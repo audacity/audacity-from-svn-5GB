@@ -118,7 +118,8 @@ class AUDACITY_DLL_API Ruler {
    void Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed);
    // If length <> 0, draws lines perpendiculars to ruler corresponding
    // to selected ticks (major, minor, or both), in an adjacent window.
-   void DrawGrid(wxDC& dc, int length, bool minor = true, bool major = true);
+   // You may need to use the offsets if you are using part of the dc for rulers, borders etc.
+   void DrawGrid(wxDC& dc, int length, bool minor = true, bool major = true, int xOffset = 0, int yOffset = 0);
 
    // So we can have white ticks on black...
    void SetTickColour( const wxColour & colour)
