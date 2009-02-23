@@ -1357,7 +1357,7 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
 }
 
 // ********** Draw grid ***************************
-void Ruler::DrawGrid(wxDC& dc, int length, bool minor, bool major)
+void Ruler::DrawGrid(wxDC& dc, int length, bool minor, bool major, int xOffset, int yOffset)
 {
    mGridLineLength = length;
    mMajorGrid = major;
@@ -1376,11 +1376,11 @@ void Ruler::DrawGrid(wxDC& dc, int length, bool minor, bool major)
          gridPos = mMinorLabels[i].pos;
          if(mOrientation == wxHORIZONTAL) {
             if((gridPos != 0) && (gridPos != mGridLineLength))
-               mDC->DrawLine(gridPos+1, 1, gridPos+1, mGridLineLength);
+               mDC->DrawLine(gridPos+xOffset, yOffset, gridPos+xOffset, mGridLineLength);
          }
          else {
             if((gridPos != 0) && (gridPos != mGridLineLength))
-               mDC->DrawLine(1, gridPos+1, mGridLineLength, gridPos+1);
+               mDC->DrawLine(xOffset, gridPos+yOffset, mGridLineLength+xOffset, gridPos+yOffset);
          }
       }
    }
@@ -1392,11 +1392,11 @@ void Ruler::DrawGrid(wxDC& dc, int length, bool minor, bool major)
          gridPos = mMajorLabels[i].pos;
          if(mOrientation == wxHORIZONTAL) {
             if((gridPos != 0) && (gridPos != mGridLineLength))
-               mDC->DrawLine(gridPos+1, 1, gridPos+1, mGridLineLength);
+               mDC->DrawLine(gridPos+xOffset, yOffset, gridPos+xOffset, mGridLineLength+yOffset);
          }
          else {
             if((gridPos != 0) && (gridPos != mGridLineLength))
-               mDC->DrawLine(1, gridPos+1, mGridLineLength, gridPos+1);
+               mDC->DrawLine(xOffset, gridPos+yOffset, mGridLineLength+xOffset, gridPos+yOffset);
          }
       }
       
@@ -1406,11 +1406,11 @@ void Ruler::DrawGrid(wxDC& dc, int length, bool minor, bool major)
          mDC->SetPen(*wxBLACK_PEN);
          if(mOrientation == wxHORIZONTAL) {
             if(zeroPosition != mGridLineLength)
-               mDC->DrawLine(zeroPosition+1, 1, zeroPosition+1, mGridLineLength);
+               mDC->DrawLine(zeroPosition+xOffset, yOffset, zeroPosition+xOffset, mGridLineLength+yOffset);
          }
          else {
             if(zeroPosition != mGridLineLength)
-               mDC->DrawLine(1, zeroPosition+1, mGridLineLength, zeroPosition+1);
+               mDC->DrawLine(xOffset, zeroPosition+yOffset, mGridLineLength+xOffset, zeroPosition+yOffset);
          }
       }
    }
