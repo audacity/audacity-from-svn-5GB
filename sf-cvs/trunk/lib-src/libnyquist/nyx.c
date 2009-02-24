@@ -327,6 +327,11 @@ LOCAL void nyx_save_obarray()
             continue;
          }
 
+         // Ignore *SCRATCH* since it's allowed to be updated
+         if (strcmp(name, "*SCRATCH*") == 0) {
+            continue;
+         }
+
          // Duplicate the symbol's values
          setvalue(nsym, nyx_dup_value(getvalue(syma)));
          setplist(nsym, nyx_dup_value(getplist(syma)));
@@ -359,6 +364,11 @@ LOCAL void nyx_restore_obarray()
          // Ignore *OBARRAY* since setting it causes the input array to be
          // truncated.
          if (strcmp(name, "*OBARRAY*") == 0) {
+            continue;
+         }
+
+         // Ignore *SCRATCH* since it's allowed to be updated
+         if (strcmp(name, "*SCRATCH*") == 0) {
             continue;
          }
 
