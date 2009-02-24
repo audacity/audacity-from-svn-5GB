@@ -143,6 +143,12 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    mLeftMargin = 40;
    mBottomMargin = 20;
 
+   gPrefs->Read(wxT("/FreqWindow/DrawGrid"), &mDrawGrid, true);
+   gPrefs->Read(wxT("/FreqWindow/SizeChoice"), &mSize, 2);
+   gPrefs->Read(wxT("/FreqWindow/AlgChoice"), &mAlg, 0);
+   gPrefs->Read(wxT("/FreqWindow/FuncChoice"), &mFunc, 3);
+   gPrefs->Read(wxT("/FreqWindow/AxisChoice"), &mAxis, 0);
+
    mFreqPlot = new FreqPlot(this, 0,
                             wxDefaultPosition, wxDefaultSize);
 
@@ -163,7 +169,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                              5, algChoiceStrings);
    mAlgChoice->SetName(_("Algorithm"));
 
-   mAlgChoice->SetSelection(0);
+   mAlgChoice->SetSelection(mAlg);
 
    wxString sizeChoiceStrings[8] = { wxT("128"),
       wxT("256"),
@@ -182,7 +188,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                               8, sizeChoiceStrings);
    mSizeChoice->SetName(_("Size"));
 
-   mSizeChoice->SetSelection(2);
+   mSizeChoice->SetSelection(mSize);
 
    int f = NumWindowFuncs();
 
@@ -200,7 +206,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                               f, funcChoiceStrings);
    mFuncChoice->SetName(_("Function"));
 
-   mFuncChoice->SetSelection(3);
+   mFuncChoice->SetSelection(mFunc);
    delete[]funcChoiceStrings;
 
    wxString axisChoiceStrings[2] = { _("Linear frequency"),
@@ -214,7 +220,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                               2, axisChoiceStrings);
    mAxisChoice->SetName(_("Axis"));
 
-   mAxisChoice->SetSelection(0);
+   mAxisChoice->SetSelection(mAxis);
 
    mLogAxis = false;
 
@@ -583,8 +589,11 @@ void FreqWindow::DrawPlot()
    memDC.SetBrush(*wxTRANSPARENT_BRUSH);
    memDC.DrawRectangle(r);
 
-   hRuler->ruler.DrawGrid(memDC, r.height);
-   vRuler->ruler.DrawGrid(memDC, r.width);
+   if(mDrawGrid)
+   {
+      hRuler->ruler.DrawGrid(memDC, r.height, true, true, 1, 1);
+      vRuler->ruler.DrawGrid(memDC, r.width, true, true, 1, 1);
+   }
 
    memDC.SelectObject( wxNullBitmap );
 
@@ -903,6 +912,11 @@ void FreqWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
 
 void FreqWindow::OnCloseButton(wxCommandEvent & WXUNUSED(event))
 {
+   gPrefs->Write(wxT("/FreqWindow/DrawGrid"), mDrawGrid);
+   gPrefs->Write(wxT("/FreqWindow/SizeChoice"), mSizeChoice->GetSelection());
+   gPrefs->Write(wxT("/FreqWindow/AlgChoice"), mAlgChoice->GetSelection());
+   gPrefs->Write(wxT("/FreqWindow/FuncChoice"), mFuncChoice->GetSelection());
+   gPrefs->Write(wxT("/FreqWindow/AxisChoice"), mAxisChoice->GetSelection());
    this->Show(FALSE);
 }
 
