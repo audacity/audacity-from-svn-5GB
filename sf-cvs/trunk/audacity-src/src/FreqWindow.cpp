@@ -84,7 +84,8 @@ enum {
    FreqSizeChoiceID,
    FreqFuncChoiceID,
    FreqAxisChoiceID,
-   ReplotButtonID
+   ReplotButtonID,
+   GridOnOffID
 };
 
 FreqWindow *gFreqWindow = NULL;
@@ -125,6 +126,7 @@ BEGIN_EVENT_TABLE(FreqWindow, wxDialog)
     EVT_CHOICE(FreqFuncChoiceID, FreqWindow::OnFuncChoice)
     EVT_CHOICE(FreqAxisChoiceID, FreqWindow::OnAxisChoice)
     EVT_BUTTON(ReplotButtonID, FreqWindow::OnReplot)
+    EVT_CHECKBOX(GridOnOffID, FreqWindow::OnGridOnOff)
 END_EVENT_TABLE()
 
 FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
@@ -237,6 +239,12 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                                _("Close"));
    mCloseButton->SetName(_("Close"));
 
+   mGridOnOff = new wxCheckBox(this, GridOnOffID, _("Grids"),
+                            wxDefaultPosition, wxDefaultSize,
+                            wxALIGN_RIGHT);
+   mGridOnOff->SetName(_("Grids"));
+   mGridOnOff->SetValue(mDrawGrid);
+
 #ifndef TARGET_CARBON
    mCloseButton->SetDefault();
    mCloseButton->SetFocus();
@@ -348,7 +356,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    hs->Add( 10, 1, 0 );
    hs->Add( mCloseButton, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxLEFT | wxRIGHT, 5 );
    gs->Add( hs, 0, wxALIGN_CENTER_HORIZONTAL | wxLEFT | wxRIGHT | wxBOTTOM, 5 );
-   // still some gs space for grid on-off control
+   gs->Add( mGridOnOff, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxLEFT | wxRIGHT, 5 );
    vs->Add( gs, 0, wxEXPAND | wxBOTTOM, 0 );
 
    vs->Add( mInfo, 0, wxEXPAND | wxBOTTOM, 0 );
@@ -394,9 +402,9 @@ void FreqWindow::GetAudio()
             start = track->TimeToLongSamples(p->mViewInfo.sel0);
             end = track->TimeToLongSamples(p->mViewInfo.sel1);
             len = (sampleCount)(end - start);
-            if (len > 1048576) {
+            if (len > 10485760) {
                warning = true;
-               len = 1048576;
+               len = 10485760;
             }
             buffer = new float[len];
             track->Get((samplePtr)buffer, floatSample, start, len);
@@ -1054,13 +1062,15 @@ void FreqWindow::Recalc()
    }
 
    switch (alg) {
+   double scale;
    case 0:                     // Spectrum
       // Convert to decibels
       mYMin = 1000000.;
       mYMax = -1000000.;
+      scale = (double)mWindowSize * (double)mWindowSize * (double)windows;
       for (i = 0; i < half; i++)
       {
-         mProcessed[i] = 10 * log10(mProcessed[i] / mWindowSize / windows);
+         mProcessed[i] = 10 * log10(mProcessed[i] / scale);
          if(mProcessed[i] > mYMax)
             mYMax = mProcessed[i];
          else if(mProcessed[i] < mYMin)
@@ -1211,6 +1221,15 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
 void FreqWindow::OnReplot(wxCommandEvent & WXUNUSED(event))
 {
    GetAudio();
+   gFreqWindow->Plot();
+}
+
+void FreqWindow::OnGridOnOff(wxCommandEvent & WXUNUSED(event))
+{
+   if( mGridOnOff->IsChecked() )
+      mDrawGrid = true;
+   else
+      mDrawGrid = false;
    gFreqWindow->Plot();
 }
 
