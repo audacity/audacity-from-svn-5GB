@@ -75,6 +75,7 @@ class FreqWindow:public wxDialog {
    void OnAxisChoice(wxCommandEvent & event);
    void OnExport(wxCommandEvent & event);
    void OnReplot(wxCommandEvent & event);
+   void OnGridOnOff(wxCommandEvent & event);
 
    void Recalc();
    void DrawPlot();
@@ -109,6 +110,7 @@ class FreqWindow:public wxDialog {
    wxChoice *mSizeChoice;
    wxChoice *mFuncChoice;
    wxChoice *mAxisChoice;
+   wxCheckBox *mGridOnOff;
 
    wxRect mPlotRect;
    wxRect mInfoRect;
