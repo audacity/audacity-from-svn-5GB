@@ -54,7 +54,7 @@ extern "C"
    void        nyx_break();
    void        nyx_continue();
 
-   void        nyx_set_audio_params( double rate );
+   void        nyx_set_audio_params(double rate, long len);
 
    void        nyx_set_input_audio(nyx_audio_callback callback,
                                    void *userdata,

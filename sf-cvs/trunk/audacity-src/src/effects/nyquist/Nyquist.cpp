@@ -677,12 +677,16 @@ bool EffectNyquist::ProcessOne()
    nyx_set_os_callback(StaticOSCallback, (void *)this);
    nyx_capture_output(StaticOutputCallback, (void *)this);
 
-   if( !( mFlags & INSERT_EFFECT ) )
+   if (!(mFlags & INSERT_EFFECT)) {
+      nyx_set_audio_params(mCurTrack[0]->GetRate(), mCurLen);
+
       nyx_set_input_audio(StaticGetCallback, (void *)this,
                           mCurNumChannels,
                           mCurLen, mCurTrack[0]->GetRate());
-   else
-      nyx_set_audio_params( mCurTrack[0]->GetRate() );
+   }
+   else {
+      nyx_set_audio_params(mCurTrack[0]->GetRate(), 0);
+   }
 
    wxString cmd;
 
@@ -864,9 +868,9 @@ bool EffectNyquist::ProcessOne()
       mOutputTrack[i] = NULL;
    }
 
-   nyx_capture_output(StaticOutputCallback, (void *)NULL);
+   nyx_capture_output(NULL, (void *)NULL);
 
-   nyx_set_os_callback(StaticOSCallback, (void *)NULL);
+   nyx_set_os_callback(NULL, (void *)NULL);
 
    nyx_cleanup();
 
