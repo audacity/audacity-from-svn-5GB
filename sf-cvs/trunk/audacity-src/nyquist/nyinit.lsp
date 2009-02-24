@@ -35,4 +35,4 @@
 
 ;(setf *gc-flag* t)
 
-
+'*scratch*;; create a symbol where Audacity plug-ins can save properties from one run to the next 
