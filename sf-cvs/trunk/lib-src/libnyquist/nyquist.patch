@@ -1,6 +1,6 @@
 diff -wruN orig/nyquist/nyqsrc/sound.c nyquist/nyqsrc/sound.c
 --- orig/nyquist/nyqsrc/sound.c	2008-07-20 23:30:05.000000000 -0500
-+++ nyquist/nyqsrc/sound.c	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqsrc/sound.c	2009-01-29 12:04:22.000000000 -0600
 @@ -17,7 +17,9 @@
  #include "extern.h"
  #include "debug.h"
@@ -13,7 +13,7 @@ diff -wruN orig/nyquist/nyqsrc/sound.c nyquist/nyqsrc/sound.c
  
 diff -wruN orig/nyquist/nyqstk/include/ADSR.h nyquist/nyqstk/include/ADSR.h
 --- orig/nyquist/nyqstk/include/ADSR.h	2008-01-07 09:59:27.000000000 -0600
-+++ nyquist/nyqstk/include/ADSR.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/ADSR.h	2009-01-29 12:04:22.000000000 -0600
 @@ -20,6 +20,9 @@
  
  #include "Envelope.h"
@@ -33,7 +33,7 @@ diff -wruN orig/nyquist/nyqstk/include/ADSR.h nyquist/nyqstk/include/ADSR.h
  #endif
 diff -wruN orig/nyquist/nyqstk/include/BandedWG.h nyquist/nyqstk/include/BandedWG.h
 --- orig/nyquist/nyqstk/include/BandedWG.h	2008-01-07 09:59:27.000000000 -0600
-+++ nyquist/nyqstk/include/BandedWG.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/BandedWG.h	2009-01-29 12:04:22.000000000 -0600
 @@ -32,14 +32,22 @@
  #ifndef STK_BANDEDWG_H
  #define STK_BANDEDWG_H
@@ -66,7 +66,7 @@ diff -wruN orig/nyquist/nyqstk/include/BandedWG.h nyquist/nyqstk/include/BandedW
  #endif
 diff -wruN orig/nyquist/nyqstk/include/BiQuad.h nyquist/nyqstk/include/BiQuad.h
 --- orig/nyquist/nyqstk/include/BiQuad.h	2008-01-07 09:59:27.000000000 -0600
-+++ nyquist/nyqstk/include/BiQuad.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/BiQuad.h	2009-01-29 12:04:22.000000000 -0600
 @@ -17,6 +17,9 @@
  
  #include "Filter.h"
@@ -86,7 +86,7 @@ diff -wruN orig/nyquist/nyqstk/include/BiQuad.h nyquist/nyqstk/include/BiQuad.h
  #endif
 diff -wruN orig/nyquist/nyqstk/include/BowTable.h nyquist/nyqstk/include/BowTable.h
 --- orig/nyquist/nyqstk/include/BowTable.h	2008-01-07 09:59:27.000000000 -0600
-+++ nyquist/nyqstk/include/BowTable.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/BowTable.h	2009-01-29 12:04:22.000000000 -0600
 @@ -14,6 +14,9 @@
  
  #include "Function.h"
@@ -106,7 +106,7 @@ diff -wruN orig/nyquist/nyqstk/include/BowTable.h nyquist/nyqstk/include/BowTabl
  #endif
 diff -wruN orig/nyquist/nyqstk/include/Bowed.h nyquist/nyqstk/include/Bowed.h
 --- orig/nyquist/nyqstk/include/Bowed.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/Bowed.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Bowed.h	2009-01-29 12:04:22.000000000 -0600
 @@ -32,6 +32,9 @@
  #include "SineWave.h"
  #include "ADSR.h"
@@ -126,7 +126,7 @@ diff -wruN orig/nyquist/nyqstk/include/Bowed.h nyquist/nyqstk/include/Bowed.h
  #endif
 diff -wruN orig/nyquist/nyqstk/include/Chorus.h nyquist/nyqstk/include/Chorus.h
 --- orig/nyquist/nyqstk/include/Chorus.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/Chorus.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Chorus.h	2009-01-29 12:04:22.000000000 -0600
 @@ -15,6 +15,9 @@
  #include "DelayL.h" 
  #include "SineWave.h" 
@@ -147,7 +147,7 @@ diff -wruN orig/nyquist/nyqstk/include/Chorus.h nyquist/nyqstk/include/Chorus.h
  
 diff -wruN orig/nyquist/nyqstk/include/Clarinet.h nyquist/nyqstk/include/Clarinet.h
 --- orig/nyquist/nyqstk/include/Clarinet.h	2008-01-07 09:30:37.000000000 -0600
-+++ nyquist/nyqstk/include/Clarinet.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Clarinet.h	2009-01-29 12:04:22.000000000 -0600
 @@ -33,6 +33,9 @@
  #include "Noise.h"
  #include "SineWave.h"
@@ -167,7 +167,7 @@ diff -wruN orig/nyquist/nyqstk/include/Clarinet.h nyquist/nyqstk/include/Clarine
  #endif
 diff -wruN orig/nyquist/nyqstk/include/Delay.h nyquist/nyqstk/include/Delay.h
 --- orig/nyquist/nyqstk/include/Delay.h	2008-01-07 09:30:37.000000000 -0600
-+++ nyquist/nyqstk/include/Delay.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Delay.h	2009-01-29 12:04:22.000000000 -0600
 @@ -23,6 +23,9 @@
  
  #include "Filter.h"
@@ -188,7 +188,7 @@ diff -wruN orig/nyquist/nyqstk/include/Delay.h nyquist/nyqstk/include/Delay.h
  
 diff -wruN orig/nyquist/nyqstk/include/DelayA.h nyquist/nyqstk/include/DelayA.h
 --- orig/nyquist/nyqstk/include/DelayA.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/DelayA.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/DelayA.h	2009-01-29 12:04:22.000000000 -0600
 @@ -24,6 +24,9 @@
  
  #include "Delay.h"
@@ -208,7 +208,7 @@ diff -wruN orig/nyquist/nyqstk/include/DelayA.h nyquist/nyqstk/include/DelayA.h
  #endif
 diff -wruN orig/nyquist/nyqstk/include/DelayL.h nyquist/nyqstk/include/DelayL.h
 --- orig/nyquist/nyqstk/include/DelayL.h	2008-01-07 09:30:37.000000000 -0600
-+++ nyquist/nyqstk/include/DelayL.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/DelayL.h	2009-01-29 12:04:22.000000000 -0600
 @@ -27,6 +27,9 @@
  
  #include "Delay.h"
@@ -228,7 +228,7 @@ diff -wruN orig/nyquist/nyqstk/include/DelayL.h nyquist/nyqstk/include/DelayL.h
  #endif
 diff -wruN orig/nyquist/nyqstk/include/Effect.h nyquist/nyqstk/include/Effect.h
 --- orig/nyquist/nyqstk/include/Effect.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/Effect.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Effect.h	2009-01-29 12:04:22.000000000 -0600
 @@ -14,6 +14,9 @@
  #ifndef STK_EFFECT_H
  #define STK_EFFECT_H
@@ -249,7 +249,7 @@ diff -wruN orig/nyquist/nyqstk/include/Effect.h nyquist/nyqstk/include/Effect.h
  
 diff -wruN orig/nyquist/nyqstk/include/Envelope.h nyquist/nyqstk/include/Envelope.h
 --- orig/nyquist/nyqstk/include/Envelope.h	2008-01-07 09:30:37.000000000 -0600
-+++ nyquist/nyqstk/include/Envelope.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Envelope.h	2009-01-29 12:04:22.000000000 -0600
 @@ -18,6 +18,9 @@
  
  #include "Generator.h"
@@ -269,7 +269,7 @@ diff -wruN orig/nyquist/nyqstk/include/Envelope.h nyquist/nyqstk/include/Envelop
  #endif
 diff -wruN orig/nyquist/nyqstk/include/FileRead.h nyquist/nyqstk/include/FileRead.h
 --- orig/nyquist/nyqstk/include/FileRead.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/FileRead.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/FileRead.h	2009-01-29 12:04:22.000000000 -0600
 @@ -34,6 +34,9 @@
  
  #include "Stk.h"
@@ -289,7 +289,7 @@ diff -wruN orig/nyquist/nyqstk/include/FileRead.h nyquist/nyqstk/include/FileRea
  #endif
 diff -wruN orig/nyquist/nyqstk/include/FileWvIn.h nyquist/nyqstk/include/FileWvIn.h
 --- orig/nyquist/nyqstk/include/FileWvIn.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/FileWvIn.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/FileWvIn.h	2009-01-29 12:04:22.000000000 -0600
 @@ -37,6 +37,9 @@
  #include "WvIn.h"
  #include "FileRead.h"
@@ -309,7 +309,7 @@ diff -wruN orig/nyquist/nyqstk/include/FileWvIn.h nyquist/nyqstk/include/FileWvI
  #endif
 diff -wruN orig/nyquist/nyqstk/include/Filter.h nyquist/nyqstk/include/Filter.h
 --- orig/nyquist/nyqstk/include/Filter.h	2008-01-07 09:30:37.000000000 -0600
-+++ nyquist/nyqstk/include/Filter.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Filter.h	2009-01-29 12:04:22.000000000 -0600
 @@ -33,6 +33,9 @@
  #include "Stk.h"
  #include <vector>
@@ -329,7 +329,7 @@ diff -wruN orig/nyquist/nyqstk/include/Filter.h nyquist/nyqstk/include/Filter.h
  #endif
 diff -wruN orig/nyquist/nyqstk/include/Flute.h nyquist/nyqstk/include/Flute.h
 --- orig/nyquist/nyqstk/include/Flute.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/Flute.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Flute.h	2009-01-29 12:04:22.000000000 -0600
 @@ -34,6 +34,9 @@
  #include "ADSR.h"
  #include "SineWave.h"
@@ -349,7 +349,7 @@ diff -wruN orig/nyquist/nyqstk/include/Flute.h nyquist/nyqstk/include/Flute.h
  #endif
 diff -wruN orig/nyquist/nyqstk/include/Function.h nyquist/nyqstk/include/Function.h
 --- orig/nyquist/nyqstk/include/Function.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/Function.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Function.h	2009-01-29 12:04:22.000000000 -0600
 @@ -15,6 +15,9 @@
  #ifndef STK_FUNCTION_H
  #define STK_FUNCTION_H
@@ -370,7 +370,7 @@ diff -wruN orig/nyquist/nyqstk/include/Function.h nyquist/nyqstk/include/Functio
  
 diff -wruN orig/nyquist/nyqstk/include/Generator.h nyquist/nyqstk/include/Generator.h
 --- orig/nyquist/nyqstk/include/Generator.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/Generator.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Generator.h	2009-01-29 12:04:22.000000000 -0600
 @@ -14,6 +14,9 @@
  
  #include "Stk.h"
@@ -391,7 +391,7 @@ diff -wruN orig/nyquist/nyqstk/include/Generator.h nyquist/nyqstk/include/Genera
  
 diff -wruN orig/nyquist/nyqstk/include/Instrmnt.h nyquist/nyqstk/include/Instrmnt.h
 --- orig/nyquist/nyqstk/include/Instrmnt.h	2008-01-07 09:30:38.000000000 -0600
-+++ nyquist/nyqstk/include/Instrmnt.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Instrmnt.h	2009-01-29 12:04:22.000000000 -0600
 @@ -14,6 +14,9 @@
  
  #include "Stk.h"
@@ -411,7 +411,7 @@ diff -wruN orig/nyquist/nyqstk/include/Instrmnt.h nyquist/nyqstk/include/Instrmn
  #endif
 diff -wruN orig/nyquist/nyqstk/include/JCRev.h nyquist/nyqstk/include/JCRev.h
 --- orig/nyquist/nyqstk/include/JCRev.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/JCRev.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/JCRev.h	2009-01-29 12:04:22.000000000 -0600
 @@ -20,6 +20,9 @@
  #include "Effect.h"
  #include "Delay.h" 
@@ -432,7 +432,7 @@ diff -wruN orig/nyquist/nyqstk/include/JCRev.h nyquist/nyqstk/include/JCRev.h
  
 diff -wruN orig/nyquist/nyqstk/include/JetTable.h nyquist/nyqstk/include/JetTable.h
 --- orig/nyquist/nyqstk/include/JetTable.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/JetTable.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/JetTable.h	2009-01-29 12:04:22.000000000 -0600
 @@ -18,6 +18,9 @@
  
  #include "Function.h"
@@ -452,7 +452,7 @@ diff -wruN orig/nyquist/nyqstk/include/JetTable.h nyquist/nyqstk/include/JetTabl
  #endif
 diff -wruN orig/nyquist/nyqstk/include/Mandolin.h nyquist/nyqstk/include/Mandolin.h
 --- orig/nyquist/nyqstk/include/Mandolin.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/Mandolin.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Mandolin.h	2009-01-29 12:04:22.000000000 -0600
 @@ -33,6 +33,9 @@
  #include "PluckTwo.h"
  #include "FileWvIn.h"
@@ -472,7 +472,7 @@ diff -wruN orig/nyquist/nyqstk/include/Mandolin.h nyquist/nyqstk/include/Mandoli
  #endif
 diff -wruN orig/nyquist/nyqstk/include/Modal.h nyquist/nyqstk/include/Modal.h
 --- orig/nyquist/nyqstk/include/Modal.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/Modal.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Modal.h	2009-01-29 12:04:22.000000000 -0600
 @@ -21,6 +21,9 @@
  #include "BiQuad.h"
  #include "OnePole.h"
@@ -492,7 +492,7 @@ diff -wruN orig/nyquist/nyqstk/include/Modal.h nyquist/nyqstk/include/Modal.h
  #endif
 diff -wruN orig/nyquist/nyqstk/include/ModalBar.h nyquist/nyqstk/include/ModalBar.h
 --- orig/nyquist/nyqstk/include/ModalBar.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/ModalBar.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/ModalBar.h	2009-01-29 12:04:22.000000000 -0600
 @@ -33,6 +33,9 @@
  
  #include "Modal.h"
@@ -512,7 +512,7 @@ diff -wruN orig/nyquist/nyqstk/include/ModalBar.h nyquist/nyqstk/include/ModalBa
  #endif
 diff -wruN orig/nyquist/nyqstk/include/NRev.h nyquist/nyqstk/include/NRev.h
 --- orig/nyquist/nyqstk/include/NRev.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/NRev.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/NRev.h	2009-01-29 12:04:22.000000000 -0600
 @@ -22,6 +22,9 @@
  #include "Effect.h" 
  #include "Delay.h" 
@@ -533,7 +533,7 @@ diff -wruN orig/nyquist/nyqstk/include/NRev.h nyquist/nyqstk/include/NRev.h
  
 diff -wruN orig/nyquist/nyqstk/include/Noise.h nyquist/nyqstk/include/Noise.h
 --- orig/nyquist/nyqstk/include/Noise.h	2008-01-07 09:30:38.000000000 -0600
-+++ nyquist/nyqstk/include/Noise.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Noise.h	2009-01-29 12:04:22.000000000 -0600
 @@ -15,6 +15,9 @@
  
  #include "Generator.h"
@@ -553,7 +553,7 @@ diff -wruN orig/nyquist/nyqstk/include/Noise.h nyquist/nyqstk/include/Noise.h
  #endif
 diff -wruN orig/nyquist/nyqstk/include/OnePole.h nyquist/nyqstk/include/OnePole.h
 --- orig/nyquist/nyqstk/include/OnePole.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/OnePole.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/OnePole.h	2009-01-29 12:04:22.000000000 -0600
 @@ -17,6 +17,9 @@
  
  #include "Filter.h"
@@ -573,7 +573,7 @@ diff -wruN orig/nyquist/nyqstk/include/OnePole.h nyquist/nyqstk/include/OnePole.
  #endif
 diff -wruN orig/nyquist/nyqstk/include/OneZero.h nyquist/nyqstk/include/OneZero.h
 --- orig/nyquist/nyqstk/include/OneZero.h	2008-01-07 09:30:38.000000000 -0600
-+++ nyquist/nyqstk/include/OneZero.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/OneZero.h	2009-01-29 12:04:22.000000000 -0600
 @@ -17,6 +17,9 @@
  
  #include "Filter.h"
@@ -593,7 +593,7 @@ diff -wruN orig/nyquist/nyqstk/include/OneZero.h nyquist/nyqstk/include/OneZero.
  #endif
 diff -wruN orig/nyquist/nyqstk/include/PRCRev.h nyquist/nyqstk/include/PRCRev.h
 --- orig/nyquist/nyqstk/include/PRCRev.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/PRCRev.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/PRCRev.h	2009-01-29 12:04:22.000000000 -0600
 @@ -20,6 +20,9 @@
  #include "Effect.h" 
  #include "Delay.h" 
@@ -614,7 +614,7 @@ diff -wruN orig/nyquist/nyqstk/include/PRCRev.h nyquist/nyqstk/include/PRCRev.h
  
 diff -wruN orig/nyquist/nyqstk/include/PitShift.h nyquist/nyqstk/include/PitShift.h
 --- orig/nyquist/nyqstk/include/PitShift.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/PitShift.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/PitShift.h	2009-01-29 12:04:22.000000000 -0600
 @@ -15,6 +15,9 @@
  #include "Effect.h" 
  #include "DelayL.h" 
@@ -635,7 +635,7 @@ diff -wruN orig/nyquist/nyqstk/include/PitShift.h nyquist/nyqstk/include/PitShif
  
 diff -wruN orig/nyquist/nyqstk/include/PluckTwo.h nyquist/nyqstk/include/PluckTwo.h
 --- orig/nyquist/nyqstk/include/PluckTwo.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/PluckTwo.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/PluckTwo.h	2009-01-29 12:04:22.000000000 -0600
 @@ -26,6 +26,9 @@
  #include "DelayA.h"
  #include "OneZero.h"
@@ -655,7 +655,7 @@ diff -wruN orig/nyquist/nyqstk/include/PluckTwo.h nyquist/nyqstk/include/PluckTw
  #endif
 diff -wruN orig/nyquist/nyqstk/include/PoleZero.h nyquist/nyqstk/include/PoleZero.h
 --- orig/nyquist/nyqstk/include/PoleZero.h	2008-01-08 13:15:25.000000000 -0600
-+++ nyquist/nyqstk/include/PoleZero.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/PoleZero.h	2009-01-29 12:04:22.000000000 -0600
 @@ -17,6 +17,9 @@
  
  #include "Filter.h"
@@ -675,7 +675,7 @@ diff -wruN orig/nyquist/nyqstk/include/PoleZero.h nyquist/nyqstk/include/PoleZer
  #endif
 diff -wruN orig/nyquist/nyqstk/include/ReedTable.h nyquist/nyqstk/include/ReedTable.h
 --- orig/nyquist/nyqstk/include/ReedTable.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/ReedTable.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/ReedTable.h	2009-01-29 12:04:22.000000000 -0600
 @@ -22,6 +22,9 @@
  
  #include "Function.h"
@@ -695,7 +695,7 @@ diff -wruN orig/nyquist/nyqstk/include/ReedTable.h nyquist/nyqstk/include/ReedTa
  #endif
 diff -wruN orig/nyquist/nyqstk/include/SKINI.msg nyquist/nyqstk/include/SKINI.msg
 --- orig/nyquist/nyqstk/include/SKINI.msg	2004-11-10 10:07:39.000000000 -0600
-+++ nyquist/nyqstk/include/SKINI.msg	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/SKINI.msg	2009-01-29 12:04:22.000000000 -0600
 @@ -11,6 +11,9 @@
  */
  /*********************************************************/
@@ -714,7 +714,7 @@ diff -wruN orig/nyquist/nyqstk/include/SKINI.msg nyquist/nyqstk/include/SKINI.ms
 +} // namespace Nyq
 diff -wruN orig/nyquist/nyqstk/include/Saxofony.h nyquist/nyqstk/include/Saxofony.h
 --- orig/nyquist/nyqstk/include/Saxofony.h	2008-01-07 09:30:38.000000000 -0600
-+++ nyquist/nyqstk/include/Saxofony.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Saxofony.h	2009-01-29 12:04:22.000000000 -0600
 @@ -46,6 +46,9 @@
  #include "Noise.h"
  #include "SineWave.h"
@@ -734,7 +734,7 @@ diff -wruN orig/nyquist/nyqstk/include/Saxofony.h nyquist/nyqstk/include/Saxofon
  #endif
 diff -wruN orig/nyquist/nyqstk/include/SineWave.h nyquist/nyqstk/include/SineWave.h
 --- orig/nyquist/nyqstk/include/SineWave.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/SineWave.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/SineWave.h	2009-01-29 12:04:22.000000000 -0600
 @@ -16,10 +16,18 @@
  #ifndef STK_SINEWAVE_H
  #define STK_SINEWAVE_H
@@ -763,7 +763,7 @@ diff -wruN orig/nyquist/nyqstk/include/SineWave.h nyquist/nyqstk/include/SineWav
  #endif
 diff -wruN orig/nyquist/nyqstk/include/Sitar.h nyquist/nyqstk/include/Sitar.h
 --- orig/nyquist/nyqstk/include/Sitar.h	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/include/Sitar.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/Sitar.h	2009-01-29 12:04:22.000000000 -0600
 @@ -26,6 +26,9 @@
  #include "Noise.h"
  #include "ADSR.h"
@@ -784,7 +784,7 @@ diff -wruN orig/nyquist/nyqstk/include/Sitar.h nyquist/nyqstk/include/Sitar.h
  
 diff -wruN orig/nyquist/nyqstk/include/Stk.h nyquist/nyqstk/include/Stk.h
 --- orig/nyquist/nyqstk/include/Stk.h	2008-01-07 09:30:38.000000000 -0600
-+++ nyquist/nyqstk/include/Stk.h	2009-01-28 23:41:04.000000000 -0600
++++ nyquist/nyqstk/include/Stk.h	2009-01-29 12:04:22.000000000 -0600
 @@ -19,6 +19,9 @@
  #include <iostream>
  #include <sstream>
@@ -804,7 +804,7 @@ diff -wruN orig/nyquist/nyqstk/include/Stk.h nyquist/nyqstk/include/Stk.h
  #endif
 diff -wruN orig/nyquist/nyqstk/include/WaveLoop.h nyquist/nyqstk/include/WaveLoop.h
 --- orig/nyquist/nyqstk/include/WaveLoop.h	2008-01-07 09:30:39.000000000 -0600
-+++ nyquist/nyqstk/include/WaveLoop.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/WaveLoop.h	2009-01-29 12:04:22.000000000 -0600
 @@ -21,6 +21,9 @@
  
  #include "FileWvIn.h"
@@ -824,7 +824,7 @@ diff -wruN orig/nyquist/nyqstk/include/WaveLoop.h nyquist/nyqstk/include/WaveLoo
  #endif
 diff -wruN orig/nyquist/nyqstk/include/WvIn.h nyquist/nyqstk/include/WvIn.h
 --- orig/nyquist/nyqstk/include/WvIn.h	2008-01-07 09:30:39.000000000 -0600
-+++ nyquist/nyqstk/include/WvIn.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/include/WvIn.h	2009-01-29 12:04:22.000000000 -0600
 @@ -23,6 +23,9 @@
  #include "Stk.h"
  #include <vector>
@@ -844,7 +844,7 @@ diff -wruN orig/nyquist/nyqstk/include/WvIn.h nyquist/nyqstk/include/WvIn.h
  #endif
 diff -wruN orig/nyquist/nyqstk/instr.cpp nyquist/nyqstk/instr.cpp
 --- orig/nyquist/nyqstk/instr.cpp	2008-01-07 09:30:36.000000000 -0600
-+++ nyquist/nyqstk/instr.cpp	2009-01-28 23:36:43.000000000 -0600
++++ nyquist/nyqstk/instr.cpp	2009-01-29 12:24:45.000000000 -0600
 @@ -11,6 +11,7 @@
  #include "stdlib.h"
  #include "string.h"
@@ -897,7 +897,7 @@ diff -wruN orig/nyquist/nyqstk/instr.cpp nyquist/nyqstk/instr.cpp
 -
 diff -wruN orig/nyquist/nyqstk/src/ADSR.cpp nyquist/nyqstk/src/ADSR.cpp
 --- orig/nyquist/nyqstk/src/ADSR.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/ADSR.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/ADSR.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -17,6 +17,8 @@
  
  #include "ADSR.h"
@@ -909,7 +909,7 @@ diff -wruN orig/nyquist/nyqstk/src/ADSR.cpp nyquist/nyqstk/src/ADSR.cpp
    target_ = 0.0;
 diff -wruN orig/nyquist/nyqstk/src/BandedWG.cpp nyquist/nyqstk/src/BandedWG.cpp
 --- orig/nyquist/nyqstk/src/BandedWG.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/BandedWG.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/BandedWG.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -33,6 +33,8 @@
  #include "SKINI.msg"
  #include <cmath>
@@ -921,7 +921,7 @@ diff -wruN orig/nyquist/nyqstk/src/BandedWG.cpp nyquist/nyqstk/src/BandedWG.cpp
    doPluck_ = true;
 diff -wruN orig/nyquist/nyqstk/src/BiQuad.cpp nyquist/nyqstk/src/BiQuad.cpp
 --- orig/nyquist/nyqstk/src/BiQuad.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/BiQuad.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/BiQuad.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -15,6 +15,8 @@
  #include "BiQuad.h"
  #include <cmath>
@@ -933,7 +933,7 @@ diff -wruN orig/nyquist/nyqstk/src/BiQuad.cpp nyquist/nyqstk/src/BiQuad.cpp
    std::vector<StkFloat> b(3, 0.0);
 diff -wruN orig/nyquist/nyqstk/src/BowTable.cpp nyquist/nyqstk/src/BowTable.cpp
 --- orig/nyquist/nyqstk/src/BowTable.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/BowTable.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/BowTable.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -12,6 +12,8 @@
  #include "BowTable.h"
  #include <math.h>
@@ -945,7 +945,7 @@ diff -wruN orig/nyquist/nyqstk/src/BowTable.cpp nyquist/nyqstk/src/BowTable.cpp
    offset_ = (StkFloat) 0.0;
 diff -wruN orig/nyquist/nyqstk/src/Bowed.cpp nyquist/nyqstk/src/Bowed.cpp
 --- orig/nyquist/nyqstk/src/Bowed.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/Bowed.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Bowed.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -24,6 +24,8 @@
  #include "Bowed.h"
  #include "SKINI.msg"
@@ -957,7 +957,7 @@ diff -wruN orig/nyquist/nyqstk/src/Bowed.cpp nyquist/nyqstk/src/Bowed.cpp
    unsigned long length;
 diff -wruN orig/nyquist/nyqstk/src/Chorus.cpp nyquist/nyqstk/src/Chorus.cpp
 --- orig/nyquist/nyqstk/src/Chorus.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/Chorus.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Chorus.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -11,6 +11,8 @@
  #include "Chorus.h"
  #include <iostream>
@@ -969,7 +969,7 @@ diff -wruN orig/nyquist/nyqstk/src/Chorus.cpp nyquist/nyqstk/src/Chorus.cpp
    delayLine_[0].setMaximumDelay( (unsigned long) (baseDelay * 1.414) + 2);
 diff -wruN orig/nyquist/nyqstk/src/Clarinet.cpp nyquist/nyqstk/src/Clarinet.cpp
 --- orig/nyquist/nyqstk/src/Clarinet.cpp	2008-01-07 09:30:39.000000000 -0600
-+++ nyquist/nyqstk/src/Clarinet.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Clarinet.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -25,6 +25,8 @@
  #include "Clarinet.h"
  #include "SKINI.msg"
@@ -981,7 +981,7 @@ diff -wruN orig/nyquist/nyqstk/src/Clarinet.cpp nyquist/nyqstk/src/Clarinet.cpp
    length_ = (long) (Stk::sampleRate() / lowestFrequency + 1);
 diff -wruN orig/nyquist/nyqstk/src/Delay.cpp nyquist/nyqstk/src/Delay.cpp
 --- orig/nyquist/nyqstk/src/Delay.cpp	2008-01-07 09:30:39.000000000 -0600
-+++ nyquist/nyqstk/src/Delay.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Delay.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -20,6 +20,8 @@
  
  #include "Delay.h"
@@ -993,7 +993,7 @@ diff -wruN orig/nyquist/nyqstk/src/Delay.cpp nyquist/nyqstk/src/Delay.cpp
    // Default maximum delay length set to 4095.
 diff -wruN orig/nyquist/nyqstk/src/DelayA.cpp nyquist/nyqstk/src/DelayA.cpp
 --- orig/nyquist/nyqstk/src/DelayA.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/DelayA.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/DelayA.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -21,6 +21,8 @@
  
  #include "DelayA.h"
@@ -1005,7 +1005,7 @@ diff -wruN orig/nyquist/nyqstk/src/DelayA.cpp nyquist/nyqstk/src/DelayA.cpp
    this->setDelay( 0.5 );
 diff -wruN orig/nyquist/nyqstk/src/DelayL.cpp nyquist/nyqstk/src/DelayL.cpp
 --- orig/nyquist/nyqstk/src/DelayL.cpp	2008-01-07 09:30:39.000000000 -0600
-+++ nyquist/nyqstk/src/DelayL.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/DelayL.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -24,6 +24,8 @@
  
  #include "DelayL.h"
@@ -1017,7 +1017,7 @@ diff -wruN orig/nyquist/nyqstk/src/DelayL.cpp nyquist/nyqstk/src/DelayL.cpp
    doNextOut_ = true;
 diff -wruN orig/nyquist/nyqstk/src/Effect.cpp nyquist/nyqstk/src/Effect.cpp
 --- orig/nyquist/nyqstk/src/Effect.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/Effect.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Effect.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -12,6 +12,8 @@
  #include "Effect.h"
  #include <math.h>
@@ -1029,7 +1029,7 @@ diff -wruN orig/nyquist/nyqstk/src/Effect.cpp nyquist/nyqstk/src/Effect.cpp
  }
 diff -wruN orig/nyquist/nyqstk/src/Envelope.cpp nyquist/nyqstk/src/Envelope.cpp
 --- orig/nyquist/nyqstk/src/Envelope.cpp	2008-01-07 09:30:39.000000000 -0600
-+++ nyquist/nyqstk/src/Envelope.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Envelope.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -15,6 +15,8 @@
  
  #include "Envelope.h"
@@ -1041,7 +1041,7 @@ diff -wruN orig/nyquist/nyqstk/src/Envelope.cpp nyquist/nyqstk/src/Envelope.cpp
    target_ = 0.0;
 diff -wruN orig/nyquist/nyqstk/src/FileRead.cpp nyquist/nyqstk/src/FileRead.cpp
 --- orig/nyquist/nyqstk/src/FileRead.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/FileRead.cpp	2009-01-29 10:30:51.000000000 -0600
++++ nyquist/nyqstk/src/FileRead.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -32,8 +32,11 @@
  #include "FileRead.h"
  #include <sys/stat.h>
@@ -1056,7 +1056,7 @@ diff -wruN orig/nyquist/nyqstk/src/FileRead.cpp nyquist/nyqstk/src/FileRead.cpp
  {
 diff -wruN orig/nyquist/nyqstk/src/FileWvIn.cpp nyquist/nyqstk/src/FileWvIn.cpp
 --- orig/nyquist/nyqstk/src/FileWvIn.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/FileWvIn.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/FileWvIn.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -33,6 +33,8 @@
  #include "FileWvIn.h"
  #include <cmath>
@@ -1068,7 +1068,7 @@ diff -wruN orig/nyquist/nyqstk/src/FileWvIn.cpp nyquist/nyqstk/src/FileWvIn.cpp
      chunkThreshold_(chunkThreshold), chunkSize_(chunkSize)
 diff -wruN orig/nyquist/nyqstk/src/Filter.cpp nyquist/nyqstk/src/Filter.cpp
 --- orig/nyquist/nyqstk/src/Filter.cpp	2008-01-07 09:30:39.000000000 -0600
-+++ nyquist/nyqstk/src/Filter.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Filter.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -30,6 +30,8 @@
  #include "Filter.h"
  #include <stdio.h>
@@ -1080,7 +1080,7 @@ diff -wruN orig/nyquist/nyqstk/src/Filter.cpp nyquist/nyqstk/src/Filter.cpp
    // The default constructor should setup for pass-through.
 diff -wruN orig/nyquist/nyqstk/src/Flute.cpp nyquist/nyqstk/src/Flute.cpp
 --- orig/nyquist/nyqstk/src/Flute.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/Flute.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Flute.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -25,6 +25,8 @@
  #include "Flute.h"
  #include "SKINI.msg"
@@ -1092,7 +1092,7 @@ diff -wruN orig/nyquist/nyqstk/src/Flute.cpp nyquist/nyqstk/src/Flute.cpp
    length_ = (unsigned long) (Stk::sampleRate() / lowestFrequency + 1);
 diff -wruN orig/nyquist/nyqstk/src/Function.cpp nyquist/nyqstk/src/Function.cpp
 --- orig/nyquist/nyqstk/src/Function.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/Function.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Function.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -12,6 +12,8 @@
  
  #include "Function.h"
@@ -1104,7 +1104,7 @@ diff -wruN orig/nyquist/nyqstk/src/Function.cpp nyquist/nyqstk/src/Function.cpp
    lastOutput_ = (StkFloat) 0.0;
 diff -wruN orig/nyquist/nyqstk/src/Generator.cpp nyquist/nyqstk/src/Generator.cpp
 --- orig/nyquist/nyqstk/src/Generator.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/Generator.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Generator.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -11,6 +11,8 @@
  
  #include "Generator.h"
@@ -1116,7 +1116,7 @@ diff -wruN orig/nyquist/nyqstk/src/Generator.cpp nyquist/nyqstk/src/Generator.cp
    lastOutput_ = 0.0;
 diff -wruN orig/nyquist/nyqstk/src/Instrmnt.cpp nyquist/nyqstk/src/Instrmnt.cpp
 --- orig/nyquist/nyqstk/src/Instrmnt.cpp	2008-01-07 09:30:39.000000000 -0600
-+++ nyquist/nyqstk/src/Instrmnt.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Instrmnt.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -11,6 +11,8 @@
  
  #include "Instrmnt.h"
@@ -1128,7 +1128,7 @@ diff -wruN orig/nyquist/nyqstk/src/Instrmnt.cpp nyquist/nyqstk/src/Instrmnt.cpp
  }
 diff -wruN orig/nyquist/nyqstk/src/JCRev.cpp nyquist/nyqstk/src/JCRev.cpp
 --- orig/nyquist/nyqstk/src/JCRev.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/JCRev.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/JCRev.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -17,6 +17,8 @@
  #include "JCRev.h"
  #include <math.h>
@@ -1140,7 +1140,7 @@ diff -wruN orig/nyquist/nyqstk/src/JCRev.cpp nyquist/nyqstk/src/JCRev.cpp
    // Delay lengths for 44100 Hz sample rate.
 diff -wruN orig/nyquist/nyqstk/src/JetTable.cpp nyquist/nyqstk/src/JetTable.cpp
 --- orig/nyquist/nyqstk/src/JetTable.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/JetTable.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/JetTable.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -15,6 +15,8 @@
  
  #include "JetTable.h"
@@ -1152,7 +1152,7 @@ diff -wruN orig/nyquist/nyqstk/src/JetTable.cpp nyquist/nyqstk/src/JetTable.cpp
  }
 diff -wruN orig/nyquist/nyqstk/src/Mandolin.cpp nyquist/nyqstk/src/Mandolin.cpp
 --- orig/nyquist/nyqstk/src/Mandolin.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/Mandolin.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Mandolin.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -30,6 +30,8 @@
  #include "Mandolin.h"
  #include "SKINI.msg"
@@ -1164,7 +1164,7 @@ diff -wruN orig/nyquist/nyqstk/src/Mandolin.cpp nyquist/nyqstk/src/Mandolin.cpp
  {
 diff -wruN orig/nyquist/nyqstk/src/Modal.cpp nyquist/nyqstk/src/Modal.cpp
 --- orig/nyquist/nyqstk/src/Modal.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/Modal.cpp	2009-01-29 10:37:10.000000000 -0600
++++ nyquist/nyqstk/src/Modal.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -12,6 +12,9 @@
  /***************************************************/
  
@@ -1177,7 +1177,7 @@ diff -wruN orig/nyquist/nyqstk/src/Modal.cpp nyquist/nyqstk/src/Modal.cpp
    : nModes_(modes)
 diff -wruN orig/nyquist/nyqstk/src/ModalBar.cpp nyquist/nyqstk/src/ModalBar.cpp
 --- orig/nyquist/nyqstk/src/ModalBar.cpp	2008-01-07 09:59:28.000000000 -0600
-+++ nyquist/nyqstk/src/ModalBar.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/ModalBar.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -32,6 +32,8 @@
  #include "SKINI.msg"
  #include <cmath>
@@ -1189,7 +1189,7 @@ diff -wruN orig/nyquist/nyqstk/src/ModalBar.cpp nyquist/nyqstk/src/ModalBar.cpp
  {
 diff -wruN orig/nyquist/nyqstk/src/NRev.cpp nyquist/nyqstk/src/NRev.cpp
 --- orig/nyquist/nyqstk/src/NRev.cpp	2008-01-07 09:59:29.000000000 -0600
-+++ nyquist/nyqstk/src/NRev.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/NRev.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -19,6 +19,8 @@
  #include "NRev.h"
  #include <math.h>
@@ -1201,7 +1201,7 @@ diff -wruN orig/nyquist/nyqstk/src/NRev.cpp nyquist/nyqstk/src/NRev.cpp
    int lengths[15] = {1433, 1601, 1867, 2053, 2251, 2399, 347, 113, 37, 59, 53, 43, 37, 29, 19};
 diff -wruN orig/nyquist/nyqstk/src/Noise.cpp nyquist/nyqstk/src/Noise.cpp
 --- orig/nyquist/nyqstk/src/Noise.cpp	2008-01-07 09:30:39.000000000 -0600
-+++ nyquist/nyqstk/src/Noise.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Noise.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -14,6 +14,8 @@
  #include <stdlib.h>
  #include <time.h>
@@ -1213,7 +1213,7 @@ diff -wruN orig/nyquist/nyqstk/src/Noise.cpp nyquist/nyqstk/src/Noise.cpp
    // Seed the random number generator with system time.
 diff -wruN orig/nyquist/nyqstk/src/OnePole.cpp nyquist/nyqstk/src/OnePole.cpp
 --- orig/nyquist/nyqstk/src/OnePole.cpp	2008-01-07 09:59:29.000000000 -0600
-+++ nyquist/nyqstk/src/OnePole.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/OnePole.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -14,6 +14,8 @@
  
  #include "OnePole.h"
@@ -1225,7 +1225,7 @@ diff -wruN orig/nyquist/nyqstk/src/OnePole.cpp nyquist/nyqstk/src/OnePole.cpp
    std::vector<StkFloat> b(1, 0.1);
 diff -wruN orig/nyquist/nyqstk/src/OneZero.cpp nyquist/nyqstk/src/OneZero.cpp
 --- orig/nyquist/nyqstk/src/OneZero.cpp	2008-01-07 09:30:40.000000000 -0600
-+++ nyquist/nyqstk/src/OneZero.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/OneZero.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -14,6 +14,8 @@
  
  #include "OneZero.h"
@@ -1237,7 +1237,7 @@ diff -wruN orig/nyquist/nyqstk/src/OneZero.cpp nyquist/nyqstk/src/OneZero.cpp
    std::vector<StkFloat> b(2, 0.5);
 diff -wruN orig/nyquist/nyqstk/src/PRCRev.cpp nyquist/nyqstk/src/PRCRev.cpp
 --- orig/nyquist/nyqstk/src/PRCRev.cpp	2008-01-07 09:59:29.000000000 -0600
-+++ nyquist/nyqstk/src/PRCRev.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/PRCRev.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -17,6 +17,8 @@
  #include "PRCRev.h"
  #include <math.h>
@@ -1249,7 +1249,7 @@ diff -wruN orig/nyquist/nyqstk/src/PRCRev.cpp nyquist/nyqstk/src/PRCRev.cpp
    // Delay lengths for 44100 Hz sample rate.
 diff -wruN orig/nyquist/nyqstk/src/PitShift.cpp nyquist/nyqstk/src/PitShift.cpp
 --- orig/nyquist/nyqstk/src/PitShift.cpp	2008-01-07 09:59:29.000000000 -0600
-+++ nyquist/nyqstk/src/PitShift.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/PitShift.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -12,6 +12,8 @@
  #include "PitShift.h"
  #include <cmath>
@@ -1261,7 +1261,7 @@ diff -wruN orig/nyquist/nyqstk/src/PitShift.cpp nyquist/nyqstk/src/PitShift.cpp
  PitShift :: PitShift()
 diff -wruN orig/nyquist/nyqstk/src/PluckTwo.cpp nyquist/nyqstk/src/PluckTwo.cpp
 --- orig/nyquist/nyqstk/src/PluckTwo.cpp	2008-01-07 09:59:29.000000000 -0600
-+++ nyquist/nyqstk/src/PluckTwo.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/PluckTwo.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -20,6 +20,8 @@
  
  #include "PluckTwo.h"
@@ -1273,7 +1273,7 @@ diff -wruN orig/nyquist/nyqstk/src/PluckTwo.cpp nyquist/nyqstk/src/PluckTwo.cpp
    length_ = (unsigned long) (Stk::sampleRate() / lowestFrequency + 1);
 diff -wruN orig/nyquist/nyqstk/src/PoleZero.cpp nyquist/nyqstk/src/PoleZero.cpp
 --- orig/nyquist/nyqstk/src/PoleZero.cpp	2008-01-07 09:59:29.000000000 -0600
-+++ nyquist/nyqstk/src/PoleZero.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/PoleZero.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -14,6 +14,8 @@
  
  #include "PoleZero.h"
@@ -1285,7 +1285,7 @@ diff -wruN orig/nyquist/nyqstk/src/PoleZero.cpp nyquist/nyqstk/src/PoleZero.cpp
    // Default setting for pass-through.
 diff -wruN orig/nyquist/nyqstk/src/ReedTable.cpp nyquist/nyqstk/src/ReedTable.cpp
 --- orig/nyquist/nyqstk/src/ReedTable.cpp	2008-01-07 09:59:29.000000000 -0600
-+++ nyquist/nyqstk/src/ReedTable.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/ReedTable.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -19,6 +19,8 @@
  
  #include "ReedTable.h"
@@ -1297,7 +1297,7 @@ diff -wruN orig/nyquist/nyqstk/src/ReedTable.cpp nyquist/nyqstk/src/ReedTable.cp
    offset_ = (StkFloat) 0.6;  // Offset is a bias, related to reed rest position.
 diff -wruN orig/nyquist/nyqstk/src/Saxofony.cpp nyquist/nyqstk/src/Saxofony.cpp
 --- orig/nyquist/nyqstk/src/Saxofony.cpp	2008-01-07 09:30:40.000000000 -0600
-+++ nyquist/nyqstk/src/Saxofony.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Saxofony.cpp	2009-01-29 12:04:22.000000000 -0600
 @@ -38,6 +38,8 @@
  #include "Saxofony.h"
  #include "SKINI.msg"
@@ -1309,7 +1309,7 @@ diff -wruN orig/nyquist/nyqstk/src/Saxofony.cpp nyquist/nyqstk/src/Saxofony.cpp
    length_ = (unsigned long) (Stk::sampleRate() / lowestFrequency + 1);
 diff -wruN orig/nyquist/nyqstk/src/SineWave.cpp nyquist/nyqstk/src/SineWave.cpp
 --- orig/nyquist/nyqstk/src/SineWave.cpp	2008-01-07 09:59:29.000000000 -0600
-+++ nyquist/nyqstk/src/SineWave.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/SineWave.cpp	2009-01-29 12:04:23.000000000 -0600
 @@ -16,6 +16,8 @@
  #include "SineWave.h"
  #include <cmath>
@@ -1321,7 +1321,7 @@ diff -wruN orig/nyquist/nyqstk/src/SineWave.cpp nyquist/nyqstk/src/SineWave.cpp
  SineWave :: SineWave( void )
 diff -wruN orig/nyquist/nyqstk/src/Sitar.cpp nyquist/nyqstk/src/Sitar.cpp
 --- orig/nyquist/nyqstk/src/Sitar.cpp	2008-01-07 09:59:29.000000000 -0600
-+++ nyquist/nyqstk/src/Sitar.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/Sitar.cpp	2009-01-29 12:04:23.000000000 -0600
 @@ -20,6 +20,8 @@
  #include "Sitar.h"
  #include <math.h>
@@ -1333,7 +1333,7 @@ diff -wruN orig/nyquist/nyqstk/src/Sitar.cpp nyquist/nyqstk/src/Sitar.cpp
    unsigned long length = (unsigned long) (Stk::sampleRate() / lowestFrequency + 1);
 diff -wruN orig/nyquist/nyqstk/src/Stk.cpp nyquist/nyqstk/src/Stk.cpp
 --- orig/nyquist/nyqstk/src/Stk.cpp	2008-01-07 09:30:40.000000000 -0600
-+++ nyquist/nyqstk/src/Stk.cpp	2009-01-29 10:36:57.000000000 -0600
++++ nyquist/nyqstk/src/Stk.cpp	2009-01-29 12:04:23.000000000 -0600
 @@ -13,6 +13,9 @@
  /***************************************************/
  
@@ -1346,7 +1346,7 @@ diff -wruN orig/nyquist/nyqstk/src/Stk.cpp nyquist/nyqstk/src/Stk.cpp
  std::string Stk :: rawwavepath_ = RAWWAVE_PATH;
 diff -wruN orig/nyquist/nyqstk/src/WaveLoop.cpp nyquist/nyqstk/src/WaveLoop.cpp
 --- orig/nyquist/nyqstk/src/WaveLoop.cpp	2008-01-07 09:30:40.000000000 -0600
-+++ nyquist/nyqstk/src/WaveLoop.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/WaveLoop.cpp	2009-01-29 12:04:23.000000000 -0600
 @@ -19,6 +19,8 @@
  #include "WaveLoop.h"
  #include <cmath>
@@ -1358,7 +1358,7 @@ diff -wruN orig/nyquist/nyqstk/src/WaveLoop.cpp nyquist/nyqstk/src/WaveLoop.cpp
  {
 diff -wruN orig/nyquist/nyqstk/src/WvIn.cpp nyquist/nyqstk/src/WvIn.cpp
 --- orig/nyquist/nyqstk/src/WvIn.cpp	2008-01-07 09:30:40.000000000 -0600
-+++ nyquist/nyqstk/src/WvIn.cpp	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/nyqstk/src/WvIn.cpp	2009-01-29 12:04:23.000000000 -0600
 @@ -20,6 +20,8 @@
  #include "WvIn.h"
  #include <cmath>
@@ -1370,7 +1370,7 @@ diff -wruN orig/nyquist/nyqstk/src/WvIn.cpp nyquist/nyqstk/src/WvIn.cpp
  }
 diff -wruN orig/nyquist/nyqstk/stkinit.cpp nyquist/nyqstk/stkinit.cpp
 --- orig/nyquist/nyqstk/stkinit.cpp	2008-01-07 09:30:37.000000000 -0600
-+++ nyquist/nyqstk/stkinit.cpp	2009-01-28 23:50:43.000000000 -0600
++++ nyquist/nyqstk/stkinit.cpp	2009-01-29 12:24:45.000000000 -0600
 @@ -16,6 +16,8 @@
  }
  #endif
@@ -1382,7 +1382,7 @@ diff -wruN orig/nyquist/nyqstk/stkinit.cpp nyquist/nyqstk/stkinit.cpp
  extern "C" void stk_init()
 diff -wruN orig/nyquist/nyqstk/stkint.cpp nyquist/nyqstk/stkint.cpp
 --- orig/nyquist/nyqstk/stkint.cpp	2008-01-07 09:59:27.000000000 -0600
-+++ nyquist/nyqstk/stkint.cpp	2009-01-28 23:51:38.000000000 -0600
++++ nyquist/nyqstk/stkint.cpp	2009-01-29 12:24:45.000000000 -0600
 @@ -8,13 +8,15 @@
  #include "JCRev.h"
  #include "PRCRev.h"
@@ -1432,9 +1432,32 @@ diff -wruN orig/nyquist/nyqstk/stkint.cpp nyquist/nyqstk/stkint.cpp
    Chorus * ch;
    ch = new Chorus(baseDelay);
    ch->setModDepth(depth);
+diff -wruN orig/nyquist/xlisp/xldmem.c nyquist/xlisp/xldmem.c
+--- orig/nyquist/xlisp/xldmem.c	2009-01-12 10:20:16.000000000 -0600
++++ nyquist/xlisp/xldmem.c	2009-02-23 11:01:01.000000000 -0600
+@@ -299,8 +299,6 @@
+ LOCAL void findmem(void)
+ {
+     gc();
+-    if (nfree < (long)anodes)
+-        addseg();
+ }
+ 
+ /* gc - garbage collect (only called here and in xlimage.c) */
+@@ -346,6 +344,10 @@
+     /* count the gc call */
+     ++gccalls;
+ 
++    /* add a new segment if still no free nodes */
++    if (nfree < (long)anodes)
++        addseg();
++
+     /* call the *gc-hook* if necessary */
+     if (s_gchook && (fun = getvalue(s_gchook))) {
+         newfp = xlsp;
 diff -wruN orig/nyquist/xlisp/xlisp.h nyquist/xlisp/xlisp.h
 --- orig/nyquist/xlisp/xlisp.h	2008-01-19 09:38:51.000000000 -0600
-+++ nyquist/xlisp/xlisp.h	2009-01-28 22:10:42.000000000 -0600
++++ nyquist/xlisp/xlisp.h	2009-02-22 05:14:48.000000000 -0600
 @@ -159,7 +159,7 @@
  #define OFFTYPE long
  #define NIL (void *)0
