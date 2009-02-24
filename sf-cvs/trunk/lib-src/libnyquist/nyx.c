@@ -32,66 +32,398 @@
 #include "samples.h"
 #include "falloc.h"
 
+/* use full copy */
+#define NYX_FULL_COPY 1
+
 /* show memory stats */
-//	#define NYX_MEMORY_STATS 1
+// #define NYX_MEMORY_STATS 1
+
+/* show details of obarray copy */
+// #define NYX_DEBUG_COPY 1
+
+/* macro to compute the size of a segment (taken from xldmem.h) */
+#define segsize(n) (sizeof(SEGMENT)+((n)-1)*sizeof(struct node))
+
+/* xldmem external variables */
+extern long nnodes;
+extern long nfree;
+extern long total;
+extern int nsegs;
+extern SEGMENT *segs;
+extern SEGMENT *lastseg;
+extern LVAL fnodes;
 
 /* nyquist externs */
 extern LVAL a_sound;
 extern snd_list_type zero_snd_list;
 
 /* globals */
-nyx_os_callback     nyx_os_cb = NULL;
-void               *nyx_os_ud;
-nyx_output_callback nyx_output_cb;
-void               *nyx_output_ud;
-int                 nyx_expr_pos;
-int                 nyx_expr_len;
-const char         *nyx_expr_string;
-LVAL                nyx_result;
-nyx_rval            nyx_result_type = nyx_error;
-XLCONTEXT           nyx_cntxt;
-int                 nyx_parse_error_flag;
-int                 nyx_first_time = 1;
-LVAL                nyx_old_obarray;
+LOCAL nyx_os_callback     nyx_os_cb = NULL;
+LOCAL void               *nyx_os_ud;
+LOCAL nyx_output_callback nyx_output_cb;
+LOCAL void               *nyx_output_ud;
+LOCAL int                 nyx_expr_pos;
+LOCAL int                 nyx_expr_len;
+LOCAL const char         *nyx_expr_string;
+LOCAL LVAL                nyx_result;
+LOCAL nyx_rval            nyx_result_type = nyx_error;
+LOCAL XLCONTEXT           nyx_cntxt;
+LOCAL int                 nyx_first_time = 1;
+LOCAL LVAL                nyx_obarray;
+LOCAL FLOTYPE             nyx_warp_stretch;
 
+/* Suspension node */
 typedef struct nyx_susp_struct {
-   snd_susp_node       susp;
+   snd_susp_node       susp;        // Must be first
    nyx_audio_callback  callback;
    void               *userdata;
    long                len;
    int                 channel;
 } nyx_susp_node, *nyx_susp_type;
 
-LVAL copylist(LVAL from)
+#if defined(NYX_DEBUG_COPY) && NYX_DEBUG_COPY
+static const char *_types_[] = 
 {
-   if (from == NULL)
+   "FREE_NODE",
+   "SUBR",
+   "FSUBR",
+   "CONS",
+   "SYMBOL",
+   "FIXNUM",
+   "FLONUM",
+   "STRING",
+   "OBJECT",
+   "STREAM",
+   "VECTOR",
+   "CLOSURE",
+   "CHAR",
+   "USTREAM",
+   "EXTERN"
+};
+
+// Dump the contents of the obarray
+LOCAL void nyx_show_obarray()
+{
+   LVAL array = getvalue(obarray);
+   LVAL sym;
+   int i;
+
+   for (i = 0; i < HSIZE; i++) {
+      for (sym = getelement(array, i); sym; sym = cdr(sym)) {
+         LVAL syma = car(sym);
+
+         printf("_sym_ = ");
+         xlprint(getvalue(s_stdout), syma, TRUE);
+
+         if (getvalue(syma)) {
+            printf(" _type_ = %s _val_ = ", _types_[ntype(getvalue(syma))]);
+            xlprint(getvalue(s_stdout), getvalue(syma), TRUE);
+         }
+
+         if (getfunction(syma)) {
+            printf(" _type_ = %s _fun_ = ", _types_[ntype(getfunction(syma))]);
+            xlprint(getvalue(s_stdout), getfunction(syma), TRUE);
+         }
+
+         printf("\n");
+      }
+   }
+}
+#endif
+
+//
+// Free empty segments
+//
+LOCAL void freesegs()
+{
+   SEGMENT *seg;
+   SEGMENT *next;
+
+   // Free up as many nodes as possible
+   gc();
+
+   // Reset free node tracking
+   fnodes = NIL;
+   nfree = 0L;
+
+   // Reset the last segment pointer
+   lastseg = NULL;
+
+   // Scan all segments
+   for (seg = segs; seg != NULL; seg = next) {
+      int n = seg->sg_size;
+      int empty = TRUE;
+      int i;
+      LVAL p;
+
+      // Check this segment for in-use nodes
+      p = &seg->sg_nodes[0];
+      for (i = n; --i >= 0; ++p) {
+         if (ntype(p) != FREE_NODE) {
+            empty = FALSE;
+            break;
+         }
+      }
+
+      // Retain pointer to next segment
+      next = seg->sg_next;
+
+      // Was the current segment empty?
+      if (empty) {
+         // Free the segment;
+         free((void *) seg);
+
+         // Unlink it from the list.  No need to worry about a NULL lastseg
+         // pointer here since the fixnum and char segments will always exist
+         // at the head of the list and they will always have nodes.  So, lastseg
+         // will have been set before we find any empty nodes.
+         lastseg->sg_next = next;
+
+         // Reduce the stats
+         total -= (long) segsize(n);
+         nsegs--;
+         nnodes -= n;
+      }
+      else {
+         // Not empty, so remember this node as the last segment
+         lastseg = seg;
+
+         // Add all of the free nodes in this segment to the free list
+         p = &seg->sg_nodes[0];
+         for (i = n; --i >= 0; ++p) {
+            if (ntype(p) == FREE_NODE) {
+               rplaca(p, NIL);
+               rplacd(p, fnodes);
+               fnodes = p;
+               nfree++;
+            }
+         }
+      }
+   }
+}
+
+#if defined(NYX_FULL_COPY) && NYX_FULL_COPY
+
+// Copy a node (recursively if appropriate)
+LOCAL LVAL nyx_dup_value(LVAL val)
+{
+   LVAL nval = val;
+
+   // Protect old and new values
+   xlprot1(val);
+   xlprot1(nval);
+
+   // Copy the node
+   if (val != NIL) {
+      switch (ntype(val))
+      {
+         case FIXNUM:
+            nval = cvfixnum(getfixnum(val));
+         break;
+
+         case FLONUM:
+            nval = cvflonum(getflonum(val));
+         break;
+
+         case CHAR:
+            nval = cvchar(getchcode(val));
+         break;
+
+         case STRING:
+            nval = cvstring((char *) getstring(val));
+         break;
+
+         case VECTOR:
+         {
+            int len = getsize(val);
+            int i;
+
+            nval = newvector(len);
+            nval->n_type = ntype(val);
+
+            for (i = 0; i < len; i++) {
+               if (getelement(val, i) == val) {
+                  setelement(nval, i, val);
+               }
+               else {
+                  setelement(nval, i, nyx_dup_value(getelement(val, i)));
+               }
+            }
+         }
+         break;
+
+         case CONS:
+            nval = cons(nyx_dup_value(car(val)), nyx_dup_value(cdr(val)));
+         break;
+
+         case SUBR:
+         case FSUBR:
+            nval = cvsubr(getsubr(val), ntype(val), getoffset(val));
+         break;
+
+         // Symbols should never be copied since their addresses are cached
+         // all over the place.
+         case SYMBOL:
+            nval = val;
+         break;
+
+         // Streams are not copied (although USTREAM could be) and reference
+         // the original value.
+         case USTREAM:
+         case STREAM:
+            nval = val;
+         break;
+
+         // Externals aren't copied because I'm not entirely certain they can be.
+         case EXTERN:
+            nval = val;
+         break;
+
+         // For all other types, just allow them to reference the original
+         // value.  Probably not the right thing to do, but easier.
+         case OBJECT:
+         case CLOSURE:
+         default:
+            nval = val;
+         break;
+      }
+   }
+
+   xlpop();
+   xlpop();
+
+   return nval;
+}
+
+// Make a copy of the original obarray, leaving the original in place
+LOCAL void nyx_save_obarray()
+{
+   LVAL newarray;
+   int i;
+
+   // This provide permanent protection for nyx_obarray as we do not want it
+   // to be garbage-collected.
+   xlprot1(nyx_obarray);
+   nyx_obarray = getvalue(obarray);
+
+   // Create and set the new vector.  This allows us to use xlenter() to
+   // properly add the new symbol.  Probably slower than adding directly,
+   // but guarantees proper hashing.
+   newarray = newvector(HSIZE);
+   setvalue(obarray, newarray);
+
+   // Scan all obarray vectors
+   for (i = 0; i < HSIZE; i++) {
+      LVAL sym;
+
+      // Scan all elements
+      for (sym = getelement(nyx_obarray, i); sym; sym = cdr(sym)) {
+         LVAL syma = car(sym);
+         char *name = (char *) getstring(getpname(syma));
+         LVAL nsym = xlenter(name);
+
+         // Ignore *OBARRAY* since there's no need to copy it
+         if (strcmp(name, "*OBARRAY*") == 0) {
+            continue;
+         }
+
+         // Duplicate the symbol's values
+         setvalue(nsym, nyx_dup_value(getvalue(syma)));
+         setplist(nsym, nyx_dup_value(getplist(syma)));
+         setfunction(nsym, nyx_dup_value(getfunction(syma)));
+      }
+   }
+
+   // Swap the obarrays, so that the original is put back into service
+   setvalue(obarray, nyx_obarray);
+   nyx_obarray = newarray;
+}
+
+// Restore the symbol values to their original value and remove any added
+// symbols.
+LOCAL void nyx_restore_obarray()
+{
+   LVAL obvec = getvalue(obarray);
+   int i;
+
+   // Scan all obarray vectors
+   for (i = 0; i < HSIZE; i++) {
+      LVAL last = NULL;
+      LVAL dcon;
+
+      for (dcon = getelement(obvec, i); dcon; dcon = cdr(dcon)) {
+         LVAL dsym = car(dcon);
+         char *name = (char *)getstring(getpname(dsym));
+         LVAL scon;
+
+         // Ignore *OBARRAY* since setting it causes the input array to be
+         // truncated.
+         if (strcmp(name, "*OBARRAY*") == 0) {
+            continue;
+         }
+
+         // Find the symbol in the original obarray.
+         for (scon = getelement(nyx_obarray, hash(name, HSIZE)); scon; scon = cdr(scon)) {
+            LVAL ssym = car(scon);
+
+            // If found, then set the current symbols value to the original.
+            if (strcmp(name, (char *)getstring(getpname(ssym))) == 0) {
+               setvalue(dsym, nyx_dup_value(getvalue(ssym)));
+               setplist(dsym, nyx_dup_value(getplist(ssym)));
+               setfunction(dsym, nyx_dup_value(getfunction(ssym)));
+               break;
+            }
+         }
+
+         // If we didn't find the symbol in the original obarray, then it must've
+         // been added since and must be removed from the current obarray.
+         if (scon == NULL) {
+            if (last) {
+               rplacd(last, cdr(dcon));
+            }
+            else {
+               setelement(obvec, i, cdr(dcon));
+            }
+         }
+
+         // Must track the last dcon for symbol removal
+         last = dcon;
+      }
+   }
+}
+
+#else
+
+LOCAL LVAL copylist(LVAL from)
+{
+   LVAL nsym;
+   if (from == NULL) {
       return NULL;
+   }
 
    return cons(car(from), copylist(cdr(from)));
 }
 
 /* Make a copy of the obarray so that we can erase any
    changes the user makes to global variables */
-void nyx_save_obarray()
+LOCAL void nyx_copy_obarray()
 {
-   LVAL array, obarrayvec;
+   LVAL newarray;
    int i;
 
-   xlsave1(array);
-   array = newvector(HSIZE);
+   // Create and set the new vector.
+   newarray = newvector(HSIZE);
+   setvalue(obarray, newarray);
 
-   obarrayvec = getvalue(obarray);
-   for(i=0; i<HSIZE; i++) {
-      LVAL from = getelement(obarrayvec, i);
-      if (from)
-         setelement(array, i, copylist(from));
+   for (i = 0; i < HSIZE; i++) {
+      LVAL from = getelement(nyx_obarray, i);
+      if (from) {
+         setelement(newarray, i, copylist(from));
+      }
    }
-
-   nyx_old_obarray = obarray;
-   obarray = xlmakesym("*OBARRAY*");
-   setvalue(obarray, array);
-   xlpop();
 }
+
+#endif
 
 void nyx_init()
 {
@@ -104,14 +436,29 @@ void nyx_init()
       nyx_output_cb = NULL;
       
       nyx_first_time = 0;
+
+#if defined(NYX_FULL_COPY) && NYX_FULL_COPY
+      // Save a copy of the original obarray's contents.
+      nyx_save_obarray();
+#else
+      // Permanently protect the original obarray value.  This is needed since
+      // it would be unreferenced in the new obarray and would be garbage
+      // collected.  We want to keep it around so we can make copies of it to 
+      // refresh the execution state.
+      xlprot1(nyx_obarray);
+      nyx_obarray = getvalue(obarray);
+#endif
    }
 
-   /* keep nyx_result from being garbage-collected */
+#if !defined(NYX_FULL_COPY) || !NYX_FULL_COPY
+   // Create a copy of the original obarray
+   nyx_copy_obarray();
+#endif
+
+   // Keep nyx_result from being garbage-collected
    xlprot1(nyx_result);
 
-   nyx_save_obarray();
-
-#if defined(NYX_MEMORY_STATS)
+#if defined(NYX_MEMORY_STATS) && NYX_MEMORY_STATS
    printf("\nnyx_init\n");
    xmem();
 #endif
@@ -119,19 +466,39 @@ void nyx_init()
 
 void nyx_cleanup()
 {
+   // Garbage-collect nyx_result
+   xlpop();
+
+#if defined(NYX_FULL_COPY) && NYX_FULL_COPY
+
+   // Restore the original symbol values
+   nyx_restore_obarray();
+
+#else
+
+   // Restore obarray to original state...but not the values
+   setvalue(obarray, nyx_obarray);
+
+#endif
+
+   // Make sure the sound nodes can be garbage-collected.  Sounds are EXTERN
+   // nodes whose value does not get copied during a full copy of the obarray.
+   setvalue(xlenter("S"), NIL);
+
+   // Free excess memory segments - does a gc()
+   freesegs();
+
+   // No longer need the callbacks
    nyx_output_cb = NULL;
    nyx_os_cb = NULL;
 
-   xlpop(); /* garbage-collect nyx_result */
-   gc(); /* run the garbage-collector now */
-
-#if defined(NYX_MEMORY_STATS)
+#if defined(NYX_MEMORY_STATS) && NYX_MEMORY_STATS
    printf("\nnyx_cleanup\n");
    xmem();
 #endif
 }
 
-void nyx_susp_fetch(register nyx_susp_type susp, snd_list_type snd_list)
+LOCAL void nyx_susp_fetch(register nyx_susp_type susp, snd_list_type snd_list)
 {
    sample_block_type         out;
    sample_block_values_type  out_ptr;
@@ -171,12 +538,12 @@ void nyx_susp_fetch(register nyx_susp_type susp, snd_list_type snd_list)
    }
 }
 
-void nyx_susp_free(nyx_susp_type susp)
+LOCAL void nyx_susp_free(nyx_susp_type susp)
 {
    ffree_generic(susp, sizeof(nyx_susp_node), "nyx_susp_free");
 }
 
-void nyx_susp_print_tree(nyx_susp_type susp, int n)
+LOCAL void nyx_susp_print_tree(nyx_susp_type susp, int n)
 {
 }
 
@@ -186,10 +553,25 @@ void nyx_capture_output(nyx_output_callback callback, void *userdata)
    nyx_output_ud = userdata;
 }
 
-void nyx_set_audio_params( double rate )
+void nyx_set_audio_params(double rate, long len)
 {
+   double stretch_len = (len > 0 ? len / rate : 1.0);
+   LVAL warp;
+
    /* Bind the sample rate to the "*sound-srate*" global */
    setvalue(xlenter("*SOUND-SRATE*"), cvflonum(rate));
+
+   /* Bind selection len to "len" global */
+   setvalue(xlenter("LEN"), cvflonum(len));
+
+   /* Set the "*warp*" global based on the length of the audio */
+   xlprot1(warp);
+   warp = cons(cvflonum(0),                    /* time offset */
+               cons(cvflonum(stretch_len),     /* time stretch */
+                    cons(NULL,                 /* cont. time warp */
+                         NULL)));
+   setvalue(xlenter("*WARP*"), warp);
+   xlpop();
 }
 
 void nyx_set_input_audio(nyx_audio_callback callback,
@@ -201,9 +583,9 @@ void nyx_set_input_audio(nyx_audio_callback callback,
    time_type        t0 = 0.0;
    nyx_susp_type   *susp;
    sound_type      *snd;
-   double           stretch_len;
-   LVAL             warp;
    int              ch;
+
+   nyx_set_audio_params(rate, len);
 
    susp = (nyx_susp_type *)malloc(num_channels * sizeof(nyx_susp_type));
    snd = (sound_type *)malloc(num_channels * sizeof(sound_type));
@@ -233,26 +615,6 @@ void nyx_set_input_audio(nyx_audio_callback callback,
                              scale_factor);
    }
 
-   /* Bind the sample rate to the "*sound-srate*" global */
-   setvalue(xlenter("*SOUND-SRATE*"), cvflonum(rate));
-
-   /* Bind selection len to "len" global */
-   setvalue(xlenter("LEN"), cvflonum(len));
-
-   if (len > 0)
-      stretch_len = len / rate;
-   else
-      stretch_len = 1.0;
-
-   /* Set the "*warp*" global based on the length of the audio */
-   xlprot1(warp);
-   warp = cons(cvflonum(0),                    /* time offset */
-               cons(cvflonum(stretch_len),     /* time stretch */
-                    cons(NULL,                 /* cont. time warp */
-                         NULL)));
-   setvalue(xlenter("*WARP*"), warp);
-   xlpop();
-
    if (num_channels > 1) {
       LVAL array = newvector(num_channels);
       for(ch=0; ch<num_channels; ch++)
@@ -267,7 +629,7 @@ void nyx_set_input_audio(nyx_audio_callback callback,
    }
 }
 
-int is_labels(LVAL expr)
+LOCAL int nyx_is_labels(LVAL expr)
 {
    /* make sure that we have a list whose first element is a
       list of the form (time "label") */
@@ -360,7 +722,7 @@ nyx_rval nyx_get_type(LVAL expr)
       {
          /* see if it's a list of time/string pairs representing a
             label track */
-         if (is_labels(expr))
+         if (nyx_is_labels(expr))
             nyx_result_type = nyx_labels;
       }
       break;
@@ -380,7 +742,7 @@ nyx_rval nyx_eval_expression(const char *expr_string)
 {
    LVAL expr = NULL;
 
-#if defined(NYX_MEMORY_STATS)
+#if defined(NYX_MEMORY_STATS) && NYX_MEMORY_STATS
    printf("\nnyx_eval_expression before\n");
    xmem();
 #endif
@@ -391,7 +753,6 @@ nyx_rval nyx_eval_expression(const char *expr_string)
 
    nyx_result = NULL;
    nyx_result_type = nyx_error;
-   nyx_parse_error_flag = 0;
 
    xlprot1(expr);
 
@@ -431,12 +792,7 @@ nyx_rval nyx_eval_expression(const char *expr_string)
 
    xlpop(); /* unprotect expr */
 
-   /* reset the globals to their initial state */
-   obarray = nyx_old_obarray;
-   setvalue(xlenter("S"), NIL);
-   gc();
-
-#if defined(NYX_MEMORY_STATS)
+#if defined(NYX_MEMORY_STATS) && NYX_MEMORY_STATS
    printf("\nnyx_eval_expression after\n");
    xmem();
 #endif
@@ -473,7 +829,7 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
    if (nyx_get_type(nyx_result) != nyx_audio)
       return success;
 
-#if defined(NYX_MEMORY_STATS)
+#if defined(NYX_MEMORY_STATS) && NYX_MEMORY_STATS
    printf("\nnyx_get_audio before\n");
    xmem();
 #endif
@@ -584,7 +940,7 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
       free(snds);
    }
 
-#if defined(NYX_MEMORY_STATS)
+#if defined(NYX_MEMORY_STATS) && NYX_MEMORY_STATS
    printf("\nnyx_get_audio after\n");
    xmem();
 #endif
