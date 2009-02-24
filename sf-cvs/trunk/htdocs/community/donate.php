@@ -80,18 +80,6 @@
 
 
 <h2 id="donate"><?= ('Make a Donation')?></h2>
-<p>
-  <?=_('We can accept donations via the Amazon Honor System, or by Paypal. To use Amazon, click the button below. You can make a donation securely by credit card, as little as US$1.00, or up to US$50.00:')?>
-</p>
-
-<!-- Begin Amazon Honor System Paybox -->
-<p class="logo"><img src="http://s1.amazon.com/exec/varzea/tipbox/A2NTHQTXQE4A60/TVWQG2UJNWCBH" usemap="#amazon" alt="Amazon Honor System" width="150" height="150"></p>
-<map name="amazon">
-  <area coords="20,60,130,115" href="http://s1.amazon.com/exec/varzea/pay/TVWQG2UJNWCBH" alt="Click to Give">
-  <area coords="5,135,145,145" href="http://s1.amazon.com/exec/varzea/subst/fx/help/how-we-know.html" alt="Learn More">
-</map>
-<!-- End Amazon Honor System Paybox -->
-
 <p id="paypal"><?=_('Alternatively, click the button below to donate securely by Paypal. You can send any amount, using either your credit card or your Paypal account:')?></p>
 
 <!-- Begin Paypal button Form --> 
