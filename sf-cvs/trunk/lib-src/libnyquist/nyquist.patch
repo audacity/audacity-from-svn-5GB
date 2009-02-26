@@ -1,6 +1,281 @@
+diff -wruN orig/nyquist/nyqsrc/falloc.c nyquist/nyqsrc/falloc.c
+--- orig/nyquist/nyqsrc/falloc.c	2006-05-14 09:33:21.000000000 -0500
++++ nyquist/nyqsrc/falloc.c	2009-02-25 21:16:10.000000000 -0600
+@@ -30,10 +30,20 @@
+ 
+ 
+ /* memory pool */
+-char *poolp = NULL;
+-char *poolend = NULL;
++char *poolp;
++char *poolend;
++
++/* sample block memory pool */
++char *spoolp;
++char *spoolend;
++
+ int npools = 0;
+ 
++#if defined(TRACK_POOLS) && TRACK_POOLS
++#define POOL_HEAD_SIZE (round_size(sizeof(CQUE)))
++CQUE *pools = NULL;
++#endif
++
+ void sound_already_free_test(s)
+   sound_type s;
+ {
+@@ -53,16 +63,44 @@
+ void new_pool(void)
+ {
+     poolp = (char *) malloc(MAXPOOLSIZE);
++
+     if (poolp == NULL) {
+         fprintf(STDERR, "fugue: out of memory!\n");
+         EXIT(1);
+     }
++
+     poolend = poolp + MAXPOOLSIZE;
+     npools++;
+     /* stick to double word boundaries */
+     poolp = (char *) round_size(((long) poolp));
+ }
+ 
++/* new_pool -- allocate a new pool from which mem is allocated */
++/**/
++void new_spool(void)
++{
++#if defined(TRACK_POOLS) && TRACK_POOLS
++    spoolp = (char *) malloc(MAXSPOOLSIZE + POOL_HEAD_SIZE);
++#else
++    spoolp = (char *) malloc(MAXSPOOLSIZE);
++#endif
++
++    if (spoolp == NULL) {
++        fprintf(STDERR, "fugue: out of memory!\n");
++        EXIT(1);
++    }
++
++#if defined(TRACK_POOLS) && TRACK_POOLS
++    Qenter(pools, spoolp);
++    spoolp += POOL_HEAD_SIZE;
++#endif
++
++    spoolend = spoolp + MAXSPOOLSIZE;
++    npools++;
++    /* stick to double word boundaries */
++    spoolp = (char *) round_size(((long) spoolp));
++}
++
+ 
+ /* find_sample_block -- get sample block when freelist is empty */
+ /* Try these strategies in order:
+@@ -78,10 +116,10 @@
+ {	
+     sample_block_type sp;
+     if (sample_block_total < sample_block_low_water + BLOCKS_PER_GC &&
+-        check_pool(round_size(sizeof(sample_block_node)))) {
+-        if (DEBUG_MEM) poolp += DEBUG_MEM_INFO_SIZE;
+-        sp = (sample_block_type) poolp;
+-        poolp += round_size(sizeof(sample_block_node));
++        check_spool(round_size(sizeof(sample_block_node)))) {
++        if (DEBUG_MEM) spoolp += DEBUG_MEM_INFO_SIZE;
++        sp = (sample_block_type) spoolp;
++        spoolp += round_size(sizeof(sample_block_node));
+         sample_block_total++;
+ /*	printf("fp%d ", sample_block_total - sample_block_low_water); */
+     } else {
+@@ -91,19 +129,19 @@
+         if (!Qempty(sample_block_free)) {
+             Qget(sample_block_free, sample_block_type, sp);
+ /*	    printf("gc, then from freelist\n"); */
+-        } else if (check_pool(round_size(sizeof(sample_block_node)))) {
+-            if (DEBUG_MEM) poolp += DEBUG_MEM_INFO_SIZE;
+-            sp = (sample_block_type) poolp;
+-            poolp += sizeof(sample_block_node);
++        } else if (check_spool(round_size(sizeof(sample_block_node)))) {
++            if (DEBUG_MEM) spoolp += DEBUG_MEM_INFO_SIZE;
++            sp = (sample_block_type) spoolp;
++            spoolp += round_size(sizeof(sample_block_node));
+             sample_block_total++;
+-/*	    printf("gc, then from pool\n"); */
++/*	    printf("gc, then from spool\n"); */
+         } else {
+-            new_pool();
+-            if (DEBUG_MEM) poolp += DEBUG_MEM_INFO_SIZE;
+-            sp = (sample_block_type) poolp;
+-            poolp += round_size(sizeof(sample_block_node));
++            new_spool();
++            if (DEBUG_MEM) spoolp += DEBUG_MEM_INFO_SIZE;
++            sp = (sample_block_type) spoolp;
++            spoolp += round_size(sizeof(sample_block_node));
+             sample_block_total++;
+-/*	    printf("gc, then new pool\n"); */
++/*	    printf("gc, then new spool\n"); */
+         }
+     }
+     return sp;
+@@ -124,3 +162,94 @@
+ }
+ 
+ 
++#if defined(TRACK_POOLS) && TRACK_POOLS
++
++/* falloc_gc -- return empty pools to the system */
++/**/
++void falloc_gc()
++{
++   CQUE *lp = NULL;
++   CQUE *cp;
++   CQUE *np;
++   CQUE *tlist = NULL;
++
++   /* Scan all allocated pools */
++   for (cp = pools; cp; lp = cp, cp = np) {
++      char *str = ((char *)cp) + POOL_HEAD_SIZE;
++      char *end = str + MAXSPOOLSIZE;
++      long tsiz = end - str;
++      long csiz = 0;
++      CQUE *tsave = NULL;
++      CQUE *ln = NULL;
++      CQUE *cn;
++      CQUE *nn;
++
++      /* Save pointer to next pool */
++      np = cp->qnext;
++
++      /* Remember head of temp free list */
++      tsave = tlist;
++
++      /* Scan all nodes on the free list */
++      for (cn = sample_block_free; cn; ln = cn, cn = nn) {
++
++         /* Get next node */
++         nn = cn->qnext;
++
++         /* Count it if the node belongs to this pool */
++         if (cn >= (CQUE *) str && cn <= (CQUE *) end) {
++            csiz += round_size(sizeof(sample_block_node));
++
++            Qenter(tlist, cn);
++
++            /* Unlink the node */
++            if (cn == sample_block_free) {
++               sample_block_free = nn;
++               cn = NULL;
++            }
++            else {
++               ln->qnext = nn;
++               cn = ln;
++            }
++         }
++      }
++
++      /* The pool had inuse nodes */
++      if (csiz != tsiz) {
++         continue;
++      }
++   
++      /* Remove the nodes from the temp free list */
++      tlist = tsave;
++
++      /* Maintain stats */
++      sample_block_total -= (tsiz / round_size(sizeof(sample_block_node)));
++      npools--;
++
++      /* If this is the active pool, then reset current pointers */
++      if (spoolp >= str && spoolp <= end) {
++         spoolp = NULL;
++         spoolend = NULL;
++      }
++
++      /* Release the pool to the system */
++      free(cp);
++
++      /* Unlink this pool from the list */
++      if (cp == pools) {
++         pools = np;
++         cp = NULL;
++      }
++      else {
++         lp->qnext = np;
++         cp = lp;
++      }
++   }
++
++   /* Resave list of free nodes */
++   sample_block_free = tlist;
++}
++
++#endif
++
++
+diff -wruN orig/nyquist/nyqsrc/falloc.h nyquist/nyqsrc/falloc.h
+--- orig/nyquist/nyqsrc/falloc.h	2004-11-10 10:07:38.000000000 -0600
++++ nyquist/nyqsrc/falloc.h	2009-02-25 21:19:57.000000000 -0600
+@@ -56,7 +56,7 @@
+ #include "cque.h"
+ #include "debug.h"
+ 
+-#define DEBUG_MEM 1
++#define DEBUG_MEM 0
+ #define DEBUG_MEM_INFO_SIZE (sizeof(long) + sizeof(char *))
+ 
+ /* special free lists */
+@@ -73,15 +73,31 @@
+ #define MAXLISTS 128
+ extern CQUE *generic_free[MAXLISTS];
+ 
+-/* memory pool */
++/* general memory pool */
+ #define MAXPOOLSIZE 1000000
+ extern char *poolp;
+ extern char *poolend;
++
++/* sample block memory pool */
++#define MAXSPOOLSIZE (256 * round_size(sizeof(sample_block_node)))
++extern char *spoolp;
++extern char *spoolend;
++
+ extern int npools;
+ extern int sample_blocks_since_gc;
+ 
++#if !defined(TRACK_POOLS)
++#define TRACK_POOLS 1
++#endif
++
++#if defined(TRACK_POOLS) && TRACK_POOLS
++extern CQUE *spools;
++void falloc_gc();
++#endif
++
+ void falloc_init(void);
+ void new_pool(void);
++void new_spool(void);
+ sample_block_type find_sample_block(void);
+ 
+ char *get_from_pool(size_t siz);
+@@ -91,8 +107,10 @@
+ /* check_pool -- returns true if enough bytes are available */
+ #if DEBUG_MEM
+ #define check_pool(size) (poolp + (size) + DEBUG_MEM_INFO_SIZE <= poolend)
++#define check_spool(size) (spoolp + (size) + DEBUG_MEM_INFO_SIZE <= spoolend)
+ #else
+ #define check_pool(size) (poolp + (size) <= poolend)
++#define check_spool(size) (spoolp + (size) <= spoolend)
+ #endif
+ 
+ #define BLOCKS_PER_GC 100
+@@ -116,7 +134,6 @@
+     sample_block_used--; \
+ }
+ 
+-
+ #define frelease_sample_block(sp, who) { \
+     sp->refcnt--; \
+     if (DEBUG_MEM) dbg_mem_released(sp, who); \
 diff -wruN orig/nyquist/nyqsrc/sound.c nyquist/nyqsrc/sound.c
 --- orig/nyquist/nyqsrc/sound.c	2008-07-20 23:30:05.000000000 -0500
-+++ nyquist/nyqsrc/sound.c	2009-01-29 12:04:22.000000000 -0600
++++ nyquist/nyqsrc/sound.c	2009-02-25 09:08:55.000000000 -0600
 @@ -17,7 +17,9 @@
  #include "extern.h"
  #include "debug.h"
@@ -11,6 +286,17 @@ diff -wruN orig/nyquist/nyqsrc/sound.c nyquist/nyqsrc/sound.c
  #include "cext.h"
  #include "userio.h"
  
+@@ -1085,8 +1087,10 @@
+     /* this should never happen */
+     if (*cnt == 0) {
+         stdputstr("SND_get_first returned 0 samples\n");
++#if DEBUG_MEM
+         dbg_mem_print("snd_list info:", snd_list);
+         dbg_mem_print("block info:", snd_list->block);
++#endif
+         sound_print_tree(snd);
+         stdputstr("It is possible that you created a recursive sound\n");
+         stdputstr("using something like: (SETF X (SEQ (SOUND X) ...))\n");
 diff -wruN orig/nyquist/nyqstk/include/ADSR.h nyquist/nyqstk/include/ADSR.h
 --- orig/nyquist/nyqstk/include/ADSR.h	2008-01-07 09:59:27.000000000 -0600
 +++ nyquist/nyqstk/include/ADSR.h	2009-01-29 12:04:22.000000000 -0600
