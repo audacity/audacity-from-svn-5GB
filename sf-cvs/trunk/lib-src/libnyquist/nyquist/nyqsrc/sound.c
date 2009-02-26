@@ -1087,8 +1087,10 @@ sample_block_type SND_get_first(sound_type snd, long * cnt)
     /* this should never happen */
     if (*cnt == 0) {
         stdputstr("SND_get_first returned 0 samples\n");
+#if DEBUG_MEM
         dbg_mem_print("snd_list info:", snd_list);
         dbg_mem_print("block info:", snd_list->block);
+#endif
         sound_print_tree(snd);
         stdputstr("It is possible that you created a recursive sound\n");
         stdputstr("using something like: (SETF X (SEQ (SOUND X) ...))\n");
