@@ -312,11 +312,7 @@ void OnEditChains();
 void OnImportCleanSpeechPresets();
 void OnExportCleanSpeechPresets();
 void OnStereoToMono(int index);
-void ResolveEffectIndices(EffectArray *effects);
 wxString BuildCleanFileName(wxString fileName);
-
-int  mNormalizeIndex;
-int  mStereoToMonoIndex;
 
         // Help Menu
 

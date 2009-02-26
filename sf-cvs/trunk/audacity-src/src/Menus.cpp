@@ -939,12 +939,6 @@ void AudacityProject::CreateMenusAndCommands()
       c->EndMenu();
    }
    
-   // Resolve from list of all effects, 
-   effects = em.GetEffects(ALL_EFFECTS);
-   ResolveEffectIndices(effects);
-   delete effects;
-
-
    #ifdef __WXMAC__
    wxGetApp().s_macHelpMenuTitleName = _("&Help");
    #endif
@@ -1169,31 +1163,6 @@ void AudacityProject::CreateRecentFilesMenu(CommandManager *c)
    gPrefs->SetPath(wxT(".."));
 
    c->AddSeparator();
-}
-
-// TIDY-ME: Replace indices by function pointers.
-// This function is currently (July 2005) required because
-// menus get to effect functions in a messy way.
-// It would be much cleaner if each menu item already
-// stored both the function pointer and the class pointer.
-// so menus, and other dispatching, can dispatch to 'any' 
-// function in 'any' class instance directly,
-// rather than having to look up the class via an index
-// when calling an effect.
-void AudacityProject::ResolveEffectIndices(EffectArray *effects)
-{
-   mNormalizeIndex = -1;
-   mStereoToMonoIndex = -1;
-
-   for (unsigned int i = 0; i < effects->GetCount(); i++) {
-      wxString effectIdentifier = (*effects)[i]->GetEffectIdentifier();
-      if (effectIdentifier == wxT("Normalize")) {
-         mNormalizeIndex = i;
-      }
-      else if (effectIdentifier == wxT("StereoToMono")) {
-         mStereoToMonoIndex = i;
-      }
-   }
 }
 
 void AudacityProject::ModifyUndoMenus()
@@ -2434,8 +2403,8 @@ void AudacityProject::OnProcessEffect(int index)
 
 void AudacityProject::OnStereoToMono(int index)
 {
-   if (mStereoToMonoIndex >= 0)
-      OnEffect(ALL_EFFECTS, mStereoToMonoIndex);
+   OnEffect(ALL_EFFECTS,
+            EffectManager::Get().GetEffectByIdentifier(wxT("StereoToMono")));
 }
 
 void AudacityProject::OnProcessPlugin(int index)

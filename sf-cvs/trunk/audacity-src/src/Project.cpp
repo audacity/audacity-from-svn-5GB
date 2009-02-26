@@ -3041,7 +3041,8 @@ void AudacityProject::Import(wxString fileName, TrackList* pNewTrackList /*= NUL
       //TODO: All we want is a SelectAll()
       SelectNone();
       SelectAllIfNone();
-      OnEffect(ALL_EFFECTS | CONFIGURED_EFFECT, mNormalizeIndex ); // gNormalize);
+      OnEffect(ALL_EFFECTS | CONFIGURED_EFFECT,
+               EffectManager::Get().GetEffectByIdentifier(wxT("Normalize")));
    }
 
    GetDirManager()->FillBlockfilesCache();
