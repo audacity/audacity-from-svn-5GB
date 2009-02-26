@@ -498,6 +498,9 @@ void nyx_cleanup()
    // Free excess memory segments - does a gc()
    freesegs();
 
+   // Free unused memory pools
+   falloc_gc();
+
    // No longer need the callbacks
    nyx_output_cb = NULL;
    nyx_os_cb = NULL;
