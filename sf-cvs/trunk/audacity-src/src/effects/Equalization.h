@@ -129,6 +129,7 @@ private:
    bool mDrawMode;
    int mInterp;
    bool mPrompting;
+   bool mDrawGrid;
 
 public:
    enum curveType {
@@ -238,6 +239,9 @@ public:
    int bandsInUse;
    bool drawMode;
    int interp;
+   bool drawGrid;
+   RulerPanel *dBRuler;
+   RulerPanel *freqRuler;
 
 private:
    void MakeEqualizationDialog();
@@ -276,6 +280,7 @@ private:
       sliderRadioID,
       ID_INTERP,
       ID_LIN_FREQ,
+      GridOnOffID,
       ID_SLIDER   // needs to come last
    };
 
@@ -303,7 +308,7 @@ private:
    void OnPreview(wxCommandEvent &event);
    void OnOk( wxCommandEvent &event );
    void OnCancel( wxCommandEvent &event );
-
+   void OnGridOnOff( wxCommandEvent &event );
 private:
    EffectEqualization * m_pEffect;
 
@@ -329,8 +334,6 @@ private:
    wxSlider *MSlider;
    wxSlider *dBMinSlider;
    wxSlider *dBMaxSlider;
-   RulerPanel *dBRuler;
-   RulerPanel *freqRuler;
    wxBoxSizer *szrC;
    wxBoxSizer *szrG;
    wxBoxSizer *szrV;
@@ -342,6 +345,7 @@ private:
    wxBoxSizer *szr2;
    wxFlexGridSizer *szr1;
    wxSize size;
+   wxCheckBox *mGridOnOff;
 
    EQCurveArray mCurves;
 

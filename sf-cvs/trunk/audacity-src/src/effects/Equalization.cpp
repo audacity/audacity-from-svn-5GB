@@ -328,6 +328,7 @@ EffectEqualization::EffectEqualization()
    }
    gPrefs->Read(wxT("/CsPresets/EQDrawMode"), &mDrawMode, true);
    gPrefs->Read(wxT("/CsPresets/EQInterp"), &mInterp, 0);
+   gPrefs->Read(wxT("/CsPresets/EQDrawGrid"), &mDrawGrid, true);
 
    mPrompting = false;
 
@@ -375,6 +376,7 @@ bool EffectEqualization::PromptUser()
    dlog.dBMax = mdBMax;
    dlog.drawMode = mDrawMode;
    dlog.interp = mInterp;
+   dlog.drawGrid = mDrawGrid;
    dlog.CentreOnParent();
 
    mPrompting = true;   // true when previewing, false in batch
@@ -391,6 +393,7 @@ bool EffectEqualization::PromptUser()
    mdBMax = dlog.dBMax;
    mDrawMode = dlog.drawMode;
    mInterp = dlog.interp;
+   mDrawGrid = dlog.drawGrid;
 
    gPrefs->Write(wxT("/CsPresets/EQFilterLength"),mM);
    gPrefs->Write(wxT("/CsPresets/EQCurveName"),mCurveName);
@@ -399,6 +402,7 @@ bool EffectEqualization::PromptUser()
    gPrefs->Write(wxT("/CsPresets/EQdBMax"),mdBMax);
    gPrefs->Write(wxT("/CsPresets/EQDrawMode"),mDrawMode);
    gPrefs->Write(wxT("/CsPresets/EQInterp"), mInterp);
+   gPrefs->Write(wxT("/CsPresets/EQDrawGrid"), mDrawGrid);
 
    return true;
 }
@@ -830,6 +834,12 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    if( mParent->mFaderOrDraw[0]->GetValue() )
       mEnvelope->Draw(memDC, mEnvRect, 0.0, mEnvRect.width, false, dBMin, dBMax);
 
+   if( mParent->drawGrid )
+   {
+      mParent->freqRuler->ruler.DrawGrid(memDC, mEnvRect.height+2, true, true, 0, 1);
+      mParent->dBRuler->ruler.DrawGrid(memDC, mEnvRect.width+2, true, true, 1, 2);
+   }
+
    dc.Blit(0, 0, mWidth, mHeight,
            &memDC, 0, 0, wxCOPY, FALSE);
 }
@@ -897,6 +907,7 @@ BEGIN_EVENT_TABLE(EqualizationDialog,wxDialog)
    EVT_RADIOBUTTON(drawRadioID, EqualizationDialog::OnDrawRadio)
    EVT_RADIOBUTTON(sliderRadioID, EqualizationDialog::OnSliderRadio)
    EVT_CHECKBOX(ID_LIN_FREQ, EqualizationDialog::OnLinFreq)
+   EVT_CHECKBOX(GridOnOffID, EqualizationDialog::OnGridOnOff)
 END_EVENT_TABLE()
 
 EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
@@ -1276,6 +1287,11 @@ void EqualizationDialog::MakeEqualizationDialog()
 
    btn = new wxButton( this, ID_CLEAR, _("Flat"));
    szrC->Add( btn, 0, wxALIGN_CENTRE | wxALL, 4 );
+   mGridOnOff = new wxCheckBox(this, GridOnOffID, _("Grids"),
+                            wxDefaultPosition, wxDefaultSize,
+                            wxALIGN_RIGHT);
+   mGridOnOff->SetName(_("Grids"));
+   szrC->Add( mGridOnOff, 0, wxALIGN_CENTRE | wxALL, 4 );
 
    szrV->Add( szrC, 0, wxALIGN_CENTER | wxALL, 0 );
 
@@ -1359,6 +1375,8 @@ bool EqualizationDialog::TransferDataToWindow()
    mLinFreq->SetValue( linCheck );
    wxCommandEvent dummyEvent;
    OnLinFreq(dummyEvent);  // causes a CalcFilter
+
+   mGridOnOff->SetValue( drawGrid ); // checks/unchecks the box on the interface
 
    MSlider->SetValue((M-1)/2);
    M = 0;                        // force refresh in TransferDataFromWindow()
@@ -2686,6 +2704,15 @@ void EqualizationDialog::OnPreview(wxCommandEvent &event)
    wxPaintEvent dummyEvent;
    OnPaint(dummyEvent);
    //v Restore previous values?
+}
+
+void EqualizationDialog::OnGridOnOff(wxCommandEvent & WXUNUSED(event))
+{
+   if( mGridOnOff->IsChecked() )
+      drawGrid = true;
+   else
+      drawGrid = false;
+   mPanel->Refresh(false);
 }
 
 void EqualizationDialog::OnCancel(wxCommandEvent &event)
