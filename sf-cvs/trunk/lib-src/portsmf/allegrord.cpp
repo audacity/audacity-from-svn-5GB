@@ -262,7 +262,7 @@ bool Alg_reader::parse()
                         parse_error(field, 0, "Dur specified twice");
                     } else {
                         // prepend 'U' to field, copy EOS too
-                        field.insert(0, 1, 'U');
+                        field.insert((unsigned int)0, 1, 'U');
                         dur = parse_dur(field, time);
                         dur_flag = true;
                     }
@@ -271,7 +271,7 @@ bool Alg_reader::parse()
                         parse_error(field, 0, "Pitch specified twice");
                     } else {
                         // prepend 'P' to field
-                        field.insert(0, 1, 'P');
+                        field.insert((unsigned int)0, 1, 'P');
                         new_pitch = parse_pitch(field);
                         new_pitch_flag = true;
                     }
