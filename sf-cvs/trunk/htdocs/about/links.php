@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 Matt Brubeck
+ * Copyright 2004-9 Matt Brubeck
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -15,12 +15,12 @@
 <ul>
   <li><?=_('<a href="http://audacityaudio.com/index.htm">Audacity DVR</a> is a digital voice recorder for Palm OS and Treo handheld computers')?></li>
   <li><?=_('<a href="http://www.audacity.org">Audacity.org</a> is a research company for construction industry professionals.')?></li>
-  <li><?=_('<a href="http://kotinetti.suomi.net/jakke/audacity/">Audacity</a> is a street-rock band from Finland.')?></li>
   <li><?=_('<a href="http://www.audacity.com/">Audacity, Inc.</a> provides janitorial services for businesses and individuals in the Seattle, WA metro area.')?></li>
+  <li><?=_('Two different rock bands from <a href="http://www.myspace.com/audacityrocks">Finland</a> and <a href="http://www.unsigned.com/audacity">England</a> are named "Audacity".')?></li>
 </ul>
 
 <h3><?=_("Other Audio Software")?></h3>
-<p><?=_('<a href="http://ardour.org/">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux.')?></p>
+<p><?=_('<a href="http://ardour.org/">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux and Mac OS X.')?></p>
 <p><?=_('<a href="http://cdexos.sourceforge.net/">CDex</a> is a free CD ripper for Microsoft Windows.')?></p>
 <p><?=_('<a href="http://www.opensourcepartners.nl/~costar/gramofile/">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records.')?></p>
 <p><?=_('More free software at SourceForge.net:')?></p>
