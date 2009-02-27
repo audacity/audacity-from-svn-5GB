@@ -49,81 +49,54 @@ The Audacity Team is pleased to announce the release of
 <a href=\"/download\">Audacity 1.3.7 (Beta)</a> 
 for Windows, Mac and Linux/Unix. 
 </p>
-<p>This is primarily a bug-fix release which significantly improves
-stability and usability, especially on Mac OS X. It incorporates some
-new features too, including DirectSound device support for Windows.
-</p>
-
-<dl>
-	<dt> Cross-Platform Bug Fixes include: </dt>
-	      <dd>   <ul>
+<p>This is primarily a bug-fix release. It significantly improves
+stability and usability, especially on Mac OS X, but incorporates some
+new features too. 
+<p>
+<b>Cross-Platform Bug Fixes include:</b>
+                <ul>
                        <li>Muting/soloing caused incorrect channel results in exported
                             stereo files</li>
-                       <li>Nyquist effects: pasted unmodified audio into the result,
-                            no progress bar, truncation of processed audio on
-                            cancel</li> 
-                       <li>Noise Removal: pasted unmodified audio into the result, 
-                            unwanted filtering tail</li>
-                       <li>Uncompressed exports:</li>
+                       <li>Effects: Noise Removal added unwanted paste and filtering 
+                            tail; Nyquist effects added unwanted paste, had no progress
+                            bar, and truncated audio if canceled</li>
+                       <li>Exports:</li>
                                 <ul>
                                        <li>Export as WAV could be corrupted if overwriting
-                                            to same file</li>
-                                       <li>Export multiple to uncompressed formats only 
-                                            produced 16-bit WAV</li>
+                                            to same file, uncompressed Export Multiple 
+                                            only produced 16-bit WAV</li>
+                                       <li>MP3 and WMA now export correctly with all supported 
+                                            metadata</li>
                                 </ul>
-                       <li>Compressed exports:</li>
-                                <ul>
-                                       <li>MP3 exports now produce correct bit rate
-                                            mode, quality and length, with improved metadata 
-                                            visibility in player applications</li>
-                                       <li>WMA exports containing metadata are now correct</li> 
-                                </ul>                               
                         <li>Restored support for multi-channel recording devices that
                             can record more than two channels using Audacity</li>
                 </ul>
-         </dd>    
-
-	<dt> Platform-specific Bug Fixes</dt>
-	      <dd>   <ul>
-                       <li><i>Windows Vista:</i> fixed crash opening Preferences with no sound
-                            devices enabled and connected </li>
-                       <li><i>Mac OS X and Linux:</i></li>
-                                <ul>
-                                       <li>fixes for spurious clipping, label typing, no shortcuts
-                                            after running effects</li>
-                                       <li>project rate now always changes to respect that of 
-                                            first imported file</li>
-                                </ul> 
-                       <li><i>Mac OS X only:</i></li>
-                                <ul>
-                                       <li>fixes for inactive or corrupted menus and hidden
-                                            dialogues, portable settings not detected, and
-                                            inability to set independent Command and Control shortcuts</li>
-                                       <li>FFmpeg installer now available</li>
-                                </ul>
+</p>
+<p>
+<b>Platform-specific Bug Fixes:</b>
+                <ul>
+                       <li><i>Windows Vista:</i> fixed crash opening Preferences</li>
+                       <li><i>Mac OS X and Linux:</i> fixes for spurious clipping, 
+                               label typing, no shortcuts after running effects, 
+                               project rate when importing files </li>
+                       <li><i>Mac OS X only:</i> fixes for inactive or corrupted 
+                               menus and hidden dialogues, portable settings not
+                               detected, inability to set independent Command and 
+                               Control shortcuts; FFmpeg installer now available</li>
                 </ul>
-         </dd>    
-
-	<dt> New Features </dt>
-	      <dd>   <ul>
+</p>
+<p>
+<b>New Features and other changes:</b>
+                <ul>
                        <li>F11 Full Screen mode, high-quality \"Sliding Time Scale/Pitch Shift\"
                             effect, Audio Contrast Analyzer </li>
                        <li>Windows: sound devices can now be opened using the more efficient
-                            DirectSound API
-                </ul>
-         </dd>    
-
-	<dt> Other changes </dt>
-	      <dd>   <ul>
+                            DirectSound API</li>
                        <li>As a first step towards improving latency correction,
                             a fixed rather than variable correction is now applied</li>
-							  <li>Numerous minor interface fixes and improvements</li>
                 </ul>
-         </dd>    
-</dl>
-
-<p>
-Because it is a work in progress and does not yet come with 
+</p>
+<p>Because it is a work in progress and does not yet come with 
 complete documentation or translations into foreign languages, 
 it is recommended for more advanced users. For all users, 
 <a href=\"/download\">Audacity 1.2.6</a> is a stable release, 
