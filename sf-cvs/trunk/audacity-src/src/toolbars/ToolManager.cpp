@@ -548,7 +548,7 @@ void ToolManager::ReadConfig()
       ToolBar *bar = mBars[ ndx ];
 
       // Change to the bar subkey
-      gPrefs->SetPath( bar->GetLabel() );
+      gPrefs->SetPath( bar->GetSection() );
 
       // Read in all the settings
       gPrefs->Read( wxT("Dock"), &dock, ndx == SelectionBarID ? BotDockID : TopDockID );
@@ -703,7 +703,7 @@ void ToolManager::WriteConfig()
       ToolBar *bar = mBars[ ndx ];
 
       // Change to the bar subkey
-      gPrefs->SetPath( bar->GetLabel() );
+      gPrefs->SetPath( bar->GetSection() );
 
       // Search both docks for toolbar order
       int to = mTopDock->GetOrder( bar );
