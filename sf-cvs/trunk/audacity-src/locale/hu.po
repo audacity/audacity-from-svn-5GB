@@ -4,10 +4,10 @@
 # Audacity Team <audacity-translation@lists.sourceforge.net>, 2008.
 #
 msgid ""
-msgstr "Project-Id-Version: Audacity 1.3.6\n"
+msgstr "Project-Id-Version: Audacity 1.3.7\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-11-03 21:55+0000\n"
-"PO-Revision-Date: 2008-12-02 20:30+0100\n"
+"PO-Revision-Date: 2009-02-28 11:18+0100\n"
 "Last-Translator: Pelladi Gabor <audacity-translation@lists.sourceforge.net>\n"
 "Language-Team: HU <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -718,7 +718,8 @@ msgstr "Függőség ellenőrzése"
 #: DirManager.cpp:137
 msgid "Warning: there is very little free disk space left on this volume.\n"
 "Please select another temporary directory in your preferences."
-msgstr "FIGYELEM: Ezen a meghajtón nagyon kevés a szabad hely. Kérlek, válassz ki egy másik ideiglenes könyvtárat a Beállítások pont alatt."
+msgstr "FIGYELEM: Ezen a meghajtón nagyon kevés a szabad hely.\n"
+"Kérem, válasszon ki egy másik ideiglenes könyvtárat a Beállítások pont alatt."
 
 #: DirManager.cpp:223 DirManager.cpp:254 DirManager.cpp:337
 msgid "Progress"
@@ -740,7 +741,8 @@ msgstr "Gyorsítótár ürítése"
 #, c-format
 msgid "Audacity found an orphaned blockfile %s! \n"
 "Please consider saving and reloading the project to perform a complete project check.\n"
-msgstr ""
+msgstr "Az Audacity egy árva blokkfájlt talált: %s! \n"
+"Ajánlott a projektet lementenie, majd visszatötenie, hogy egy teljes ellenőrzésre kerüljön sor.\n"
 
 #. i18n-hint: This is the pattern for filenames that are created
 #. when a file needs to be backed up to a different name.  For
@@ -772,55 +774,58 @@ msgstr "'%s' átnevezése '%s'-re sikertelen"
 #: DirManager.cpp:1183
 #, c-format
 msgid "Changed block %s to new alias name\n"
-msgstr ""
+msgstr "Blokk %s megváltoztatva új alias névre\n"
 
 #: DirManager.cpp:1224 DirManager.cpp:1515
 msgid "Inspecting project file data..."
-msgstr ""
+msgstr "A projekt fájl adatok vizsgálata..."
 
 #: DirManager.cpp:1240
 #, c-format
 msgid "Orphaned blockfile: (%s)"
-msgstr ""
+msgstr "Árva blokkfájl: (%s)"
 
 #: DirManager.cpp:1265
 #, c-format
 msgid "Missing alias file: (%s)"
-msgstr ""
+msgstr "Hiányzó alias fájl: (%s)"
 
 #: DirManager.cpp:1285
 #, c-format
 msgid "Missing summary file: (%s.auf)"
-msgstr ""
+msgstr "Hiányzó összegző fájl: (%s.auf)"
 
 #: DirManager.cpp:1305
 #, c-format
 msgid "Missing data file: (%s.au)"
-msgstr ""
+msgstr "Hiányzó adatfájl: (%s.au)"
 
 #: DirManager.cpp:1319
 msgid "Project check found inconsistencies inspecting the loaded project data;\n"
 "click 'Details' for a complete list of errors, or 'OK' to proceed to more options."
-msgstr ""
+msgstr "A projekt ellenőrzés inkonzisztenciát talált a betöltött projekt adataiban;\n"
+"a 'Részletek' gombbal nézheti meg az összes hibát, vagy az 'OK' gombbal folytathatja."
 
 #: DirManager.cpp:1331
 #, c-format
 msgid "Project check found %d orphaned blockfile[s]. These files are\n"
 "unused and probably left over from a crash or some other bug.\n"
 "They should be deleted to avoid disk contention."
-msgstr ""
+msgstr "A projekt ellenőrzés %d árva blokkfájlt talált. Ezek a fájlok\n"
+"nincsenek használva és valószínűleg egy programösszeomlás vagy hiba után\n"
+"maradtak hátra. Ajánlott törölni a lemezhasználat csökkentésének érdekében."
 
 #: DirManager.cpp:1336
 msgid "Delete orphaned files [safe and recommended]"
-msgstr ""
+msgstr "Árva fájlok törlése [biztonságos és ajánlott]"
 
 #: DirManager.cpp:1337
 msgid "Continue without deleting; silently work around the extra files"
-msgstr ""
+msgstr "Folytatás törlés nélkül; az extra fájlok figyelmen kívül hagyása"
 
 #: DirManager.cpp:1338
 msgid "Close project immediately with no changes"
-msgstr ""
+msgstr "A projekt azonnali bezárása változtatás nélkül"
 
 #: DirManager.cpp:1340 DirManager.cpp:1375 DirManager.cpp:1421
 #: DirManager.cpp:1463 export/Export.cpp:576 export/Export.cpp:597
@@ -836,34 +841,41 @@ msgid "Project check detected %d input file[s] being used in place\n"
 "permanently fill in silence for the missing files, temporarily\n"
 "fill in silence for this session only, or close the project now\n"
 "and try to restore the missing files by hand."
-msgstr ""
+msgstr "A projekt ellenőrzés észlelte, hogy %d helyben használt\n"
+"('alias') bemeneti fájl hiányzik. Az Audacity számára nem lehetséges,\n"
+"hogy ezeket automatikusan helyreállítsa; a hiányzó fájlokat\n"
+"helyettesítheti csenddel tartósan, vagy ideiglenesen, csak a\n"
+"jelenlegi munkamenetben, vagy bezárhatja a projektet azonnal\n"
+"és megpróbálhatja helyreállítani a hiányzó fájlokat kézzel."
 
 #: DirManager.cpp:1371
 msgid "Replace missing data with silence [permanent upon save]"
-msgstr ""
+msgstr "A hiányzó adatok helyettesítése csenddel [mentés után állandósul]"
 
 #: DirManager.cpp:1372 DirManager.cpp:1460
 msgid "Temporarily replace missing data with silence [this session only]"
-msgstr ""
+msgstr "A hiányzó adatok ideiglenes helyettesítése csenddel [csak ebben a munkamenetben]"
 
 #: DirManager.cpp:1373 DirManager.cpp:1419 DirManager.cpp:1461
 msgid "Close project immediately with no further changes"
-msgstr ""
+msgstr "A projekt azonnali bezárása változtatások nélkül"
 
 #: DirManager.cpp:1412
 #, c-format
 msgid "Project check detected %d missing summary file[s] (.auf).\n"
 "Audacity can fully regenerate these summary files from the\n"
 "original audio data in the project."
-msgstr ""
+msgstr "A projekt ellenőrzés %d hiányzó összegző fájlt (.auf) talált.\n"
+"Az Audacity teljesen helyre tudja állítani ezeket a fájlokat\n"
+"a projekt eredeti hanganyaga alapján."
 
 #: DirManager.cpp:1417
 msgid "Regenerate summary files [safe and recommended]"
-msgstr ""
+msgstr "Összegző fájlok helyreállítása [biztonságos és ajánlott]"
 
 #: DirManager.cpp:1418
 msgid "Fill in silence for missing display data [this session only]"
-msgstr ""
+msgstr "A hiányzó adatok helyettesítése csenddel [csak ebben a munkamenetben]"
 
 #: DirManager.cpp:1454
 #, c-format
@@ -874,15 +886,21 @@ msgid "Project check detected %d missing audio data blockfile[s] (.au), \n"
 "for the missing data, temporarily fill in silence for this\n"
 "session only, or close the project now and try to restore the\n"
 "missing data by hand."
-msgstr ""
+msgstr "A projekt ellenőrzés %d hiányzó hangadat blokkfájlt (.au) talált,\n"
+"valószínűleg programhiba, összeomlás vagy véletlen törlés miatt.\n"
+"Az Audacity számára nem lehetséges, hogy az elveszett adatokat\n"
+"automatikusan helyreállítsa; a hiányzó fájlokat helyettesítheti\n"
+"csenddel tartósan, vagy ideiglenesen, csak a jelenlegi\n"
+"munkamenetben, vagy bezárhatja a projektet azonnal és\n"
+"megpróbálhatja helyreállítani a hiányzó fájlokat kézzel."
 
 #: DirManager.cpp:1459
 msgid "Replace missing data with silence [permanent immediately]"
-msgstr ""
+msgstr "A hiányzó adatok helyettesítése csenddel [azonnal állandósul]"
 
 #: DirManager.cpp:1487
 msgid "Cleaning up unused directories in project data..."
-msgstr ""
+msgstr "A nem használt könyvtárak takarítása a projektben..."
 
 #: DirManager.cpp:1558
 msgid "Caching audio"
@@ -906,7 +924,7 @@ msgstr "Négyszögletű"
 
 #: FFmpeg.cpp:36
 msgid "FFmpeg support not compiled in"
-msgstr ""
+msgstr "FFmpeg támogatás nincs "
 
 #: FFmpeg.cpp:101
 msgid "FFmpeg was configured in Preferences and successfully loaded before,                       \n"
@@ -917,7 +935,7 @@ msgstr ""
 
 #: FFmpeg.cpp:104
 msgid "FFmpeg startup failed"
-msgstr ""
+msgstr "FFmpeg indítása sikertelen"
 
 #: FFmpeg.cpp:115
 msgid "FFmpeg library not found"
@@ -952,7 +970,7 @@ msgstr "Az FFmpeg ingyenes letöltéséhez kattintson ide -->"
 
 #: FFmpeg.cpp:215 export/ExportMP3.cpp:579
 msgid "Download"
-msgstr ""
+msgstr "Letöltés"
 
 #. i18n-hint: It's asking for the location of a file, for
 #. example, "Where is lame_enc.dll?" - you could translate
@@ -964,7 +982,7 @@ msgstr "Hol található meg ez: %s?"
 
 #: FFmpeg.cpp:407
 msgid "Failed to find compatible FFmpeg libraries"
-msgstr ""
+msgstr "Nem található FFmpeg komptibilis könyvtár"
 
 #: FFmpeg.h:95
 msgid "FFmpeg not found"
@@ -975,11 +993,14 @@ msgid "Audacity attempted to use FFmpeg libraries to import an audio file,\n"
 "but libraries were not found.\n"
 "If you want to use the FFmpeg import feature, please go to Preferences->Import/Export\n"
 "and tell Audacity where to look for the libraries."
-msgstr ""
+msgstr "Az Audacity megpróbálta az FFmpeg könyvtárat használni a fájl importálásához,\n"
+"de a könyvtárat nem találta.\n"
+"Ha használni szeretné az FFmpeg importálás funkciót, kérem adja meg a\n"
+"Beállítások->Importálás/Exportálás menüpontban a könyvtár helyét."
 
 #: FFmpeg.h:109
 msgid "Do not show this warning again"
-msgstr ""
+msgstr "Ne mutassa ezt a figyelmeztetést ismét"
 
 #: FFmpeg.h:251
 msgid "Only avformat.dll|*avformat*.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
@@ -987,11 +1008,11 @@ msgstr "Csak avformat.dll|*avformat*.dll|Dinamikusan linkelt könyvtárak (*.dll
 
 #: FFmpeg.h:268
 msgid "Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*"
-msgstr ""
+msgstr "Dinamikus könyvtárak (*.dylib)|*.dylib|Minden fájl (*)|*"
 
 #: FFmpeg.h:295
 msgid "Only libavformat.so|libavformat.so*|Dynamically Linked Libraries (*.so*)|*.so*|All Files (*)|*"
-msgstr ""
+msgstr "Csak libavformat.so|libavformat.so*|Dinamikusan linkelt könyvtárak (*.so*)|*.so*|Minden fájl (*.*)|*"
 
 #: FreqWindow.cpp:103
 msgid "Frequency Analysis"
@@ -1804,11 +1825,11 @@ msgstr "&Vezérlők"
 
 #: Menus.cpp:591
 msgid "Play\tSpace"
-msgstr ""
+msgstr "Lejátszás\tSpace"
 
 #: Menus.cpp:593
 msgid "&Loop Play\tShift+Space"
-msgstr ""
+msgstr "&Ismétlődő lejátszás\tShift+Space"
 
 #: Menus.cpp:593
 msgid "&Pause\tP"
@@ -1816,7 +1837,7 @@ msgstr "Szü&net\tP"
 
 #: Menus.cpp:596
 msgid "&Stop\tSpace"
-msgstr ""
+msgstr "Állj\tSpace"
 
 #: Menus.cpp:595 Menus.cpp:1010
 msgid "Skip to Start\tHome"
@@ -2064,7 +2085,7 @@ msgstr "Előző eszköz\tA"
 
 #: Menus.cpp:997
 msgid "Play/Stop\tSpace"
-msgstr ""
+msgstr "Lejátszás/Állj\tSpace"
 
 #: Menus.cpp:996
 msgid "Stop\tS"
@@ -2096,11 +2117,11 @@ msgstr "Lejátszás a kijelölésig\tB"
 
 #: Menus.cpp:1006
 msgid "Play Looped\tL"
-msgstr "Ismételt Lejátszás\tL"
+msgstr "Ismétlődő lejátszás\tL"
 
 #: Menus.cpp:1009
 msgid "Play Looped\tShift+Space"
-msgstr ""
+msgstr "Ismétlődő lejátszás\tShift+Space"
 
 #: Menus.cpp:1008
 msgid "Play Cut Preview\tC"
@@ -3811,7 +3832,6 @@ msgid "Plugins %i to %i"
 msgstr "Plugin-ek %i-től %i-ig"
 
 #: commands/CommandManager.cpp:857
-#, fuzzy
 msgid "Disallowed for some reason.  Try selecting some audio first?"
 msgstr "Letiltott valamilyen okból.  Próbált kijelölni némi hangot?"
 
@@ -4352,7 +4372,7 @@ msgstr ""
 
 #: effects/Contrast.cpp:321
 msgid "Parameters"
-msgstr ""
+msgstr "Paraméterek"
 
 #: effects/ToneGen.cpp:355 toolbars/ControlToolBar.cpp:186
 msgid "Start"
@@ -4370,7 +4390,7 @@ msgstr ""
 
 #: effects/Contrast.cpp:335
 msgid "Foreground:"
-msgstr ""
+msgstr "Előtér"
 
 #: effects/Contrast.cpp:347
 msgid "Foreground start time"
@@ -4386,7 +4406,7 @@ msgstr ""
 
 #: effects/Contrast.cpp:378
 msgid "Background:"
-msgstr ""
+msgstr "Háttér:"
 
 #: effects/Contrast.cpp:391
 msgid "Background start time"
@@ -4398,7 +4418,7 @@ msgstr ""
 
 #: effects/Contrast.cpp:426
 msgid "Result"
-msgstr ""
+msgstr "Eredmény"
 
 #: effects/Contrast.cpp:430
 msgid "Contrast Result:"
@@ -4410,7 +4430,7 @@ msgstr "Alaphelyzet"
 
 #: effects/Contrast.cpp:434
 msgid "Difference:"
-msgstr ""
+msgstr "Különbség:"
 
 #: effects/Contrast.cpp:445
 msgid "Information"
@@ -4494,11 +4514,11 @@ msgstr ""
 #: effects/Contrast.cpp:574
 #, c-format
 msgid "Filename = %s."
-msgstr ""
+msgstr "Fájlnév = %s."
 
 #: effects/Contrast.cpp:576
 msgid "Foreground"
-msgstr ""
+msgstr "Előtér"
 
 #: effects/Contrast.cpp:581 effects/Contrast.cpp:598
 #, c-format
@@ -4521,11 +4541,11 @@ msgstr ""
 
 #: effects/Contrast.cpp:593
 msgid "Background"
-msgstr ""
+msgstr "Háttér"
 
 #: effects/Contrast.cpp:609
 msgid "Results"
-msgstr ""
+msgstr "Eredmények"
 
 #: effects/Contrast.cpp:611
 #, c-format
@@ -4542,19 +4562,19 @@ msgstr ""
 
 #: effects/Contrast.cpp:618
 msgid "Data gathered"
-msgstr ""
+msgstr "Gyűjtött adaat"
 
 #: effects/Contrast.h:33
 msgid "Contrast...\tCtrl+Shift+T"
-msgstr ""
+msgstr "Kontraszt...\tCtrl+Shift+T"
 
 #: effects/Contrast.h:52
 msgid "Measuring background"
-msgstr ""
+msgstr "Háttér mérése"
 
 #: effects/Contrast.h:54
 msgid "Measuring foreground"
-msgstr ""
+msgstr "Előtér mérése"
 
 #: effects/DtmfGen.cpp:56
 msgid "DTMF Tone Generator"
@@ -5666,11 +5686,11 @@ msgstr "Program"
 
 #: export/Export.cpp:469
 msgid "All the selected audio is muted."
-msgstr ""
+msgstr "Minden kijelölt hang néma."
 
 #: export/Export.cpp:471
 msgid "All the audio is muted."
-msgstr ""
+msgstr "Minden hang néma."
 
 #: export/Export.cpp:522
 msgid "Export File"
@@ -5691,7 +5711,11 @@ msgid "You are about to save a %s file with the name \"%s\".\n"
 "Normally these files end in \".%s\", and some programs will not open files with nonstandard extensions.\n"
 "\n"
 "Are you sure you want to save the file under this name?"
-msgstr ""
+msgstr "Ön egy %s fájlt készül menteni az alábbi néven: \"%s\".\n"
+"\n"
+"Ezek a fájlok szabványosan \".%s\"-re végződnek, és egyes programok nem nyitják meg a fájlokat nem szabványos kiterjesztésekkel.\n"
+"\n"
+"Biztosan ezen a néven szeretné a fájt menteni?"
 
 #: export/Export.cpp:612
 #, c-format
@@ -5725,7 +5749,7 @@ msgstr " - Jobb"
 
 #: export/Export.cpp:1072
 msgid "Mixer Panel"
-msgstr ""
+msgstr "Keverő panel"
 
 #: export/Export.cpp:1078 export/Export.cpp:1125
 #, c-format
@@ -5738,7 +5762,7 @@ msgstr "Parancssoros kódoló megadása"
 
 #: export/ExportCL.cpp:70
 msgid "Command Line Export Setup"
-msgstr ""
+msgstr "Parancssori exportálás beállítása"
 
 #: export/ExportCL.cpp:75
 msgid "Command:"
@@ -5777,28 +5801,30 @@ msgstr "A parancs kimenete"
 #: export/ExportFFmpeg.cpp:59
 msgid "Properly configured FFmpeg is required to proceed.\n"
 "You can configure it in Preferences->Import/Export."
-msgstr ""
+msgstr "Helyesen beállított FFmpeg szükséges a folytatáshoz.\n"
+"Konfigurálja a Beállítások menü Importálás/Exportálás pontjában."
 
 #: export/ExportFFmpeg.cpp:394
 #, c-format
 msgid "FFmpeg cannot find audio codec 0x%x.\n"
 "Support for this codec is probably not compiled in."
-msgstr ""
+msgstr "Az FFmpeg nem talál audio kodeket 0x%x.\n"
+"Ennek a kodeknek a támogatása valószínűleg nincs a programba belefordítva."
 
 #: export/ExportFFmpeg.cpp:614
 #, c-format
 msgid "Attempted to export %d channels, but max. channels for selected output format is %d"
-msgstr ""
+msgstr "Ön %d csatornát próbált exportálni, de max. %d csatornát támogat a kiválasztott formátum"
 
 #: export/ExportFFmpeg.cpp:638
 #, c-format
 msgid "Exporting selected audio as %s"
-msgstr ""
+msgstr "Kijelölt hang exportálása mint %s"
 
 #: export/ExportFFmpeg.cpp:639
 #, c-format
 msgid "Exporting entire file as %s"
-msgstr ""
+msgstr "Teljes exportálás mint %s"
 
 #: export/ExportFFmpeg.cpp:702 export/ExportMP3.cpp:1920
 msgid "Invalid sample rate"
@@ -5808,13 +5834,15 @@ msgstr "Érvénytelen mintavételi ráta"
 #, c-format
 msgid "The project sample rate (%d) is not supported by the current output\n"
 "file format.  "
-msgstr ""
+msgstr "A projekt mintavételi rátáját (%d) a kiválasztott kimeneti formátum\n"
+"nem támogatja.  "
 
 #: export/ExportFFmpeg.cpp:718
 #, c-format
 msgid "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
 "supported by the current output file format.  "
-msgstr ""
+msgstr "A projekt mintavételi rátájának (%d) és bitrátájának (%d kbps) a\n"
+"kombinációját a kimeneti formátum nem támogatja.  "
 
 #: export/ExportFFmpeg.cpp:721 export/ExportMP3.cpp:1939
 msgid "You may resample to one of the rates below."
@@ -5826,11 +5854,11 @@ msgstr "Mintavételi ráták"
 
 #: export/ExportFFmpegDialogs.cpp:93
 msgid "Specify AC3 Options"
-msgstr ""
+msgstr "Adja meg az AC3 opciókat"
 
 #: export/ExportFFmpegDialogs.cpp:117
 msgid "AC3 Export Setup"
-msgstr ""
+msgstr "AC3 exportálás beállítása"
 
 #: export/ExportFFmpegDialogs.cpp:121 export/ExportFFmpegDialogs.cpp:245
 #: export/ExportFFmpegDialogs.cpp:314 export/ExportFFmpegDialogs.cpp:385
@@ -5840,35 +5868,35 @@ msgstr "Bitsűrűség:"
 
 #: export/ExportFFmpegDialogs.cpp:162
 msgid "Specify AAC Options"
-msgstr ""
+msgstr "Adja meg az AAC opciókat"
 
 #: export/ExportFFmpegDialogs.cpp:178
 msgid "AAC Export Setup"
-msgstr ""
+msgstr "AAC exportálás beállítása"
 
 #: export/ExportFFmpegDialogs.cpp:217
 msgid "Specify AMR-NB Options"
-msgstr ""
+msgstr "Adja meg az AMR-NB opciókat"
 
 #: export/ExportFFmpegDialogs.cpp:241
 msgid "AMR-NB Export Setup"
-msgstr ""
+msgstr "AMR-NB exportálás beállítása"
 
 #: export/ExportFFmpegDialogs.cpp:286
 msgid "Specify AMR-WB Options"
-msgstr ""
+msgstr "Adja meg az AMR-WB opciókat"
 
 #: export/ExportFFmpegDialogs.cpp:310
 msgid "AMR-WB Export Setup"
-msgstr ""
+msgstr "AMR-WB exportálás beállítása"
 
 #: export/ExportFFmpegDialogs.cpp:357
 msgid "Specify WMA Options"
-msgstr ""
+msgstr "Adja meg a WMA opciókat"
 
 #: export/ExportFFmpegDialogs.cpp:381
 msgid "WMA Export Setup"
-msgstr ""
+msgstr "WMA exportálás beállítása"
 
 #: export/ExportFFmpegDialogs.cpp:509
 #, c-format
@@ -5926,7 +5954,7 @@ msgstr "Formátum:"
 
 #: export/ExportFFmpegDialogs.cpp:909
 msgid "Codec:"
-msgstr ""
+msgstr "Kodek:"
 
 #: export/ExportFFmpegDialogs.cpp:913
 msgid "Not all formats and codecs are compatible. Some parameters (such as bitrate and samplerate) combinations are not compatible with some codecs too."
@@ -5992,7 +6020,7 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:943
 msgid "Sample Rate:"
-msgstr ""
+msgstr "Mintavételi ráta:"
 
 #: export/ExportFFmpegDialogs.cpp:944
 msgid "Sample rate (Hz)\n"
@@ -6011,7 +6039,7 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:949
 msgid "Profile:"
-msgstr ""
+msgstr "Profil:"
 
 #: export/ExportFFmpegDialogs.cpp:951
 msgid "AAC Profile\n"
@@ -6033,7 +6061,7 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:965
 msgid "Compression Level:"
-msgstr ""
+msgstr "Tömörítés mértéke:"
 
 #: export/ExportFFmpegDialogs.cpp:966
 msgid "Compression level\n"
@@ -6128,7 +6156,7 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:977
 msgid "Use LPC"
-msgstr ""
+msgstr "LPC használata"
 
 #: export/ExportFFmpegDialogs.cpp:984
 msgid "MPEG container options"
@@ -6181,67 +6209,67 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:1361
 msgid "Failed to guess format"
-msgstr ""
+msgstr "Nem sikerült kitalálni a formátumot"
 
 #: export/ExportFFmpegDialogs.cpp:1403
 msgid "Failed to find the codec"
-msgstr ""
+msgstr "Nem sikerült megtalálni a kodeket"
 
 #: export/ExportFFmpegDialogs.h:53
 msgid "M4A (AAC) Files (FFmpeg)"
-msgstr ""
+msgstr "M4A (AAC) fájlok (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:54
 msgid "AC3 Files (FFmpeg)"
-msgstr ""
+msgstr "AC3 fájlok (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:55
 msgid "AMR (narrow band) Files (FFmpeg)"
-msgstr ""
+msgstr "AMR (keskeny sávú) fájlok (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:56
 msgid "AMR (wide band) Files (FFmpeg)"
-msgstr ""
+msgstr "AMR (széles sávú) fájlok (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:57
 msgid "WMA (version 2) Files (FFmpeg)"
-msgstr ""
+msgstr "WMA (2. verzió) fájlok (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:58
 msgid "Custom FFmpeg Export"
-msgstr ""
+msgstr "Egyéni FFmpeg exportálás"
 
 #: export/ExportFFmpegDialogs.h:373
 msgid "LTP"
-msgstr ""
+msgstr "LTP"
 
 #: export/ExportFFmpegDialogs.h:373
 msgid "Low Complexity"
-msgstr ""
+msgstr "Alacsony komplexitás"
 
 #: export/ExportFFmpegDialogs.h:373
 msgid "Main profile"
-msgstr ""
+msgstr "Fő profil"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "2-level"
-msgstr ""
+msgstr "2-szintű"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "4-level"
-msgstr ""
+msgstr "4-szintű"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "8-level"
-msgstr ""
+msgstr "8-szintű"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "Estimate"
-msgstr ""
+msgstr "Becsült"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "Full search"
-msgstr ""
+msgstr "Teljes keresés"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "Log search"
@@ -6529,7 +6557,7 @@ msgstr "A projekt mintavételi rátájának (%d) és bitrátájának (%d kbps) k
 
 #: export/ExportMP3.cpp:1965
 msgid "MP3 export library not found"
-msgstr ""
+msgstr "MP3 exportálás könyvtára nem található"
 
 #: export/ExportMultiple.cpp:96 export/ExportMultiple.cpp:426
 #: export/ExportMultiple.cpp:667 export/ExportMultiple.cpp:834
@@ -6588,7 +6616,7 @@ msgstr "Első fájl neve:"
 
 #: export/ExportMultiple.cpp:280
 msgid "First file name"
-msgstr ""
+msgstr "Első fájl neve"
 
 #: export/ExportMultiple.cpp:288 export/ExportMultiple.cpp:290
 msgid "Tracks"
@@ -6612,7 +6640,7 @@ msgstr "Fájlnév prefix:"
 
 #: export/ExportMultiple.cpp:327
 msgid "File name prefix"
-msgstr ""
+msgstr "Fájlnév prefix"
 
 #: export/ExportMultiple.cpp:341
 msgid "Overwrite existing files"
@@ -6654,7 +6682,8 @@ msgstr "Valami elromlott %d fájl exportálása után."
 #, c-format
 msgid "Label %s is not a legal file name. You cannot use any of:   %s\n"
 "Use..."
-msgstr ""
+msgstr "%s nem érvényes fájlnév. Nem használhatja a következőket:   %s\n"
+"Használjon..."
 
 #: export/ExportOGG.cpp:64
 msgid "Specify Ogg Vorbis Options"
@@ -6698,19 +6727,19 @@ msgstr "(A fejléceknek és kódolásoknak nem minden kombinációja lehetséges
 
 #: export/ExportPCM.cpp:366
 msgid "Other uncompressed files"
-msgstr ""
+msgstr "Egyéb tömörítetlen fájlok"
 
 #: export/ExportPCM.cpp:358
 msgid "AIFF (Apple) signed 16 bit PCM"
-msgstr ""
+msgstr "AIFF (Apple) előjeles 16 bit PCM"
 
 #: export/ExportPCM.cpp:348
 msgid "WAV (Microsoft) signed 16 bit PCM"
-msgstr ""
+msgstr "WAV (Microsoft) előjeles 16 bit PCM"
 
 #: export/ExportPCM.cpp:384
 msgid "GSM 6.10 WAV (mobile)"
-msgstr ""
+msgstr "GSM 6.10 WAV (mobil)"
 
 #: export/ExportPCM.cpp:446
 msgid "Cannot export audio in this format."
@@ -6734,7 +6763,7 @@ msgstr "Hiba (lehet hogy a fájl sem lett írva): %s"
 
 #: export/ExportPCM.cpp:723
 msgid "There are no options for this format.\n"
-msgstr ""
+msgstr "Nincs beállítás ehhez a formátumhoz.\n"
 
 #. i18n-hint: This is pointing users at another possible export format in
 #. * the list. So you should translate the quoted string
@@ -6742,19 +6771,19 @@ msgstr ""
 #. * when it comes up on it's own.
 #: export/ExportPCM.cpp:728
 msgid "If you need more control over the export format please use the 'Other uncompressed files' format."
-msgstr ""
+msgstr "Ha részletesebben szeretné beállítani az exportálás formátumát, használja az 'Egyéb tömörítetlen fájlok' formátumot."
 
 #: export/ExportPCM.cpp:733
 msgid "Your file will be exported as a 16-bit AIFF (Apple/SGI) file.\n"
-msgstr ""
+msgstr "A fájl 16-bit AIFF (Apple/SGI) fájlként lesz exportálva.\n"
 
 #: export/ExportPCM.cpp:738
 msgid "Your file will be exported as a 16-bit WAV (Microsoft) file.\n"
-msgstr ""
+msgstr "A fájl 16-bit WAV (Microsoft) fájlként lesz exportálva.\n"
 
 #: export/ExportPCM.cpp:743
 msgid "Your file will be exported as a GSM 6.10 WAV file.\n"
-msgstr ""
+msgstr "A fájl GSM 6.10 WAV fájlként lesz exportálva.\n"
 
 #: import/Import.cpp:156 import/ImportMP3.cpp:47
 msgid "MP3 files"
@@ -6882,7 +6911,7 @@ msgstr ""
 
 #: import/ImportFFmpeg.cpp:34
 msgid "FFmpeg-compatible files"
-msgstr ""
+msgstr "FFmpeg-kompatibilis fájlok"
 
 #: import/ImportFFmpeg.cpp:431
 #, c-format
@@ -7115,7 +7144,7 @@ msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:168 prefs/MidiIOPrefs.cpp:193
 msgid "Effects Preview"
-msgstr ""
+msgstr "Effekt előnézet"
 
 #: prefs/AudioIOPrefs.cpp:171
 msgid "Length of preview:"
@@ -7123,15 +7152,15 @@ msgstr "Előnézet hossza:"
 
 #: prefs/AudioIOPrefs.cpp:176 prefs/MidiIOPrefs.cpp:157
 msgid "Cut Preview"
-msgstr ""
+msgstr "Kivágás előnézete"
 
 #: prefs/AudioIOPrefs.cpp:179
 msgid "Preview before cut region:"
-msgstr ""
+msgstr "Előnézet a kivágott régió előtt:"
 
 #: prefs/AudioIOPrefs.cpp:181
 msgid "Preview after cut region:"
-msgstr ""
+msgstr "Előnézet a kivágott régió után:"
 
 #: prefs/AudioIOPrefs.cpp:189 prefs/MidiIOPrefs.cpp:167
 msgid "Latency"
@@ -7268,15 +7297,15 @@ msgstr "&Letöltés"
 
 #: prefs/FileFormatPrefs.cpp:106
 msgid "FFmpeg Import/Export Library"
-msgstr ""
+msgstr "FFmpeg importálás/exportálás könyvtár"
 
 #: prefs/FileFormatPrefs.cpp:109
 msgid "FFmpeg Library Version:"
-msgstr ""
+msgstr "FFmpeg könyvtár verzió:"
 
 #: prefs/FileFormatPrefs.cpp:118 prefs/FileFormatPrefs.cpp:122
 msgid "FFmpeg Library:"
-msgstr ""
+msgstr "FFmpeg könyvtár:"
 
 #: prefs/FileFormatPrefs.cpp:136
 msgid "Note: Export quality options can be chosen by clicking the Options button in the Export dialog.\n"
@@ -7384,7 +7413,7 @@ msgstr ""
 
 #: prefs/GUIPrefs.cpp:114
 msgid "Show / Hide"
-msgstr ""
+msgstr "Mutat / Elrejt"
 
 #: prefs/GUIPrefs.cpp:116
 msgid "Enable cut &lines"
@@ -7400,11 +7429,11 @@ msgstr ""
 
 #: prefs/GUIPrefs.cpp:122
 msgid "Show &Welcome Message at program start up"
-msgstr ""
+msgstr "&Üdvözlő üzenet mutatása a program indításakor"
 
 #: prefs/GUIPrefs.cpp:126
 msgid "Modes"
-msgstr ""
+msgstr "Módok"
 
 #: prefs/GUIPrefs.cpp:129
 msgid "Don't a&pply effects in batch mode"
@@ -7424,7 +7453,7 @@ msgstr "-48 dB (a 8 bites PCM-kódolású hangminták dinamika-tartománya)"
 
 #: prefs/GUIPrefs.cpp:143
 msgid "-60 dB (PCM range of 10 bit samples)"
-msgstr ""
+msgstr "-60 dB (a 10 bites PCM-kódolású hangminták dinamika-tartománya)"
 
 #: prefs/GUIPrefs.cpp:144
 msgid "-96 dB (PCM range of 16 bit samples)"
@@ -7606,7 +7635,7 @@ msgstr "Dupla bal-kattintás"
 
 #: prefs/MousePrefs.cpp:101
 msgid "Select Clip or Entire Track"
-msgstr ""
+msgstr "Klip vagy az egész sáv kijelölése"
 
 #: prefs/MousePrefs.cpp:102
 msgid "Ctrl-Left-Click"
@@ -7614,7 +7643,7 @@ msgstr "Ctrl-Bal-kattintás"
 
 #: prefs/MousePrefs.cpp:102
 msgid "Set Selection Point and Play"
-msgstr ""
+msgstr "Kijelölés beállítása és lejátszás"
 
 #: prefs/MousePrefs.cpp:104 prefs/MousePrefs.cpp:105 prefs/MousePrefs.cpp:106
 #: prefs/MousePrefs.cpp:107 prefs/MousePrefs.cpp:108 prefs/MousePrefs.cpp:109
@@ -7631,7 +7660,7 @@ msgstr "Nagyítás az adott tartományra"
 
 #: prefs/MousePrefs.cpp:105
 msgid "same as right-drag"
-msgstr ""
+msgstr "mint jobb-vonszolás"
 
 #: prefs/MousePrefs.cpp:106 prefs/MousePrefs.cpp:124
 msgid "Right-Click"
@@ -7647,7 +7676,7 @@ msgstr "Jobb-vonszolás"
 
 #: prefs/MousePrefs.cpp:107
 msgid "same as left-drag"
-msgstr ""
+msgstr "mint bal-vonszolás"
 
 #: prefs/MousePrefs.cpp:108
 msgid "Shift-Drag"
@@ -7821,15 +7850,15 @@ msgstr "Csúcsminőség:"
 
 #: prefs/SmartRecordPrefs.cpp:37 prefs/SmartRecordPrefs.cpp:38
 msgid "Smart Recording"
-msgstr ""
+msgstr "Okos felvétel"
 
 #: prefs/SmartRecordPrefs.cpp:64 prefs/SmartRecordPrefs.cpp:66
 msgid "Sound Activated Recording"
-msgstr ""
+msgstr "Hang által aktivált felvétel"
 
 #: prefs/SmartRecordPrefs.cpp:71
 msgid "Sound Activation Level (dB):"
-msgstr ""
+msgstr "Hang aktiválási szintje (dB):"
 
 #: prefs/SpectrumPrefs.cpp:41 prefs/SpectrumPrefs.cpp:42
 msgid "Spectrograms"
@@ -7873,7 +7902,7 @@ msgstr ""
 
 #: prefs/SpectrumPrefs.cpp:147
 msgid "Minimum Frequency (Hz):"
-msgstr ""
+msgstr "Minimum frekvencia (Hz):"
 
 #: prefs/SpectrumPrefs.cpp:152
 msgid "Maximum Frequency (Hz):"
@@ -7881,7 +7910,7 @@ msgstr "Maximális frekvencia (Hz):"
 
 #: prefs/SpectrumPrefs.cpp:158
 msgid "&Y-Grid"
-msgstr ""
+msgstr "&Y-rács"
 
 #: prefs/SpectrumPrefs.cpp:161
 msgid "&Find Notes"
@@ -7897,7 +7926,7 @@ msgstr "Legkisebb apmlitudó (dB):"
 
 #: prefs/SpectrumPrefs.cpp:170
 msgid "Max. Number of Notes (1..128):"
-msgstr ""
+msgstr "Jegyzetek max. száma (1..128)"
 
 #: prefs/SpectrumPrefs.cpp:197
 msgid "The maximum frequency must be an integer"
@@ -7909,11 +7938,11 @@ msgstr "A maximális frekvencia 100 - 100,000 Hz között kell, hogy legyen"
 
 #: prefs/SpectrumPrefs.cpp:209
 msgid "The minimum frequency must be an integer"
-msgstr ""
+msgstr "A minimum frekvenciának egésznek kell lennie"
 
 #: prefs/SpectrumPrefs.cpp:213
 msgid "Minimum frequency must be at least 0 Hz"
-msgstr ""
+msgstr "A minimum frekvenciának legalább 0 Hz-nek kell lennie"
 
 #: prefs/SpectrumPrefs.cpp:220
 msgid "The minimum amplitude (dB) must be an integer"
@@ -8007,7 +8036,7 @@ msgstr "Lejátszás"
 
 #: toolbars/ControlToolBar.cpp:178
 msgid "Play (Shift for Loop Play)"
-msgstr "Lejátszás (Shift-tel ismételt lejátszás)"
+msgstr "Lejátszás (Shift-tel ismétlődő lejátszás)"
 
 #: toolbars/ControlToolBar.cpp:183
 msgid "Stop"
@@ -8059,7 +8088,7 @@ msgstr "Kijelölés átalakítása csenddé"
 
 #: toolbars/EditToolBar.cpp:150
 msgid "Link Tracks"
-msgstr ""
+msgstr "Sávok összekapcsolása"
 
 #: toolbars/EditToolBar.cpp:155
 msgid "Zoom In"
@@ -8490,7 +8519,7 @@ msgstr ""
 
 #: widgets/Meter.cpp:1146
 msgid "Meter refresh rate per second [1-100]: "
-msgstr ""
+msgstr "Mérő frissítése másodpercenként [1-100]"
 
 #: widgets/Meter.cpp:1147
 msgid "Meter Preferences"
@@ -8502,19 +8531,19 @@ msgstr " Kérem válasszon egy akciót "
 
 #: widgets/MultiDialog.cpp:86
 msgid "Please select an action"
-msgstr ""
+msgstr "Kérem válasszon egy akciót"
 
 #: widgets/ProgressDialog.cpp:97
 msgid "Elapsed Time:"
-msgstr ""
+msgstr "Eltelt idő:"
 
 #: widgets/ProgressDialog.cpp:117
 msgid "Remaining Time:"
-msgstr ""
+msgstr "Hátraévő idő:"
 
 #: widgets/ProgressDialog.cpp:134
 msgid "Cancel"
-msgstr ""
+msgstr "Mégse"
 
 #: widgets/Ruler.cpp:1445 widgets/Ruler.cpp:1446
 msgid "Vertical Ruler"
@@ -8555,7 +8584,7 @@ msgstr "0100 nap 024 ó 060 p 060 mp"
 #. * minutes, seconds and hundreths of a second (1/100 second)
 #: widgets/TimeTextCtrl.cpp:288
 msgid "hh:mm:ss + hundredths"
-msgstr ""
+msgstr "óó:pp:mm + századmásodperc"
 
 #. i18n-hint: Format string for displaying time in hours, minutes, seconds
 #. * and hundredths of a second. Change the 'h' to the abbreviation for hours,
@@ -8564,7 +8593,7 @@ msgstr ""
 #. * unless there aren't 60 minutes in an hour in your locale
 #: widgets/TimeTextCtrl.cpp:294
 msgid "0100 h 060 m 060.0100 s"
-msgstr ""
+msgstr "0100 ó 060 p 060.0100 mp"
 
 #. i18n-hint: Name of time display format that shows time in hours,
 #. * minutes, seconds and milliseconds (1/1000 second)
