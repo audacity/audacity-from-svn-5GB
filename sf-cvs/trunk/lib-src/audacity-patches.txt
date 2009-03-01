@@ -176,8 +176,12 @@ portsmf-includes.patch	add include of <cstring> needed to compile with recent
 portsmf-string-const.patch	Add string const qualifiers as needed
 local-macros.patch		Add all the necessary 3rd party m4 macros into autotools
 						/m4/ and supporting changes.
+unsigned-const-casts.patch	Build fix for Solaris compiler, adds casts to
+						unsigned integer literals.
 AM_MAINTAINER_MODE has been added to configure.ac to disable autotools rebuilds
 by default
+All patches have been added to upstream patch tracker at
+https://sourceforge.net/tracker2/?group_id=196750&atid=958711
 
 
 portburn
