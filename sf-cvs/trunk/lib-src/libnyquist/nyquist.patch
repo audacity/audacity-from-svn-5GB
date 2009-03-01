@@ -211,16 +211,7 @@ diff -wruN orig/nyquist/nyqsrc/falloc.c nyquist/nyqsrc/falloc.c
 +
 diff -wruN orig/nyquist/nyqsrc/falloc.h nyquist/nyqsrc/falloc.h
 --- orig/nyquist/nyqsrc/falloc.h	2004-11-10 10:07:38.000000000 -0600
-+++ nyquist/nyqsrc/falloc.h	2009-02-25 21:19:57.000000000 -0600
-@@ -56,7 +56,7 @@
- #include "cque.h"
- #include "debug.h"
- 
--#define DEBUG_MEM 1
-+#define DEBUG_MEM 0
- #define DEBUG_MEM_INFO_SIZE (sizeof(long) + sizeof(char *))
- 
- /* special free lists */
++++ nyquist/nyqsrc/falloc.h	2009-03-01 01:17:00.000000000 -0600
 @@ -73,15 +73,31 @@
  #define MAXLISTS 128
  extern CQUE *generic_free[MAXLISTS];
@@ -254,25 +245,110 @@ diff -wruN orig/nyquist/nyqsrc/falloc.h nyquist/nyqsrc/falloc.h
  sample_block_type find_sample_block(void);
  
  char *get_from_pool(size_t siz);
-@@ -91,8 +107,10 @@
+@@ -91,8 +107,16 @@
  /* check_pool -- returns true if enough bytes are available */
  #if DEBUG_MEM
  #define check_pool(size) (poolp + (size) + DEBUG_MEM_INFO_SIZE <= poolend)
 +#define check_spool(size) (spoolp + (size) + DEBUG_MEM_INFO_SIZE <= spoolend)
++#define DBG_MEM_ALLOCATED(p, who) dbg_mem_allocated(p, who)
++#define DBG_MEM_FREED(p, who) dbg_mem_freed(p, who)
++#define DBG_MEM_RELEASED(p, who) dbg_mem_released(p, who)
  #else
  #define check_pool(size) (poolp + (size) <= poolend)
 +#define check_spool(size) (spoolp + (size) <= spoolend)
++#define DBG_MEM_ALLOCATED(p, who)
++#define DBG_MEM_FREED(p, who)
++#define DBG_MEM_RELEASED(p, who)
  #endif
  
  #define BLOCKS_PER_GC 100
-@@ -116,7 +134,6 @@
+@@ -103,7 +127,7 @@
+     else sp = find_sample_block(); \
+     /* sample_block_test(sp, "falloc_sample_block"); */ \
+     /* printf("[%x] ", sp); */ \
+-    if (DEBUG_MEM) dbg_mem_allocated(sp, who); \
++    DBG_MEM_ALLOCATED(sp, who); \
+     sp->refcnt = 1; \
+     sample_block_used++; \
+ }
+@@ -111,15 +135,14 @@
+ 
+ #define ffree_sample_block(sp, who) { \
+     /* printf("freeing sample_block@%x\n", sp); */ \
+-    if (DEBUG_MEM) dbg_mem_freed(sp, who); \
++    DBG_MEM_FREED(sp, who); \
+     Qenter(sample_block_free, sp); \
      sample_block_used--; \
  }
  
 -
  #define frelease_sample_block(sp, who) { \
      sp->refcnt--; \
-     if (DEBUG_MEM) dbg_mem_released(sp, who); \
+-    if (DEBUG_MEM) dbg_mem_released(sp, who); \
++    DBG_MEM_RELEASED(sp, who); \
+     if (sp->refcnt <= 0) { \
+         ffree_sample_block(sp); \
+     } \
+@@ -138,12 +161,12 @@
+     else \
+         sp = (snd_list_type)get_from_pool(round_size(sizeof(snd_list_node)));\
+     snd_list_used++; \
+-    if (DEBUG_MEM) dbg_mem_allocated(sp, who); \
++    DBG_MEM_ALLOCATED(sp, who); \
+ }
+ 
+ 
+ #define ffree_snd_list(sp, who) { \
+-    if (DEBUG_MEM) dbg_mem_freed(sp, who); \
++    DBG_MEM_FREED(sp, who); \
+     Qenter(snd_list_free, sp); \
+     snd_list_used--; \
+ }
+@@ -151,7 +174,7 @@
+ 
+ #define frelease_snd_list(sp, who) { \
+     sp->refcnt--; \
+-    if (DEBUG_MEM) dbg_mem_released(sp, who); \
++    DBG_MEM_RELEASED(sp, who); \
+     if (sp->refcnt <= 0) { \
+         ffree_snd_list(sp, who); \
+     } \
+@@ -169,7 +192,7 @@
+         sp = (sound_type) get_from_pool(round_size(sizeof(sound_node))); \
+     } \
+     sound_used++; \
+-    if (DEBUG_MEM) dbg_mem_allocated(sp, who); \
++    DBG_MEM_ALLOCATED(sp, who); \
+ }
+ #else
+ #define falloc_sound(sp) \
+@@ -180,7 +203,7 @@
+ /* note: usually you call sound_unref, not this macro */
+ #define ffree_sound(sp, who) { \
+ /*    sound_already_free_test(); */ \
+-    if (DEBUG_MEM) dbg_mem_freed(sp, who); \
++    DBG_MEM_FREED(sp, who); \
+     Qenter(sound_free, sp); \
+     sound_used--; \
+ }
+@@ -208,7 +231,7 @@
+     } else { \
+         sp = (sptype *) get_from_pool(size); \
+     } \
+-    if (DEBUG_MEM) dbg_mem_allocated(sp, who); \
++    DBG_MEM_ALLOCATED(sp, who); \
+ /*    printf("GENERIC ALLOC %x\n", sp);  */
+ 
+ 
+@@ -220,7 +243,7 @@
+  */
+ #define ffree_generic(sp, nn, who) { \
+     int sIzE = round_size(nn) >> 3; \
+-    if (DEBUG_MEM) dbg_mem_freed(sp, who); \
++    DBG_MEM_FREED(sp, who); \
+     /* printf("GENERIC FREE %x SIZE %d\n", sp, nnn); */ \
+     if ((sIzE) >= MAXLISTS) { \
+         free(sp); \
 diff -wruN orig/nyquist/nyqsrc/sound.c nyquist/nyqsrc/sound.c
 --- orig/nyquist/nyqsrc/sound.c	2008-07-20 23:30:05.000000000 -0500
 +++ nyquist/nyqsrc/sound.c	2009-02-25 09:08:55.000000000 -0600
