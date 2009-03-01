@@ -406,7 +406,6 @@ LOCAL void nyx_restore_obarray()
 
 LOCAL LVAL copylist(LVAL from)
 {
-   LVAL nsym;
    if (from == NULL) {
       return NULL;
    }
