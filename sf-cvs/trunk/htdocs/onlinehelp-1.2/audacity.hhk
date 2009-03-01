@@ -18,7 +18,7 @@ Index
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Playthrough">
-		<param name="Local" value="prefs_audio.htm">
+		<param name="Local" value="prefs.htm">
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Set Selection Format">
@@ -86,7 +86,7 @@ Index
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="MP3 Export Setup">
-		<param name="Local" value="prefs_audio.htm">
+		<param name="Local" value="prefs.htm">
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Add Label at Selection">
@@ -162,7 +162,7 @@ Index
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Maximum Frequency">
-		<param name="Local" value="prefs_audio.htm">
+		<param name="Local" value="prefs.htm">
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Wahwah">
@@ -254,7 +254,7 @@ Index
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="When importing uncompressed audio files...">
-		<param name="Local" value="prefs_audio.htm">
+		<param name="Local" value="prefs.htm">
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Fit Vertically">
@@ -378,7 +378,7 @@ Index
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Uncompressed Export Format">
-		<param name="Local" value="prefs_audio.htm">
+		<param name="Local" value="prefs.htm">
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Fade In">
@@ -398,7 +398,7 @@ Index
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Grayscale">
-		<param name="Local" value="prefs_audio.htm">
+		<param name="Local" value="prefs.htm">
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Enable Mixer Toolbar">
@@ -434,7 +434,7 @@ Index
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Record in Stereo">
-		<param name="Local" value="prefs_audio.htm">
+		<param name="Local" value="prefs.htm">
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="FFT Size">
@@ -474,7 +474,7 @@ Index
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Ogg Export Setup">
-		<param name="Local" value="prefs_audio.htm">
+		<param name="Local" value="prefs.htm">
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Dock Edit Toolbar">
@@ -490,7 +490,7 @@ Index
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="FFT Size:">
-		<param name="Local" value="prefs_audio.htm">
+		<param name="Local" value="prefs.htm">
 	</object>
 	<li><object type="text/sitemap">
 		<param name="Name" value="Name...">
