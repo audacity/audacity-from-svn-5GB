@@ -69,6 +69,7 @@
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;&quot;$(WXWIN)\lib\vc_dll&quot;"
 				IgnoreDefaultLibraryNames="dsound.lib"
 				SubSystem="2"
+				StackReserveSize="8388608"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -157,6 +158,7 @@
 				IgnoreDefaultLibraryNames="dsound.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
+				StackReserveSize="8388608"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -245,6 +247,7 @@
 				IgnoreDefaultLibraryNames="dsound.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
+				StackReserveSize="8388608"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -327,6 +330,7 @@
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;&quot;$(WXWIN)\lib\vc_dll&quot;"
 				IgnoreDefaultLibraryNames="dsound.lib"
 				SubSystem="2"
+				StackReserveSize="8388608"
 				TargetMachine="1"
 			/>
 			<Tool
