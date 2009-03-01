@@ -15,7 +15,7 @@
  * and a sequence number.  (8 extra bytes are allocated for this info).
  *
  * When storage is freed, the ID is set to NULL, and the routine
- * dbg_mem_check(ptr) will abort if ID is NULL.  Call this routine to
+ * _DBG_MEM_check(ptr) will abort if ID is NULL.  Call this routine to
  * avoid following a pointer to data that was previously freed.
  *
  * The goal of this support is to allow you to "go back" to the point
@@ -29,7 +29,7 @@
  *   pointer came from.  See if the source of the pointer was freed.
  * (4) If the source of the pointer was freed, then notice the sequence
  *   number.
- * (5) Rerun with dbg_mem_seq_num set to the number noted in (4).
+ * (5) Rerun with _DBG_MEM_seq_num set to the number noted in (4).
  * (6) Nyquist will print when the storage in question was allocated and
  *   freed.  Use the debugger to find out why the storage is
  *   freed too early and who did it.
@@ -37,10 +37,10 @@
  *   own.
  *
  * The DEBUG_MEM related routines are:
- *    dbg_mem_allocated: called when memory is allocated
- *    dbg_mem_freed: called when memory is freed
- *    dbg_mem_released: called when memory is released
- *    dbg_mem_check: called to check memory
+ *    _DBG_MEM_ALLOCATED: called when memory is allocated
+ *    _DBG_MEM_FREED: called when memory is freed
+ *    _DBG_MEM_RELEASED: called when memory is released
+ *    _DBG_MEM_check: called to check memory
  *
  * see also xldmem.c:
  * by setting xldmem_trace to a pointer, you can trace when the
@@ -108,9 +108,15 @@ char *get_from_pool(size_t siz);
 #if DEBUG_MEM
 #define check_pool(size) (poolp + (size) + DEBUG_MEM_INFO_SIZE <= poolend)
 #define check_spool(size) (spoolp + (size) + DEBUG_MEM_INFO_SIZE <= spoolend)
+#define _DBG_MEM_ALLOCATED(p, who) _DBG_MEM_allocated(p, who)
+#define _DBG_MEM_FREED(p, who) _DBG_MEM_freed(p, who)
+#define _DBG_MEM_RELEASED(p, who) _DBG_MEM_released(p, who)
 #else
 #define check_pool(size) (poolp + (size) <= poolend)
 #define check_spool(size) (spoolp + (size) <= spoolend)
+#define _DBG_MEM_ALLOCATED(p, who)
+#define _DBG_MEM_FREED(p, who)
+#define _DBG_MEM_RELEASED(p, who)
 #endif
 
 #define BLOCKS_PER_GC 100
@@ -121,7 +127,7 @@ char *get_from_pool(size_t siz);
     else sp = find_sample_block(); \
     /* sample_block_test(sp, "falloc_sample_block"); */ \
     /* printf("[%x] ", sp); */ \
-    if (DEBUG_MEM) dbg_mem_allocated(sp, who); \
+    _DBG_MEM_ALLOCATED(sp, who); \
     sp->refcnt = 1; \
     sample_block_used++; \
 }
@@ -129,14 +135,14 @@ char *get_from_pool(size_t siz);
 
 #define ffree_sample_block(sp, who) { \
     /* printf("freeing sample_block@%x\n", sp); */ \
-    if (DEBUG_MEM) dbg_mem_freed(sp, who); \
+    _DBG_MEM_FREED(sp, who); \
     Qenter(sample_block_free, sp); \
     sample_block_used--; \
 }
 
 #define frelease_sample_block(sp, who) { \
     sp->refcnt--; \
-    if (DEBUG_MEM) dbg_mem_released(sp, who); \
+    _DBG_MEM_RELEASED(sp, who); \
     if (sp->refcnt <= 0) { \
         ffree_sample_block(sp); \
     } \
@@ -155,12 +161,12 @@ char *get_from_pool(size_t siz);
     else \
         sp = (snd_list_type)get_from_pool(round_size(sizeof(snd_list_node)));\
     snd_list_used++; \
-    if (DEBUG_MEM) dbg_mem_allocated(sp, who); \
+    _DBG_MEM_ALLOCATED(sp, who); \
 }
 
 
 #define ffree_snd_list(sp, who) { \
-    if (DEBUG_MEM) dbg_mem_freed(sp, who); \
+    _DBG_MEM_FREED(sp, who); \
     Qenter(snd_list_free, sp); \
     snd_list_used--; \
 }
@@ -168,7 +174,7 @@ char *get_from_pool(size_t siz);
 
 #define frelease_snd_list(sp, who) { \
     sp->refcnt--; \
-    if (DEBUG_MEM) dbg_mem_released(sp, who); \
+    _DBG_MEM_RELEASED(sp, who); \
     if (sp->refcnt <= 0) { \
         ffree_snd_list(sp, who); \
     } \
@@ -186,7 +192,7 @@ char *get_from_pool(size_t siz);
         sp = (sound_type) get_from_pool(round_size(sizeof(sound_node))); \
     } \
     sound_used++; \
-    if (DEBUG_MEM) dbg_mem_allocated(sp, who); \
+    _DBG_MEM_ALLOCATED(sp, who); \
 }
 #else
 #define falloc_sound(sp) \
@@ -197,7 +203,7 @@ char *get_from_pool(size_t siz);
 /* note: usually you call sound_unref, not this macro */
 #define ffree_sound(sp, who) { \
 /*    sound_already_free_test(); */ \
-    if (DEBUG_MEM) dbg_mem_freed(sp, who); \
+    _DBG_MEM_FREED(sp, who); \
     Qenter(sound_free, sp); \
     sound_used--; \
 }
@@ -225,7 +231,7 @@ char *get_from_pool(size_t siz);
     } else { \
         sp = (sptype *) get_from_pool(size); \
     } \
-    if (DEBUG_MEM) dbg_mem_allocated(sp, who); \
+    _DBG_MEM_ALLOCATED(sp, who); \
 /*    printf("GENERIC ALLOC %x\n", sp);  */
 
 
@@ -237,7 +243,7 @@ char *get_from_pool(size_t siz);
  */
 #define ffree_generic(sp, nn, who) { \
     int sIzE = round_size(nn) >> 3; \
-    if (DEBUG_MEM) dbg_mem_freed(sp, who); \
+    _DBG_MEM_FREED(sp, who); \
     /* printf("GENERIC FREE %x SIZE %d\n", sp, nnn); */ \
     if ((sIzE) >= MAXLISTS) { \
         free(sp); \
