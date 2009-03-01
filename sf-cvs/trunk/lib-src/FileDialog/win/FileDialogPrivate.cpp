@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.14 2008-11-08 21:00:26 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.15 2009-03-01 19:13:25 msmeyer Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -419,8 +419,8 @@ FileDialog::FileDialog(wxWindow *parent,
 {
    m_dialogStyle = style;
    
-   if ( ( m_dialogStyle & wxMULTIPLE ) && ( m_dialogStyle & wxSAVE ) )
-      m_dialogStyle &= ~wxMULTIPLE;
+   if ( ( m_dialogStyle & wxFD_MULTIPLE ) && ( m_dialogStyle & wxFD_SAVE ) )
+      m_dialogStyle &= ~wxFD_MULTIPLE;
    
    m_bMovedWindow = false;
    
@@ -514,7 +514,7 @@ int FileDialog::ShowModal()
    long msw_flags = OFN_HIDEREADONLY;
 #endif
    
-   if ( m_dialogStyle & wxFILE_MUST_EXIST )
+   if ( m_dialogStyle & wxFD_FILE_MUST_EXIST )
       msw_flags |= OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
    /*
     If the window has been moved the programmer is probably
@@ -537,7 +537,7 @@ int FileDialog::ShowModal()
 #endif
    }
    
-   if (m_dialogStyle & wxMULTIPLE )
+   if (m_dialogStyle & wxFD_MULTIPLE )
    {
       // OFN_EXPLORER must always be specified with OFN_ALLOWMULTISELECT
       msw_flags |= OFN_EXPLORER | OFN_ALLOWMULTISELECT;
@@ -546,12 +546,12 @@ int FileDialog::ShowModal()
    // if wxCHANGE_DIR flag is not given we shouldn't change the CWD which the
    // standard dialog does by default (notice that under NT it does it anyhow, 
    // OFN_NOCHANGEDIR or not, see below)
-   if ( !(m_dialogStyle & wxCHANGE_DIR) )
+   if ( !(m_dialogStyle & wxFD_CHANGE_DIR) )
    {
       msw_flags |= OFN_NOCHANGEDIR;
    }
    
-   if ( m_dialogStyle & wxOVERWRITE_PROMPT )
+   if ( m_dialogStyle & wxFD_OVERWRITE_PROMPT )
    {
       msw_flags |= OFN_OVERWRITEPROMPT;
    }
@@ -573,7 +573,7 @@ int FileDialog::ShowModal()
    wxZeroMemory(of);
    
    // Allow Places bar to show on supported platforms
-   if ( wxGetOsVersion() == wxWINDOWS_NT )
+   if ( wxGetOsVersion() == wxOS_WINDOWS_NT )
    {
       of.lStructSize       = sizeof(OPENFILENAME);
    }
@@ -675,7 +675,7 @@ int FileDialog::ShowModal()
    // user types "foo" and the default extension is ".bar" we should force it
    // to check for "foo.bar" existence and not "foo")
    wxString defextBuffer; // we need it to be alive until GetSaveFileName()!
-   if (m_dialogStyle & wxSAVE && m_dialogStyle & wxOVERWRITE_PROMPT)
+   if (m_dialogStyle & wxFD_SAVE && m_dialogStyle & wxFD_OVERWRITE_PROMPT)
    {
       const wxChar* extension = filterBuffer;
       int maxFilter = (int)(of.nFilterIndex*2L) - 1;
@@ -697,7 +697,7 @@ int FileDialog::ShowModal()
    
    //== Execute FileDialog >>=================================================
    
-   bool success = (m_dialogStyle & wxSAVE ? GetSaveFileName(&of)
+   bool success = (m_dialogStyle & wxFD_SAVE ? GetSaveFileName(&of)
                    : GetOpenFileName(&of)) != 0;
    
 #ifdef __WXWINCE__
@@ -713,7 +713,7 @@ int FileDialog::ShowModal()
    // seems safe). 
    if ( success && 
        (msw_flags & OFN_NOCHANGEDIR) && 
-       wxGetOsVersion() == wxWINDOWS_NT ) 
+       wxGetOsVersion() == wxOS_WINDOWS_NT ) 
    { 
       wxSetWorkingDirectory(cwdOrig); 
    } 
@@ -725,14 +725,14 @@ int FileDialog::ShowModal()
       
       int oldStructSize = of.lStructSize;
       of.lStructSize       = oldStructSize - (sizeof(void *) + 2*sizeof(DWORD));
-      success = (m_dialogStyle & wxSAVE) ? (GetSaveFileName(&of) != 0)
+      success = (m_dialogStyle & wxFD_SAVE) ? (GetSaveFileName(&of) != 0)
       : (GetOpenFileName(&of) != 0);
       errCode = CommDlgExtendedError();
       
       if (!success && (errCode == CDERR_STRUCTSIZE))
       {
          of.lStructSize       = oldStructSize + (sizeof(void *) + 2*sizeof(DWORD));
-         success = (m_dialogStyle & wxSAVE) ? (GetSaveFileName(&of) != 0)
+         success = (m_dialogStyle & wxFD_SAVE) ? (GetSaveFileName(&of) != 0)
          : (GetOpenFileName(&of) != 0);
       }
    }
@@ -743,7 +743,7 @@ int FileDialog::ShowModal()
    {
       m_fileNames.Empty();
       
-      if ( ( m_dialogStyle & wxMULTIPLE ) &&
+      if ( ( m_dialogStyle & wxFD_MULTIPLE ) &&
 #if defined(OFN_EXPLORER)
           ( fileNameBuffer[of.nFileOffset-1] == wxT('\0') )
 #else
