@@ -2204,7 +2204,7 @@ wxString AudioIO::GetDeviceInfo()
    
       s << wxT("==============================") << e;
       s << wxT("Capture volume is ") << (EmulateMixerInputVol? wxT("emulated"): wxT("native")) << e;
-      s << wxT("Capture volume is ") << (EmulateMixerOutputVol? wxT("emulated"): wxT("native")) << e;
+      s << wxT("Playback volume is ") << (EmulateMixerOutputVol? wxT("emulated"): wxT("native")) << e;
    
       Px_CloseMixer(PortMixer);
 
