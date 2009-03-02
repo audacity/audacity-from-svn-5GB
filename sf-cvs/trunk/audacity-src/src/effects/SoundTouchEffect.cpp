@@ -197,8 +197,7 @@ bool EffectSoundTouch::ProcessOne(WaveTrack *track,
    // Take the output track and insert it in place of the original
    // sample data
    
-   track->HandleClear(mCurT0, mCurT1, false, false);
-   track->HandlePaste(mCurT0, outputTrack);
+   track->ClearAndPaste(mCurT0, mCurT1, outputTrack);
    
    double newLength = outputTrack->GetEndTime(); 
    m_maxNewLength = wxMax(m_maxNewLength, newLength);
@@ -302,10 +301,8 @@ bool EffectSoundTouch::ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack
    
    // Take the output tracks and insert in place of the original
    // sample data.
-   leftTrack->HandleClear(mCurT0, mCurT1, false, false);
-   leftTrack->HandlePaste(mCurT0, outputLeftTrack);
-   rightTrack->HandleClear(mCurT0, mCurT1, false, false);
-   rightTrack->HandlePaste(mCurT0, outputRightTrack);
+   leftTrack->ClearAndPaste(mCurT0, mCurT1, outputLeftTrack);
+   rightTrack->ClearAndPaste(mCurT0, mCurT1, outputRightTrack);
 
    // Track the longest result length
    double newLength = outputLeftTrack->GetEndTime();

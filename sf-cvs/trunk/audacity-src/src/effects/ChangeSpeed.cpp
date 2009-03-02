@@ -241,8 +241,7 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
    // Take the output track and insert it in place of the original
    // sample data
 	if (bLoopSuccess) {
-		track->HandleClear(mCurT0, mCurT1, false, false);
-		track->HandlePaste(mCurT0, outputTrack);
+		track->ClearAndPaste(mCurT0, mCurT1, outputTrack);
 	}
 
 	double newLength = outputTrack->GetEndTime(); 

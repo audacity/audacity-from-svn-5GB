@@ -268,8 +268,7 @@ bool EffectToneGen::Process()
       delete[] data;
 
       tmp->Flush();
-      track->HandleClear(mT0, mT1, false, false);
-      track->HandlePaste(mT0, tmp);
+      track->ClearAndPaste(mT0, mT1, tmp);
       delete tmp;
 
       if (!bGoodResult)
