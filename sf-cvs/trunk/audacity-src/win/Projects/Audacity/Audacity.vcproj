@@ -12,6 +12,9 @@
 		/>
 	</Platforms>
 	<ToolFiles>
+		<ToolFile
+			RelativePath="..\..\ny.rules"
+		/>
 	</ToolFiles>
 	<Configurations>
 		<Configuration
@@ -27,6 +30,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="copy"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -110,6 +116,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="copy"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -201,6 +210,9 @@
 				Name="VCCustomBuildTool"
 			/>
 			<Tool
+				Name="copy"
+			/>
+			<Tool
 				Name="VCXMLDataGeneratorTool"
 			/>
 			<Tool
@@ -288,6 +300,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="copy"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -2082,6 +2097,370 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="plug-ins"
+			>
+			<File
+				RelativePath="..\..\..\plug-ins\analyze.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\beat.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\clicktrack.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\clipfix.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\crossfadein.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\crossfadeout.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\delay.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\equalabel.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\highpass.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\lowpass.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\pluck.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\rissetdrum.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\SilenceMarker.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\tremolo.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\vocalremover.ny"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\plug-ins\vocoder.ny"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="nyquist"
+			>
+			<File
+				RelativePath="..\..\..\nyquist\bug.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\dspprims.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\envelopes.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\equalizer.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\evalenv.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\fileio.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\follow.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\init.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\misc.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\nyinit.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\nyqmisc.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\nyquist-plot.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\nyquist.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\printrec.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\profile.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\sal-parse.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\sal.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\seq.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\seqfnint.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\seqmidi.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\sndfnint.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\stk.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\system.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\xlinit.lsp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\nyquist\xm.lsp"
+				>
+			</File>
+			<Filter
+				Name="rawwaves"
+				>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand1.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand10.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand11.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand12.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand2.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand3.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand4.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand5.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand6.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand7.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand8.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mand9.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\mandpluk.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\marmstk1.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\nyquist\rawwaves\sinewave.raw"
+					>
+					<FileConfiguration
+						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+		</Filter>
+		<File
+			RelativePath="..\..\ny.rules"
+			>
+		</File>
+		<File
+			RelativePath="..\..\po.rules"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
