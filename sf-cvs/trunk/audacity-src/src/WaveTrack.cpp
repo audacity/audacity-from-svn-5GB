@@ -472,6 +472,172 @@ bool WaveTrack::ClearAndAddCutLine(double t0, double t1)
       return HandleClear(t0, t1, addCutLines, split);
 }
 
+//
+// ClearAndPaste() is a specialized version of HandleClear()
+// followed by HandlePaste() and is used mostly by effects that
+// can't replace track data directly using Get()/Set().
+//
+// HandleClear() removes any cut/split lines lines with the
+// cleared range, but, in most cases, effects want to preserve
+// the existing cut/split lines, so they are saved before the
+// HandleClear()/HandlePaste() and restored after.
+//
+// If the pasted track overlaps two or more clips, then it will
+// be pasted with visible split lines.  Normally, effects do not
+// want these extra lines, so they may be merged out.
+//
+bool WaveTrack::ClearAndPaste(double t0, double t1,
+                              Track *src,
+                              bool preserve, bool merge)
+{
+   WaveClipList::Node* ic;
+   WaveClipList::Node* it;
+   double dur = wxMin(t1 - t0, src->GetEndTime());
+   wxArrayDouble splits;
+   WaveClipArray cuts;
+   WaveClip *clip;
+
+   // If duration is 0, then it's just a plain paste
+   if (dur == 0.0) {
+      return HandlePaste(t0, src);
+   }
+
+   // Calculate end of cleared regions
+   t1 = t0 + dur;
+
+   // Align to a sample
+   t0 = LongSamplesToTime(TimeToLongSamples(t0));
+   t1 = LongSamplesToTime(TimeToLongSamples(t1));
+
+   // Save the cut/split lines whether preserving or not since merging
+   // needs to know if a clip boundary is being crossed since HandlePaste()
+   // will add split lines around the pasted clip if so.
+   for (ic = GetClipIterator(); ic; ic = ic->GetNext()) {
+      double st;
+
+      clip = ic->GetData();
+      st = LongSamplesToTime(TimeToLongSamples(clip->GetStartTime()));
+
+      // Remember split line
+      if (st >= t0 && st <= t1) {
+         splits.Add(st);
+      }
+
+      // Search for cut lines
+      WaveClipList* cutlines = clip->GetCutLines();
+      it = cutlines->GetFirst();
+      while (it) {
+         WaveClipList::Node* in = it->GetNext();
+         WaveClip *cut = it->GetData();
+         double cs = LongSamplesToTime(TimeToLongSamples(clip->GetOffset() +
+                                                         cut->GetOffset()));
+
+         // Remember cut point
+         if (cs >= t0 && cs <= t1) {
+            // Remove cut point from this clips cutlines array, otherwise
+            // it will not be deleted when HandleClear() is called.
+            cutlines->DeleteNode(it);
+
+            // Remember the absolute offset and add to our cuts array.
+            cut->SetOffset(cs);
+            cuts.Add(cut);
+         }
+
+         it = in;
+      }
+   }
+
+   // Now, clear the selection
+   if (HandleClear(t0, t1, false, false)) {
+
+      // And paste in the new data
+      if (HandlePaste(t0, src)) {
+         int i;
+
+         // First, merge the new clip(s) in with the existing clips
+         if (merge && splits.GetCount() > 0)
+         {
+            WaveClipArray clips;
+
+            // Now t1 represents the absolute end of the pasted data.
+            t1 = t0 + src->GetEndTime();
+
+            // Get a sorted array of the clips
+            FillSortedClipArray(clips);
+
+            // Scan the sorted clips for the first clip whose start time
+            // exceeds the pasted regions end time.
+            for (i = 0; i < clips.GetCount(); i++) {
+               clip = clips[i];
+               
+               // Merge this clip and the previous clip if the end time
+               // falls within it and this isn't the first clip in the track.
+               if (fabs(t1 - clip->GetStartTime()) < WAVETRACK_MERGE_POINT_TOLERANCE) {
+                  if (i > 0) {
+                     MergeClips(GetClipIndex(clips[i - 1]), GetClipIndex(clip));
+                  }
+                  break;
+               }
+            }
+
+            // Refill the array since clips have changed.
+            FillSortedClipArray(clips);
+
+            // Scan the sorted clips to look for the start of the pasted
+            // region.
+            for (i = 0; i < clips.GetCount(); i++) {
+               clip = clips[i];
+
+               // Merge this clip and the next clip if the start time
+               // falls within it and this isn't the last clip in the track.
+               if (fabs(t0 - clip->GetEndTime()) < WAVETRACK_MERGE_POINT_TOLERANCE) {
+                  if (i < clips.GetCount() - 1) {
+                     MergeClips(GetClipIndex(clip), GetClipIndex(clips[i + 1]));
+                  }
+                  break;
+               }
+            }
+         }
+
+         // Restore cut/split lines
+         if (preserve) {
+
+            // Restore the split lines by simply resplitting at the saved time.
+            for (i = 0; i < splits.GetCount(); i++) {
+               SplitAt(splits[i]);
+            }
+
+            // Restore the saved cut lines
+            for (ic = GetClipIterator(); ic; ic = ic->GetNext()) {
+               double st;
+               double et;
+
+               clip = ic->GetData();
+               st = clip->GetStartTime();
+               et = clip->GetEndTime();
+
+               // Scan the cuts for any that live within this clip
+               for (i = 0; i < cuts.GetCount(); i++) {
+                  WaveClip *cut = cuts[i];
+                  double cs = cut->GetOffset();
+
+                  // Offset the cut from the start of the clip and add it to
+                  // this clips cutlines.
+                  if (cs >= st && cs <= et) {
+                     cut->SetOffset(cs - st);
+                     clip->GetCutLines()->Append(cut);
+                     cuts.RemoveAt(i);
+                     break;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   return true;
+}
+
 bool WaveTrack::SplitDelete(double t0, double t1)
 {
    bool addCutLines = false;

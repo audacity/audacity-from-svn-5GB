@@ -669,10 +669,9 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * track,
       // Take the output track and insert it in place of the original
       // sample data
       if (bLoopSuccess) {
-		   track->HandleClear(mT0, mT1, false, false);
          // Filtering effects always end up with more data than they started with.  Delete this 'tail'.
          mOutputTrack->HandleClear(mT1 - mT0, mOutputTrack->GetEndTime(), false, false);
-         track->HandlePaste(mT0, mOutputTrack);
+         track->ClearAndPaste(mT0, mT1, mOutputTrack);
       }
 
       // Delete the outputTrack now that its data is inserted in place

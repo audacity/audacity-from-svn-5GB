@@ -126,7 +126,11 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    virtual bool Cut  (double t0, double t1, Track **dest);
    virtual bool Copy (double t0, double t1, Track **dest);
    virtual bool Clear(double t0, double t1);
-   virtual bool Paste(double t, Track *src);
+   virtual bool Paste(double t0, Track *src);
+   virtual bool ClearAndPaste(double t0, double t1,
+                              Track *src,
+                              bool preserve = true,
+                              bool merge = true);
 
    virtual bool Silence(double t0, double t1);
    virtual bool InsertSilence(double t, double len);

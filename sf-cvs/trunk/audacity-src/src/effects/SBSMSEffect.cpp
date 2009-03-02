@@ -297,11 +297,9 @@ bool EffectSBSMS::Process()
          outputLeftTrack->Flush();
          if(rightTrack) outputRightTrack->Flush();
          
-         leftTrack->HandleClear(mCurT0, mCurT1, false, false);
-         leftTrack->HandlePaste(mCurT0, outputLeftTrack);
+         leftTrack->ClearAndPaste(mCurT0, mCurT1, outputLeftTrack);
          if(rightTrack) {
-            rightTrack->HandleClear(mCurT0, mCurT1, false, false);
-            rightTrack->HandlePaste(mCurT0, outputRightTrack);
+            rightTrack->ClearAndPaste(mCurT0, mCurT1, outputRightTrack);
          }
          
          delete outputLeftTrack;
