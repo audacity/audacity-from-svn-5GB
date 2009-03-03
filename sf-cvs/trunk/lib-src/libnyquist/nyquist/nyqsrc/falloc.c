@@ -1,6 +1,6 @@
 /*
  * falloc.c
- * data for fugue memory allocation.
+ * data for Nyquist memory allocation.
  */
 
 #include <stdio.h>
@@ -30,12 +30,12 @@ void falloc_init(void)
 
 
 /* memory pool */
-char *poolp;
-char *poolend;
+char *poolp = NULL;
+char *poolend = NULL;
 
 /* sample block memory pool */
-char *spoolp;
-char *spoolend;
+char *spoolp = NULL;
+char *spoolend = NULL;
 
 int npools = 0;
 
@@ -65,7 +65,7 @@ void new_pool(void)
     poolp = (char *) malloc(MAXPOOLSIZE);
 
     if (poolp == NULL) {
-        fprintf(STDERR, "fugue: out of memory!\n");
+        fprintf(STDERR, "Nyquist: out of memory!\n");
         EXIT(1);
     }
 
@@ -86,7 +86,7 @@ void new_spool(void)
 #endif
 
     if (spoolp == NULL) {
-        fprintf(STDERR, "fugue: out of memory!\n");
+        fprintf(STDERR, "Nyquist: out of memory!\n");
         EXIT(1);
     }
 

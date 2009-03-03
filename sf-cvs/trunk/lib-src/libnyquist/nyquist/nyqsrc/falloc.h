@@ -56,7 +56,7 @@
 #include "cque.h"
 #include "debug.h"
 
-#define DEBUG_MEM 1
+#define DEBUG_MEM 0
 #define DEBUG_MEM_INFO_SIZE (sizeof(long) + sizeof(char *))
 
 /* special free lists */
@@ -91,7 +91,7 @@ extern int sample_blocks_since_gc;
 #endif
 
 #if defined(TRACK_POOLS) && TRACK_POOLS
-extern CQUE *spools;
+// extern CQUE *pools;
 void falloc_gc();
 #endif
 
