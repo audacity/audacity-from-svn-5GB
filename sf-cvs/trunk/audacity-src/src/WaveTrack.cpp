@@ -540,6 +540,7 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
 
             // Remember the absolute offset and add to our cuts array.
             cut->SetOffset(cs);
+printf("cut o %f cs %f ce %f\n", cs, t0, t1);
             cuts.Add(cut);
          }
 
@@ -627,7 +628,7 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
                      cut->SetOffset(cs - st);
                      clip->GetCutLines()->Append(cut);
                      cuts.RemoveAt(i);
-                     break;
+                     i--;
                   }
                }
             }
