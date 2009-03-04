@@ -662,7 +662,7 @@ Cases:
          }
       }
 
-      // In theses statement, remember we subtracted mOffset from t0
+      // In these statements, remember we subtracted mOffset from t0
       if( t0 < mTrackEpsilon )
          atStart = true;
       if( (mTrackLen - t0) < mTrackEpsilon )
@@ -837,10 +837,21 @@ void Envelope::GetPoints(double *bufferWhen,
 // Although this renders the name a slight misnomer, a duplicate
 // 'replaces' the current control point.
 
-// Envelopes start at zero and are offset by other things by mOffset.
-// This is worth remembering.
-// If you call 'Insert' from WaveClip, subtract mOffset from the time.
-// If you call it from Envelope, don't. Kind of makes sense. MJS.
+/** @brief Add a control point to the envelope
+ *
+ * Control point positions start at zero and are measured in seconds from the
+ * start of the envelope. The position of the envelope on the project-wide
+ * time scale is store in seconds in Envelope::mOffset.
+ * This is worth remembering.
+ * If you call Envelope::Insert() from WaveClip, or anywhere else outside the
+ * Envelope class that is using project timing, subtract the envelope's mOffset
+ * from the time.
+ * If you call Envelope::Insert() from within Envelope, don't subtract mOffset 
+ * because you are working in relative time inside the envelope
+ * @param when the time in seconds when the envelope point should be created.
+ * @param value the envelope value to use at the given point.
+ * @return the index of the new envelope point within array of envelope points.
+ */
 int Envelope::Insert(double when, double value)
 {
    // in debug builds, do a spot of argument checking
