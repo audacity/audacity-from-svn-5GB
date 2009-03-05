@@ -327,7 +327,9 @@
 
 
 
-;;; fixed-parameter filters based on snd-biquadfilt
+;;; fixed-parameter filters based on snd-biquad
+;;; note: snd-biquad is implemented in biquadfilt.[ch],
+;;; while BiQuad.{cpp,h} is part of STK
 
 (setf Pi 3.14159265358979)
 
@@ -335,7 +337,7 @@
 (defun sinh (x) (* 0.5 (- (exp x) (exp (- x)))))
 
 
-; remember that snd-biquadfilt uses the opposite sign convention for a_i's 
+; remember that snd-biquad uses the opposite sign convention for a_i's 
 ; than Matlab does.
 
 ; convenient biquad: normalize a0, and use zero initial conditions.
