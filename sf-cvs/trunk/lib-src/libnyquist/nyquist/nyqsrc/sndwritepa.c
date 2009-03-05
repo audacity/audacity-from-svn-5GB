@@ -37,6 +37,63 @@
 #endif
 #endif
 
+/* Previously, Nyquist would wrap samples that 
+ * overflowed -- this produces horrible output, 
+ * but makes it really easy to detect clipping,
+ * which I found helpful in my own work and good 
+ * for students too since the effect is impossible
+ * to ignore. Now that Nyquist is doing IO to
+ * libraries that clip, we're going to artificially
+ * generate the wrapping here. This is floating point
+ * wrapping, so +1.0 does not wrap (it would if it
+ * were an integer since the maximum sample value for
+ * 16-bit data is a bit less than 1.) Since this is extra
+ * overhead, I'm trying to be a bit clever by using
+ * the compare to max_sample to eliminate compares
+ * for clipping in the common case.
+ * 
+ * INPUTS: max_sample -- initially 0.0
+ *         threshold -- initially 0.0
+ *         s -- the value of the current sample
+ *         x -- if s has to be wrapped, put the value here
+ */
+#define COMPUTE_MAXIMUM_AND_WRAP(x) \
+    if (s > threshold) { \
+        if (s > max_sample) { \
+            max_sample = s; \
+            threshold = min(1.0, s); \
+        } \
+        if (s > 1.0) { \
+            s = fmod(s + 1.0, 2.0) - 1.0; \
+            (x) = s; \
+        } \
+    } else if (s < -threshold) { \
+        if (s < -max_sample) { \
+            max_sample = -s; \
+            threshold = min(1.0, -s); \
+        } \
+        if (s < -1.0) { \
+            s = -(fmod(-s + 1.0, 2.0) - 1.0); \
+            (x) = s; \
+        } \
+    }
+// the s < -threshold case is tricky: 
+//    flip the signal, do the wrap, flip again
+//    in order to pass positive values to fmod
+
+
+/* When not using PCM encodings, we do not wrap
+ * samples -- therefore float sample formats do 
+ * not wrap or clip when written to sound files
+ */
+#define COMPUTE_MAXIMUM() \
+        if (s > max_sample) { \
+            max_sample = s; \
+        } else if (s < -max_sample) { \
+            max_sample = -s; \
+        }
+
+
 /* jlh Changed these to the <> format, so it will be sought for in the
    include path */
 #include <portaudio.h>
@@ -300,6 +357,10 @@ double sound_save(
          */ 
         if (filename[0]) {
             sndfile = sf_open((char *) filename, SFM_WRITE, &sf_info);
+            if (sndfile) {
+                /* use proper scale factor: 8000 vs 7FFF */
+                sf_command(sndfile, SFC_SET_CLIPPING, NULL, SF_TRUE);
+            }
         }
         
         if (play) 
@@ -321,6 +382,10 @@ double sound_save(
         *sr = sf_info.samplerate;
         if (filename[0]) {
             sndfile = sf_open((char *) filename, SFM_WRITE, &sf_info);
+            if (sndfile) {
+                /* use proper scale factor: 8000 vs 7FFF */
+                sf_command(sndfile, SFC_SET_CLIPPING, NULL, SF_TRUE);
+            }
         }
         if (play)
             play = prepare_audio(play, &sf_info, &audio_stream);
@@ -345,7 +410,7 @@ double sound_save(
 }
 
 
-/* open_for_write -- helper function for sound_save and sound_overwrite */
+/* open_for_write -- helper function for sound_overwrite */
 /*
  * if the format is RAW, then fill in sf_info according to 
  * sound sample rate and channels. Otherwise, open the file
@@ -373,10 +438,13 @@ SNDFILE *open_for_write(unsigned char *filename, long direction,
         sprintf(error, "snd_overwrite: cannot open file %s", filename);
         xlabort(error);
     }
+    /* use proper scale factor: 8000 vs 7FFF */
+    sf_command(sndfile, SFC_SET_CLIPPING, NULL, SF_TRUE);
+    
     frames = round(offset * sf_info->samplerate);
     rslt = sf_seek(sndfile, frames, SEEK_SET);
     if (rslt < 0) {
-        sprintf(error, "snd_overwrite: cannot seek to frame %ld of %s",
+        sprintf(error, "snd_overwrite: cannot seek to frame %lld of %s",
                 frames, filename);
         xlabort(error);
     }
@@ -391,7 +459,7 @@ SNDFILE *open_for_write(unsigned char *filename, long direction,
     }
 
     if (sf_info->samplerate != srate) {
-        sprintf(error, "%s%g%s%g%s",
+        sprintf(error, "%s%g%s%ld%s",
                 "snd_overwrite: sample rate in sound (",
                 srate,
                 ") does not match\n    sample rate in file (",
@@ -480,6 +548,13 @@ double sound_overwrite(
     return max_sample;
 }
 
+int is_pcm(SF_INFO *sf_info)
+{
+    long subtype = sf_info->format & SF_FORMAT_SUBMASK;
+    return (subtype == SF_FORMAT_PCM_S8 || subtype == SF_FORMAT_PCM_16 ||
+            subtype == SF_FORMAT_PCM_24 || subtype == SF_FORMAT_PCM_32);
+}
+
 
 sample_type sound_save_sound(LVAL s_as_lval, long n, SF_INFO *sf_info, 
         SNDFILE *sndfile, float *buf, long *ntotal, PaStream *audio_stream)
@@ -491,6 +566,7 @@ sample_type sound_save_sound(LVAL s_as_lval, long n, SF_INFO *sf_info,
     long debug_unit;    /* print messages at intervals of this many samples */
     long debug_count;   /* next point at which to print a message */
     sample_type max_sample = 0.0F;
+    sample_type threshold = 0.0F;
     /* jlh    cvtfn_type cvtfn; */
     *ntotal = 0;
 
@@ -545,12 +621,17 @@ sample_type sound_save_sound(LVAL s_as_lval, long n, SF_INFO *sf_info,
         } else {
             samps = sampblock->samples;
         }
-        for (i = 0; i < togo; i++) {
-            sample_type s = samps[i];
-            if (s > max_sample) max_sample = s;
-            else if (s < -max_sample) max_sample = -s;
+        if (is_pcm(sf_info)) {
+            for (i = 0; i < togo; i++) {
+                sample_type s = samps[i];
+                COMPUTE_MAXIMUM_AND_WRAP(samps[i]);
+            }
+        } else {
+            for (i = 0; i < togo; i++) {
+                sample_type s = samps[i];
+                COMPUTE_MAXIMUM();
+            }
         }
-
         if (sndfile) {
             sf_writef_float(sndfile, samps, togo);
         }
@@ -584,6 +665,7 @@ sample_type sound_save_array(LVAL sa, long n, SF_INFO *sf_info,
     long debug_unit;    /* print messages at intervals of this many samples */
     long debug_count;   /* next point at which to print a message */
     sample_type max_sample = 0.0F;
+    sample_type threshold = 0.0F;
     /*    cvtfn_type cvtfn; jlh */
 
     *ntotal = 0;
@@ -684,12 +766,21 @@ D       nyquist_printf("save scale factor %ld = %g\n", i, state[i].scale);
         if (terminated) break;
 
         float_bufp = (float *) buf;
-        for (j = 0; j < togo; j++) {
-            for (i = 0; i < chans; i++) {
-                float s = (float) (*(state[i].ptr++) * (float) state[i].scale); 
-                *float_bufp++ = s;
-                if (s > max_sample) max_sample = s;
-                else if (s < -max_sample) max_sample = -s;
+        if (is_pcm(sf_info)) {
+            for (j = 0; j < togo; j++) {
+                for (i = 0; i < chans; i++) {
+                    float s = (float) (*(state[i].ptr++) * (float) state[i].scale);
+                    COMPUTE_MAXIMUM_AND_WRAP(s);
+                    *float_bufp++ = s;
+                }
+            }
+        } else {
+            for (j = 0; j < togo; j++) {
+                for (i = 0; i < chans; i++) {
+                    float s = (float) (*(state[i].ptr++) * (float) state[i].scale);
+                    COMPUTE_MAXIMUM();
+                    *float_bufp++ = s;
+                }
             }
         }
         /* Here we have interleaved floats. Before converting to the sound

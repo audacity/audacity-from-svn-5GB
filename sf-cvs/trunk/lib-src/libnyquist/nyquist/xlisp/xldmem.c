@@ -299,6 +299,8 @@ LOCAL unsigned char *stralloc(int size)
 LOCAL void findmem(void)
 {
     gc();
+    if (nfree < (long)anodes)
+        addseg();
 }
 
 /* gc - garbage collect (only called here and in xlimage.c) */
@@ -343,10 +345,6 @@ void gc(void)
 
     /* count the gc call */
     ++gccalls;
-
-    /* add a new segment if still no free nodes */
-    if (nfree < (long)anodes)
-        addseg();
 
     /* call the *gc-hook* if necessary */
     if (s_gchook && (fun = getvalue(s_gchook))) {
@@ -756,6 +754,7 @@ void xlminit(void)
     /* allocate the argument stack */
     if ((xlargstkbase = (LVAL *)malloc(ADEPTH * sizeof(LVAL))) == NULL)
         xlfatal("insufficient memory");
+    // printf("ADEPTH is %d\n", ADEPTH);
     xlargstktop = xlargstkbase + ADEPTH;
     xlfp = xlsp = xlargstkbase;
     *xlsp++ = NIL;

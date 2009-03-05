@@ -131,7 +131,7 @@ typedef double promoted_sample_type;
 /* used by sndwrite.c for output buffers.  This should be
  * eliminated:
  */
-#define MAX_SND_CHANNELS 8
+#define MAX_SND_CHANNELS 24
 
 #define max_table_len 100000
 /* Set to 4 for debugging block allocation stuff, 1012? for

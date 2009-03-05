@@ -36,11 +36,25 @@ LVAL xsetdir() {
 /* xget_temp_path -- get a path to create temp files */
 LVAL xget_temp_path()
 {
+    char *p;
     char szDir[MAX_PATH];
+    char szDirLC[MAX_PATH];
     int rslt = GetTempPath(MAX_PATH, szDir);
     if (rslt > MAX_PATH || rslt <= 0) {
         return cvstring("");
     } else {
+        /* Vista apparently treats c:\windows with
+         * special semantics, so just don't allow
+         * GetTempPath to put us in c:\windows...
+         */
+        strcpy(szDirLC, szDir); /* convert to lower case */
+        for (p = szDirLC; *p; p++) { 
+            *p = tolower(*p);
+        }
+        if (strstr(szDirLC, "c:\\windows")) {
+            /* c:\windows is bad. */
+            return cvstring("");
+        }
         return cvstring(szDir);
     }
 }

@@ -85,7 +85,7 @@ LVAL snd_badsr(void)
  *  the nominal pitch (in half steps), the table length, and the sample
  *  rate, compute the sample number corresponding to the phase.  This
  *  routine makes it easy to initialize the table pointer at the beginning
- *  of various oscillator implementations in Fugue.  Note that the table
+ *  of various oscillator implementations in Nyquist.  Note that the table
  *  may represent several periods, in which case phase 360 is not the same
  *  as 0.  Also note that the phase increment is also computed and returned
  *  through incr_ptr.
@@ -332,7 +332,7 @@ void sound_prepend_zeros(sound_type snd, time_type t0)
     /* compute the true t0 which corresponds to the time of first sample */
     snd->true_t0 -= (n / snd->sr);
     /* make caller happy by claiming the sound now starts at exactly t0;
-     * this is always true within 0.5 samples as allowed by Fugue. */
+     * this is always true within 0.5 samples as allowed by Nyquist. */
     snd->t0 = t0;
 /*    nyquist_printf("sound_prepend_zeros: snd %p true_t0 %g sr %g n %d\n", 
            snd, snd->true_t0, snd->sr, n);*/
@@ -506,39 +506,33 @@ void snd_list_terminate(snd_list)
 void snd_list_unref(snd_list_type list)
 {
     void (*freefunc)();
-    snd_list_type next;
 
-    while (list != zero_snd_list) {
-        if (list == NULL) {
+    if (list == NULL || list == zero_snd_list) {
+        if (list == NULL)
            nyquist_printf("why did snd_list_unref get %p?\n", list);
-           return;
+        return;
+    }
+    list->refcnt--;
+/*    nyquist_printf("snd_list_unref "); print_snd_list_type(list); stdputstr("\n"); */
+    if (list->refcnt == 0) {
+        if (list->block && list->block != zero_block) {
+            /* there is a next snd_list */
+/*          stdputstr("["); */
+            sample_block_unref(list->block);
+/*          stdputstr("]"); */
+            snd_list_unref(list->u.next);
         }
-        next = zero_snd_list;
-
-        list->refcnt--;
-/*      nyquist_printf("snd_list_unref "); print_snd_list_type(list); stdputstr("\n"); */
-        if (list->refcnt == 0) {
-            if (list->block && list->block != zero_block) {
-                /* there is a next snd_list */
-/*              stdputstr("["); */
-                sample_block_unref(list->block);
-/*              stdputstr("]"); */
-                next = list->u.next;
-            }
-            else if (list->block == NULL) { /* the next thing is the susp */
-                /* free suspension structure */
-                /* nyquist_printf("freeing susp@%p\n", list->u.susp); */
-                freefunc = list->u.susp->free;
-                (*freefunc)(list->u.susp);
-            }
-            /* nyquist_printf("freeing snd_list@%p\n", list); */
-            //DBY
-            if (list == list_watch) printf("freeing watched snd_list %p\n", list);
-            //DBY
-            ffree_snd_list(list, "snd_list_unref");
+        else if (list->block == NULL) { /* the next thing is the susp */
+            /* free suspension structure */
+            /* nyquist_printf("freeing susp@%p\n", list->u.susp); */
+            freefunc = list->u.susp->free;
+            (*freefunc)(list->u.susp);
         }
-
-        list = next;
+        /* nyquist_printf("freeing snd_list@%p\n", list); */
+        //DBY
+        if (list == list_watch) printf("freeing watched snd_list %p\n", list);
+        //DBY
+        ffree_snd_list(list, "snd_list_unref");
     }
 }
 
