@@ -38,12 +38,7 @@ DIST_COMMON = $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/configure \
 	autotools/depcomp autotools/install-sh autotools/missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps =  \
-	$(top_srcdir)/autotools/m4/ax_cflags_strict_prototypes.m4 \
-	$(top_srcdir)/autotools/m4/ax_cflags_warn_all.m4 \
-	$(top_srcdir)/autotools/m4/ax_cxx_check_flag.m4 \
-	$(top_srcdir)/autotools/m4/ax_cxxcpp_check_flag.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -127,8 +122,9 @@ am_libnyquist_a_OBJECTS = extern.$(OBJEXT) xldmem.$(OBJEXT) \
 	Mandolin.$(OBJEXT) PluckTwo.$(OBJEXT) Sitar.$(OBJEXT) \
 	ModalBar.$(OBJEXT) Modal.$(OBJEXT) Flute.$(OBJEXT) \
 	JetTable.$(OBJEXT) PoleZero.$(OBJEXT) stkinit.$(OBJEXT) \
-	instr.$(OBJEXT) stkint.$(OBJEXT) fftn.$(OBJEXT) \
-	sndfnint.$(OBJEXT) seqfnint.$(OBJEXT) nyx.$(OBJEXT)
+	instr.$(OBJEXT) stkint.$(OBJEXT) fftext.$(OBJEXT) \
+	fftlib.$(OBJEXT) matlib.$(OBJEXT) sndfnint.$(OBJEXT) \
+	seqfnint.$(OBJEXT) nyx.$(OBJEXT)
 libnyquist_a_OBJECTS = $(am_libnyquist_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/autotools/depcomp
@@ -201,7 +197,6 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 RANLIB = @RANLIB@
-SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -262,7 +257,7 @@ INC = \
    -I$(NYQUIST)/xlisp \
    -I$(NYQUIST)/sys/unix \
    -I$(NYQUIST)/cmt \
-   -I$(NYQUIST)/fft \
+   -I$(NYQUIST)/ffts \
    -I$(NYQUIST)/nyqstk/include \
    -I$(NYQUIST)/nyqstk
 
@@ -470,7 +465,9 @@ libnyquist_a_SOURCES = \
    $(NYQUIST)/nyqstk/stkinit.cpp \
    $(NYQUIST)/nyqstk/instr.cpp \
    $(NYQUIST)/nyqstk/stkint.cpp \
-   $(NYQUIST)/fft/fftn.c \
+   $(NYQUIST)/ffts/src/fftext.c \
+   $(NYQUIST)/ffts/src/fftlib.c \
+   $(NYQUIST)/ffts/src/matlib.c \
    $(NYQUIST)/nyqsrc/sndfnint.c \
    $(NYQUIST)/nyqsrc/seqfnint.c \
    nyx.c
@@ -641,7 +638,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/falloc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ffilterkit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fft.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fftn.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fftext.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fftlib.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fmfb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fmfbv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fmosc.Po@am__quote@
@@ -673,6 +671,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lpanal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lpreson.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/matlib.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/maxv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mem.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/midifile.Po@am__quote@
@@ -2876,19 +2875,47 @@ lpanal.obj: $(NYQUIST)/nyqsrc/lpanal.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o lpanal.obj `if test -f '$(NYQUIST)/nyqsrc/lpanal.c'; then $(CYGPATH_W) '$(NYQUIST)/nyqsrc/lpanal.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/nyqsrc/lpanal.c'; fi`
 
-fftn.o: $(NYQUIST)/fft/fftn.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT fftn.o -MD -MP -MF $(DEPDIR)/fftn.Tpo -c -o fftn.o `test -f '$(NYQUIST)/fft/fftn.c' || echo '$(srcdir)/'`$(NYQUIST)/fft/fftn.c
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/fftn.Tpo $(DEPDIR)/fftn.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(NYQUIST)/fft/fftn.c' object='fftn.o' libtool=no @AMDEPBACKSLASH@
+fftext.o: $(NYQUIST)/ffts/src/fftext.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT fftext.o -MD -MP -MF $(DEPDIR)/fftext.Tpo -c -o fftext.o `test -f '$(NYQUIST)/ffts/src/fftext.c' || echo '$(srcdir)/'`$(NYQUIST)/ffts/src/fftext.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/fftext.Tpo $(DEPDIR)/fftext.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(NYQUIST)/ffts/src/fftext.c' object='fftext.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o fftn.o `test -f '$(NYQUIST)/fft/fftn.c' || echo '$(srcdir)/'`$(NYQUIST)/fft/fftn.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o fftext.o `test -f '$(NYQUIST)/ffts/src/fftext.c' || echo '$(srcdir)/'`$(NYQUIST)/ffts/src/fftext.c
 
-fftn.obj: $(NYQUIST)/fft/fftn.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT fftn.obj -MD -MP -MF $(DEPDIR)/fftn.Tpo -c -o fftn.obj `if test -f '$(NYQUIST)/fft/fftn.c'; then $(CYGPATH_W) '$(NYQUIST)/fft/fftn.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/fft/fftn.c'; fi`
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/fftn.Tpo $(DEPDIR)/fftn.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(NYQUIST)/fft/fftn.c' object='fftn.obj' libtool=no @AMDEPBACKSLASH@
+fftext.obj: $(NYQUIST)/ffts/src/fftext.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT fftext.obj -MD -MP -MF $(DEPDIR)/fftext.Tpo -c -o fftext.obj `if test -f '$(NYQUIST)/ffts/src/fftext.c'; then $(CYGPATH_W) '$(NYQUIST)/ffts/src/fftext.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/ffts/src/fftext.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/fftext.Tpo $(DEPDIR)/fftext.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(NYQUIST)/ffts/src/fftext.c' object='fftext.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o fftn.obj `if test -f '$(NYQUIST)/fft/fftn.c'; then $(CYGPATH_W) '$(NYQUIST)/fft/fftn.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/fft/fftn.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o fftext.obj `if test -f '$(NYQUIST)/ffts/src/fftext.c'; then $(CYGPATH_W) '$(NYQUIST)/ffts/src/fftext.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/ffts/src/fftext.c'; fi`
+
+fftlib.o: $(NYQUIST)/ffts/src/fftlib.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT fftlib.o -MD -MP -MF $(DEPDIR)/fftlib.Tpo -c -o fftlib.o `test -f '$(NYQUIST)/ffts/src/fftlib.c' || echo '$(srcdir)/'`$(NYQUIST)/ffts/src/fftlib.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/fftlib.Tpo $(DEPDIR)/fftlib.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(NYQUIST)/ffts/src/fftlib.c' object='fftlib.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o fftlib.o `test -f '$(NYQUIST)/ffts/src/fftlib.c' || echo '$(srcdir)/'`$(NYQUIST)/ffts/src/fftlib.c
+
+fftlib.obj: $(NYQUIST)/ffts/src/fftlib.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT fftlib.obj -MD -MP -MF $(DEPDIR)/fftlib.Tpo -c -o fftlib.obj `if test -f '$(NYQUIST)/ffts/src/fftlib.c'; then $(CYGPATH_W) '$(NYQUIST)/ffts/src/fftlib.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/ffts/src/fftlib.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/fftlib.Tpo $(DEPDIR)/fftlib.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(NYQUIST)/ffts/src/fftlib.c' object='fftlib.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o fftlib.obj `if test -f '$(NYQUIST)/ffts/src/fftlib.c'; then $(CYGPATH_W) '$(NYQUIST)/ffts/src/fftlib.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/ffts/src/fftlib.c'; fi`
+
+matlib.o: $(NYQUIST)/ffts/src/matlib.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT matlib.o -MD -MP -MF $(DEPDIR)/matlib.Tpo -c -o matlib.o `test -f '$(NYQUIST)/ffts/src/matlib.c' || echo '$(srcdir)/'`$(NYQUIST)/ffts/src/matlib.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/matlib.Tpo $(DEPDIR)/matlib.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(NYQUIST)/ffts/src/matlib.c' object='matlib.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o matlib.o `test -f '$(NYQUIST)/ffts/src/matlib.c' || echo '$(srcdir)/'`$(NYQUIST)/ffts/src/matlib.c
+
+matlib.obj: $(NYQUIST)/ffts/src/matlib.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT matlib.obj -MD -MP -MF $(DEPDIR)/matlib.Tpo -c -o matlib.obj `if test -f '$(NYQUIST)/ffts/src/matlib.c'; then $(CYGPATH_W) '$(NYQUIST)/ffts/src/matlib.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/ffts/src/matlib.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/matlib.Tpo $(DEPDIR)/matlib.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(NYQUIST)/ffts/src/matlib.c' object='matlib.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o matlib.obj `if test -f '$(NYQUIST)/ffts/src/matlib.c'; then $(CYGPATH_W) '$(NYQUIST)/ffts/src/matlib.c'; else $(CYGPATH_W) '$(srcdir)/$(NYQUIST)/ffts/src/matlib.c'; fi`
 
 sndfnint.o: $(NYQUIST)/nyqsrc/sndfnint.c
 @am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT sndfnint.o -MD -MP -MF $(DEPDIR)/sndfnint.Tpo -c -o sndfnint.o `test -f '$(NYQUIST)/nyqsrc/sndfnint.c' || echo '$(srcdir)/'`$(NYQUIST)/nyqsrc/sndfnint.c
