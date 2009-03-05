@@ -719,40 +719,83 @@ loop
 
 
 ; s-plot -- compute and write n data points for plotting
-; 
-(defun s-plot (snd &optional (n 1000) (dur 2.0))
-  (prog ((points (snd-samples snd (1+ n)))
-	 (t0 (snd-t0 snd))
-	 (filename (soundfilename *default-plot-file*))
-     outf
-     (period (/ 1.0 (snd-srate snd)))
-     len 
-     (maximum 1.0))
-    (setf outf (open filename :direction :output))
-    (cond ((null outf)
-       (format t "s-plot: could not open ~A!~%" filename)
-       (return nil)))
+;
+; dur is how many seconds of sound to plot. If necessary, cut the
+;     sample rate to allow plotting dur seconds
+; n is the number of points to plot. If there are more than n points,
+;     cut the sample rate. If there are fewer than n samples, just
+;     plot the points that exist.
+;
+(defun s-plot (snd &optional (dur 2.0) (n 1000))
+  (prog* ((sr (snd-srate snd))
+          (t0 (snd-t0 snd))
+          (filename (soundfilename *default-plot-file*))
+          (s snd) ;; s is either snd or resampled copy of snd
+          (outf (open filename :direction :output)) ;; for plot data
+          (maximum -1000000.0) ;; maximum amplitude
+          (minimum  1000000.0) ;; minimum amplitude
+          actual-dur ;; is the actual-duration of snd
+          sample-count ;; is how many samples to get from s
+          period  ;; is the period of samples to be plotted
+          truncation-flag     ;; true if we didn't get whole sound
+          points) ;; is array of samples
+     ;; If we need more than n samples to get dur seconds, resample
+     (cond ((< n (* dur sr))
+            (setf s (force-srate (/ (float n) dur) snd))))
+     ;; Get samples from the signal
+     (setf points (snd-samples s (1+ n)))
+     ;; If we got fewer than n points, we can at least estimate the
+     ;; actual duration (we might not know exactly if we use a lowered
+     ;; sample rate). If the actual sample rate was lowered to avoid
+     ;; getting more than n samples, we can now raise the sample rate
+     ;; based on our estimate of the actual sample duration.
+     (display "test" (length points) n)
+     (cond ((< (length points) n)
+            ;; sound is shorter than dur, estimate actual length
+            (setf actual-dur (/ (length points) (snd-srate s)))
+            (setf sample-count (round (min n (* actual-dur sr))))
+            (cond ((< n (* actual-dur sr))
+                   (setf s (force-srate (/ (float n) actual-dur) snd)))
+                  (t ;; we can use original signal
+                   (setf s snd)))
+            (setf points (snd-samples s sample-count))
+            ;; due to rounding, need to recalculate exact count
+            (setf sample-count (length points)))
+           ((= (length points) n)
+            (setf actual-dur dur)
+            (setf sample-count n))
+           (t ;; greater than n points, so we must have truncated sound
+            (setf actual-dur dur)
+            (setf sample-count n)
+            (setf truncation-flag t)))
+     ;; actual-dur is the duration of the plot
+     ;; sample-count is how many samples we have
+     (setf period (/ 1.0 (snd-srate s)))
+     (cond ((null outf)
+            (format t "s-plot: could not open ~A!~%" filename)
+            (return nil)))
     (format t "s-plot: writing ~A ... ~%" filename)
-    (setf len (length points))
-    (display "s-plot" snd (snd-srate snd) period n dur)
-    (cond ((and (> len n) (> (snd-srate snd) (/ n dur)))
-           (format t "WARNING: RESAMPLING TO ~A Hz~%" (/ n dur))
-	   (setf points (snd-samples (force-srate (/ n dur) snd) (1+ n)))
-           (setf period (/ (float dur) n))
-           (setf len (length points))))
-    (cond ((> len n)
-       (setf len n)
-       (format t "WARNING: SOUND TRUNCATED TO ~A POINTS~%" len)
-       (format t "  consider (S-PLOT snd num-points duration)~%")))
-    (dotimes (i len)
-      (cond ((< (abs maximum) (abs (aref points i)))
-         (setf maximum (aref points i))))
+    (cond (truncation-flag
+           (format t "        !!TRUNCATING SOUND TO ~As\n" actual-dur)))
+    (cond ((/= (snd-srate s) (snd-srate snd))
+           (format t "        !!RESAMPLING SOUND FROM ~A to ~Ahz\n"
+                   (snd-srate snd) (snd-srate s))))
+    (cond (truncation-flag
+           (format t "        Plotting ~As, actual sound duration is greater\n"
+                     actual-dur))
+          (t
+           (format t "        Sound duration is ~As~%" actual-dur)))
+    (dotimes (i sample-count)
+      (setf maximum (max maximum (aref points i)))
+      (setf minimum (min minimum (aref points i)))
       (format outf "~A ~A~%" (+ t0 (* i period)) (aref points i)))
     (close outf)
-    (cond ((> (abs maximum) 1.0)
-       (format t "WARNING: MAXIMUM AMPLITUDE IS ~A~%" maximum)))
-    (format t "~A points from ~A to ~A~%"
-     len t0 (+ t0 (* len period)))))
+    (format t "        Wrote ~A points from ~As to ~As~%" 
+              sample-count t0 (+ t0 actual-dur))
+    (format t "        Range of values ~A to ~A\n" minimum maximum)
+    (cond ((or (< minimum -1) (> maximum 1))
+           (format t "        !!SIGNAL EXCEEDS +/-1~%")))))
+
 
 ; run something like this to plot the points:
 ; graph < points.dat | plot -Ttek

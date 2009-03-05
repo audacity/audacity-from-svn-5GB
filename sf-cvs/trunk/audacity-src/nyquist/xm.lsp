@@ -1046,6 +1046,7 @@ pattern argument (by default).
         (dotimes (i order)
           (push (nth i rule) pattern))
         (push (cons (reverse pattern) entry) rules)))
+    (setf rules (reverse rules)) ;; keep rules in original order
     (setf *rslt* nil) ;; in case produces is nil
     (cond ((and produces (not (is-produces-homogeneous produces)))
            (setf produces (make-produces-homogeneous produces))))
@@ -1096,6 +1097,7 @@ pattern argument (by default).
 
 (send markov-class :answer :find-rule '()
   '((let (rslt)
+      ;(display "find-rule" rules)
       (dolist (rule rules)
         ;(display "find-rule" state rule)
         (cond ((markov-match state (car rule))
@@ -1111,8 +1113,29 @@ pattern argument (by default).
   '((if (null count)
         (setf count len))))
 
+(defun markov-general-rule-p (rule)
+  (let ((pre (car rule)))
+    (cond ((< (length pre) 2) nil) ;; 1st-order mm
+          (t
+           ;; return false if any member not *
+           ;; return t if all members are *
+           (dolist (s pre t)
+             (if (eq s '*) t (return nil)))))))
+
+(defun markov-find-state-leading-to (target rules)
+  (let (candidates)
+    (dolist (rule rules)
+      (let ((targets (cdr rule)))
+        (dolist (targ targets)
+          (cond ((eql (car targ) target)
+                 (push (car rule) candidates))))))
+    (cond (candidates ;; found at least one
+           (nth (random (length candidates)) candidates))
+          (t
+           nil))))
+
 (send markov-class :answer :advance '()
-  '((let (rule sum target rslt)
+  '((let (rule sum target rslt new-state)
       ;(display "markov" pattern rules)
       (setf rule (send self :find-rule))
       ;(display "advance 1" rule)
@@ -1121,6 +1144,21 @@ pattern argument (by default).
       (setf sum (markov-sum-of-weights rule))
       ;; the target can be a pattern, so apply NEXT to it
       (setf target (next (markov-pick-target sum rule)))
+      ;; if the matching rule is multiple *'s, then this
+      ;; is a higher-order Markov model, and we may now
+      ;; wander around in parts of the state space that
+      ;; never appeared in the training data. To avoid this
+      ;; we violate the strict interpretation of the rules
+      ;; and pick a random state sequence from the rule set
+      ;; that might have let to the current state. We jam
+      ;; this state sequence into state so that when we
+      ;; append target, we'll have a history that might
+      ;; have a corresponding rule next time.
+      (cond ((markov-general-rule-p rule)
+             (setf new-state (markov-find-state-leading-to target rules))
+             (cond (new-state
+                    ;(display "state replacement" new-state target)
+                    (setf state new-state)))))
       (setf state (append (cdr state) (list target)))
       ;(display "markov next" rule sum target state)
       ;; target is the symbol for the current state. We can
@@ -1360,7 +1398,7 @@ pattern argument (by default).
        ;; stack if the list is sorted because (apparently) the pivot points
        ;; are not random.
        (cond ((not (score-sorted sg:seq))
-              (setf sg:seq (sort sg:seq #'event-before))))
+              (setf sg:seq (bigsort sg:seq #'event-before))))
        (cond ((and sg:seq (null sg:end))
               (setf sg:end (event-end (car (last sg:seq)))))
              ((null sg:end)
@@ -1519,7 +1557,72 @@ pattern argument (by default).
 (defun event-before (a b)
   (< (car a) (car b)))
   
-  
+;; bigsort -- a sort routine that avoids recursion in order
+;; to sort large lists without overflowing the evaluation stack
+;;
+;; Does not modify input list. Does not minimize cons-ing.
+;;
+;; Algorithm: first accumulate sorted sub-sequences into lists
+;; Then merge pairs iteratively until only one big list remains
+;; 
+(defun bigsort (lis cmp) ; sort lis using cmp function
+  ;; if (funcall cmp a b) then a and b are in order
+  (prog (rslt sub pairs)
+    ;; first, convert to sorted sublists stored on rslt
+    ;; accumulate sublists in sub
+   get-next-sub
+    (if (null lis) (go done-1))
+    (setf sub (list (car lis)))
+    (setf lis (cdr lis))
+   fill-sub
+    ;; invariant: sub is non-empty, in reverse order
+    (cond ((and lis (funcall cmp (car sub) (car lis)))
+           (setf sub (cons (car lis) sub))
+           (setf lis (cdr lis))
+           (go fill-sub)))
+    (setf sub (reverse sub)) ;; put sub in correct order
+    (setf rslt (cons sub rslt)) ;; build rslt in reverse order
+    (go get-next-sub)
+   done-1
+    ;; invariant: rslt is list of sorted sublists
+    (if (cdr rslt) nil (go done-2))
+    ;; invariant: rslt has at least one list
+    (setf pairs rslt)
+    (setf rslt nil)
+   merge-pairs    ;; merge a pair and save on rslt
+    (if (car pairs) nil (go end-of-pass)) ;; loop until all pairs merged
+    ;; invariant: pairs has at least one list
+    (setf list1 (car pairs)) ;; list1 is non-empty
+    (setf list2 (cadr pairs)) ;; list2 could be empty
+    (setf pairs (cddr pairs))
+    (cond (list2
+           (setf rslt (cons (list-merge list1 list2 cmp) rslt)))
+          (t
+           (setf rslt (cons list1 rslt))))
+    (go merge-pairs)
+   end-of-pass
+    (go done-1)
+   done-2
+    ;; invariant: rslt has one sorted list!
+    (return (car rslt))))
+
+(defun list-merge (list1 list2 cmp)
+  (prog (rslt)
+   merge-loop
+    (cond ((and list1 list2)
+           (cond ((funcall cmp (car list1) (car list2))
+                  (setf rslt (cons (car list1) rslt))
+                  (setf list1 (cdr list1)))
+                 (t
+                  (setf rslt (cons (car list2) rslt))
+                  (setf list2 (cdr list2)))))
+          (list1
+           (return (nconc (reverse rslt) list1)))
+          (t
+           (return (nconc (reverse rslt) list2))))
+    (go merge-loop)))  
+
+
 ;; SCORE-SORT -- sort a score into time order
 ;;
 (defun score-sort (score &optional (copy-flag t)) 
@@ -1527,7 +1630,7 @@ pattern argument (by default).
   (let ((begin-end (car score)))
     (setf score (cdr score))
     (if copy-flag (setf score (append score nil)))
-    (cons begin-end (sort score #'event-before))))
+    (cons begin-end (bigsort score #'event-before))))
   
 
 ;; PUSH-SORT -- insert an event in (reverse) sorted order

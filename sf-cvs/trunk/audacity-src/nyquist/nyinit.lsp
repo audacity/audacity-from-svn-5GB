@@ -31,8 +31,8 @@
 
 (format t "~%Nyquist -- A Language for Sound Synthesis and Composition~%")
 (format t "    Copyright (c) 1991,1992,1995,2007-2009 by Roger B. Dannenberg~%")
-(format t "    Version 3.02~%~%")
+(format t "    Version 3.03~%~%")
 
 ;(setf *gc-flag* t)
 
-'*scratch*;; create a symbol where Audacity plug-ins can save properties from one run to the next 
+

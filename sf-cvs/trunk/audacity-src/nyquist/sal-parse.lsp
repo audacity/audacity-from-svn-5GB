@@ -393,7 +393,7 @@
   (setf delimiter-stack nil)
   (setf delimiter-mismatch nil))
 (defun delimiter-match (tok what)
-  (cond ((eql (first delimiter-stack) what)
+  (cond ((eql (token-string (first delimiter-stack)) what)
          (pop delimiter-stack))
         ((null delimiter-mismatch)
          ;(display "delimiter-mismatch" tok)
@@ -401,7 +401,7 @@
 (defun delimiter-check (tok)
   (let ((c (token-string tok)))
     (cond ((member c '(#\( #\{ #\[))
-           (push c delimiter-stack))
+           (push tok delimiter-stack))
           ((eql c +rbrace+)
            (delimiter-match tok +lbrace+))
           ((eql c +rparen+)
@@ -1423,18 +1423,20 @@
     
 ;; PARSE-ASSIGN -- based on parse-bind, but with different operators
 ;;
+;; allows arbitrary term on left because it could be an array
+;; reference. After parsing, we can check that the target of the
+;; assignment is either an identifier or an (aref ...)
+;;
 (defun parse-assign ()
-  (let (id op val)
-    (if (token-is :id)
-        (setf id (token-lisp (parse-token)))
-        (errexit "expected a variable name"))
-    ;; if it's id[expr], replace id with (aref id expr)
-    (setf id (maybe-aref id))
+  (let ((lhs (parse-term) op val))
     (cond ((token-is '(:= :-= :+= :*= :/= :&= :@= :^= :<= :>=))
            (setf op (parse-token))
            (setf op (if (eq (token-type op) ':=) '= (token-lisp op)))
            (setf val (parse-sexpr))))
-    (list id op val)))
+    (cond ((and (consp lhs) (eq (car lhs) 'aref))) ;; aref good
+          ((symbolp lhs)) ;; id good
+          (t (errexit "expected a variable name or array reference")))
+    (list lhs op val)))
 
 
 (defun maybe-parse-loop ()
@@ -1602,6 +1604,8 @@
     (list binding term-test)))
 
     
+;; parse-sexpr works by building a list: (term op term op term ...)
+;; later, the list is parsed again using operator precedence rules
 (defun parse-sexpr (&optional loc)
   (let (term rslt)
     (push (parse-term) rslt)
@@ -1622,7 +1626,17 @@
   (third (assoc op +operators+)))
 
 
-(defun parse-term ()
+;; a term is <unary-op> <term>, or
+;;           ( <sexpr> ), or
+;;           ? ( <sexpr> , <sexpr> , <sexpr> ), or
+;;           <id>, or
+;;           <id> ( <args> ), or
+;;           <term> [ <sexpr> ]
+;; Since any term can be followed by indexing, handle everything
+;; but the indexing here in parse-term-1, then write parse-term
+;; to do term-1 followed by indexing operations
+;;
+(defun parse-term-1 ()
   (let (sexpr id)
     (cond ((token-is '(:- :!))
            (list (token-lisp (parse-token)) (parse-term)))
@@ -1642,9 +1656,9 @@
            (token-lisp (parse-token)))
           ((token-is :id) ;; aref or funcall
            (setf id (token-lisp (parse-token)))
-           (cond ((token-is :lb)
-                  (setf id (maybe-aref id)))
-                 ((token-is :lp)
+           ;; array indexing was here, but that only allows [x] after
+           ;; identifiers. Move this to expression parsing.
+           (cond ((token-is :lp)
                   (parse-token)
                   (setf sexpr (cons id (parse-pargs t)))
                   (if (token-is :rp)
@@ -1656,15 +1670,16 @@
            (errexit "expression not found")))))
 
 
-(defun maybe-aref (id)
-  (cond ((token-is :lb)
-         (parse-token)
-         (setf id
-               (list 'aref id (parse-sexpr)))
-         (if (token-is :rb)
-             (parse-token)
-             (errexit "right bracket not found"))))
-  id)
+(defun parse-term ()
+  (let ((term (parse-term-1)))
+    ; (display "parse-term" term (token-is :lb))
+    (while (token-is :lb)
+      (parse-token)
+      (setf term (list 'aref term (parse-sexpr)))
+      (if (token-is :rb)
+          (parse-token)
+          (errexit "right bracket not found")))
+    term))
 
 
 (defun parse-ifexpr ()

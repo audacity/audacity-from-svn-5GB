@@ -5,8 +5,8 @@
 ;;; See http://www.cliki.net/LLGPL for the text of this agreement.
 ;;; **********************************************************************
 
-;;; $Revision: 1.1 $
-;;; $Date: 2009-01-30 00:54:45 $
+;;; $Revision: 1.2 $
+;;; $Date: 2009-03-05 17:42:25 $
 
 ;; DATA STRUCTURES AND ALGORITHMS (for sal.lsp and parse.lsp)
 ;;
@@ -496,7 +496,7 @@
 ;; returns:
 ;;   if eval-flag, then nothing is returned
 ;;   otherwise, returns nil if an error is encountered
-;;   otherwise, returns a list (PROG p1 p2 p3 ...) where pn are lisp
+;;   otherwise, returns a list (PROGN p1 p2 p3 ...) where pn are lisp
 ;;      expressions
 ;;
 (defun sal-compile (input eval-flag multiple-statements filename)
@@ -534,7 +534,7 @@
                               (setf input remainder))
                              ;; see if we've compiled everything
                              ((and (not eval-flag) (not remainder))
-                              (return (cons 'prog (reverse rslt))))
+                              (return (cons 'progn (reverse rslt))))
                              ;; if eval but no more input, return
                              ((not remainder)
                               (return))))

@@ -20,7 +20,7 @@
                    (setdir "e:\\tmp\\")
                    (setdir "e:\\temp\\")
 	           (get-temp-path)))
-         (format t "Set *default-sf-dir* to ~A in fileio.lsp~%" 
+         (format t "Set *default-sf-dir* to \"~A\" in fileio.lsp~%" 
 		 *default-sf-dir*)
 	 (setdir current))))
 
@@ -143,6 +143,8 @@
 ;;   the *autonorm-target*
 ;;
 (defun autonorm-update (peak)
+  (cond ((> peak 1.0)
+         (format t "*** CLIPPING DETECTED! ***~%")))
   (cond ((and *autonormflag* (> peak 0.0))
            (setf *autonorm-previous-peak* (/ peak *autonorm*))
          (setf *autonorm* (/ *autonorm-target* *autonorm-previous-peak*))
@@ -151,10 +153,12 @@
          (format t (if (eq *autonorm-type* 'PREVIOUS)
                        "     new normalization factor is ~A~%"
                        "     suggested normalization factor is ~A~%")
-                 *autonorm*)
-         *autonorm-previous-peak*
-        )
-        (t peak)
+                 *autonorm*))
+        (t
+         (format t "Peak was ~A,~%" peak)
+         (format t "     suggested normalization factor is ~A~%"
+                   (/ *autonorm-target* peak)))
+   peak
   ))
 
 ;; s-read -- reads a file
