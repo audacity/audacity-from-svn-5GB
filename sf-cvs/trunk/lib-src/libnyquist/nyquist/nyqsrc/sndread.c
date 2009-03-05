@@ -273,7 +273,11 @@ LVAL snd_make_read(
         nyquist_printf("Warning: more than 24 sound files are now open\n");
     }
 #endif
-    
+    /* report info back to caller */
+    if ((susp->sf_info.format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW) {
+        *flags = SND_HEAD_CHANNELS | SND_HEAD_MODE | SND_HEAD_BITS |
+                 SND_HEAD_SRATE | SND_HEAD_LEN | SND_HEAD_TYPE;
+    }    
     if (susp->sf_info.channels == 1) {
         susp->susp.fetch = read__fetch;
         susp->susp.free = read_free;

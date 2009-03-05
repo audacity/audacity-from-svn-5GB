@@ -159,6 +159,7 @@ LVAL xexit(void)
     return NIL; /* never happens */
 }
 
+#ifdef PEEK_AND_POKE
 /* xpeek - peek at a location in memory */
 LVAL xpeek(void)
 {
@@ -203,6 +204,7 @@ LVAL xaddrs(void)
     /* return the address of the node */
     return (cvfixnum((FIXTYPE)val));
 }
+#endif PEEK_AND_POKE
 
 /* xprofile - turn profiling on and off */
 LVAL xprofile()

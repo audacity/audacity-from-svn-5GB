@@ -29,6 +29,7 @@
 */
 /***************************************************/
 
+#include "string.h"
 #include "FileRead.h"
 #include <sys/stat.h>
 #include <sys/types.h>

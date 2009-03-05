@@ -358,10 +358,15 @@ FUNDEF funtab[] = {
 
 {	"TYPE-OF",			S, xtype		}, /* 194 */
 {	"EXIT",				S, xexit		}, /* 195 */
+#ifdef PEEK_AND_POKE
 {	"PEEK",				S, xpeek		}, /* 196 */
 {	"POKE",				S, xpoke		}, /* 197 */
 {	"ADDRESS-OF",			S, xaddrs		}, /* 198 */
-
+#else
+{	NULL,				S, xnotimp		}, /* 196 */
+{	NULL,				S, xnotimp		}, /* 197 */
+{	NULL,				S, xnotimp		}, /* 198 */
+#endif
     /* new functions and special forms */
 {	"VECTOR",			S, xvector  		}, /* 199 */
 {	"BLOCK",			F, xblock		}, /* 200 */

@@ -770,7 +770,7 @@
 
   (dolist 
        (slot 
-     '(name inner-loop sample-rate support-functions inline-interpolation delay
+     '(name lispname inner-loop sample-rate support-functions inline-interpolation delay
        )) 
        (put-slot alg (car (get-slot alg slot)) slot))
 
@@ -850,7 +850,9 @@
 (defun write-header (alg stream)
 ;;  (format stream "sound_type snd_make_~A();~%" (get-slot alg 'name))
     (let ((arguments (get-slot alg 'arguments))
-      (name (get-slot alg 'name)))
+      (name (get-slot alg 'name))
+      (lisp-name (get-slot alg 'lispname)))
+       (cond ((null lisp-name) (setf lisp-name name)))
        (format stream "sound_type snd_make_~A" name)
        (write-ansi-prototype-list stream "" arguments)
        (format stream ";~%")
@@ -861,7 +863,7 @@
        (format stream ";~%")
 
        ; write the type specification for intgen
-       (format stream "    /* LISP: (snd-~A" name)
+       (format stream "    /* LISP: (snd-~A" lisp-name)
        (dolist (arg arguments)
      (let ((xltype (assoc (car arg) c-to-xlisp-type :test #'equal)))
        (cond ((null xltype)

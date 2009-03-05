@@ -4,6 +4,7 @@
 
 (SNDBIQUAD-ALG
 (NAME "biquadfilt")
+(LISPNAME "biquad")
 (ARGUMENTS ("sound_type" "s") 
         ("double" "b0") ("double" "b1") ("double" "b2") 
                          ("double" "a1") ("double" "a2")
