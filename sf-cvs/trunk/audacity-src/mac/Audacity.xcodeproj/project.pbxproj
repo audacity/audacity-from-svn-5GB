@@ -681,7 +681,6 @@
 		284A82C30F3158A2001D7A67 /* tempomap.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A80620F3158A1001D7A67 /* tempomap.c */; };
 		284A82C50F3158A2001D7A67 /* timebase.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A80640F3158A1001D7A67 /* timebase.c */; };
 		284A82C70F3158A2001D7A67 /* userio.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A80660F3158A1001D7A67 /* userio.c */; };
-		284A82C90F3158A2001D7A67 /* fftn.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A80690F3158A1001D7A67 /* fftn.c */; };
 		284A82CB0F3158A2001D7A67 /* add.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A806C0F3158A1001D7A67 /* add.c */; };
 		284A82CD0F3158A2001D7A67 /* avg.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A806E0F3158A1001D7A67 /* avg.c */; };
 		284A82CF0F3158A2001D7A67 /* compose.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A80700F3158A1001D7A67 /* compose.c */; };
@@ -1141,6 +1140,12 @@
 		2897F6F90AB3DB5A003C20C5 /* TranscriptionToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6EE0AB3DB5A003C20C5 /* TranscriptionToolBar.cpp */; };
 		2897F6FE0AB3DCD0003C20C5 /* Grabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6FC0AB3DCD0003C20C5 /* Grabber.cpp */; };
 		289F9C7E0AC671BB00797DC1 /* DeviceToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */; };
+		28A4E2AC0F60319300E9E7F2 /* fftext.c in Sources */ = {isa = PBXBuildFile; fileRef = 28A4E2A40F60319300E9E7F2 /* fftext.c */; };
+		28A4E2AD0F60319300E9E7F2 /* fftext.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4E2A50F60319300E9E7F2 /* fftext.h */; };
+		28A4E2AE0F60319300E9E7F2 /* fftlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 28A4E2A60F60319300E9E7F2 /* fftlib.c */; };
+		28A4E2AF0F60319300E9E7F2 /* fftlib.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4E2A70F60319300E9E7F2 /* fftlib.h */; };
+		28A4E2B00F60319300E9E7F2 /* matlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 28A4E2AA0F60319300E9E7F2 /* matlib.c */; };
+		28A4E2B10F60319300E9E7F2 /* matlib.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4E2AB0F60319300E9E7F2 /* matlib.h */; };
 		28A520550C12BE0300BF6811 /* pa_debugprint.c in Sources */ = {isa = PBXBuildFile; fileRef = 28A520510C12BE0300BF6811 /* pa_debugprint.c */; };
 		28A520560C12BE0300BF6811 /* pa_debugprint.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A520520C12BE0300BF6811 /* pa_debugprint.h */; };
 		28A520570C12BE0300BF6811 /* pa_ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28A520530C12BE0300BF6811 /* pa_ringbuffer.c */; };
@@ -1393,7 +1398,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 1790ABE309883346008A330A /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 283753E30F42875100364787 /* taglib */;
+			remoteGlobalIDString = 283753E30F42875100364787;
 			remoteInfo = taglib;
 		};
 		2840CF7F0AEB822100F49FC3 /* PBXContainerItemProxy */ = {
@@ -2315,7 +2320,6 @@
 		284A80620F3158A1001D7A67 /* tempomap.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = tempomap.c; sourceTree = "<group>"; };
 		284A80640F3158A1001D7A67 /* timebase.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = timebase.c; sourceTree = "<group>"; };
 		284A80660F3158A1001D7A67 /* userio.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = userio.c; sourceTree = "<group>"; };
-		284A80690F3158A1001D7A67 /* fftn.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = fftn.c; sourceTree = "<group>"; };
 		284A806C0F3158A1001D7A67 /* add.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = add.c; sourceTree = "<group>"; };
 		284A806E0F3158A1001D7A67 /* avg.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = avg.c; sourceTree = "<group>"; };
 		284A80700F3158A1001D7A67 /* compose.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = compose.c; sourceTree = "<group>"; };
@@ -2800,6 +2804,12 @@
 		2897F6FD0AB3DCD0003C20C5 /* Grabber.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Grabber.h; sourceTree = "<group>"; };
 		289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceToolBar.cpp; sourceTree = "<group>"; };
 		289F9C7D0AC671BB00797DC1 /* DeviceToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = DeviceToolBar.h; sourceTree = "<group>"; };
+		28A4E2A40F60319300E9E7F2 /* fftext.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = fftext.c; path = ffts/src/fftext.c; sourceTree = "<group>"; };
+		28A4E2A50F60319300E9E7F2 /* fftext.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = fftext.h; path = ffts/src/fftext.h; sourceTree = "<group>"; };
+		28A4E2A60F60319300E9E7F2 /* fftlib.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = fftlib.c; path = ffts/src/fftlib.c; sourceTree = "<group>"; };
+		28A4E2A70F60319300E9E7F2 /* fftlib.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = fftlib.h; path = ffts/src/fftlib.h; sourceTree = "<group>"; };
+		28A4E2AA0F60319300E9E7F2 /* matlib.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = matlib.c; path = ffts/src/matlib.c; sourceTree = "<group>"; };
+		28A4E2AB0F60319300E9E7F2 /* matlib.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = matlib.h; path = ffts/src/matlib.h; sourceTree = "<group>"; };
 		28A520510C12BE0300BF6811 /* pa_debugprint.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_debugprint.c; sourceTree = "<group>"; };
 		28A520520C12BE0300BF6811 /* pa_debugprint.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_debugprint.h; sourceTree = "<group>"; };
 		28A520530C12BE0300BF6811 /* pa_ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_ringbuffer.c; sourceTree = "<group>"; };
@@ -4653,7 +4663,7 @@
 			isa = PBXGroup;
 			children = (
 				284A80370F3158A1001D7A67 /* cmt */,
-				284A80680F3158A1001D7A67 /* fft */,
+				28A4E29B0F6030F200E9E7F2 /* ffts */,
 				284A806B0F3158A1001D7A67 /* nyqsrc */,
 				284A80C80F3158A1001D7A67 /* nyqstk */,
 				284A817C0F3158A2001D7A67 /* tran */,
@@ -4684,14 +4694,6 @@
 				284A80660F3158A1001D7A67 /* userio.c */,
 			);
 			path = cmt;
-			sourceTree = "<group>";
-		};
-		284A80680F3158A1001D7A67 /* fft */ = {
-			isa = PBXGroup;
-			children = (
-				284A80690F3158A1001D7A67 /* fftn.c */,
-			);
-			path = fft;
 			sourceTree = "<group>";
 		};
 		284A806B0F3158A1001D7A67 /* nyqsrc */ = {
@@ -5275,6 +5277,19 @@
 			path = toolbars;
 			sourceTree = "<group>";
 		};
+		28A4E29B0F6030F200E9E7F2 /* ffts */ = {
+			isa = PBXGroup;
+			children = (
+				28A4E2A40F60319300E9E7F2 /* fftext.c */,
+				28A4E2A50F60319300E9E7F2 /* fftext.h */,
+				28A4E2A60F60319300E9E7F2 /* fftlib.c */,
+				28A4E2A70F60319300E9E7F2 /* fftlib.h */,
+				28A4E2AA0F60319300E9E7F2 /* matlib.c */,
+				28A4E2AB0F60319300E9E7F2 /* matlib.h */,
+			);
+			name = ffts;
+			sourceTree = "<group>";
+		};
 		28AA28110F267957008AED9E /* plug-ins */ = {
 			isa = PBXGroup;
 			children = (
@@ -5753,6 +5768,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				284A7B930F31571C001D7A67 /* nyx.h in Headers */,
+				28A4E2AD0F60319300E9E7F2 /* fftext.h in Headers */,
+				28A4E2AF0F60319300E9E7F2 /* fftlib.h in Headers */,
+				28A4E2B10F60319300E9E7F2 /* matlib.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6918,7 +6936,6 @@
 				284A82C30F3158A2001D7A67 /* tempomap.c in Sources */,
 				284A82C50F3158A2001D7A67 /* timebase.c in Sources */,
 				284A82C70F3158A2001D7A67 /* userio.c in Sources */,
-				284A82C90F3158A2001D7A67 /* fftn.c in Sources */,
 				284A82CB0F3158A2001D7A67 /* add.c in Sources */,
 				284A82CD0F3158A2001D7A67 /* avg.c in Sources */,
 				284A82CF0F3158A2001D7A67 /* compose.c in Sources */,
@@ -7097,6 +7114,9 @@
 				284A84690F3158A2001D7A67 /* xlsubr.c in Sources */,
 				284A846A0F3158A2001D7A67 /* xlsym.c in Sources */,
 				284A846B0F3158A2001D7A67 /* xlsys.c in Sources */,
+				28A4E2AC0F60319300E9E7F2 /* fftext.c in Sources */,
+				28A4E2AE0F60319300E9E7F2 /* fftlib.c in Sources */,
+				28A4E2B00F60319300E9E7F2 /* matlib.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

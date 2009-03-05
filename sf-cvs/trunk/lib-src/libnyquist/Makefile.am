@@ -16,7 +16,7 @@ INC = \
    -I$(NYQUIST)/xlisp \
    -I$(NYQUIST)/sys/unix \
    -I$(NYQUIST)/cmt \
-   -I$(NYQUIST)/fft \
+   -I$(NYQUIST)/ffts \
    -I$(NYQUIST)/nyqstk/include \
    -I$(NYQUIST)/nyqstk
 
@@ -223,7 +223,9 @@ libnyquist_a_SOURCES = \
    $(NYQUIST)/nyqstk/stkinit.cpp \
    $(NYQUIST)/nyqstk/instr.cpp \
    $(NYQUIST)/nyqstk/stkint.cpp \
-   $(NYQUIST)/fft/fftn.c \
+   $(NYQUIST)/ffts/src/fftext.c \
+   $(NYQUIST)/ffts/src/fftlib.c \
+   $(NYQUIST)/ffts/src/matlib.c \
    $(NYQUIST)/nyqsrc/sndfnint.c \
    $(NYQUIST)/nyqsrc/seqfnint.c \
    nyx.c
