@@ -17,6 +17,8 @@
 
 #ifndef WIN32
 #include <unistd.h>
+#else
+#include <direct.h>
 #endif
 
 /* nyx includes */
@@ -253,7 +255,8 @@ LOCAL LVAL nyx_dup_value(LVAL val)
          break;
 
          case CONS:
-            nval = cons(nyx_dup_value(car(val)), nyx_dup_value(cdr(val)));
+            nval = nyx_dup_value(cdr(val));
+            nval = cons(nyx_dup_value(car(val)), nval);
          break;
 
          case SUBR:
@@ -356,6 +359,7 @@ LOCAL void nyx_restore_obarray()
       LVAL last = NULL;
       LVAL dcon;
 
+      // Scan all elements
       for (dcon = getelement(obvec, i); dcon; dcon = cdr(dcon)) {
          LVAL dsym = car(dcon);
          char *name = (char *)getstring(getpname(dsym));
@@ -386,7 +390,7 @@ LOCAL void nyx_restore_obarray()
          }
 
          // If we didn't find the symbol in the original obarray, then it must've
-         // been added since and must be removed from the current obarray.
+         // been added and must be removed from the current obarray.
          if (scon == NULL) {
             if (last) {
                rplacd(last, cdr(dcon));
@@ -522,11 +526,12 @@ LOCAL void nyx_susp_fetch(register nyx_susp_type susp, snd_list_type snd_list)
    snd_list->block = out;
 
    n = max_sample_block_len;
-   if (susp->susp.current + n > susp->len)
+   if (susp->susp.current + n > susp->len) {
       n = susp->len - susp->susp.current;
+   }
 
    err = susp->callback(out_ptr, susp->channel,
-                            susp->susp.current, n, 0, susp->userdata);
+                        susp->susp.current, n, 0, susp->userdata);
    if (err) {
       // The user canceled or some other error occurred, so we use
       // xlsignal() to jump back to our error handler.
@@ -567,23 +572,30 @@ void nyx_capture_output(nyx_output_callback callback, void *userdata)
 
 void nyx_set_audio_params(double rate, long len)
 {
-   double stretch_len = (len > 0 ? len / rate : 1.0);
-   LVAL warp;
+   LVAL flo;
+   LVAL con;
+
+   xlstkcheck(2);
+   xlsave(flo);
+   xlsave(con);
 
    /* Bind the sample rate to the "*sound-srate*" global */
-   setvalue(xlenter("*SOUND-SRATE*"), cvflonum(rate));
+   flo = cvflonum(rate);
+   setvalue(xlenter("*SOUND-SRATE*"), flo);
 
    /* Bind selection len to "len" global */
-   setvalue(xlenter("LEN"), cvflonum(len));
+   flo = cvflonum(len);
+   setvalue(xlenter("LEN"), flo);
 
    /* Set the "*warp*" global based on the length of the audio */
-   xlprot1(warp);
-   warp = cons(cvflonum(0),                    /* time offset */
-               cons(cvflonum(stretch_len),     /* time stretch */
-                    cons(NULL,                 /* cont. time warp */
-                         NULL)));
-   setvalue(xlenter("*WARP*"), warp);
-   xlpop();
+   con = cons(NULL, NULL);
+   flo = cvflonum(len > 0 ? (double) len / rate : 1.0);
+   con = cons(flo, con);
+   flo = cvflonum(0);
+   con = cons(flo, con);
+   setvalue(xlenter("*WARP*"), con);
+
+   xlpopn(2);
 }
 
 void nyx_set_input_audio(nyx_audio_callback callback,
@@ -591,54 +603,52 @@ void nyx_set_input_audio(nyx_audio_callback callback,
                          int num_channels,
                          long len, double rate)
 {
-   sample_type      scale_factor = 1.0;
-   time_type        t0 = 0.0;
-   nyx_susp_type   *susp;
-   sound_type      *snd;
-   int              ch;
+   LVAL val;
+   int ch;
 
    nyx_set_audio_params(rate, len);
 
-   susp = (nyx_susp_type *)malloc(num_channels * sizeof(nyx_susp_type));
-   snd = (sound_type *)malloc(num_channels * sizeof(sound_type));
-
-   for(ch=0; ch < num_channels; ch++) {
-      falloc_generic(susp[ch], nyx_susp_node, "nyx_set_input_audio");
-
-      susp[ch]->callback = callback;
-      susp[ch]->userdata = userdata;
-      susp[ch]->len = len;
-      susp[ch]->channel = ch;
-
-      susp[ch]->susp.fetch = nyx_susp_fetch;
-      susp[ch]->susp.keep_fetch = NULL;
-      susp[ch]->susp.free = nyx_susp_free;
-      susp[ch]->susp.mark = NULL;
-      susp[ch]->susp.print_tree = nyx_susp_print_tree;
-      susp[ch]->susp.name = "nyx";
-      susp[ch]->susp.toss_cnt = 0;
-      susp[ch]->susp.current = 0;
-      susp[ch]->susp.sr = rate;
-      susp[ch]->susp.t0 = t0;
-      susp[ch]->susp.log_stop_cnt = 0;
-      
-      snd[ch] = sound_create((snd_susp_type)susp[ch], t0, 
-                             rate, 
-                             scale_factor);
-   }
-
    if (num_channels > 1) {
-      LVAL array = newvector(num_channels);
-      for(ch=0; ch<num_channels; ch++)
-         setelement(array, ch, cvsound(snd[ch]));
-
-      setvalue(xlenter("S"), array);
+      val = newvector(num_channels);
    }
-   else {
-      LVAL s = cvsound(snd[0]);
 
-      setvalue(xlenter("S"), s);
+   xlprot1(val);
+
+   for (ch = 0; ch < num_channels; ch++) {
+      nyx_susp_type susp;
+      sound_type snd;
+
+      falloc_generic(susp, nyx_susp_node, "nyx_set_input_audio");
+
+      susp->callback = callback;
+      susp->userdata = userdata;
+      susp->len = len;
+      susp->channel = ch;
+
+      susp->susp.fetch = nyx_susp_fetch;
+      susp->susp.keep_fetch = NULL;
+      susp->susp.free = nyx_susp_free;
+      susp->susp.mark = NULL;
+      susp->susp.print_tree = nyx_susp_print_tree;
+      susp->susp.name = "nyx";
+      susp->susp.toss_cnt = 0;
+      susp->susp.current = 0;
+      susp->susp.sr = rate;
+      susp->susp.t0 = 0.0;
+      susp->susp.log_stop_cnt = 0;
+      
+      snd = sound_create((snd_susp_type) susp, 0.0, rate, 1.0);
+      if (num_channels > 1) {
+         setelement(val, ch, cvsound(snd));
+      }
+      else {
+         val = cvsound(snd);
+      }
    }
+
+   setvalue(xlenter("S"), val);
+
+   xlpop();
 }
 
 LOCAL int nyx_is_labels(LVAL expr)
@@ -656,33 +666,41 @@ LOCAL int nyx_is_labels(LVAL expr)
    }
 
    while (expr != NULL) {
-      if (!consp(expr))
+      if (!consp(expr)) {
          return 0;
+      }
 
       label = car(expr);
 
-      if (!consp(label))
+      if (!consp(label)) {
          return 0;
+      }
 
       first = car(label);
-      if (!(floatp(first) || fixp(first)))
+      if (!(floatp(first) || fixp(first))) {
          return 0;
+      }
 
-      if (!consp(cdr(label)))
+      if (!consp(cdr(label))) {
          return 0;
+      }
 
       second = car(cdr(label));
 
       if (floatp(second) || fixp(second)) {
-         if (!consp(cdr(cdr(label))))
+         if (!consp(cdr(cdr(label)))) {
             return 0;
+         }
          third = car(cdr(cdr(label)));
-         if (!(stringp(third)))
+         if (!(stringp(third))) {
             return 0;
+         }
       }
-      else
-         if (!(stringp(second)))
+      else {
+         if (!(stringp(second))) {
             return 0;
+         }
+      }
 
       expr = cdr(expr);
    }
@@ -698,11 +716,11 @@ nyx_rval nyx_get_type(LVAL expr)
 
    nyx_result_type = nyx_error;
 
-   if (expr==NULL) {
+   if (expr == NULL) {
       return nyx_result_type;
    }
 
-   switch(ntype(expr))
+   switch (ntype(expr))
    {
       case FIXNUM:
          nyx_result_type = nyx_int;
@@ -721,7 +739,7 @@ nyx_rval nyx_get_type(LVAL expr)
          /* make sure it's a vector of sounds */
          int i;
          nyx_result_type = nyx_audio;
-         for(i=0; i<getsize(expr); i++) {
+         for (i = 0; i < getsize(expr); i++) {
             if (!soundp(getelement(expr, i))) {
                nyx_result_type = nyx_error;
                break;
@@ -734,15 +752,17 @@ nyx_rval nyx_get_type(LVAL expr)
       {
          /* see if it's a list of time/string pairs representing a
             label track */
-         if (nyx_is_labels(expr))
+         if (nyx_is_labels(expr)) {
             nyx_result_type = nyx_labels;
+         }
       }
       break;
 
       case EXTERN:
       {
-         if (soundp(expr))
+         if (soundp(expr)) {
             nyx_result_type = nyx_audio;
+         }
       }
       break;
    } /* switch */
@@ -766,12 +786,13 @@ nyx_rval nyx_eval_expression(const char *expr_string)
    nyx_result = NULL;
    nyx_result_type = nyx_error;
 
+   // Protect the expression from being garbage collected
    xlprot1(expr);
 
-   /* Setup a new context */
+   // Setup a new context
    xlbegin(&nyx_cntxt, CF_TOPLEVEL|CF_CLEANUP|CF_BRKLEVEL|CF_ERROR, s_true);
 
-   /* setup the error return */
+   // Set the context jump destination
    if (setjmp(nyx_cntxt.c_jmpbuf)) {
       // If the script is cancelled or some other condition occurs that causes
       // the script to exit and return to this level, then we don't need to
@@ -779,30 +800,40 @@ nyx_rval nyx_eval_expression(const char *expr_string)
       goto finish;
    }
 
-   while(nyx_expr_pos < nyx_expr_len) {
+   while (nyx_expr_pos < nyx_expr_len) {
       expr = NULL;
 
-      /* read an expression */
-      if (!xlread(getvalue(s_stdin), &expr, FALSE))
+      // Read an expression
+      if (!xlread(getvalue(s_stdin), &expr, FALSE)) {
          break;
+      }
 
       #if 0
       /* save the input expression (so the user can refer to it
          as +, ++, or +++) */
       xlrdsave(expr);
       #endif
-      
-      /* evaluate the expression */
+
+      // Evaluate the expression
       nyx_result = xleval(expr);
    }
 
-   xlflush();
-
-   xltoplevel();
+   // This will unwind the xlisp context and restore internals to a point just
+   // before we issued our xlbegin() above.  This is important since the internal
+   // xlisp stacks will contain pointers to invalid objects otherwise.
+   //
+   // Also note that execution will jump back up to the statement following the
+   // setjmp() above.
+   xljump(&nyx_cntxt, CF_TOPLEVEL, NIL);
+   // Never reached
 
  finish:
 
-   xlpop(); /* unprotect expr */
+   xlflush();
+
+   xlpop(); // unprotect expr
+
+   gc();
 
 #if defined(NYX_MEMORY_STATS) && NYX_MEMORY_STATS
    printf("\nnyx_eval_expression after\n");
@@ -814,32 +845,37 @@ nyx_rval nyx_eval_expression(const char *expr_string)
 
 int nyx_get_audio_num_channels()
 {
-   if (nyx_get_type(nyx_result) != nyx_audio)
+   if (nyx_get_type(nyx_result) != nyx_audio) {
       return 0;
+   }
 
-   if (vectorp(nyx_result))
+   if (vectorp(nyx_result)) {
       return getsize(nyx_result);
-   else
-      return 1;
+   }
+
+   return 1;
 }
 
 int nyx_get_audio(nyx_audio_callback callback, void *userdata)
 {
-   sample_block_type block;
-   sound_type snd;
-   sound_type *snds = NULL;
    float *buffer = NULL;
-   long bufferlen = 0;
+   sound_type *snds = NULL;
    long *totals = NULL;
    long *lens = NULL;
-   long cnt;
+   sound_type snd;
    int result = 0;
    int num_channels;
-   int ch, i;
-   int success = FALSE;
+   int ch;
 
-   if (nyx_get_type(nyx_result) != nyx_audio)
-      return success;
+   // Any variable whose value is set between the setjmp() and the "finish" label
+   // and that is used after the "finish" label, must be marked volatile since
+   // any routine outside of the current one that calls longjmp() will cause values
+   // cached in registers to be lost.
+   volatile int success = FALSE;
+
+   if (nyx_get_type(nyx_result) != nyx_audio) {
+      return FALSE;
+   }
 
 #if defined(NYX_MEMORY_STATS) && NYX_MEMORY_STATS
    printf("\nnyx_get_audio before\n");
@@ -848,25 +884,30 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
 
    num_channels = nyx_get_audio_num_channels();
 
-   snds = (sound_type *)malloc(num_channels * sizeof(sound_type));
+   buffer = (sample_type *) malloc(max_sample_block_len * sizeof(sample_type));
+   if (buffer == NULL) {
+      goto finish;
+   }
+
+   snds = (sound_type *) malloc(num_channels * sizeof(sound_type));
    if (snds == NULL) {
       goto finish;
    }
 
-   totals = (long *)malloc(num_channels * sizeof(long));
+   totals = (long *) malloc(num_channels * sizeof(long));
    if (totals == NULL) {
       goto finish;
    }
 
-   lens = (long *)malloc(num_channels * sizeof(long));
+   lens = (long *) malloc(num_channels * sizeof(long));
    if (lens == NULL) {
       goto finish;
    }
 
-   /* Setup a new context */
+   // Setup a new context
    xlbegin(&nyx_cntxt, CF_TOPLEVEL|CF_CLEANUP|CF_BRKLEVEL|CF_ERROR, s_true);
 
-   /* setup the error return */
+   // Set the context jump destination
    if (setjmp(nyx_cntxt.c_jmpbuf)) {
       // If the script is cancelled or some other condition occurs that causes
       // the script to exit and return to this level, then we don't need to
@@ -874,67 +915,61 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
       goto finish;
    }
 
-   for(ch=0; ch<num_channels; ch++) {
-      if (num_channels == 1)
+   for (ch = 0; ch < num_channels; ch++) {
+      if (num_channels == 1) {
          snd = getsound(nyx_result);
-      else
+      }
+      else {
          snd = getsound(getelement(nyx_result, ch));
+      }
       snds[ch] = snd;
       totals[ch] = 0;
       lens[ch] = snd_length(snd, snd->stop);
    }
 
-   while(result==0) {
-      for(ch=0; ch<num_channels; ch++) {
+   while (result == 0) {
+      for (ch =0 ; ch < num_channels; ch++) {
+         sample_block_type block;
+         long cnt;
+         int i;
+
          snd = snds[ch];
+
          cnt = 0;
-         block = snd->get_next(snd, &cnt);
+         block = sound_get_next(snd, &cnt);
          if (block == zero_block || cnt == 0) {
+            success = TRUE;
             result = -1;
             break;
          }
 
-         /* copy the data to a temporary buffer and scale it
-            by the appropriate scale factor */
-
-         if (cnt > bufferlen) {
-            if (buffer)
-               free(buffer);
-
-            buffer = (float *)malloc(cnt * sizeof(float));
-            if (buffer == NULL) {
-               goto finish;
-            }
-
-            bufferlen = cnt;
+         // Copy and scale the samples
+         for (i = 0; i < cnt; i++) {
+            buffer[i] = block->samples[i] * snd->scale;
          }
 
-         memcpy(buffer, block->samples, cnt * sizeof(float));
-
-         for(i=0; i<cnt; i++)
-            buffer[i] *= snd->scale;
-
-         result = callback(buffer, ch,
+         result = callback((float *)buffer, ch,
                            totals[ch], cnt, lens[ch], userdata);
 
          if (result != 0) {
-            // The user canceled or some other error occurred, so we use
-            // xlsignal() to jump back to our error handler.
-            xlsignal(NULL, NULL);
-            // never get here.
+            result = -1;
+            break;
          }
 
          totals[ch] += cnt;
       }
    }
 
-   success = TRUE;
-
-   xltoplevel();
+   // This will unwind the xlisp context and restore internals to a point just
+   // before we issued our xlbegin() above.  This is important since the internal
+   // xlisp stacks will contain pointers to invalid objects otherwise.
+   //
+   // Also note that execution will jump back up to the statement following the
+   // setjmp() above.
+   xljump(&nyx_cntxt, CF_TOPLEVEL, NIL);
+   // Never reached
 
  finish:
-
-   gc();
 
    if (buffer) {
       free(buffer);
@@ -952,6 +987,8 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
       free(snds);
    }
 
+   gc();
+
 #if defined(NYX_MEMORY_STATS) && NYX_MEMORY_STATS
    printf("\nnyx_get_audio after\n");
    xmem();
@@ -962,39 +999,42 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
 
 int nyx_get_int()
 {
-   if (nyx_get_type(nyx_result) != nyx_int)
+   if (nyx_get_type(nyx_result) != nyx_int) {
       return -1;
+   }
 
    return getfixnum(nyx_result);
 }
 
 double nyx_get_double()
 {
-   if (nyx_get_type(nyx_result) != nyx_double)
+   if (nyx_get_type(nyx_result) != nyx_double) {
       return -1.0;
+   }
 
    return getflonum(nyx_result);
 }
 
 const char *nyx_get_string()
 {
-   if (nyx_get_type(nyx_result) != nyx_string)
+   if (nyx_get_type(nyx_result) != nyx_string) {
       return NULL;
+   }
 
    return (const char *)getstring(nyx_result);
 }
 
 unsigned int nyx_get_num_labels()
 {
-   LVAL s = nyx_result;
+   LVAL s;
    int count = 0;
 
-   if (nyx_get_type(nyx_result) != nyx_labels)
+   if (nyx_get_type(nyx_result) != nyx_labels) {
       return 0;
+   }
 
-   while(s) {
+   for (s = nyx_result; s; s = cdr(s)) {
       count++;
-      s = cdr(s);
    }
 
    return count;
@@ -1011,10 +1051,11 @@ void nyx_get_label(unsigned int index,
    LVAL t1_expr;
    LVAL str_expr;
 
-   if (nyx_get_type(nyx_result) != nyx_labels)
+   if (nyx_get_type(nyx_result) != nyx_labels) {
       return;
+   }
 
-   while(index) {
+   while (index) {
       index--;
       s = cdr(s);
       if (s == NULL) {
@@ -1032,18 +1073,23 @@ void nyx_get_label(unsigned int index,
       str_expr = t1_expr;
       t1_expr = t0_expr;
    }
-   else
+   else {
       str_expr = car(cdr(cdr(label_expr)));
+   }
 
-   if (floatp(t0_expr))
+   if (floatp(t0_expr)) {
       *start_time = getflonum(t0_expr);
-   else if (fixp(t0_expr))
+   }
+   else if (fixp(t0_expr)) {
       *start_time = (double)getfixnum(t0_expr);
+   }
 
-   if (floatp(t1_expr))
+   if (floatp(t1_expr)) {
       *end_time = getflonum(t1_expr);
-   else if (fixp(t1_expr))
+   }
+   else if (fixp(t1_expr)) {
       *end_time = (double)getfixnum(t1_expr);
+   }
 
    *label = (const char *)getstring(str_expr);
 }
@@ -1089,8 +1135,8 @@ int ostgetc()
       nyx_expr_pos++;
       return '\n';
    }
-   else
-      return EOF;
+
+   return EOF;
 }
 
 /* osinit - initialize */
@@ -1106,7 +1152,7 @@ void osfinish(void)
 /* oserror - print an error message */
 void oserror(char *msg)
 {
-   printf("nyx error: %s\n", msg);
+   errputstr(msg);
 }
 
 long osrand(long n)
@@ -1116,61 +1162,56 @@ long osrand(long n)
 
 /* cd ..
 open - open an ascii file */
-FILE *osaopen(name,mode) char *name,*mode;
+FILE *osaopen(char *name, char *mode)
 {
-   FILE *fp;
-   fp = fopen(name,mode);
-   return fp;
+   return fopen(name, mode);
 }
 
 /* osbopen - open a binary file */
 FILE *osbopen(char *name, char *mode)
 {
    char bmode[10];
-   FILE *fp;
    
    strncpy(bmode, mode, 8);
-   strcat(bmode,"b");
-   fp = fopen(name,bmode);
-   return fp;
+   strcat(bmode, "b");
+
+   return fopen(name,bmode);
 }
 
 /* osclose - close a file */
 int osclose(FILE *fp)
 {
-   return (fclose(fp));
+   return fclose(fp);
 }
 
 /* osagetc - get a character from an ascii file */
 int osagetc(FILE *fp)
 {
-   return (getc(fp));
+   return getc(fp);
 }
 
 /* osaputc - put a character to an ascii file */
 int osaputc(int ch, FILE *fp)
 {
-   return (putc(ch,fp));
+   return putc(ch,fp);
 }
 
 /* osoutflush - flush output to a file */
-void osoutflush(FILE *fp) { fflush(fp); }
-
-extern int dbgflg;
+void osoutflush(FILE *fp)
+{
+   fflush(fp);
+}
 
 /* osbgetc - get a character from a binary file */
-/* int osbgetc(fp) FILE *fp; {return (getc(fp));} */
-#ifndef WIN32  // duplicated in winfun.c, per James Crook, 7/4/2003
-	int osbgetc(FILE *fp)
-	{
-		return (getc(fp));
-	}
-#endif
+int osbgetc(FILE *fp)
+{
+   return getc(fp);
+}
 
 /* osbputc - put a character to a binary file */
 int osbputc(int ch, FILE *fp)
 {
-   return (putc(ch,fp));
+   return putc(ch, fp);
 }
 
 /* ostputc - put a character to the terminal */
@@ -1178,17 +1219,20 @@ void ostputc(int ch)
 {     
    oscheck();		/* check for control characters */
    
-   if (nyx_output_cb)
+   if (nyx_output_cb) {
       nyx_output_cb(ch, nyx_output_ud);
-   else
-      putchar(((char) ch));
+   }
+   else {
+      putchar((char) ch);
+   }
 }
 
 /* ostoutflush - flush output buffer */
 void ostoutflush()
 {
-   if (!nyx_output_cb)
+   if (!nyx_output_cb) {
       fflush(stdout);
+   }
 }
 
 /* osflush - flush the terminal input buffer */
@@ -1208,7 +1252,6 @@ void oscheck(void)
 }
 
 /* xsystem - execute a system command */
-#ifndef WIN32  // duplicated in winfun.c, per James Crook, 7/4/2003
 LVAL xsystem()
 {
    if (moreargs()) {
@@ -1218,82 +1261,115 @@ LVAL xsystem()
    }
    return s_true;
 }
-#endif
 
-#ifndef WIN32
 /* xsetdir -- set current directory of the process */
 LVAL xsetdir()
 {
    char *dir = (char *)getstring(xlgastring());
    int result;
    LVAL cwd = NULL;
+
    xllastarg();
+
    result = chdir(dir);
    if (result) {
       perror("SETDIR");
    }
+
    dir = getcwd(NULL, 1000);
    if (dir) {
-       cwd = cvstring(dir);
-       free(dir);
-    }
+      cwd = cvstring(dir);
+      free(dir);
+   }
+
    return cwd;
 }
-#endif
 
 /* xgetkey - get a key from the keyboard */
-#ifndef WIN32  // duplicated in winfun.c, per James Crook, 7/4/2003
-	LVAL xgetkey() {xllastarg(); return (cvfixnum((FIXTYPE)getchar()));}
-#endif
+LVAL xgetkey()
+{
+   xllastarg();
+   return (cvfixnum((FIXTYPE)getchar()));
+}
 
 /* ossymbols - enter os specific symbols */
-#ifndef WIN32  // duplicated in winfun.c, per James Crook, 7/4/2003
-	void ossymbols(void) {}
-#endif
+void ossymbols(void)
+{
+}
 
 /* xsetupconsole -- used to configure window in Win32 version */
-#ifndef WIN32  // duplicated in winfun.c, per James Crook, 7/4/2003
-	LVAL xsetupconsole() { return NULL; }
-#endif
+LVAL xsetupconsole()
+{
+   return NULL;
+}
 
+#if defined(WIN32)
+const char os_pathchar = '\\';
+const char os_sepchar = ',';
+#else
 const char os_pathchar = '/';
 const char os_sepchar = ':';
+#endif
 
 /* control-C handling */
-void ctcinit()	{}
+void ctcinit()
+{
+}
 
 /* xechoenabled -- set/clear echo_enabled flag (unix only) */
-LVAL xechoenabled() { return NULL; }
+LVAL xechoenabled()
+{
+   return NULL;
+}
 
 /* osdir_list_start -- open a directory listing */
-int osdir_list_start(char *path) { return FALSE; }
+int osdir_list_start(char *path)
+{
+   return FALSE;
+}
 
 /* osdir_list_next -- read the next entry from a directory */
-char *osdir_list_next() { return NULL; }
+char *osdir_list_next()
+{
+   return NULL;
+}
 
 /* osdir_list_finish -- close an open directory */
-void osdir_list_finish() { return; }
+void osdir_list_finish()
+{
+   return;
+}
 
-#ifndef WIN32
 /* xget_temp_path -- get a path to create temp files */
 LVAL xget_temp_path()
 {
-   char *tmp = getenv("TMPDIR");
+   char *tmp;
+
+#if defined(WINDOWS)
+   tmp = getenv("TEMP");
+#else
+   tmp = getenv("TMPDIR");
+#endif
+
    if (!tmp || !*tmp) {
       tmp = getenv("TMP");
       if (!tmp || !*tmp) {
+#if defined(WINDOWS)
+         tmp = "/";
+#else
          tmp = "/tmp/";
+#endif
       }
    }
+
    return cvstring(tmp);
 }
-#endif
 
-#ifndef WIN32
 /* xget_user -- get a string identifying the user, for use in file names */
 LVAL xget_user()
 {
    char *user = getenv("USER");
+
    if (!user || !*user) {
       user = getenv("USERNAME");
       if (!user || !*user) {
@@ -1301,6 +1377,23 @@ LVAL xget_user()
          user = "nyquist";
       }
    }
+
    return cvstring(user);
 }
+
+#if defined(WINDOWS)
+/* get_xlisp_path -- return path to xlisp */
+void get_xlisp_path(char *p, long p_max)
+{
+   char *paths = getenv("XLISPPATH");
+
+   if (!paths || !*paths) {
+      *p = 0;
+      return;
+   }
+
+   strncpy(p, paths, p_max);
+   p[p_max] = 0;
+}
 #endif
+
