@@ -16,7 +16,7 @@ INC = \
    -I$(NYQUIST)/xlisp \
    -I$(NYQUIST)/sys/unix \
    -I$(NYQUIST)/cmt \
-   -I$(NYQUIST)/ffts \
+   -I$(NYQUIST)/ffts/src \
    -I$(NYQUIST)/nyqstk/include \
    -I$(NYQUIST)/nyqstk
 
