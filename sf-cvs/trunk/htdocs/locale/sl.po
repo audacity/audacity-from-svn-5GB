@@ -2645,7 +2645,7 @@ msgstr "Dokumentacija"
 #. linked to at the bottom of this page, please add the links.
 #: help/documentation.php:17
 msgid "This page contains manuals and quick reference guides for the free Audacity sound editor.  For additional help, see the <a href=\"faq\">Frequently Asked Questions</a> and our <a href=\"http://audacityteam.org/wiki/index.php?title=Tutorials\">Tutorials</a> and <a href=\"http://audacityteam.org/wiki/index.php?title=Tips\">Tips</a> on the Audacity <a href=\"http://audacityteam.org/wiki/\">Wiki</a>."
-msgstr "Ta stran vsebuje priročnike in uporabniške vodnike za brezplačni urejevalnik zvoka Audacity. Za dodatno pomoč si oglejte še <a href=\"faq\">pogosto zastavljena vprašanja</a> in <a href=\"tutorials\">razložene primere</a>, pa tudi <a href=\"http://audacityteam.org/wiki/index.php?title=Tips\">nasvete (v angl.)</a> na <a href=\"http://audacityteam.org/wiki/\">angleškem wikiju</a> Audacity."
+msgstr "Ta stran vsebuje priročnike in uporabniške vodnike za brezplačni urejevalnik zvoka Audacity. Za dodatno pomoč si oglejte še <a href=\"faq\">pogosto zastavljena vprašanja</a> in <a href=\"http://audacityteam.org/wiki/index.php?title=Tutorials\">razložene primere</a>, pa tudi <a href=\"http://audacityteam.org/wiki/index.php?title=Tips\">nasvete (v angl.)</a> na <a href=\"http://audacityteam.org/wiki/\">angleškem wikiju</a> Audacity."
 
 #: help/documentation.php:20
 msgid "Quick Reference Guide"

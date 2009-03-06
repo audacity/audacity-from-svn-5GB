@@ -514,7 +514,7 @@ msgstr "Ohjeet"
 #: help/documentation.php:17
 #, fuzzy
 msgid "This page contains manuals and quick reference guides for the free Audacity sound editor.  For additional help, see the <a href=\"faq\">Frequently Asked Questions</a> and our <a href=\"http://audacityteam.org/wiki/index.php?title=Tutorials\">Tutorials</a> and <a href=\"http://audacityteam.org/wiki/index.php?title=Tips\">Tips</a> on the Audacity <a href=\"http://audacityteam.org/wiki/\">Wiki</a>."
-msgstr "Tämä sivu sisältää vapaan Audacity-äänieditorin (englanninkieliset) manuaalit ja käyttäjän käsikirjat. Saadaksesi lisää ohjeita katso <a href=\"faq\">Usein kysytyt kysymykset (FAQ)</a> ja <a href=\"tutorials\">Tutoriaalit</a>."
+msgstr "Tämä sivu sisältää vapaan Audacity-äänieditorin (englanninkieliset) manuaalit ja käyttäjän käsikirjat. Saadaksesi lisää ohjeita katso <a href=\"faq\">Usein kysytyt kysymykset (FAQ)</a>, <a href=\"http://audacityteam.org/wiki/index.php?title=Tutorials\">Tutoriaalit</a> ja <a href=\"http://audacityteam.org/wiki/index.php?title=Tips\">hy�dyllisi� vinkkej�</a>."
 
 #: help/documentation.php:20
 msgid "Quick Reference Guide"
