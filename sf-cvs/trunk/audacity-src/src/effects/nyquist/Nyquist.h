@@ -28,9 +28,8 @@
 
 #include <string>
 
-class WaveTrack;
-
-class NyqControl {
+class NyqControl
+{
  public:
    wxString var;
    wxString name;
@@ -44,12 +43,16 @@ class NyqControl {
    double high;
    int ticks;
 };
+#define NYQ_CTRL_INT 0
+#define NYQ_CTRL_REAL 1
+#define NYQ_CTRL_STRING 2
+#define NYQ_CTRL_CHOICE 3
 
 WX_DECLARE_USER_EXPORTED_OBJARRAY(NyqControl,  NyqControlArray, AUDACITY_DLL_API);
 
-class AUDACITY_DLL_API EffectNyquist: public Effect {
-
-public:
+class AUDACITY_DLL_API EffectNyquist:public Effect
+{
+ public:
    
    EffectNyquist(wxString fname);
    virtual ~EffectNyquist();
@@ -105,15 +108,10 @@ public:
    virtual bool PromptUser();
    
    virtual bool Process();
-   
-private:
-   
-   int GetCallback(float *buffer, int channel,
-                   long start, long len, long totlen);
-   int PutCallback(float *buffer, int channel,
-                   long start, long len, long totlen);
-   void OutputCallback(int c);
-   void OSCallback();
+
+ private:
+
+   bool ProcessOne();
 
    static int StaticGetCallback(float *buffer, int channel,
                                 long start, long len, long totlen,
@@ -124,57 +122,65 @@ private:
    static void StaticOutputCallback(int c, void *userdata);
    static void StaticOSCallback(void *userdata);
 
-   bool       ProcessOne();
+   int GetCallback(float *buffer, int channel,
+                   long start, long len, long totlen);
+   int PutCallback(float *buffer, int channel,
+                   long start, long len, long totlen);
+   void OutputCallback(int c);
+   void OSCallback();
 
-   void       Parse(wxString line);
-   void       ParseFile();
-   wxString   UnQuote(wxString s);
-   double     GetCtrlValue(wxString s);
+   void Parse(wxString line);
+   void ParseFile();
+   wxString UnQuote(wxString s);
+   double GetCtrlValue(wxString s);
 
-   static wxString  mXlispPath;
+ private:
 
-   wxFileName       mFileName;
-   wxDateTime       mFileModified;
+   wxString          mXlispPath;
 
-   bool mStop;
-   bool mBreak;
-   bool mCont;
+   wxFileName        mFileName;
+   wxDateTime        mFileModified;
 
-   bool             mCompiler;
-   bool             mIsSal;
-   bool             mExternal;
-   bool             mInteractive;
-   bool             mOK;
-   wxString         mCmd;
-   wxString         mName;
-   wxString         mAction;
-   wxString         mInfo;
-   bool             mDebug;
-   std::string      mDebugOutput;
+   bool              mStop;
+   bool              mBreak;
+   bool              mCont;
 
-   NyqControlArray  mControls;
+   bool              mCompiler;
+   bool              mIsSal;
+   bool              mExternal;
+   bool              mInteractive;
+   bool              mOK;
+   wxString          mCmd;
+   wxString          mName;
+   wxString          mAction;
+   wxString          mInfo;
+   bool              mDebug;
+   std::string       mDebugOutput;
 
-   int              mCurNumChannels;
-   WaveTrack       *mCurTrack[2];
-   sampleCount      mCurStart[2];
-   sampleCount      mCurLen;
-   double           mOutputTime;
-   int              mCount;
-   double           mProgressIn;
-   double           mProgressOut;
-   double           mProgressTot;
-   double           mScale;
+   NyqControlArray   mControls;
 
-   samplePtr        mCurBuffer[2];
-   sampleCount      mCurBufferStart[2];
-   sampleCount      mCurBufferLen[2];
+   int               mCurNumChannels;
+   WaveTrack         *mCurTrack[2];
+   sampleCount       mCurStart[2];
+   sampleCount       mCurLen;
+   double            mOutputTime;
+   int               mCount;
+   double            mProgressIn;
+   double            mProgressOut;
+   double            mProgressTot;
+   double            mScale;
 
-   WaveTrack       *mOutputTrack[2];
+   samplePtr         mCurBuffer[2];
+   sampleCount       mCurBufferStart[2];
+   sampleCount       mCurBufferLen[2];
 
-   wxArrayString    mCategories;
+   WaveTrack         *mOutputTrack[2];
+
+   wxArrayString     mCategories;
 };
 
-class NyquistDialog:public wxDialog {
+class NyquistDialog:public wxDialog
+{
  public:
    // constructors and destructors
    NyquistDialog(wxWindow * parent, wxWindowID id,
@@ -198,7 +204,8 @@ class NyquistDialog:public wxDialog {
 
 };
 
-class NyquistInputDialog:public wxDialog {
+class NyquistInputDialog:public wxDialog
+{
  public:
    NyquistInputDialog(wxWindow * parent, wxWindowID id,
                       const wxString & title,
@@ -218,7 +225,8 @@ class NyquistInputDialog:public wxDialog {
    DECLARE_EVENT_TABLE()
 };
 
-class NyquistOutputDialog:public wxDialog {
+class NyquistOutputDialog:public wxDialog
+{
  public:
    NyquistOutputDialog(wxWindow * parent, wxWindowID id,
                        const wxString & title,
