@@ -2,6 +2,7 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
+ * Copyright 2009 Richard Ash
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -19,71 +20,89 @@
 	<li><a href="nyquist3"><?=_("Creating Nyquist Plug-ins")?></a></li>
 </ol>
 
-<?=_('<p>Beginning with version 1.1.1, Audacity allows you to use the Nyquist programming language to write your own plug-in effects for Audacity.  Unlike VST and LADSPA plug-ins, Nyquist plug-ins can be written using an ordinary text editor and don\'t need to be compiled.</p>
+<?php
+printf('<p>%s</p>', _('Beginning with version 1.1.1, Audacity allows you to use the Nyquist programming language to write your own plug-in effects for Audacity.  Unlike VST and LADSPA plug-ins, Nyquist plug-ins can be written using an ordinary text editor and don\'t need to be compiled.'));
+// i18n-hint: All the %s sequences become HTML tags to make the name 
+// "Roger B. Dannenberg" into a link to his home page. So we need the same %s
+// in the translated strings for it to work, but there will be no visible text
+// inserted in those places. The colon at the end is because this text is
+// followed by some bullet points with links to download Nyquist.
+printf(_('%sNyquist was written by %sRoger B. Dannenberg%s and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging and more.  Audacity uses only a subset of Nyquist\'s functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn\'t include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project:%s'), '<p>', '<a href="http://www-2.cs.cmu.edu/~rbd/">', '</a>', '</p>' );
+printf('<ul><li><a href="http://www-2.cs.cmu.edu/~music/music.software.html">%s</a></li></ul>', _('CMU Computer Music Project Software - download the full Nyquist here'));
 
-<p>Nyquist was written by <a href="http://www-2.cs.cmu.edu/~rbd/">Roger B. Dannenberg</a> and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging and more.  Audacity uses only a subset of Nyquist\'s functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn\'t include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project:</p>
-<ul>
-	<li><a href="http://www-2.cs.cmu.edu/~music/music.software.html">CMU Computer Music Project Software</a> - download the full Nyquist here</a></li>
-</ul>
+printf(_('%sTo write plug-ins for use with Audacity, you will need the older %sNyquist version 2.37 Manual%s, not the version 3 manual available from CMU. This is because in Nyquist version 3 the code notation has changed to SAL instead of LISP. We will investigate integrating SAL with the Audacity implementation of Nyquist in the future.'), '<p>', '<a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">', '</a>', '</p>' );
 
-<p>To write plug-ins for use with Audacity, you will need the older <a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">Nyquist version 2.37 Manual</a>, not the version 3 manual available from CMU. This is because in Nyquist version 3 the code notation has changed to SAL instead of LISP. We will investigate integrating SAL with the Audacity implementation of Nyquist in the future.</p>
-
-<p>Note that you don\'t need to download Nyquist in order to write simple plug-ins to use with Audacity.  All of the instructions you need are below.</p>
-
-<h3>Lisp</h3>
-
-<p>Nyquist is based on Lisp.  If you have programmed in Lisp before, you can skim this section or go directly to the <a href="nyquist2">next page</a>.  Otherwise, here\'s an extremely brief introduction to Lisp:</p>
-
-<p>In Lisp (and therefore Nyquist), everything is an S-Expression, which is just a list of tokens (words) separated by whitespace and enclosed in parentheses.  The name of the function is always the first token in an S-Expression, and all of the other tokens are arguments to this function.  Here\'s a simple example:</p>
-
+printf('<p>%s</p>', _('Note that you don\'t need to download Nyquist in order to write simple plug-ins to use with Audacity.  All of the instructions you need are below.'));
+// 18n-hint: This is Lisp as in the programming language. So you probably don't
+// want to translate it.
+printf('<h3>%s</h3>', _('Lisp'));
+printf(_('%sNyquist is based on Lisp.  If you have programmed in Lisp before, you can skim this section or go directly to the %snext page%s.  Otherwise, here\'s an extremely brief introduction to Lisp:'), '<p>', '<a href="nyquist2">', '</a>', '</p>');
+printf('<p>%s</p>', _('In Lisp (and therefore Nyquist), everything is an S-Expression, which is just a list of tokens (words) separated by whitespace and enclosed in parentheses.  The name of the function is always the first token in an S-Expression, and all of the other tokens are arguments to this function.  Here\'s a simple example:'));
+?>
 <pre>
   (setf area (* 3.14159 (expt radius 2)))
 </pre>
-
-<p>Let\'s break down this example.  The outermost S-expression has three members.  The first one, <code>setf</code>, is the name of the function (it stands for set-field).  <code>setf</code> is used to assign a value to a variable.  (There are other similar functions, like <code>set</code> and <code>setq</code>, but <code>setf</code> is the most powerful, so it\'s the one we\'ll use in our examples.) After <code>setf</code> comes <code>area</code>, which is the name of the variable we\'re going to set.  Next comes the value to assign to this variable, which in this case is another S-expression.</p>
-
-<p>Lisp doesn\'t have any special operators for Math functions - they\'re all functions like everything else, using <i>prefix</i> notation, where the name of the function (or operator) come before its arguments.  So instead of 3*7 for the product of 3 and 7, in Lisp you would write (* 3 7).  In Nyquist, the <code>expt</code> (exponent) function raises its first argument to the power of the second argument.  Therefore <code>(* 3.14159 (expt radius 2))</code> means 3.14159 times the square of <code>radius</code>, or the formula for the area of a circle.</p>
-
-<p>Rather than typing in this full expression every time, let\'s define a function for the area of the circle, that we can call every time we need it:</p>
-
-<pre>
+<?php
+// 18n-hint: This one is hard. The first and last %s are HTML and invisible.
+// All the others are little code snippets embeded in the text. The examples
+// wouldn't make any sense if the snippets were translated, so they aren't
+// translatable. The snag is that what is left behind isn't very readable, so
+// you might find looking at the final web page
+// (// http://audacity.sourceforge.net/help/nyquist) helpful.
+printf(_('%sLet\'s break down this example.  The outermost S-expression has three members.  The first one, %s, is the name of the function (it stands for set-field).  %s is used to assign a value to a variable.  (There are other similar functions, like %s and %s, but %s is the most powerful, so it\'s the one we\'ll use in our examples.) After %s comes %s, which is the name of the variable we\'re going to set.  Next comes the value to assign to this variable, which in this case is another S-expression.</p>'), 
+'<p>', '<code>setf</code>', '<code>setf</code>', '<code>set</code>',
+'<code>setq</code>', '<code>setf</code>', '<code>setf</code>',
+'<code>area</code>' );
+printf(_('%sLisp doesn\'t have any special operators for Math functions - they\'re all functions like everything else, using%s prefix %snotation, where the name of the function (or operator) comes before its arguments.  So instead of 3*7 for the product of 3 and 7, in Lisp you would write (* 3 7).  In Nyquist, the %s (exponent) function raises its first argument to the power of the second argument.  Therefore %s means 3.14159 times the square of %s, or the formula for the area of a circle.%s'),
+'<p>', '<i>', '</i>', '<code>expt</code>',
+'<code>(* 3.14159 (expt radius 2))</code>',
+'<code>radius</code>', '</p>');
+printf('<p>%s</p>', _('Rather than typing in this full expression every time, let\'s define a function for the area of the circle, that we can call every time we need it:'));
+?><pre>
   (defun circlearea (radius) (* 3.14159 (expt radius 2)))
-</pre>
-
-<p>The <code>defun</code> function is used to define a new function.  The first argument is the name of the function, in this case <code>circlearea</code>.  The second argument is a list of arguments to the function to be defined - this is one of the few cases where you have an S-expression that is not interpreted as a function call.  Finally the last expression is the value of the function.  Now if we want to compute the area of a circle of radius <code>r</code>, we just need to compute:</p>
-
+  </pre><?php
+printf(_('%sThe %s function is used to define a new function.  The first argument is the name of the function, in this case %s.  The second argument is a list of arguments to the function to be defined - this is one of the few cases where you have an S-expression that is not interpreted as a function call.  Finally the last expression is the value of the function.  Now if we want to compute the area of a circle of radius <code>r</code>, we just need to compute:%s'),
+		'<p>','<code>defun</code>','<code>circlearea</code>', '</p>');?>
 <pre>
   (setf area (circlearea r))
 </pre>
+<?php
+printf('<p>%s</p>', 
+		_('An S-expression is just a representation of a list.  Lisp uses lists to represent just about everything (the name LISP comes from LISt Processing language), so it\'s helpful to know how to manipulate lists.  Let\'s start by assigning a list of numbers to a variable.  You can\'t quite do this:'));
 
-<p>An S-expression is just a representation of a list.  Lisp uses lists to represent just about everything (the name LISP comes from LISt Processing language), so it\'s helpful to know how to manipulate lists.  Let\'s start by assigning a list of numbers to a variable.  You can\'t quite do this:</p>
-
-<pre>
+?><pre>
   (setf mylist (1 2 3 4 5))  <font color=#cc0000><--  error!</font>
-</pre>
+  </pre><?php
 
-<p>The reason this doesn\'t work is that whenever Nyquist sees an S-expression, it tries to evaluate it as a function unless you tell it otherwise.  Since there\'s no function named "1" that takes arguments <code>(2 3 4 5)</code>, this will generate an error.  To tell lisp that you want to treat an S-expression literally, and not to evaluate it as a function, you <i>quote</i> it.  In Nyquist, you can quote a list by putting a single quotation mark before it, like this:</p>
+printf(_('%sThe reason this doesn\'t work is that whenever Nyquist sees an S-expression, it tries to evaluate it as a function unless you tell it otherwise.  Since there\'s no function named "1" that takes arguments %s, this will generate an error.  To tell lisp that you want to treat an S-expression literally, and not to evaluate it as a function, you %squote%s it.  In Nyquist, you can quote a list by putting a single quotation mark before it, like this:%s'),
+	   	'<p>', '<code>(2 3 4 5)</code>', '<i>', '</i>','</p>' );
 
-<pre>
+?><pre>
   (setf mylist \'(1 2 3 4 5))
-</pre>
+  </pre><?php
+printf(_('%sNyquist also provides a %s function that you can use to construct lists - this is useful if some of the elements of the list are functions:%s'),
+		'<p>', '<code>list</code>', '</p>');
 
-<p>Nyquist also provides a <code>list</code> function that you can use to construct lists - this is useful if some of the elements of the list are functions:</p>
-
-<pre>
+?><pre>
   (setf mylist (list 1 2 3 4 (sqrt 25)))
-</pre>
+</pre><?php
+printf(_('%sTo get things off of a list, you can use the %s and %s functions. (Traditionally, these were called %s and %s, respectively, but %s and %s are much easier to remember.  Both sets of names are supported in Nyquist.)  The output of %s is 1, and the output of %s is the list %s.  So the second element of the list is %s.'),
+		'<p>', '<code>first</code>','<code>rest</code>', '<code>car</code>',
+		'<code>cdr</code>', '<code>first</code>', '<code>rest</code>',
+		'<code>(first mylist)</code>', '<code>(rest mylist)</code>',
+		'<code>(2 3 4 5)</code>', '<code>(first (rest mylist))</code>',
+		'</p>');
+printf('<h3>%s</h3>', _('Lisp function reference'));
+printf(_('%sHere\'s a list of some of the basic lisp functions you might need.  For a complete list of Lisp / Nyquist functions, see the %sNyquist version 2.37 Reference Manual%s.%s'),
+		'<p>', '<a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">',
+		'</a>', '</p>');
+printf('<p><b>%s</b></p>', _('Note: Symbols in Nyquist (like variable names and function names) are not case-sensitive.  They are converted to uppercase internally.'));
 
-<p>To get things off of a list, you can use the <code>first</code> and <code>rest</code> functions.  (Traditionally, these were called <code>car</code> and <code>cdr</code>, respectively, but <code>first</code> and <code>rest</code> are much easier to remember.  Both sets of names are supported in Nyquist.)  The output of <code>(first mylist)</code> is 1, and the output of <code>(rest mylist)</code> is the list <code>(2 3 4 5)</code>.  So the second element of the list is <code>(first (rest mylist))</code>.</p>
-
-<h3>Lisp function reference</h3>
-
-<p>Here\'s a list of some of the basic lisp functions you might need.  For a complete list of Lisp / Nyquist functions, see the <a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">Nyquist version 2.37 Reference Manual</a>.</p>
-
-<p><b>Note: Symbols in Nyquist (like variable names and function names) are not case-sensitive.  They are converted to uppercase internally.</b></p>
-
-<h4>Math functions</h4>
-<table class="function-list" summary="List of functions and explanations">
+printf('<h4>%s</h4>', _('Math functions'));
+printf('<table class="function-list" summary="%s">', 
+		// i18n-hint: This is the summary of a table - so not really a sentance
+		_('List of functions and explanations'));
+?>
 <tr><td><code>(+ a b)</code></td><td>addition</td></tr>
 <tr><td><code>(- a b)</code></td><td>subtraction</td></tr>
 <tr><td><code>(* a b)</code></td><td>multiplication</td></tr>
@@ -100,15 +119,18 @@
 <tr><td><code>(tan a b)</code></td><td>tangent</td></tr>
 <tr><td><code>(expt a b)</code></td><td>exponent (a to the power of b)</td></tr>
 <tr><td><code>(sqrt a b)</code></td><td>square root</td></tr>
-<tr><td><code>(< a b)</code></td><td>test for a less than b</td></tr>
-<tr><td><code>(<= a b)</code></td><td>test for a less than or equal to b</td></tr>
-<tr><td><code>(> a b)</code></td><td>test for a greater than b</td></tr>
-<tr><td><code>(>= a b)</code></td><td>test for a greater than or equal to b</td></tr>
+<tr><td><code>(&lt; a b)</code></td><td>test for a less than b</td></tr>
+<tr><td><code>(&lt;= a b)</code></td><td>test for a less than or equal to b</td></tr>
+<tr><td><code>(&gt; a b)</code></td><td>test for a greater than b</td></tr>
+<tr><td><code>(&gt;= a b)</code></td><td>test for a greater than or equal to b</td></tr>
 <tr><td><code>(= a b)</code></td><td>test for equality</td></tr>
 <tr><td><code>(/= a b)</code></td><td>test for inequality</td></tr>
 </table>
-<h4>List functions</h4>
-<table class="function-list" summary="List of functions and explanations">
+<?php
+printf('<h4>%s</h4>', _('List functions'));
+printf('<table class="function-list" summary="%s">',
+		_('List of functions and explanations'));
+?>
 <tr><td><code>(first l)</code></td><td>first element of a list (car)</td></tr>
 <tr><td><code>(rest l)</code></td><td>rest of the list (cdr)</td></tr>
 <tr><td><code>(reverse l)</code></td><td>reverse a list</td></tr>
@@ -117,14 +139,14 @@
 <tr><td><code>(length l)</code></td><td>length of a list</td></tr>
 <tr><td><code>(maplist function l)</code></td><td>apply a function to every element in a list</td></tr>
 </table>
-
-<h4>Control</h4>
-<table class="function-list" summary="List of functions and explanations">
+<?php
+printf('<h4>%s</h4>', _('Control'));
+printf('<table class="function-list" summary="%s">', 
+		_('List of functions and explanations'));
+?>
 <tr><td><code>(if expr expr1 expr2)</code></td><td>if expr is true, evaluates expr1, otherwise evaluates expr2</td></tr>
 </table>
-
-<h3><a href="nyquist2">Next: Programming in Nyquist</a></h3>')?>
-
 <?php
+  printf('<h3><a href="nyquist2">%s</a></h3>', _('Next: Programming in Nyquist'));
   include "../include/footer.inc.php";
 ?>
