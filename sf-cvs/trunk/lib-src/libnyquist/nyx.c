@@ -514,6 +514,11 @@ void nyx_cleanup()
 #endif
 }
 
+void nyx_set_xlisp_path(const char *path)
+{
+   set_xlisp_path(path);
+}
+
 LOCAL void nyx_susp_fetch(register nyx_susp_type susp, snd_list_type snd_list)
 {
    sample_block_type         out;
@@ -779,12 +784,17 @@ nyx_rval nyx_eval_expression(const char *expr_string)
    xmem();
 #endif
 
+   nyx_result = NULL;
+   nyx_result_type = nyx_error;
+
+   // Check argument
+   if (!expr_string || !strlen(expr_string)) {
+      return nyx_get_type(nyx_result);
+   }
+
    nyx_expr_string = expr_string;
    nyx_expr_len = strlen(nyx_expr_string);
    nyx_expr_pos = 0;
-
-   nyx_result = NULL;
-   nyx_result_type = nyx_error;
 
    // Protect the expression from being garbage collected
    xlprot1(expr);
