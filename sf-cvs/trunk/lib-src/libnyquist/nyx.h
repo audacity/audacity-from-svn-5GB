@@ -29,6 +29,7 @@ extern "C"
    
    void        nyx_init();
    void        nyx_cleanup();
+   void        nyx_set_xlisp_path(const char *path);
 
    /* should return return 0 for success, -1 for error */
    typedef int (*nyx_audio_callback)(float *buffer,
