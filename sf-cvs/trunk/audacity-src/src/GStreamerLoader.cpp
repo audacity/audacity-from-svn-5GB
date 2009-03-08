@@ -41,6 +41,8 @@ void GStreamerStartup()
 
 #else
 
+void GLogHandlerFunction(const gchar *log_domain, GLogLevelFlags log_level, const gchar *message, gpointer user_data);
+
 GStreamerLoader *GStreamerInst = NULL;
 
 // This function should dump stream information to debug log.
@@ -50,16 +52,7 @@ gboolean LogStructure(GQuark field_id, const GValue *value, gpointer user_data)
    // Get a name of a field
    const gchar *field_name = g_quark_to_string(field_id);
 
-   // Create a string value
-   GValue *value_str = g_try_new0(GValue,1);
-   g_value_init(value_str, G_TYPE_STRING);
-   
-   // Attempt to convert a field contents to string
-   if (!g_value_transform(value,value_str))
-   {
-      g_value_set_static_string(value_str,"?");
-   }
-   const gchar *value_str_value = g_value_get_string(value_str);
+   gchar *value_str_value = gst_value_serialize(value);
 
    // TODO: push this into future over and over until wxLogMessage becomes threadsafe (code already in trunk)
 #if wxCHECK_VERSION(2, 9, 0)
@@ -67,56 +60,36 @@ gboolean LogStructure(GQuark field_id, const GValue *value, gpointer user_data)
 #endif
    if (strinfo)
       g_string_append_printf(strinfo, " %s[%s]",field_name, value_str_value);
-   g_free(value_str);
+   g_free(value_str_value);
    return TRUE;
 }
 
-// Debug logging, really resource-expensive stuff.
-void GstLogHandlerFunction(GstDebugCategory *category, GstDebugLevel level, const gchar *file, const gchar *function, gint line, GObject *object, GstDebugMessage *message, gpointer data)
+
+void GstGLogHandlerFunction(const gchar *string)
 {
-   GStreamerLoader *loader = (GStreamerLoader*)data;
-   gchar *slevel = NULL;
-   switch (level)
+#if 0
+   static bool runtimedebugvar = false;
+   if (runtimedebugvar)
    {
-   case GST_LEVEL_ERROR:
-      slevel = "Error";
-      break;
-   case GST_LEVEL_WARNING:
-      slevel = "Warning";
-      break;
-   case GST_LEVEL_INFO:
-      slevel = "Info";
-      break;
-   case GST_LEVEL_DEBUG:
-      slevel = "Debug";
-      break;
-   case GST_LEVEL_LOG:
-      slevel = "Log";
-      break;
-   default:
-      slevel = "Unknown";
-      break;
+      FILE *f;
+      errno_t err = 1;
+      while (err != 0)
+         err = fopen_s(&f,"gstreamer.debug.log","ab");
+      fprintf(f,"%s",string);
+      fclose(f);
    }
-   const gchar *dbg = gst_debug_message_get(message);
-   gchar *str = g_strdup_printf("GStreamer %s - %s: in file '%s' at line %d in function '%s' : %s", category->name, slevel, file, line, function, dbg);
-  
-#if wxCHECK_VERSION(2, 9, 0)
-   wxLogMessage(wxString::FromUTF8(str).c_str());
+#else
+  g_printerr("%s",string);
 #endif
-   g_free(str);
 }
 
 bool GStreamerLoader::LoadGStreamer(bool showerror)
 {
    // First, we need to intialize GLib threading system
    if (!g_thread_supported())
-   {
       g_thread_init(NULL);
-   }
    else
-   {
       return false;
-   }
   
    // This will be used in future to give GStreamer additional arguments
    wxString arguments = wxEmptyString;
@@ -132,19 +105,22 @@ bool GStreamerLoader::LoadGStreamer(bool showerror)
    wxLogMessage(wxT("Audacity is built against GStreamer version %d.%d.%d-%d"),GST_VERSION_MAJOR,GST_VERSION_MINOR,GST_VERSION_MICRO,GST_VERSION_NANO);
    wxLogMessage(wxT("Initializing GStreamer with arguments: \"%s\""),arguments.c_str());
    GError *errorptr = NULL;
+
    if (!gst_init_check(&argc, &argv,&errorptr))
    {
       wxLogMessage(wxT("Failed to initialize GStreamer. Error %d: %s"),errorptr->code, wxString::FromUTF8(errorptr->message).c_str());
+      g_error_free(errorptr);
       return false;
    }
 
    gst_version(&major, &minor, &micro, &nano);
    wxLogMessage(wxT("Linked to GStreamer version %d.%d.%d-%d"),major,minor,micro,nano);
 
-   // Debugging makes GStreamer roughly 4-5 times slower
+   g_set_printerr_handler(GstGLogHandlerFunction);
+   // Debugging makes GStreamer roughly 4-5 times slower when it is not writing anything and 10 times slower with it writes info into a file
 #if 0
    gst_debug_set_active(TRUE);
-   gst_debug_add_log_function(GstLogHandlerFunction,(gpointer)this);
+   gst_debug_set_default_threshold(GST_LEVEL_LOG);
 #endif
    mGStreamerLoaded = true;
 
@@ -191,7 +167,6 @@ wxArrayString GStreamerLoader::GetExtensions()
 // This one is for Glib.
 void GLogHandlerFunction(const gchar *log_domain, GLogLevelFlags log_level, const gchar *message, gpointer user_data)
 {
-   GStreamerLoader *loader = (GStreamerLoader*)user_data;
    wxString level;
    switch (log_level)
    {
@@ -238,6 +213,7 @@ void GStreamerStartup()
                       but this time Audacity failed to load it at startup.\n\
                       You may want to go back to Preferences->Import/Export and re-configure it."),
                       _("GStreamer startup failed"));
+     delete GStreamerInst;
    }
 }
 

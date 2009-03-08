@@ -48,17 +48,17 @@ extern "C" {
 
 // A stucture, we create and maintain one for each audio stream
 struct GStreamContext {
-//   gchar      *mBinSinkName; // Name of a sink pad, that receives audio for this stream
-   gchar      *mAConvName;   // Name of an audio converter element that serves this stream
-   gchar      *mASinkName;   // Name of an AppSink element that passes this stream to Audacity
-   GstElement *mConv;        // Audio converter
-   GstElement *mSink;        // Application sink
-   bool        mUse;         // True if this stream should be imported, False if it should not be
-   WaveTrack **mChannels;    // Array of WaveTrack pointers, one for each channel
-   gint        mNumChannels; // Number of channels
-   gdouble     mSampleRate;  // Sample rate
-   gint        mWidth;       // Alignment
-   gint        mDepth;       // Sample resolution
+   gchar       *mAConvName;   // Name of an audio converter element that serves this stream
+   gchar       *mASinkName;   // Name of an AppSink element that passes this stream to Audacity
+   GstElement  *mConv;        // Audio converter
+   GstElement  *mSink;        // Application sink
+   bool         mUse;         // True if this stream should be imported, False if it should not be
+   WaveTrack  **mChannels;    // Array of WaveTrack pointers, one for each channel
+   gint         mNumChannels; // Number of channels
+   gdouble      mSampleRate;  // Sample rate
+   gint         mWidth;       // Alignment
+   gint         mDepth;       // Sample resolution
+   GstClockTime mLastTime;     // For synchronization
 };
 
 class GStreamerImportFileHandle;
@@ -99,8 +99,9 @@ public:
    ~GStreamerImportFileHandle();
 
    ///! Format initialization
+   ///\param nameIsUri - true if mName should be treated as uri, false if mName is a filename
    ///\return true if successful, false otherwise
-   bool Init();
+   bool Init(bool nameIsUri);
 
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
@@ -172,25 +173,32 @@ public:
       }
    }
 
+   //! Convenience function - processes all the messages on the bus
+   void ProcessMessages()
+   {
+      GstMessage *msg = gst_bus_pop(mBus);
+      while (msg != NULL)
+      {
+         OnBusMessage(mBus,msg);
+         msg = gst_bus_pop(mBus);
+      }
+   }
+
 private:
 
-   GstElement           *mPipeline;      //!< GStreamer pipeline
-   GstBus               *mBus;           //!< Message bus
-   GstElement           *mDec;           //!< uridecodebin element
-//   GMainLoop            *mGLoop;         //!< GLib main loop
-//   GstElement           *mAudioBin;      //!< Audio bin that contains audio converters and audio sinks
-   GstStaticCaps         mStaticCaps;    //!< Decribes our input capabilities
+   GstElement             *mPipeline;      //!< GStreamer pipeline
+   GstBus                 *mBus;           //!< Message bus
+   GstElement             *mDec;           //!< uridecodebin element
+   GstStaticCaps           mStaticCaps;    //!< Decribes our input capabilities
 
-   GPtrArray            *mScs;           //!< Array of pointers to stream contexts.
-   wxArrayString        *mStreamInfo;    //!< Array of stream descriptions. Length is the same as mScs
+   GPtrArray              *mScs;           //!< Array of pointers to stream contexts.
+   wxArrayString          *mStreamInfo;    //!< Array of stream descriptions. Length is the same as mScs
 
-   bool                  mCancelled;     //!< True if importing was canceled by user
-   wxString              mName;          //!< Source name
+   wxString                mName;          //!< Source name
 
-   TrackFactory         *mTrackFactory;  //!< Used to save Audacity track factory
-   Track              ***mOutTracks;     //!< Tracks to be passed back to Audacity
-   int                  *mOutNumTracks;  //!< Number of tracks to be passed back to Audacity
-   Tags                  mTags;          //!< Tags to be passed back to Audacity
+   Track                ***mOutTracks;     //!< Tracks to be passed back to Audacity
+   int                    *mOutNumTracks;  //!< Number of tracks to be passed back to Audacity
+   Tags                    mTags;          //!< Tags to be passed back to Audacity
 };
 
 void GetGStreamerImportPlugin(ImportPluginList *importPluginList,
@@ -206,13 +214,13 @@ wxString GStreamerImportPlugin::GetPluginFormatDescription()
 
 ImportFileHandle *GStreamerImportPlugin::Open(wxString filename)
 {
-   if (!GStreamerInst->Loaded())
+   if (!GStreamerInst || !GStreamerInst->Loaded())
       return NULL;
 
    GStreamerImportFileHandle *handle = new GStreamerImportFileHandle(filename);
 
    // Open the file for import  
-   bool success = handle->Init();
+   bool success = handle->Init(false);
    if (!success) {
       delete handle;
       return NULL;
@@ -226,14 +234,10 @@ GStreamerImportFileHandle::GStreamerImportFileHandle(const wxString & name)
 {
 
    mStreamInfo = new wxArrayString();
-   mCancelled = false;
    mName = name;
-   mTrackFactory = NULL;
 
    mPipeline = mDec = NULL;
-//   mAudioBin = NULL;
    mScs = g_ptr_array_new();
-//   mGLoop = NULL;
 
    memset(&mStaticCaps,0,sizeof(mStaticCaps));
    mStaticCaps.string = (               // We are guaranteed to get audio in following format:
@@ -257,8 +261,34 @@ GStreamerImportFileHandle::~GStreamerImportFileHandle()
    g_ptr_array_free(mScs,TRUE);
    if (mPipeline != NULL)
    {
-      gst_element_set_state(mPipeline, GST_STATE_NULL);
       gst_object_unref(GST_OBJECT(mPipeline));
+   }
+}
+
+// Transforms a taglist to a string
+void ConvertTagsToString(const GstTagList *list, const gchar *tag, gpointer user_data)
+{
+   GString *gstring = (GString*)user_data;
+   guint valuecount = gst_tag_list_get_tag_size(list, tag);
+   const gchar *strvalue = NULL;
+   GValue value = {0};
+
+   // Get a GValue of the tag
+   if (gst_tag_list_copy_value(&value, list, tag))
+   {
+     GType valtype = G_VALUE_TYPE(&value);
+     const gchar *gtypename = g_type_name(valtype);
+
+     GValue value_str = {0};
+     // Transform it to string GValue
+     g_value_init(&value_str, G_TYPE_STRING);
+     if (g_value_transform(&value, &value_str))
+     {
+        // Get the string representation
+        strvalue = g_value_get_string(&value_str);
+        if (strvalue)
+           g_string_append_printf(gstring, "%s[%s] ", tag, strvalue, NULL);
+     }
    }
 }
 
@@ -268,50 +298,44 @@ void GStreamerWriteTags(const GstTagList *list, const gchar *tag, gpointer user_
    handle->WriteTags(list, tag);
 }
 
+// Writes tags to mTags member
 void GStreamerImportFileHandle::WriteTags(const GstTagList *list, const gchar *tag)
 {
    guint valuecount = gst_tag_list_get_tag_size(list, tag);
-   gchar *strvalue = NULL;
-   GType tagtype = gst_tag_get_type(tag);
-   const gchar *typetitle = g_type_name(tagtype);
-   if (tagtype == G_TYPE_STRING)
-      gst_tag_list_get_string(list, tag, &strvalue);
-   else if (tagtype == G_TYPE_UINT)
+   const gchar *strvalue = NULL;
+
+   GValue value = {0};
+
+   if (gst_tag_list_copy_value(&value, list, tag))
    {
-      guint uintvalue;
-      if (gst_tag_list_get_uint(list, tag, &uintvalue))
-        strvalue = g_strdup_printf("%d", uintvalue);
-   }
-   else if (tagtype == GST_TYPE_DATE)
-   {
-      GDate *datevalue;
-      if (gst_tag_list_get_date(list, tag, &datevalue))
+      GValue value_str = {0};
+      g_value_init(&value_str, G_TYPE_STRING);
+      if (g_value_transform(&value, &value_str))
       {
-        strvalue = g_new0(char,100);
-        g_date_strftime(strvalue, 100, "%Y", datevalue);
+         strvalue = g_value_get_string(&value_str);
+         if (strvalue)
+         {
+            wxString wxstrvalue = wxString::FromUTF8(strvalue);
+            if (g_utf8_collate(tag, GST_TAG_TITLE) == 0)
+               mTags.SetTag(TAG_TITLE, wxstrvalue);
+            else if (g_utf8_collate(tag, GST_TAG_ARTIST) == 0)
+               mTags.SetTag(TAG_ARTIST, wxstrvalue);
+            else if (g_utf8_collate(tag, GST_TAG_ALBUM) == 0)
+               mTags.SetTag(TAG_ALBUM, wxstrvalue);
+            else if (g_utf8_collate(tag, GST_TAG_TRACK_NUMBER) == 0)
+               mTags.SetTag(TAG_TRACK, wxstrvalue);
+            else if (g_utf8_collate(tag, GST_TAG_DATE) == 0)
+               mTags.SetTag(TAG_YEAR, wxstrvalue);
+            else if (g_utf8_collate(tag, GST_TAG_GENRE) == 0)
+               mTags.SetTag(TAG_GENRE, wxstrvalue);
+            else if (g_utf8_collate(tag, GST_TAG_COMMENT) == 0)
+               mTags.SetTag(TAG_COMMENTS, wxstrvalue);
+         }
       }
    }
-   wxString wxstrvalue = wxString::FromUTF8(strvalue);
-   if (g_utf8_collate(tag, GST_TAG_TITLE) == 0)
-      mTags.SetTag(TAG_TITLE, wxstrvalue);
-   else if (g_utf8_collate(tag, GST_TAG_ARTIST) == 0)
-      mTags.SetTag(TAG_ARTIST, wxstrvalue);
-   else if (g_utf8_collate(tag, GST_TAG_ALBUM) == 0)
-      mTags.SetTag(TAG_ALBUM, wxstrvalue);
-   else if (g_utf8_collate(tag, GST_TAG_TRACK_NUMBER) == 0)
-      mTags.SetTag(TAG_TRACK, wxstrvalue);
-   else if (g_utf8_collate(tag, GST_TAG_DATE) == 0)
-      mTags.SetTag(TAG_YEAR, wxstrvalue);
-   else if (g_utf8_collate(tag, GST_TAG_GENRE) == 0)
-      mTags.SetTag(TAG_GENRE, wxstrvalue);
-   else if (g_utf8_collate(tag, GST_TAG_COMMENT) == 0)
-      mTags.SetTag(TAG_COMMENTS, wxstrvalue);
-   else
-      mTags.SetTag(wxString::FromUTF8(tag), wxstrvalue);
-   if (strvalue)
-     g_free(strvalue);
 }
 
+// Message handling
 gboolean GStreamerImportFileHandle::OnBusMessage(GstBus *bus, GstMessage *message)
 {
    if (message != NULL && message->src != NULL)
@@ -329,6 +353,7 @@ gboolean GStreamerImportFileHandle::OnBusMessage(GstBus *bus, GstMessage *messag
 
    GError *err;
    gchar *debug;
+   GstTagList *storedTaglist;
 
    switch (GST_MESSAGE_TYPE(message))
    {
@@ -357,11 +382,11 @@ gboolean GStreamerImportFileHandle::OnBusMessage(GstBus *bus, GstMessage *messag
       wxLogMessage(wxT("GStreamer State: %d -> %d ... %d"), oldstate, newstate, pending);
       break;
    case GST_MESSAGE_ASYNC_DONE:
-      wxLogMessage(wxT("GStreamer: async done"));
+      wxLogMessage(wxT("GStreamer: Asynchronous state change is done"));
       return FALSE;
       break;
    case GST_MESSAGE_EOS:
-      wxLogMessage(wxT("GStreamer: end of stream"));
+      wxLogMessage(wxT("GStreamer: End of the source stream"));
       gst_element_set_state(mPipeline, GST_STATE_NULL);
       return FALSE;
       break;
@@ -369,6 +394,11 @@ gboolean GStreamerImportFileHandle::OnBusMessage(GstBus *bus, GstMessage *messag
       GstTagList *tags;
       tags = NULL;
       gst_message_parse_tag(message, &tags);
+      storedTaglist = (GstTagList*)g_object_get_data(G_OBJECT(message->src), "Audacity::StoredTagList");
+      if (storedTaglist)
+      {
+         gst_tag_list_insert(storedTaglist, tags, GST_TAG_MERGE_APPEND);
+      }
       gst_tag_list_foreach(tags, GStreamerWriteTags, (gpointer)this);
       break;
    default:
@@ -389,19 +419,65 @@ gboolean GStreamerBusCallback(GstBus *bus, GstMessage *message, gpointer data)
    return handle->OnBusMessage(bus, message);
 }
 
-void GStreamerNewStreamCallback(GstElement *uridecodebin, GstPad *pad, gpointer data)
-{
-   GStreamerImportFileHandle *handle = (GStreamerImportFileHandle*)data;
-   handle->OnNewStream(uridecodebin, pad);
-}
-
 void GStreamerUnknownStreamCallback(GstElement *uridecodebin, GstPad *pad, GstCaps *caps, gpointer data)
 {
    GStreamerImportFileHandle *handle = (GStreamerImportFileHandle*)data;
    handle->OnUnknownStream(uridecodebin, pad, caps);
 }
 
-// this "gint" is really GstAutoplugSelectResult enum, but we may not have gstplay-enum.h, so just use gint
+// Event handler for audioconv'es sink pads, reroutes tags to to the message bus
+gboolean GStreamerConvEventCallback(GstPad *pad, GstEvent *event)
+{
+   gboolean ret;
+   GstTagList *taglist;
+   GstObject *element = gst_pad_get_parent(pad);
+
+   switch (GST_EVENT_TYPE (event)) {
+     case GST_EVENT_TAG:
+       gst_event_parse_tag (event, &taglist);
+       gst_element_post_message (GST_ELEMENT(element), gst_message_new_tag (element, gst_tag_list_copy(taglist)));
+       break;
+   }
+   gst_object_unref(element);
+   return gst_pad_event_default (pad, event);
+}
+
+// Called when there is going to be no more pads, i.e. demuxer found and autoplugged all streams
+void GStreamerNoMorePadsCallback(GstElement *gstelement, gpointer data)
+{
+   GStreamerImportFileHandle *handle = (GStreamerImportFileHandle*)data;
+ 
+   gpointer itdata;
+   gboolean done;
+   GstIterator *it;
+
+   it = gst_element_iterate_src_pads(gstelement);
+   done = FALSE;
+
+   while (!done) {
+     switch (gst_iterator_next (it, &itdata)) {
+       case GST_ITERATOR_OK:
+         handle->OnNewStream(gstelement, GST_PAD(itdata));
+         gst_object_unref (itdata);
+         break;
+       case GST_ITERATOR_RESYNC:
+         // Rollback changes to items
+         gst_iterator_resync (it);
+         break;
+       case GST_ITERATOR_ERROR:
+         // Wrong parameter were given
+         done = TRUE;
+         break;
+       case GST_ITERATOR_DONE:
+         done = TRUE;
+         break;
+     }
+   }
+
+   gst_iterator_free(it);
+}
+
+// This "gint" is really GstAutoplugSelectResult enum, but we may not have gstplay-enum.h, so just use gint
 gint GStreamerAutoplugSelectCallback(GstElement *element, GstPad *pad, GstCaps *caps, GstElementFactory *factory, gpointer data)
 {
    // Check factory class
@@ -413,25 +489,23 @@ gint GStreamerAutoplugSelectCallback(GstElement *element, GstPad *pad, GstCaps *
    return 0;
 }
 
+// Called for each new stream
 void GStreamerImportFileHandle::OnNewStream(GstElement *uridecodebin, GstPad *pad)
 {
    GstCaps *caps;
    GstStructure *str;
+   gboolean quit;
+   const gchar *name;
 
    caps = gst_pad_get_caps(pad);
    str = gst_caps_get_structure(caps, 0);
 
-   // Dump info
-   GString *strinfo = g_string_new(NULL);
-   gst_structure_foreach(str, LogStructure, strinfo);
    // Check stream type
-   const gchar *name = gst_structure_get_name(str);
-   // Only accept audio streams with integer samples
-   // TODO: instead of g_strrstr use caps_subset or caps_intersect with caps from mStaticCaps
-   gboolean quit = FALSE;
-   if (!g_strrstr(name, "audio") || !g_strrstr(name, "raw-int"))
+   name = gst_structure_get_name(str);
+   // Only accept audio streams
+   quit = FALSE;
+   if (!g_strrstr(name, "audio"))
    {
-      g_string_free(strinfo, TRUE);
       quit = TRUE;
    }
    gst_caps_unref (caps);
@@ -444,6 +518,11 @@ void GStreamerImportFileHandle::OnNewStream(GstElement *uridecodebin, GstPad *pa
    GstElement *mConv = gst_element_factory_make("audioconvert", mAConvName);
    // Get it's sink pad
    GstPad *convpad = gst_element_get_static_pad(mConv, "sink");
+   GstTagList *storedTaglist = gst_tag_list_new();
+   g_object_set_data(G_OBJECT(mConv), "Audacity::StoredTagList", (gpointer)storedTaglist);
+
+   gst_pad_set_event_function(convpad, GStreamerConvEventCallback);
+
    // Add it to the pipeline
    gst_bin_add(GST_BIN(mPipeline), mConv);
 
@@ -456,7 +535,6 @@ void GStreamerImportFileHandle::OnNewStream(GstElement *uridecodebin, GstPad *pa
       g_free(mAConvName);
       gst_bin_remove(GST_BIN(mPipeline), mConv);
       gst_object_unref(mConv);
-      g_string_free(strinfo, TRUE);
       return;
    }
 
@@ -469,19 +547,19 @@ void GStreamerImportFileHandle::OnNewStream(GstElement *uridecodebin, GstPad *pa
    gst_base_sink_set_sync(GST_BASE_SINK(mSink), FALSE);       //!< TRUE by default (sync to the clock)
    gst_app_sink_set_drop(GST_APP_SINK(mSink), FALSE);         //!< FALSE by default (don't drop buffers when queue is full)
    gst_app_sink_set_emit_signals(GST_APP_SINK(mSink), FALSE); //!< FALSE by default (work in blocking mode)
-   gst_app_sink_set_max_buffers(GST_APP_SINK(mSink), 10);     //!< 0 by default, which means unlimited buffering
+   //gst_app_sink_set_max_buffers(GST_APP_SINK(mSink), 0);     //!< 0 by default, which means unlimited buffering
 
    gst_bin_add(GST_BIN(mPipeline), mSink);
 
    if (!gst_element_link(mConv, mSink))
    {
+      g_print("Failed to link autioconvert to appsink\n");
       g_free(mAConvName);
       gst_bin_remove(GST_BIN(mPipeline), mConv);
       gst_object_unref(mConv);
       g_free(mASinkName);
       gst_bin_remove(GST_BIN(mPipeline), mSink);
       gst_object_unref(mSink);
-      g_string_free(strinfo, TRUE);
    }
 
    // Run newly added elements
@@ -497,16 +575,9 @@ void GStreamerImportFileHandle::OnNewStream(GstElement *uridecodebin, GstPad *pa
    c->mSink = mSink;
    // Add new stream context to context array
    g_ptr_array_add(mScs,c);
-
-   // Add stream info
-   wxString sinfo;
-   // TODO: filter the strinfo somehow, becaue it may have a lot of unnecessary elements
-   sinfo.Printf(wxT("Index[%02x] %s"),mScs->len - 1, wxString::FromUTF8(strinfo->str).c_str());
-   g_string_free(strinfo, TRUE);
-   mStreamInfo->Add(sinfo);
 }
 
-// For unknown streams just dump info
+// For unknown streams just dump info to the debug log
 void GStreamerImportFileHandle::OnUnknownStream(GstElement *uridecodebin, GstPad *pad, GstCaps *caps)
 {
    GstStructure *str;
@@ -522,23 +593,18 @@ void GStreamerImportFileHandle::DeleteStream(guint index)
       GStreamContext *str = (GStreamContext*)g_ptr_array_index(mScs,index);
       g_free(str->mAConvName);
       g_free(str->mASinkName);
-      gst_bin_remove(GST_BIN(mPipeline), str->mConv);
       gst_bin_remove(GST_BIN(mPipeline), str->mSink);
-      gst_object_unref(GST_OBJECT(str->mConv));
+      gst_bin_remove(GST_BIN(mPipeline), str->mConv);
       gst_object_unref(GST_OBJECT(str->mSink));
+      gst_object_unref(GST_OBJECT(str->mConv));
       g_ptr_array_remove(mScs,(gpointer)str);
       g_free(str);
    }
 }
 
 // Pipeline initialization
-bool GStreamerImportFileHandle::Init()
+bool GStreamerImportFileHandle::Init(bool nameIsUri)
 {
-   // Create main loop
-   //mGLoop = g_main_loop_new(NULL, FALSE);
-
-   GstPad *audiopad = NULL;
-
    // Create a pipeline
    mPipeline = gst_pipeline_new("pipeline");
    // Get it's bus an add a message watch to it
@@ -546,9 +612,10 @@ bool GStreamerImportFileHandle::Init()
 
    // Set up source location
    gchar *name_utf8 = g_strdup(mName.ToUTF8());
-   // TODO: handle various URIs, not just file URIs. Yes, we can import radio streams through http!
-   gchar *name_with_proto_utf8 = g_strdup_printf("file:///%s",name_utf8);
-   g_free(name_utf8);
+   gchar *name_with_proto_utf8;
+   if (!nameIsUri)
+      name_with_proto_utf8 = g_strdup_printf("file:///%s",name_utf8);
+   
    // FIXME: it is possible that g_filename_from_utf8 should be used to convert uri to filesystem encoding
 /*
    GError *err = NULL;
@@ -562,24 +629,28 @@ bool GStreamerImportFileHandle::Init()
    
    // Create uridecodebin and set up signal handlers
    mDec = gst_element_factory_make("uridecodebin", "decoder");
-   g_signal_connect(mDec, "pad-added", G_CALLBACK(GStreamerNewStreamCallback), (gpointer)this);
+   g_object_set_data(G_OBJECT(mDec), "Audacity.Object", (gpointer)this);
+   g_signal_connect(mDec, "no-more-pads", G_CALLBACK(GStreamerNoMorePadsCallback), (gpointer)this);
    g_signal_connect(mDec, "unknown-type", G_CALLBACK(GStreamerUnknownStreamCallback), (gpointer)this);
-   //g_signal_connect(mDec, "autoplug-continue", G_CALLBACK(GStreamerAutoplugContinueCallback), (gpointer)this);
-   //g_signal_connect(mDec, "autoplug-factories", G_CALLBACK(GStreamerAutoplugFactoriesCallback), (gpointer)this);
    g_signal_connect(mDec, "autoplug-select", G_CALLBACK(GStreamerAutoplugSelectCallback), (gpointer)this);
    
-   
+   if (!nameIsUri)
+   {
+      g_object_set(G_OBJECT(mDec), "uri", name_with_proto_utf8, NULL);
+      g_free(name_with_proto_utf8);
+   }
+   else
+      g_object_set(G_OBJECT(mDec), "uri", name_utf8, NULL);
 
-   g_object_set(G_OBJECT(mDec), "uri", name_with_proto_utf8, NULL);
-   //g_free(name_filesystem);
+   g_free(name_utf8);
 
-   // Add everythin into the pipeline
+   // Add everything into the pipeline
    gst_bin_add_many(GST_BIN(mPipeline), mDec, NULL);
 
    // Run the pipeline
    GstStateChangeReturn statechange = gst_element_set_state(mPipeline, GST_STATE_PAUSED);
 
-   while (true)
+   while (TRUE)
    {
       GstMessage *msg = gst_bus_pop(mBus);
       if (msg)
@@ -587,6 +658,47 @@ bool GStreamerImportFileHandle::Init()
         if (!OnBusMessage(mBus,msg))
           break;
       }
+   }
+
+   // Make streaminfo strings for stream selector
+   for (gint i = 0; i < mScs->len; i++)
+   {
+      wxString sinfo;
+      GString *gstring_tags, *gstring_caps;
+      GstTagList *storedTaglist;
+
+      GstPad *convpad;
+      GstCaps *ncaps;
+      GstStructure *str;
+
+      gstring_tags = g_string_new(NULL);
+      gstring_caps = g_string_new(NULL);
+
+      GStreamContext *c = (GStreamContext*) g_ptr_array_index(mScs, i);
+      // Retrieve the taglist for that pad
+      storedTaglist = (GstTagList *)g_object_get_data(G_OBJECT(c->mConv), "Audacity::StoredTagList");
+      // Remove it from the pad so it won't accumulate tags anymore
+      g_object_set_data(G_OBJECT(c->mConv), "Audacity::StoredTagList", NULL);
+
+      // Convert taglist to string
+      gst_tag_list_foreach(storedTaglist,ConvertTagsToString, (gpointer)gstring_tags);
+      
+      // Get negotiated caps
+      convpad = gst_element_get_static_pad(c->mConv, "sink");
+      ncaps = gst_pad_get_negotiated_caps(convpad);
+      str = gst_caps_get_structure(ncaps, 0);
+
+      // Convert it to gstring
+      gst_structure_foreach(str, LogStructure, (gpointer)gstring_caps);
+      
+      sinfo.Printf(wxT("%s negotiated as: %s"), wxString::FromUTF8(gstring_tags->str).c_str(), wxString::FromUTF8(gstring_caps->str).c_str());
+      mStreamInfo->Add(sinfo);
+      
+      gst_caps_unref(ncaps);
+      gst_object_unref(convpad);
+      gst_object_unref(storedTaglist);
+      g_string_free(gstring_tags, TRUE);
+      g_string_free(gstring_caps, TRUE);
    }
 
    return true;
@@ -610,46 +722,158 @@ int GStreamerImportFileHandle::Import(TrackFactory *trackFactory,
 {
    CreateProgress();
 
-   // Not necessary anymore, but i decided to keep it
-   mTrackFactory = trackFactory;
    mOutTracks = outTracks;
    mOutNumTracks = outNumTracks;
+/*
+   // Dumps pipeline to file. At the moment it's for debugging only.
+   FILE *f = fopen("gstreamer.import.pipeline.xml", "wb");
 
+   xmlDocPtr cur = gst_xml_write (mPipeline);
+   int memsize;
+   xmlChar *mem;
+   xmlDocDumpMemory (cur, &mem, &memsize);
+   fwrite(mem,1,memsize,f);
+
+   fclose(f);
+*/
+/*   
+   for (guint i = 0; i < mScs->len; i++)
+   {
+     GStreamContext *sc = (GStreamContext *)g_ptr_array_index(mScs, i);
+     if (!sc->mUse)
+     {
+       DeleteStream(i);
+       i--;
+     }
+   }
+*/
+   // For each stream
+   for (guint i = 0; i < mScs->len; i++)
+   {
+      GStreamContext *sc = (GStreamContext *)g_ptr_array_index(mScs, i);
+      // For used streams - get actual stream caps
+      if (sc->mUse)
+      {
+         GstPad *pad = gst_element_get_static_pad(sc->mSink,"sink");
+         if (pad != NULL)
+         {
+            GstCaps *caps = gst_pad_get_negotiated_caps(pad);
+            if (caps != NULL)
+            {
+               gint capcount = gst_caps_get_size(caps);
+               GstStructure *str = gst_caps_get_structure(caps, 0);
+               gint channels = -1;
+               gst_structure_get_int(str, "channels", &channels);
+               gint rate = 0;
+               gst_structure_get_int(str, "rate", &rate);
+               sc->mNumChannels = channels;
+               sc->mSampleRate = (double)rate;
+               gst_structure_get_int(str, "width", &sc->mWidth);
+               gst_structure_get_int(str, "depth", &sc->mDepth);
+               gst_caps_unref(caps);
+               if (channels <= 0) sc->mUse = false;
+            }
+            gst_object_unref(pad);
+         }
+         else sc->mUse = false;
+      }
+      // For used streams that got negotiated properly - allocate stuff
+      if (sc->mUse)
+      {
+         sc->mChannels = new WaveTrack *[sc->mNumChannels];
+         
+         sampleFormat sfmt = int16Sample;
+         switch(sc->mDepth)
+         {
+         case 16:
+           sfmt = int16Sample;
+           break;
+         case 24:
+           sfmt = int24Sample;
+           break;
+         default:
+           ;// TODO: Error? We do not support 32-bit int samples, do we?
+         }
+
+         for (int ch = 0; ch < sc->mNumChannels; ch++)
+         {
+            sc->mChannels[ch] = trackFactory->NewWaveTrack(sfmt, sc->mSampleRate);
+            if (sc->mNumChannels == 2)
+            {
+               switch (ch)
+               {
+               case 0:
+                  sc->mChannels[ch]->SetChannel(Track::LeftChannel);
+                  sc->mChannels[ch]->SetLinked(true);
+                  break;
+               case 1:
+                  sc->mChannels[ch]->SetChannel(Track::RightChannel);
+                  sc->mChannels[ch]->SetTeamed(true);
+                  break;
+               }
+            }
+            else
+            {
+               sc->mChannels[ch]->SetChannel(Track::MonoChannel);
+            }
+         }
+      }
+      // I'm not sure this is going to work with queue limit set to zero...
+      else
+      {
+        gst_app_sink_set_drop(GST_APP_SINK(sc->mSink), true);
+      }
+   }
+
+   // The result of Import() to be returend. It will be something other than zero if user canceled or some error appears.
+   int res = eProgressSuccess;
+
+   // Run the pipeline
    GstStateChangeReturn statechange = gst_element_set_state(mPipeline, GST_STATE_PLAYING);
    if (statechange == GST_STATE_CHANGE_FAILURE)
-      return eImportFailed;
+      res = eProgressFailed;
 
+   
+   
+   
    // This is the heart of the importing process
-   // The result of Import() to be returend. It will be something other than zero if user canceled or some error appears.
-   int res = eImportSuccess;
-   // Read next frame.
    gboolean doIt = TRUE;
-   while (doIt && res == eImportSuccess)
+   while (doIt && res == eProgressSuccess)
    {
       doIt = FALSE;
       // Keep an eye on any messages we could have
-      GstMessage *msg = gst_bus_pop(mBus);
-      while (msg != NULL)
-      {
-        OnBusMessage(mBus,msg);
-        msg = gst_bus_pop(mBus);
-      }
-      for (guint i = 0; i < mScs->len && (res == eImportSuccess || res == eImportStopped); i++)
+      ProcessMessages();
+
+      guint sinkToPull = 0;
+      GstClockTime lowestTime = -1;
+      GstFormat fmt = GST_FORMAT_TIME;
+      // Find a sink with lowest last timestamp (the one that lags behind the most)
+      for (guint i = 0; i < mScs->len; i++)
       {
          GStreamContext *c = (GStreamContext *)g_ptr_array_index(mScs, i);
-         if (!c->mUse) continue;
-         GstBuffer *incbuf = gst_app_sink_pull_buffer(GST_APP_SINK(c->mSink));
-         if (incbuf)
+         if (c->mUse)
          {
-           doIt = TRUE;
-           res = WriteData(c, incbuf);
+            if (c->mLastTime < lowestTime || lowestTime < 0)
+            {
+              sinkToPull = i;
+              lowestTime = c->mLastTime;
+            }
          }
-         gst_buffer_unref(incbuf);
+      }
+      // Pull the data from that sink
+      GStreamContext *c = (GStreamContext *)g_ptr_array_index(mScs, sinkToPull);
+      GstBuffer *incbuf = gst_app_sink_pull_buffer(GST_APP_SINK(c->mSink));
+      if (incbuf)
+      {
+        c->mLastTime = GST_BUFFER_TIMESTAMP(incbuf);
+        doIt = TRUE;
+        res = WriteData(c, incbuf);
+        gst_buffer_unref(incbuf);
       }
    }
 
    // Something bad happened - destroy everything!
-   if (res == eImportFailed)
+   if (res == eProgressFailed || res == eProgressCancelled)
    {
       for (guint s = 0; s < mScs->len; s++)
       {
@@ -657,10 +881,7 @@ int GStreamerImportFileHandle::Import(TrackFactory *trackFactory,
          delete[] c->mChannels;
       }
 
-      if (mCancelled)
-         return eImportCancelled;
-      else
-         return eImportFailed;
+      return res;
    }
 
    *outNumTracks = 0;
@@ -695,83 +916,17 @@ int GStreamerImportFileHandle::Import(TrackFactory *trackFactory,
    // Pray that copycon works correctly
    *tags = mTags;
 
-   return eImportSuccess;
+   return eProgressSuccess;
 }
 
 int GStreamerImportFileHandle::WriteData(GStreamContext *sc,GstBuffer *buffer)
 {
-   if (this->mTrackFactory == NULL) return eImportFailed;
    size_t pos = 0;
 
-   int updateResult = eImportSuccess;
+   int updateResult = eProgressSuccess;
 
    gpointer data = GST_BUFFER_DATA(buffer);
    guint length = GST_BUFFER_SIZE(buffer);
-   if (sc->mNumChannels == 0)
-   {
-      GstPad *pad = gst_element_get_static_pad(sc->mSink,"sink");
-      if (pad != NULL)
-      {
-         GstCaps *caps = gst_pad_get_negotiated_caps(pad);
-         if (caps != NULL)
-         {
-            gint capcount = gst_caps_get_size(caps);
-            GstStructure *str = gst_caps_get_structure(caps, 0);
-            gst_structure_foreach(str, LogStructure, NULL);
-            gint channels = -1;
-            gst_structure_get_int(str, "channels", &channels);
-            gint rate = 0;
-            gst_structure_get_int(str, "rate", &rate);
-            sc->mNumChannels = channels;
-            sc->mSampleRate = (double)rate;
-            gst_structure_get_int(str, "width", &sc->mWidth);
-            gst_structure_get_int(str, "depth", &sc->mDepth);
-            gst_caps_unref(caps);
-            if (channels <= 0) sc->mUse = false;
-         }
-         gst_object_unref(pad);
-      }
-      else sc->mUse = false;
-   }
-   if (sc->mChannels == NULL)
-   {
-      sc->mChannels = new WaveTrack *[sc->mNumChannels];
-      int ch;
-      for (ch = 0; ch < sc->mNumChannels; ch++)
-      {
-         sampleFormat sfmt = int16Sample;
-         switch(sc->mDepth)
-         {
-         case 16:
-           sfmt = int16Sample;
-           break;
-         case 24:
-           sfmt = int24Sample;
-           break;
-         default:
-           ;// TODO: Error? We do not support 32-bit int samples, do we?
-         }
-         sc->mChannels[ch] = mTrackFactory->NewWaveTrack(sfmt, sc->mSampleRate);
-         if (sc->mNumChannels == 2)
-         {
-            switch (ch)
-            {
-            case 0:
-               sc->mChannels[ch]->SetChannel(Track::LeftChannel);
-               sc->mChannels[ch]->SetLinked(true);
-               break;
-            case 1:
-               sc->mChannels[ch]->SetChannel(Track::RightChannel);
-               sc->mChannels[ch]->SetTeamed(true);
-               break;
-            }
-         }
-         else
-         {
-            sc->mChannels[ch]->SetChannel(Track::MonoChannel);
-         }
-      }
-   }
    
    // Allocate the buffer to store audio.
    int nChannels = sc->mNumChannels;
@@ -857,19 +1012,23 @@ int GStreamerImportFileHandle::WriteData(GStreamContext *sc,GstBuffer *buffer)
        gst_element_query_duration (mPipeline, &fmt, &tlen) )
    {
       updateResult = mProgress->Update((wxLongLong)tpos, (wxLongLong)tlen);
+      if (((gdouble)tpos/tlen) >= 0.98103365830952650)
+      {
+        if (tpos > 0)
+          tpos = 0;
+      }
       if (updateResult != 1)
       {
          if (updateResult == 0)
          {
-           mCancelled = true;
-           updateResult = eImportCancelled;
+           updateResult = eProgressCancelled;
          }
          else
-           updateResult = eImportStopped;
+           updateResult = eProgressStopped;
          GstStateChangeReturn statechange = gst_element_set_state(mPipeline, GST_STATE_NULL);
       }
       else
-        updateResult = eImportSuccess;
+        updateResult = eProgressSuccess;
    }
    
    return updateResult;
