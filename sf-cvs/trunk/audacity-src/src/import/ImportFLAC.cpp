@@ -151,6 +151,7 @@ public:
 private:
    sampleFormat          mFormat;
    MyFLACFile           *mFile;
+   wxFFile               mHandle;
    unsigned long         mSampleRate;
    unsigned long         mNumChannels;
    unsigned long         mBitsPerSample;
@@ -310,7 +311,7 @@ FLACImportFileHandle::FLACImportFileHandle(const wxString & name)
 bool FLACImportFileHandle::Init()
 {
 #ifdef LEGACY_FLAC
-   bool success = mFile->set_filename(OSFILENAME(mFilename));
+   bool success = mFile->set_filename(OSINPUT(mFilename));
    if (!success) {
       return false;
    }
@@ -321,7 +322,14 @@ bool FLACImportFileHandle::Init()
       return false;
    }
 #else
-   if (mFile->init(OSFILENAME(mFilename)) != FLAC__STREAM_DECODER_INIT_STATUS_OK) {
+   if (!mHandle.Open(mFilename, wxT("rb"))) {
+      return false;
+   }
+
+   // Even though there is an init() method that takes a filename, use the one that
+   // takes a file handle because wxWidgets can open a file with a Unicode name and
+   // libflac can't (under Windows).
+   if (mFile->init(mHandle.fp()) != FLAC__STREAM_DECODER_INIT_STATUS_OK) {
       return false;
    }
 #endif
@@ -436,6 +444,8 @@ FLACImportFileHandle::~FLACImportFileHandle()
 {
    mFile->finish();
    delete mFile;
+
+   mHandle.Close();
 }
 
 #endif /* USE_LIBFLAC */

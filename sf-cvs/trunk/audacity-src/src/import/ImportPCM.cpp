@@ -118,11 +118,24 @@ wxString PCMImportPlugin::GetPluginFormatDescription()
 ImportFileHandle *PCMImportPlugin::Open(wxString filename)
 {
    SF_INFO info;
-   SNDFILE *file;
+   SNDFILE *file = NULL;
 
    memset(&info, 0, sizeof(info));
 
-   file = sf_open(OSFILENAME(filename), SFM_READ, &info);
+   wxFile f;   // will be closed when it goes out of scope
+
+   if (f.Open(filename)) {
+      // Even though there is an sf_open() that takes a filename, use the one that
+      // takes a file descriptor since wxWidgets can open a file with a Unicode name and
+      // libsndfile can't (under Windows).
+      file = sf_open_fd(f.fd(), SFM_READ, &info, TRUE);
+   }
+
+   // The file descriptor is now owned by "file", so we must tell "f" to leave
+   // it alone.  The file descriptor is closed by sf_open_fd() even if an error
+   // occurs.
+   f.Detach();
+
    if (!file) {
       // TODO: Handle error
       //char str[1000];

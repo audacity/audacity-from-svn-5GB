@@ -21,33 +21,24 @@ and on Mac OS X for the filesystem.
 *//*******************************************************************/
 
 
-#include "Internat.h"
-
 #include <wx/log.h>
 #include <wx/intl.h>
 #include <wx/filename.h>
 
-#ifdef __WXMAC__
-#include <wx/mac/private.h>
-#endif
-
 #include <locale.h>
 #include <math.h> // for pow()
+
+#include "Internat.h"
+#include "FileDialog.h"
 
 // in order for the static member variables to exist, they must appear here
 // (_outside_) the class definition, in order to be allocated some storage.
 // Otherwise, you get link errors.
 
 wxChar Internat::mDecimalSeparator = wxT('.'); // default
-wxMBConv *Internat::mConvLocal = NULL;
 wxString Internat::forbid;
 wxArrayString Internat::exclude;
-
-
-#ifdef __WXMAC__
-void *Internat::mTECToUTF = NULL;
-void *Internat::mTECFromUTF = NULL;
-#endif
+wxCharBuffer Internat::mFilename;
 
 void Internat::Init()
 {
@@ -58,50 +49,11 @@ void Internat::Init()
 
 //   wxLogDebug(wxT("Decimal separator set to '%c'"), mDecimalSeparator);
 
-   #ifndef __WXMAC__
-   // Set up character-set conversion for UTF-8 input and output.
-   mConvLocal = new wxCSConv(wxLocale::GetSystemEncodingName());
-   #else
-   // Set up a special converter to/from the Mac-specific local
-   // encoding (usually MacRoman)
-   OSStatus status = noErr;
-   TECObjectRef ec;
-
-   TextEncoding MacEncoding = GetApplicationTextEncoding();
-   TextEncoding UTF8 = CreateTextEncoding(kTextEncodingUnicodeDefault,
-                                          kUnicodeNoSubset,
-                                          kUnicodeUTF8Format);
-   status = TECCreateConverter(&ec, MacEncoding, UTF8);
-   if (status == noErr)
-      mTECToUTF = (void *)ec;
-   else
-      mTECToUTF = NULL;
-   
-   status = TECCreateConverter(&ec, UTF8, MacEncoding);
-   if (status == noErr)
-      mTECFromUTF = (void *)ec;
-   else
-      mTECFromUTF = NULL;
-
-   #endif
-
    // Setup list of characters that aren't allowed in file names
    wxFileName tmpFile;
    forbid = tmpFile.GetForbiddenChars();
    for(unsigned int i=0; i < forbid.Length(); i++)
       exclude.Add( forbid.Mid(i, 1) );
-
-}
-
-// JKC: Added to fix a memory leak.
-void Internat::CleanUp()
-{
-#ifndef __WXMAC__
-   if( mConvLocal != NULL )
-   {
-      delete mConvLocal;
-   }
-#endif
 }
 
 wxChar Internat::GetDecimalSeparator()
@@ -207,97 +159,41 @@ wxString Internat::FormatSize(double size)
    return sizeStr;
 }
 
-#ifdef __WXMAC__IGNORE
-
-// wxMac 2.4.x doesn't support converting to/from Mac encodings yet,
-// so we use Mac OS X-specific code
-
-wxString MacConvertString(TECObjectRef ec,
-                          wxString input)
+#if defined(__WXMSW__)
+//
+// On Windows, wxString::mb_str() can return a NULL pointer if the
+// conversion to multi-byte fails.  So, based on direction intent,
+// returns a pointer to an empty string or prompts for a new name.
+//
+char *Internat::VerifyFilename(const wxString &s, bool input)
 {
-   OSStatus status = noErr;
-   ByteCount byteOutLen;
-   ByteCount byteInLen = input.Length();
-   ByteCount byteBufferLen = byteInLen * 8 + 1;
-   char* buf = new char[byteBufferLen] ;
+   static wxCharBuffer buf;
+   wxString name = s;
 
-   status = TECConvertText(ec,
-                           (ConstTextPtr)input.c_str(),
-                           byteInLen,
-                           &byteInLen,
-                           (TextPtr)buf,
-                           byteBufferLen,
-                           &byteOutLen);
+   if (input) {
+      if ((char *) (const char *)name.mb_str() == NULL) {
+         name = wxEmptyString;
+      }
+   }
+   else {
+      wxFileName f(name);
+      while ((char *) (const char *)name.mb_str() == NULL) {
+         wxMessageBox(_("The specified filename could not be converted due to Unicode character use."));
 
-   if (status != noErr) {
-      delete[] buf;
-      return input;
+         name = FileSelector(_("Specify New Filename:"),
+                             NULL,
+                             name,
+                             f.GetExt(),
+                             wxT("*.") + f.GetExt(),
+                             wxFD_SAVE | wxRESIZE_BORDER,
+                             wxGetTopLevelParent(NULL));
+      }
    }
 
-   buf[byteOutLen] = 0;
+   mFilename = name.mb_str();
 
-   wxString result = wxString(buf, wxConvLocal);
-   delete[] buf;
-
-   return result;
+   return (char *) (const char *) mFilename;
 }
-
-wxString Internat::LocalToUTF8(const wxString &s)
-{
-   if (!mTECToUTF)
-      return s;
-
-   return MacConvertString((TECObjectRef)mTECToUTF, s);
-}
-
-wxString Internat::UTF8ToLocal(const wxString &s)
-{
-   if (!mTECFromUTF)
-      return s;
-
-   return MacConvertString((TECObjectRef)mTECFromUTF, s);
-}
-
-wxString Internat::ToFilename(const wxString &s)
-{
-   return LocalToUTF8(s);
-}
-
-wxString Internat::FromFilename(const wxString &s)
-{
-   return UTF8ToLocal(s);
-}
-
-#else
-
-wxString Internat::LocalToUTF8(const wxString &s)
-{
-#if defined(__WXMAC__)
-   return wxString(s, wxConvUTF8);
-#else
-   return wxString(s.wc_str(*mConvLocal), wxConvUTF8);
-#endif
-}
-
-wxString Internat::UTF8ToLocal(const wxString &s)
-{
-#if defined(__WXMAC__)
-   return wxString(s, wxConvLocal);
-#else
-   return wxString(s.wc_str(wxConvUTF8), *mConvLocal);
-#endif
-}
-
-wxString Internat::ToFilename(const wxString &s)
-{
-   return s;
-}
-
-wxString Internat::FromFilename(const wxString &s)
-{
-   return s;
-}
-
 #endif
 
 wxString Internat::SanitiseFilename(const wxString &name, const wxString &sub)

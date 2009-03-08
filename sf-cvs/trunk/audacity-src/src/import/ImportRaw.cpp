@@ -98,7 +98,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
    sampleCount totalFrames;
    double rate = 44100.0;
    double percent = 100.0;
-   SNDFILE *sndFile;
+   SNDFILE *sndFile = NULL;
    SF_INFO sndInfo;
    int result;
 
@@ -130,8 +130,16 @@ int ImportRaw(wxWindow *parent, wxString fileName,
    sndInfo.channels = (int)numChannels;
    sndInfo.format = encoding | SF_FORMAT_RAW;
 
-   sndFile = sf_open(OSFILENAME(fileName), SFM_READ, &sndInfo);
-   if (!sndFile) {
+   wxFile f;   // will be closed when it goes out of scope
+
+   if (f.Open(fileName)) {
+      // Even though there is an sf_open() that takes a filename, use the one that
+      // takes a file descriptor since wxWidgets can open a file with a Unicode name and
+      // libsndfile can't (under Windows).
+      sndFile = sf_open_fd(f.fd(), SFM_READ, &sndInfo, FALSE);
+   }
+
+   if (!sndFile){
       // TODO: Handle error
       char str[1000];
       sf_error_str((SNDFILE *)NULL, str, 1000);
