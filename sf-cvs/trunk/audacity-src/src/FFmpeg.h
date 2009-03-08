@@ -51,6 +51,7 @@ extern "C" {
 #include "../Prefs.h"
 #include <wx/checkbox.h>
 #include <wx/textctrl.h>
+#include <errno.h>
 
 // if you needed them, any other audacity header files would go here
 
@@ -68,6 +69,11 @@ wxString GetFFmpegVersion(wxWindow *parent);
 
 /* from here on in, this stuff only applies when ffmpeg is available */
 #if defined(USE_FFMPEG)
+
+#if defined(__WXMSW__)
+int modify_file_url_to_utf8(char* buffer, size_t buffer_size, const char* url);
+int modify_file_url_to_utf8(char* buffer, size_t buffer_size, const wchar_t* url);
+#endif
 
 //----------------------------------------------------------------------------
 // Attempt to load and enable/disable FFmpeg at startup
@@ -176,6 +182,11 @@ public:
    void*             (*av_fast_realloc)               (void *ptr, unsigned int *size, unsigned int min_size);
    int               (*av_open_input_file)            (AVFormatContext **ic_ptr, const char *filename, AVInputFormat *fmt, int buf_size, AVFormatParameters *ap);
    void              (*av_register_all)               (void);
+#if LIBAVFORMAT_VERSION_MAJOR < 53
+   int               (*register_protocol)             (URLProtocol *protocol);
+#endif
+   int               (*av_register_protocol)          (URLProtocol *protocol);
+   int               (*av_strstart)                   (const char *str, const char *pfx, const char **ptr);
    int               (*av_find_stream_info)           (AVFormatContext *ic);
    int               (*av_read_frame)                 (AVFormatContext *s, AVPacket *pkt);
    int               (*av_seek_frame)                 (AVFormatContext *s, int stream_index, int64_t timestamp, int flags);

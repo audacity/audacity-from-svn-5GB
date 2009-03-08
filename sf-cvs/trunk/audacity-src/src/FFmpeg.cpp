@@ -154,6 +154,122 @@ void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
    wxLogMessage(wxT("%s: %s"),cpt.c_str(),printstring.c_str());
 }
 
+#if defined(__WXMSW__)
+//======================= UTF8-aware uri protocol for FFmpeg
+// Code is from ffmpeg-users mailing list mostly
+
+static int ufile_open(URLContext *h, const char *filename, int flags)
+{
+    int access;
+    int fd;
+
+    FFmpegLibsInst->av_strstart(filename, "ufile:", &filename);
+
+    /// 4096 should be enough for a path name
+    wchar_t wfilename[4096];
+    int nChars = MultiByteToWideChar(
+        CP_UTF8,
+        MB_ERR_INVALID_CHARS,
+        filename,
+        -1,    // string is NULL terminated
+        wfilename,
+        sizeof(wfilename) / sizeof(*wfilename)
+        );
+
+    if(nChars <= 0) {
+        return AVERROR(ENOENT);
+    }
+
+    if (flags & URL_RDWR) {
+        access = _O_CREAT | _O_TRUNC | _O_RDWR;
+    } else if (flags & URL_WRONLY) {
+        access = _O_CREAT | _O_TRUNC | _O_WRONLY;
+    } else {
+        access = _O_RDONLY;
+    }
+#ifdef O_BINARY
+    access |= O_BINARY;
+#endif
+    fd = _wopen(wfilename, access, 0666);
+    h->priv_data = (void *)(size_t)fd;
+    if (fd < 0) {
+        const int err = AVERROR(ENOENT);
+        assert (err < 0);
+        return err;
+    }
+    return 0;
+}
+
+static int ufile_read(URLContext *h, unsigned char *buf, int size)
+{
+    int fd = (size_t)h->priv_data;
+    int nBytes = _read(fd, buf, size);
+    return nBytes;
+}
+
+static int ufile_write(URLContext *h, unsigned char *buf, int size)
+{
+    int fd = (size_t)h->priv_data;
+    int nBytes = _write(fd, buf, size);
+    return nBytes;
+}
+
+#if LIBAVFORMAT_VERSION_MAJOR >= 52
+static int64_t ufile_seek(URLContext *h, int64_t pos, int whence)
+#else
+static offset_t ufile_seek(URLContext *h, offset_t pos, int whence)
+#endif
+{
+    //assert(whence == SEEK_SET || whence == SEEK_CUR || whence == SEEK_END);
+    const int fd = (size_t)h->priv_data;
+    const __int64 nBytes = _lseeki64(fd, pos, whence);
+    return nBytes;
+}
+
+static int ufile_close(URLContext *h)
+{
+    int fd = (size_t)h->priv_data;
+    if(fd >= 0) {
+        return _close(fd);
+    }
+
+    return 0;
+}
+
+URLProtocol ufile_protocol = {
+    "ufile",
+    ufile_open,
+    ufile_read,
+    ufile_write,
+    ufile_seek,
+    ufile_close,
+};
+
+int modify_file_url_to_utf8(char* buffer, size_t buffer_size, const char* url)
+{
+    strncpy(buffer, "ufile:", buffer_size);
+    strncat(buffer, url, buffer_size);
+    return 0;
+}
+
+int modify_file_url_to_utf8(char* buffer, size_t buffer_size, const wchar_t* url)
+{
+    static const char ufile[] = "ufile:";
+    strncpy(buffer, ufile, buffer_size);
+
+    /// convert Unicode to multi-byte string
+    int result = WideCharToMultiByte(CP_UTF8,
+        0, url, -1, buffer + (sizeof(ufile) - 1),
+        buffer_size - sizeof(ufile),
+        NULL, NULL);
+    if (result <= 0)  
+        return -1;
+
+    return 0;
+}
+#endif
+
+
 class FFmpegNotFoundDialog;
 
 //----------------------------------------------------------------------------
@@ -555,6 +671,12 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avformat,av_iformat_next);
    INITDYN(avformat,av_oformat_next);
    INITDYN(avformat,av_set_parameters);
+#if LIBAVFORMAT_VERSION_MAJOR < 53
+   INITDYN(avformat,register_protocol);
+   av_register_protocol = register_protocol;
+#else
+   INITDYN(avformat,av_register_protocol);
+#endif
    INITDYN(avformat,url_fopen);
    INITDYN(avformat,url_fclose);
    INITDYN(avformat,url_fsize);
@@ -601,6 +723,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(util,av_malloc);
    INITDYN(util,av_freep);
    INITDYN(util,av_rescale_q);
+   INITDYN(util,av_strstart);
    INITDYN(util,avutil_version);
 
    //FFmpeg initialization
@@ -633,6 +756,9 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
       wxLogMessage(wxT("Version mismatch! Libraries are unusable."));
       return false;
    }
+
+   av_register_protocol(&ufile_protocol);
+
    return true;
 }
 
