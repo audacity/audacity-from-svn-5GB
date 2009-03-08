@@ -53,12 +53,13 @@ void GStreamerStartup();
 // so let's use msw-specific pragma to add required libraries.
 // Of course, library search path still has to be updated manually
 #   if defined(__WXMSW__)
-#      pragma comment(lib,"libgstreamer-0.10-0.lib")
-#      pragma comment(lib,"libgstapp-0.10-0.lib")
-#      pragma comment(lib,"libgstbase-0.10-0.lib")
+#      pragma comment(lib,"libgstreamer-0.10.lib")
+#      pragma comment(lib,"libgstapp-0.10.lib")
+#      pragma comment(lib,"libgstbase-0.10.lib")
 #      pragma comment(lib,"glib-2.0.lib")
 #      pragma comment(lib,"gobject-2.0.lib")
 #      pragma comment(lib,"gthread-2.0.lib")
+#      pragma comment(lib,"libxml2.lib")
 #   endif
     extern "C" {
 #      include <gst/gst.h>
