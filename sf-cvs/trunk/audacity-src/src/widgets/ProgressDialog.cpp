@@ -1017,6 +1017,14 @@ ProgressDialog::ProgressDialog(const wxString & title, const wxString & message,
 
    mHadFocus = wxWindow::FindFocus();
 
+#if defined(__WXGTK__)
+   // Under GTK, when applying any effect that prompts the user, it's more than
+   // like that FindFocus() will return NULL.  So, make sure something has focus.
+   if (GetParent()) {
+      GetParent()->SetFocus();
+   }
+#endif
+
    SetExtraStyle(GetExtraStyle() | wxWS_EX_TRANSIENT);
 
    v = new wxBoxSizer(wxVERTICAL);
@@ -1147,6 +1155,14 @@ ProgressDialog::~ProgressDialog()
       delete mDisable;
 
    }
+
+#if defined(__WXGTK__)
+   // Under GTK, when applying any effect that prompts the user, it's more than
+   // like that FindFocus() will return NULL.  So, make sure something has focus.
+   if (GetParent()) {
+      GetParent()->SetFocus();
+   }
+#endif
 
    if (mHadFocus) {
       mHadFocus->SetFocus();
