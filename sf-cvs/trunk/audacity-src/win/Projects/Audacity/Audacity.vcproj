@@ -2275,7 +2275,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand1.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2287,7 +2311,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand10.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2299,7 +2347,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand11.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2311,7 +2383,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand12.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2323,7 +2419,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand2.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2335,7 +2455,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand3.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2347,7 +2491,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand4.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2359,7 +2527,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand5.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2371,7 +2563,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand6.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2383,7 +2599,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand7.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2395,7 +2635,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand8.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2407,7 +2671,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mand9.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2419,7 +2707,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\mandpluk.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2431,7 +2743,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\marmstk1.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
@@ -2443,7 +2779,31 @@
 					RelativePath="..\..\..\nyquist\rawwaves\sinewave.raw"
 					>
 					<FileConfiguration
+						Name="Unicode Release|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Unicode Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="copy"
+							OutputName="&quot;$(OutDir)\nyquist\$(ParentName)\$(InputFileName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
 						<Tool
 							Name="copy"
