@@ -252,7 +252,7 @@ bool ExportFFmpeg::Init(const char *shortname, AudacityProject *project, Tags *m
    // See if libavformat has modules that can write our output format. If so, mEncFormatDesc
    // will describe the functions used to write the format (used internally by libavformat)
    // and the default video/audio codecs that the format uses.
-   if ((mEncFormatDesc = FFmpegLibsInst->guess_format(shortname, OSFILENAME(mName), NULL)) == NULL)
+   if ((mEncFormatDesc = FFmpegLibsInst->guess_format(shortname, OSINPUT(mName), NULL)) == NULL)
    {
       wxLogMessage(wxT("FFmpeg : ERROR - Can't determine format description for file \"%s\"."), mName.c_str());
       return false;
