@@ -1370,7 +1370,6 @@ int AudacityApp::OnExit()
    BlockFile::Deinit();
 
    DeinitAudioIO();
-   Internat::CleanUp();// JKC
 
    if (mLocale)
       delete mLocale;

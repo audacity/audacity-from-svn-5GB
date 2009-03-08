@@ -276,11 +276,23 @@ MP3ImportFileHandle::~MP3ImportFileHandle()
 
 void MP3ImportFileHandle::ImportID3(Tags *tags)
 {
-#ifdef USE_LIBID3TAG 
-   struct id3_file *fp = id3_file_open(OSFILENAME(mFilename), ID3_FILE_MODE_READONLY);
+#ifdef USE_LIBID3TAG
+   wxFile f;   // will be closed when it goes out of scope
+   struct id3_file *fp = NULL;
+
+   if (f.Open(mFilename)) {
+      // Use id3_file_fdopen() instead of id3_file_open since wxWidgets can open a
+      // file with a Unicode name and id3_file_open() can't (under Windows).
+      fp = id3_file_fdopen(f.fd(), ID3_FILE_MODE_READONLY);
+   }
+      
    if (!fp) {
       return;
    }
+
+   // The file descriptor is now owned by "fp", so we must tell "f" to forget
+   // about it.
+   f.Detach();
 
    struct id3_tag *tp = id3_file_tag(fp);
    if (!tp) {

@@ -1291,7 +1291,7 @@ void MP3Exporter::PutInfoTag(wxFFile & f, wxFileOffset off)
 #if defined(__WXMSW__)
       else if (beWriteInfoTag) {
          f.Flush();
-         beWriteInfoTag(mGF, OSFILENAME(f.GetName()));
+         beWriteInfoTag(mGF, OSOUTPUT(f.GetName()));
       }
 #endif
       else if (lame_mp3_tags_fid) {   

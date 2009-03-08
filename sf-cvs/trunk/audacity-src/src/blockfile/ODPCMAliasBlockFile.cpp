@@ -630,10 +630,18 @@ int ODPCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
    //there are thread-unsafe crashes here - not sure why.  sf_open may be called on the same file
    //from different threads, but this seems okay, unless it is implemented strangely..  
    static ODLock sfMutex;
-   ODManager::LockLibSndFileMutex();
-   SNDFILE *sf=sf_open(OSFILENAME(aliasPath),
-                        SFM_READ, &info);
-   ODManager::UnlockLibSndFileMutex();
+
+   wxFile f;   // will be closed when it goes out of scope
+   SNDFILE *sf = NULL;
+
+   if (f.Open(aliasPath)) {
+      // Even though there is an sf_open() that takes a filename, use the one that
+      // takes a file descriptor since wxWidgets can open a file with a Unicode name and
+      // libsndfile can't (under Windows).
+      ODManager::LockLibSndFileMutex();
+      sf = sf_open_fd(f.fd(), SFM_READ, &info, FALSE);
+      ODManager::UnlockLibSndFileMutex();
+   }
    
    if (!sf){
       

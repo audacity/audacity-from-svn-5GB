@@ -19,8 +19,6 @@
 class Internat
 {
 public:
-   static void CleanUp();
-
    /** \brief Initialize internationalisation support. Call this once at
     * program start. */
    static void Init();
@@ -56,26 +54,11 @@ public:
    static wxString FormatSize(wxLongLong size);
    static wxString FormatSize(double size);
 
-   /** \brief Convert string from UTF-8 to the local character encoding
-    *
-    * Used for XML files, which are always read in UTF-8 regardless of the
-    * language settings on the host OS */
-   static wxString UTF8ToLocal(const wxString &s);
-   /** \brief Convert string from the local character encoding to UTF-8
-    *
-    * Used for XML files, which are always written in UTF-8 regardless of the
-    * language settings on the host OS */
-   static wxString LocalToUTF8(const wxString &s);
-
-   /** \brief Convert file name to correct character encoding for host file
-    * system
-    *
-    * On Mac it converts to UTF-8, on other platforms it does nothing.*/
-   static wxString ToFilename(const wxString &s);
-   /** \brief Convert file name from character encoding of host file system
-    *
-    * On Mac it converts from UTF-8, on other platforms it does nothing.*/
-   static wxString FromFilename(const wxString &s);
+   /** \brief Protect against Unicode to multi-byte conversion failures
+    * on Windows */
+#if defined(__WXMSW__)
+   static char *VerifyFilename(const wxString &s, bool input = true);
+#endif
 
    /** \brief Check a proposed file name string for illegal characters and
     * remove them */
@@ -92,16 +75,12 @@ public:
 
 private:
    static wxChar mDecimalSeparator;
-   static wxMBConv *mConvLocal;
 
-   #ifdef __WXMAC__
-   static void *mTECToUTF;
-   static void *mTECFromUTF;
-   #endif
    // stuff for file name sanitisation
    static wxString forbid;
    static wxArrayString exclude;
 
+   static wxCharBuffer mFilename;
 };
 
 #define _NoAcc(X) Internat::StripAccelerators(_(X))
@@ -109,10 +88,19 @@ private:
 // Use this macro to wrap all filenames and pathnames that get
 // passed directly to a system call, like opening a file, creating
 // a directory, checking to see that a file exists, etc...
-#if defined(__WXMAC__)
+#if defined(__WXMSW__)
+// Note, on Windows we don't define an OSFILENAME() to prevent accidental use.
+// See VerifyFilename() for an explanation.
+#define OSINPUT(X) Internat::VerifyFilename(X, true)
+#define OSOUTPUT(X) Internat::VerifyFilename(X, false)
+#elif defined(__WXMAC__)
 #define OSFILENAME(X) ((char *) (const char *)(X).fn_str())
+#define OSINPUT(X) OSFILENAME(X)
+#define OSOUTPUT(X) OSFILENAME(X)
 #else
 #define OSFILENAME(X) ((char *) (const char *)(X).mb_str())
+#define OSINPUT(X) OSFILENAME(X)
+#define OSOUTPUT(X) OSFILENAME(X)
 #endif
 
 // Convert C strings to wxString

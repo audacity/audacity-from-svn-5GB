@@ -237,7 +237,7 @@ int ExportFLAC::Export(AudacityProject *project,
    FLAC::Encoder::File encoder;
 
 #ifdef LEGACY_FLAC
-   encoder.set_filename(OSFILENAME(fName));
+   encoder.set_filename(OSOUTPUT(fName));
 #endif
    encoder.set_channels(numChannels);
    encoder.set_sample_rate(lrint(rate));
@@ -245,7 +245,7 @@ int ExportFLAC::Export(AudacityProject *project,
    // See note in GetMetadata() about a bug in libflac++ 1.1.2
    if (!GetMetadata(project, metadata)) {
       return false;
-      }
+   }
 
    if (mMetadata) {
       encoder.set_metadata(&mMetadata, 1);
@@ -283,7 +283,20 @@ int ExportFLAC::Export(AudacityProject *project,
 #ifdef LEGACY_FLAC
    encoder.init();
 #else
-   encoder.init(OSFILENAME(fName));
+   wxFFile f;     // will be closed when it goes out of scope
+   if (!f.Open(fName, wxT("w+b"))) {
+      wxMessageBox(wxString::Format(_("FLAC export couldn't open %s"), fName.c_str()));
+      return false;
+   }
+
+   // Even though there is an init() method that takes a filename, use the one that
+   // takes a file handle because wxWidgets can open a file with a Unicode name and
+   // libflac can't (under Windows).
+   int status = encoder.init(f.fp());
+   if (status != FLAC__STREAM_ENCODER_INIT_STATUS_OK) {
+      wxMessageBox(wxString::Format(_("FLAC encoder failed to initialize\nStatus: %d"), status));
+      return false;
+   }
 #endif
 
    if (mMetadata) {
