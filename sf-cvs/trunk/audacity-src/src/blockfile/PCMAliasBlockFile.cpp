@@ -12,6 +12,7 @@
    #include <windows.h>
 #endif
 
+#include <wx/file.h>
 #include <wx/utils.h>
 #include <wx/wxchar.h>
 #include <wx/log.h>
