@@ -268,7 +268,14 @@ bool ExportFFmpeg::Init(const char *shortname, AudacityProject *project, Tags *m
    // Initialise the output format context.
    mEncFormatCtx->oformat = mEncFormatDesc;
    wxString tName(mName);
+#if defined(__WXMSW__)
+   const wchar_t* unicode_filename = mName.wc_str();
+   char utf8url[1024];
+   modify_file_url_to_utf8(utf8url, sizeof(utf8url), unicode_filename);
+   memcpy(mEncFormatCtx->filename,utf8url,strlen(utf8url)+1);
+#else
    memcpy(mEncFormatCtx->filename,OSFILENAME(mName),strlen(OSFILENAME(mName))+1);
+#endif
    
    // At the moment Audacity can export only one audio stream
    if ((mEncAudioStream = FFmpegLibsInst->av_new_stream(mEncFormatCtx, 1)) == NULL)
