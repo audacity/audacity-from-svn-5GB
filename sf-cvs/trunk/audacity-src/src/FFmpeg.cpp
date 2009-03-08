@@ -757,7 +757,9 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
       return false;
    }
 
+#if defined(__WXMSW__)
    av_register_protocol(&ufile_protocol);
+#endif
 
    return true;
 }
