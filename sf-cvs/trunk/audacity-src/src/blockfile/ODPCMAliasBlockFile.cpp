@@ -21,6 +21,7 @@ The summary is eventually computed and written to a file in a background thread.
 #endif
 #include "ODPCMAliasBlockFile.h"
 
+#include <wx/file.h>
 #include <wx/utils.h>
 #include <wx/wxchar.h>
 #include <wx/log.h>
