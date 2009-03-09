@@ -502,9 +502,6 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
       return HandlePaste(t0, src);
    }
 
-   // Calculate end of cleared regions
-   t1 = t0 + dur;
-
    // Align to a sample
    t0 = LongSamplesToTime(TimeToLongSamples(t0));
    t1 = LongSamplesToTime(TimeToLongSamples(t1));
