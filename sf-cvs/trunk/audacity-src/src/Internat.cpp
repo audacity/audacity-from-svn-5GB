@@ -20,7 +20,7 @@ and on Mac OS X for the filesystem.
 
 *//*******************************************************************/
 
-
+#include <wx/msgdlg.h> 
 #include <wx/log.h>
 #include <wx/intl.h>
 #include <wx/filename.h>
