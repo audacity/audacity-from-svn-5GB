@@ -31,6 +31,10 @@ Describes shared object that is used to access FFmpeg libraries.
 
 #if defined(USE_FFMPEG)
 extern "C" {
+   // Include errno.h before the ffmpeg includes since they depend on 
+   // knowing the value of EINVAL...see bottom of avcodec.h.  Not doing
+   // so will produce positive error returns when they should be < 0.
+   #include <errno.h>
    #include <libavcodec/avcodec.h>
    #include <libavformat/avformat.h>
    #include <libavutil/fifo.h>
@@ -51,7 +55,6 @@ extern "C" {
 #include "../Prefs.h"
 #include <wx/checkbox.h>
 #include <wx/textctrl.h>
-#include <errno.h>
 
 // if you needed them, any other audacity header files would go here
 
@@ -69,6 +72,7 @@ wxString GetFFmpegVersion(wxWindow *parent);
 
 /* from here on in, this stuff only applies when ffmpeg is available */
 #if defined(USE_FFMPEG)
+int ufile_fopen(ByteIOContext **s, const wxString & name, int flags);
 
 #if defined(__WXMSW__)
 int modify_file_url_to_utf8(char* buffer, size_t buffer_size, const char* url);
@@ -181,6 +185,8 @@ public:
    int               (*av_get_bits_per_sample_format) (enum SampleFormat sample_fmt);
    void*             (*av_fast_realloc)               (void *ptr, unsigned int *size, unsigned int min_size);
    int               (*av_open_input_file)            (AVFormatContext **ic_ptr, const char *filename, AVInputFormat *fmt, int buf_size, AVFormatParameters *ap);
+   int               (*av_open_input_stream)          (AVFormatContext **ic_ptr, ByteIOContext *pb, const char *filename, AVInputFormat *fmt, AVFormatParameters *ap);
+   int               (*get_buffer)                    (ByteIOContext *s, unsigned char *buf, int size);
    void              (*av_register_all)               (void);
 #if LIBAVFORMAT_VERSION_MAJOR < 53
    int               (*register_protocol)             (URLProtocol *protocol);
@@ -197,12 +203,17 @@ public:
    AVOutputFormat*   (*av_oformat_next)               (AVOutputFormat *f);
    AVCodec*          (*av_codec_next)                 (AVCodec *c);
    int               (*av_set_parameters)             (AVFormatContext *s, AVFormatParameters *ap);
+   int               (*url_open_protocol)             (URLContext **puc, struct URLProtocol *up, const char *filename, int flags);
+   int               (*url_fdopen)                    (ByteIOContext **s, URLContext *h);
+   int               (*url_close)                     (URLContext *h);
    int               (*url_fopen)                     (ByteIOContext **s, const char *filename, int flags);
+   int64_t           (*url_fseek)                     (ByteIOContext *s, int64_t offset, int whence);
    int               (*url_fclose)                    (ByteIOContext *s);
    int               (*url_fsize)                     (ByteIOContext *s);
    AVStream*         (*av_new_stream)                 (AVFormatContext *s, int id);
    AVFormatContext*  (*av_alloc_format_context)       (void);
    AVOutputFormat*   (*guess_format)                  (const char *short_name, const char *filename, const char *mime_type);
+   int               (*match_ext)                     (const char *filename, const char *extensions);
    int               (*av_write_trailer)              (AVFormatContext *s);
    int               (*av_interleaved_write_frame)    (AVFormatContext *s, AVPacket *pkt);
    int               (*av_write_frame)                (AVFormatContext *s, AVPacket *pkt);
@@ -366,6 +377,9 @@ FFmpegLibs *PickFFmpegLibs();
 ///! Helper function - destroys FFmpegLibs object if there is no need for it
 ///! anymore, or just decrements it's reference count
 void        DropFFmpegLibs();
+
+int ufile_fopen(ByteIOContext **s, const wxString & name, int flags);
+int ufile_fopen_input(AVFormatContext **ic_ptr, wxString & name);
 
 #endif // USE_FFMPEG
 #endif // __AUDACITY_FFMPEG__

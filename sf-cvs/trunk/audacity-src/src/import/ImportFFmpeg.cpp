@@ -364,15 +364,7 @@ bool FFmpegImportFileHandle::Init()
 
    FFmpegLibsInst->av_log_set_callback(av_log_wx_callback);
 
-#if defined(__WXMSW__)
-   const wchar_t* unicode_filename = mName.wc_str(wxConvLocal);
-   char utf8url[1024];
-   modify_file_url_to_utf8(utf8url, sizeof(utf8url), unicode_filename);
-   int err = FFmpegLibsInst->av_open_input_file(&mFormatContext,utf8url,NULL,0, NULL);
-#else
-   int err = FFmpegLibsInst->av_open_input_file(&mFormatContext,OSFILENAME(mName),NULL,0, NULL);
-#endif
-   
+   int err = ufile_fopen_input(&mFormatContext, mName);
    if (err < 0)
    {
       wxLogMessage(wxT("FFmpeg : av_open_input_file() failed for file %s"),mName.c_str());

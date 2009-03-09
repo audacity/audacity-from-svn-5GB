@@ -20,6 +20,8 @@ License: GPL v2.  See License.txt.
 #include "FFmpeg.h"
 #include "AudacityApp.h"
 
+#include <wx/file.h>
+
 #ifdef _DEBUG
    #ifdef _MSC_VER
       #undef THIS_FILE
@@ -154,64 +156,45 @@ void av_log_wx_callback(void* ptr, int level, const char* fmt, va_list vl)
    wxLogMessage(wxT("%s: %s"),cpt.c_str(),printstring.c_str());
 }
 
-#if defined(__WXMSW__)
-//======================= UTF8-aware uri protocol for FFmpeg
-// Code is from ffmpeg-users mailing list mostly
+//======================= Unicode aware uri protocol for FFmpeg
+// Code inspired from ffmpeg-users mailing list sample
 
 static int ufile_open(URLContext *h, const char *filename, int flags)
 {
-    int access;
-    int fd;
+   wxFile *f;
+   wxFile::OpenMode mode;
 
-    FFmpegLibsInst->av_strstart(filename, "ufile:", &filename);
+   f = new wxFile;
+   if (!f) {
+      return AVERROR(ENOMEM);
+   }
 
-    /// 4096 should be enough for a path name
-    wchar_t wfilename[4096];
-    int nChars = MultiByteToWideChar(
-        CP_UTF8,
-        MB_ERR_INVALID_CHARS,
-        filename,
-        -1,    // string is NULL terminated
-        wfilename,
-        sizeof(wfilename) / sizeof(*wfilename)
-        );
+   if (flags & URL_RDWR) {
+      mode = wxFile::read_write;
+   } else if (flags & URL_WRONLY) {
+      mode = wxFile::write;
+   } else {
+      mode = wxFile::read;
+   }
 
-    if(nChars <= 0) {
-        return AVERROR(ENOENT);
-    }
+   if (!f->Open((const wxChar *) filename, mode)) {
+      delete f;
+      return AVERROR(ENOENT);
+   }
 
-    if (flags & URL_RDWR) {
-        access = _O_CREAT | _O_TRUNC | _O_RDWR;
-    } else if (flags & URL_WRONLY) {
-        access = _O_CREAT | _O_TRUNC | _O_WRONLY;
-    } else {
-        access = _O_RDONLY;
-    }
-#ifdef O_BINARY
-    access |= O_BINARY;
-#endif
-    fd = _wopen(wfilename, access, 0666);
-    h->priv_data = (void *)(size_t)fd;
-    if (fd < 0) {
-        const int err = AVERROR(ENOENT);
-        assert (err < 0);
-        return err;
-    }
-    return 0;
+   h->priv_data = (void *)f;
+
+   return 0;
 }
 
 static int ufile_read(URLContext *h, unsigned char *buf, int size)
 {
-    int fd = (size_t)h->priv_data;
-    int nBytes = _read(fd, buf, size);
-    return nBytes;
+   return (int) ((wxFile *) h->priv_data)->Read(buf, size);
 }
 
 static int ufile_write(URLContext *h, unsigned char *buf, int size)
 {
-    int fd = (size_t)h->priv_data;
-    int nBytes = _write(fd, buf, size);
-    return nBytes;
+   return (int) ((wxFile *) h->priv_data)->Write(buf, size);
 }
 
 #if LIBAVFORMAT_VERSION_MAJOR >= 52
@@ -220,18 +203,29 @@ static int64_t ufile_seek(URLContext *h, int64_t pos, int whence)
 static offset_t ufile_seek(URLContext *h, offset_t pos, int whence)
 #endif
 {
-    //assert(whence == SEEK_SET || whence == SEEK_CUR || whence == SEEK_END);
-    const int fd = (size_t)h->priv_data;
-    const __int64 nBytes = _lseeki64(fd, pos, whence);
-    return nBytes;
+   wxSeekMode mode;
+
+   if (whence == SEEK_SET) {
+      mode = wxFromStart;
+   }
+   else if (whence == SEEK_CUR) {
+      mode = wxFromCurrent;
+   }
+   else {
+      mode = wxFromEnd;
+   }
+
+   return ((wxFile *) h->priv_data)->Seek(pos, mode);
 }
 
 static int ufile_close(URLContext *h)
 {
-    int fd = (size_t)h->priv_data;
-    if(fd >= 0) {
-        return _close(fd);
-    }
+   wxFile *f = (wxFile *) h->priv_data;
+
+   if (f) {
+      f->Close();
+      delete f;
+   }
 
     return 0;
 }
@@ -245,30 +239,147 @@ URLProtocol ufile_protocol = {
     ufile_close,
 };
 
-int modify_file_url_to_utf8(char* buffer, size_t buffer_size, const char* url)
+// Open a file with a (possibly) Unicode filename
+int ufile_fopen(ByteIOContext **s, const wxString & name, int flags)
 {
-    strncpy(buffer, "ufile:", buffer_size);
-    strncat(buffer, url, buffer_size);
-    return 0;
+   URLContext *h;
+   int err;
+
+   // Open the file using our custom protocol and passing the (possibly) Unicode
+   // filename.  This is playing a slight trick since our ufile_open() routine above
+   // knows that the "char *" name may actually be wide characters.
+   err = FFmpegLibsInst->url_open_protocol(&h, &ufile_protocol, (const char *) name.c_str(), flags);
+   if (err < 0) {
+      return err;
+   }
+
+   // Associate the file with a context
+   err = FFmpegLibsInst->url_fdopen(s, h);
+   if (err < 0) {
+      FFmpegLibsInst->url_close(h);
+      return err;
+   }
+
+   return 0;
 }
 
-int modify_file_url_to_utf8(char* buffer, size_t buffer_size, const wchar_t* url)
+
+// Size of probe buffer, for guessing file type from file contents
+#define PROBE_BUF_MIN 2048
+#define PROBE_BUF_MAX (1<<20)
+
+// Detect type of input file and open it if recognized. Routine
+// based on the av_open_input_file() libavformat function.
+int ufile_fopen_input(AVFormatContext **ic_ptr, wxString & name)
 {
-    static const char ufile[] = "ufile:";
-    strncpy(buffer, ufile, buffer_size);
+   wxFileName f(name);
+   wxCharBuffer fname;
+   const char *filename;
+   AVProbeData pd;
+   ByteIOContext *pb = NULL;
+   AVInputFormat *fmt = NULL;
+   AVInputFormat *fmt1;
+   int probe_size;
+   int err;
 
-    /// convert Unicode to multi-byte string
-    int result = WideCharToMultiByte(CP_UTF8,
-        0, url, -1, buffer + (sizeof(ufile) - 1),
-        buffer_size - sizeof(ufile),
-        NULL, NULL);
-    if (result <= 0)  
-        return -1;
+   // Create a dummy file name using the extension from the original
+   f.SetName(wxT("ufile"));
+   fname = f.GetFullName().mb_str();
+   filename = (const char *) fname;
 
-    return 0;
+   // Initialize probe data...go ahead and preallocate the maximum buffer size.
+   pd.filename = filename;
+   pd.buf_size = 0;
+   pd.buf = (unsigned char *) FFmpegLibsInst->av_malloc(PROBE_BUF_MAX + AVPROBE_PADDING_SIZE);
+   if (pd.buf == NULL) {
+      err = AVERROR_NOMEM;
+      goto fail;
+   }
+
+   // Open the file to prepare for probing
+   if ((err = ufile_fopen(&pb, name, URL_RDONLY)) < 0) {
+      goto fail;
+   }
+
+   for (probe_size = PROBE_BUF_MIN; probe_size <= PROBE_BUF_MAX && !fmt; probe_size <<= 1) {
+      int score_max = probe_size < PROBE_BUF_MAX ? AVPROBE_SCORE_MAX / 4 : 0;
+
+      // Read up to a "probe_size" worth of data
+      pd.buf_size = FFmpegLibsInst->get_buffer(pb, pd.buf, probe_size);
+
+      // Clear up to a "AVPROBE_PADDING_SIZE" worth of unused buffer
+      memset(pd.buf + pd.buf_size, 0, AVPROBE_PADDING_SIZE);
+
+      // Reposition file for succeeding scan
+      if (FFmpegLibsInst->url_fseek(pb, 0, SEEK_SET) < 0) {
+         err = AVERROR(EIO);
+         goto fail;
+      }
+
+      // Scan all input formats
+      fmt = NULL;
+      for (fmt1 = FFmpegLibsInst->av_iformat_next(NULL); fmt1 != NULL; fmt1 = FFmpegLibsInst->av_iformat_next(fmt1)) {
+         int score = 0;
+
+         // Ignore the ones that are not file based
+         if (fmt1->flags & AVFMT_NOFILE) {
+            continue;
+         }
+
+         // If the format can probe the file then try that first
+         if (fmt1->read_probe) {
+            score = fmt1->read_probe(&pd);
+         }
+         // Otherwize, resort to extension matching if available
+         else if (fmt1->extensions) {
+            if (FFmpegLibsInst->match_ext(filename, fmt1->extensions)) {
+               score = 50;
+            }
+         }
+
+         // Remember this format if it scored higher than a previous match
+         if (score > score_max) {
+            score_max = score;
+            fmt = fmt1;
+         }
+         else if (score == score_max) {
+            fmt = NULL;
+         }
+      }
+   }
+
+   // Didn't find a suitable format, so bail
+   if (!fmt) {
+      err = AVERROR_NOFMT;
+      goto fail;
+   }
+
+   // And finally, attempt to associate an input stream with the file
+   err = FFmpegLibsInst->av_open_input_stream(ic_ptr, pb, filename, fmt, NULL);
+   if (err) {
+      goto fail;
+   }
+
+   // Done with the probe buffer
+   FFmpegLibsInst->av_freep(&pd.buf);
+
+   return 0;
+
+fail:
+   if (pd.buf) {
+      FFmpegLibsInst->av_freep(&pd.buf);
+   }
+
+   if (pb) {
+      FFmpegLibsInst->url_fclose(pb);
+   }
+
+   *ic_ptr = NULL;
+
+   return err;
 }
-#endif
 
+/*******************************************************/
 
 class FFmpegNotFoundDialog;
 
@@ -677,7 +788,11 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
 #else
    INITDYN(avformat,av_register_protocol);
 #endif
+   INITDYN(avformat,url_open_protocol);
+   INITDYN(avformat,url_fdopen);
+   INITDYN(avformat,url_close);
    INITDYN(avformat,url_fopen);
+   INITDYN(avformat,url_fseek);
    INITDYN(avformat,url_fclose);
    INITDYN(avformat,url_fsize);
    INITDYN(avformat,av_new_stream);
@@ -688,6 +803,10 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avformat,av_codec_get_id);
    INITDYN(avformat,av_codec_get_tag);
    INITDYN(avformat,avformat_version);
+   INITDYN(avformat,av_open_input_file);
+   INITDYN(avformat,av_open_input_stream);
+   INITDYN(avformat,get_buffer);
+   INITDYN(avformat,match_ext);
 
    INITDYN(codec,avcodec_init);
    INITDYN(codec,avcodec_find_encoder);
@@ -757,9 +876,7 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
       return false;
    }
 
-#if defined(__WXMSW__)
    av_register_protocol(&ufile_protocol);
-#endif
 
    return true;
 }
