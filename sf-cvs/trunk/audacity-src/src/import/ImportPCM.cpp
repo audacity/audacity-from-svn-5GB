@@ -401,6 +401,7 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
                break;
             }
             f.Read(&len, 4);
+            len = wxUINT32_SWAP_ON_LE(len);
 
             if (strcmp(id, "ID3 ") != 0) {
                f.Seek(len + (len & 0x01), wxFromCurrent);
