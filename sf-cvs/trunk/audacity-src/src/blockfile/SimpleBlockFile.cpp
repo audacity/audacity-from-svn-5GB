@@ -591,7 +591,14 @@ bool SimpleBlockFile::GetCache()
 {  
    bool cacheBlockFiles = false;
    gPrefs->Read(wxT("/Directories/CacheBlockFiles"), &cacheBlockFiles);
-   return cacheBlockFiles;
+
+   int lowMem = gPrefs->Read(wxT("/Directories/CacheLowMem"), 16l);
+   if (lowMem < 16) {
+      lowMem = 16;
+   }
+   lowMem <<= 20;
+    
+   return cacheBlockFiles && (wxGetFreeMemory() > lowMem);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

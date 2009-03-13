@@ -1565,6 +1565,12 @@ void DirManager::FillBlockfilesCache()
    if (!cacheBlockFiles)
       return; // user opted not to cache block files
 
+   int lowMem = gPrefs->Read(wxT("/Directories/CacheLowMem"), 16l);
+   if (lowMem < 16) {
+      lowMem = 16;
+   }
+   lowMem <<= 20;
+
    BlockHash::iterator i;
    int numNeed = 0;
 
@@ -1588,8 +1594,10 @@ void DirManager::FillBlockfilesCache()
    while (i != blockFileHash.end())
    {
       BlockFile *b = i->second;
-      if (b->GetNeedFillCache())
+      if (b->GetNeedFillCache() && (wxGetFreeMemory() > lowMem)) {
          b->FillCache();
+      }
+
       if (!progress.Update(current, numNeed))
          break; // user cancelled progress dialog, stop caching
       i++;
