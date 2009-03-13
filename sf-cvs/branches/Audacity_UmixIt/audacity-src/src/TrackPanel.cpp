@@ -1331,8 +1331,12 @@ void TrackPanel::OnTimer()
 
    // AS: The "indicator" is the little graphical mark shown in the ruler
    //  that indicates where the current play/record position is.
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) // Draw the yellow version when paused. 
+   if (mIndicatorShowing || gAudioIO->IsStreamActive(p->GetAudioIOToken()))
+#else
    if (!gAudioIO->IsPaused() &&
        (mIndicatorShowing || gAudioIO->IsStreamActive(p->GetAudioIOToken())))
+#endif
    {
       UpdateIndicator();
    }
@@ -1351,7 +1355,7 @@ void TrackPanel::OnTimer()
       #if (AUDACITY_BRANDING == BRAND_UMIXIT)
          !mShowRulerOnly && 
       #endif
-      gAudioIO->GetNumCaptureChannels()) {
+      (gAudioIO->GetNumCaptureChannels() > 0)) {
 
       // Periodically update the display while recording
       
@@ -3990,7 +3994,7 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
    if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
       indp = GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
 
-      AColor::IndicatorColor(dc, (gAudioIO->GetNumCaptureChannels() ? false : true));
+      AColor::IndicatorColor(dc, (gAudioIO->GetNumCaptureChannels() > 0), gAudioIO->IsPaused());
          
       //Get the size of the trackpanel region, so we know where to redraw
       int width, height;
@@ -4037,7 +4041,7 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
 
                //Draw the new indicator in its correct location
                dc->DrawLine(x, top, x, bottom);
-               #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+               #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) // thicker
                   dc->DrawLine(x + 1, top, x + 1, bottom);
                   dc->DrawLine(x + 2, top, x + 2, bottom);
                #endif
@@ -4330,9 +4334,9 @@ void TrackPanel::DrawRuler( wxDC * dc, bool text )
    #endif
 
       
-   bool bRecording = (gAudioIO->GetNumCaptureChannels() ? false : true);
+   bool bRecording = (gAudioIO->GetNumCaptureChannels() > 0);
 
-   mRuler->DrawAdornedRuler( dc, mViewInfo, text, bIndicators, bRecording );
+   mRuler->DrawAdornedRuler( dc, mViewInfo, text, bIndicators, bRecording, gAudioIO->IsPaused());
 }
 
 

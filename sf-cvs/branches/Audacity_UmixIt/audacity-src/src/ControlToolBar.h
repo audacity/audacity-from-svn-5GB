@@ -147,7 +147,7 @@ class ControlToolBar:public ToolBar {
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
       AButton* mLoopPlay;
    #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      AButton* mLock;
+      // 2009-02-22: No lock button, and mIsLocked defaults false.    AButton* mLock;
       bool mIsLocked;
       public:
          bool IsLocked() { return mIsLocked; };

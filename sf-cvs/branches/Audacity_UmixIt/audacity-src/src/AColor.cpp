@@ -34,8 +34,8 @@ wxPen AColor::mediumPen[2];
 wxPen AColor::darkPen[2];
 
 wxPen AColor::cursorPen;
-wxBrush AColor::indicatorBrush[2];
-wxPen AColor::indicatorPen[2];
+wxBrush AColor::indicatorBrush[3]; 
+wxPen AColor::indicatorPen[3];
 
 wxBrush AColor::muteBrush[2];
 wxBrush AColor::soloBrush;
@@ -123,11 +123,15 @@ void AColor::CursorColor(wxDC * dc)
    dc->SetPen(cursorPen);
 }
 
-void AColor::IndicatorColor(wxDC * dc, bool recording)
+void AColor::IndicatorColor(wxDC * dc, bool recording, bool bIsPaused)
 {
    if (!inited)
       Init(dc);
-   int index = (int) recording;
+   int index = 0; // playing
+   if (recording)
+      index = 1;
+   else if (bIsPaused)
+      index = 2;
    dc->SetPen(indicatorPen[index]);
    dc->SetBrush(indicatorBrush[index]);
 }
@@ -244,10 +248,13 @@ void AColor::Init(wxDC * dc)
    cursorPen.SetColour(0, 0, 0);
 //   indicatorPen[0].SetColour(255, 0, 51); //recording
 //   indicatorPen[1].SetColour(0, 255, 51); //playback
-   indicatorPen[0].SetColour(176, 0, 28); //recording
-   indicatorPen[1].SetColour( 36,96, 46); //playback
-   indicatorBrush[0].SetColour(190,129,129); //recording
-   indicatorBrush[1].SetColour( 28,171, 51); //playback
+   indicatorPen[0].SetColour( 36,  96,  46); // playback
+   indicatorPen[1].SetColour(176,   0,  28); // recording
+   indicatorPen[2].SetColour(176, 176,  28); // paused
+
+   indicatorBrush[0].SetColour( 28, 171,  51); // playback
+   indicatorBrush[1].SetColour(190, 129, 129); // recording
+   indicatorBrush[2].SetColour(255, 255,   0); // paused
 
 //Determine tooltip color
 //TODO: Find out why the commented out version yields black.

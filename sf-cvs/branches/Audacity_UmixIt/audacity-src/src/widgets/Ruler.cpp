@@ -987,7 +987,7 @@ AdornedRulerPanel::~AdornedRulerPanel()
 }
 
 void AdornedRulerPanel::DrawAdornedRuler(
-   wxDC * dc, ViewInfo * pViewInfo, bool text, bool indicator, bool bRecording)
+   wxDC * dc, ViewInfo * pViewInfo, bool text, bool indicator, bool bRecording, bool bIsPaused)
 {
    wxRect r;
 
@@ -1003,7 +1003,7 @@ void AdornedRulerPanel::DrawAdornedRuler(
    DrawSelection(dc, r);
 
    if( indicator )
-      DrawIndicator(dc, bRecording);
+      DrawIndicator(dc, bRecording, bIsPaused);
 
    DrawMarks(dc, r, text);
 
@@ -1073,7 +1073,7 @@ void AdornedRulerPanel::DrawMarks(wxDC * dc, const wxRect r, bool /*text */ )
 //This draws the little triangular indicator on the 
 //AdornedRulerPanel.
 //
-void AdornedRulerPanel::DrawIndicator(wxDC * dc, bool bRecording)
+void AdornedRulerPanel::DrawIndicator(wxDC * dc, bool bRecording, bool bIsPaused)
 {
    // Draw indicator
    double ind = indicatorPos; 
@@ -1082,7 +1082,7 @@ void AdornedRulerPanel::DrawIndicator(wxDC * dc, bool bRecording)
       int indp =
           GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
 
-      AColor::IndicatorColor(dc, bRecording );
+      AColor::IndicatorColor(dc, bRecording, bIsPaused);
 //      dc->SetPen(*wxTRANSPARENT_PEN);
 //      dc->SetBrush(*wxBLACK_BRUSH);
 
@@ -1148,9 +1148,9 @@ void AdornedRulerPanel::OnPaint(wxPaintEvent &evt)
    const bool bText = true; // ALWAYS true in all current calls to TrackPanel::DrawRuler.
    bool bIndicators = gAudioIO->IsStreamActive(GetActiveProject()->GetAudioIOToken());
    this->indicatorPos = bIndicators ? gAudioIO->GetStreamTime() : 0.0;
-   bool bRecording = (gAudioIO->GetNumCaptureChannels() ? false : true);
+   bool bRecording = (gAudioIO->GetNumCaptureChannels() > 0);
 
-   this->DrawAdornedRuler(&dc, mViewInfo, bText, bIndicators, bRecording);
+   this->DrawAdornedRuler(&dc, mViewInfo, bText, bIndicators, bRecording, gAudioIO->IsPaused());
 
    ruler.Draw(dc);
 }
