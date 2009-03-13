@@ -109,8 +109,12 @@ void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
    
    S.StartStatic( _("Audio cache"),0);
    {
-      S.TieCheckBox( _("Play and/or record using RAM (useful for slow drives, but could crash with long files or recordings)"),
+      S.TieCheckBox( _("Play and/or record using RAM (useful for slow drives)"),
                      wxT("/Directories/CacheBlockFiles"), false);
+      S.StartTwoColumn();
+      S.TieTextBox( _("Minimum Free Memory (MB):"), wxT("/Directories/CacheLowMem"), 16, 9);
+      S.EndThreeColumn();
+      S.AddVariableText( _("If the available system memory falls below this value, audio will no longer be cached in memory and will be written to disk.") );
    }
    S.EndStatic();
 }
