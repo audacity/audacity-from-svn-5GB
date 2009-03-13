@@ -34,6 +34,7 @@ It handles initialization and termination by subclassing wxApp.
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/snglinst.h>
+#include <wx/sysopt.h>
 #include <wx/fontmap.h>
 
 #include <wx/fs_zip.h>
@@ -623,6 +624,11 @@ void AudacityApp::InitLang( const wxString & lang )
 // main frame
 bool AudacityApp::OnInit()
 {
+#if defined(__WXMAC__)
+   // Disable window animation
+   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
+#endif
+   
    mLogger = NULL;
 
    #if USE_QUICKTIME
