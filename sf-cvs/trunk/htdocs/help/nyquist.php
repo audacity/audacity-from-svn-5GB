@@ -25,10 +25,11 @@ printf('<p>%s</p>', _('Beginning with version 1.1.1, Audacity allows you to use 
 // i18n-hint: All the %s sequences become HTML tags to make the name 
 // "Roger B. Dannenberg" into a link to his home page. So we need the same %s
 // in the translated strings for it to work, but there will be no visible text
-// inserted in those places. The colon at the end is because this text is
-// followed by some bullet points with links to download Nyquist.
-printf(_('%sNyquist was written by %sRoger B. Dannenberg%s and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging and more.  Audacity uses only a subset of Nyquist\'s functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn\'t include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project:%s'), '<p>', '<a href="http://www-2.cs.cmu.edu/~rbd/">', '</a>', '</p>' );
-printf('<ul><li><a href="http://www-2.cs.cmu.edu/~music/music.software.html">%s</a></li></ul>', _('CMU Computer Music Project Software - download the full Nyquist here'));
+// inserted in those places.
+printf(_('%sNyquist was written by %sRoger B. Dannenberg%s and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging and more.  Audacity uses only a subset of Nyquist\'s functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn\'t include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project: %sCMU Computer Music Project Software%s - download the full Nyquist here%s'),
+	'<p>', '<a href="http://www-2.cs.cmu.edu/~rbd/">', '</a>',
+  	'</p><ul><li><a href="http://www-2.cs.cmu.edu/~music/music.software.html">',
+   	'</a>', '</li></ul>' );
 
 printf(_('%sTo write plug-ins for use with Audacity, you will need the older %sNyquist version 2.37 Manual%s, not the version 3 manual available from CMU. This is because in Nyquist version 3 the code notation has changed to SAL instead of LISP. We will investigate integrating SAL with the Audacity implementation of Nyquist in the future.'), '<p>', '<a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">', '</a>', '</p>' );
 
@@ -49,10 +50,10 @@ printf('<p>%s</p>', _('In Lisp (and therefore Nyquist), everything is an S-Expre
 // translatable. The snag is that what is left behind isn't very readable, so
 // you might find looking at the final web page
 // (// http://audacity.sourceforge.net/help/nyquist) helpful.
-printf(_('%sLet\'s break down this example.  The outermost S-expression has three members.  The first one, %s, is the name of the function (it stands for set-field).  %s is used to assign a value to a variable.  (There are other similar functions, like %s and %s, but %s is the most powerful, so it\'s the one we\'ll use in our examples.) After %s comes %s, which is the name of the variable we\'re going to set.  Next comes the value to assign to this variable, which in this case is another S-expression.</p>'), 
+printf(_('%sLet\'s break down this example.  The outermost S-expression has three members.  The first one, %s, is the name of the function (it stands for set-field).  %s is used to assign a value to a variable.  (There are other similar functions, like %s and %s, but %s is the most powerful, so it\'s the one we\'ll use in our examples.) After %s comes %s, which is the name of the variable we\'re going to set.  Next comes the value to assign to this variable, which in this case is another S-expression.%s'), 
 '<p>', '<code>setf</code>', '<code>setf</code>', '<code>set</code>',
 '<code>setq</code>', '<code>setf</code>', '<code>setf</code>',
-'<code>area</code>' );
+'<code>area</code>', '</p>' );
 printf(_('%sLisp doesn\'t have any special operators for Math functions - they\'re all functions like everything else, using%s prefix %snotation, where the name of the function (or operator) comes before its arguments.  So instead of 3*7 for the product of 3 and 7, in Lisp you would write (* 3 7).  In Nyquist, the %s (exponent) function raises its first argument to the power of the second argument.  Therefore %s means 3.14159 times the square of %s, or the formula for the area of a circle.%s'),
 '<p>', '<i>', '</i>', '<code>expt</code>',
 '<code>(* 3.14159 (expt radius 2))</code>',
@@ -74,7 +75,7 @@ printf('<p>%s</p>',
   (setf mylist (1 2 3 4 5))  <font color=#cc0000><--  error!</font>
   </pre><?php
 
-printf(_('%sThe reason this doesn\'t work is that whenever Nyquist sees an S-expression, it tries to evaluate it as a function unless you tell it otherwise.  Since there\'s no function named "1" that takes arguments %s, this will generate an error.  To tell lisp that you want to treat an S-expression literally, and not to evaluate it as a function, you %squote%s it.  In Nyquist, you can quote a list by putting a single quotation mark before it, like this:%s'),
+printf(_('%sThe reason this doesn\'t work is that whenever Nyquist sees an S-expression, it tries to evaluate it as a function unless you tell it otherwise.  Since there\'s no function named "1" that takes arguments %s, this will generate an error.  To tell Lisp that you want to treat an S-expression literally, and not to evaluate it as a function, you %squote%s it.  In Nyquist, you can quote a list by putting a single quotation mark before it, like this:%s'),
 	   	'<p>', '<code>(2 3 4 5)</code>', '<i>', '</i>','</p>' );
 
 ?><pre>
