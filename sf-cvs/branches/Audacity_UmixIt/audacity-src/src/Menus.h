@@ -229,7 +229,7 @@ void OnBenchmark();
 
    // Help menu
    void OnAboutBrand();
-   void OnDifferences();
+   //void OnDifferences();
    void OnGetAudiotouch();
 #endif
 

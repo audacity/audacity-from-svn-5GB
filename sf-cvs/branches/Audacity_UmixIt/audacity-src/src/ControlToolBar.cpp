@@ -62,8 +62,8 @@ enum {
    ID_PLAY_BUTTON,
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
       ID_LOOP_PLAY_BUTTON,
-   #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      ID_LOCK_BUTTON, 
+   //#elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   //   ID_LOCK_BUTTON, 
    #endif
    ID_RECORD_BUTTON,
    ID_PAUSE_BUTTON,
@@ -111,9 +111,9 @@ BEGIN_EVENT_TABLE(ControlToolBar, wxWindow)
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
       EVT_COMMAND(ID_LOOP_PLAY_BUTTON,
             wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnLoopPlay)
-   #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      EVT_COMMAND(ID_LOCK_BUTTON,
-            wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnLock)
+   //#elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   //   EVT_COMMAND(ID_LOCK_BUTTON,
+   //         wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnLock)
       //v Never gets called.  EVT_KEY_UP(ControlToolBar::OnKeyUp)
    #endif
    EVT_COMMAND(ID_STOP_BUTTON,
@@ -157,7 +157,7 @@ void ControlToolBar::InitializeControlToolBar()
    wxColour backgroundColour =
       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      this->SetBackgroundColour(wxColour(255, 255, 0)); // yellow for Ready
+      this->SetBackgroundColour(*wxBLUE); // blue for Ready
    #endif
 
    //Read the following wxASSERTs as documentating a design decision
@@ -170,8 +170,8 @@ void ControlToolBar::InitializeControlToolBar()
 
    MakeButtons();
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      mIsLocked = true;
-      mLock->PushDown();
+      mIsLocked = false; // 2009-02-22: No lock button, and mIsLocked defaults false.   mIsLocked = true;
+      //mLock->PushDown();
    #endif
 
    wxImage *sliderOriginal = new wxImage(wxBitmap(Slider).ConvertToImage());
@@ -421,7 +421,7 @@ void ControlToolBar::MakeButtons()
 #endif
 
    /* Buttons */
-   #if (AUDACITY_BRANDING == BRAND_THINKLABS) || (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   #if (AUDACITY_BRANDING == BRAND_THINKLABS) // || (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       #define kNumButtons 7
    #else
       #define kNumButtons 6
@@ -447,13 +447,20 @@ void ControlToolBar::MakeButtons()
          buttonOrder[5] = ID_FF_BUTTON;
          buttonOrder[6] = ID_RECORD_BUTTON;
       #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-         buttonOrder[0] = ID_LOCK_BUTTON;
-         buttonOrder[1] = ID_RECORD_BUTTON;
-         buttonOrder[2] = ID_REW_BUTTON;
-         buttonOrder[3] = ID_PLAY_BUTTON;
-         buttonOrder[4] = ID_PAUSE_BUTTON; // actually, on top of Play btn, and alternately hidden
-         buttonOrder[5] = ID_STOP_BUTTON;
-         buttonOrder[6] = ID_FF_BUTTON;
+         //buttonOrder[0] = ID_LOCK_BUTTON;
+         //buttonOrder[1] = ID_RECORD_BUTTON;
+         //buttonOrder[2] = ID_REW_BUTTON;
+         //buttonOrder[3] = ID_PLAY_BUTTON;
+         //buttonOrder[4] = ID_PAUSE_BUTTON; // actually, on top of Play btn, and alternately hidden
+         //buttonOrder[5] = ID_STOP_BUTTON;
+         //buttonOrder[6] = ID_FF_BUTTON;
+
+         buttonOrder[0] = ID_RECORD_BUTTON;
+         buttonOrder[1] = ID_REW_BUTTON;
+         buttonOrder[2] = ID_PLAY_BUTTON;
+         buttonOrder[3] = ID_PAUSE_BUTTON; // actually, on top of Play btn, and alternately hidden
+         buttonOrder[4] = ID_STOP_BUTTON;
+         buttonOrder[5] = ID_FF_BUTTON;
       #else
          buttonOrder[0] = ID_PAUSE_BUTTON;
          buttonOrder[1] = ID_PLAY_BUTTON;
@@ -473,13 +480,20 @@ void ControlToolBar::MakeButtons()
          buttonOrder[5] = ID_STOP_BUTTON;
          buttonOrder[6] = ID_FF_BUTTON;
       #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) // ignores mErgonomicTransportButtons
-         buttonOrder[0] = ID_LOCK_BUTTON;
-         buttonOrder[1] = ID_RECORD_BUTTON;
-         buttonOrder[2] = ID_REW_BUTTON;
-         buttonOrder[3] = ID_PLAY_BUTTON;
-         buttonOrder[4] = ID_PAUSE_BUTTON; // actually, on top of Play btn, and alternately hidden
-         buttonOrder[5] = ID_STOP_BUTTON;
-         buttonOrder[6] = ID_FF_BUTTON;
+         //buttonOrder[0] = ID_LOCK_BUTTON;
+         //buttonOrder[1] = ID_RECORD_BUTTON;
+         //buttonOrder[2] = ID_REW_BUTTON;
+         //buttonOrder[3] = ID_PLAY_BUTTON;
+         //buttonOrder[4] = ID_PAUSE_BUTTON; // actually, on top of Play btn, and alternately hidden
+         //buttonOrder[5] = ID_STOP_BUTTON;
+         //buttonOrder[6] = ID_FF_BUTTON;
+
+         buttonOrder[0] = ID_RECORD_BUTTON;
+         buttonOrder[1] = ID_REW_BUTTON;
+         buttonOrder[2] = ID_PLAY_BUTTON;
+         buttonOrder[3] = ID_PAUSE_BUTTON; // actually, on top of Play btn, and alternately hidden
+         buttonOrder[4] = ID_STOP_BUTTON;
+         buttonOrder[5] = ID_FF_BUTTON;
       #else
          buttonOrder[0] = ID_REW_BUTTON;
          buttonOrder[1] = ID_PLAY_BUTTON;
@@ -516,14 +530,14 @@ void ControlToolBar::MakeButtons()
                                     (char const **) LoopAlpha, ID_LOOP_PLAY_BUTTON,
                                     false);
             break;
-      #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) 
-         case ID_LOCK_BUTTON:
-            mLock = MakeButton((char const **) Lock, 
-                                 (char const **) LockDisabled, 
-                                 (char const **) LockAlpha, ID_LOCK_BUTTON, 
-                                 true); // processDownEvents
-            //vvvvv alt images for unlocked? Currently just making it toggle up/down with processDownEvents.
-            break;
+      //#elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) 
+      //   case ID_LOCK_BUTTON:
+      //      mLock = MakeButton((char const **) Lock, 
+      //                           (char const **) LockDisabled, 
+      //                           (char const **) LockAlpha, ID_LOCK_BUTTON, 
+      //                           true); // processDownEvents
+      //      //v alt images for unlocked? Currently just making it toggle up/down with processDownEvents.
+      //      break;
       #endif
 
       case ID_RECORD_BUTTON:
@@ -567,8 +581,8 @@ void ControlToolBar::MakeButtons()
          mPlay->SetToolTip(_("Play (Shift for loop-play)"));
          #if (AUDACITY_BRANDING == BRAND_THINKLABS)
             mLoopPlay->SetToolTip(_("Loop Play"));
-         #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) 
-            mLock->SetToolTip(_("Lock/Unlock Recording"));
+         //#elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) 
+         //   mLock->SetToolTip(_("Lock/Unlock Recording"));
          #endif
          mRecord->SetToolTip(_("Record"));
          mPause->SetToolTip(_("Pause"));
@@ -658,8 +672,7 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
 
    // Play/Stop
 #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-   if (event.GetKeyCode() == WXK_RETURN) 
-   {
+   if (event.GetKeyCode() == WXK_RETURN) {
 #else
    if (event.KeyCode() == WXK_SPACE) {
 #endif
@@ -1002,15 +1015,15 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
    void ControlToolBar::OnLock(wxCommandEvent &evt)
    {
       mIsLocked = !mIsLocked;
-      if (mIsLocked)
-      {
-         mLock->PushDown();
-      }
-      else
-      {
-         // In unlocked state, user must hold down Record btn or spacebar to continue recording. 
-         mLock->PopUp();
-      }
+      //if (mIsLocked)
+      //{
+      //   mLock->PushDown();
+      //}
+      //else
+      //{
+      //   // In unlocked state, user must hold down Record btn or spacebar to continue recording. 
+      //   mLock->PopUp();
+      //}
    }
 #endif
 
@@ -1054,7 +1067,7 @@ void ControlToolBar::StopPlaying()
    SetPlay(false);
    SetRecord(false);
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      this->SetBackgroundColour(wxColour(255, 255, 0)); // yellow for Ready
+      this->SetBackgroundColour(*wxBLUE); // blue for Ready
       this->Refresh();
    #endif
 
@@ -1142,7 +1155,10 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
          WaveTrack *newTrack = p->GetTrackFactory()->NewWaveTrack();
          newTrack->SetOffset(t0);
          newTrack->SetRate(p->GetRate());
-         newTrack->SetDisplay(WaveTrack::WaveformDisplay); // for performance //vvvvv 
+
+         //v for performance     newTrack->SetDisplay(WaveTrack::WaveformAndSpectrumDisplay);
+         newTrack->SetDisplay(WaveTrack::WaveformDisplay); 
+         
          if( recordingChannels == 2 )
          {
             if( c == 0 )
@@ -1211,7 +1227,7 @@ void ControlToolBar::OnPause(wxCommandEvent &evt)
       mPaused=true;
    }
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      this->SetBackgroundColour(*wxBLUE); // blue for Paused Play
+      this->SetBackgroundColour(wxColour(255, 255, 0)); // yellow for Paused Play
       this->Refresh();
    #endif
  

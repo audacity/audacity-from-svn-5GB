@@ -409,8 +409,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->BeginMenu(_("&Play"));
    c->SetDefaultFlags(0, 0);
    // Start with "Do Not" versions because default for both is TRUE.
-   c->AddItem("PlayAfterOpen", _("Do Not Play after File Open"),  FN(OnPlayAfterOpen));
-   c->AddItem("PlayAfterRecord", _("Do Not Play after Record"),  FN(OnPlayAfterRecord));
+   c->AddItem("PlayAfterOpen", _("Do Not Play after File Open\tCtrl+Shift+O"),  FN(OnPlayAfterOpen));
+   c->AddItem("PlayAfterRecord", _("Do Not Play after Record\tCtrl+Shift+R"),  FN(OnPlayAfterRecord));
    c->EndMenu();
 #endif
 
@@ -429,7 +429,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddItem("FitInWindow",    _("&Fit Horizontally\tCtrl+F"),         FN(OnZoomFit));
    c->AddItem("FitV",           _("Fit &Vertically\tCtrl+Shift+F"),  FN(OnZoomFitV));
-   c->AddItem("FitBoth",        _("Fit &Both Horizontally and Vertically"),  FN(OnZoomFitBoth));
+   c->AddItem("FitBoth",        _("Fit &Both Horizontally and Vertically\tCtrl+Up"),  FN(OnZoomFitBoth));
    c->AddItem("ZoomSel",        _("&Zoom to Selection\tCtrl+E"),     FN(OnZoomSel));
 
    #if (AUDACITY_BRANDING != BRAND_THINKLABS) // easy mode for Thinklabs
@@ -650,8 +650,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("About",          _("&About Audacity..."),          FN(OnAbout));
    
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      c->AddItem("Help", _("Differences in Audacity_Audiotouch..."), FN(OnDifferences));
-      c->AddItem("Help", _("Get Audiotouch 2.2 ..."), FN(OnGetAudiotouch));
+      //c->AddItem("Help", _("Differences in Audacity_Audiotouch..."), FN(OnDifferences));
+      c->AddItem("Help", _("Get Audiotouch..."), FN(OnGetAudiotouch));
    #endif
 
 #if 0 // No Benchmark in stable release
@@ -1209,7 +1209,7 @@ void AudacityProject::OnPlayLooped()
    void AudacityProject::OnLockUnlock()
    {
       ControlToolBar *toolbar = GetControlToolBar();
-      wxCommandEvent evt; //vvvvv
+      wxCommandEvent evt; //vvv
       toolbar->OnLock(evt);
    }
 #endif
@@ -3510,7 +3510,9 @@ void AudacityProject::OnBenchmark()
       m_bWantPlayAfterOpen = !m_bWantPlayAfterOpen;
       mCommandManager.Modify(
          "PlayAfterOpen", 
-         m_bWantPlayAfterOpen ? _("Do Not Play after File Open") : _("Play after File Open"));
+         m_bWantPlayAfterOpen ? 
+            _("Do Not Play after File Open\tCtrl+Shift+O") : 
+            _("Play after File Open\tCtrl+Shift+O"));
    }
 
    void AudacityProject::OnPlayAfterRecord()
@@ -3518,7 +3520,9 @@ void AudacityProject::OnBenchmark()
       m_bWantPlayAfterRecord = !m_bWantPlayAfterRecord;
       mCommandManager.Modify(
          "PlayAfterRecord", 
-         m_bWantPlayAfterRecord ? _("Do Not Play after Record") : _("Play after Record"));
+         m_bWantPlayAfterRecord ? 
+            _("Do Not Play after Record\tCtrl+Shift+R") : 
+            _("Play after Record\tCtrl+Shift+R"));
    }
 
    // Help menu
@@ -3546,10 +3550,10 @@ void AudacityProject::OnBenchmark()
       LinkToPathlistHTM(FROMFILENAME("Audacity_Audiotouch-about.htm"));
    }
 
-   void AudacityProject::OnDifferences()
-   {
-      LinkToPathlistHTM(FROMFILENAME("Audacity_Audiotouch-diffs.htm"));
-   }
+   //void AudacityProject::OnDifferences()
+   //{
+   //   LinkToPathlistHTM(FROMFILENAME("Audacity_Audiotouch-diffs.htm"));
+   //}
 
    void AudacityProject::OnGetAudiotouch()
    {

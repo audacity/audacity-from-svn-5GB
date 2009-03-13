@@ -214,7 +214,7 @@ class AdornedRulerPanel : public wxPanel
 
 public:
    void DrawAdornedRuler(wxDC * dc, ViewInfo * pViewInfo, 
-      bool text, bool indicator, bool bRecording);
+      bool text, bool indicator, bool bRecording, bool bIsPaused);
    static int GetRulerHeight() { return 22;}
    void SetLeftOffset( int offset ){ leftOffset = offset;}
    double indicatorPos;
@@ -231,7 +231,7 @@ private:
    void DrawBorder(wxDC * dc, wxRect & r);
    void DrawSelection(wxDC * dc,  const wxRect r);
    void DrawMarks(wxDC * dc, const wxRect r, bool /*text */ );
-   void DrawIndicator(wxDC * dc, bool bRecording);
+   void DrawIndicator(wxDC * dc, bool bRecording, bool bIsPaused);
 
    void OnMouseEvent(wxMouseEvent &evt);
    void OnPaint(wxPaintEvent &evt);
