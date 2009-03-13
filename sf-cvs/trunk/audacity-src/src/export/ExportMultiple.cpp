@@ -862,8 +862,13 @@ bool ExportMultiple::DoExport(int channels,
    if (selectedOnly) wxLogDebug(wxT("Selected Region Only"));
    else wxLogDebug(wxT("Whole Project"));
 
-   // Generate a unique name if we're not allowed to overwrite
-   if (!mOverwrite->GetValue()) {
+   if (mOverwrite->GetValue()) {
+      // Make sure we don't overwrite (corrupt) alias files
+      if (!mProject->GetDirManager()->EnsureSafeFilename(name)) {
+         return false;
+      }
+   }
+   else {
       int i = 2;
       wxString base(name.GetName());
       while (name.FileExists()) {
