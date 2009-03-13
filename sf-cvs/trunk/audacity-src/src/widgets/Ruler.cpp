@@ -1965,7 +1965,7 @@ void AdornedRulerPanel::DrawIndicator( double pos, bool rec )
       return;
    }
 
-   mIndType = ( rec ? 1 : 0 );
+   mIndType = ( rec ? 0 : 1 );
 
    Refresh(false);
 }

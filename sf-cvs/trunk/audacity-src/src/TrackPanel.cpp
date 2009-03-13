@@ -972,8 +972,8 @@ void TrackPanel::DoDrawIndicator(wxDC & dc)
    panelarea.x = GetLeftOffset();
 
    // Set play/record color
-   bool rec = gAudioIO->GetNumCaptureChannels() ? false : true;
-   AColor::IndicatorColor( &dc, rec );
+   bool rec = (gAudioIO->GetNumCaptureChannels() > 0);
+   AColor::IndicatorColor( &dc, !rec);
       
    // Draw cursor in all visible tracks
    TrackListIterator iter( mTracks );
