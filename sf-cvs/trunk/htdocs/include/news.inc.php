@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007-8 Vaughan Johnson, Gale Andrews
+ * 2007-9 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -38,6 +38,41 @@ function most_recent_news_item() {
 
 // Add news items below in reverse-chronological order
 // (most recent first).
+
+add_news_item(
+  "March 11, 2009",
+  	"GSoC_2008",
+  _("Preliminary call for Students! Audacity is applying for Google Summer of Code (GSoC) 2009"),
+  _("
+<p>
+This is a preliminary call for students for 
+<a href=\"http://socghop.appspot.com/\">
+GSoC 2009</a> for Audacity&reg;. 
+</p>
+<p>
+GSoC offers student developers a $4,500 stipend to write code for open source projects. 
+We're asking interested students to contact us now to discuss their proposals. We're
+looking for projects that will move us towards a new stable 1.4 Release later this year.  
+</p>
+<p>
+If you are an eligible student, or know one who might be interested, please review our
+draft documentation. You'll want to look at our 
+<a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Ideas\">
+Ideas</a> page and check out the 
+<a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Skills\">
+skills required</a>, and our hints on
+<a href=\"http://www.audacityteam.org/wiki/index.php?title=Writing_GSoC_Proposals\">
+writing your proposal</a>. Be sure also to review our 
+<a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_FAQ\">
+GSOC FAQ</a> and
+<a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Student_Guidelines\">
+Student Policy Requirements</a>.
+</p>
+<p>
+Prospective students should contact us now at the summerofcode e-mail address given
+on our GSoC pages.
+</p>
+"));
 
 add_news_item(
   "January 28, 2009",
