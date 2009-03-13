@@ -233,11 +233,11 @@ void AColor::CursorColor(wxDC * dc)
    dc->SetPen(cursorPen);
 }
 
-void AColor::IndicatorColor(wxDC * dc, bool recording)
+void AColor::IndicatorColor(wxDC * dc, bool bIsNotRecording)
 {
    if (!inited)
       Init();
-   int index = (int) recording;
+   int index = (int) bIsNotRecording;
    dc->SetPen(indicatorPen[index]);
    dc->SetBrush(indicatorBrush[index]);
 }

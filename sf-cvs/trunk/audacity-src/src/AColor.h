@@ -39,7 +39,7 @@ class AColor {
    static void Dark(wxDC * dc, bool selected);
 
    static void CursorColor(wxDC * dc);
-   static void IndicatorColor(wxDC * dc, bool recording);
+   static void IndicatorColor(wxDC * dc, bool bIsNotRecording);
    static void PlayRegionColor(wxDC * dc, bool locked);
 
    static void Mute(wxDC * dc, bool on, bool selected, bool soloing);
