@@ -686,7 +686,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.bRedrawWaveform = false;
 
    mLockPlayRegion = false;
-   mStickyFlag = true;
+   SetStickyFlag(true);
 
    CreateMenusAndCommands();
 
@@ -3972,7 +3972,7 @@ bool AudacityProject::IsSticky()
       t=iter.Next();
    }
       
-   return (mStickyFlag && linked);  
+   return (GetStickyFlag() && linked);  
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

@@ -4653,7 +4653,7 @@ int AudacityProject::DoAddLabel(double left, double right)
 
 void AudacityProject::OnStickyLabel()
 {
-   mStickyFlag = !mStickyFlag;
+   SetStickyFlag(!GetStickyFlag());
    EditToolBar *toolbar = GetEditToolBar();
    toolbar->EnableDisableButtons();
 }
