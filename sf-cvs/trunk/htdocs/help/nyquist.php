@@ -102,51 +102,46 @@ printf('<h4>%s</h4>', _('Math functions'));
 printf('<table class="function-list" summary="%s">', 
 		// i18n-hint: This is the summary of a table - so not really a sentance
 		_('List of functions and explanations'));
-?>
-<tr><td><code>(+ a b)</code></td><td>addition</td></tr>
-<tr><td><code>(- a b)</code></td><td>subtraction</td></tr>
-<tr><td><code>(* a b)</code></td><td>multiplication</td></tr>
-<tr><td><code>(/ a b)</code></td><td>division</td></tr>
-<tr><td><code>(truncate a b)</code></td><td>round down to integer (floor)</td></tr>
-<tr><td><code>(float a b)</code></td><td>integer to floating-point</td></tr>
-<tr><td><code>(rem a b c ...)</code></td><td>remainder</td></tr>
-<tr><td><code>(min a b c ...)</code></td><td>minimum</td></tr>
-<tr><td><code>(max a b c ...)</code></td><td>maximum </td></tr>
-<tr><td><code>(abs a)</code></td><td>absolute value</td></tr>
-<tr><td><code>(random n)</code></td><td>random integer between 1 and n-1</td></tr>
-<tr><td><code>(sin a b)</code></td><td>sine</td></tr>
-<tr><td><code>(cos a b)</code></td><td>cosine</td></tr>
-<tr><td><code>(tan a b)</code></td><td>tangent</td></tr>
-<tr><td><code>(expt a b)</code></td><td>exponent (a to the power of b)</td></tr>
-<tr><td><code>(sqrt a b)</code></td><td>square root</td></tr>
-<tr><td><code>(&lt; a b)</code></td><td>test for a less than b</td></tr>
-<tr><td><code>(&lt;= a b)</code></td><td>test for a less than or equal to b</td></tr>
-<tr><td><code>(&gt; a b)</code></td><td>test for a greater than b</td></tr>
-<tr><td><code>(&gt;= a b)</code></td><td>test for a greater than or equal to b</td></tr>
-<tr><td><code>(= a b)</code></td><td>test for equality</td></tr>
-<tr><td><code>(/= a b)</code></td><td>test for inequality</td></tr>
+printf('<tr><td><code>(+ a b)</code></td><td>%s</td></tr>', _('addition'));
+printf('<tr><td><code>(- a b)</code></td><td>%s</td></tr>', _('subtraction'));
+printf('<tr><td><code>(* a b)</code></td><td>%s</td></tr>', _('multiplication'));
+printf('<tr><td><code>(/ a b)</code></td><td>%s</td></tr>', _('division'));
+printf('<tr><td><code>(truncate a b)</code></td><td>%s</td></tr>', _('round down to integer (floor)'));
+printf('<tr><td><code>(float a b)</code></td><td>%s</td></tr>', _('integer to floating-point'));
+printf('<tr><td><code>(rem a b c ...)</code></td><td>%s</td></tr>', _('remainder'));
+printf('<tr><td><code>(min a b c ...)</code></td><td>%s</td></tr>', _('minimum'));
+printf('<tr><td><code>(max a b c ...)</code></td><td>%s</td></tr>', _('maximum'));
+printf('<tr><td><code>(abs a)</code></td><td>%s</td></tr>', _('absolute value'));
+printf('<tr><td><code>(random n)</code></td><td>%s</td></tr>', _('random integer between 1 and n-1'));
+printf('<tr><td><code>(sin a b)</code></td><td>%s</td></tr>', _('sine'));
+printf('<tr><td><code>(cos a b)</code></td><td>%s</td></tr>', _('cosine'));
+printf('<tr><td><code>(tan a b)</code></td><td>%s</td></tr>', _('tangent'));
+printf('<tr><td><code>(expt a b)</code></td><td>%s</td></tr>', _('exponent (a to the power of b)'));
+printf('<tr><td><code>(sqrt a b)</code></td><td>%s</td></tr>', _('square root'));
+printf('<tr><td><code>(&lt; a b)</code></td><td>%s</td></tr>', _('test for a less than b'));
+printf('<tr><td><code>(&lt;= a b)</code></td><td>%s</td></tr>', _('test for a less than or equal to b'));
+printf('<tr><td><code>(&gt; a b)</code></td><td>%s</td></tr>', _('test for a greater than b'));
+printf('<tr><td><code>(&gt;= a b)</code></td><td>%s</td></tr>', _('test for a greater than or equal to b'));
+printf('<tr><td><code>(= a b)</code></td><td>%s</td></tr>', _('test for equality'));
+printf('<tr><td><code>(/= a b)</code></td><td>%s</td></tr>', _('test for inequality')); ?>
 </table>
 <?php
 printf('<h4>%s</h4>', _('List functions'));
 printf('<table class="function-list" summary="%s">',
 		_('List of functions and explanations'));
-?>
-<tr><td><code>(first l)</code></td><td>first element of a list (car)</td></tr>
-<tr><td><code>(rest l)</code></td><td>rest of the list (cdr)</td></tr>
-<tr><td><code>(reverse l)</code></td><td>reverse a list</td></tr>
-<tr><td><code>(list a b ...)</code></td><td>construct a list</td></tr>
-<tr><td><code>(append l1 l2)</code></td><td>append two lists</td></tr>
-<tr><td><code>(length l)</code></td><td>length of a list</td></tr>
-<tr><td><code>(maplist function l)</code></td><td>apply a function to every element in a list</td></tr>
-</table>
-<?php
+printf('<tr><td><code>(first l)</code></td><td>%s</td></tr>', _('first element of a list (car)'));
+printf('<tr><td><code>(rest l)</code></td><td>%s</td></tr>', _('rest of the list (cdr)'));
+printf('<tr><td><code>(reverse l)</code></td><td>%s</td></tr>', _('reverse a list'));
+printf('<tr><td><code>(list a b ...)</code></td><td>%s</td></tr>', _('construct a list'));
+printf('<tr><td><code>(append l1 l2)</code></td><td>%s</td></tr>', _('append two lists'));
+printf('<tr><td><code>(length l)</code></td><td>%s</td></tr>', _('length of a list'));
+printf('<tr><td><code>(maplist function l)</code></td><td>%s</td></tr></table>', _('apply a function to every element in a list'));
+
 printf('<h4>%s</h4>', _('Control'));
 printf('<table class="function-list" summary="%s">', 
 		_('List of functions and explanations'));
-?>
-<tr><td><code>(if expr expr1 expr2)</code></td><td>if expr is true, evaluates expr1, otherwise evaluates expr2</td></tr>
-</table>
-<?php
+printf('<tr><td><code>(if expr expr1 expr2)</code></td><td>%s</td></tr></table>', _('if expr is true, evaluates expr1, otherwise evaluates expr2'));
+
   printf('<h3><a href="nyquist2">%s</a></h3>', _('Next: Programming in Nyquist'));
   include "../include/footer.inc.php";
 ?>
