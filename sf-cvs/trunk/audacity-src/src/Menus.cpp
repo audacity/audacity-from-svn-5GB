@@ -798,7 +798,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
                       AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
 
-   c->AddItem(wxT("RepeatLastEffect"),     _("Repeat Last Effect\tCtrl+R"),    FN(OnRepeatLastEffect));
+   c->AddItem(wxT("RepeatLastEffect"), mLastEffectDesc, FN(OnRepeatLastEffect));
    c->SetCommandFlags(wxT("RepeatLastEffect"),
                       AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag | HasLastEffectFlag,
                       AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag | HasLastEffectFlag);
@@ -1363,7 +1363,7 @@ wxUint32 AudacityProject::GetUpdateFlags()
    if (mUndoManager.UnsavedChanges())
       flags |= UnsavedChangesFlag;
 
-   if (EffectManager::Get().GetLastEffect() != NULL)
+   if (mLastEffect != NULL)
       flags |= HasLastEffectFlag;
 
    if (mUndoManager.UndoAvailable())
@@ -2347,10 +2347,10 @@ bool AudacityProject::OnEffect(int type, Effect * f)
       // Only remember a successful effect, don't rmemeber insert,
       // or analyze effects.
       if ((f->GetEffectFlags() & (INSERT_EFFECT | ANALYZE_EFFECT))==0) {
-         EffectManager::Get().SetLastEffect( type, f );
-         mCommandManager.Modify(wxT("RepeatLastEffect"),
-            wxString::Format(_("Repeat %s\tCtrl+R"),
-            shortDesc.c_str()));
+         mLastEffect = f;
+         mLastEffectType = type;
+         mLastEffectDesc.Printf(_("Repeat %s\tCtrl+R"), shortDesc.c_str());
+         mCommandManager.Modify(wxT("RepeatLastEffect"), mLastEffectDesc);
       }
       
       mTrackPanel->Refresh(false);
@@ -2376,13 +2376,10 @@ void AudacityProject::OnGeneratePlugin(int index)
 
 void AudacityProject::OnRepeatLastEffect(int index)
 {
-   EffectManager& em = EffectManager::Get();
-   Effect *f = em.GetLastEffect();
-   if( f  != NULL )
-   {
+   if (mLastEffect != NULL) {
       // Setting the CONFIGURED_EFFECT bit prevents
       // prompting for parameters.
-      OnEffect(em.GetLastEffectType() | CONFIGURED_EFFECT, f);
+      OnEffect(mLastEffectType | CONFIGURED_EFFECT, mLastEffect);
    }
 }
 

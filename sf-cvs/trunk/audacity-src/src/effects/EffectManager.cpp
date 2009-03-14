@@ -25,10 +25,7 @@ EffectManager& EffectManager::Get() {
 
 
 EffectManager::EffectManager()
-   : mLastType(0),
-     mLastIndex(0),
-     mLastEffect(0),
-     mNumEffects(0)
+:  mNumEffects(0)
 {
 #ifdef EFFECT_CATEGORIES
    mCategories = new CategoryMap();

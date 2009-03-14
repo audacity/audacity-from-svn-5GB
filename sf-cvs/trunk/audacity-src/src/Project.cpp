@@ -636,12 +636,11 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mIsRecovered(false),
      mRecordingRecoveryHandler(NULL),
      mImportedDependencies(false), 
-     mWantSaveCompressed(false)
+     mWantSaveCompressed(false),
+     mLastEffect(NULL),
+     mLastEffectType(0),
+     mLastEffectDesc(_("Repeat Last Effect\tCtrl+R"))
 {
-
-
-
-   
    int widths[] = {-1, 130};
    mStatusBar = CreateStatusBar(2);
    mStatusBar->SetStatusWidths(2, widths);
