@@ -172,9 +172,9 @@ private:
    wxTextCtrl *mFreqT;
    wxTextCtrl *mTimeT;
 
-   float       mGain;
-   float       mFreq;
-   float       mTime;
+   double      mGain;
+   double      mFreq;
+   double      mTime;
 
 private:
    DECLARE_EVENT_TABLE()

@@ -859,7 +859,7 @@ void NoiseRemovalDialog::PopulateOrExchange(ShuttleGui & S)
          mFreqS->SetRange(FREQ_MIN, FREQ_MAX);
          mFreqS->SetSizeHints(150, -1);
 
-         mTimeT = S.Id(ID_FREQ_TEXT).AddTextBox(_("Attack/decay time (secs):"),
+         mTimeT = S.Id(ID_TIME_TEXT).AddTextBox(_("Attack/decay time (secs):"),
                                                 wxT(""),
                                                 0);
          S.SetStyle(wxSL_HORIZONTAL);
@@ -875,45 +875,39 @@ void NoiseRemovalDialog::PopulateOrExchange(ShuttleGui & S)
 
 bool NoiseRemovalDialog::TransferDataToWindow()
 {
-   mGainS->SetValue((int)mGain);
-   mFreqS->SetValue((int)(mFreq / 10));
-   mTimeS->SetValue((int)(mTime * 100));
-
    mGainT->SetValue(wxString::Format(wxT("%d"), (int)mGain));
    mFreqT->SetValue(wxString::Format(wxT("%d"), (int)mFreq));
    mTimeT->SetValue(wxString::Format(wxT("%.2f"), mTime));
+
+   mGainS->SetValue(TrapLong(mGain, GAIN_MIN, GAIN_MAX));
+   mFreqS->SetValue(TrapLong(mFreq / 10, FREQ_MIN, FREQ_MAX));
+   mTimeS->SetValue(TrapLong(mTime / 0.01, TIME_MIN, TIME_MAX));
 
    return true;
 }
 
 bool NoiseRemovalDialog::TransferDataFromWindow()
 {
-   mGain = mGainS->GetValue();
-   mFreq = mFreqS->GetValue() * 10;
-   mTime = mTimeS->GetValue() * 0.01;
-
+   // Nothing to do here
    return true;
 }
 
 void NoiseRemovalDialog::OnGainText(wxCommandEvent & event)
 {
-   long val;
-   mGainT->GetValue().ToLong(&val);
-   mGainS->SetValue(TrapLong(val, GAIN_MIN, GAIN_MAX));
+   mGainT->GetValue().ToDouble(&mGain);
+   mGainS->SetValue(TrapLong(mGain, GAIN_MIN, GAIN_MAX));
 }
 
 void NoiseRemovalDialog::OnFreqText(wxCommandEvent & event)
 {
-   long val;
-   mFreqT->GetValue().ToLong(&val);
-   mFreqS->SetValue(TrapLong(val/10, FREQ_MIN, FREQ_MAX));
+   mFreqT->GetValue().ToDouble(&mFreq);
+   mFreqS->SetValue(TrapLong(mFreq / 10, FREQ_MIN, FREQ_MAX));
 }
 
 void NoiseRemovalDialog::OnTimeText(wxCommandEvent & event)
 {
-   long val;
-   mTimeT->GetValue().ToLong(&val);
-   mTimeS->SetValue(TrapLong(val*100, TIME_MIN, TIME_MAX));
+   mTimeT->GetValue().ToDouble(&mTime);
+   mTimeS->SetValue(TrapLong(mTime / 0.01, TIME_MIN, TIME_MAX));
 }
 
 void NoiseRemovalDialog::OnGainSlider(wxCommandEvent & event)
