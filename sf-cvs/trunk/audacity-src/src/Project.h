@@ -462,6 +462,10 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    bool mWantSaveCompressed;
    wxArrayString mStrOtherNamesArray; // used to make sure compressed file names are unique
    
+   // Last effect applied to this project
+   Effect *mLastEffect;
+   int mLastEffectType;
+   wxString mLastEffectDesc;
 
  private:
 

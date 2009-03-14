@@ -104,22 +104,6 @@ class AUDACITY_DLL_API EffectManager {
 #endif
 
  private:
-   int mLastType;
-   int mLastIndex;
-   Effect * mLastEffect;
-
- public:
-   
-   void SetLastEffect(int type, Effect * pEffect){
-      mLastType=type;
-      mLastEffect = pEffect;
-   }
-   
-   int GetLastEffectType(){ return mLastType;}
-   
-   Effect * GetLastEffect(){ return mLastEffect;}
-
- private:
    
    EffectArray mEffects;
    int mNumEffects;
