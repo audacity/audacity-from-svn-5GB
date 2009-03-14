@@ -163,21 +163,32 @@ wxString XMLTagHandler::XMLEsc(wxString s)
       switch (c) {
          case wxT('\''):
             result += wxT("&apos;");
-            break;
+         break;
+
          case wxT('"'):
             result += wxT("&quot;");
-            break;
+         break;
+
          case wxT('&'):
             result += wxT("&amp;");
-            break;
+         break;
+
          case wxT('<'):
             result += wxT("&lt;");
-            break;
+         break;
+
          case wxT('>'):
             result += wxT("&gt;");
-            break;
+         break;
+
          default:
-            result += c;
+            if (!wxIsprint(c)) {
+               result += wxString::Format(wxT("&#x%04x;"), c);
+            }
+            else {
+               result += c;
+            }
+         break;
       }
    }
 
