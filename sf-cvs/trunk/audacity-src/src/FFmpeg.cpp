@@ -189,7 +189,11 @@ static int ufile_open(URLContext *h, const char *filename, int flags)
 
 static int ufile_read(URLContext *h, unsigned char *buf, int size)
 {
-   return (int) ((wxFile *) h->priv_data)->Read(buf, size);
+   //return (int) ((wxFile *) h->priv_data)->Read(buf, size);
+   static int totalret = 0;
+   int ret = (int) ((wxFile *) h->priv_data)->Read(buf, size);
+   totalret += ret;
+   return ret;
 }
 
 static int ufile_write(URLContext *h, unsigned char *buf, int size)
@@ -205,14 +209,19 @@ static offset_t ufile_seek(URLContext *h, offset_t pos, int whence)
 {
    wxSeekMode mode;
 
-   if (whence == SEEK_SET) {
-      mode = wxFromStart;
-   }
-   else if (whence == SEEK_CUR) {
-      mode = wxFromCurrent;
-   }
-   else {
-      mode = wxFromEnd;
+   switch (whence)
+   {
+   case (SEEK_SET):
+     mode = wxFromStart;
+     break;
+   case (SEEK_CUR):
+     mode = wxFromCurrent;
+     break;
+   case (SEEK_END):
+     mode = wxFromEnd;
+     break;
+   case (AVSEEK_SIZE):
+     return ((wxFile *) h->priv_data)->Length();
    }
 
    return ((wxFile *) h->priv_data)->Seek(pos, mode);
