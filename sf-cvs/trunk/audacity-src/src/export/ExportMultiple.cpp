@@ -682,7 +682,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
    int channels = 0;  // how many channels export?
    int l = 0;     // track counter
    int numTracks = 0;
-   bool ok = true;
+   int ok = eProgressSuccess;
    wxArrayString otherNames;
    wxArrayPtrVoid selected;   /**< Array of pointers to the tracks which were
                                 selected when we started */
@@ -826,7 +826,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
       }
 
       // Stop if an error occurred
-      if (!ok) {
+      if (ok != eProgressSuccess) {
          break;
       }
       // increment export counter
@@ -840,9 +840,15 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
    }
 
    // Give 'em the result
-   ::wxMessageBox(wxString::Format(ok
-                                   ? _("Successfully exported %d file(s).")
-                                   : _("Something went wrong after exporting %d file(s)."),
+   ::wxMessageBox(wxString::Format(
+      ok == eProgressSuccess ? _("Successfully exported %d file(s).")
+        : (ok == eProgressFailed ? _("Something went wrong after exporting %d file(s).")
+          : (ok == eProgressCancelled ? _("Export canceled after exporting %d file(s).") 
+            : (ok == eProgressStopped ? _("Export stopped after exporting %d file(s).")
+              : _("Something went really wrong after exporting %d file(s).")
+              )
+            )
+          ),
                                    count),
                   _("Export Multiple"),
                   wxOK | wxCENTRE, this);
@@ -850,7 +856,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
    return ok;
 }
 
-bool ExportMultiple::DoExport(int channels,
+int ExportMultiple::DoExport(int channels,
                               wxFileName name,
                               bool selectedOnly,
                               double t0,
@@ -887,7 +893,7 @@ bool ExportMultiple::DoExport(int channels,
                                                 &tags,
                                                 mSubFormatIndex);
 
-   return (success == eProgressSuccess || success == eProgressStopped);
+   return success;
 }
 
 wxString ExportMultiple::MakeFileName(wxString input)
