@@ -76,73 +76,13 @@ void BrowserFrame::UpdateButtons()
    }
 }
 
-#if defined(__WXMSW__)
-// Enumeration function to scan windows for a matching process ID
-// and, if found, bring the window to the fore.
-BOOL CALLBACK ShowWindowFunc(HWND wnd, LPARAM pid)
-{
-   DWORD id;
-
-   GetWindowThreadProcessId(wnd, &id);
-   if (id == pid) {
-      SetForegroundWindow(wnd);
-
-      if (IsIconic(wnd)) {
-         ShowWindow(wnd, SW_RESTORE);
-      }
-
-      return FALSE;
-   }
-
-   return TRUE ;
-}
-#endif
-
 void OpenInDefaultBrowser(const wxHtmlLinkInfo& link)
 {
    #ifdef __WXMAC__
       wxString openCmd = wxT("open ") + link.GetHref();
       ::wxExecute(openCmd);
    #else
-      #ifdef __WXMSW__
-         wxFileType* pFileType = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT(".htm"));
-         if (pFileType == NULL)  {
-            return;
-         }
-
-         wxString openCmd = pFileType->GetOpenCommand(link.GetHref());
-
-         if (openCmd.Lower().Contains(wxT("iexplore.exe"))) {
-            // GetOpenCommand is not quite right for Internet Explorer.
-            openCmd.Replace(wxT("WWW_OpenURL#\"file://"), wxT("WWW_OpenURL#\""));
-         }
-
-         if (openCmd.Lower().Contains(wxT("firefox.exe"))) {
-            // For Firefox, we do not want to use DDE so that we can get back 
-            // a real process ID.  When using DDE, the window doesn't always
-            // come up the top and the WWW_Activate DDE command simply opens
-            // an empty browser window.
-            //
-            // If this doesn't work, then another other option may be to
-            // get the process ID via a call to DdeQueryConvInfo() followed
-            // by a call to GetWindowThreadProcessId() using the hwndPartner
-            // field of the CONVINFO structure.
-            openCmd = openCmd.AfterFirst(wxT('#')).BeforeFirst(wxT('#'));
-         }
-
-         long pid = ::wxExecute(openCmd);
-
-         // If the returned process ID isn't the fake DDE process ID, then
-         // enumerate the windows until a matching process is located and
-         // bring the related window to the fore.
-         if (pid != -1) {
-            EnumWindows((WNDENUMPROC)ShowWindowFunc, pid);
-         }
-
-         delete pFileType;
-      #else
-         wxLaunchDefaultBrowser(link.GetHref());
-      #endif
+      wxLaunchDefaultBrowser(link.GetHref());
    #endif
 };
 
