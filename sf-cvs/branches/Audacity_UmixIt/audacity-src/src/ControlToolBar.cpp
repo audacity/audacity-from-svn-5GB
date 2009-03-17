@@ -401,6 +401,14 @@ void ControlToolBar::RegenerateToolsTooltips()
 static const int kToolsClusterWidth = 3 * 27; // Each tool is 27x27, in a 3x2 grid.
 static const int kButtonsXOffset = 14;
 
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) 
+   // Don't bother to conditionalize these in ControlButtons.h, just load them but use these instead. 
+   #include "../images/ControlButtons/Pause_yellow.xpm"
+   #include "../images/ControlButtons/PauseDisabled_yellow.xpm"
+   #include "../images/ControlButtons/Stop_blue.xpm"
+   #include "../images/ControlButtons/StopDisabled_blue.xpm"
+#endif
+
 void ControlToolBar::MakeButtons()
 {
    wxImage *upOriginal = new wxImage(wxBitmap(UpButton).ConvertToImage());
@@ -550,19 +558,36 @@ void ControlToolBar::MakeButtons()
                               false);
          break;
       
-      case ID_PAUSE_BUTTON:
-         mPause = MakeButton((char const **)Pause,
-                            (char const **) PauseDisabled,
-                            (char const **) PauseAlpha, ID_PAUSE_BUTTON,
-                             true);
-         break;
-      
-      case ID_STOP_BUTTON:
-         mStop = MakeButton((char const **) Stop,
-                            (char const **) StopDisabled,
-                            (char const **) StopAlpha, ID_STOP_BUTTON,
-                            false);
-         break;
+      #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) 
+         // Audacity_Audiotouch swaps colors for Pause and Stop. 
+         case ID_PAUSE_BUTTON:
+            mPause = MakeButton((char const **)Pause_yellow,
+                              (char const **) PauseDisabled_yellow,
+                              (char const **) PauseAlpha, ID_PAUSE_BUTTON,
+                              true);
+            break;
+         
+         case ID_STOP_BUTTON:
+            mStop = MakeButton((char const **) Stop_blue,
+                              (char const **) StopDisabled_blue,
+                              (char const **) StopAlpha, ID_STOP_BUTTON,
+                              false);
+            break;
+      #else
+         case ID_PAUSE_BUTTON:
+            mPause = MakeButton((char const **)Pause,
+                              (char const **) PauseDisabled,
+                              (char const **) PauseAlpha, ID_PAUSE_BUTTON,
+                              true);
+            break;
+         
+         case ID_STOP_BUTTON:
+            mStop = MakeButton((char const **) Stop,
+                              (char const **) StopDisabled,
+                              (char const **) StopAlpha, ID_STOP_BUTTON,
+                              false);
+            break;
+      #endif
       
       case ID_FF_BUTTON:
          mFF = MakeButton((char const **) FFwd,
@@ -1210,6 +1235,10 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
          SetStop(false);
          SetRecord(false);
       }
+
+      #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+         p->OnZoomFitV();
+      #endif
    }
 }
 
