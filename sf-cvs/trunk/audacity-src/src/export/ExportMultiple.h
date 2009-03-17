@@ -71,7 +71,7 @@ private:
     * @param t1 End time for export
     * @param tags Metadata to include in the file (if possible).
     */
-   bool DoExport(int channels,
+   int DoExport(int channels,
                  wxFileName name,
                  bool selectedOnly,
                  double t0,
