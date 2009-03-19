@@ -103,6 +103,9 @@ private:
 
    void PrintDebugInfo();
 
+   // If autoPos was enabled, focus the first non-zero digit
+   void UpdateAutoFocus();
+
    void Updated();
    void Increase(int steps);
    void Decrease(int steps);
@@ -142,6 +145,9 @@ private:
 
    int            mFocusedDigit;
    int            mLastField;
+
+   // If true, the focus will be set to the first non-zero digit
+   bool           mAutoPos;
 
    DigitInfoArray mDigits;
 
