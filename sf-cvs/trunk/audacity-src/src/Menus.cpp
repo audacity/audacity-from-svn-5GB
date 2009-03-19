@@ -4044,14 +4044,15 @@ void AudacityProject::OnImport()
       gPrefs->Write(wxT("/DefaultOpenPath"), path);
       
       Import(fileName);
+      //Saving in history
+      mRecentFiles->AddFileToHistory(fileName);
+      gPrefs->SetPath(wxT("/RecentFiles"));
+      mRecentFiles->Save(*gPrefs);
+      gPrefs->SetPath(wxT(".."));
    }
-
+	
    HandleResize(); // Adjust scrollers for new track sizes.
 }
-
-
-
-
 
 void AudacityProject::OnImportLabels()
 {
