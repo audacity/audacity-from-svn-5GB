@@ -257,7 +257,8 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    mDigitFont(NULL),
    mLabelFont(NULL),
    mFocusedDigit(0),
-   mLastField(-1)
+   mLastField(-1),
+   mAutoPos(autoPos)
 {
    /* i18n-hint: Name of time display format that shows time in seconds */
    BuiltinFormatStrings[0].name = _("seconds");
@@ -399,17 +400,6 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    Fit();
    ValueToControls();
 
-   if (autoPos) {
-      mFocusedDigit = 0;
-      while (mFocusedDigit < ((int)mDigits.GetCount() - 1)) {
-         wxChar dgt = mValueString[mDigits[mFocusedDigit].pos];
-         if (dgt != '0') {
-            break;
-         }
-         mFocusedDigit++;
-      }
-   }
-
 #if wxUSE_ACCESSIBILITY
    SetLabel(wxT(""));
    SetName(wxT(""));
@@ -431,6 +421,23 @@ TimeTextCtrl::~TimeTextCtrl()
       delete mLabelFont;
 }
 
+// Set the focus to the first (left-most) non-zero digit
+// If all digits are zero, the right-most position is focused
+void TimeTextCtrl::UpdateAutoFocus()
+{
+   if (!mAutoPos)
+      return;
+
+   mFocusedDigit = 0;
+   while (mFocusedDigit < ((int)mDigits.GetCount() - 1)) {
+      wxChar dgt = mValueString[mDigits[mFocusedDigit].pos];
+      if (dgt != '0') {
+         break;
+      }
+      mFocusedDigit++;
+   }
+}
+
 void TimeTextCtrl::SetFormatString(wxString formatString)
 {
    mFormatString = formatString;
@@ -438,6 +445,7 @@ void TimeTextCtrl::SetFormatString(wxString formatString)
    Layout();
    Fit();
    ValueToControls();
+   UpdateAutoFocus();
 }
 
 void TimeTextCtrl::SetSampleRate(double sampleRate)
