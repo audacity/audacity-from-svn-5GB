@@ -4,15 +4,8 @@
 
   Contrast.cpp
 
-*******************************************************************//**
-
-\class EffectContrast
-\brief An effect to measure the difference between two sections of audio
-
-*//****************************************************************//**
-
 \class ContrastDialog
-\brief Dialog used with EffectContrast
+\brief Dialog used for Contrast menu item
 
 *//*******************************************************************/
 
@@ -57,24 +50,40 @@
 
 #include "../PlatformCompatibility.h"
 
-EffectContrast::EffectContrast()
-{
-   bFGset = false;
-   bBGset = false;
-}
+ContrastDialog *gContrastDialog = NULL;
 
-EffectContrast::~EffectContrast()
+void InitContrastDialog(wxWindow * parent)
 {
-   return;
-}
-
-bool EffectContrast::PromptUser()
-{
-   if( !bFGset )
+   if(!gContrastDialog)
    {
-      SaveTimes(true, mT0, mT1);
-      bFGset = true;
-      if( !bBGset )
+      wxPoint where;
+
+      where.x = 150;
+      where.y = 150;
+
+      gContrastDialog = new ContrastDialog(parent, -1, _("Contrast Analysis"), where);
+
+      
+      gContrastDialog->bFGset = false;
+      gContrastDialog->bBGset = false;
+   }
+
+   AudacityProject *p = GetActiveProject();
+   TrackListIterator iter(p->GetTracks());
+   Track *t = iter.First();
+   while (t) {
+      if (t->GetSelected() && t->GetKind() == Track::Wave) {
+         gContrastDialog->mT0 = p->mViewInfo.sel0;
+         gContrastDialog->mT1 = p->mViewInfo.sel1;
+      }
+      t = iter.Next();
+   }
+
+   if( !gContrastDialog->bFGset )
+   {
+      gContrastDialog->SaveTimes(true, gContrastDialog->mT0, gContrastDialog->mT1);
+      gContrastDialog->bFGset = true;
+      if( !gContrastDialog->bBGset )
       {
          wxMessageDialog m(NULL, _("Foreground times selected.\nNow select background and use Ctrl+Shift+T or menu again."), _("Contrast Tool Foreground"), wxOK);
          m.ShowModal();
@@ -82,51 +91,51 @@ bool EffectContrast::PromptUser()
    }
    else
    {
-      if( !bBGset )
+      if( !gContrastDialog->bBGset )
       {
-         SaveTimes(false, mT0, mT1);
-         bBGset = true;
+         gContrastDialog->SaveTimes(false, gContrastDialog->mT0, gContrastDialog->mT1);
+         gContrastDialog->bBGset = true;
       }
    }
 
-   if( bFGset && bBGset )
+   if( gContrastDialog->bFGset && gContrastDialog->bBGset )
    {
-      ContrastDialog dlog(this, mParent);
-
-      // Copy parameters into dialog from effect
-      dlog.mForegroundStartT->SetTimeValue(mStartTimeF);
-      dlog.mForegroundEndT->SetTimeValue(mEndTimeF);
-      dlog.mBackgroundStartT->SetTimeValue(mStartTimeB);
-      dlog.mBackgroundEndT->SetTimeValue(mEndTimeB);
+      // Copy parameters into dialog boxes
+      gContrastDialog->mForegroundStartT->SetTimeValue(gContrastDialog->mStartTimeF);
+      gContrastDialog->mForegroundEndT->SetTimeValue(gContrastDialog->mEndTimeF);
+      gContrastDialog->mBackgroundStartT->SetTimeValue(gContrastDialog->mStartTimeB);
+      gContrastDialog->mBackgroundEndT->SetTimeValue(gContrastDialog->mEndTimeB);
 
       wxCommandEvent dummyEvt;
-      dlog.OnGetForegroundDB(dummyEvt);
-      dlog.OnGetBackgroundDB(dummyEvt);
+      gContrastDialog->OnGetForegroundDB(dummyEvt);
+      gContrastDialog->OnGetBackgroundDB(dummyEvt);
 
-      dlog.CentreOnParent();
-      dlog.ShowModal();
+      gContrastDialog->CentreOnParent();
+      gContrastDialog->Show();
 
-      // Copy parameters from dialog back into effect
-      mStartTimeF = dlog.mForegroundStartT->GetTimeValue();
-      mEndTimeF = dlog.mForegroundEndT->GetTimeValue();
-      mStartTimeB = dlog.mBackgroundStartT->GetTimeValue();
-      mEndTimeB = dlog.mBackgroundEndT->GetTimeValue();
+      // Copy parameters back from dialog
+      gContrastDialog->mStartTimeF = gContrastDialog->mForegroundStartT->GetTimeValue();
+      gContrastDialog->mEndTimeF = gContrastDialog->mForegroundEndT->GetTimeValue();
+      gContrastDialog->mStartTimeB = gContrastDialog->mBackgroundStartT->GetTimeValue();
+      gContrastDialog->mEndTimeB = gContrastDialog->mBackgroundEndT->GetTimeValue();
    }
-
-   return false;
 }
 
-float EffectContrast::GetDB()
+float ContrastDialog::GetDB()
 {
+//   not good
+//  why not?
+// what if more than one track?
    float rms = float(0.0);
 
-   TrackListIterator iter(mWaveTracks);
+   AudacityProject *p = GetActiveProject();
+   TrackListIterator iter(p->GetTracks());
    Track *t = iter.First();
    if(mT0 > mT1)
    {
       wxMessageDialog m(NULL, _("Start time after after end time!\nPlease enter reasonable times."), _("Error"), wxOK);
       m.ShowModal();
-      return 1234.0; // 'magic number', but the whole +ve dB range will never occur
+      return 1234.0; // 'magic number', but the whole +ve dB range will 'almost' never occur
    }
    if(mT0 < t->GetStartTime())
       mT0 = t->GetStartTime();
@@ -150,27 +159,27 @@ float EffectContrast::GetDB()
       return 20.0*log10(fabs(rms));
 }
 
-double EffectContrast::GetStartTime()
+double ContrastDialog::GetStartTime()
 {
    return(mT0);
 }
 
-void EffectContrast::SetStartTime(double t)
+void ContrastDialog::SetStartTime(double t)
 {
    mT0 = t;
 }
 
-double EffectContrast::GetEndTime()
+double ContrastDialog::GetEndTime()
 {
    return(mT1);
 }
 
-void EffectContrast::SetEndTime(double t)
+void ContrastDialog::SetEndTime(double t)
 {
    mT1 = t;
 }
 
-void EffectContrast::SaveTimes(bool isForeground, double start, double end)
+void ContrastDialog::SaveTimes(bool isForeground, double start, double end)
 {
    if(isForeground)
    {
@@ -183,17 +192,6 @@ void EffectContrast::SaveTimes(bool isForeground, double start, double end)
       mEndTimeB = end;
    }
    return;
-}
-
-bool EffectContrast::Process()
-{
-   wxMessageBox(_("Hello.\n"));  // you should never see this!
-   return true;
-}
-
-bool EffectContrast::CheckWhetherSkipEffect()
-{
-   return true;
 }
 
 // WDR: class implementations
@@ -240,12 +238,12 @@ BEGIN_EVENT_TABLE(ContrastDialog,wxDialog)
 END_EVENT_TABLE()
 
 /* i18n-hint: WCAG2 is the 'Web Content Accessibility Guidelines (WCAG) 2.0', see http://www.w3.org/TR/WCAG20/ */
-ContrastDialog::ContrastDialog(EffectContrast * effect, 
-                                       wxWindow *parent) :
-   EffectDialog( parent, _("WCAG2 Audio Contrast Analyzer"), ANALYZE_EFFECT)
+ContrastDialog::ContrastDialog(wxWindow * parent, wxWindowID id,
+                           const wxString & title,
+                           const wxPoint & pos):
+  wxDialog(parent, id, title, pos, wxDefaultSize,
+     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX )
 {
-   m_pEffect = effect;
-   
    // NULL out the control members until the controls are created.
    m_pButton_GetForeground = NULL;
    m_pButton_GetBackground = NULL;
@@ -253,66 +251,15 @@ ContrastDialog::ContrastDialog(EffectContrast * effect,
    mForegroundEndT = NULL;
    mBackgroundStartT = NULL;
    mBackgroundEndT = NULL;
-
-   mT0orig = m_pEffect->GetStartTime();  // keep copy of selection times
-   mT1orig = m_pEffect->GetEndTime();
-
-   Init();
-}
-
-ContrastDialog::~ContrastDialog()
-{
-   mForegroundRMSText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
-   mBackgroundRMSText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
-   mPassFailText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
-   mDiffText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
-}
-
-void ContrastDialog::OnGetForegroundDB( wxCommandEvent &event )
-{
-   m_pEffect->SetStartTime(mForegroundStartT->GetTimeValue());
-   m_pEffect->SetEndTime(mForegroundEndT->GetTimeValue());
-   foregrounddB = m_pEffect->GetDB();
-   m_pButton_GetForeground->Enable(false);
-   m_pButton_GetForeground->SetLabel(_("Measured"));
-   m_pButton_UseCurrentF->SetFocus();
-   results();
-}
-
-void ContrastDialog::OnGetBackgroundDB( wxCommandEvent &event )
-{
-   m_pEffect->SetStartTime(mBackgroundStartT->GetTimeValue());
-   m_pEffect->SetEndTime(mBackgroundEndT->GetTimeValue());
-   backgrounddB = m_pEffect->GetDB();
-   m_pButton_GetBackground->Enable(false);
-   m_pButton_GetBackground->SetLabel(_("Measured"));
-   m_pButton_UseCurrentB->SetFocus();
-   results();
-}
-
-void ContrastDialog::OnGetURL(wxCommandEvent &event)
-{
-   wxString page = wxT("http://www.eramp.com/WCAG_2_audio_contrast_tool_help.htm");
-   ::OpenInDefaultBrowser(page);
-}
-
-void ContrastDialog::OnOK(wxCommandEvent &event)
-{
-   wxCommandEvent dummyEvt;
-   OnReset(event);
-   EndModal(0);
-}
-
-void ContrastDialog::OnCloseWithoutReset(wxCommandEvent &event)
-{
-   EndModal(0);
-}
-
-void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
-{
    wxTextValidator vld(wxFILTER_NUMERIC);
    wxString number;
 
+   AudacityProject *p = GetActiveProject();
+   mProjectRate = p->GetRate();
+
+   ShuttleGui S(this, eIsCreating);
+   
+   S.SetBorder(5);
    S.StartHorizontalLay(wxCENTER, false);
    {
       S.AddTitle(_("Contrast Analyzer"));
@@ -340,7 +287,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          ID_FOREGROUNDSTART_T,
                          wxT(""),
                          0.0,
-                         m_pEffect->mProjectRate,
+                         mProjectRate,
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
@@ -358,7 +305,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          ID_FOREGROUNDEND_T,
                          wxT(""),
                          0.0,
-                         m_pEffect->mProjectRate,
+                         mProjectRate,
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
@@ -384,7 +331,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          ID_BACKGROUNDSTART_T,
                          wxT(""),
                          0.0,
-                         m_pEffect->mProjectRate,
+                         mProjectRate,
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
@@ -402,7 +349,7 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
                          ID_BACKGROUNDEND_T,
                          wxT(""),
                          0.0,
-                         m_pEffect->mProjectRate,
+                         mProjectRate,
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
@@ -448,16 +395,66 @@ void ContrastDialog::PopulateOrExchange(ShuttleGui & S)
          m_pButton_GetURL = S.Id(ID_BUTTON_GETURL).AddButton(_("Help for WCAG2 Audio Contrast Analyzer"));
       }
       S.EndStatic();
-      //What happens when we close the dialog (OK button is standard and clears values)
+      //What happens when we close the dialog
       S.StartStatic( _("Control"));
       {
-         S.AddFixedText(_("Note: The 'OK' button resets time values."));
-         m_pButton_Close = S.Id(ID_BUTTON_CLOSE).AddButton(_("Close but keep times"));
+         m_pButton_Close = S.Id(ID_BUTTON_CLOSE).AddButton(_("Close (keeping times)"));
       }
       S.EndStatic();
    }
    S.EndHorizontalLay();
+   Layout();
    Fit();
+   SetMinSize(GetSize());
+   Center();
+}
+
+ContrastDialog::~ContrastDialog()
+{
+   mForegroundRMSText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
+   mBackgroundRMSText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
+   mPassFailText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
+   mDiffText->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(ContrastDialog::OnChar));
+}
+
+void ContrastDialog::OnGetForegroundDB( wxCommandEvent &event )
+{
+   SetStartTime(mForegroundStartT->GetTimeValue());
+   SetEndTime(mForegroundEndT->GetTimeValue());
+   foregrounddB = GetDB();
+   m_pButton_GetForeground->Enable(false);
+   m_pButton_GetForeground->SetLabel(_("Measured"));
+   m_pButton_UseCurrentF->SetFocus();
+   results();
+}
+
+void ContrastDialog::OnGetBackgroundDB( wxCommandEvent &event )
+{
+   SetStartTime(mBackgroundStartT->GetTimeValue());
+   SetEndTime(mBackgroundEndT->GetTimeValue());
+   backgrounddB = GetDB();
+   m_pButton_GetBackground->Enable(false);
+   m_pButton_GetBackground->SetLabel(_("Measured"));
+   m_pButton_UseCurrentB->SetFocus();
+   results();
+}
+
+void ContrastDialog::OnGetURL(wxCommandEvent &event)
+{
+   wxString page = wxT("http://www.eramp.com/WCAG_2_audio_contrast_tool_help.htm");
+   ::OpenInDefaultBrowser(page);
+}
+
+void ContrastDialog::OnOK(wxCommandEvent &event)
+{
+   wxCommandEvent dummyEvt;
+   OnReset(event);
+   EndModal(0);
+}
+
+void ContrastDialog::OnCloseWithoutReset(wxCommandEvent &event)
+{
+   Show(false);
 }
 
 void ContrastDialog::OnForegroundStartT(wxCommandEvent & event)
@@ -486,21 +483,33 @@ void ContrastDialog::OnBackgroundEndT(wxCommandEvent & event)
 
 void ContrastDialog::OnUseSelectionF(wxCommandEvent & event)
 {
-   mForegroundStartT->SetTimeValue(mT0orig);
-   mForegroundEndT->SetTimeValue(mT1orig);
-
-   m_pEffect->SetStartTime(mT0orig);
-   m_pEffect->SetEndTime(mT1orig);
+   AudacityProject *p = GetActiveProject();
+   TrackListIterator iter(p->GetTracks());
+   Track *t = iter.First();
+   while (t) {
+      if (t->GetSelected() && t->GetKind() == Track::Wave) {
+         mForegroundStartT->SetTimeValue(p->mViewInfo.sel0);
+         mForegroundEndT->SetTimeValue(p->mViewInfo.sel1);
+         break;
+      }
+      t = iter.Next();
+   }
    OnGetForegroundDB(event);
 }
 
 void ContrastDialog::OnUseSelectionB(wxCommandEvent & event)
 {
-   mBackgroundStartT->SetTimeValue(mT0orig);
-   mBackgroundEndT->SetTimeValue(mT1orig);
-
-   m_pEffect->SetStartTime(mT0orig);
-   m_pEffect->SetEndTime(mT1orig);
+   AudacityProject *p = GetActiveProject();
+   TrackListIterator iter(p->GetTracks());
+   Track *t = iter.First();
+   while (t) {
+      if (t->GetSelected() && t->GetKind() == Track::Wave) {
+         mBackgroundStartT->SetTimeValue(p->mViewInfo.sel0);
+         mBackgroundEndT->SetTimeValue(p->mViewInfo.sel1);
+         break;
+      }
+      t = iter.Next();
+   }
    OnGetBackgroundDB(event);
 }
 
@@ -642,8 +651,8 @@ void ContrastDialog::OnExport(wxCommandEvent & event)
 
 void ContrastDialog::OnReset(wxCommandEvent & event)
 {
-   m_pEffect->bFGset = false;
-   m_pEffect->bBGset = false;
+   bFGset = false;
+   bBGset = false;
 
    mForegroundStartT->SetTimeValue(0.0);
    mForegroundEndT->SetTimeValue(0.0);

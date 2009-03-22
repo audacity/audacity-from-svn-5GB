@@ -233,6 +233,7 @@ void OnShowClipping();
 void OnSelectionFormat(int index);
 
 void OnPlotSpectrum();
+void OnContrast();
 
 void OnShowControlToolBar();
 void OnShowDeviceToolBar();
