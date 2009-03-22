@@ -913,6 +913,7 @@ void Envelope::SetTrackLen(double trackLen)
          delete mEnv[i];
          mEnv.RemoveAt(i);
          len--;
+         i--;
       }
 }
 
