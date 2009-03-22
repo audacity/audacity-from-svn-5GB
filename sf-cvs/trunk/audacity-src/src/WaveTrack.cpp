@@ -769,19 +769,19 @@ bool WaveTrack::HandleClear(double t0, double t1,
                 * region being cleared. If one of the ends of the clip is inside
                 * the region, then one of the glue points will be redundant. */
                // clip->Clear keeps points < t0 and >= t1 via Envelope::CollapseRegion
-               double val;
-               if (t0 > clip->GetStartTime())
-                  {  // start of clip is before start of region to clear
-                  val = clip->GetEnvelope()->GetValue(t0);
-                  clip->GetEnvelope()->Insert(t0 - clip->GetOffset() - 1.0/clip->GetRate(), val);
-                  }
-
-               if (t1 < clip->GetEndTime())
-                  {  // end of clip is after end of region
-                  val = clip->GetEnvelope()->GetValue(t1);
-                  clip->GetEnvelope()->Insert(t1 - clip->GetOffset(), val);
-                  }
-
+               if (clip->GetEnvelope()->GetNumberOfPoints() > 0) {   // don't insert env pts if none exist
+                  double val;
+                  if (t0 > clip->GetStartTime())
+                     {  // start of clip is before start of region to clear
+                     val = clip->GetEnvelope()->GetValue(t0);
+                     clip->GetEnvelope()->Insert(t0 - clip->GetOffset() - 1.0/clip->GetRate(), val);
+                     }
+                  if (t1 < clip->GetEndTime())
+                     {  // end of clip is after end of region
+                     val = clip->GetEnvelope()->GetValue(t1);
+                     clip->GetEnvelope()->Insert(t1 - clip->GetOffset(), val);
+                     }
+               }
                if (!clip->Clear(t0,t1))
                   return false;
             }
