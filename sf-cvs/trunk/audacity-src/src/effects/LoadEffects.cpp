@@ -21,7 +21,6 @@
 #include "ChangeSpeed.h"
 #include "ClickRemoval.h"
 #include "Compressor.h"
-#include "Contrast.h"
 #include "DtmfGen.h"
 #include "Echo.h"
 #include "Equalization.h"
@@ -267,7 +266,6 @@ void LoadEffects()
    em.RegisterEffect(new EffectWahwah());
 
    // Analyze menu
-   em.RegisterEffect(new EffectContrast(), ANALYZE_EFFECT);
    em.RegisterEffect(new EffectFindClipping(), ANALYZE_EFFECT);
 
 #ifdef USE_NYQUIST

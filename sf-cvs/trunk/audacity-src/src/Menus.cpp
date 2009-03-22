@@ -47,6 +47,7 @@ simplifies construction of menu items.
 
 #include "Project.h"
 #include "effects/EffectManager.h"
+#include "effects/Contrast.h"
 
 #include "AudacityApp.h"
 #include "AudioIO.h"
@@ -877,6 +878,10 @@ void AudacityProject::CreateMenusAndCommands()
    if( !mCleanSpeechMode ) {
 
       c->BeginMenu(_("&Analyze"));
+      c->AddItem(wxT("ContrastAnalyser"), _("Contrast...\tCtrl+Shift+T"), FN(OnContrast));
+      c->SetCommandFlags(wxT("ContrastAnalyser"),
+                         AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
+                         AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
       /* plot spectrum moved from view */
       c->AddItem(wxT("PlotSpectrum"), _("Plot Spectrum..."), FN(OnPlotSpectrum));
       c->SetCommandFlags(wxT("PlotSpectrum"),
@@ -3956,6 +3961,11 @@ void AudacityProject::OnShowClipping()
 void AudacityProject::OnPlotSpectrum()
 {
    InitFreqWindow(NULL);
+}
+
+void AudacityProject::OnContrast()
+{
+   InitContrastDialog(NULL);
 }
 
 

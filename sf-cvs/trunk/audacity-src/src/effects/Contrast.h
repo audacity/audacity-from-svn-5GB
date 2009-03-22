@@ -6,10 +6,9 @@
 
 **********************************************************************/
 
-#ifndef __AUDACITY_EFFECT_CONTRAST__
-#define __AUDACITY_EFFECT_CONTRAST__
+#ifndef __AUDACITY_CONTRAST_DIALOG__
+#define __AUDACITY_CONTRAST_DIALOG__
 
-#include "Effect.h"
 #include "../widgets/TimeTextCtrl.h"
 
 #include <wx/dialog.h>
@@ -22,63 +21,11 @@ class wxString;
 class Envelope;
 class WaveTrack;
 
-class EffectContrast: public Effect {
+class ContrastDialog;
 
-public:
-   
-   EffectContrast();
-   virtual ~EffectContrast();
+extern ContrastDialog *gContrastDialog;
 
-   virtual wxString GetEffectName() {
-      return wxString(_("Contrast...\tCtrl+Shift+T"));
-   }
-
-   virtual int GetEffectFlags() {
-      return BUILTIN_EFFECT | ANALYZE_EFFECT;
-   }
-
-   virtual std::set<wxString> GetEffectCategories() {
-      std::set<wxString> result;
-      result.insert(wxT("http://lv2plug.in/ns/lv2core#AnalyserPlugin"));
-      return result;
-   }
-
-   virtual wxString GetEffectIdentifier() {
-      return wxString(wxT("Contrast"));
-   }
-
-   virtual wxString GetEffectAction() {
-      if (mDoBackground)
-         return wxString(_("Measuring background"));
-      else
-         return wxString(_("Measuring foreground"));
-   }
-   
-   virtual bool PromptUser();
-   
-   virtual bool CheckWhetherSkipEffect();
-   virtual bool Process();
-   void SaveTimes(bool, double, double);
-   double length;
-   
-private:
-   bool      mDoBackground;
-   float GetDB();
-   double GetStartTime();
-   void SetStartTime(double);
-   double GetEndTime();
-   void SetEndTime(double);
-   double mStartTimeF;
-   double mEndTimeF;
-   bool bFGset;
-   double mStartTimeB;
-   double mEndTimeB;
-   bool bBGset;
-
-friend class ContrastDialog;
-};
-
-// WDR: class declarations
+void InitContrastDialog(wxWindow * parent);
 
 //----------------------------------------------------------------------------
 // ContrastDialog
@@ -86,18 +33,41 @@ friend class ContrastDialog;
 
 // Declare window functions
 
-class ContrastDialog: public EffectDialog
+class ContrastDialog:public wxDialog
 {
 public:
    // constructors and destructors
-   ContrastDialog(EffectContrast * effect,
-                      wxWindow *parent);
+   ContrastDialog(wxWindow * parent, wxWindowID id,
+              const wxString & title, const wxPoint & pos);
    ~ContrastDialog();
-
-   void PopulateOrExchange(ShuttleGui & S);
 
    void OnGetForegroundDB( wxCommandEvent &event );
    void OnGetBackgroundDB( wxCommandEvent &event );
+
+   wxButton * m_pButton_GetBackground;
+   wxButton * m_pButton_GetForeground;
+   wxButton * m_pButton_UseCurrentF;
+   wxButton * m_pButton_UseCurrentB;
+   wxButton * m_pButton_GetURL;
+   wxButton * m_pButton_Export;
+   wxButton * m_pButton_Reset;
+   wxButton * m_pButton_Close;
+
+   TimeTextCtrl *mForegroundStartT;
+   TimeTextCtrl *mForegroundEndT;
+   TimeTextCtrl *mBackgroundStartT;
+   TimeTextCtrl *mBackgroundEndT;
+
+   bool bFGset;
+   bool bBGset;
+   double mT0;
+   double mT1;
+   double mProjectRate;
+   void SaveTimes(bool, double, double);
+   double mStartTimeF;
+   double mEndTimeF;
+   double mStartTimeB;
+   double mEndTimeB;
 
 private:
    // handlers
@@ -125,25 +95,15 @@ private:
    double mT0orig;
    double mT1orig;
 
- public:
+   bool mDoBackground;
+   float GetDB();
+   double GetStartTime();
+   void SetStartTime(double);
+   double GetEndTime();
+   void SetEndTime(double);
 
-   EffectContrast * m_pEffect;
+   double length;
 
-   wxButton * m_pButton_GetBackground;
-   wxButton * m_pButton_GetForeground;
-   wxButton * m_pButton_UseCurrentF;
-   wxButton * m_pButton_UseCurrentB;
-   wxButton * m_pButton_GetURL;
-   wxButton * m_pButton_Export;
-   wxButton * m_pButton_Reset;
-   wxButton * m_pButton_Close;
-
-   TimeTextCtrl *mForegroundStartT;
-   TimeTextCtrl *mForegroundEndT;
-   TimeTextCtrl *mBackgroundStartT;
-   TimeTextCtrl *mBackgroundEndT;
-
-private:
    DECLARE_EVENT_TABLE()
 
 };
