@@ -421,6 +421,7 @@ wxString Effect::GetPreviewName()
 
 void Effect::Preview()
 {
+   wxWindow* FocusDialog = wxWindow::FindFocus();
    if (gAudioIO->IsBusy())
       return;
 
@@ -512,9 +513,11 @@ void Effect::Preview()
       }
       else {
          wxMessageBox(_("Error while opening sound device. Please check the output device settings and the project sample rate."),
-                      _("Error"), wxOK | wxICON_EXCLAMATION, mParent);
+                      _("Error"), wxOK | wxICON_EXCLAMATION, FocusDialog);
       }
    }
+   
+   FocusDialog->SetFocus();
 
    if (mWaveTracks == mOutputWaveTracks) // typical case, but depends on descendant implementation
       mOutputWaveTracks = NULL; 
