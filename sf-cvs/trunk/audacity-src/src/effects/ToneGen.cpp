@@ -232,7 +232,7 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
 bool EffectToneGen::Process()
 {
    if (length <= 0.0)
-      length = sDefaultGenerateLen;
+      return false;
 
    mPositionInCycles = 0.0;
    //Iterate over each track
