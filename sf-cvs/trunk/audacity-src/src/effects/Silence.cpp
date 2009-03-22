@@ -55,7 +55,7 @@ bool EffectSilence::PromptUser()
 bool EffectSilence::Process()
 {
    if (length <= 0.0)
-      length = sDefaultGenerateLen;
+      return false;
       
    HandleLinkedTracksOnGenerate(length, mT0);
 

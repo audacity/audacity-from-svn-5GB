@@ -140,7 +140,7 @@ bool EffectNoise::MakeNoise(float *buffer, sampleCount len, float fs, float ampl
 bool EffectNoise::Process()
 {
    if (noiseDuration <= 0.0)
-      noiseDuration = sDefaultGenerateLen;
+      return false;
 
    //Iterate over each track
    int ntrack = 0;
