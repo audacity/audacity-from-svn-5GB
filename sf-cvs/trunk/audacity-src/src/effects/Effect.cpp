@@ -200,8 +200,11 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
 
       // Replace input track with processed output track.
       if (n != NULL) { // Can be NULL as result of Tracks > Stereo to Mono.
+         // Remove the track from the output list...this clears the backpointer
+         // to the node.
          x = iterOut.RemoveCurrent();
 
+         // Replace the track in mTracks with the new one
          t = iterIn.ReplaceCurrent(n);
 
          // Swap the wavecache track the ondemand task uses, since now the new one will be kept in the project
@@ -209,11 +212,17 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
             ODManager::Instance()->ReplaceWaveTrack((WaveTrack *)t, (WaveTrack *)n);
          }
 
+         // No longer need the original track from mTracks
+         delete t;
+
+         // Set next output track
          n = x;
       }
    }
 
-   // Also need to clean up mWaveTracks, primarily because Preview uses it as the processed tracks. 
+   wxASSERT(iterOut.First() == NULL);
+   
+   // The output list is no longer needed
    delete mOutputWaveTracks;
    mOutputWaveTracks = NULL;
 }
