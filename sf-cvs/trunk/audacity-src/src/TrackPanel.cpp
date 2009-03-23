@@ -487,6 +487,12 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mAdjustLeftSelectionCursor = new wxCursor(wxCURSOR_POINT_LEFT);
    mAdjustRightSelectionCursor = new wxCursor(wxCURSOR_POINT_RIGHT);
 
+   mWaveTrackMenu = NULL;
+   mNoteTrackMenu = NULL;
+   mLabelTrackMenu = NULL;
+   mLabelTrackInfoMenu = NULL;
+   mTimeTrackMenu = NULL;
+
    BuildMenus();
 
    mTrackArtist = new TrackArtist();
@@ -525,8 +531,49 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mLastIndicator = -1;
 }
 
+TrackPanel::~TrackPanel()
+{
+   mTimer.Stop();
+
+   // This can happen if a label is being edited and the user presses
+   // ALT+F4 or Command+Q
+   if (HasCapture())
+      ReleaseMouse();
+
+   if (mBacking)
+   {
+      mBackingDC.SelectObject( wxNullBitmap );
+      delete mBacking;
+   }
+//   delete mAx;
+   delete mTrackArtist;
+
+   delete mArrowCursor;
+   delete mPencilCursor;
+   delete mSelectCursor;
+   delete mEnvelopeCursor;
+   delete mDisabledCursor;
+   delete mSlideCursor;
+   delete mResizeCursor;
+   delete mSmoothCursor;
+   delete mZoomInCursor;
+   delete mZoomOutCursor;
+   delete mLabelCursorLeft;
+   delete mLabelCursorRight;
+   delete mRearrangeCursor;
+   delete mAdjustLeftSelectionCursor;
+   delete mAdjustRightSelectionCursor;
+
+   delete mSnapManager;
+
+   DeleteMenus();
+}
+
 void TrackPanel::BuildMenus(void)
 {
+   // Get rid of existing menus
+   DeleteMenus();
+
    // Use AppendCheckItem so we can have ticks beside the items.
    // We would use AppendRadioItem but it only currently works on windows and GTK.
    mRateMenu = new wxMenu();
@@ -598,53 +645,34 @@ void TrackPanel::BuildMenus(void)
    mLabelTrackInfoMenu->Append(OnPasteSelectedTextID, _("Paste"));
 }
 
-void AudacityProject::RebuildOtherMenus()
+void TrackPanel::DeleteMenus(void)
 {
-   mTrackPanel->BuildMenus();
-}
-
-TrackPanel::~TrackPanel()
-{
-   mTimer.Stop();
-
-   // This can happen if a label is being edited and the user presses
-   // ALT+F4 or Command+Q
-   if (HasCapture())
-      ReleaseMouse();
-
-   if (mBacking)
-   {
-      mBackingDC.SelectObject( wxNullBitmap );
-      delete mBacking;
-   }
-//   delete mAx;
-   delete mTrackArtist;
-
-   delete mArrowCursor;
-   delete mPencilCursor;
-   delete mSelectCursor;
-   delete mEnvelopeCursor;
-   delete mDisabledCursor;
-   delete mSlideCursor;
-   delete mResizeCursor;
-   delete mSmoothCursor;
-   delete mZoomInCursor;
-   delete mZoomOutCursor;
-   delete mLabelCursorLeft;
-   delete mLabelCursorRight;
-   delete mRearrangeCursor;
-   delete mAdjustLeftSelectionCursor;
-   delete mAdjustRightSelectionCursor;
-
-   delete mSnapManager;
-
    // Note that the submenus (mRateMenu, ...)
    // are deleted by their parent
-   delete mWaveTrackMenu;
-   delete mNoteTrackMenu;
-   delete mLabelTrackMenu;
-   delete mLabelTrackInfoMenu;
-   delete mTimeTrackMenu;
+   if (mWaveTrackMenu) {
+      delete mWaveTrackMenu;
+      mWaveTrackMenu = NULL;
+   }
+
+   if (mNoteTrackMenu) {
+      delete mNoteTrackMenu;
+      mNoteTrackMenu = NULL;
+   }
+
+   if (mLabelTrackMenu) {
+      delete mLabelTrackMenu;
+      mLabelTrackMenu = NULL;
+   }
+
+   if (mLabelTrackInfoMenu) {
+      delete mLabelTrackInfoMenu;
+      mLabelTrackInfoMenu = NULL;
+   }
+
+   if (mTimeTrackMenu) {
+      delete mTimeTrackMenu;
+      mTimeTrackMenu = NULL;
+   }
 }
 
 void TrackPanel::UpdatePrefs()
