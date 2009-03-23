@@ -3249,16 +3249,9 @@ void AudacityProject::DeleteAllProjectsDeleteLock()
 
 void AudacityProject::ClearClipboard()
 {
-   TrackListIterator iter(msClipboard);
-   Track *n = iter.First();
-   while (n) {
-      delete n;
-      n = iter.Next();
-   }
-
    msClipLen = 0.0;
    msClipProject = NULL;
-   msClipboard->Clear();
+   msClipboard->Clear(true);
 }
 
 void AudacityProject::Clear()
