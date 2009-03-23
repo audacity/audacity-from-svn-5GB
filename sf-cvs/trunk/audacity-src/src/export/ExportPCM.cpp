@@ -761,17 +761,16 @@ bool ExportPCM::DisplayOptions(wxWindow *parent, int format)
 
 wxString ExportPCM::GetExtension(int index)
 {
-if (index == 0)
-   {  // get extension libsndfile thinks is correct for currently selected
-      // format
-   wxString fileext = sf_header_extension(ReadExportFormatPref());
-   return fileext; 
+   if (index == 0) {
+      // get extension libsndfile thinks is correct for currently selected format
+      return sf_header_extension(ReadExportFormatPref());
    }
-else
-   {  // do as the default in Export.cpp
-   return mFormatInfos[index]->mExtensions[0];
+   else {
+      // return the default
+      return ExportPlugin::GetExtension(index);
    }
 }
+
 //----------------------------------------------------------------------------
 // Constructor
 //----------------------------------------------------------------------------

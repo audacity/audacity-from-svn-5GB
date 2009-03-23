@@ -40,7 +40,7 @@ class FormatInfo
       bool mCanMetaData;
 };
 
-WX_DECLARE_OBJARRAY(FormatInfo *, FormatInfoArray);
+WX_DECLARE_OBJARRAY(FormatInfo, FormatInfoArray);
 
 //----------------------------------------------------------------------------
 // ExportPlugin
@@ -114,7 +114,7 @@ public:
                          MixerSpec *mixerSpec,
                          int subformat);
 
-protected:
+private:
 
    FormatInfoArray mFormatInfos;
 };

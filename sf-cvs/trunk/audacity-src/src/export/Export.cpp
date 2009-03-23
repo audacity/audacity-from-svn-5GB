@@ -85,6 +85,7 @@ static void ExportCallback(void *cbdata, int index)
 #include <wx/arrimpl.cpp>
 
 WX_DEFINE_OBJARRAY(ExportPluginArray);
+WX_DEFINE_OBJARRAY(FormatInfoArray);
 
 ExportPlugin::ExportPlugin()
 {
@@ -93,7 +94,7 @@ ExportPlugin::ExportPlugin()
 
 ExportPlugin::~ExportPlugin()
 {
-   mFormatInfos.Empty();
+   mFormatInfos.Clear();
 }
 
 bool ExportPlugin::CheckFileName(wxFileName &filename, int format)
@@ -110,7 +111,7 @@ bool ExportPlugin::CheckFileName(wxFileName &filename, int format)
  */
 int ExportPlugin::AddFormat()
 {
-   FormatInfo *nf = new FormatInfo();
+   FormatInfo nf;
    mFormatInfos.Add(nf);
    return mFormatInfos.Count();
 }
@@ -131,63 +132,63 @@ void ExportPlugin::Destroy()
  */
 void ExportPlugin::SetFormat(const wxString & format, int index)
 {
-   mFormatInfos[index]->mFormat = format;
+   mFormatInfos[index].mFormat = format;
 }
 
 void ExportPlugin::SetDescription(const wxString & description, int index)
 {
-   mFormatInfos[index]->mDescription = description;
+   mFormatInfos[index].mDescription = description;
 }
 
 void ExportPlugin::AddExtension(const wxString &extension,int index)
 {
-   mFormatInfos[index]->mExtensions.Add(extension);
+   mFormatInfos[index].mExtensions.Add(extension);
 }
 
 void ExportPlugin::SetExtensions(const wxArrayString & extensions, int index)
 {
-   mFormatInfos[index]->mExtensions = extensions;
+   mFormatInfos[index].mExtensions = extensions;
 }
 
 void ExportPlugin::SetMask(const wxString & mask, int index)
 {
-   mFormatInfos[index]->mMask = mask;
+   mFormatInfos[index].mMask = mask;
 }
 
 void ExportPlugin::SetMaxChannels(int maxchannels, int index)
 {
-   mFormatInfos[index]->mMaxChannels = maxchannels;
+   mFormatInfos[index].mMaxChannels = maxchannels;
 }
 
 void ExportPlugin::SetCanMetaData(bool canmetadata, int index)
 {
-   mFormatInfos[index]->mCanMetaData = canmetadata;
+   mFormatInfos[index].mCanMetaData = canmetadata;
 }
 
 wxString ExportPlugin::GetFormat(int index)
 {
-   return mFormatInfos[index]->mFormat;
+   return mFormatInfos[index].mFormat;
 }
 
 wxString ExportPlugin::GetDescription(int index)
 {
-   return mFormatInfos[index]->mDescription;
+   return mFormatInfos[index].mDescription;
 }
 
 wxString ExportPlugin::GetExtension(int index)
 {
-   return mFormatInfos[index]->mExtensions[0];
+   return mFormatInfos[index].mExtensions[0];
 }
 
 wxArrayString ExportPlugin::GetExtensions(int index)
 {
-   return mFormatInfos[index]->mExtensions;
+   return mFormatInfos[index].mExtensions;
 }
 
 wxString ExportPlugin::GetMask(int index)
 {
-   if (!mFormatInfos[index]->mMask.IsEmpty()) {
-      return mFormatInfos[index]->mMask;
+   if (!mFormatInfos[index].mMask.IsEmpty()) {
+      return mFormatInfos[index].mMask;
    }
 
    wxString mask = GetDescription(index) + wxT("|");
@@ -207,12 +208,12 @@ wxString ExportPlugin::GetMask(int index)
 
 int ExportPlugin::GetMaxChannels(int index)
 {
-   return mFormatInfos[index]->mMaxChannels;
+   return mFormatInfos[index].mMaxChannels;
 }
 
 bool ExportPlugin::GetCanMetaData(int index)
 {
-   return mFormatInfos[index]->mCanMetaData;
+   return mFormatInfos[index].mCanMetaData;
 }
 
 bool ExportPlugin::IsExtension(wxString & ext, int index)
@@ -266,8 +267,6 @@ int ExportPlugin::DoExport(AudacityProject *project,
 //----------------------------------------------------------------------------
 // Export
 //----------------------------------------------------------------------------
-
-WX_DEFINE_OBJARRAY(FormatInfoArray);
 
 Exporter::Exporter()
 {
