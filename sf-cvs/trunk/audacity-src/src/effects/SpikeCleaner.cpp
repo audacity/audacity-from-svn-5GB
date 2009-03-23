@@ -102,7 +102,7 @@ bool EffectSpikeCleaner::ProcessSimpleMono(float *buffer, sampleCount len)
    int    firstNoiseFrame = 0;
    int    noiseLen = 0;
 
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    double    curRate = track->GetRate();
    int       spikeMaxDurationSamples = int((curRate / 1000.0) * double(mSpikeMaxDurationMs));

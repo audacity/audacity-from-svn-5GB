@@ -228,10 +228,10 @@ bool EffectNoiseRemoval::PromptUser()
    // We may want to twiddle the levels if we are setting
    // from an automation dialog, the only case in which we can
    // get here without any wavetracks.
-   bool bAllowTwiddleSettings = (mWaveTracks==NULL); 
+   bool bAllowTwiddleSettings = (GetNumWaveTracks() == 0); 
 
-   if (mHasProfile || bAllowTwiddleSettings ) {
-      dlog.m_pButton_Preview->Enable(mWaveTracks != NULL);
+   if (mHasProfile || bAllowTwiddleSettings) {
+      dlog.m_pButton_Preview->Enable(GetNumWaveTracks());
       dlog.m_pButton_RemoveNoise->SetDefault();
    } else {
       dlog.m_pButton_Preview->Enable(false);

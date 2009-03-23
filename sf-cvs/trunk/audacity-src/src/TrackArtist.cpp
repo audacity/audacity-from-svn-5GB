@@ -219,7 +219,7 @@ void TrackArtist::DrawTracks(TrackList * tracks,
       // its linked partner, and see if any part of that rect is on-screen.
       // If so, we draw both.  Otherwise, we can safely draw neither.
 
-      Track *link = tracks->GetLink(t);
+      Track *link = t->GetLink();
       if (link) {
          if (t->GetLinked()) {
             // If we're the first track

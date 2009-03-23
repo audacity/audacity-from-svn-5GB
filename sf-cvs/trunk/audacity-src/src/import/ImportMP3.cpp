@@ -489,7 +489,6 @@ enum mad_flow output_cb(void *_data,
          data->channels[0]->SetChannel(Track::LeftChannel);
          data->channels[1]->SetChannel(Track::RightChannel);
          data->channels[0]->SetLinked(true);
-         data->channels[1]->SetTeamed(true);
       }
       data->numChannels = channels;
    }

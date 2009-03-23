@@ -140,7 +140,6 @@ bool EffectAutoDuck::Init()
    }
    
    mControlTrack = controlTrackCandidate;
-   wxASSERT(mWaveTracks);
 
    return true;
 }
@@ -197,7 +196,7 @@ bool EffectAutoDuck::Process()
 {
    int i;
    
-   if (!mWaveTracks || !mControlTrack)
+   if (GetNumWaveTracks() == 0 || !mControlTrack)
       return false;
 
    bool cancel = false;

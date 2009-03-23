@@ -57,7 +57,7 @@ bool EffectAmplify::Init()
 {
    peak = float(0.0);
 
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    Track *t = iter.First();
    int count = 0;
    while(t) {

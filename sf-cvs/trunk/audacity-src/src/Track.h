@@ -40,19 +40,22 @@ class NoteTrack;
 WX_DEFINE_ARRAY(NoteTrack*, NoteTrackArray);
 #endif
 
-class AUDACITY_DLL_API Track: public XMLTagHandler {
+struct TrackListNode;
+
+class AUDACITY_DLL_API Track: public XMLTagHandler
+{
 
  // To be TrackDisplay
  protected:
-   int        mHeight;
-   wxString   mName;
-   wxString   mDefaultName;
+   TrackListNode *mNode;
+   int            mHeight;
+   wxString       mName;
+   wxString       mDefaultName;
 
-   bool       mSelected;
+   bool           mSelected;
 
-   bool       mLinked;
-   bool       mTeamed;
-   bool       mMinimized;
+   bool           mLinked;
+   bool           mMinimized;
 
  public:
    wxSize vrulerSize;
@@ -67,6 +70,11 @@ class AUDACITY_DLL_API Track: public XMLTagHandler {
    bool GetMinimized() const { return mMinimized; }
    void SetMinimized(bool isMinimized) { mMinimized = isMinimized; }
 
+   Track *Track::GetLink() const;
+
+   const TrackListNode *GetNode();
+   void SetNode(TrackListNode *node);
+
  // Keep in Track
 
  protected:
@@ -79,13 +87,15 @@ class AUDACITY_DLL_API Track: public XMLTagHandler {
 
  public:
 
-   enum {
+   enum
+   {
       LeftChannel = 0,
       RightChannel = 1,
       MonoChannel = 2
    };
 
-   enum {
+   enum
+   {
       None,
       Wave,
 #if defined(USE_MIDI)
@@ -115,13 +125,11 @@ class AUDACITY_DLL_API Track: public XMLTagHandler {
    bool GetSelected() const { return mSelected; }
    bool GetMute    () const { return mMute;     }
    bool GetLinked  () const { return mLinked;   }
-   bool GetTeamed  () const { return mTeamed;   }
    bool GetSolo    () const { return mSolo;     }
 
    void SetSelected(bool s) { mSelected = s; }
    void SetMute    (bool m) { mMute     = m; }
-   void SetLinked  (bool l) { mLinked   = l; mTeamed = l; }
-   void SetTeamed  (bool l) { mTeamed   = l; mLinked = false; }
+   void SetLinked  (bool l) { mLinked   = l; }
    void SetSolo    (bool s) { mSolo     = s; }
 
    int    GetChannel() const { return mChannel; }
@@ -162,7 +170,8 @@ class AUDACITY_DLL_API Track: public XMLTagHandler {
    virtual double GetEndTime() { return 0.0; }
 };
 
-struct TrackListNode {
+struct TrackListNode
+{
    Track *t;
    TrackListNode *next;
    TrackListNode *prev;
@@ -170,32 +179,45 @@ struct TrackListNode {
 
 class TrackList;
 
-class AUDACITY_DLL_API TrackListIterator {
+class AUDACITY_DLL_API TrackListIterator
+{
  public:
-  TrackListIterator(TrackList * val = NULL);
+   TrackListIterator(TrackList * val = NULL);
   
-  // Iterate functions
-  Track *First(TrackList * val = NULL);
-  Track *Next(bool SkipLinked = false);
-  Track *RemoveCurrent();     // returns next
+   // Iterate functions
+   virtual Track *First(TrackList * val = NULL);
+   virtual Track *Next(bool skiplinked = false);
+   virtual Track *Last();
 
-  Track *Last();
+   Track *ReplaceCurrent(Track *t);                // returns original
+   Track *RemoveCurrent(bool deletetrack = false); // returns next
   
  private:
-  TrackList * l;
-  TrackListNode *cur;
+   TrackList *l;
+   TrackListNode *cur;
+};
+
+class AUDACITY_DLL_API TrackListOfKindIterator: public TrackListIterator
+{
+ public:
+   TrackListOfKindIterator(int kind, TrackList * val = NULL);
+
+   // Iterate functions
+   Track *First(TrackList * val = NULL);
+   Track *Next(bool skiplinked = false);
+
+ private:
+   int kind;
 };
 
 /** \brief TrackList is a flat linked list of tracks supporting Add,  Remove,
  * Clear, and Contains, plus serialization of the list of tracks.
  */
-class AUDACITY_DLL_API TrackList {
+class AUDACITY_DLL_API TrackList
+{
  public:
   // Create an empty TrackList
   TrackList();
-  
-  // Copy constructor
-  TrackList(TrackList * t);
   
   // Destructor
   virtual ~TrackList();
@@ -203,7 +225,7 @@ class AUDACITY_DLL_API TrackList {
   friend class TrackListIterator;
   friend class ConstTrackListIterator;
   
-  /// Add a this Track or all children of this TrackGroup
+  /// Add this Track or all children of this TrackGroup
   void Add(Track * t);
   void AddToHead(Track * t);
   
@@ -222,7 +244,7 @@ class AUDACITY_DLL_API TrackList {
   
   Track *GetPrev(Track * t, bool linked = false) const;
   Track *GetNext(Track * t, bool linked = false) const;
-  int GetGroupHeight( Track*t ) const;
+  int GetGroupHeight(Track * t) const;
   
   bool CanMoveUp(Track * t) const;
   bool CanMoveDown(Track * t) const;
@@ -275,7 +297,8 @@ class AUDACITY_DLL_API TrackList {
   TrackListNode *tail;
 };
 
-class AUDACITY_DLL_API ConstTrackListIterator {
+class AUDACITY_DLL_API ConstTrackListIterator
+{
  public:
     ConstTrackListIterator(const TrackList * val) : l(val), cur(NULL) {}
 

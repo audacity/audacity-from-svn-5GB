@@ -357,7 +357,7 @@ bool EffectEqualization::Init()
 
 bool EffectEqualization::PromptUser()
 {
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    WaveTrack *t = (WaveTrack *) iter.First();
    float hiFreq;
    if (t)
@@ -409,7 +409,7 @@ bool EffectEqualization::PromptUser()
 
 bool EffectEqualization::DontPromptUser()
 {
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    WaveTrack *t = (WaveTrack *) iter.First();
    float hiFreq;
    if (t)

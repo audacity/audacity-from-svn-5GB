@@ -390,7 +390,6 @@ int FLACImportFileHandle::Import(TrackFactory *trackFactory,
             break;
          case 1:
             mChannels[c]->SetChannel(Track::RightChannel);
-            mChannels[c]->SetTeamed(true);
             break;
          }
       }

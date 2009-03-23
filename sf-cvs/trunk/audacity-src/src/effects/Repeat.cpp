@@ -57,7 +57,7 @@ bool EffectRepeat::PromptUser()
    // could be repeated without overflowing any track
    //
    int maxCount = -1;
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    while (track) {
       sampleCount trackLen = 

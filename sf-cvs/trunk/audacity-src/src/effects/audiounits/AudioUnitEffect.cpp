@@ -200,7 +200,7 @@ bool AudioUnitEffect::PromptUser()
    
 bool AudioUnitEffect::Process()
 {
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    int count = 0;
    Track *left = iter.First();
    Track *right;
