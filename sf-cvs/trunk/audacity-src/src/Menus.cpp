@@ -2704,6 +2704,7 @@ void AudacityProject::OnUndo()
    TrackList *l = mUndoManager.Undo(&mViewInfo.sel0, &mViewInfo.sel1);
    PopState(l);
 
+   mTrackPanel->SetFocusedTrack(NULL);
    mTrackPanel->EnsureVisible(mTrackPanel->GetFirstSelectedTrack());
 
    RedrawProject();
@@ -2723,6 +2724,9 @@ void AudacityProject::OnRedo()
 
    TrackList *l = mUndoManager.Redo(&mViewInfo.sel0, &mViewInfo.sel1);
    PopState(l);
+
+   mTrackPanel->SetFocusedTrack(NULL);
+   mTrackPanel->EnsureVisible(mTrackPanel->GetFirstSelectedTrack());
 
    RedrawProject();
 
