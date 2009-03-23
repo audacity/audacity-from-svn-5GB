@@ -2940,7 +2940,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       }
       mTracks->Add(newTracks[i]);
       newTracks[i]->SetSelected(true);
-      if (numTracks > 2 || (numTracks > 1 && !newTracks[i]->GetTeamed())) {
+      if (numTracks > 2 || (numTracks > 1 && !newTracks[i]->GetLink())) {
          newTracks[i]->SetName(trackNameBase + wxString::Format(wxT(" %d" ), i + 1));
       }
       else {
@@ -3123,11 +3123,8 @@ void AudacityProject::InitialState()
    
    mUndoManager.ClearStates();
 
-   TrackList *l = new TrackList(mTracks);
-
-   mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1,
+   mUndoManager.PushState(mTracks, mViewInfo.sel0, mViewInfo.sel1,
                           _("Created new project"), wxT(""));
-   delete l;
 
    mUndoManager.StateSaved();
 
@@ -3143,10 +3140,8 @@ void AudacityProject::PushState(wxString desc,
                                 wxString shortDesc,
                                 bool consolidate)
 {
-   TrackList *l = new TrackList(mTracks);
-   mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1,
+   mUndoManager.PushState(mTracks, mViewInfo.sel0, mViewInfo.sel1,
                           desc, shortDesc, consolidate);
-   delete l;
 
    mDirty = true;
 
@@ -3165,13 +3160,10 @@ void AudacityProject::PushState(wxString desc,
 
 void AudacityProject::ModifyState()
 {
-   TrackList *l = new TrackList(mTracks);
-
-   mUndoManager.ModifyState(l, mViewInfo.sel0, mViewInfo.sel1);
-
-   delete l;
+   mUndoManager.ModifyState(mTracks, mViewInfo.sel0, mViewInfo.sel1);
 }
 
+// LL:  Is there a memory leak here as "l" and "t" are not deleted???
 void AudacityProject::PopState(TrackList * l)
 {
    mTracks->Clear(true);
@@ -3648,7 +3640,6 @@ void AudacityProject::EditClipboardByLabel( WaveTrack::EditDestFunction action )
             if( dest )
             {
                dest->SetChannel( wt->GetChannel() );
-               dest->SetTeamed( wt->GetTeamed() ); // do first
                dest->SetLinked( wt->GetLinked() );
                dest->SetName( wt->GetName() );
                if( !merged )

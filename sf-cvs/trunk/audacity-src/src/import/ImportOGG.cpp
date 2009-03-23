@@ -257,7 +257,6 @@ int OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
             break;
          case 1:
             mChannels[i][c]->SetChannel(Track::RightChannel);
-            mChannels[i][c]->SetTeamed(true);
             break;
             }
          }

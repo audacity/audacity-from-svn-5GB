@@ -59,7 +59,7 @@ bool EffectSilence::Process()
       
    HandleLinkedTracksOnGenerate(length, mT0);
 
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
       WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), track->GetRate());

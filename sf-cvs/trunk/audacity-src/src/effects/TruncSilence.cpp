@@ -94,7 +94,7 @@ bool EffectTruncSilence::TransferParameters( Shuttle & shuttle )
 #define QUARTER_SECOND_MS 250
 bool EffectTruncSilence::Process()
 {
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    WaveTrack *t;
    double t0 = mT0;
    double t1 = mT1;

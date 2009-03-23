@@ -74,15 +74,16 @@ bool EffectFindClipping::Process()
    LabelTrack *l = NULL;
    Track *original = NULL;
 
-   TrackListIterator iter(mTracks);
-   for (Track *t = iter.First(); t && !l; t = iter.Next()) {
-      if (t->GetKind() == Track::Label && t->GetName() == wxT("Clipping")) {
+   TrackListOfKindIterator iter(Track::Label, mTracks);
+   for (Track *t = iter.First(); t; t = iter.Next()) {
+      if (t->GetName() == wxT("Clipping")) {
          l = (LabelTrack *) t;
          // copy LabelTrack here, so it can be undone on cancel
          l->Copy(l->GetStartTime(), l->GetEndTime(), &original);
          original->SetOffset(l->GetStartTime());
          original->SetName(wxT("Clipping"));
          l->Clear(l->GetStartTime(), l->GetEndTime());
+         break;
       }
    }
    
@@ -94,7 +95,7 @@ bool EffectFindClipping::Process()
 
    int count = 0;
 
-   TrackListIterator waves(mWaveTracks);
+   TrackListOfKindIterator waves(Track::Wave, mTracks);
    WaveTrack *t = (WaveTrack *) waves.First();
    while (t) {
       double trackStart = t->GetStartTime();

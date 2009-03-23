@@ -182,7 +182,7 @@ bool LadspaEffect::Init()
    mBlockSize = 0;
    mainRate = 0;
 
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    Track *left = iter.First();
    while(left) {
       if (mainRate == 0)

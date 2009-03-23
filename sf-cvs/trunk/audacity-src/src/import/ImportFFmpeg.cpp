@@ -503,7 +503,6 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
                break;
             case 1:
                mChannels[s][c]->SetChannel(Track::RightChannel);
-               mChannels[s][c]->SetTeamed(true);
                break;
             }
          }

@@ -315,7 +315,6 @@ bool BatchCommands::PromptForParamsFor(wxString command)
    //mFactory = factory;
    //mProjectRate = projectRate;
    f->mParent = NULL;
-   f->mWaveTracks = NULL;
    //mTracks = list;
    return f->PromptUser();
 }

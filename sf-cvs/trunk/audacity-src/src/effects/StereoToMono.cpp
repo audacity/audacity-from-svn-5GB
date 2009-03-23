@@ -50,7 +50,7 @@ void EffectStereoToMono::End()
 //      to see if it is stereo. Consolidate these
 bool EffectStereoToMono::CheckWhetherSkipEffect()
 {
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    WaveTrack *t = (WaveTrack*)iter.First();
    while (t) {
       if (t->GetLinked()) {

@@ -196,9 +196,7 @@ class AUDACITY_DLL_API Effect {
                                // be created with this rate...
    TrackFactory   *mFactory;
    TrackList      *mTracks;      // the complete list of all tracks
-   TrackList      *mWaveTracks;  // effects which do not add or remove tracks
-                               // should use this
-   TrackList*     mOutputWaveTracks; // used only if CopyInputWaveTracks() is called.
+   TrackList      *mOutputWaveTracks; // used only if CopyInputWaveTracks() is called.
    double         mT0;
    double         mT1;
 

@@ -47,7 +47,6 @@ simplifies construction of menu items.
 
 #include "Project.h"
 #include "effects/EffectManager.h"
-#include "effects/Contrast.h"
 
 #include "AudacityApp.h"
 #include "AudioIO.h"
@@ -98,6 +97,7 @@ simplifies construction of menu items.
 #include "TimerRecordDialog.h"
 #include "SoundActivatedRecord.h"
 #include "LabelDialog.h"
+#include "effects/Contrast.h"
 
 #include "FileDialog.h"
 #include "SplashDialog.h"
@@ -2782,7 +2782,6 @@ void AudacityProject::OnCut()
 
          if (dest) {
             dest->SetChannel(n->GetChannel());
-            dest->SetTeamed(n->GetTeamed()); // do first
             dest->SetLinked(n->GetLinked());
             dest->SetName(n->GetName());
             msClipboard->Add(dest);
@@ -2849,7 +2848,6 @@ void AudacityProject::OnSplitCut()
          }
          if (dest) {
             dest->SetChannel(n->GetChannel());
-            dest->SetTeamed(n->GetTeamed()); // do first
             dest->SetLinked(n->GetLinked());
             dest->SetName(n->GetName());
             msClipboard->Add(dest);
@@ -2895,7 +2893,6 @@ void AudacityProject::OnCopy()
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
             dest->SetChannel(n->GetChannel());
-            dest->SetTeamed(n->GetTeamed()); // do first
             dest->SetLinked(n->GetLinked());
             dest->SetName(n->GetName());
             msClipboard->Add(dest);
@@ -2983,7 +2980,6 @@ void AudacityProject::OnPaste()
          if (!f)
             f = n;
 
-         n->SetTeamed(c->GetTeamed()); // do first
          n->SetLinked(c->GetLinked());
          n->SetChannel(c->GetChannel());
          n->SetName(c->GetName());
@@ -3341,29 +3337,25 @@ void AudacityProject::OnDuplicate()
 {
    TrackListIterator iter(mTracks);
 
+   Track *l = iter.Last();
    Track *n = iter.First();
-   Track *dest;
-
-   TrackList newTracks;
 
    while (n) {
       if (n->GetSelected()) {
-         dest = NULL;
+         Track *dest = NULL;
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
             dest->Init(*n);
             dest->SetOffset(wxMax(mViewInfo.sel0, n->GetOffset()));
-            newTracks.Add(dest);
+            mTracks->Add(dest);
          }
       }
-      n = iter.Next();
-   }
 
-   TrackListIterator nIter(&newTracks);
-   n = nIter.First();
-   while (n) {
-      mTracks->Add(n);
-      n = nIter.Next();
+      if (n == l) {
+         break;
+      }
+
+      n = iter.Next();
    }
 
    PushState(_("Duplicated"), _("Duplicate"));
@@ -3585,7 +3577,6 @@ void AudacityProject::OnSplitNew()
          }
          if (dest) {
             dest->SetChannel(n->GetChannel());
-            dest->SetTeamed(n->GetTeamed()); // do first
             dest->SetLinked(n->GetLinked());
             dest->SetName(n->GetName());
             dest->SetOffset(wxMax(mViewInfo.sel0, n->GetOffset()));
@@ -4200,12 +4191,11 @@ void AudacityProject::HandleMixAndRender(bool toNewTrack)
 
             // Add one to the count if it's an unlinked track, or if it's the first
             // in a stereo pair
-            if (t->GetLinked() || !mTracks->GetLink(t))
+            if (t->GetLinked() || !t->GetLink())
                 selectedCount++;
 
                 if (!toNewTrack) {
-                   delete t;
-                   t = iter.RemoveCurrent();
+                   t = iter.RemoveCurrent(true);
                 } else {
                    t = iter.Next();
                 };
@@ -4553,7 +4543,6 @@ void AudacityProject::OnNewStereoTrack()
    
    mTracks->Add(t);
    t->SetSelected(true);
-   t->SetTeamed (true);
    
    PushState(_("Created new stereo audio track"), _("New Track"));
    
@@ -4929,8 +4918,7 @@ void AudacityProject::OnRemoveTracks()
       if (t->GetSelected()) {
          if (!f)
             f = l;         // Capture the track preceeding the first removed track
-         delete t;
-         t = iter.RemoveCurrent();
+         t = iter.RemoveCurrent(true);
       }
       else {
          l = t;

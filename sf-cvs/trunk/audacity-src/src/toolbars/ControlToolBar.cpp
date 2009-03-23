@@ -825,7 +825,6 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
                }
                else {
                   newTrack->SetChannel(Track::RightChannel);
-                  newTrack->SetTeamed(true);
                }
             }
             else {
@@ -931,7 +930,7 @@ void ControlToolBar::SetupCutPreviewTracks(double playStart, double cutStart,
          if (t->GetKind() == Track::Wave && t->GetSelected())
          {
             track1 = t;
-            track2 = p->GetTracks()->GetLink(track1);
+            track2 = t->GetLink();
             break;
          }
       }

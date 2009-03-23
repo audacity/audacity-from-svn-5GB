@@ -84,29 +84,23 @@ void UndoManager::SetLongDescription(unsigned int n, wxString desc)
 
 void UndoManager::RemoveStateAt(int n)
 {
-   TrackListIterator iter(stack[n]->tracks);
-   Track *t = iter.First();
-   while(t)
-   {
-      delete t;
-      t = iter.Next();
-   }
-
+   stack[n]->tracks->Clear();
    delete stack[n]->tracks;
 
    UndoStackElem *tmpStackElem = stack[n];
    stack.RemoveAt(n);
    delete tmpStackElem;
-
-   current -= 1;
-   saved -= 1;
 }
 
 
 void UndoManager::RemoveStates(int num)
 {
-   for (int i = 0; i < num; i++)
+   for (int i = 0; i < num; i++) {
       RemoveStateAt(0);
+
+      current -= 1;
+      saved -= 1;
+   }
 }
    
 void UndoManager::ClearStates()
@@ -137,26 +131,19 @@ bool UndoManager::RedoAvailable()
 void UndoManager::ModifyState(TrackList * l, double sel0, double sel1)
 {
    // Delete current
+   stack[current]->tracks->Clear(true);
+   delete stack[current]->tracks;
 
-   TrackListIterator iter(stack[current]->tracks);
+   // Duplicate
+   TrackList *tracksCopy = new TrackList();
+   TrackListIterator iter(l);
    Track *t = iter.First();
    while (t) {
-      delete t;
+      tracksCopy->Add(t->Duplicate());
       t = iter.Next();
    }
 
-   // Duplicate
-
-   TrackList *tracksCopy = new TrackList();
-   TrackListIterator iter2(l);
-   t = iter2.First();
-   while (t) {
-      tracksCopy->Add(t->Duplicate());
-      t = iter2.Next();
-   }
-
    // Replace
-   delete stack[current]->tracks;
    stack[current]->tracks = tracksCopy;
    stack[current]->sel0 = sel0;
    stack[current]->sel1 = sel1;
@@ -186,17 +173,8 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1,
    consolidationCount = 0;
 
    for (i = current + 1; i < stack.Count(); i++) {
-      TrackListIterator iter(stack[i]->tracks);
-      Track *t = iter.First();
-      while (t) {
-         delete t;
-         t = iter.Next();
-      }
+      RemoveStateAt(i);
    }
-
-   i = stack.Count() - 1;
-   while (i > (unsigned int)current)
-      stack.RemoveAt(i--);
 
    TrackList *tracksCopy = new TrackList();
    TrackListIterator iter(l);

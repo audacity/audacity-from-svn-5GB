@@ -820,7 +820,7 @@ void ScreenFrame::OnShortTracks(wxCommandEvent& evt)
    TrackListIterator iter(proj->GetTracks());
    for (Track * t = iter.First(); t; t = iter.Next()) {
       if (t->GetKind() == Track::Wave) {
-         if (proj->GetTracks()->GetLink(t)) {
+         if (t->GetLink()) {
             t->SetHeight(48);
          }
          else {
@@ -837,7 +837,7 @@ void ScreenFrame::OnMedTracks(wxCommandEvent& evt)
    TrackListIterator iter(proj->GetTracks());
    for (Track * t = iter.First(); t; t = iter.Next()) {
       if (t->GetKind() == Track::Wave) {
-         if (proj->GetTracks()->GetLink(t)) {
+         if (t->GetLink()) {
             t->SetHeight(60);
          }
          else {
@@ -854,7 +854,7 @@ void ScreenFrame::OnTallTracks(wxCommandEvent& evt)
    TrackListIterator iter(proj->GetTracks());
    for (Track * t = iter.First(); t; t = iter.Next()) {
       if (t->GetKind() == Track::Wave) {
-         if (proj->GetTracks()->GetLink(t)) {
+         if (t->GetLink()) {
             t->SetHeight(85);
          }
          else {

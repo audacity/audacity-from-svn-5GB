@@ -94,7 +94,7 @@ bool VampEffect::Init()
    delete mPlugin;
    mPlugin = 0;
 
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    WaveTrack *left = (WaveTrack *)iter.First();
 
    mRate = 0.0;
@@ -167,7 +167,7 @@ bool VampEffect::Process()
 {
    if (!mPlugin) return false;
 
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
 
    int count = 0;
 
@@ -176,9 +176,7 @@ bool VampEffect::Process()
    bool multiple = false;
    int prevTrackChannels = 0;
 
-   TrackListIterator scooter(iter);
-   if (left->GetLinked()) scooter.Next();      
-   if (scooter.Next()) {
+   if (GetNumWaveGroups() > 1) {
       // if there is another track beyond this one and any linked one,
       // then we're processing more than one track.  That means we
       // should use the originating track name in each new label

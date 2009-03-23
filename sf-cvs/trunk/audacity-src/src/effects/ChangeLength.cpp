@@ -79,7 +79,7 @@ bool EffectChangeLength::TransferParameters( Shuttle & shuttle )
 
 bool EffectChangeLength::Process()
 {
-   TrackListIterator iter(mWaveTracks);
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
    mTrack = (WaveTrack *) iter.First();
 
    return true;

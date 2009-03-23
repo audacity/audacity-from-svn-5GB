@@ -137,7 +137,7 @@ wxString EffectNyquist::UnQuote(wxString s)
 double EffectNyquist::GetCtrlValue(wxString s)
 {
    if (s == wxT("rate")) {
-      TrackListIterator iter(mWaveTracks);
+      TrackListOfKindIterator iter(Track::Wave, mTracks);
       return ((WaveTrack *)iter.First())->GetRate();
    }
 
