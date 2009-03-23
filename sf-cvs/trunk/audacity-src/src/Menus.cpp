@@ -4513,6 +4513,7 @@ void AudacityProject::OnScoreAlign()
                           floatSample,             // sampleFormat outFormat
                           true,                    // bool highQuality = true
                           NULL);                   // MixerSpec *mixerSpec = NULL
+   delete [] waveTracks;
 
    // debugging/testing
    //float *buffer;
