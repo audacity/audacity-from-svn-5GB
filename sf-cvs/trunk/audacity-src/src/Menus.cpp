@@ -2362,6 +2362,7 @@ bool AudacityProject::OnEffect(int type, Effect * f)
    } else {
       if (newTrack) {
          mTracks->Remove(newTrack);
+         delete newTrack;
          mTrackPanel->Refresh(false);
       }
       return false;
