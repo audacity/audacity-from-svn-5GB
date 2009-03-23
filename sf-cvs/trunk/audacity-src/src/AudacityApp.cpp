@@ -1370,6 +1370,10 @@ int AudacityApp::OnExit()
 
    FinishPreferences();
 
+   #ifdef USE_FFMPEG
+   DropFFmpegLibs();
+   #endif
+
    UnloadEffects();
 
    DeinitFFT();
