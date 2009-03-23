@@ -333,6 +333,9 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
             break;
 
       } while (block > 0);
+
+      DeleteSamples(buffer);
+      DeleteSamples(srcbuffer);
    }
 
    if (updateResult == eProgressFailed || updateResult == eProgressCancelled) {
