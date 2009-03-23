@@ -84,6 +84,7 @@ TranscriptionToolBar::TranscriptionToolBar()
 : ToolBar(TranscriptionBarID, _("Transcription"), wxT("Transcription"))
 {
    mPlaySpeed = 1.0;
+   mTimeTrack = NULL;
 #ifdef EXPERIMENTAL_VOICE_DETECTION
    mVk = new VoiceKey();
 #endif
@@ -94,6 +95,9 @@ TranscriptionToolBar::~TranscriptionToolBar()
 #ifdef EXPERIMENTAL_VOICE_DETECTION
    delete mVk;
 #endif
+   if (mTimeTrack) {
+      delete mTimeTrack;
+   }
 }
 
 void TranscriptionToolBar::Create(wxWindow * parent)
@@ -362,6 +366,14 @@ void TranscriptionToolBar::OnPlaySpeed(wxCommandEvent & event)
       return;
    }
 
+   // Create a TimeTrack if we haven't done so already
+   if (!mTimeTrack) {
+      mTimeTrack = new TimeTrack(p->GetDirManager());
+      if (!mTimeTrack) {
+         return;
+      }
+   }
+
    // Pop up the button
    SetButton(false, mButtons[TTB_PlaySpeed]); 
 
@@ -370,15 +382,9 @@ void TranscriptionToolBar::OnPlaySpeed(wxCommandEvent & event)
       p->GetControlToolBar()->StopPlaying();
    }
 
-   // Can't do anything without a time track
-   // TODO: Yikes - Bad coding style.
-   // A new time track will be created each time we
-   // play-at-speed.
-   TimeTrack *tt = new TimeTrack(p->GetDirManager());
-
    // Set the speed range
-   tt->SetRangeUpper((long int)mPlaySpeed);
-   tt->SetRangeLower((long int)mPlaySpeed);
+   mTimeTrack->SetRangeUpper((long int)mPlaySpeed);
+   mTimeTrack->SetRangeLower((long int)mPlaySpeed);
 
    // Get the current play region
    double playRegionStart, playRegionEnd;
@@ -392,7 +398,7 @@ void TranscriptionToolBar::OnPlaySpeed(wxCommandEvent & event)
                                              playRegionEnd,
                                              false,
                                              false,
-                                             tt);
+                                             mTimeTrack);
    }
 }
 
