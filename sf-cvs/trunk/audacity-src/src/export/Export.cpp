@@ -809,6 +809,10 @@ ExportMixerPanel::~ExportMixerPanel()
 {
    delete[] mTrackRects;
    delete[] mChannelRects;
+
+   if (mBitmap) {
+      delete mBitmap;
+   }
 }
 
 //set the font on memDC such that text can fit in specified width and height
