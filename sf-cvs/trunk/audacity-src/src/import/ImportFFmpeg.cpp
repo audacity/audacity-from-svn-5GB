@@ -837,6 +837,9 @@ FFmpegImportFileHandle::~FFmpegImportFileHandle()
 
       delete mScs[i];
    }
+   free(mScs);
+
+   delete mStreamInfo;
 
    DropFFmpegLibs();
 }
