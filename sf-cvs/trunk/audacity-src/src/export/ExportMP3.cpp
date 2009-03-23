@@ -1643,6 +1643,7 @@ int ExportMP3::Export(AudacityProject *project,
                             t0, t1,
                             channels, inSamples, true,
                             rate, int16Sample, true, mixerSpec);
+   delete [] waveTracks;
 
    wxString title;
    if (rmode == MODE_SET) {

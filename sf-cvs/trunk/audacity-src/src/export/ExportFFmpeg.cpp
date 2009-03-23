@@ -676,6 +676,7 @@ int ExportFFmpeg::Export(AudacityProject *project,
       t0, t1,
       channels, pcmBufferSize, true,
       mSampleRate, int16Sample, true, mixerSpec);
+   delete [] waveTracks;
 
    ProgressDialog *progress = new ProgressDialog(wxFileName(fName).GetName(),
       selectionOnly ?
