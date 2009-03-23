@@ -70,7 +70,7 @@ class AUDACITY_DLL_API Track: public XMLTagHandler
    bool GetMinimized() const { return mMinimized; }
    void SetMinimized(bool isMinimized) { mMinimized = isMinimized; }
 
-   Track *Track::GetLink() const;
+   Track *GetLink() const;
 
    const TrackListNode *GetNode();
    void SetNode(TrackListNode *node);
