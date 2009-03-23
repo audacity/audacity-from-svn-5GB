@@ -311,6 +311,7 @@ int ExportFLAC::Export(AudacityProject *project,
                             t0, t1,
                             numChannels, SAMPLES_PER_RUN, false,
                             rate, format, true, mixerSpec);
+   delete [] waveTracks;
 
    int i, j;
    FLAC__int32 **tmpsmplbuf = new FLAC__int32*[numChannels];

@@ -249,6 +249,7 @@ int ExportOGG::Export(AudacityProject *project,
                             t0, t1,
                             numChannels, SAMPLES_PER_RUN, false,
                             rate, floatSample, true, mixerSpec);
+   delete [] waveTracks;
 
    ProgressDialog *progress = new ProgressDialog(wxFileName(fName).GetName(),
       selectionOnly ?
