@@ -3149,7 +3149,11 @@ void AudacityProject::OnPaste()
          Track *prev = NULL;
          c = clipIter.First();
          Track *first = c;
-         
+
+         // LL:  There is an endless loop here if you paste only non-wave track
+         //      data, like midi data.  Not sure exactly what this is supposed
+         //      to do in that case, but it seems that it's making an assumption
+         //      that only wave data can be pasted.
          while (!foundSrcTrack){
             prev = c;
             c = clipIter.Next();
@@ -3173,13 +3177,14 @@ void AudacityProject::OnPaste()
       while (n){
          if (n->GetSelected() && n->GetKind()==Track::Wave){
             if (c && c->GetKind() == Track::Wave){
-               tmp = (WaveTrack*)c;
+               ((WaveTrack *)n)->HandlePaste(t0, (WaveTrack *)c);
             }else{
                tmp = mTrackFactory->NewWaveTrack( ((WaveTrack*)n)->GetSampleFormat(), ((WaveTrack*)n)->GetRate());
                tmp->InsertSilence(0.0, srcLength);
                tmp->Flush();
+               ((WaveTrack *)n)->HandlePaste(t0, tmp);
+               delete tmp;
             }
-            ((WaveTrack *)n)->HandlePaste(t0, tmp);
          }
          n = iter.Next();
       }
