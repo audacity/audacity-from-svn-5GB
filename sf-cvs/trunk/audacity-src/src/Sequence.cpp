@@ -1564,10 +1564,8 @@ bool Sequence::Delete(sampleCount start, sampleCount len)
    } else {
       // The sample where we begin deletion happens to fall
       // right on the end of a block.
-      if (b0 != b1) {
-         mDirManager->Deref(mBlock->Item(b1)->f);
-         delete mBlock->Item(b1);
-      }
+      mDirManager->Deref(mBlock->Item(b1)->f);
+      delete mBlock->Item(b1);
    }
 
    // Copy the remaining blocks over from the old array
