@@ -359,8 +359,10 @@ void CommandManager::InsertItem(wxString name, wxString label_in,
 {
    wxString label = label_in;
 
-   if (ItemShouldBeHidden(label))
+   if (ItemShouldBeHidden(label)) {
+      delete callback;
       return;
+   }
 
    wxMenuBar *bar = GetActiveProject()->GetMenuBar();
    wxArrayString names = ::wxStringTokenize(after, wxT(":"));
@@ -445,8 +447,10 @@ void CommandManager::AddItem(wxString name, wxString label_in,
 {
    wxString label = label_in;
 
-   if( ItemShouldBeHidden( label ) )
+   if (ItemShouldBeHidden(label)) {
+      delete callback;
       return;
+   }
 
    int ID = NewIdentifier(name, label, CurrentMenu(), callback, false, 0, 0);
 
