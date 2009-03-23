@@ -122,7 +122,7 @@ int Importer::Import(wxString fName,
    wxString extension = fName.AfterLast(wxT('.'));
 
    // This list is used to call plugins in correct order
-   ImportPluginList *importPlugins = new ImportPluginList;
+   ImportPluginList importPlugins;
 
    bool haveCompatiblePlugin = false;
 
@@ -140,11 +140,11 @@ int Importer::Import(wxString fName,
       if (plugin->GetPluginFormatDescription().CompareTo(type) == 0)
       {
          // This plugin corresponds to user-selected filter, try it first.
-         importPlugins->Insert(plugin);
+         importPlugins.Insert(plugin);
       }
       else if (plugin->SupportsExtension(extension))
       {
-         importPlugins->Append(plugin);
+         importPlugins.Append(plugin);
       }
       if (plugin->SupportsExtension(extension))
         haveCompatiblePlugin = true;
@@ -156,18 +156,18 @@ int Importer::Import(wxString fName,
    while(importPluginNode)
    {
       ImportPlugin *plugin = importPluginNode->GetData();
-      if (importPlugins->Find(plugin) == NULL)
+      if (importPlugins.Find(plugin) == NULL)
       {
          // Skip MP3 import plugin. Opens some non-mp3 audio files (ac3 for example) as garbage.
          if (plugin->GetPluginFormatDescription().CompareTo( _("MP3 files") ) != 0)
          {
-            importPlugins->Append(plugin);
+            importPlugins.Append(plugin);
          }        
       }
       importPluginNode = importPluginNode->GetNext();
    }
 
-   importPluginNode = importPlugins->GetFirst();
+   importPluginNode = importPlugins.GetFirst();
    while(importPluginNode)
    {
       ImportPlugin *plugin = importPluginNode->GetData();
