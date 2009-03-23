@@ -84,7 +84,7 @@ void UndoManager::SetLongDescription(unsigned int n, wxString desc)
 
 void UndoManager::RemoveStateAt(int n)
 {
-   stack[n]->tracks->Clear();
+   stack[n]->tracks->Clear(true);
    delete stack[n]->tracks;
 
    UndoStackElem *tmpStackElem = stack[n];
