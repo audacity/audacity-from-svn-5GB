@@ -2824,44 +2824,35 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       Track* pSavedTrack;
       Track* pTrack;
       WaveTrack* pWaveTrack;
-      TrackListIterator iter(mTracks);
+      TrackListOfKindIterator iter(Track::Wave, mTracks);
       unsigned int numWaveTracks = 0;
       TrackList* pSavedTrackList = new TrackList();
       for (pTrack = iter.First(); pTrack != NULL; pTrack = iter.Next())
       {
-         if (pTrack->GetKind() == Track::Wave)
-         {
-            numWaveTracks++; 
-            pWaveTrack = (WaveTrack*)pTrack;
-            pSavedTrack = mTrackFactory->DuplicateWaveTrack(*pWaveTrack);
-         }
-         else
-            pSavedTrack = pTrack; // No need to copy. 
+         numWaveTracks++; 
+         pWaveTrack = (WaveTrack*)pTrack;
+         pSavedTrack = mTrackFactory->DuplicateWaveTrack(*pWaveTrack);
          pSavedTrackList->Add(pSavedTrack);
       }
-      TrackListIterator savedTrackIter(pSavedTrackList);
+
       if (numWaveTracks == 0) 
       {
          // Nothing to save compressed => success. Delete the copies and go. 
-         for (pSavedTrack = savedTrackIter.First(); pSavedTrack != NULL; pSavedTrack = savedTrackIter.Next())
-            if (pSavedTrack->GetKind() == Track::Wave)
-               delete pSavedTrack;
          delete pSavedTrackList;
          return true;
       }
 
       // Okay, now some bold state-faking to default values.
       for (pTrack = iter.First(); pTrack != NULL; pTrack = iter.Next())
-         if (pTrack->GetKind() == Track::Wave)
-         {
-            pWaveTrack = (WaveTrack*)pTrack;
-            pWaveTrack->SetSelected(false);
-            pWaveTrack->SetMute(false);
-            pWaveTrack->SetSolo(false);
+      {
+         pWaveTrack = (WaveTrack*)pTrack;
+         pWaveTrack->SetSelected(false);
+         pWaveTrack->SetMute(false);
+         pWaveTrack->SetSolo(false);
 
-            pWaveTrack->SetGain(1.0); 
-            pWaveTrack->SetPan(0.0); 
-         }
+         pWaveTrack->SetGain(1.0); 
+         pWaveTrack->SetPan(0.0); 
+      }
 
       wxString strDataDirPathName = strProjectPathName + wxT("_data");
       if (!wxFileName::DirExists(strDataDirPathName) && 
@@ -2901,25 +2892,21 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       }
 
       // Restore the saved track states and clean up. 
+      TrackListIterator savedTrackIter(pSavedTrackList);
       for (pTrack = iter.First(), pSavedTrack = savedTrackIter.First(); 
             ((pTrack != NULL) && (pSavedTrack != NULL)); 
             pTrack = iter.Next(), pSavedTrack = savedTrackIter.Next())
       {
-         if (pTrack->GetKind() == Track::Wave)
-         {
-            wxASSERT(pSavedTrack->GetKind() == Track::Wave);
-            pWaveTrack = (WaveTrack*)pTrack;
-            pWaveTrack->SetSelected(pSavedTrack->GetSelected());
-            pWaveTrack->SetMute(pSavedTrack->GetMute());
-            pWaveTrack->SetSolo(pSavedTrack->GetSolo());
+         pWaveTrack = (WaveTrack*)pTrack;
+         pWaveTrack->SetSelected(pSavedTrack->GetSelected());
+         pWaveTrack->SetMute(pSavedTrack->GetMute());
+         pWaveTrack->SetSolo(pSavedTrack->GetSolo());
 
-            pWaveTrack->SetGain(((WaveTrack*)pSavedTrack)->GetGain());
-            pWaveTrack->SetPan(((WaveTrack*)pSavedTrack)->GetPan());
-         }
+         pWaveTrack->SetGain(((WaveTrack*)pSavedTrack)->GetGain());
+         pWaveTrack->SetPan(((WaveTrack*)pSavedTrack)->GetPan());
       }
-      for (pSavedTrack = savedTrackIter.First(); pSavedTrack != NULL; pSavedTrack = savedTrackIter.Next())
-         if (pSavedTrack->GetKind() == Track::Wave)
-            delete pSavedTrack;
+
+      pSavedTrackList->Clear(true);
       delete pSavedTrackList;
 
       return bSuccess;
