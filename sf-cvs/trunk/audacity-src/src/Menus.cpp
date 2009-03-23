@@ -3590,8 +3590,9 @@ void AudacityProject::OnSplitNew()
    TrackListIterator nIter(&newTracks);
    n = nIter.First();
    while (n) {
+      Track *x = nIter.RemoveCurrent();
       mTracks->Add(n);
-      n = nIter.Next();
+      n = x;
    }
 
    PushState(_("Split to new track"), _("Split New"));
