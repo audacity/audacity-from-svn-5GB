@@ -646,7 +646,7 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
       l++;  // next label, count up one
    }
 
-   bool ok = true;   // did it work?
+   int ok = eProgressSuccess;   // did it work?
    int count = 0; // count the number of sucessful runs
    ExportKit activeSetting;  // pointer to the settings in use for this export
    /* Go round again and do the exporting (so this run is slow but
@@ -657,7 +657,7 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
 
       // Export it
       ok = DoExport(channels, activeSetting.destfile, false, activeSetting.t0, activeSetting.t1, activeSetting.filetags);
-      if (!ok) {
+      if (ok != eProgressSuccess && ok != eProgressStopped) {
          break;
       }
    }
@@ -670,7 +670,7 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
                   _("Export Multiple"),
                   wxOK | wxCENTRE, this);
 
-   return ok;
+   return (ok == eProgressSuccess || ok == eProgressStopped);
 }
 
 bool ExportMultiple::ExportMultipleByTrack(bool byName,
@@ -826,7 +826,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
       }
 
       // Stop if an error occurred
-      if (ok != eProgressSuccess) {
+      if (ok != eProgressSuccess && ok != eProgressStopped) {
          break;
       }
       // increment export counter
@@ -852,8 +852,8 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
                                    count),
                   _("Export Multiple"),
                   wxOK | wxCENTRE, this);
-   
-   return ok;
+
+   return (ok == eProgressSuccess || ok == eProgressStopped);
 }
 
 int ExportMultiple::DoExport(int channels,
