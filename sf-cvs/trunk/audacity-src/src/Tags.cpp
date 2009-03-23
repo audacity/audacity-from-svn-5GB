@@ -766,6 +766,9 @@ TagsEditor::TagsEditor(wxWindow * parent,
 
 TagsEditor::~TagsEditor()
 {
+   delete mGrid;
+//   delete mStringRenderer;
+   delete mComboEditor;
 }
 
 void TagsEditor::PopulateOrExchange(ShuttleGui & S)
@@ -785,9 +788,10 @@ void TagsEditor::PopulateOrExchange(ShuttleGui & S)
                           wxDefaultSize,
                           wxSUNKEN_BORDER);
 
-         mGrid->RegisterDataType(wxT("Combo"),
-                                 new wxGridCellStringRenderer,
-                                 new ComboEditor(wxArrayString(), true));
+         mStringRenderer = new wxGridCellStringRenderer;
+         mComboEditor = new ComboEditor(wxArrayString(), true);
+
+         mGrid->RegisterDataType(wxT("Combo"), mStringRenderer, mComboEditor);
 
          mGrid->SetColLabelSize(mGrid->GetDefaultRowSize());
 
