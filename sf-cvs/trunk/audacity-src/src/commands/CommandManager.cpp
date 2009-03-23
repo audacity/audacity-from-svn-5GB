@@ -582,7 +582,7 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    wxString labelPrefix;
    if( !mSubMenuList.IsEmpty() )
       labelPrefix = mSubMenuList[ mSubMenuList.GetCount() - 1 ]->name;
-   
+
    // wxMac 2.5 and higher will do special things with the
    // Preferences, Exit (Quit), and About menu items,
    // if we give them the right IDs.
@@ -997,7 +997,7 @@ wxString CommandManager::GetPrefixedLabelFromName(wxString name)
    if (!entry)
       return wxT("");
 
-   return entry->labelPrefix + wxT(" ") + entry->label;
+   return wxString(entry->labelPrefix + wxT(" ") + entry->label).Trim(false).Trim(true);
 }
 
 wxString CommandManager::GetKeyFromName(wxString name)
