@@ -1267,6 +1267,13 @@ void AudacityProject::RebuildMenuBar()
    ModuleManager::Dispatch(MenusRebuilt);
 }
 
+void AudacityProject::RebuildOtherMenus()
+{
+   if (mTrackPanel) {
+      mTrackPanel->BuildMenus();
+   }
+}
+
 int AudacityProject::GetFocusedFrame()
 {
    wxWindow *w = FindFocus();

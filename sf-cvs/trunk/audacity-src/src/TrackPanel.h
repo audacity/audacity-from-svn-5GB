@@ -138,6 +138,8 @@ class TrackPanel:public wxPanel {
    virtual ~ TrackPanel();
 
    void BuildMenus(void);
+   void DeleteMenus(void);
+
    void UpdatePrefs();
 
    void OnSize(wxSizeEvent & event);
