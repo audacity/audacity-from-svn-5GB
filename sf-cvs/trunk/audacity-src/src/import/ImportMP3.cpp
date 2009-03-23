@@ -418,7 +418,7 @@ enum mad_flow input_cb(void *_data, struct mad_stream *stream)
       data->file->Read(data->inputBuffer, ID3_TAG_QUERYSIZE);
       int len = id3_tag_query(data->inputBuffer, ID3_TAG_QUERYSIZE);
       if (len > 0) {
-         data->file->Seek(len, wxFromCurrent);
+         data->file->Seek(len, wxFromStart);
       }
       else {
          data->file->Seek(0);
