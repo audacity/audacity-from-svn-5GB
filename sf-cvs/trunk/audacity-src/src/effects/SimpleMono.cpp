@@ -121,8 +121,10 @@ bool EffectSimpleMono::ProcessOne(WaveTrack * track,
       s += block;
 
       //Update the Progress meter
-      if (TrackProgress(mCurTrackNum, (s - start) / len))
+      if (TrackProgress(mCurTrackNum, (s - start) / len)) {
+         delete[]buffer;
          return false;
+      }
    }
 
    //Clean up the buffer

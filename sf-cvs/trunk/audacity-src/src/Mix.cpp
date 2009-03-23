@@ -262,6 +262,7 @@ Mixer::~Mixer()
       DeleteSamples(mTemp[i]);
    }
    delete[] mBuffer;
+   delete[] mTemp;
    delete[] mInputTrack;
    delete[] mEnvValues;
    delete[] mFloatBuffer;
