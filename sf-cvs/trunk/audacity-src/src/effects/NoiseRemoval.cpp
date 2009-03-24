@@ -231,7 +231,7 @@ bool EffectNoiseRemoval::PromptUser()
    bool bAllowTwiddleSettings = (GetNumWaveTracks() == 0); 
 
    if (mHasProfile || bAllowTwiddleSettings) {
-      dlog.m_pButton_Preview->Enable(GetNumWaveTracks());
+      dlog.m_pButton_Preview->Enable(GetNumWaveTracks() != 0);
       dlog.m_pButton_RemoveNoise->SetDefault();
    } else {
       dlog.m_pButton_Preview->Enable(false);
