@@ -537,7 +537,6 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
 
             // Remember the absolute offset and add to our cuts array.
             cut->SetOffset(cs);
-printf("cut o %f cs %f ce %f\n", cs, t0, t1);
             cuts.Add(cut);
          }
 
@@ -550,7 +549,7 @@ printf("cut o %f cs %f ce %f\n", cs, t0, t1);
 
       // And paste in the new data
       if (HandlePaste(t0, src)) {
-         int i;
+         unsigned int i;
 
          // First, merge the new clip(s) in with the existing clips
          if (merge && splits.GetCount() > 0)
