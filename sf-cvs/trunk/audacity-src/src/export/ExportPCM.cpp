@@ -690,12 +690,16 @@ void ExportPCM::AddID3Chunk(wxString fName, Tags *tags)
    id3_length_t len;
 
    len = id3_tag_render(tp, 0);
-   id3_byte_t *buffer = (id3_byte_t *)malloc(len + 1);
+   if (len == 0) {
+      id3_tag_delete(tp);
+      return;
+   }
+
+   id3_byte_t *buffer = (id3_byte_t *)malloc(len);
    if (buffer == NULL) {
       id3_tag_delete(tp);
       return;
    }
-   buffer[len + 1] = '\0';
 
    len = id3_tag_render(tp, buffer);
 
