@@ -387,38 +387,38 @@ bool ImportXMLTagHandler::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          return false;
       }
    }
-   TrackList newTrackList;
-   mProject->Import(strAttr, &newTrackList);
-   if (newTrackList.IsEmpty())
+
+   WaveTrackArray trackArray;
+   mProject->Import(strAttr, &trackArray);
+   if (trackArray.IsEmpty())
       return false;
 
    // Handle other attributes, now that we have the tracks. 
    attrs++; 
    const wxChar** pAttr;
-   TrackListIterator iter(&newTrackList);
    bool bSuccess = true;
-   for (Track* pTrack = iter.First(); (pTrack && bSuccess); pTrack = iter.Next())
-      if (pTrack->GetKind() == Track::Wave) 
-      {
-         // Most of the "import" tag attributes are the same as for "wavetrack" tags, 
-         // so apply them via WaveTrack::HandleXMLTag().
-         bSuccess = ((WaveTrack*)pTrack)->HandleXMLTag(wxT("wavetrack"), attrs);
 
-         // "offset" tag is ignored in WaveTrack::HandleXMLTag except for legacy projects, 
-         // so handle it here. 
-         double dblValue;
-         pAttr = attrs;
-         while (*pAttr)
-         {
-            const wxChar *attr = *pAttr++;
-            const wxChar *value = *pAttr++;
-            const wxString strValue = value;
-            if (!wxStrcmp(attr, wxT("offset")) && 
-                  XMLValueChecker::IsGoodString(strValue) && 
-                  Internat::CompatibleToDouble(strValue, &dblValue))
-               pTrack->SetOffset(dblValue);
-         }
+   for (size_t i = 0; i < trackArray.GetCount(); i++)
+   {
+      // Most of the "import" tag attributes are the same as for "wavetrack" tags, 
+      // so apply them via WaveTrack::HandleXMLTag().
+      bSuccess = trackArray[i]->HandleXMLTag(wxT("wavetrack"), attrs);
+
+      // "offset" tag is ignored in WaveTrack::HandleXMLTag except for legacy projects, 
+      // so handle it here. 
+      double dblValue;
+      pAttr = attrs;
+      while (*pAttr)
+      {
+         const wxChar *attr = *pAttr++;
+         const wxChar *value = *pAttr++;
+         const wxString strValue = value;
+         if (!wxStrcmp(attr, wxT("offset")) && 
+               XMLValueChecker::IsGoodString(strValue) && 
+               Internat::CompatibleToDouble(strValue, &dblValue))
+            trackArray[i]->SetOffset(dblValue);
       }
+   }
    return bSuccess; 
 };
 
@@ -2980,7 +2980,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
 }
 
 // If pNewTrackList is passed in non-NULL, it gets filled with the pointers to new tracks.
-void AudacityProject::Import(wxString fileName, TrackList* pNewTrackList /*= NULL*/)
+void AudacityProject::Import(wxString fileName, WaveTrackArray* pTrackArray /*= NULL*/)
 {
    Track **newTracks;
    int numTracks;
@@ -3018,9 +3018,13 @@ void AudacityProject::Import(wxString fileName, TrackList* pNewTrackList /*= NUL
 
    // Have to set up newTrackList before calling AddImportedTracks, 
    // because AddImportedTracks deletes newTracks.
-   if (pNewTrackList)
-      for (int i = 0; i < numTracks; i++)
-         pNewTrackList->Add(newTracks[i]);
+   if (pTrackArray) {
+      for (int i = 0; i < numTracks; i++) {
+         if (newTracks[i]->GetKind() == Track::Wave) {
+            pTrackArray->Add((WaveTrack *)newTracks[i]);
+         }
+      }
+   }
 
    AddImportedTracks(fileName, newTracks, numTracks);
 
