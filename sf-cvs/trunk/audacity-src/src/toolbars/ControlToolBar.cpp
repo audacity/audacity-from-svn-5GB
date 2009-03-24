@@ -567,6 +567,9 @@ void ControlToolBar::PlayCurrentRegion(bool looped /* = false */,
    mPlay->SetAlternate(looped);
 
    AudacityProject *p = GetActiveProject();
+
+   p->TP_DisplaySelection();
+
    if (p)
    {
       if (looped)
