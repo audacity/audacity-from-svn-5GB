@@ -138,6 +138,9 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
 {
    mMouseX = 0;
    mMouseY = 0;
+   mRate = 0;
+   mDataLen = 0;
+   mBuffer = NULL;
 
    mFreqFont = wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
@@ -378,9 +381,11 @@ FreqWindow::~FreqWindow()
    delete mArrowCursor;
    delete mCrossCursor;
    if (mData)
-      delete[]mData;
-   if(buffer)
-      delete[] buffer;
+      delete[] mData;
+   if (mBuffer)
+      delete[] mBuffer;
+   if (mProcessed)
+      delete[] mProcessed;
 }
 
 void FreqWindow::GetAudio()
@@ -388,8 +393,6 @@ void FreqWindow::GetAudio()
    int selcount = 0;
    int i;
    bool warning = false;
-   sampleCount len;
-   double rate;
    AudacityProject *p = GetActiveProject();
    TrackListIterator iter(p->GetTracks());
    Track *t = iter.First();
@@ -397,30 +400,34 @@ void FreqWindow::GetAudio()
       if (t->GetSelected() && t->GetKind() == Track::Wave) {
          WaveTrack *track = (WaveTrack *)t;
          if (selcount==0) {
-            rate = track->GetRate();
+            mRate = track->GetRate();
             sampleCount start, end;
             start = track->TimeToLongSamples(p->mViewInfo.sel0);
             end = track->TimeToLongSamples(p->mViewInfo.sel1);
-            len = (sampleCount)(end - start);
-            if (len > 10485760) {
+            mDataLen = (sampleCount)(end - start);
+            if (mDataLen > 10485760) {
                warning = true;
-               len = 10485760;
+               mDataLen = 10485760;
             }
-            buffer = new float[len];
-            track->Get((samplePtr)buffer, floatSample, start, len);
+            if (mBuffer) {
+               delete [] mBuffer;
+            }
+            mBuffer = new float[mDataLen];
+            track->Get((samplePtr)mBuffer, floatSample, start, mDataLen);
          }
          else {
-            if (track->GetRate() != rate) {
+            if (track->GetRate() != mRate) {
                wxMessageBox(_("To plot the spectrum, all selected tracks must be the same sample rate."));
-               delete[] buffer;
+               delete[] mBuffer;
+               mBuffer = NULL;
                return;
             }
             sampleCount start;
             start = track->TimeToLongSamples(p->mViewInfo.sel0);
-            float *buffer2 = new float[len];
-            track->Get((samplePtr)buffer2, floatSample, start, len);
-            for(i=0; i<len; i++)
-               buffer[i] += buffer2[i];
+            float *buffer2 = new float[mDataLen];
+            track->Get((samplePtr)buffer2, floatSample, start, mDataLen);
+            for(i=0; i<mDataLen; i++)
+               mBuffer[i] += buffer2[i];
             delete[] buffer2;
          }
          selcount++;
@@ -432,17 +439,15 @@ void FreqWindow::GetAudio()
       return;
    
    if (selcount > 1)
-      for(i=0; i<len; i++)
-         buffer[i] /= selcount;
+      for(i=0; i<mDataLen; i++)
+         mBuffer[i] /= selcount;
    
    if (warning) {
       wxString msg;
       msg.Printf(_("Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."),
-                          (len / rate));
+                          (mDataLen / mRate));
       wxMessageBox(msg);
    }
-   mDataLen = len;
-   mRate = rate;
 }
 
 void FreqWindow::OnSize(wxSizeEvent & event)
@@ -931,12 +936,18 @@ void FreqWindow::OnCloseButton(wxCommandEvent & WXUNUSED(event))
 
 void FreqWindow::Plot()
 {
-   if (mData)
+   if (mData) {
       delete[]mData;
-   mData = new float[mDataLen];
-   for (int i = 0; i < mDataLen; i++)
-      mData[i] = buffer[i];
+      mData = NULL;
+   }
+
+   if (mBuffer) {
+      mData = new float[mDataLen];
+      for (int i = 0; i < mDataLen; i++)
+         mData[i] = mBuffer[i];
+   }
    Recalc();
+
    wxSizeEvent dummy;
    OnSize( dummy );
 }

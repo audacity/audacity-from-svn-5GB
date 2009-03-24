@@ -82,7 +82,7 @@ class FreqWindow:public wxDialog {
    void DrawPlot();
 
  private:
-   float *buffer;
+   float *mBuffer;
    bool mDrawGrid;
    int mSize;
    int mAlg;
