@@ -732,9 +732,17 @@ Cases:
       mTrackLen += deltat;
    }
    else {   // Case 10:
-      mTrackLen = e->mTrackLen;
-      mOffset = e->mOffset;
-      //wxLogDebug(wxT("Case 10: mTrackLen %f mOffset %f t0 %f"), mTrackLen, mOffset, t0);
+      if( mTrackLen == 0 ) // creating a new envelope
+      {
+         mTrackLen = e->mTrackLen;
+         mOffset = e->mOffset;
+         //wxLogDebug(wxT("Case 10, new env/clip: mTrackLen %f mOffset %f t0 %f"), mTrackLen, mOffset, t0);
+      }
+      else
+      {
+         mTrackLen += e->mTrackLen;
+         //wxLogDebug(wxT("Case 10, paste into current env: mTrackLen %f mOffset %f t0 %f"), mTrackLen, mOffset, t0);
+      }
    }
 
    // Copy points from inside the selection
@@ -855,8 +863,18 @@ void Envelope::GetPoints(double *bufferWhen,
 int Envelope::Insert(double when, double value)
 {
    // in debug builds, do a spot of argument checking
-   wxASSERT(when <= (mTrackLen));
-   wxASSERT(when >= 0);
+   if(when > mTrackLen)
+   {
+      wxString msg;
+      msg = wxString::Format(wxT("when %.20f mTrackLen %.20f diff %.20f"), when, mTrackLen, when-mTrackLen);
+      wxASSERT_MSG(when <= (mTrackLen), msg);
+   }
+   if(when < 0)
+   {
+      wxString msg;
+      msg = wxString::Format(wxT("when %.20f mTrackLen %.20f"), when);
+      wxASSERT_MSG(when >= 0, msg);
+   }
 
    int len = mEnv.Count();
 
@@ -947,8 +965,18 @@ void Envelope::GetValues(double *buffer, int bufferLen,
    double tprev, vprev, tnext = 0, vnext, vstep = 0;
 
    // in debug builds, do a spot of argument checking
-   wxASSERT(t0 <= (mTrackLen));
-   wxASSERT(t0 >= 0);
+   if(t0 > mTrackLen)
+   {
+      wxString msg;
+      msg = wxString::Format(wxT("t0 %.20f mTrackLen %.20f diff %.20f"), t0, mTrackLen, t0-mTrackLen);
+      wxASSERT_MSG(t0 <= mTrackLen, msg);
+   }
+   if(t0 < 0)
+   {
+      wxString msg;
+      msg = wxString::Format(wxT("t0 %.20f"), t0);
+      wxASSERT_MSG(t0 >= 0, msg);
+   }
 
    for (int b = 0; b < bufferLen; b++) {
       if (len <= 0) {
