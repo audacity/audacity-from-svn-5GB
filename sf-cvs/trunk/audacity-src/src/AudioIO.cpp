@@ -1351,6 +1351,7 @@ void AudioIO::StopStream()
          for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
             {
                delete mCaptureBuffers[i];
+               delete mResample[i];
                
                WaveTrack* track = mCaptureTracks[i];
                track->Flush();
@@ -1395,6 +1396,7 @@ void AudioIO::StopStream()
             }
          
          delete[] mCaptureBuffers;
+         delete[] mResample;
       }
    }
 
