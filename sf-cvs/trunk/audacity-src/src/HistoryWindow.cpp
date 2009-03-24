@@ -121,6 +121,7 @@ HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
    Fit();
    SetMinSize(GetSize());
    mList->SetColumnWidth(0, mList->GetClientSize().x - mList->GetColumnWidth(1));
+   mList->SetTextColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 }
 
 HistoryWindow::~HistoryWindow()
@@ -206,7 +207,6 @@ void HistoryWindow::OnItemSelected(wxListEvent &event)
 
    for (i = 0; i < mList->GetItemCount(); i++) {
       mList->SetItemImage(i, 0);
-
       if (i > selected)
          mList->SetItemTextColour(i, *wxLIGHT_GREY);
       else
