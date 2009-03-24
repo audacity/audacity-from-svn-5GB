@@ -1957,7 +1957,7 @@ void AudacityProject::OpenFiles(AudacityProject *proj)
       if (skip) {
          continue;
       }
-printf("qwerqwerqwerqwer\n");
+
       gPrefs->Write(wxT("/DefaultOpenPath"), wxPathOnly(fileName));
       
       // DMM: If the project is dirty, that means it's been touched at
