@@ -178,7 +178,7 @@ bool EffectSoundTouch::ProcessOne(WaveTrack *track,
    }
    
    // Tell SoundTouch to finish processing any remaining samples
-   mSoundTouch->flush();
+   mSoundTouch->flush();   // this should only be used for changeTempo - it dumps data otherwise with pRateTransposer->clear();
    
    unsigned int outputCount = mSoundTouch->numSamples();
    if (outputCount > 0) {
