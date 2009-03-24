@@ -1939,9 +1939,8 @@ void AudacityProject::OpenFiles(AudacityProject *proj)
    for (size_t ff = 0; ff < selectedFiles.GetCount(); ff++) {
       wxString fileName = selectedFiles[ff];
       wxFileName newFileName(fileName);
+      bool skip = false;
 
-      gPrefs->Write(wxT("/DefaultOpenPath"), wxPathOnly(fileName));
-      
       // Make sure it isn't already open
       size_t numProjects = gAudacityProjects.Count();
       for (size_t i = 0; i < numProjects; i++) {
@@ -1950,10 +1949,17 @@ void AudacityProject::OpenFiles(AudacityProject *proj)
                                           newFileName.GetName().c_str()),
                          _("Error opening project"),
                          wxOK | wxCENTRE);
-            continue;
+            skip = true;
+            break;
          }
       }
 
+      if (skip) {
+         continue;
+      }
+printf("qwerqwerqwerqwer\n");
+      gPrefs->Write(wxT("/DefaultOpenPath"), wxPathOnly(fileName));
+      
       // DMM: If the project is dirty, that means it's been touched at
       // all, and it's not safe to open a new project directly in its
       // place.  Only if the project is brand-new clean and the user

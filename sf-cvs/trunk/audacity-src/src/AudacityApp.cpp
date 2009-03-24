@@ -500,7 +500,7 @@ bool AudacityApp::MRUOpen(wxString fileName) {
                   newFileName.GetName().c_str()),
                   _("Error opening project"),
                   wxOK | wxCENTRE);
-               continue;
+               return(true);
             }
          }
          
