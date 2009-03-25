@@ -448,6 +448,7 @@
 		186CCE720E51F48500659159 /* ODDecodeFlacTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCE6E0E51F48500659159 /* ODDecodeFlacTask.cpp */; };
 		186CCE730E51F48500659159 /* ODDecodeTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCE700E51F48500659159 /* ODDecodeTask.cpp */; };
 		186CCEA40E523C8E00659159 /* Profiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCEA30E523C8E00659159 /* Profiler.cpp */; };
+		18A2840F0F79BCAB0013A1BE /* Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A2840E0F79BCAB0013A1BE /* Generator.cpp */; };
 		18D8314E0ED0F56300FD870D /* Contrast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18D8314C0ED0F56200FD870D /* Contrast.cpp */; };
 		2801A6460BF9268700648258 /* ImportQT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6430BF9268700648258 /* ImportQT.cpp */; };
 		2801A6470BF9268700648258 /* ImportQTWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6450BF9268700648258 /* ImportQTWrapper.cpp */; };
@@ -1701,7 +1702,7 @@
 		174F73CD098D516D009CD6E0 /* AudacityOGG.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityOGG.icns; sourceTree = "<group>"; };
 		174F73CE098D516D009CD6E0 /* AudacityProject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityProject.icns; sourceTree = "<group>"; };
 		174F73CF098D516D009CD6E0 /* AudacityWAV.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityWAV.icns; sourceTree = "<group>"; };
-		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
+		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
 		176A1A5B098B7B8D00DC73B4 /* libnyquist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libnyquist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		176EE9DB09A2EC1000188F3B /* caf.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = caf.c; sourceTree = "<group>"; };
 		176EE9DC09A2EC1000188F3B /* flac.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = flac.c; sourceTree = "<group>"; };
@@ -2019,6 +2020,8 @@
 		186CCE710E51F48500659159 /* ODDecodeTask.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ODDecodeTask.h; path = ondemand/ODDecodeTask.h; sourceTree = "<group>"; };
 		186CCEA20E523C8D00659159 /* Profiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profiler.h; sourceTree = "<group>"; };
 		186CCEA30E523C8E00659159 /* Profiler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Profiler.cpp; sourceTree = "<group>"; };
+		18A2840D0F79BCAA0013A1BE /* Generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Generator.h; sourceTree = "<group>"; };
+		18A2840E0F79BCAB0013A1BE /* Generator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Generator.cpp; sourceTree = "<group>"; };
 		18D8314C0ED0F56200FD870D /* Contrast.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Contrast.cpp; sourceTree = "<group>"; };
 		18D8314D0ED0F56200FD870D /* Contrast.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Contrast.h; sourceTree = "<group>"; };
 		2801A6430BF9268700648258 /* ImportQT.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImportQT.cpp; sourceTree = "<group>"; };
@@ -3931,6 +3934,8 @@
 				1790B01E09883BFD008A330A /* Fade.h */,
 				2891B2850C531D2C0044FBE3 /* FindClipping.cpp */,
 				2891B2860C531D2C0044FBE3 /* FindClipping.h */,
+				18A2840E0F79BCAB0013A1BE /* Generator.cpp */,
+				18A2840D0F79BCAA0013A1BE /* Generator.h */,
 				1790B02109883BFD008A330A /* Invert.cpp */,
 				1790B02209883BFD008A330A /* Invert.h */,
 				1790B02A09883BFD008A330A /* Leveller.cpp */,
@@ -7407,6 +7412,7 @@
 				286D31340F264BEE004E6E4A /* vi.po in Sources */,
 				286D31350F264BEE004E6E4A /* zh.po in Sources */,
 				286D31360F264BEE004E6E4A /* zh_TW.po in Sources */,
+				18A2840F0F79BCAB0013A1BE /* Generator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7932,8 +7938,10 @@
 					CMTSTUFF,
 					EXT,
 				);
+				HEADER_SEARCH_PATHS = "";
 				PRODUCT_NAME = nyquist;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libnyquist $(TOPLEVEL)/lib-src/libnyquist/nyquist/cmt $(TOPLEVEL)/lib-src/libnyquist/nyquist/fft $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqsrc $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk/include $(TOPLEVEL)/lib-src/libnyquist/nyquist/sys/unix $(TOPLEVEL)/lib-src/libnyquist/nyquist/tran $(TOPLEVEL)/lib-src/libnyquist/nyquist/xlisp";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libnyquist $(TOPLEVEL)/lib-src/libnyquist/nyquist/cmt $(TOPLEVEL)/lib-src/libnyquist/nyquist/ffts/** $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqsrc $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk $(TOPLEVEL)/lib-src/libnyquist/nyquist/nyqstk/include $(TOPLEVEL)/lib-src/libnyquist/nyquist/sys/unix $(TOPLEVEL)/lib-src/libnyquist/nyquist/tran $(TOPLEVEL)/lib-src/libnyquist/nyquist/xlisp";
+				USE_HEADERMAP = "";
 			};
 			name = "Debug Static";
 		};
