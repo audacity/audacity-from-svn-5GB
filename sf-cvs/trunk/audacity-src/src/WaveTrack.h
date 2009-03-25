@@ -240,7 +240,7 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    // Utility functions to convert between times in seconds
    // and sample positions
 
-   sampleCount TimeToLongSamples(double t0);
+   sampleCount TimeToLongSamples(double t0) const;
    double LongSamplesToTime(sampleCount pos);
 
    // Get access to the clips in the tracks. This is used by

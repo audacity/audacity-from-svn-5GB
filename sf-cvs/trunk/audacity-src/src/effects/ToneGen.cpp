@@ -49,7 +49,6 @@ EffectToneGen::EffectToneGen()
    frequency[1] = float(1320.0);          //Hz
    amplitude[0] = float(0.8);
    amplitude[1] = float(0.8);
-   length = sDefaultGenerateLen;
    interpolation=0;
 }
 
@@ -59,7 +58,7 @@ wxString EffectToneGen::GetEffectDescription() {
    const wxChar* waveformNames[] = {wxT("sine"), wxT("square"), wxT("sawtooth"), wxT("square, no alias")};
    const wxChar* interpolationNames[] = {wxT("linear"), wxT("logarithmic")};
    return wxString::Format(_("Applied effect: Generate %s wave %s, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"), 
-      waveformNames[waveform], mbChirp ? wxT("chirp") : wxT("tone"), frequency[0], amplitude[0], length); 
+      waveformNames[waveform], mbChirp ? wxT("chirp") : wxT("tone"), frequency[0], amplitude[0], mDuration);
 } 
 
 bool EffectToneGen::PromptUser()
@@ -76,7 +75,7 @@ bool EffectToneGen::PromptUser()
    dlog.isSelection= false;
 
    if (mT1 > mT0) {
-      length = mT1 - mT0;
+      mDuration = mT1 - mT0;
       dlog.isSelection= true;
    }
   
@@ -86,7 +85,7 @@ bool EffectToneGen::PromptUser()
    dlog.frequency[1] = frequency[1];
    dlog.amplitude[0] = amplitude[0];
    dlog.amplitude[1] = amplitude[1];
-   dlog.length = length;
+   dlog.mDuration = mDuration;
    dlog.waveforms = &waveforms;
    dlog.interpolation = interpolation;
    dlog.interpolations = &interpolations;
@@ -113,7 +112,7 @@ bool EffectToneGen::PromptUser()
       frequency[1] = frequency[0];
       amplitude[1] = amplitude[0];
    }
-   length = dlog.length;
+   mDuration = dlog.mDuration;
    return true;
 }
 
@@ -227,63 +226,22 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
    return true;
 }
 
-
-
-bool EffectToneGen::Process()
+void EffectToneGen::BeforeGenerate()
 {
-   if (length <= 0.0)
-      return false;
-
    mPositionInCycles = 0.0;
-   //Iterate over each track
-   int ntrack = 0;
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
-   bool bGoodResult = true;
-   
-   HandleLinkedTracksOnGenerate(length, mT0);
+}
 
-   TrackListIterator iter(mOutputWaveTracks);
-   WaveTrack *track = (WaveTrack *)iter.First();
-   while (track) {
-      mSample = 0;
-      mCurRate = track->GetRate();
-      WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), mCurRate);
-      numSamples = tmp->TimeToLongSamples(length);
-      sampleCount i = 0;
-      float *data = new float[tmp->GetMaxBlockSize()];
-      sampleCount block;
+void EffectToneGen::GenerateBlock(float *data,
+                                  const WaveTrack &track,
+                                  sampleCount block)
+{
+   MakeTone(data, block);
+}
 
-      while ((i < numSamples) && bGoodResult) {
-         block = tmp->GetBestBlockSize(i);
-         if (block > (numSamples - i))
-             block = numSamples - i;
-         MakeTone(data, block);
-         tmp->Append((samplePtr)data, floatSample, block);
-         i += block;
-
-         //Update the Progress meter
-         if (TrackProgress(ntrack, (double)i / numSamples))
-            bGoodResult = false;
-      }
-      delete[] data;
-
-      tmp->Flush();
-      track->ClearAndPaste(mT0, mT1, tmp);
-      delete tmp;
-
-      if (!bGoodResult)
-         break;
-
-      //Iterate to the next track
-      ntrack++;
-      track = (WaveTrack *)iter.Next();
-   }
-
-   if (bGoodResult)
-	   mT1 = mT0 + length; // Update selection.
-
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
-   return bGoodResult;
+void EffectToneGen::BeforeTrack(const WaveTrack &track)
+{
+   mSample = 0;
+   mCurRate = track.GetRate();
 }
 
 // WDR: class implementations
@@ -324,7 +282,7 @@ void ToneGenDialog::PopulateOrExchangeStandard( ShuttleGui & S )
          TimeTextCtrl(this,
                       wxID_ANY,
                       wxT(""),
-                      length,
+                      mDuration,
                       mEffect->mProjectRate,
                       wxDefaultPosition,
                       wxDefaultSize,
@@ -368,7 +326,7 @@ void ToneGenDialog::PopulateOrExchangeExtended( ShuttleGui & S )
          TimeTextCtrl(this,
                       wxID_ANY,
                       wxT(""),
-                      length,
+                      mDuration,
                       mEffect->mProjectRate,
                       wxDefaultPosition,
                       wxDefaultSize,
@@ -395,7 +353,7 @@ bool ToneGenDialog::TransferDataToWindow()
    EffectDialog::TransferDataToWindow();
 
    // Must handle this ourselves since ShuttleGui doesn't know about it
-   mToneDurationT->SetTimeValue(length);
+   mToneDurationT->SetTimeValue(mDuration);
 
    return true;
 }
@@ -410,7 +368,7 @@ bool ToneGenDialog::TransferDataFromWindow()
    frequency[1] = TrapDouble(frequency[1], FREQ_MIN, (float)(GetActiveProject()->GetRate())/2.);
 
    // Must handle this ourselves since ShuttleGui doesn't know about it
-   length = mToneDurationT->GetTimeValue();
+   mDuration = mToneDurationT->GetTimeValue();
 
    return true;
 }

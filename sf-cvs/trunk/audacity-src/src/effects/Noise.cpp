@@ -48,10 +48,10 @@ bool EffectNoise::PromptUser()
    // replace selection with noise
    //
    if (mT1 > mT0) {
-      noiseDuration = mT1 - mT0;
+      mDuration = mT1 - mT0;
       dlog.nIsSelection = true;
    } else {
-      gPrefs->Read(wxT("/CsPresets/NoiseGen_Duration"), &noiseDuration, 1L);
+      gPrefs->Read(wxT("/CsPresets/NoiseGen_Duration"), &mDuration, 1L);
       dlog.nIsSelection = false;
    }
 
@@ -59,7 +59,7 @@ bool EffectNoise::PromptUser()
    gPrefs->Read(wxT("/CsPresets/NoiseGen_Amp"), &noiseAmplitude, 0.8f);
 
    // Initialize dialog locals
-   dlog.nDuration = noiseDuration;
+   dlog.nDuration = mDuration;
    dlog.nAmplitude = noiseAmplitude;
    dlog.nType = noiseType;
    dlog.nTypeList = &noiseTypeList;
@@ -75,7 +75,7 @@ bool EffectNoise::PromptUser()
 
    // if there was an OK, retrieve values
    noiseType = dlog.nType;
-   noiseDuration = dlog.nDuration;
+   mDuration = dlog.nDuration;
    noiseAmplitude = dlog.nAmplitude;
 
    return true;
@@ -137,73 +137,24 @@ bool EffectNoise::MakeNoise(float *buffer, sampleCount len, float fs, float ampl
    return true;
 }
 
-bool EffectNoise::Process()
+void EffectNoise::GenerateBlock(float *data,
+                                const WaveTrack &track,
+                                sampleCount block)
 {
-   if (noiseDuration <= 0.0)
-      return false;
+   MakeNoise(data, block, track.GetRate(), noiseAmplitude);
+}
 
-   //Iterate over each track
-   int ntrack = 0;
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
-   bool bGoodResult = true;
-   
-   HandleLinkedTracksOnGenerate(noiseDuration, mT0);
-
-   TrackListIterator iter(mOutputWaveTracks);
-   WaveTrack *track = (WaveTrack *)iter.First();
-   while (track) {
-      WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), track->GetRate());
-      numSamples = track->TimeToLongSamples(noiseDuration);
-      sampleCount i = 0;
-      float *data = new float[tmp->GetMaxBlockSize()];
-      sampleCount block;
-
-      while ((i < numSamples) && bGoodResult) {
-         block = tmp->GetBestBlockSize(i);
-         if (block > (numSamples - i))
-             block = numSamples - i;
-
-         MakeNoise(data, block, track->GetRate(), noiseAmplitude);
-
-         tmp->Append((samplePtr)data, floatSample, block);
-         i += block;
-
-         //Update the Progress meter
-         if (TrackProgress(ntrack, (double)i / numSamples))
-            bGoodResult = false;
-      }
-      delete[] data;
-
-      tmp->Flush();
-      track->ClearAndPaste(mT0, mT1, tmp);
-      delete tmp;
-
-      if (!bGoodResult)
-         break;
-
-      //Iterate to the next track
-      ntrack++;
-      track = (WaveTrack *)iter.Next();
-   }
-
-   if (bGoodResult)
-   {
-      /*
-         save last used values
-         save duration unless value was got from selection, so we save only
-         when user explicitely setup a value
+void EffectNoise::Success()
+{
+   /* save last used values
+      save duration unless value was got from selection, so we save only
+      when user explicitely setup a value
       */
-      if (mT1 == mT0)
-         gPrefs->Write(wxT("/CsPresets/NoiseGen_Duration"), noiseDuration);
+   if (mT1 == mT0)
+      gPrefs->Write(wxT("/CsPresets/NoiseGen_Duration"), mDuration);
 
-      gPrefs->Write(wxT("/CsPresets/NoiseGen_Type"), noiseType);
-      gPrefs->Write(wxT("/CsPresets/NoiseGen_Amp"), noiseAmplitude);
-
-      mT1 = mT0 + noiseDuration; // Update selection.
-   }
-
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
-   return bGoodResult;
+   gPrefs->Write(wxT("/CsPresets/NoiseGen_Type"), noiseType);
+   gPrefs->Write(wxT("/CsPresets/NoiseGen_Amp"), noiseAmplitude);
 }
 
 //----------------------------------------------------------------------------
@@ -225,7 +176,7 @@ NoiseDialog::NoiseDialog(EffectNoise * effect, wxWindow * parent, const wxString
 {
    mNoiseDurationT = NULL;
    /* // already initialized in EffectNoise::PromptUser
-   nDuration = noiseDuration;
+   nDuration = mDuration;
    nAmplitude = noiseAmplitude;
    nType = noiseType;
    */
