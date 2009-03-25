@@ -110,6 +110,7 @@ OBJS = \
 	commands/CommandManager.o \
 	commands/Keyboard.o \
 	effects/Effect.o \
+	effects/Generator.o \
 	effects/EffectCategory.o \
 	effects/EffectManager.o \
 	effects/SimpleMono.o \
