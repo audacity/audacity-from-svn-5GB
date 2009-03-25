@@ -774,7 +774,17 @@ void Envelope::RemoveUnneededPoints(double tolerence)
       Delete(i);  // try it to see if it's doing anything
       val1 = GetValue(when + mOffset);
       if( fabs(val -val1) > tolerence )
+      {
          Insert(when,val); // put it back, we needed it
+         
+         //Insert may have modified instead of inserting, if two points were at the same tinme.
+         // in which case len needs to shrink i and len, because the array size decreased.
+         if(mEnv.Count()!=len)
+         {
+            len--;
+            i--;
+         }
+      }
       else {   // it made no difference so leave it out
          len--;
          i--;
