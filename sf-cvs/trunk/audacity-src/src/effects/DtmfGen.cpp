@@ -65,11 +65,11 @@ bool EffectDtmf::PromptUser()
 
    if (mT1 > mT0) {
       // there is a selection: let's fit in there...
-      dtmfDuration = mT1 - mT0;
+      mDuration = mT1 - mT0;
       dlog.dIsSelection = true;
    } else {
       // retrieve last used values
-      gPrefs->Read(wxT("/CsPresets/DtmfGen_SequenceDuration"), &dtmfDuration, 1L);
+      gPrefs->Read(wxT("/CsPresets/DtmfGen_SequenceDuration"), &mDuration, 1L);
       dlog.dIsSelection = false;
    }
    /// \todo this code shouldn't be using /CsPresets - need to review its use
@@ -82,7 +82,7 @@ bool EffectDtmf::PromptUser()
    // Initialize dialog locals
    dlog.dString = dtmfString;
    dlog.dDutyCycle = dtmfDutyCycle;
-   dlog.dDuration = dtmfDuration;
+   dlog.dDuration = mDuration;
    dlog.dAmplitude = dtmfAmplitude;
 
    // start dialog
@@ -95,7 +95,7 @@ bool EffectDtmf::PromptUser()
    // if there was an OK, retrieve values
    dtmfString = dlog.dString;
    dtmfDutyCycle = dlog.dDutyCycle;
-   dtmfDuration = dlog.dDuration;
+   mDuration = dlog.dDuration;
    dtmfAmplitude = dlog.dAmplitude;
    
    dtmfNTones = dlog.dNTones;
@@ -240,156 +240,124 @@ bool EffectDtmf::MakeDtmfTone(float *buffer, sampleCount len, float fs, wxChar t
    return true;
 }
 
-bool EffectDtmf::Process()
+bool EffectDtmf::GenerateTrack(WaveTrack *tmp,
+                               const WaveTrack &track,
+                               int ntrack)
 {
-   if (dtmfDuration <= 0.0)
-      return false;
-      
-   HandleLinkedTracksOnGenerate(dtmfDuration, mT0);
-
-   //Iterate over each track
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
    bool bGoodResult = true;
-   int ntrack = 0;
-   TrackListIterator iter(mOutputWaveTracks);
-   WaveTrack *track = (WaveTrack *)iter.First();
-   while (track) {
-      // new tmp track, to fill with dtmf sequence
-      // we will build the track by adding a tone, then a silence, next tone, and so on...
-      WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), track->GetRate());
 
-      // all dtmf sequence durations in samples from seconds
-      numSamplesSequence = (sampleCount)(dtmfDuration * track->GetRate() + 0.5);
-      numSamplesTone = (sampleCount)(dtmfTone * track->GetRate() + 0.5);
-      numSamplesSilence = (sampleCount)(dtmfSilence * track->GetRate() + 0.5);
+   // all dtmf sequence durations in samples from seconds
+   numSamplesSequence = (sampleCount)(mDuration * track.GetRate() + 0.5);
+   numSamplesTone = (sampleCount)(dtmfTone * track.GetRate() + 0.5);
+   numSamplesSilence = (sampleCount)(dtmfSilence * track.GetRate() + 0.5);
 
-      // recalculate the sum, and spread the difference - due to approximations.
-      // Since diff should be in the order of "some" samples, a division (resulting in zero)
-      // is not sufficient, so we add the additional remaining samples in each tone/silence block,
-      // at least until available.
-      int diff = numSamplesSequence - (dtmfNTones*numSamplesTone) - (dtmfNTones-1)*numSamplesSilence;
-      if (diff>dtmfNTones) {
-         // in this case, both these values would change, so it makes sense to recalculate diff
-         // otherwise just keep the value we already have
+   // recalculate the sum, and spread the difference - due to approximations.
+   // Since diff should be in the order of "some" samples, a division (resulting in zero)
+   // is not sufficient, so we add the additional remaining samples in each tone/silence block,
+   // at least until available.
+   int diff = numSamplesSequence - (dtmfNTones*numSamplesTone) - (dtmfNTones-1)*numSamplesSilence;
+   if (diff>dtmfNTones) {
+      // in this case, both these values would change, so it makes sense to recalculate diff
+      // otherwise just keep the value we already have
 
-         // should always be the case that dtmfNTones>1, as if 0, we don't even start processing,
-         // and with 1 there is no difference to spread (no silence slot)...
-         wxASSERT(dtmfNTones > 1);
-         numSamplesTone += (diff/(dtmfNTones));
-         numSamplesSilence += (diff/(dtmfNTones-1));
-         diff = numSamplesSequence - (dtmfNTones*numSamplesTone) - (dtmfNTones-1)*numSamplesSilence;
-      }
-      // this var will be used as extra samples distributor
-      int extra=0;
+      // should always be the case that dtmfNTones>1, as if 0, we don't even start processing,
+      // and with 1 there is no difference to spread (no silence slot)...
+      wxASSERT(dtmfNTones > 1);
+      numSamplesTone += (diff/(dtmfNTones));
+      numSamplesSilence += (diff/(dtmfNTones-1));
+      diff = numSamplesSequence - (dtmfNTones*numSamplesTone) - (dtmfNTones-1)*numSamplesSilence;
+   }
+   // this var will be used as extra samples distributor
+   int extra=0;
 
-      sampleCount i = 0;
-      sampleCount j = 0;
-      int n=0; // pointer to string in dtmfString
-      sampleCount block;
-      bool isTone = true;
-      float *data = new float[tmp->GetMaxBlockSize()];
+   sampleCount i = 0;
+   sampleCount j = 0;
+   int n=0; // pointer to string in dtmfString
+   sampleCount block;
+   bool isTone = true;
+   float *data = new float[tmp->GetMaxBlockSize()];
 
-      // for the whole dtmf sequence, we will be generating either tone or silence
-      // according to a bool value, and this might be done in small chunks of size
-      // 'block', as a single tone might sometimes be larger than the block
-      // tone and silence generally have different duration, thus two generation blocks
-      //
-      // Note: to overcome a 'clicking' noise introduced by the abrupt transition from/to
-      // silence, I added a fade in/out of 1/250th of a second (4ms). This can still be
-      // tweaked but gives excellent results at 44.1kHz: I haven't tried other freqs.
-      // A problem might be if the tone duration is very short (<10ms)... (?)
-      //
-      // One more problem is to deal with the approximations done when calculating the duration 
-      // of both tone and silence: in some cases the final sum might not be same as the initial
-      // duration. So, to overcome this, we had a redistribution block up, and now we will spread
-      // the remaining samples in every bin in order to achieve the full duration: test case was
-      // to generate an 11 tone DTMF sequence, in 4 seconds, and with DutyCycle=75%: after generation
-      // you ended up with 3.999s or in other units: 3 seconds and 44097 samples.
-      //
-      while ((i < numSamplesSequence) && bGoodResult) {
-         if (isTone)
+   // for the whole dtmf sequence, we will be generating either tone or silence
+   // according to a bool value, and this might be done in small chunks of size
+   // 'block', as a single tone might sometimes be larger than the block
+   // tone and silence generally have different duration, thus two generation blocks
+   //
+   // Note: to overcome a 'clicking' noise introduced by the abrupt transition from/to
+   // silence, I added a fade in/out of 1/250th of a second (4ms). This can still be
+   // tweaked but gives excellent results at 44.1kHz: I haven't tried other freqs.
+   // A problem might be if the tone duration is very short (<10ms)... (?)
+   //
+   // One more problem is to deal with the approximations done when calculating the duration 
+   // of both tone and silence: in some cases the final sum might not be same as the initial
+   // duration. So, to overcome this, we had a redistribution block up, and now we will spread
+   // the remaining samples in every bin in order to achieve the full duration: test case was
+   // to generate an 11 tone DTMF sequence, in 4 seconds, and with DutyCycle=75%: after generation
+   // you ended up with 3.999s or in other units: 3 seconds and 44097 samples.
+   //
+   while ((i < numSamplesSequence) && bGoodResult) {
+      if (isTone)
          // generate tone
-         {
-            // the statement takes care of extracting one sample from the diff bin and
-            // adding it into the tone block until depletion
-            extra=(diff-- > 0?1:0);
-            for(j=0; j < numSamplesTone+extra && bGoodResult; j+=block) {
-               block = tmp->GetBestBlockSize(j);
-               if (block > (numSamplesTone+extra - j))
-                   block = numSamplesTone+extra - j;
-
-               // generate the tone and append
-               MakeDtmfTone(data, block, track->GetRate(), dtmfString[n], j, numSamplesTone, dtmfAmplitude);
-               tmp->Append((samplePtr)data, floatSample, block);
-               //Update the Progress meter
-               if (TrackProgress(ntrack, (double)(i+j) / numSamplesSequence))
-                  bGoodResult = false;
-            }
-            i += numSamplesTone;
-            n++;
-            if(n>=dtmfNTones)break;
-         }
-         else
-         // generate silence
-         {
-            // the statement takes care of extracting one sample from the diff bin and
-            // adding it into the silence block until depletion
-            extra=(diff-- > 0?1:0);
-            for(j=0; j < numSamplesSilence+extra && bGoodResult; j+=block) {
-               block = tmp->GetBestBlockSize(j);
-               if (block > (numSamplesSilence+extra - j))
-                   block = numSamplesSilence+extra - j;
-
-               // generate silence and append
-               memset(data, 0, sizeof(float)*block);
-               tmp->Append((samplePtr)data, floatSample, block);
-               //Update the Progress meter
-               if (TrackProgress(ntrack, (double)(i+j) / numSamplesSequence))
-                  bGoodResult = false;
-            }
-            i += numSamplesSilence;
-         }
-         // flip flag
-         isTone=!isTone;
-
-      } // finished the whole dtmf sequence
-
-      delete[] data;
-
-      tmp->Flush();
-      track->ClearAndPaste(mT0, mT1, tmp);
-      delete tmp;
-
-      if (!bGoodResult)
-         break;
-
-      //Iterate to the next track
-      ntrack++;
-      track = (WaveTrack *)iter.Next();
-   }
-
-   if (bGoodResult)
       {
-      /*
-         save last used values
-         save duration unless value was got from selection, so we save only
-         when user explicitely setup a value
-      */
-      if (mT1 == mT0)
-         gPrefs->Write(wxT("/CsPresets/DtmfGen_SequenceDuration"), dtmfDuration);
+         // the statement takes care of extracting one sample from the diff bin and
+         // adding it into the tone block until depletion
+         extra=(diff-- > 0?1:0);
+         for(j=0; j < numSamplesTone+extra && bGoodResult; j+=block) {
+            block = tmp->GetBestBlockSize(j);
+            if (block > (numSamplesTone+extra - j))
+               block = numSamplesTone+extra - j;
 
-      gPrefs->Write(wxT("/CsPresets/DtmfGen_String"), dtmfString);
-      gPrefs->Write(wxT("/CsPresets/DtmfGen_DutyCycle"), dtmfDutyCycle);
-      gPrefs->Write(wxT("/CsPresets/DtmfGen_Amplitude"), dtmfAmplitude);
+            // generate the tone and append
+            MakeDtmfTone(data, block, track.GetRate(), dtmfString[n], j, numSamplesTone, dtmfAmplitude);
+            tmp->Append((samplePtr)data, floatSample, block);
+            //Update the Progress meter
+            if (TrackProgress(ntrack, (double)(i+j) / numSamplesSequence))
+               bGoodResult = false;
+         }
+         i += numSamplesTone;
+         n++;
+         if(n>=dtmfNTones)break;
+      }
+      else
+         // generate silence
+      {
+         // the statement takes care of extracting one sample from the diff bin and
+         // adding it into the silence block until depletion
+         extra=(diff-- > 0?1:0);
+         for(j=0; j < numSamplesSilence+extra && bGoodResult; j+=block) {
+            block = tmp->GetBestBlockSize(j);
+            if (block > (numSamplesSilence+extra - j))
+               block = numSamplesSilence+extra - j;
 
-      // Update selection: this is not accurate if my calculations are wrong.
-      // To validate, once the effect is done, unselect, and select all, then
-      // see what the selection length is being reported (in sec,ms,samples)
-      mT1 = mT0 + dtmfDuration;
-   }
+            // generate silence and append
+            memset(data, 0, sizeof(float)*block);
+            tmp->Append((samplePtr)data, floatSample, block);
+            //Update the Progress meter
+            if (TrackProgress(ntrack, (double)(i+j) / numSamplesSequence))
+               bGoodResult = false;
+         }
+         i += numSamplesSilence;
+      }
+      // flip flag
+      isTone=!isTone;
 
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   } // finished the whole dtmf sequence
+
+   delete[] data;
    return bGoodResult;
+}
+
+void EffectDtmf::Success()
+{
+   /* save last used values
+      save duration unless value was got from selection, so we save only
+      when user explicitely setup a value
+      */
+   if (mT1 == mT0)
+      gPrefs->Write(wxT("/CsPresets/DtmfGen_SequenceDuration"), mDuration);
+
+   gPrefs->Write(wxT("/CsPresets/DtmfGen_String"), dtmfString);
+   gPrefs->Write(wxT("/CsPresets/DtmfGen_DutyCycle"), dtmfDutyCycle);
+   gPrefs->Write(wxT("/CsPresets/DtmfGen_Amplitude"), dtmfAmplitude);
 }
 
 //----------------------------------------------------------------------------

@@ -17,18 +17,16 @@
 #include <wx/dialog.h>
 #include <wx/intl.h>
 
-#include "Effect.h"
+#include "Generator.h"
 #include "../widgets/TimeTextCtrl.h"
 
 class wxSizer;
 class wxTextCtrl;
 
-class EffectSilence:public Effect {
+class EffectSilence : public Generator {
 
  public:
-   EffectSilence() {
-      length = sDefaultGenerateLen;
-   }
+   EffectSilence() { }
 
    virtual wxString GetEffectName() {
       return wxString(_("Silence..."));
@@ -50,7 +48,7 @@ class EffectSilence:public Effect {
 
    // Useful only after PromptUser values have been set. 
    virtual wxString GetEffectDescription() { 
-      return wxString::Format(_("Applied effect: Generate Silence, %.6lf seconds"), length); 
+      return wxString::Format(_("Applied effect: Generate Silence, %.6lf seconds"), mDuration); 
    } 
 
    virtual int GetEffectFlags() {
@@ -58,11 +56,8 @@ class EffectSilence:public Effect {
    }
 
    virtual bool PromptUser();
-
-   virtual bool Process();
-
- private:
-   double length;
+ protected:
+   bool GenerateTrack(WaveTrack *tmp, const WaveTrack &track, int ntrack);
 };
 
 #endif

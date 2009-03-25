@@ -25,11 +25,11 @@
 #include "../WaveTrack.h"
 #include "../widgets/TimeTextCtrl.h"
 
-#include "Effect.h"
+#include "Generator.h"
 
 #define __UNINITIALIZED__ (-1)
 
-class EffectDtmf:public Effect {
+class EffectDtmf : public Generator {
 
  public:
    EffectDtmf() {
@@ -50,7 +50,7 @@ class EffectDtmf:public Effect {
    }
 
    virtual wxString GetEffectDescription() {
-      return wxString::Format(_("Applied effect: Generate DTMF tones, %.6lf seconds"), dtmfDuration);
+      return wxString::Format(_("Applied effect: Generate DTMF tones, %.6lf seconds"), mDuration);
    }
 
    virtual wxString GetEffectAction() {
@@ -62,7 +62,6 @@ class EffectDtmf:public Effect {
    }
 
    virtual bool PromptUser();
-   virtual bool Process();
    virtual bool TransferParameters( Shuttle & shuttle );
 
  private:
@@ -72,7 +71,6 @@ class EffectDtmf:public Effect {
    int    dtmfNTones;         // total number of tones to generate
    double dtmfTone;           // duration of a single tone in ms
    double dtmfSilence;        // duration of silence between tones in ms
-   double dtmfDuration;       // duration of the whole dtmf tone sequence in seconds
    double dtmfDutyCycle;      // ratio of dtmfTone/(dtmfTone+dtmfSilence)
    double dtmfAmplitude;      // amplitude of dtmf tone sequence, restricted to (0-1)
 
@@ -80,6 +78,8 @@ class EffectDtmf:public Effect {
    virtual bool MakeDtmfTone(float *buffer, sampleCount len, float fs,
                              wxChar tone, sampleCount last,
                              sampleCount total, float amplitude);
+   bool GenerateTrack(WaveTrack *tmp, const WaveTrack &track, int ntrack);
+   void Success();
 
  // friendship ...
  friend class DtmfDialog;

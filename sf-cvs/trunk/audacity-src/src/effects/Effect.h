@@ -269,6 +269,7 @@ class AUDACITY_DLL_API Effect {
 
 };
 
+
 // Base dialog for generate effect
 
 #define ID_EFFECT_PREVIEW ePreviewID

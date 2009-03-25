@@ -13,7 +13,7 @@
 #ifndef __AUDACITY_EFFECT_TONEGEN__
 #define __AUDACITY_EFFECT_TONEGEN__
 
-#include "Effect.h"
+#include "Generator.h"
 #include "../widgets/TimeTextCtrl.h"
 #include "../Experimental.h"
 
@@ -29,7 +29,7 @@ class ShuttleGui;
 class WaveTrack;
 
 
-class EffectToneGen:public Effect {
+class EffectToneGen : public BlockGenerator {
 
  public:
    EffectToneGen();
@@ -64,14 +64,15 @@ class EffectToneGen:public Effect {
    virtual bool PromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
 
-   virtual bool Process();
+   void GenerateBlock(float *data, const WaveTrack &track, sampleCount block);
+   void BeforeGenerate();
+   void BeforeTrack(const WaveTrack &track);
 
  protected:
    virtual bool MakeTone(float *buffer, sampleCount len);
 
  private:
 
-   sampleCount numSamples;
    bool mbChirp;
    bool mbLogInterpolation;
 
@@ -82,7 +83,6 @@ class EffectToneGen:public Effect {
    int waveform;
    float frequency[2];
    float amplitude[2];
-   double length;
    float logFrequency[2];
    double mCurRate;
    int interpolation;
@@ -124,7 +124,7 @@ class ToneGenDialog:public EffectDialog {
    int waveform;
    double frequency[2];
    double amplitude[2];
-   double length;
+   double mDuration;
    bool isSelection;
    int interpolation;
    wxArrayString *interpolations;
