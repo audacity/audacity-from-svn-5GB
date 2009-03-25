@@ -1157,6 +1157,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\effects\Generator.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\effects\Generator.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\effects\Invert.cpp"
 				>
 			</File>
