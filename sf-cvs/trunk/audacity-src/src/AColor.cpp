@@ -122,7 +122,7 @@ void AColor::Bevel(wxDC & dc, bool up, wxRect & r)
       AColor::Dark(&dc, false);
 
    dc.DrawLine(r.x + r.width, r.y, r.x + r.width, r.y + r.height);
-   dc.DrawLine(r.x, r.y + r.height, r.x + r.width + 1, r.y + r.height);
+   dc.DrawLine(r.x, r.y + r.height, r.x + r.width, r.y + r.height);
 }
 
 wxColour AColor::Blend( const wxColour & c1, const wxColour & c2 )
