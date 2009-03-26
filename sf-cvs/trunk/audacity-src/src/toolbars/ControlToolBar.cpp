@@ -568,10 +568,10 @@ void ControlToolBar::PlayCurrentRegion(bool looped /* = false */,
 
    AudacityProject *p = GetActiveProject();
 
-   p->TP_DisplaySelection();
-
    if (p)
    {
+      p->TP_DisplaySelection();
+
       if (looped)
          p->mLastPlayMode = loopedPlay;
       else
