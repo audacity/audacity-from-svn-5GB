@@ -14,7 +14,7 @@
 *******************************************************************//**
 
 \class TimerRecordDialog
-\brief Dialog for Timer Record, i.e., timed or long recording, limited GUI.
+\brief Dialog for Timer Record, i.e., timed or long recording.
 
 *//*******************************************************************/
 
@@ -68,7 +68,6 @@ END_EVENT_TABLE()
 TimerRecordDialog::TimerRecordDialog(wxWindow* parent)
 : wxDialog(parent, -1, _("Audacity Timer Record"), wxDefaultPosition, 
            wxDefaultSize, wxCAPTION)
-//           wxDefaultSize, wxCAPTION | wxTHICK_FRAME)
 {
    m_DateTime_Start = wxDateTime::UNow(); 
    m_TimeSpan_Duration = wxTimeSpan::Minutes(5); // default 5 minute duration
@@ -203,6 +202,12 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
    m_timer.Stop(); // Don't need to keep updating m_DateTime_Start to prevent backdating.
 
    this->TransferDataFromWindow();
+   if (!m_TimeSpan_Duration.IsPositive())
+   {
+      wxMessageBox(_("Duration is zero. Nothing will be recorded."), 
+                     _("Error in Duration"), wxICON_EXCLAMATION | wxOK);
+      return;
+   }
 
    int updateResult = eProgressSuccess;
    if (m_DateTime_Start > wxDateTime::UNow()) 
@@ -222,12 +227,8 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
 
       bool bIsRecording = true;
 
-      /* Although inaccurate, use the wxProgressDialog wxPD_ELAPSED_TIME | wxPD_REMAINING_TIME 
-         instead of calculating and presenting it.
-            wxTimeSpan remaining_TimeSpan;
-            wxString strNewMsg;
-         */
-
+      // Although inaccurate, use the wxProgressDialog wxPD_ELAPSED_TIME | wxPD_REMAINING_TIME 
+      // instead of calculating and presenting it, as in the commented out strNewMsg stuff below.
       wxString strMsg = 
          _("Recording start") + (wxString)wxT(":\t\t")
          + GetDisplayDate(m_DateTime_Start) + wxT("\n") + _("Recording end")
@@ -246,20 +247,20 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
       wxDateTime dateTime_UNow;
       wxTimeSpan done_TimeSpan;
 
+      // Loop for progress display during recording.
       while (bIsRecording && updateResult == eProgressSuccess) {
-		 // sit in this loop during the recording phase, i.e. from rec start to
-		 // recording end
          wxMilliSleep(kTimerInterval);
          
-         dateTime_UNow = wxDateTime::UNow();	// get time now
+         dateTime_UNow = wxDateTime::UNow();	// current time
          done_TimeSpan = dateTime_UNow - m_DateTime_Start;
-		 // work out how long we have been recording for
-         // remaining_TimeSpan = m_DateTime_End - dateTime_UNow;
 
-         // strNewMsg = strMsg + _("\nDone: ") + done_TimeSpan.Format() + _("     Remaining: ") + remaining_TimeSpan.Format();
-         updateResult = progress.Update(done_TimeSpan.GetSeconds(),
-                                       m_TimeSpan_Duration.GetSeconds()); // , strNewMsg);
-         bIsRecording = (wxDateTime::UNow() <= m_DateTime_End);
+         // wxTimeSpan remaining_TimeSpan = m_DateTime_End - dateTime_UNow;
+         // wxString strNewMsg = 
+         //    strMsg + _("\nDone: ") + done_TimeSpan.Format() + _("     Remaining: ") + remaining_TimeSpan.Format();
+         updateResult = 
+            progress.Update(done_TimeSpan.GetSeconds(), m_TimeSpan_Duration.GetSeconds()); // , strNewMsg);
+
+         bIsRecording = (wxDateTime::UNow() <= m_DateTime_End); // Call UNow() again for extra accuracy...
       }
       pProject->OnStop();
    }
