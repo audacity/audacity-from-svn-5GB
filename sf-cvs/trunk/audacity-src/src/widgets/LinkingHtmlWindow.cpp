@@ -78,13 +78,8 @@ void BrowserFrame::UpdateButtons()
 
 void OpenInDefaultBrowser(const wxHtmlLinkInfo& link)
 {
-   #ifdef __WXMAC__
-      wxString openCmd = wxT("open ") + link.GetHref();
-      ::wxExecute(openCmd);
-   #else
-      wxLaunchDefaultBrowser(link.GetHref());
-   #endif
-};
+   wxLaunchDefaultBrowser(link.GetHref());
+}
 
 LinkingHtmlWindow::LinkingHtmlWindow(wxWindow *parent, wxWindowID id /*= -1*/, 
                                        const wxPoint& pos /*= wxDefaultPosition*/, 
