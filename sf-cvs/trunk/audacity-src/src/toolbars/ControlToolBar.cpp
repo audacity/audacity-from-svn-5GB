@@ -570,8 +570,6 @@ void ControlToolBar::PlayCurrentRegion(bool looped /* = false */,
 
    if (p)
    {
-      p->TP_DisplaySelection();
-
       if (looped)
          p->mLastPlayMode = loopedPlay;
       else
@@ -579,7 +577,7 @@ void ControlToolBar::PlayCurrentRegion(bool looped /* = false */,
 
       double playRegionStart, playRegionEnd;
       p->GetPlayRegion(&playRegionStart, &playRegionEnd);
-         
+
       PlayPlayRegion(playRegionStart,
                      playRegionEnd,
                      looped, cutpreview);
@@ -634,6 +632,11 @@ void ControlToolBar::OnKeyUp(wxKeyEvent & event)
 
 void ControlToolBar::OnPlay(wxCommandEvent &evt)
 {
+   StopPlaying();
+
+   AudacityProject *p = GetActiveProject();
+   if (p) p->TP_DisplaySelection(); 
+
    PlayDefault();
 }
 
@@ -644,8 +647,6 @@ void ControlToolBar::OnStop(wxCommandEvent &evt)
 
 void ControlToolBar::PlayDefault()
 {
-   StopPlaying();
-
    if(mPlay->WasControlDown())
       PlayCurrentRegion(false, true); /* play with cut preview */
    else if(mPlay->WasShiftDown())
