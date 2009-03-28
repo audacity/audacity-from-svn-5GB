@@ -51,8 +51,6 @@ private:
    DECLARE_EVENT_TABLE()
 	   
 };
-void ShowHtmlInBrowser( const wxString &Url );
-
 
 BEGIN_EVENT_TABLE(ErrorDialog, wxDialog)
    EVT_BUTTON( wxID_OK, ErrorDialog::OnOk)
@@ -190,17 +188,6 @@ void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &Ht
    return;
 }
 
-
-
-void ShowHtmlInBrowser( const wxString &Url )
-{
-#if defined(__WXMSW__) || defined(__WXMAC__)
-   OpenInDefaultBrowser(Url);
-#else
-   wxLaunchDefaultBrowser(Url);
-#endif
-}
-
 void ErrorDialog::OnHelp(wxCommandEvent &event)
 {
    if( dhelpURL.StartsWith(wxT("innerlink:")) )
@@ -211,7 +198,7 @@ void ErrorDialog::OnHelp(wxCommandEvent &event)
          HelpText( dhelpURL.Mid( 10 )) );
       return;
    }
-   ShowHtmlInBrowser( dhelpURL );
+   OpenInDefaultBrowser( dhelpURL );
 	EndModal(true);
 }
 
@@ -241,7 +228,7 @@ void ShowHelpDialog(wxWindow *parent,
    if( (HelpMode == wxT("FromInternet")) && !remoteURL.IsEmpty() )
    {
       // Always go to remote URL.  Use External browser.
-      ShowHtmlInBrowser( remoteURL );
+      OpenInDefaultBrowser( remoteURL );
    }
    else if( !wxFileExists( localFileName ))
    {
@@ -257,7 +244,7 @@ void ShowHelpDialog(wxWindow *parent,
    else if( HelpMode == wxT("InBrowser") ) 
    {
       // Local file, External browser 
-      ShowHtmlInBrowser( wxString(wxT("file:"))+localFileName );
+      OpenInDefaultBrowser( wxString(wxT("file:"))+localFileName );
    }
    else
    {
