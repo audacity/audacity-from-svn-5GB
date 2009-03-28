@@ -107,6 +107,11 @@ void LinkingHtmlWindow::OnLinkClicked(const wxHtmlLinkInfo& link)
          wxGetTopLevelParent(this)->SetLabel( TitleText( href.Mid( 10 )));
       }
    }
+   else if( href.StartsWith(wxT("mailto:")) )
+   {
+      OpenInDefaultBrowser( link );
+      return;
+   }
    else if( !href.StartsWith( wxT("http:")))
    {
       HtmlWindow::OnLinkClicked( link );
