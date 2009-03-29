@@ -713,6 +713,10 @@ void TrackPanel::UpdatePrefs()
    if (mTrackArtist) {
       mTrackArtist->UpdatePrefs();
    }
+
+   // All vertical rulers must be recalculated since the minimum and maximum
+   // frequences may have been changed.
+   UpdateVRulers();
 }
 
 void TrackPanel::SetStop(bool bStopped)
@@ -2894,7 +2898,7 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
    }
 
    mZoomEnd = mZoomStart = 0;
-   UpdateVRulerRect(mCapturedTrack);
+   UpdateVRuler(mCapturedTrack);
    Refresh(false);
    mCapturedTrack = NULL;
    MakeParentModifyState();
@@ -3460,7 +3464,7 @@ void TrackPanel::OnTrackListResized(wxCommandEvent & e)
 {
    Track *t = (Track *) e.GetClientData();
 
-   UpdateVRulerRect(t);
+   UpdateVRuler(t);
 
    e.Skip();
 }
@@ -4973,7 +4977,24 @@ void TrackPanel::HighlightFocusedTrack(wxDC * dc, const wxRect r)
    dc->DrawRectangle(rect.x - 3, rect.y - 3, rect.width + 6, rect.height + 6);
 }
 
-void TrackPanel::UpdateVRulerRect(Track *t)
+void TrackPanel::UpdateVRulers()
+{
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
+   for (Track *t = iter.First(); t; t = iter.Next()) {
+      UpdateTrackVRuler(t);
+   }
+
+   UpdateVRulerSize();
+}
+
+void TrackPanel::UpdateVRuler(Track *t)
+{
+   UpdateTrackVRuler(t);
+
+   UpdateVRulerSize();
+}
+
+void TrackPanel::UpdateTrackVRuler(Track *t)
 {
    wxRect r(GetVRulerOffset(),
             kTopInset,
@@ -4988,9 +5009,12 @@ void TrackPanel::UpdateVRulerRect(Track *t)
          mTrackArtist->UpdateVRuler(l, r);
       }
    }
+}
 
+void TrackPanel::UpdateVRulerSize()
+{
    TrackListIterator iter(mTracks);
-   t = iter.First();
+   Track *t = iter.First();
    if (t) {
       wxSize s = t->vrulerSize;
       while (t) {
@@ -6233,7 +6257,7 @@ void TrackPanel::OnSetDisplay(wxCommandEvent & event)
          mTrackArtist->InvalidateSpectrumCache(l);
       }
 
-      UpdateVRulerRect(wt);
+      UpdateVRuler(wt);
    }
    MakeParentModifyState();
    mPopupMenuTarget = NULL;
@@ -6735,7 +6759,7 @@ wxRect TrackPanel::FindTrackRect(Track * target, bool label)
             target->GetHeight());
 
    if (target->GetLinked()) {
-      r.height +- target->GetLink()->GetHeight();
+      r.height += target->GetLink()->GetHeight();
    }
 
    if (label) {

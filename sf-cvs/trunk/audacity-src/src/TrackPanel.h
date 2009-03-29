@@ -215,7 +215,11 @@ class TrackPanel:public wxPanel {
    void OnTrackSticky(wxCommandEvent & event);
 
    void HandleCursorForLastMouseEvent();
-   void UpdateVRulerRect(Track *t);
+
+   void UpdateVRulers();
+   void UpdateVRuler(Track *t);
+   void UpdateTrackVRuler(Track *t);
+   void UpdateVRulerSize();
 
  private:
 
