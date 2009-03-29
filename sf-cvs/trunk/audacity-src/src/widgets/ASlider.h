@@ -122,6 +122,7 @@ class LWSlider
    void RecreateTipWin();
 
    bool ShowDialog();
+   bool ShowDialog(wxPoint pos);
 
  private:
 
@@ -210,6 +211,7 @@ class ASlider :public wxPanel
 
    void Increase(int steps);
    void Decrease(int steps);
+   bool ShowDialog(wxPoint pos = wxPoint(-1, -1));
 
    void SetSpeed(float speed);
 
