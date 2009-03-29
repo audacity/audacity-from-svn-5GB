@@ -882,7 +882,7 @@ void CommandManager::TellUserWhyDisallowed( wxUint32 flagsGot, wxUint32 flagsReq
 ///with the command's flags.
 bool CommandManager::HandleCommandEntry(CommandListEntry * entry, wxUint32 flags, wxUint32 mask)
 {
-   if (!entry)
+   if (!entry || !entry->enabled)
       return false;
 
    wxUint32 combinedMask = (mask & entry->mask);
