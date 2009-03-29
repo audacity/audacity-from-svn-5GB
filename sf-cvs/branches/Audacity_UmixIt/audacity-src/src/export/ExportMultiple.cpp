@@ -654,6 +654,9 @@ ExportMultipleDialog::ExportMultipleDialog(wxWindow *parent, wxWindowID id):
    mByNumber = new wxRadioButton(this, ByNumberID,
                                  _("Numbering consecutively"));
    group->Add(mByNumber, 0, wxALL, 5);
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      mByNumber->SetValue(true); // default for Audiotouch
+   #endif
 
    hSizer = new wxBoxSizer(wxHORIZONTAL);
    hSizer->Add(20, 5); // indent
@@ -675,7 +678,11 @@ ExportMultipleDialog::ExportMultipleDialog(wxWindow *parent, wxWindowID id):
    hSizer = new wxBoxSizer(wxHORIZONTAL);
    mOverwrite = new wxCheckBox(this, ExplanationID, 
                                _("Overwrite existing files"));
-   mOverwrite->SetValue(true);
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      mOverwrite->SetValue(false);
+   #else
+      mOverwrite->SetValue(true);
+   #endif
    hSizer->Add(mOverwrite, 1, wxALL | wxEXPAND, 5);
    vSizer->Add(hSizer, 0, wxALL | wxEXPAND, 5);
 

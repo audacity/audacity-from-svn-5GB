@@ -1694,7 +1694,13 @@ void AudacityProject::OnExportOggSelection()
 
 void AudacityProject::OnExportMultiple()
 {
-   ::ExportMultiple(this);
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      // Close only if actually completed Save, i.e., user didn't cancel.
+      if (::ExportMultiple(this))
+         this->OnClose();
+   #else
+      ::ExportMultiple(this);
+   #endif
 }
 
 void AudacityProject::OnPreferences()
