@@ -13,12 +13,6 @@
 Classes derived form it include the WaveTrack, NoteTrack, LabelTrack 
 and TimeTrack.
 
-*//****************************************************************//**
-
-\class ConstTrackListIterator
-\brief ConstTrackListIterator provides an iterator to iterate through 
-a TrackList.
-
 *//*******************************************************************/
 
 #include <float.h>
@@ -30,6 +24,7 @@ a TrackList.
 #include "WaveTrack.h"
 #include "NoteTrack.h"
 #include "LabelTrack.h"
+#include "Project.h"
 #include "TimeTrack.h"
 #include "DirManager.h"
 
@@ -41,7 +36,7 @@ a TrackList.
 #ifdef __WXDEBUG__
    // if we are in a debug build of audacity
    /// Define this to do extended (slow) debuging of TrackListIterator
-   #define DEBUG_TLI
+//   #define DEBUG_TLI
 #endif
 
 Track::Track(DirManager * projDirManager) 
@@ -50,14 +45,16 @@ Track::Track(DirManager * projDirManager)
 {
    mDirManager->Ref();
 
+   mList      = NULL;
    mNode      = NULL;
    mSelected  = false;
    mLinked    = false;
    mMute      = false;
    mSolo      = false;
 
-   //mHeight = 136;
+   mY = 0;
    mHeight = 150;
+   mIndex = 0;
    
    mMinimized = false;
 
@@ -68,8 +65,12 @@ Track::Track(DirManager * projDirManager)
 
 Track::Track(const Track &orig)
 {
-   mNode = NULL;
    mDirManager = NULL;
+
+   mList = NULL;
+   mNode = NULL;
+   mY = 0;
+   mIndex = 0;
 
    Init(orig);
    mOffset = orig.mOffset;
@@ -81,8 +82,7 @@ void Track::Init(const Track &orig)
    mDefaultName = orig.mDefaultName;
    mName = orig.mName;
 
-   if (mDirManager != orig.mDirManager)
-   {
+   if (mDirManager != orig.mDirManager) {
       if (mDirManager) {
          mDirManager->Deref(); // MM: unreference old DirManager
       }
@@ -119,13 +119,16 @@ const TrackListNode *Track::GetNode()
 }
 
 // A track can only live on one list at a time, so if you're moving a
-// track from one list to another, you must call SetNode() with a NULL
-// pointer first and then with the real pointer.
-void Track::SetNode(TrackListNode *node)
+// track from one list to another, you must call SetOwner() with NULL
+// pointers first and then with the real pointers.
+void Track::SetOwner(TrackList *list, TrackListNode *node)
 {
    // Try to detect offenders while in development.
+   wxASSERT(list == NULL || mList == NULL);
    wxASSERT(node == NULL || mNode == NULL);
+   wxASSERT((list != NULL && node != NULL) || (list == NULL && node == NULL));
 
+   mList = list;
    mNode = node;
 }
 
@@ -138,6 +141,26 @@ int Track::GetMinimizedHeight() const
    return 40;
 }
 
+int Track::GetIndex() const
+{
+   return mIndex;
+}
+
+void Track::SetIndex(int index)
+{
+   mIndex = index;
+}
+
+int Track::GetY() const
+{
+   return mY;
+}
+
+void Track::SetY(int y)
+{
+   mY = y;
+}
+
 int Track::GetHeight() const
 {
    if (mMinimized) {
@@ -145,6 +168,25 @@ int Track::GetHeight() const
    }
 
    return mHeight;
+}
+
+void Track::SetHeight(int h)
+{
+   mHeight = h;
+   mList->RecalcPositions(mNode);
+   mList->ResizedEvent(mNode);
+}
+
+bool Track::GetMinimized() const
+{
+   return mMinimized;
+}
+
+void Track::SetMinimized(bool isMinimized)
+{
+   mMinimized = isMinimized;
+   mList->RecalcPositions(mNode);
+   mList->ResizedEvent(mNode);
 }
 
 Track *Track::GetLink() const
@@ -167,6 +209,25 @@ TrackListIterator::TrackListIterator(TrackList * val)
 {
    l = val;
    cur = NULL;
+}
+
+Track *TrackListIterator::StartWith(Track * val)
+{
+   if (val == NULL) {
+      return First();
+   }
+
+   if (l == NULL) {
+      return NULL;
+   }
+
+   cur = (TrackListNode *) val->GetNode();
+
+   if (cur) {
+      return cur->t;
+   }
+
+   return NULL;
 }
 
 Track *TrackListIterator::First(TrackList * val)
@@ -236,31 +297,10 @@ Track *TrackListIterator::RemoveCurrent(bool deletetrack)
 {
    TrackListNode *next = cur->next;
 
-   // Remove cur from the linked list
-   if (cur->prev) {
-      cur->prev->next = next;
-   }
-   else {
-      l->head = next;
-   }
-
-   if (next) {
-      next->prev = cur->prev;
-   }
-   else {
-      l->tail = cur->prev;
-   }
-
-   if (deletetrack) {
-      delete cur->t;
-   }
-   else {
-      cur->t->SetNode(NULL);
-   }
-
-   delete cur;
-
+   l->Remove(cur->t, deletetrack);
+   
    cur = next;
+
    #ifdef DEBUG_TLI // if we are debugging this bit
    wxASSERT_MSG((!cur || (*l).Contains((*cur).t)), wxT("cur invalid after deletion of track."));   // check that cur is in the list
    #endif
@@ -278,10 +318,13 @@ Track *TrackListIterator::ReplaceCurrent(Track *t)
 
    if (cur) {
       p = cur->t;
-      p->SetNode(NULL);
+      p->SetOwner(NULL, NULL);
 
       cur->t = t;
-      t->SetNode(cur);
+      t->SetOwner(l, cur);
+      l->RecalcPositions(cur);
+      l->UpdatedEvent(cur);
+      l->ResizedEvent(cur);
    }
 
    return p;
@@ -316,8 +359,56 @@ Track *TrackListOfKindIterator::Next(bool skiplinked)
    return NULL;
 }
 
+// VisibleTrackIterator
+//
+// Based on TrackListIterator returns only the currently visible tracks.
+//
+VisibleTrackIterator::VisibleTrackIterator(AudacityProject *project)
+:  TrackListIterator(project->GetTracks())
+{
+   mProject = project;
+   mPanelRect.SetTop(mProject->mViewInfo.vpos);
+   mPanelRect.SetSize(mProject->TP_GetTracksUsableArea());
+}
+
+Track *VisibleTrackIterator::First()
+{
+   Track *t = mProject->GetFirstVisible();
+   if (!t) {
+      return NULL;
+   }
+
+   TrackListIterator::StartWith(t);
+
+   return t;
+}
+
+Track *VisibleTrackIterator::Next(bool skiplinked)
+{
+   Track *t = TrackListIterator::Next(skiplinked);
+   if (!t) {
+      return NULL;
+   }
+
+   wxRect r(0, t->GetY(), 1, t->GetHeight());
+   if (r.Intersects(mPanelRect)) {
+      return t;
+   }
+
+   return NULL;
+}
+
 // TrackList
+//
+// The TrackList sends itself events whenever an update occurs to the list it
+// is managing.  Any other classes that may be interested in get these updates
+// should use TrackList::Connect() and TrackList::Disconnect().
+//
+DEFINE_EVENT_TYPE(EVT_TRACKLIST_RESIZED);
+DEFINE_EVENT_TYPE(EVT_TRACKLIST_UPDATED);
+
 TrackList::TrackList()
+:  wxEvtHandler()
 {
    head = NULL;
    tail = NULL;
@@ -328,42 +419,55 @@ TrackList::~TrackList()
    Clear();
 }
 
-double TrackList::GetMinOffset() const
+void TrackList::RecalcPositions(const TrackListNode *node)
 {
-   if (IsEmpty()) {
-      return 0.0;
+   Track *t;
+   int i = 0;
+   int y = 0;
+
+   if (!node) {
+      return;
    }
 
-   double len = head->t->GetOffset();
-   ConstTrackListIterator iter(this);
-
-   for (Track *t = iter.First(); t; t = iter.Next()) {
-      double l = t->GetOffset();
-      if (l < len) {
-         len = l;
-      }
+   if (node->prev) {
+      t = node->prev->t;
+      i = t->GetIndex() + 1;
+      y = t->GetY() + t->GetHeight();
    }
 
-   return len;
+   for (const TrackListNode *n = node; n; n = n->next) {
+      t = n->t;
+      t->SetIndex(i++);
+      t->SetY(y);
+      y += t->GetHeight();
+   }
 }
 
-int TrackList::GetHeight() const
+void TrackList::UpdatedEvent(const TrackListNode *node)
 {
-   int height = 0;
-
-   ConstTrackListIterator iter(this);
-
-   for (Track *t = iter.First(); t; t = iter.Next()) {
-      height += t->GetHeight();
+   wxCommandEvent e(EVT_TRACKLIST_UPDATED);
+   if (node) {
+      e.SetClientData(node->t);
    }
+   else {
+      e.SetClientData(NULL);
+   }
+   ProcessEvent(e);
+}
 
-   return height;
+void TrackList::ResizedEvent(const TrackListNode *node)
+{
+   if (node) {
+      wxCommandEvent e(EVT_TRACKLIST_RESIZED);
+      e.SetClientData(node->t);
+      ProcessEvent(e);
+   }
 }
 
 void TrackList::Add(Track * t)
 {
    TrackListNode *n = new TrackListNode();
-   t->SetNode(n);
+   t->SetOwner(this, n);
 
    n->t = (Track *) t;
    n->prev = tail;
@@ -377,12 +481,15 @@ void TrackList::Add(Track * t)
    if (!head) {
       head = n;
    }
+
+   RecalcPositions(n);
+   UpdatedEvent(n);
 }
 
 void TrackList::AddToHead(Track * t)
 {
    TrackListNode *n = new TrackListNode();
-   t->SetNode(n);
+   t->SetOwner(this, n);
 
    n->t = (Track *) t;
    n->prev = NULL;
@@ -396,14 +503,22 @@ void TrackList::AddToHead(Track * t)
    if (!tail) {
       tail = n;
    }
+
+   RecalcPositions(head);
+   UpdatedEvent(n);
+   ResizedEvent(n);
 }
 
 // TODO: Removing a track does not free the track resources.
-void TrackList::Remove(Track * t)
+void TrackList::Remove(Track * t, bool deletetrack)
 {
    if (t) {
       const TrackListNode *node = t->GetNode();
-      t->SetNode(NULL);
+
+      t->SetOwner(NULL, NULL);
+      if (deletetrack) {
+         delete t;
+      }
 
       if (node) {
          if (node->prev) {
@@ -415,10 +530,14 @@ void TrackList::Remove(Track * t)
 
          if (node->next) {
             node->next->prev = node->prev;
+            RecalcPositions(node->next);
          }
          else {
             tail = node->prev;
          }
+
+         UpdatedEvent(NULL);
+         ResizedEvent(node->next);
 
          delete node;
       }
@@ -429,16 +548,18 @@ void TrackList::Clear(bool deleteTracks /* = false */)
 {
    while (head) {
       TrackListNode *temp = head;
+
+      head->t->SetOwner(NULL, NULL);
       if (deleteTracks) {
          delete head->t;
       }
-      else {
-         head->t->SetNode(NULL);
-      }
+
       head = head->next;
       delete temp;
    }
    tail = NULL;
+
+   UpdatedEvent(NULL);
 }
 
 void TrackList::Select(Track * t, bool selected /* = true */ )
@@ -600,8 +721,8 @@ void TrackList::Swap(TrackListNode * s1, TrackListNode * s2)
    for (int t = 0; t < 4; t++) {
       if (target[t]) {
          target[t]->t = source[s];
-         target[t]->t->SetNode(NULL);
-         target[t]->t->SetNode(target[t]);
+         target[t]->t->SetOwner(NULL, NULL);
+         target[t]->t->SetOwner(this, target[t]);
 
          s = (s + 1) % 4;
          if (!source[s]) {
@@ -609,6 +730,10 @@ void TrackList::Swap(TrackListNode * s1, TrackListNode * s2)
          }
       }
    }
+
+   RecalcPositions(s1);
+   UpdatedEvent(s1);
+   ResizedEvent(s1);
 }
 
 bool TrackList::MoveUp(Track * t)
@@ -652,6 +777,17 @@ bool TrackList::Contains(Track * t) const
 bool TrackList::IsEmpty() const
 {
    return (head == NULL);
+}
+
+int TrackList::GetCount() const
+{
+   int cnt = 0;
+
+   if (tail) {
+      cnt = tail->t->GetIndex() + 1;
+   }
+
+   return cnt;
 }
 
 TimeTrack *TrackList::GetTimeTrack()
@@ -768,6 +904,7 @@ WaveTrackArray TrackList::GetWaveTrackArray(bool selectionOnly)
 
       p = p->next;
    }
+
    return waveTrackArray;
 }
 
@@ -785,22 +922,56 @@ NoteTrackArray TrackList::GetNoteTrackArray(bool selectionOnly)
 
       p = p->next;
    }
+
    return noteTrackArray;
 }
 #endif
 
+int TrackList::GetHeight() const
+{
+   int height = 0;
+
+   if (tail) {
+      const Track *t = tail->t;
+      height = t->GetY() + t->GetHeight();
+   }
+
+   return height;
+}
+
+double TrackList::GetMinOffset() const
+{
+   const TrackListNode *node = head;
+   if (!node) {
+      return 0.0;
+   }
+
+   double len = node->t->GetOffset();
+
+   while (node = node->next) {
+      double l = node->t->GetOffset();
+      if (l < len) {
+         len = l;
+      }
+   }
+   
+   return len;
+}
+
 double TrackList::GetStartTime() const
 {
-   if (IsEmpty())
+   const TrackListNode *node = head;
+   if (!node) {
       return 0.0;
-   
-   double min = head->t->GetStartTime(); // head->t should be APIfied
-   ConstTrackListIterator iter(this);
-   
-   for (Track *t = iter.First(); t; t = iter.Next()) {
-      double l = t->GetStartTime();
-      if (l < min)
+   }
+
+   double min = node->t->GetStartTime();
+
+   while (node = node->next) {
+      double l = node->t->GetStartTime();
+      if (l < min) {
          min = l;
+      }
    }
    
    return min;
@@ -808,18 +979,20 @@ double TrackList::GetStartTime() const
 
 double TrackList::GetEndTime() const
 {
-   if (IsEmpty())
+   const TrackListNode *node = head;
+   if (!node) {
       return 0.0;
-   
-   double max = head->t->GetEndTime();
-   ConstTrackListIterator iter(this);
-   
-   for (Track *t = iter.First(); t; t = iter.Next()) {
-      double l = t->GetEndTime();
-      if (l > max)
-         max = l;
    }
-   
+
+   double max = node->t->GetEndTime();
+
+   while (node = node->next) {
+      double l = node->t->GetEndTime();
+      if (l > max) {
+         max = l;
+      }
+   }
+
    return max;
 }
 

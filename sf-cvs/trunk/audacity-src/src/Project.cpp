@@ -653,6 +653,12 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mTracks = new TrackList();
    mLastSavedTracks = NULL;
 
+   // Register for tracklist updates
+   mTracks->Connect(EVT_TRACKLIST_UPDATED,
+                    wxCommandEventHandler(AudacityProject::OnTrackListUpdated),
+                    NULL,
+                    this);
+
    //
    // Initialize view info (shared with TrackPanel)
    //
@@ -669,6 +675,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.lastZoom = mViewInfo.zoom;
 
    // Vertical scrollbar
+   mViewInfo.track = NULL;
    mViewInfo.vpos = 0;
 
    mViewInfo.scrollStep = 16;
@@ -837,7 +844,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    InitialState();
    FixScrollbars();
-   mRuler->SetLeftOffset( mTrackPanel->GetLeftOffset() - 1 );  // bevel on AdornedRuler
+   mRuler->SetLeftOffset(mTrackPanel->GetLeftOffset());  // bevel on AdornedRuler
    mRuler->SetProject(this);
 
    //
@@ -875,8 +882,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 //   mTrackPanel->SetDropTarget(new AudacityDropTarget(this));
    mTrackPanel->SetDropTarget(new DropTarget(this));
 #endif
-
-
 }
 
 AudacityProject::~AudacityProject()
@@ -1214,6 +1219,7 @@ void AudacityProject::FixScrollbars()
    if(!mTracks)
       return;
 
+   bool refresh = false;
    bool rescroll = false;
 
    int totalHeight = (mTracks->GetHeight() + 32);
@@ -1238,6 +1244,7 @@ void AudacityProject::FixScrollbars()
    mViewInfo.sbarScreen = (wxInt64) (mViewInfo.screen * mViewInfo.zoom);
    mViewInfo.sbarH = (wxInt64) (mViewInfo.h * mViewInfo.zoom);
 
+   int lastv = mViewInfo.vpos;
    mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
 
    if (mViewInfo.vpos >= totalHeight)
@@ -1265,16 +1272,20 @@ void AudacityProject::FixScrollbars()
    if (panelHeight >= totalHeight && mViewInfo.vpos != 0) {
       mViewInfo.vpos = 0;
 
-      mTrackPanel->Refresh(false);
+      refresh = true;
       rescroll = false;
    }
    if (mViewInfo.screen >= mViewInfo.total && mViewInfo.sbarH != 0) {
       mViewInfo.sbarH = 0;
 
-      mTrackPanel->Refresh(false);
+      refresh = true;
       rescroll = false;
    }
-   
+
+   if (lastv != mViewInfo.vpos) {
+      UpdateFirstVisible();
+   }
+
    // wxScrollbar only supports int values but we need a greater range, so
    // we scale the scrollbar coordinates on demand. We only do this if we
    // would exceed the int range, so we can always use the maximum resolution
@@ -1304,7 +1315,7 @@ void AudacityProject::FixScrollbars()
    mVsbar->Refresh();
    mViewInfo.lastZoom = mViewInfo.zoom;
 
-   if (rescroll && mViewInfo.screen < mViewInfo.total){
+   if (refresh || (rescroll && mViewInfo.screen < mViewInfo.total)) {
       mTrackPanel->Refresh(false);
    }
 
@@ -1313,6 +1324,53 @@ void AudacityProject::FixScrollbars()
    if (oldhstate != newhstate || oldvstate != newvstate) {
       UpdateLayout();
    }
+}
+
+Track *AudacityProject::GetFirstVisible()
+{
+   if (!mViewInfo.track && mTracks) {
+      TrackListIterator iter(mTracks);
+      for (Track *t = iter.First(); t; t = iter.Next()) {
+         int y = t->GetY();
+         int h = t->GetHeight();
+         if (y >= mViewInfo.vpos || y + h >= mViewInfo.vpos) {
+            mViewInfo.track = t;
+            break;
+         }
+      }
+   }
+
+   return mViewInfo.track;
+}
+
+void AudacityProject::UpdateFirstVisible()
+{
+   if (!mViewInfo.track || !mTracks) {
+      return;
+   }
+
+   Track *t = mViewInfo.track;
+   mViewInfo.track = NULL;
+
+   if (t->GetY() > mViewInfo.vpos) {
+      Track *l = NULL;
+      while (t && t->GetY() > mViewInfo.vpos) {
+         l = t;
+         t = mTracks->GetPrev(t);
+      }
+   }
+
+   while (t) {
+      int y = t->GetY();
+      int h = t->GetHeight();
+      if (y >= mViewInfo.vpos || y + h >= mViewInfo.vpos) {
+         mViewInfo.track = t;
+         return;
+      }
+      t = mTracks->GetNext(t);
+   }
+
+   return;
 }
 
 void AudacityProject::UpdateLayout()
@@ -1387,6 +1445,14 @@ void AudacityProject::OnToolBarUpdate(wxCommandEvent & event)
    event.Skip(false);             /* No need to propagate any further */
 }
 
+// The projects tracklist has been updated
+void AudacityProject::OnTrackListUpdated(wxCommandEvent & event)
+{
+   mViewInfo.track = NULL;
+
+   event.Skip();
+}
+
 ///Prevents deletion of projects from outside threads.
 void AudacityProject::AllProjectsDeleteLock()
 {
@@ -1419,7 +1485,6 @@ void AudacityProject::OnODTaskComplete(wxCommandEvent & event)
 void AudacityProject::OnScroll(wxScrollEvent & event)
 {
    wxInt64 hlast = mViewInfo.sbarH;
-   wxInt64 hoffset = 0;
 
    mViewInfo.sbarH = (wxInt64)
       (mHsbar->GetThumbPosition() / mViewInfo.sbarScale);
@@ -1431,26 +1496,14 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
          mViewInfo.h = mViewInfo.total - mViewInfo.screen;
       if (mViewInfo.h < 0.0)
          mViewInfo.h = 0.0;
-      hoffset = (mViewInfo.sbarH - hlast);
    }
 
-   int vlast = mViewInfo.vpos;
-   int voffset = 0;
-
+   int lastv = mViewInfo.vpos;
    mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
-   voffset = mViewInfo.vpos - vlast;
 
-   /*   TODO: add back fast scrolling code
-
-      // Track panel is updated either way, but it is smart and only redraws
-      // what is needed
-      TrackPanel->FastScroll(-hoffset, -voffset);
-
-      // Ruler panel updated if we scroll horizontally
-      if (hoffset) {
-      REDRAW(rulerPanel);
-      }
-    */
+   if (lastv != mViewInfo.vpos) {
+      UpdateFirstVisible();
+   }
 
    SetActiveProject(this);
 
@@ -1744,6 +1797,12 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 
    delete mImportXMLTagHandler;
    mImportXMLTagHandler = NULL;
+
+   // Unregister for tracklist updates
+   mTracks->Disconnect(EVT_TRACKLIST_UPDATED,
+                       wxCommandEventHandler(AudacityProject::OnTrackListUpdated),
+                       NULL,
+                       this);
 
    // Delete all the tracks to free up memory and DirManager references.
    mTracks->Clear(true);
@@ -2358,6 +2417,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       long longVpos = 0;
       if (!wxStrcmp(attr, wxT("vpos")))
          wxString(value).ToLong(&longVpos);
+      mViewInfo.track = NULL;
       mViewInfo.vpos = longVpos;
 
       if (!wxStrcmp(attr, wxT("h")))
@@ -3683,6 +3743,13 @@ void AudacityProject::TP_DisplaySelection()
 }
 
 // TrackPanel callback method
+wxSize AudacityProject::TP_GetTracksUsableArea()
+{
+   wxSize s;
+   mTrackPanel->GetTracksUsableArea(&s.x, &s.y);
+   return s;
+}
+
 int AudacityProject::TP_GetCurrentTool()
 {
    //ControlToolBar might be NULL--especially on shutdown.

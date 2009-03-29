@@ -293,11 +293,6 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    // clipidx1 and clipidx2 are indices into the clip list.
    bool MergeClips(int clipidx1, int clipidx2);
 
-   // Set/get rectangle that this WaveClip fills on screen. This is
-   // called by TrackArtist while actually drawing the tracks and clips.
-   void SetDisplayRect(const wxRect& r) { mDisplayRect = r; }
-   void GetDisplayRect(wxRect* r) { *r = mDisplayRect; }
-
    // Cache special locations (e.g. cut lines) for later speedy access
    void UpdateLocationsCache();
 
@@ -348,7 +343,6 @@ class AUDACITY_DLL_API WaveTrack: public Track {
 
    WaveClipList mClips;
 
-   wxRect        mDisplayRect;
    sampleFormat  mFormat;
    int           mRate;
    float         mGain;
