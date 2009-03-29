@@ -43,6 +43,13 @@ class MixerToolBar:public ToolBar {
 
    void OnSlider(wxCommandEvent & event);
 
+   void ShowOutputGainDialog();
+   void ShowInputGainDialog();
+   void ShowInputSourceDialog();
+
+   void AdjustOutputGain(int adj);
+   void AdjustInputGain(int adj);
+
  private:
 
    void InitializeMixerToolBar();
