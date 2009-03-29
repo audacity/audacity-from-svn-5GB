@@ -261,7 +261,6 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
 
    if (mEnabled && event.IsButton()) {
       if (event.ButtonIsDown(wxMOUSE_BTN_ANY)) {
-         SetFocus();
          mIsClicking = true;
          CaptureMouse();
       }
@@ -272,8 +271,6 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
             ReleaseMouse();
 
          if (mCursorIsInWindow && (mToggle || !mButtonIsDown)) {
-            SetFocus();
-               
             if (mToggle)
                mButtonIsDown = !mButtonIsDown;
             else
