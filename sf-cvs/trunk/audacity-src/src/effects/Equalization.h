@@ -216,6 +216,7 @@ public:
                const wxPoint& pos = wxDefaultPosition,
                const wxSize& size = wxDefaultSize,
                long style = wxDEFAULT_DIALOG_STYLE );
+   EqualizationDialog::~EqualizationDialog();
 
    // WDR: method declarations for EqualizationDialog
    virtual bool Validate();

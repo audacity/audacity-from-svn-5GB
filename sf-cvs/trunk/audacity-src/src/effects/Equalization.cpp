@@ -570,6 +570,7 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
    delete[] buffer;
    delete[] window1;
    delete[] window2;
+   delete output;
 
    return bLoopSuccess;
 }
@@ -968,6 +969,12 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    whens[NUM_PTS-1] = 1.;
    whenSliders[NUMBER_OF_BANDS] = 1.;
    m_EQVals[NUMBER_OF_BANDS] = 0.;
+}
+
+EqualizationDialog::~EqualizationDialog()
+{
+   delete mLogEnvelope;
+   delete mLinEnvelope;
 }
 
 //
@@ -2218,6 +2225,8 @@ void EqualizationDialog::OnDrawRadio(wxCommandEvent &evt)
          }
       }
    }
+   delete [] when;
+   delete [] value;
 
    if(mLinFreq->IsChecked())
    {
