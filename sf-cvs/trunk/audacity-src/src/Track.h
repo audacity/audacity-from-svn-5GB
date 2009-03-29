@@ -287,9 +287,7 @@ class AUDACITY_DLL_API TrackList
   virtual bool Load(wxTextFile * in, DirManager * dirManager);
   virtual bool Save(wxTextFile * out, bool overwrite);
 #endif
-  
-  wxLongLong GetSpaceUsage();
-  wxLongLong GetAdditionalSpaceUsage(UndoStack *stack);
+
  private:
   void Swap(TrackListNode * s1, TrackListNode * s2);
   

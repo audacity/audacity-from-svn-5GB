@@ -22,14 +22,16 @@ UndoManager
 
 #include "Audacity.h"
 
-#include <wx/textctrl.h>
-#include <wx/log.h>
-
+#include "BlockFile.h"
 #include "Internat.h"
-#include "UndoManager.h"
+#include "Sequence.h"
 #include "Track.h"
-
 #include "WaveTrack.h"          // temp
+
+#include <map>
+#include <set>
+
+#include "UndoManager.h"
 
 UndoManager::UndoManager()
 {
@@ -44,6 +46,63 @@ UndoManager::~UndoManager()
    ClearStates();
 }
 
+// get the sum of the sizes of all blocks this track list
+// references.  However, if a block is referred to multiple
+// times it is only counted once.  Return value is in bytes.
+wxLongLong UndoManager::GetSpaceUsage(int index)
+{
+   TrackListOfKindIterator iter(Track::Wave);
+   WaveTrack *wt;
+   WaveClipList::Node *it;
+   BlockArray *blocks;
+   unsigned int i;
+
+   // get a map of all blocks referenced in this TrackList
+   std::map<BlockFile*, wxLongLong> cur;
+
+   wt = (WaveTrack *) iter.First(stack[index]->tracks);
+   while (wt) {
+      for (it = wt->GetClipIterator(); it; it = it->GetNext()) {
+         blocks = it->GetData()->GetSequenceBlockArray();
+         for (i = 0; i < blocks->GetCount(); i++) {
+            cur[blocks->Item(i)->f] = blocks->Item(i)->f->GetSpaceUsage();
+         }
+      }
+      wt = (WaveTrack *) iter.Next();
+   }
+
+   if (index > 0) {
+      // get a set of all blocks referenced in all prev TrackList
+      std::set<BlockFile*> prev;
+      while (--index) {
+         wt = (WaveTrack *) iter.First(stack[index]->tracks);
+         while (wt) {
+            for (it = wt->GetClipIterator(); it; it = it->GetNext()) {
+               blocks = it->GetData()->GetSequenceBlockArray();
+               for (i = 0; i < blocks->GetCount(); i++) {
+                  prev.insert(blocks->Item(i)->f);
+               }
+            }
+            wt = (WaveTrack *) iter.Next();
+         }
+      }
+
+      // remove all blocks in prevBlockFiles from curBlockFiles
+      std::set<BlockFile*>::const_iterator prevIter;
+      for (prevIter = prev.begin(); prevIter != prev.end(); prevIter++) {
+         cur.erase(*prevIter);
+      }
+   }
+
+   // sum the sizes of the blocks remaining in curBlockFiles;
+   wxLongLong bytes = 0;
+   std::map<BlockFile*, wxLongLong>::const_iterator curIter;
+   for (curIter = cur.begin(); curIter != cur.end(); curIter++) {
+      bytes += curIter->second;
+   }
+
+   return bytes;
+}
 
 void UndoManager::GetLongDescription(unsigned int n, wxString *desc,
                                      wxString *size)
@@ -51,17 +110,10 @@ void UndoManager::GetLongDescription(unsigned int n, wxString *desc,
    n -= 1; // 1 based to zero based
 
    wxASSERT(n < stack.Count());
-   wxLongLong bytes;
 
    *desc = stack[n]->description;
 
-   if (n == 0)
-      bytes = stack[n]->tracks->GetSpaceUsage();
-   else {
-      bytes = stack[n]->tracks->GetAdditionalSpaceUsage(&stack);
-   }
-
-   *size = Internat::FormatSize(bytes);
+   *size = Internat::FormatSize(GetSpaceUsage(n));
 }
 
 void UndoManager::GetShortDescription(unsigned int n, wxString *desc)
@@ -194,8 +246,9 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1,
    stack.Add(push);
    current++;
 
-   if (saved >= current)
+   if (saved >= current) {
       saved = -1;
+   }
 
    lastAction = longDescription;
 }
@@ -282,7 +335,6 @@ void UndoManager::StateSaved()
 void UndoManager::Debug()
 {
    for (unsigned int i = 0; i < stack.Count(); i++) {
-
       TrackListIterator iter(stack[i]->tracks);
       WaveTrack *t = (WaveTrack *) (iter.First());
       wxPrintf(wxT("*%d* %s %f\n"), i, (i == (unsigned int)current) ? wxT("-->") : wxT("   "),
@@ -297,6 +349,7 @@ void UndoManager::SetODChangesFlag()
    mODChanges=true;
    mODChangesMutex.Unlock();
 }
+
 bool UndoManager::HasODChangesFlag()
 {
    bool ret;

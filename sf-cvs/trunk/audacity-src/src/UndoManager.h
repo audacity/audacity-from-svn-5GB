@@ -102,6 +102,8 @@ class AUDACITY_DLL_API UndoManager {
    void ResetODChangesFlag();
 
  private:
+   wxLongLong GetSpaceUsage(int index);
+
    int current;
    int saved;
    UndoStack stack;
