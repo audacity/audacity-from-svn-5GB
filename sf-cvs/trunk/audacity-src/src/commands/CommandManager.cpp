@@ -671,6 +671,7 @@ void CommandManager::Enable(CommandListEntry *entry, bool enabled)
    // Only enabled if needed
    if (entry->enabled != enabled) {
       entry->menu->Enable(entry->id, enabled);
+      entry->enabled = entry->menu->IsEnabled(entry->id);
    }
 
    if (entry->multi) {
