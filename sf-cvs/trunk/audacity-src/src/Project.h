@@ -131,6 +131,9 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    double GetSel0() { return mViewInfo.sel0; }
    double GetSel1() { return mViewInfo.sel1; }
 
+   Track *GetFirstVisible();
+   void UpdateFirstVisible();
+
    void GetPlayRegion(double* playRegionStart, double *playRegionEnd);
    bool IsPlayRegionLocked() { return mLockPlayRegion; }
    
@@ -217,6 +220,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void OnReleaseKeyboard(wxCommandEvent & event);
    void OnODTaskUpdate(wxCommandEvent & event);
    void OnODTaskComplete(wxCommandEvent & event);
+   void OnTrackListUpdated(wxCommandEvent & event);
    bool HandleKeyDown(wxKeyEvent & event);
    bool HandleChar(wxKeyEvent & event);
    bool HandleKeyUp(wxKeyEvent & event);
@@ -264,6 +268,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
    // TrackPanel callback methods
 
+   virtual wxSize TP_GetTracksUsableArea();
    virtual void TP_DisplayStatusMessage(wxString msg);
    virtual void TP_DisplaySelection();
    virtual int TP_GetCurrentTool();

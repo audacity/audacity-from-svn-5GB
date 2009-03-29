@@ -142,6 +142,7 @@ void TrackArtist::SetInset(int left, int top, int right, int bottom)
 }
 
 void TrackArtist::DrawTracks(TrackList * tracks,
+                             Track * start,
                              wxDC & dc,
                              wxRegion & reg,
                              wxRect & r,
@@ -179,26 +180,14 @@ void TrackArtist::DrawTracks(TrackList * tracks,
    dc.DrawRectangle(clip);
 #endif
 
-   t = iter.First();
-   bool linkFlag = false;
-   bool muted = false;
-
+   t = iter.StartWith(start);
    while (t) {
-      if (t->GetKind() == Track::Wave)
-      {
-         WaveTrack* wt = (WaveTrack*)t;
-         for (WaveClipList::Node* it=wt->GetClipIterator(); it; it=it->GetNext())
-            it->GetData()->ClearDisplayRect();
-      }
-
-      if (linkFlag) // Use the value from the previous (linked) track.
-         linkFlag = false;
-      else {
-         muted = (hasSolo || t->GetMute()) && !t->GetSolo();
-         linkFlag = t->GetLinked();
-      }
-
+      trackRect.y = t->GetY() - viewInfo->vpos;
       trackRect.height = t->GetHeight();
+
+      if (trackRect.y > clip.GetBottom() && !t->GetLinked()) {
+         break;
+      }
 
 #if defined(DEBUG_CLIENT_AREA)
       // Filled rectangle to show the interior of the client area
@@ -232,10 +221,7 @@ void TrackArtist::DrawTracks(TrackList * tracks,
          }
       }
 
-      if (stereoTrackRect.y < (clip.y + clip.height) &&
-          stereoTrackRect.y + stereoTrackRect.height > clip.y
-          && reg.Contains( stereoTrackRect )) {
-
+      if (stereoTrackRect.Intersects(clip) && reg.Contains(stereoTrackRect)) {
          wxRect rr = trackRect;
          rr.x += mInsetLeft;
          rr.y += mInsetTop;
@@ -244,28 +230,35 @@ void TrackArtist::DrawTracks(TrackList * tracks,
 
          switch (t->GetKind()) {
          case Track::Wave:
-            ((WaveTrack*)t)->SetDisplayRect(rr);
-            
-            switch (((WaveTrack *)t)->GetDisplay()) {
+         {
+            WaveTrack* wt = (WaveTrack*)t;
+            for (WaveClipList::Node* it=wt->GetClipIterator(); it; it=it->GetNext()) {
+               it->GetData()->ClearDisplayRect();
+            }
+
+            bool muted = (hasSolo || t->GetMute()) && !t->GetSolo();
+
+            switch (wt->GetDisplay()) {
             case WaveTrack::WaveformDisplay:
-               DrawWaveform((WaveTrack *)t, dc, rr, viewInfo,
+               DrawWaveform(wt, dc, rr, viewInfo,
                             drawEnvelope, drawSamples, drawSliders, false, muted);
                break;
             case WaveTrack::WaveformDBDisplay:
-               DrawWaveform((WaveTrack *)t, dc, rr, viewInfo,
+               DrawWaveform(wt, dc, rr, viewInfo,
                             drawEnvelope,  drawSamples, drawSliders, true, muted);
                break;
             case WaveTrack::SpectrumDisplay:
-               DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, false, false);
+               DrawSpectrum(wt, dc, rr, viewInfo, false, false);
                break;
             case WaveTrack::SpectrumLogDisplay:
-               DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, false, true);
+               DrawSpectrum(wt, dc, rr, viewInfo, false, true);
                break;
             case WaveTrack::PitchDisplay:
-               DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, true, false);
+               DrawSpectrum(wt, dc, rr, viewInfo, true, false);
                break;
             }
             break;              // case Wave
+         }
          #ifdef USE_MIDI
          case Track::Note:
             DrawNoteTrack((NoteTrack *)t, dc, rr, viewInfo);
@@ -281,186 +274,50 @@ void TrackArtist::DrawTracks(TrackList * tracks,
       }
 
       t = iter.Next();
-      trackRect.y += trackRect.height;
    }
 }
 
 void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 {
    // Label tracks do not have a vruler
+   // But give it beveled area
    if (t->GetKind() == Track::Label) {
+      wxRect bev = r;
+      bev.Inflate(-1, -1);
+      bev.width += 1;
+      AColor::BevelTrackInfo(*dc, true, bev);
+
       return;
    }
 
    // All waves have a ruler in the info panel
    // The ruler needs a bevelled surround.
-   if (t->GetKind() == Track::Wave )
-   {
+   if (t->GetKind() == Track::Wave) {
       wxRect bev = r;
       bev.Inflate(-1, -1);
-      bev.width  +=1;
+      bev.width += 1;
       AColor::BevelTrackInfo(*dc, true, bev);
-   }
 
-   if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::WaveformDisplay) {
-      // Waveform
-      float min, max;
+      // Right align the ruler
+      wxRect rr = r;
+      if (t->vrulerSize.GetWidth() < r.GetWidth()) {
+         int adj = rr.GetWidth() - t->vrulerSize.GetWidth();
+         rr.x += adj;
+         rr.width -= adj;
+      }
 
-      ((WaveTrack *)t)->GetDisplayBounds(&min, &max);
-      vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-1);
-      vruler->SetOrientation(wxVERTICAL);
-      vruler->SetRange(max, min);
-      vruler->SetFormat(Ruler::RealFormat);
-      vruler->SetUnits(wxT(""));
-      vruler->SetLabelEdges(false);
-      vruler->SetLog(false);
+      UpdateVRuler(t, rr);
+
       vruler->Draw(*dc);
+
+      return;
    }
 
-   if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::WaveformDBDisplay) {
-      // Waveform (db)
-      vruler->SetUnits(wxT(""));
-
-      float min, max;
-      ((WaveTrack *)t)->GetDisplayBounds(&min, &max);
-
-      if (max > 0) {
-         int top = 0;
-         float topval = 0;
-         int bot = r.height;
-         float botval = -mdBrange;
-
-         if (min < 0) {
-            bot = top + (int)((max / (max-min))*(bot-top));
-            min = 0;
-         }
-
-         if (max > 1) {
-            top += (int)((max-1)/(max-min) * (bot-top));
-            max = 1;
-         }
-
-         if (max < 1)
-            topval = -((1-max)*mdBrange);
-
-         if (min > 0) {
-            botval = -((1-min)*mdBrange);
-         }
-
-         if (topval > botval && bot > top+10) {
-            vruler->SetBounds(r.x, r.y+top+1, r.x + r.width, r.y + bot-1);
-            vruler->SetOrientation(wxVERTICAL);
-            vruler->SetRange(topval, botval);
-            vruler->SetFormat(Ruler::LinearDBFormat);
-            vruler->SetLabelEdges(true);
-            vruler->SetLog(false);
-            vruler->Draw(*dc);
-         }
-      }
-   }
-
-   if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumDisplay) {
-      // Spectrum
-      if (r.height < 60)
-         return;
-
-      bool logF = ((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumLogDisplay;
-      double rate = ((WaveTrack *) t)->GetRate();
-#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-      int fftSkipPoints = gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), 0L);
-#endif //EXPERIMENTAL_FFT_SKIP_POINTS
-      int freq = lrint(rate/2.);
-      int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), freq);
-#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-      maxFreq/=(fftSkipPoints+1);
-#endif //EXPERIMENTAL_FFT_SKIP_POINTS
-      if(maxFreq > freq)
-         maxFreq = freq;
-      int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
-#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-      minFreq/=(fftSkipPoints+1);
-#endif //EXPERIMENTAL_FFT_SKIP_POINTS
-      if(minFreq < 0) {
-         minFreq = 0;
-         gPrefs->Write(wxT("/Spectrum/MinFreq"), 0L);
-      }
-
-      /*
-         draw the ruler
-         we will use Hz if maxFreq is < 2000, otherwise we represent kHz,
-         and append to the numbers a "k"
-      */
-      vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-1);
-      vruler->SetOrientation(wxVERTICAL);
-      vruler->SetFormat(Ruler::RealFormat);
-      vruler->SetLabelEdges(true);
-      // use kHz in scale, if appropriate
-      if (maxFreq>=2000) {
-         vruler->SetRange((maxFreq/1000.), (minFreq/1000.));
-         vruler->SetUnits(wxT("k"));
-      } else {
-         // use Hz
-         vruler->SetRange(int(maxFreq), int(minFreq));
-         vruler->SetUnits(wxT(""));
-      }
-      vruler->SetLog(false);
-      vruler->Draw(*dc);
-   }
-
-   if (t->GetKind() == Track::Wave
-   && ((WaveTrack *) t)->GetDisplay() == WaveTrack::SpectrumLogDisplay)
-   {  // SpectrumLog
-      if (r.height < 10)
-         return;
-      double rate = ((WaveTrack *) t)->GetRate();
-#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-      int fftSkipPoints = gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), 0L);
-#endif //EXPERIMENTAL_FFT_SKIP_POINTS
-      int freq = lrint(rate/2.);
-      int maxFreq = gPrefs->Read(wxT("/SpectrumLog/MaxFreq"), freq);
-#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-      maxFreq/=(fftSkipPoints+1);
-#endif //EXPERIMENTAL_FFT_SKIP_POINTS
-      if(maxFreq > freq)
-         maxFreq = freq;
-      int minFreq = gPrefs->Read(wxT("/SpectrumLog/MinFreq"), freq/1000.0);
-#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-      minFreq/=(fftSkipPoints+1);
-#endif //EXPERIMENTAL_FFT_SKIP_POINTS
-      if(minFreq < 1) {
-         minFreq = 1;
-           gPrefs->Write(wxT("/SpectrumLog/MinFreq"), 1L);
-      }
-      /*
-         draw the ruler
-         we will use Hz if maxFreq is < 2000, otherwise we represent kHz,
-         and append to the numbers a "k"
-      */
-      vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-1);
-      vruler->SetOrientation(wxVERTICAL);
-      vruler->SetFormat(Ruler::IntFormat);
-      vruler->SetLabelEdges(true);
-      vruler->SetRange(maxFreq, minFreq);
-      vruler->SetUnits(wxT(""));
-      vruler->SetLog(true);
-      vruler->Draw(*dc);
-   }
-
-   if (t->GetKind() == Track::Wave
-       && ((WaveTrack *) t)->GetDisplay() == WaveTrack::PitchDisplay) {
-      // Pitch
-   }
-
-   #ifdef USE_MIDI
+#ifdef USE_MIDI
    // The note track isn't drawing a ruler at all!
    // But it needs to!
    if (t->GetKind() == Track::Note) {
-      vruler->SetBounds(r.x, r.y+1, r.x + 1, r.y + r.height-1);
-      vruler->SetOrientation(wxVERTICAL);
-      vruler->Draw(*dc);
+      UpdateVRuler(t, r);
 
       dc->SetPen(*wxTRANSPARENT_PEN);
       dc->SetBrush(*wxWHITE_BRUSH);
@@ -537,9 +394,172 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
          }
       }
    }
-   #endif // USE_MIDI
+#endif // USE_MIDI
 
-   t->vrulerSize = vruler->mRect.GetSize();
+}
+
+void TrackArtist::UpdateVRuler(Track *t, wxRect & r)
+{
+   // Label tracks do not have a vruler
+   if (t->GetKind() == Track::Label) {
+      return;
+   }
+
+   // All waves have a ruler in the info panel
+   // The ruler needs a bevelled surround.
+   if (t->GetKind() == Track::Wave) {
+      WaveTrack *wt = (WaveTrack *)t;
+      int display = wt->GetDisplay();
+
+      if (display == WaveTrack::WaveformDisplay) {
+         // Waveform
+
+         float min, max;
+         wt->GetDisplayBounds(&min, &max);
+
+         vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-1);
+         vruler->SetOrientation(wxVERTICAL);
+         vruler->SetRange(max, min);
+         vruler->SetFormat(Ruler::RealFormat);
+         vruler->SetUnits(wxT(""));
+         vruler->SetLabelEdges(false);
+         vruler->SetLog(false);
+      }
+      else if (display == WaveTrack::WaveformDBDisplay) {
+         // Waveform (db)
+
+         vruler->SetUnits(wxT(""));
+
+         float min, max;
+         wt->GetDisplayBounds(&min, &max);
+
+         if (max > 0) {
+            int top = 0;
+            float topval = 0;
+            int bot = r.height;
+            float botval = -mdBrange;
+
+            if (min < 0) {
+               bot = top + (int)((max / (max-min))*(bot-top));
+               min = 0;
+            }
+
+            if (max > 1) {
+               top += (int)((max-1)/(max-min) * (bot-top));
+               max = 1;
+            }
+
+            if (max < 1)
+               topval = -((1-max)*mdBrange);
+
+            if (min > 0) {
+               botval = -((1-min)*mdBrange);
+            }
+
+            if (topval > botval && bot > top+10) {
+               vruler->SetBounds(r.x, r.y+top+1, r.x + r.width, r.y + bot-1);
+               vruler->SetOrientation(wxVERTICAL);
+               vruler->SetRange(topval, botval);
+               vruler->SetFormat(Ruler::LinearDBFormat);
+               vruler->SetLabelEdges(true);
+               vruler->SetLog(false);
+            }
+         }
+      }
+      else if (display == WaveTrack::SpectrumDisplay) {
+         // Spectrum
+
+         if (r.height < 60)
+            return;
+
+         double rate = wt->GetRate();
+         int freq = lrint(rate/2.);
+
+         int maxFreq = GetSpectrumMaxFreq(freq);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+         maxFreq/=(mFftSkipPoints+1);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+         if(maxFreq > freq)
+            maxFreq = freq;
+
+         int minFreq = GetSpectrumMinFreq(0);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+         minFreq/=(mFftSkipPoints+1);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+         if(minFreq < 0)
+            minFreq = 0;
+
+         /*
+            draw the ruler
+            we will use Hz if maxFreq is < 2000, otherwise we represent kHz,
+            and append to the numbers a "k"
+         */
+         vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-1);
+         vruler->SetOrientation(wxVERTICAL);
+         vruler->SetFormat(Ruler::RealFormat);
+         vruler->SetLabelEdges(true);
+         // use kHz in scale, if appropriate
+         if (maxFreq>=2000) {
+            vruler->SetRange((maxFreq/1000.), (minFreq/1000.));
+            vruler->SetUnits(wxT("k"));
+         } else {
+            // use Hz
+            vruler->SetRange(int(maxFreq), int(minFreq));
+            vruler->SetUnits(wxT(""));
+         }
+         vruler->SetLog(false);
+      }
+      else if (display == WaveTrack::SpectrumLogDisplay) {
+         // SpectrumLog
+
+         if (r.height < 10)
+            return;
+
+         double rate = wt->GetRate();
+         int freq = lrint(rate/2.);
+
+         int maxFreq = GetSpectrumLogMaxFreq(freq);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+         maxFreq/=(mFftSkipPoints+1);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+         if(maxFreq > freq)
+            maxFreq = freq;
+
+         int minFreq = GetSpectrumLogMinFreq(freq/1000.0);
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+         minFreq/=(mFftSkipPoints+1);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+         if(minFreq < 1)
+            minFreq = 1;
+
+         /*
+            draw the ruler
+            we will use Hz if maxFreq is < 2000, otherwise we represent kHz,
+            and append to the numbers a "k"
+         */
+         vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-1);
+         vruler->SetOrientation(wxVERTICAL);
+         vruler->SetFormat(Ruler::IntFormat);
+         vruler->SetLabelEdges(true);
+         vruler->SetRange(maxFreq, minFreq);
+         vruler->SetUnits(wxT(""));
+         vruler->SetLog(true);
+      }
+      else if (display == WaveTrack::PitchDisplay) {
+         // Pitch
+      }
+   }
+
+#ifdef USE_MIDI
+   // The note track isn't drawing a ruler at all!
+   // But it needs to!
+   else if (t->GetKind() == Track::Note) {
+      vruler->SetBounds(r.x, r.y+1, r.x + 1, r.y + r.height-1);
+      vruler->SetOrientation(wxVERTICAL);
+   }
+#endif // USE_MIDI
+
+   vruler->GetMaxSize(&t->vrulerSize.x, &t->vrulerSize.y);
 }
 
 /// Takes a value between min and max and returns a value between 
@@ -1733,61 +1753,46 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    if (!image)return;
    unsigned char *data = image->GetData();
 
-   int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
-#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-   int fftSkipPoints = gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), 0L);
-#endif //EXPERIMENTAL_FFT_SKIP_POINTS
-#ifdef EXPERIMENTAL_FFT_Y_GRID
-   bool fftYGrid = (gPrefs->Read(wxT("/Spectrum/FFTYGrid"), 0L) != 0);
-#endif //EXPERIMENTAL_FFT_Y_GRID
+   int windowSize = GetSpectrumWindowSize();
    int half = windowSize/2;
    float *freq = new float[mid.width * half];
    sampleCount *where = new sampleCount[mid.width+1];
 
    bool updated = clip->GetSpectrogram(freq, where, mid.width,
                               t0, pps, autocorrelation);
-   bool isGrayscale = false;
-   gPrefs->Read(wxT("/Spectrum/Grayscale"), &isGrayscale, false);
    int ifreq = lrint(rate/2);
+
    int maxFreq;
    if (!logF)
-      maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), ifreq);
+      maxFreq = GetSpectrumMaxFreq(ifreq);
    else
-      maxFreq = gPrefs->Read(wxT("/SpectrumLog/MaxFreq"), ifreq);
+      maxFreq = GetSpectrumLogMaxFreq(ifreq);
    if(maxFreq > ifreq)
       maxFreq = ifreq;
+
    int minFreq;
    if (!logF) {
-      minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
-      if(minFreq < 0) {
+      minFreq = GetSpectrumMinFreq(0);
+      if(minFreq < 0)
          minFreq = 0;
-         gPrefs->Write(wxT("/Spectrum/MinFreq"), 0L);
-      }
    }
    else {
-      minFreq = gPrefs->Read(wxT("/SpectrumLog/MinFreq"), ifreq/1000.0);
-      if(minFreq < 1) {
+      minFreq = GetSpectrumLogMinFreq(ifreq/1000.0);
+      if(minFreq < 1)
          minFreq = ifreq/1000.0;
-         gPrefs->Write(wxT("/SpectrumLog/MinFreq"), ifreq/1000.0);
-      }
    }
-#ifdef EXPERIMENTAL_FIND_NOTES
-   bool fftFindNotes = (gPrefs->Read(wxT("/Spectrum/FFTFindNotes"), 0L) != 0);
-   int findNotesMinA = gPrefs->Read(wxT("/Spectrum/FindNotesMinA"), -30.0);
-   int numberOfMaxima = gPrefs->Read(wxT("/Spectrum/FindNotesN"), 5L);
-   bool findNotesQuantize = (gPrefs->Read(wxT("/Spectrum/FindNotesQuantize"), 0L) != 0);
-#endif //EXPERIMENTAL_FIND_NOTES
+
    bool usePxCache = false;
 
    if( !updated && clip->mSpecPxCache->valid && (clip->mSpecPxCache->len == mid.height * mid.width) 
 #ifdef EXPERIMENTAL_FFT_Y_GRID
-   && fftYGrid==fftYGridOld
+   && mFftYGrid==fftYGridOld
 #endif //EXPERIMENTAL_FFT_Y_GRID
 #ifdef EXPERIMENTAL_FIND_NOTES
-   && fftFindNotes==fftFindNotesOld
-   && findNotesMinA==findNotesMinAOld
-   && numberOfMaxima==findNotesNOld
-   && findNotesQuantize==findNotesQuantizeOld
+   && mFftFindNotes==fftFindNotesOld
+   && mFindNotesMinA==findNotesMinAOld
+   && mNumberOfMaxima==findNotesNOld
+   && mFindNotesQuantize==findNotesQuantizeOld
 #endif
    ) {
       usePxCache = true;
@@ -1798,10 +1803,10 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
       usePxCache = false;
       clip->mSpecPxCache->valid = true;
 #ifdef EXPERIMENTAL_FIND_NOTES
-      fftFindNotesOld=fftFindNotes;
-      findNotesMinAOld=findNotesMinA;
-      findNotesNOld=numberOfMaxima;
-      findNotesQuantizeOld=findNotesQuantize;
+      fftFindNotesOld=mFftFindNotes;
+      findNotesMinAOld=mFindNotesMinA;
+      findNotesNOld=mNumberOfMaxima;
+      findNotesQuantizeOld=mFindNotesQuantize;
 #endif
    }
 
@@ -1819,8 +1824,8 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
       lmin=log(float(minFreq)),
       lmax=log(float(maxFreq)),
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-      lmins=log(float(minFreq)/(fftSkipPoints+1)),
-      lmaxs=log(float(maxFreq)/(fftSkipPoints+1)),
+      lmins=log(float(minFreq)/(mFftSkipPoints+1)),
+      lmaxs=log(float(maxFreq)/(mFftSkipPoints+1)),
 #else //!EXPERIMENTAL_FFT_SKIP_POINTS
       lmins=lmin,
       lmaxs=lmax,
@@ -1836,8 +1841,8 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    for (int y = 0; y < mid.height; y++) {
       float n =(float(y  )/mid.height*scale2-lmin2)*12; 
       float n2=(float(y+1)/mid.height*scale2-lmin2)*12; 
-      float f =float(minFreq)/(fftSkipPoints+1)*pow(2.0f, n /12.0f+lmin2);
-      float f2=float(minFreq)/(fftSkipPoints+1)*pow(2.0f, n2/12.0f+lmin2);
+      float f =float(minFreq)/(mFftSkipPoints+1)*pow(2.0f, n /12.0f+lmin2);
+      float f2=float(minFreq)/(mFftSkipPoints+1)*pow(2.0f, n2/12.0f+lmin2);
       n =log(f /440)/log2*12;
       n2=log(f2/440)/log2*12;
       if (floor(n) < floor(n2))
@@ -1852,7 +1857,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    float maxima0[128], maxima1[128];
    const float 
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-      f2bin = half/(rate/2.0f/(fftSkipPoints+1)),
+      f2bin = half/(rate/2.0f/(mFftSkipPoints+1)),
 #else //!EXPERIMENTAL_FFT_SKIP_POINTS
       f2bin = half/(rate/2.0f),
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
@@ -1911,7 +1916,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
             else
                value = clip->mSpecPxCache->values[x * mid.height + yy];
 
-            GetColorGradient(value, selflag, isGrayscale, &rv, &gv, &bv);
+            GetColorGradient(value, selflag, mIsGrayscale, &rv, &gv, &bv);
 
             int px = ((mid.height - 1 - yy) * mid.width + x) * 3;
             data[px++] = rv;
@@ -1928,7 +1933,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
 
 #ifdef EXPERIMENTAL_FIND_NOTES
          int maximas=0;
-         if (!usePxCache && fftFindNotes) {
+         if (!usePxCache && mFftFindNotes) {
             for (int i = maxTableSize-1; i >= 0; i--)
                indexes[i]=-1;
             
@@ -1947,7 +1952,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
                int index=indexes[i];
                if (index >= 0) {
                   float freqi=freq[x0+index];
-                  if (freqi < findNotesMinA) 
+                  if (freqi < mFindNotesMinA) 
                      break;
 
                   bool ok=true;
@@ -1961,7 +1966,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
                   }
                   if (ok) {
                      maxima[maximas++] = index;
-                     if (maximas >= numberOfMaxima)
+                     if (maximas >= mNumberOfMaxima)
                         break;
                   }
                }
@@ -1974,7 +1979,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
             for (int i=0; i < maximas; i++) {
                int index=maxima[i];
                float f = float(index)*bin2f;
-               if (findNotesQuantize)
+               if (mFindNotesQuantize)
                {  f = exp(int(log(f/440)/log2*12-0.5)/12.0f*log2)*440;
                   maxima[i] = f*f2bin;
                }
@@ -2007,7 +2012,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
                float bin1 = float(yy3);
 
 #ifdef EXPERIMENTAL_FIND_NOTES
-               if (fftFindNotes) {
+               if (mFftFindNotes) {
                   if (it < maximas) {
                      float i0=maxima0[it];
                      if (yy >= i0)
@@ -2017,7 +2022,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
                         float i1=maxima1[it];
                         if (yy+1 <= i1) {
                            value=sumFreqValues(freq, x0, bin0, bin1);
-                           if (value < findNotesMinA)
+                           if (value < mFindNotesMinA)
                               value = minColor;
                            else
                               value = (value + 80.0) / 80.0;
@@ -2049,10 +2054,10 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
             else
                value = clip->mSpecPxCache->values[x * mid.height + yy];
 
-            GetColorGradient(value, selflag, isGrayscale, &rv, &gv, &bv);
+            GetColorGradient(value, selflag, mIsGrayscale, &rv, &gv, &bv);
 
 #ifdef EXPERIMENTAL_FFT_Y_GRID
-            if (fftYGrid && yGrid[yy]) {
+            if (mFftYGrid && yGrid[yy]) {
                rv /= 1.1f;
                gv /= 1.1f;
                bv /= 1.1f;
@@ -2090,6 +2095,23 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    delete[] indexes;
 #endif //EXPERIMENTAL_FIND_NOTES
 }
+
+void TrackArtist::InvalidateSpectrumCache(TrackList *tracks)
+{
+   TrackListOfKindIterator iter(Track::Wave, tracks);
+   for (Track *t = iter.First(); t; t = iter.Next()) {
+      InvalidateSpectrumCache((WaveTrack *)t);
+   }
+}
+
+void TrackArtist::InvalidateSpectrumCache(WaveTrack *track)
+{
+   WaveClipList::Node* it;
+   for (it = track->GetClipIterator(); it; it = it->GetNext()) {
+      it->GetData()->mSpecPxCache->valid = false;
+   }
+}
+
 
 #ifdef USE_MIDI
 /*
@@ -2618,7 +2640,7 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
                      // now do justification
                      const char *s = LookupStringAttribute(note, texts, "");
                      #ifdef __WXMAC__
-                     long textWidth, textHeight;
+                        long textWidth, textHeight;
                      #else
                         int textWidth, textHeight;
                      #endif
@@ -2686,6 +2708,83 @@ void TrackArtist::UpdatePrefs()
 {
    mdBrange = gPrefs->Read(wxT("/GUI/EnvdBRange"), mdBrange);
    mShowClipping = gPrefs->Read(wxT("/GUI/ShowClipping"), mShowClipping);
+
+   mMaxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), -1);
+   mMinFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), -1);
+   mLogMaxFreq = gPrefs->Read(wxT("/SpectrumLog/MaxFreq"), -1);
+   mLogMinFreq = gPrefs->Read(wxT("/SpectrumLog/MinFreq"), -1);
+
+   mWindowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
+   mIsGrayscale = (gPrefs->Read(wxT("/Spectrum/Grayscale"), 0L) != 0);
+
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+   mFftYGrid = (gPrefs->Read(wxT("/Spectrum/FFTYGrid"), 0L) != 0);
+#endif //EXPERIMENTAL_FFT_Y_GRID
+
+#ifdef EXPERIMENTAL_FIND_NOTES
+   mFftFindNotes = (gPrefs->Read(wxT("/Spectrum/FFTFindNotes"), 0L) != 0);
+   mFindNotesMinA = gPrefs->Read(wxT("/Spectrum/FindNotesMinA"), -30.0);
+   mNumberOfMaxima = gPrefs->Read(wxT("/Spectrum/FindNotesN"), 5L);
+   mFindNotesQuantize = (gPrefs->Read(wxT("/Spectrum/FindNotesQuantize"), 0L) != 0);
+#endif //EXPERIMENTAL_FIND_NOTES
+
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+   mFftSkipPoints = gPrefs->Read(wxT("/Spectrum/FFTSkipPoints"), 0L);
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+}
+
+// Get various preference values
+int TrackArtist::GetSpectrumMinFreq(int deffreq)
+{
+   return mMinFreq < 0 ? deffreq : mMinFreq;
+}
+
+int TrackArtist::GetSpectrumMaxFreq(int deffreq)
+{
+   return mMaxFreq < 0 ? deffreq : mMaxFreq;
+}
+
+int TrackArtist::GetSpectrumLogMinFreq(int deffreq)
+{
+   return mLogMinFreq < 0 ? deffreq : mLogMinFreq;
+}
+
+int TrackArtist::GetSpectrumLogMaxFreq(int deffreq)
+{
+   return mLogMaxFreq < 0 ? deffreq : mLogMaxFreq;
+}
+
+int TrackArtist::GetSpectrumWindowSize()
+{
+   return mWindowSize;
+}
+
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+int GetSpectrumFftSkipPoints()
+{
+   return mFftSkipPoints;
+}
+#endif
+
+// Set various preference values
+void TrackArtist::SetSpectrumMinFreq(int freq)
+{
+   mMinFreq = freq;
+}
+
+void TrackArtist::SetSpectrumMaxFreq(int freq)
+{
+   mMaxFreq = freq;
+}
+
+void TrackArtist::SetSpectrumLogMinFreq(int freq)
+{
+   mLogMinFreq = freq;
+}
+
+void TrackArtist::SetSpectrumLogMaxFreq(int freq)
+{
+   mLogMaxFreq = freq;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

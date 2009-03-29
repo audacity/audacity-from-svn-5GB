@@ -48,12 +48,14 @@ class AUDACITY_DLL_API TrackArtist {
    ~TrackArtist();
 
    void SetColours();
-   void DrawTracks(TrackList * tracks,
+   void DrawTracks(TrackList * tracks, Track * start,
                    wxDC & dc, wxRegion & reg,
                    wxRect & r, wxRect & clip, ViewInfo * viewInfo, 
                    bool drawEnvelope,bool drawSamples,bool drawSliders);
 
    void DrawVRuler(Track * t, wxDC * dc, wxRect & r);
+
+   void UpdateVRuler(Track *t, wxRect & r);
 
    void SetInset(int left, int top, int right, int bottom);
 
@@ -99,6 +101,9 @@ class AUDACITY_DLL_API TrackArtist {
                          wxDC & dc, wxRect & r,
                          ViewInfo * viewInfo, bool autocorrelation, bool logF);
 
+   void InvalidateSpectrumCache(TrackList *tracks);
+   void InvalidateSpectrumCache(WaveTrack *track);
+
    void SetBackgroundBrushes(wxBrush unselectedBrush, wxBrush selectedBrush,
 			     wxPen unselectedPen, wxPen selectedPen) {
      this->unselectedBrush = unselectedBrush;
@@ -107,15 +112,52 @@ class AUDACITY_DLL_API TrackArtist {
      this->selectedPen = selectedPen;
    }
 
+   int GetSpectrumMinFreq(int deffreq);
+   int GetSpectrumMaxFreq(int deffreq);
+   int GetSpectrumLogMinFreq(int deffreq);
+   int GetSpectrumLogMaxFreq(int deffreq);
+   int GetSpectrumWindowSize();
+
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+   int GetSpectrumFftSkipPoints();
+#endif
+
+   void SetSpectrumMinFreq(int freq);
+   void SetSpectrumMaxFreq(int freq);
+   void SetSpectrumLogMinFreq(int freq);
+   void SetSpectrumLogMaxFreq(int freq);
+
  private:
 
+   // Preference values
+   float mdBrange;            // "/GUI/EnvdBRange"
+   long mShowClipping;        // "/GUI/ShowClipping"
+   int mLogMaxFreq;           // "/SpectrumLog/MaxFreq"
+   int mLogMinFreq;           // "/SpectrumLog/MinFreq"
+   int mMaxFreq;              // "/Spectrum/MaxFreq"
+   int mMinFreq;              // "/Spectrum/MinFreq"
+   int mWindowSize;           // "/Spectrum/FFTSize"
+   bool mIsGrayscale;         // "/Spectrum/Grayscale"
+
+#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
+   int mFftSkipPoints;        // "/Spectrum/FFTSkipPoints"
+#endif //EXPERIMENTAL_FFT_SKIP_POINTS
+
+#ifdef EXPERIMENTAL_FFT_Y_GRID
+   bool mFftYGrid;            // "/Spectrum/FFTYGrid"
+#endif //EXPERIMENTAL_FFT_Y_GRID
+
+#ifdef EXPERIMENTAL_FIND_NOTES
+   bool mFftFindNotes;        // "/Spectrum/FFTFindNotes"
+   float mFindNotesMinA;      // "/Spectrum/FindNotesMinA"
+   int mNumberOfMaxima;       // "/Spectrum/FindNotesN"
+   bool mFindNotesQuantize;   // "/Spectrum/FindNotesQuantize")
+#endif //EXPERIMENTAL_FIND_NOTES
+   
    int mInsetLeft;
    int mInsetTop;
    int mInsetRight;
    int mInsetBottom;
-
-   float mdBrange;
-   long mShowClipping;
 
    wxBrush blankBrush;
    wxBrush unselectedBrush;
@@ -190,8 +232,6 @@ class AUDACITY_DLL_API TrackArtist {
 extern int GetWaveYPos(float value, float min, float max,
 			  int height, bool dB, bool outer, float dBr, 
 			  bool clip);
-
-
 
 #endif                          // define __AUDACITY_TRACKARTIST__
 

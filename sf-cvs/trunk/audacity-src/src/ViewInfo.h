@@ -14,6 +14,8 @@
 const double gMaxZoom = 6000000,
              gMinZoom = 0.001;
 
+class Track;
+
 struct ViewInfo {
 
    // Current selection (in seconds)
@@ -23,6 +25,7 @@ struct ViewInfo {
 
    // Scroll info
 
+   Track *track;                // first visible track
    int vpos;                    // vertical scroll pos
 
    double h;                    // h pos in secs
