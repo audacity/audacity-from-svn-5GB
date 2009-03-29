@@ -291,7 +291,6 @@ SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
    SetSizerAndFit(vs);
 
    mTextCtrl->SetSelection(-1,-1);
-   mTextCtrl->SetFocus();
 
    mSlider->Set(value);
 }
@@ -699,31 +698,36 @@ bool LWSlider::ShowDialog()
    return DoShowDialog( mParent->ClientToScreen(wxPoint( mLeft, mTop ) ) );
 }
 
+bool LWSlider::ShowDialog(wxPoint pos)
+{
+   return DoShowDialog( pos );
+}
+
 bool LWSlider::DoShowDialog(wxPoint pos)
 {
    float value;
    bool changed = false;
 
-   SliderDialog * dialog =
-      new SliderDialog( mParent,
-                        wxID_ANY,
-                        mName,
-                        pos,
-                        wxSize( mWidth, mHeight ),
-                        mStyle,
-                        Get());
+   SliderDialog dlg( NULL,
+                     wxID_ANY,
+                     mName,
+                     pos,
+                     wxSize( mWidth, mHeight ),
+                     mStyle,
+                     Get());
+   if (pos == wxPoint(-1, -1)) {
+      dlg.Center();
+   }
 
-   if( dialog->ShowModal() == wxID_OK )
+   if( dlg.ShowModal() == wxID_OK )
    {
-      value = dialog->Get();
+      value = dlg.Get();
       if( value != mCurrentValue )
       {
          mCurrentValue = value;
          changed = true;
       }
    }
-
-   dialog->Destroy();
 
    return changed;
 }
@@ -768,8 +772,6 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
    }
    else if( event.ButtonDown() )
    {
-      mParent->SetFocus();
-
       // Thumb clicked?
       //
       // Do not change position until first drag.  This helps
@@ -1039,7 +1041,7 @@ void LWSlider::Increase(int steps)
 
 void LWSlider::Decrease(int steps)
 {
-   float stepValue  = mStepValue;
+   float stepValue = mStepValue;
 
    if( stepValue == 0.0 )
    {
@@ -1215,6 +1217,11 @@ void ASlider::Increase(int steps)
 void ASlider::Decrease(int steps)
 {
    mLWSlider->Decrease(steps);
+}
+
+bool ASlider::ShowDialog(wxPoint pos)
+{
+   return mLWSlider->ShowDialog(pos);
 }
 
 void ASlider::SetSpeed(float speed)
