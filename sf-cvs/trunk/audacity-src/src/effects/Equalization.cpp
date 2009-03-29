@@ -2137,7 +2137,7 @@ void EqualizationDialog::GraphicEQ(Envelope *env)
 
       case 2:  // Cubic Spline
       {
-         double y2[NUMBER_OF_BANDS];
+         double y2[NUMBER_OF_BANDS+1];
          m_EQVals[bandsInUse] = m_EQVals[bandsInUse-1];
          spline(whenSliders, m_EQVals, bandsInUse+1, y2);
          for(double xf=0; xf<1.; xf+=1./NUM_PTS)
