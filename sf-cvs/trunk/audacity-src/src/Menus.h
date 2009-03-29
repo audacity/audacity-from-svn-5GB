@@ -89,7 +89,7 @@ void OnPlayToSelection();
 void OnPlayLooped();
 void OnPlayCutPreview();
 
-        //
+        // Wave track control
 
 void OnTrackPan();
 void OnTrackPanLeft();
@@ -102,6 +102,15 @@ void OnTrackMute();
 void OnTrackSolo();
 void OnTrackClose();
 
+        // Mixer control
+
+void OnOutputGain();
+void OnInputGain();
+void OnInputSource();
+void OnOutputGainInc();
+void OnOutputGainDec();
+void OnInputGainInc();
+void OnInputGainDec();
 
         // Selection-Editing Commands
 

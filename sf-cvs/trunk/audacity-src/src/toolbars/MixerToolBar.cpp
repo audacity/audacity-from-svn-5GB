@@ -50,7 +50,6 @@ IMPLEMENT_CLASS(MixerToolBar, ToolBar);
 BEGIN_EVENT_TABLE(MixerToolBar, ToolBar)
    EVT_PAINT(MixerToolBar::OnPaint)
    EVT_SLIDER(wxID_ANY, MixerToolBar::SetMixer)
-   EVT_SLIDER(wxID_ANY, MixerToolBar::SetMixer)
    EVT_CHOICE(wxID_ANY, MixerToolBar::SetMixer)
    EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, MixerToolBar::OnCaptureKey)
 END_EVENT_TABLE()
@@ -59,6 +58,7 @@ END_EVENT_TABLE()
 MixerToolBar::MixerToolBar()
 : ToolBar(MixerBarID, _("Mixer"), wxT("Mixer"))
 {
+   mInputSourceChoice = NULL;
 }
 
 MixerToolBar::~MixerToolBar()
@@ -269,6 +269,86 @@ void MixerToolBar::SetMixer(wxCommandEvent &event)
 
    gAudioIO->SetMixer(inputSource, inputVolume, outputVolume);
 #endif // USE_PORTMIXER
+}
+
+void MixerToolBar::ShowOutputGainDialog()
+{
+   mOutputSlider->ShowDialog();
+   wxCommandEvent e;
+   SetMixer(e);
+   UpdateControls();
+}
+
+void MixerToolBar::ShowInputGainDialog()
+{
+   mInputSlider->ShowDialog();
+   wxCommandEvent e;
+   SetMixer(e);
+   UpdateControls();
+}
+
+void MixerToolBar::ShowInputSourceDialog()
+{
+   if (!mInputSourceChoice || mInputSourceChoice->GetCount() == 0) {
+      wxMessageBox(_("Input source information is not available."));
+      return;
+   }
+
+#if USE_PORTMIXER
+   wxArrayString inputSources = mInputSourceChoice->GetStrings();
+
+   wxDialog dlg(NULL, wxID_ANY, wxString(_("Select Input Source")));
+   ShuttleGui S(&dlg, eIsCreating);
+   wxChoice *c;
+
+   S.StartVerticalLay(true);
+   {
+      S.StartHorizontalLay(wxCENTER, false);
+      {
+         c = S.AddChoice(_("New sample rate (Hz):"),
+                         mInputSourceChoice->GetStringSelection(),
+                         &inputSources);
+      }
+      S.EndHorizontalLay();
+      S.AddStandardButtons();
+   }
+   S.EndVerticalLay();
+
+   dlg.SetSize(dlg.GetSizer()->GetMinSize());
+   dlg.Center();
+
+   if (dlg.ShowModal() == wxID_OK)
+   {
+      // This will fire an event which will invoke SetMixer above.
+      mInputSourceChoice->SetSelection(c->GetSelection());
+   }
+#endif
+}
+
+void MixerToolBar::AdjustOutputGain(int adj)
+{
+   if (adj < 0) {
+      mOutputSlider->Decrease(-adj);
+   }
+   else {
+      mOutputSlider->Increase(adj);
+   }
+   wxCommandEvent e;
+   SetMixer(e);
+   UpdateControls();
+}
+
+void MixerToolBar::AdjustInputGain(int adj)
+{
+   if (adj < 0) {
+      mInputSlider->Decrease(-adj);
+   }
+   else {
+      mInputSlider->Increase(adj);
+   }
+   wxCommandEvent e;
+   SetMixer(e);
+   UpdateControls();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

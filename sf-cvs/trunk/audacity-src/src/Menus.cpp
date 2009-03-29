@@ -89,6 +89,7 @@ simplifies construction of menu items.
 #include "toolbars/ControlToolBar.h"
 #include "toolbars/ToolsToolBar.h"
 #include "toolbars/EditToolBar.h"
+#include "toolbars/MixerToolBar.h"
 
 #include "Experimental.h"
 #include "PlatformCompatibility.h"
@@ -1029,7 +1030,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("SeekRightShort"),_("Seek right short period during playback\tRight"),      FN(OnSeekRightShort));
    c->AddCommand(wxT("SeekLeftLong"),  _("Seek left long period during playback\tShift+Left"),   FN(OnSeekLeftLong));
    c->AddCommand(wxT("SeekRightLong"), _("Seek right long period during playback\tShift+Right"), FN(OnSeekRightLong));
-   
+
    c->SetDefaultFlags(TracksExistFlag | TrackPanelHasFocus,
                       TracksExistFlag | TrackPanelHasFocus);
    c->AddCommand(wxT("PrevTrack"),     _("Move Focus to Previous Track\tUp"),                      FN(OnCursorUp));
@@ -1071,6 +1072,17 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("SnapToOff"),     _("Snap To Off"),          FN(OnSnapToOff));
    c->AddCommand(wxT("FullScreenOnOff"), _("Full screen on/off\tF11"),  FN(OnFullScreen));
    c->SetCommandFlags(wxT("FullScreenOnOff"), 0, 0);
+
+   c->SetDefaultFlags(0, 0);
+   c->AddCommand(wxT("OutputGain"),     _("Adjust output gain"),     FN(OnOutputGain));
+   c->AddCommand(wxT("OutputGainInc"),  _("Increase output gain"),   FN(OnOutputGainInc));
+   c->AddCommand(wxT("OutputGainDec"),  _("Decrease output gain"),   FN(OnOutputGainDec));
+   c->AddCommand(wxT("InputGain"),      _("Adjust input gain"),      FN(OnInputGain));
+   c->AddCommand(wxT("InputGainInc"),   _("Increase input gain"),    FN(OnInputGainInc));
+   c->AddCommand(wxT("InputGainDec"),   _("Decrease input gain"),    FN(OnInputGainDec));
+
+   c->AddCommand(wxT("InputSource"),    _("Adjust input source"), FN(OnInputSource));
+   c->SetCommandFlags(wxT("InputSource"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 
    mLastFlags = 0;
 
@@ -2189,6 +2201,61 @@ void AudacityProject::OnTrackClose()
    mTrackPanel->OnTrackClose();
 }
 
+void AudacityProject::OnOutputGain()
+{
+   MixerToolBar *tb = GetMixerToolBar();
+   if (tb) {
+      tb->ShowOutputGainDialog();
+   }
+}
+
+void AudacityProject::OnInputGain()
+{
+   MixerToolBar *tb = GetMixerToolBar();
+   if (tb) {
+      tb->ShowInputGainDialog();
+   }
+}
+
+void AudacityProject::OnInputSource()
+{
+   MixerToolBar *tb = GetMixerToolBar();
+   if (tb) {
+      tb->ShowInputSourceDialog();
+   }
+}
+
+void AudacityProject::OnOutputGainInc()
+{
+   MixerToolBar *tb = GetMixerToolBar();
+   if (tb) {
+      tb->AdjustOutputGain(1);
+   }
+}
+
+void AudacityProject::OnOutputGainDec()
+{
+   MixerToolBar *tb = GetMixerToolBar();
+   if (tb) {
+      tb->AdjustOutputGain(-1);
+   }
+}
+
+void AudacityProject::OnInputGainInc()
+{
+   MixerToolBar *tb = GetMixerToolBar();
+   if (tb) {
+      tb->AdjustInputGain(1);
+   }
+}
+
+void AudacityProject::OnInputGainDec()
+{
+   MixerToolBar *tb = GetMixerToolBar();
+   if (tb) {
+      tb->AdjustInputGain(-1);
+   }
+}
 
 double AudacityProject::NearestZeroCrossing(double t0)
 {
