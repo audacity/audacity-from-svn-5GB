@@ -125,7 +125,7 @@ class ControlToolBar:public ToolBar {
    void SetVUMeters(AudacityProject *p);
 
  private:
-
+   void EnablePauseCommand(bool bEnable); // Enable/disable the "P" key command. 
    void InitializeControlToolBar();
    void RegenerateToolsTooltips();
 

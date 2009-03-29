@@ -304,6 +304,18 @@ AButton *ControlToolBar::MakeTool(const char **tool, const char **alpha,
    return button;
 }
 
+void ControlToolBar::EnablePauseCommand(bool bEnable)
+{
+   // Enable/disable the "P" key command. 
+   // GetActiveProject() won't work for all callers, e.g., MakeButton(), because it hasn't finished initializing.
+   AudacityProject* pProj = (AudacityProject*)GetParent(); 
+   if (pProj)
+   {
+      CommandManager* pCmdMgr = pProj->GetCommandManager();
+      if (pCmdMgr)
+         pCmdMgr->Enable(wxT("Pause"), bEnable);
+   }
+}
 
 // This is a convenience function that allows for button creation in
 // MakeButtons() with fewer arguments
@@ -330,7 +342,10 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
       if (id == ID_PLAY_BUTTON) 
          mButtonPos -= BUTTON_WIDTH;
       else if (id == ID_PAUSE_BUTTON)
+      {
          r->Hide(); // Default is to show Play, not Pause.
+         this->EnablePauseCommand(false);
+      }
    #endif
    return r;
 }
@@ -740,11 +755,16 @@ void ControlToolBar::UpdatePrefs()
    gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
 
    if(mAlwaysEnablePause)
+   {
       mPause->Enable();
+      this->EnablePauseCommand(true);
+   }
    else if(!mAlwaysEnablePause && !gAudioIO->IsBusy())
    {
       mPause->PopUp();
       mPause->Disable();
+      this->EnablePauseCommand(false);
+
       mPaused = false;
       gAudioIO->SetPaused(false);
    }
@@ -841,6 +861,7 @@ void ControlToolBar::SetPlay(bool down)
       #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
          mPlay->Hide();
          mPause->Show();
+         this->EnablePauseCommand(true);
       #endif
    }
    else {
@@ -851,6 +872,7 @@ void ControlToolBar::SetPlay(bool down)
       #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
          mPlay->Show();
          mPause->Hide();
+         this->EnablePauseCommand(false);
       #endif
       mPlay->SetAlternate(false);
    }
@@ -870,9 +892,13 @@ void ControlToolBar::SetStop(bool down)
       #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
          mPlay->Show();
          mPause->Hide();
+         this->EnablePauseCommand(false);
       #endif
       if(!mAlwaysEnablePause)
+      {
          mPause->Disable();
+         this->EnablePauseCommand(false);
+      }
       mRewind->Enable();
       mFF->Enable();
    }
@@ -896,6 +922,7 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
       #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
          mPlay->Show();
          mPause->Hide();
+         this->EnablePauseCommand(false);
       #endif
       return;
    }
@@ -905,6 +932,7 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
    mRecord->Disable();
    mFF->Disable();
    mPause->Enable();
+   this->EnablePauseCommand(true);
    
    AudacityProject *p = GetActiveProject();
    if (p) {
@@ -987,6 +1015,8 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
          {
             mPlay->Hide();
             mPause->Show();
+            this->EnablePauseCommand(true);
+
             this->SetBackgroundColour(*wxGREEN); // green for Playing
             this->Refresh();
          }
@@ -1137,6 +1167,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
    mFF->Disable();
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       mPause->SetEnabled(mIsLocked);
+      this->EnablePauseCommand(mIsLocked);
       this->SetRecord(mIsLocked); // If locked, push Record down, else up.
    #else
       mPause->Enable();
@@ -1256,7 +1287,12 @@ void ControlToolBar::OnPause(wxCommandEvent &evt)
       mPaused=true;
    }
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      this->SetBackgroundColour(wxColour(255, 255, 0)); // yellow for Paused Play
+      if (mPaused)
+         this->SetBackgroundColour(wxColour(255, 255, 0)); // yellow for Paused Play
+      else if (gAudioIO->GetNumCaptureChannels() > 0) 
+         this->SetBackgroundColour(*wxRED); // red for Recording
+      else 
+         this->SetBackgroundColour(*wxGREEN); // green for Playing
       this->Refresh();
    #endif
  

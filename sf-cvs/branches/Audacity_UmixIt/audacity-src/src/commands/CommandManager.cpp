@@ -550,6 +550,8 @@ bool CommandManager::HandleKey(wxKeyEvent &evt, wxUint32 flags, wxUint32 mask)
 	CommandListEntry *entry = mCommandKeyHash[keyStr];
    if (!entry)
       return false;
+   if (!entry->enabled)
+      return true;
 
    wxUint32 combinedMask = (mask & entry->mask);
    if (combinedMask) {
