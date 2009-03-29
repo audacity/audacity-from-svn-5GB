@@ -4571,12 +4571,12 @@ bool TrackPanel::HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event)
    wavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
 
    // Get y position of envelope point.
-   int yValue = GetWaveYPosNew( envValue,
+   int yValue = GetWaveYPos( envValue,
       zoomMin, zoomMax,      
       r.height, dB, true, mdBr, false ) + r.y;
 
    // Get y position of center line
-   int ctr = GetWaveYPosNew( 0.0,
+   int ctr = GetWaveYPos( 0.0,
       zoomMin, zoomMax,      
       r.height, dB, true, mdBr, false ) + r.y;
   
@@ -4645,7 +4645,7 @@ bool TrackPanel::HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event)
    if (env)
       envValue = env->GetValue(tt);
 
-   int yValue = GetWaveYPosNew( oneSample * envValue, 
+   int yValue = GetWaveYPos( oneSample * envValue, 
       zoomMin, zoomMax,      
       r.height, dB, true, mdBr, false) + r.y;   
 

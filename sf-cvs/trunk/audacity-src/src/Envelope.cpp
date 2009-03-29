@@ -195,23 +195,23 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
          int x = int ((mEnv[i]->t - h) * pps);
          int y,y2;
 
-	 y = GetWaveYPosNew(v, zoomMin, zoomMax, r.height, dB,
-			    true, dBr, false);
-	 DrawPoint(dc, r, x, y, true, false);
+         y = GetWaveYPos(v, zoomMin, zoomMax, r.height, dB,
+            true, dBr, false);
+         DrawPoint(dc, r, x, y, true, false);
 
          if (mMirror) {
-	   y2 = GetWaveYPosNew(-v-.000000001, zoomMin, zoomMax, r.height, dB,
-			       true, dBr, false);
-	   DrawPoint(dc, r, x, y2, false, false);
+            y2 = GetWaveYPos(-v-.000000001, zoomMin, zoomMax, r.height, dB,
+               true, dBr, false);
+            DrawPoint(dc, r, x, y2, false, false);
 	   
-	   // Contour
-	   y = GetWaveYPosNew(v, zoomMin, zoomMax, r.height, dB,
-			      false, dBr, false);
-	   y2 = GetWaveYPosNew(-v-.000000001, zoomMin, zoomMax, r.height, dB,
-			       false, dBr, false);
-	   if(y<=y2){
-	     DrawPoint(dc, r, x, y, true, true);
-	     DrawPoint(dc, r, x, y2, false, true);
+            // Contour
+            y = GetWaveYPos(v, zoomMin, zoomMax, r.height, dB,
+               false, dBr, false);
+            y2 = GetWaveYPos(-v-.000000001, zoomMin, zoomMax, r.height, dB,
+               false, dBr, false);
+            if(y<=y2){
+               DrawPoint(dc, r, x, y, true, true);
+               DrawPoint(dc, r, x, y2, false, true);
             }
          }
 
@@ -344,15 +344,15 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
          int numControlPoints;
 
          // Outer control points
-         y[0] = GetWaveYPosNew( mEnv[i]->val, zoomMin, zoomMax, r.height,
+         y[0] = GetWaveYPos( mEnv[i]->val, zoomMin, zoomMax, r.height,
                                 dB, true, dBr, false);
-         y[1] = GetWaveYPosNew( -mEnv[i]->val, zoomMin, zoomMax, r.height,
+         y[1] = GetWaveYPos( -mEnv[i]->val, zoomMin, zoomMax, r.height,
                                 dB, true, dBr, false);
 
          // Inner control points(contour)
-         y[2] = GetWaveYPosNew( mEnv[i]->val, zoomMin, zoomMax, r.height,
+         y[2] = GetWaveYPos( mEnv[i]->val, zoomMin, zoomMax, r.height,
                                 dB, false, dBr, false);
-         y[3] = GetWaveYPosNew( -mEnv[i]->val-.00000001, zoomMin, zoomMax, 
+         y[3] = GetWaveYPos( -mEnv[i]->val-.00000001, zoomMin, zoomMax, 
                                 r.height, dB, false, dBr, false);
 
          numControlPoints = 4;
@@ -387,14 +387,14 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
       
       double v = GetValueAtX( event.m_x, r, h, pps );
       
-      int ct = GetWaveYPosNew( v, zoomMin, zoomMax, r.height, dB, 
+      int ct = GetWaveYPos( v, zoomMin, zoomMax, r.height, dB, 
                                false, dBr, false) ;
-      int cb = GetWaveYPosNew( -v-.000000001, zoomMin, zoomMax, r.height, dB, 
+      int cb = GetWaveYPos( -v-.000000001, zoomMin, zoomMax, r.height, dB, 
                                false, dBr, false) ;
       if( ct <= cb || !mMirror ){
-         int t = GetWaveYPosNew( v, zoomMin, zoomMax, r.height, dB, 
+         int t = GetWaveYPos( v, zoomMin, zoomMax, r.height, dB, 
                                  true, dBr, false) ;
-         int b = GetWaveYPosNew( -v, zoomMin, zoomMax, r.height, dB, 
+         int b = GetWaveYPos( -v, zoomMin, zoomMax, r.height, dB, 
                                  true, dBr, false) ;
          
          ct = (t + ct) / 2;

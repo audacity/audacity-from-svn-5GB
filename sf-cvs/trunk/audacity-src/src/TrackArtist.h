@@ -54,7 +54,6 @@ class AUDACITY_DLL_API TrackArtist {
                    bool drawEnvelope,bool drawSamples,bool drawSliders);
 
    void DrawVRuler(Track * t, wxDC * dc, wxRect & r);
-   int GetWaveYPos(float value, int height, bool dB, float dBr);
 
    void SetInset(int left, int top, int right, int bottom);
 
@@ -188,7 +187,7 @@ class AUDACITY_DLL_API TrackArtist {
 
 };
 
-extern int GetWaveYPosNew(float value, float min, float max,
+extern int GetWaveYPos(float value, float min, float max,
 			  int height, bool dB, bool outer, float dBr, 
 			  bool clip);
 
