@@ -24,8 +24,6 @@
 #include <wx/list.h>
 #include <wx/msgdlg.h>
 
-typedef wxLongLong_t sampleCount; /* 64-bit int */
-
 class Envelope;
 class WaveCache;
 class SpecCache;
