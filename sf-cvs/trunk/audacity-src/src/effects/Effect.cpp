@@ -512,8 +512,10 @@ void Effect::Preview()
                       _("Error"), wxOK | wxICON_EXCLAMATION, FocusDialog);
       }
    }
-   
-   FocusDialog->SetFocus();
+
+   if (FocusDialog) {
+      FocusDialog->SetFocus();
+   }
 
    delete mOutputWaveTracks;
    mOutputWaveTracks = NULL;
