@@ -3644,46 +3644,40 @@ void AudacityProject::OnSplit()
 void AudacityProject::OnSplitNew()
 {
    TrackListIterator iter(mTracks);
-   Track *n = iter.First();
-   Track *dest;
+   Track *l = iter.Last();
 
-   TrackList newTracks;
-
-   n = iter.First();
-   while (n) {
+   for (Track *n = iter.First(); n; n = iter.Next()) {
       if (n->GetSelected()) {
-         dest = NULL;
-         if (n->GetKind() == Track::Wave)
-         {
+         Track *dest = NULL;
+         double offset = n->GetOffset();
+         if (n->GetKind() == Track::Wave) {
             ((WaveTrack*)n)->SplitCut(mViewInfo.sel0, mViewInfo.sel1, &dest);
-         } else
-         {
+         }
+#if 0
+         // LL:  For now, just skip all non-wave tracks since the other do not
+         //      yet support proper splitting.
+         else {
             n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
          }
+#endif
          if (dest) {
             dest->SetChannel(n->GetChannel());
             dest->SetLinked(n->GetLinked());
             dest->SetName(n->GetName());
-            dest->SetOffset(wxMax(mViewInfo.sel0, n->GetOffset()));
-            newTracks.Add(dest);
+            dest->SetOffset(wxMax(mViewInfo.sel0, offset));
+            mTracks->Add(dest);
          }
       }
-      n = iter.Next();
-   }
 
-   TrackListIterator nIter(&newTracks);
-   n = nIter.First();
-   while (n) {
-      Track *x = nIter.RemoveCurrent();
-      mTracks->Add(n);
-      n = x;
+      if (n == l) {
+         break;
+      }
    }
 
    PushState(_("Split to new track"), _("Split New"));
 
    RedrawProject();
 }
-
 
 void AudacityProject::OnSplitLabelsToTracks()
 {
