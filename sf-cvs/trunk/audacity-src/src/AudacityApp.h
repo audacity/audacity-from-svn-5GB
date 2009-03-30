@@ -18,6 +18,7 @@
 
 #include <wx/app.h>
 #include <wx/event.h>
+#include <wx/docview.h>
 #include <wx/intl.h>
 #include <wx/snglinst.h>
 #include <wx/log.h>
@@ -145,10 +146,14 @@ class AudacityApp:public wxApp {
                                    int flags, // wxFILE, wxDIR, or 0
                                    wxArrayString &results);
 
+   wxFileHistory *GetRecentFiles() {return mRecentFiles;}
+   void AddFileToHistory(const wxString & name);
+
    Importer *mImporter;
 
    wxLogWindow *mLogger;
  private:
+   wxFileHistory *mRecentFiles;
 
    wxLocale *mLocale;
 

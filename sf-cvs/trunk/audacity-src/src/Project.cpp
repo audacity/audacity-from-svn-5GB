@@ -1792,9 +1792,6 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    delete mTags;
    mTags = NULL;
 
-   delete mRecentFiles;
-   mRecentFiles = NULL;
-
    delete mImportXMLTagHandler;
    mImportXMLTagHandler = NULL;
 
@@ -2038,10 +2035,7 @@ void AudacityProject::OpenFiles(AudacityProject *proj)
       // and it's okay to open a new project inside this window.
       proj->OpenFile(fileName);
 
-      proj->mRecentFiles->AddFileToHistory(fileName);
-      gPrefs->SetPath(wxT("/RecentFiles"));
-      proj->mRecentFiles->Save(*gPrefs);
-      gPrefs->SetPath(wxT(".."));
+      wxGetApp().AddFileToHistory(fileName);
    }
 }
 
@@ -3150,10 +3144,7 @@ bool AudacityProject::SaveAs(bool bWantSaveCompressed /*= false*/)
    bool success = Save(false, true, bWantSaveCompressed);
 
    if (success) {
-      mRecentFiles->AddFileToHistory(mFileName);
-      gPrefs->SetPath(wxT("/RecentFiles"));
-      mRecentFiles->Save(*gPrefs);
-      gPrefs->SetPath(wxT(".."));
+      wxGetApp().AddFileToHistory(mFileName);
    } 
    if (!success || bWantSaveCompressed) // bWantSaveCompressed doesn't actually change current project. 
    {

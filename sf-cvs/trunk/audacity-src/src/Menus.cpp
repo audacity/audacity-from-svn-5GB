@@ -1164,28 +1164,21 @@ void AudacityProject::CreateRecentFilesMenu(CommandManager *c)
 {
    // Recent Files and Recent Projects menus
    
-   #ifdef __WXMAC__
-      /* i18n-hint: This is the name of the menu item on Mac OS X only */
-      wxMenu* pm = c->BeginSubMenu(_("Open Recent"));
-   #else
-      /* i18n-hint: This is the name of the menu item on Windows and Linux */
-      wxMenu* pm = c->BeginSubMenu(_("Recent &Files"));
-   #endif
-
-   if( pm==NULL )
-      return;
+#ifdef __WXMAC__
+   /* i18n-hint: This is the name of the menu item on Mac OS X only */
+   mRecentFilesMenu = c->BeginSubMenu(_("Open Recent"));
+#else
+   /* i18n-hint: This is the name of the menu item on Windows and Linux */
+   mRecentFilesMenu = c->BeginSubMenu(_("Recent &Files"));
+#endif
 
    c->AddItem(wxT("ClearRecent"),  _("Clear"), FN(OnClearRecent));
    c->SetCommandFlags(wxT("ClearRecent"),
                       HaveRecentFiles, HaveRecentFiles);
 
 
-   // TODO - read the number of files to store in history from preferences
-   mRecentFiles = new wxFileHistory();
-   mRecentFiles->UseMenu(pm);
-   gPrefs->SetPath(wxT("/RecentFiles"));
-   mRecentFiles->Load(*gPrefs);
-   gPrefs->SetPath(wxT(".."));
+   wxGetApp().GetRecentFiles()->UseMenu(mRecentFilesMenu);
+   wxGetApp().GetRecentFiles()->AddFilesToMenu(mRecentFilesMenu);
 
    c->EndSubMenu();
 
@@ -1280,8 +1273,8 @@ void AudacityProject::RebuildMenuBar()
    */
   
    mCommandManager.PurgeData();
-   delete mRecentFiles;
-   mRecentFiles = NULL;
+
+   wxGetApp().GetRecentFiles()->RemoveMenu(mRecentFilesMenu);
 
    CreateMenusAndCommands();
 
@@ -1426,7 +1419,7 @@ wxUint32 AudacityProject::GetUpdateFlags()
       }
    }
 
-   if (mRecentFiles && mRecentFiles->GetCount() > 0)
+   if (wxGetApp().GetRecentFiles()->GetCount() > 0)
       flags |= HaveRecentFiles;
 
    return flags;
@@ -2549,8 +2542,9 @@ void AudacityProject::OnSaveAs()
 
 void AudacityProject::OnClearRecent()
 {
-   while (mRecentFiles->GetCount()) {
-      mRecentFiles->RemoveFileFromHistory(0);
+   wxFileHistory *h = wxGetApp().GetRecentFiles();
+   while (h->GetCount()) {
+      h->RemoveFileFromHistory(0);
    }
 }
 
@@ -4145,10 +4139,7 @@ void AudacityProject::OnImport()
       
       Import(fileName);
       //Saving in history
-      mRecentFiles->AddFileToHistory(fileName);
-      gPrefs->SetPath(wxT("/RecentFiles"));
-      mRecentFiles->Save(*gPrefs);
-      gPrefs->SetPath(wxT(".."));
+      wxGetApp().AddFileToHistory(fileName);
    }
 	
    HandleResize(); // Adjust scrollers for new track sizes.
@@ -5002,7 +4993,7 @@ wxString AudacityProject::BuildCleanFileName(wxString fileName)
    cleanedName += wxT("/");
    cleanedName += justName;
    cleanedName += wxT(".mp3");
-   mRecentFiles->AddFileToHistory(cleanedName);
+   wxGetApp().AddFileToHistory(cleanedName);
 
    return cleanedName;
 }
