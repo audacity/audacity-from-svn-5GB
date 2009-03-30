@@ -302,6 +302,7 @@ SliderDialog::~SliderDialog()
 bool SliderDialog::TransferDataToWindow()
 {
    mTextCtrl->SetValue(wxString::Format(wxT("%g"), mSlider->Get(false)));
+   mTextCtrl->SetSelection(-1, -1);
 
    return true;
 }
