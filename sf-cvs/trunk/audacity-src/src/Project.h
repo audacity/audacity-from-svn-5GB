@@ -393,9 +393,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    CommandManager mCommandManager;
 
    wxUint32 mLastFlags;
-   int mLastToolBarCheckSum;   //This finds the state of the toolbars:
-                               //Base three for each toolbar
-                               //0: unloaded, 1: docked, 2: floating
 
    // Window elements
 
