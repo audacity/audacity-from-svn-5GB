@@ -101,16 +101,20 @@ bool EffectSoundTouch::Process()
       mCurTrackNum++;
    }
 
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
-
    AudacityProject *p = (AudacityProject*)mParent;
-   if( p && p->IsSticky() ){
+   if (p && p->IsSticky()) {
       leftTrack = (WaveTrack*)(iter.First());
       double newLen = leftTrack->GetEndTime() - leftTrack->GetStartTime();
       double timeAdded = newLen-len;
-      double sel = mCurT1-mCurT0;
-      double percent = (sel/(timeAdded+sel))*100 - 100;
-      if ( !(HandleGroupChangeSpeed(percent, mCurT0, mCurT1)) ) bGoodResult = false;
+      double sel = mCurT1 - mCurT0;
+      double percent = (sel / (timeAdded + sel)) * 100 - 100;
+      ReplaceProcessedWaveTracks(bGoodResult); 
+      if (!(HandleGroupChangeSpeed(percent, mCurT0, mCurT1))) {
+         bGoodResult = false;
+      }
+   }
+   else {
+      ReplaceProcessedWaveTracks(bGoodResult); 
    }
 
    delete mSoundTouch;
