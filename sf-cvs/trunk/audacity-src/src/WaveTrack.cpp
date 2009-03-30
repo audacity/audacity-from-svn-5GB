@@ -92,7 +92,6 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    mDisplayNumLocations = 0;
    mDisplayLocations = NULL;
    mDisplayNumLocationsAllocated = 0;
-   mStickyLabelTrack = NULL;
 }
 
 WaveTrack::WaveTrack(WaveTrack &orig):
@@ -128,7 +127,6 @@ void WaveTrack::Init(const WaveTrack &orig)
    mDisplayNumLocations = 0;
    mDisplayLocations = NULL;
    mDisplayNumLocationsAllocated = 0;
-   mStickyLabelTrack = NULL;
 }
 
 void WaveTrack::Merge(const Track &orig)

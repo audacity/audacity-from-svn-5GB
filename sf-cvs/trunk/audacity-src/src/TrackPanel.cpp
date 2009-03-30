@@ -314,7 +314,6 @@ enum {
    OnCutSelectedTextID,
    OnCopySelectedTextID,
    OnPasteSelectedTextID,
-   OnStickySubmenuID = 12000,//leave 12000-12999 open for sticky tracks
 };
 
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
@@ -348,7 +347,6 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU(OnCutSelectedTextID, TrackPanel::OnCutSelectedText)
     EVT_MENU(OnCopySelectedTextID, TrackPanel::OnCopySelectedText)
     EVT_MENU(OnPasteSelectedTextID, TrackPanel::OnPasteSelectedText)
-    EVT_MENU_RANGE(OnStickySubmenuID, OnStickySubmenuID+999, TrackPanel::OnTrackSticky)
 END_EVENT_TABLE()
 
 /// Makes a cursor from an XPM, uses CursorId as a fallback.
@@ -2226,7 +2224,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
                if (t->GetKind() == Track::Wave) {
                   WaveTrack *wt = (WaveTrack *)t;
                   WaveClipList::Node* it;
-                  for(it=wt->GetClipIterator(); it; it=it->GetNext()) {
+                  for (it = wt->GetClipIterator(); it; it = it->GetNext()) {
                      WaveClip *clip = it->GetData();
                      double clip0 = clip->GetStartTime();
                      double clip1 = clip->GetEndTime();
@@ -2235,7 +2233,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
                          clip1 >= mViewInfo->sel0) {
                         mCapturedClipArray.Add(TrackClip(wt, clip));
                      }
-                  }      
+                  }
                }
                else {
                   mCapturedClipArray.Add(TrackClip(t, NULL));
@@ -6572,41 +6570,6 @@ void TrackPanel::OnPasteSelectedText(wxCommandEvent &event)
                           true /* consolidate */);
    }
    RefreshTrack(lt);
-}
-
-void TrackPanel::OnTrackSticky(wxCommandEvent & event)
-{
-   wxASSERT(mPopupMenuTarget && mPopupMenuTarget->GetKind() == Track::Label);
-   int id = event.GetId();
-   int pos = id - 12000;
-   int count = 1;
-
-   AudacityProject *p = GetActiveProject();
-   if (!p) return;
-   TrackListIterator iter(p->GetTracks());
-   WaveTrack *wt = (WaveTrack *) iter.First();
-   while (wt && count!=pos) {
-      if (wt->GetKind()==Track::Wave){
-         count++;
-      }
-      wt = (WaveTrack *) iter.Next();
-   }
-   if (wt){
-      if (event.IsChecked())
-         wt->SetStickyTrack((LabelTrack *)mPopupMenuTarget);
-      else
-         wt->SetStickyTrack(NULL);
-   }
-   ((LabelTrack *)mPopupMenuTarget)->SetStickyTrack(wt);
-   //TEMP CODE FOR REMOVAL OF ALL ASSOCIATIONS
-   if (id==12999){
-      wt = (WaveTrack *) iter.First();
-      while (wt) {
-         if (wt->GetKind()==Track::Wave)
-            wt->SetStickyTrack(NULL);
-         wt = (WaveTrack *) iter.Next();
-      }
-   }//END TEMP CODE
 }
 
 // Small helper class to enumerate all fonts in the system

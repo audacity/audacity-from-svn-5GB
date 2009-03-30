@@ -4010,18 +4010,7 @@ bool AudacityProject::GetSnapTo()
 
 bool AudacityProject::IsSticky()
 {
-   bool linked=false;
-   TrackListIterator iter(mTracks);
-   Track *t=iter.First();
-   while(t){
-      if (t->GetKind()==Track::Label){
-         linked=true;
-         break;
-      }
-      t=iter.Next();
-   }
-      
-   return (GetStickyFlag() && linked);  
+   return (GetStickyFlag() && (mLastFlags & LabelTracksExistFlag));  
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

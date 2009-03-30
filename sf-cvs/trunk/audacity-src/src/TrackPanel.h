@@ -211,8 +211,6 @@ class TrackPanel:public wxPanel {
 
    Track *GetFocusedTrack();
    void SetFocusedTrack(Track *t);
-   
-   void OnTrackSticky(wxCommandEvent & event);
 
    void HandleCursorForLastMouseEvent();
 
@@ -563,7 +561,6 @@ private:
    wxMenu *mLabelTrackMenu;
    wxMenu *mRateMenu;
    wxMenu *mFormatMenu;
-   wxMenu *mStickyLabelMenu;
    wxMenu *mLabelTrackInfoMenu;
 
    Track *mPopupMenuTarget;

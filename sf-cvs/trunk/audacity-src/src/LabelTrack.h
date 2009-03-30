@@ -171,8 +171,6 @@ class LabelTrack:public Track {
    void ShiftLabelsOnInsert(double length, double pt);
    void ShiftLabelsOnChangeSpeed(double b, double e, double change);
    double AdjustTimeStampForSpeedChange(double t, double b, double e, double change);
-   WaveTrack* GetStickyTrack() { return mStickyTrack; }
-   void SetStickyTrack(WaveTrack *track) { mStickyTrack = track; }
 
  public:
 	 void SortLabels();
@@ -188,7 +186,6 @@ class LabelTrack:public Track {
    int mMouseOverLabelRight;   /// Keeps track of which right label the mouse is currently over.
    int mxMouseDisplacement;    /// Displacement of mouse cursor from the centre being dragged.
    LabelArray mLabels;
-   WaveTrack *mStickyTrack;
 
    static int mIconHeight;
    static int mIconWidth;
