@@ -177,7 +177,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void SetProjectTitle();
 
    bool GetIsEmpty() { return mTracks->IsEmpty(); }
-   wxFileHistory *GetRecentFiles() { return mRecentFiles; }
 
    bool GetTracksFitVerticallyZoomed() { return mTracksFitVerticallyZoomed; } //lda
    void SetTracksFitVerticallyZoomed(bool flag) { mTracksFitVerticallyZoomed = flag; } //lda
@@ -362,6 +361,9 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    double mRate;
    sampleFormat mDefaultFormat;
 
+   // Recent files
+   wxMenu *mRecentFilesMenu;
+
    // Tags (artist name, song properties, MP3 ID3 info, etc.)
 
    Tags *mTags;
@@ -434,9 +436,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
    wxWindow *mKeyboardCaptured;
 
-   // Recent File and Project History
-   wxFileHistory *mRecentFiles;
-   
    ImportXMLTagHandler* mImportXMLTagHandler;
 
    // Last auto-save file name and path (empty if none)

@@ -523,10 +523,7 @@ bool AudacityApp::MRUOpen(wxString fileName) {
          proj->OpenFile(fileName);
 
          // Add file to "recent files" list.
-         proj->GetRecentFiles()->AddFileToHistory(fileName);
-         gPrefs->SetPath(wxT("/RecentFiles"));
-         proj->GetRecentFiles()->Save(*gPrefs);
-         gPrefs->SetPath(wxT(".."));
+         AddFileToHistory(fileName);
       }
       else {
          // File doesn't exist - remove file from history
@@ -542,14 +539,11 @@ void AudacityApp::OnMRUFile(wxCommandEvent& event) {
    AudacityProject *proj = GetActiveProject();
 
    int n = event.GetId() - wxID_FILE1;
-   wxString fileName = proj->GetRecentFiles()->GetHistoryFile(n);
+   wxString fileName = mRecentFiles->GetHistoryFile(n);
 
    bool opened = MRUOpen(fileName);
    if(!opened) {
-      proj->GetRecentFiles()->RemoveFileFromHistory(n);
-      gPrefs->SetPath(wxT("/RecentFiles"));
-      proj->GetRecentFiles()->Save(*gPrefs);
-      gPrefs->SetPath(wxT(".."));
+      mRecentFiles->RemoveFileFromHistory(n);
    }
 }
 
@@ -650,6 +644,12 @@ bool AudacityApp::OnInit()
 	#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
 		this->AssociateFileTypes(); 
 	#endif
+
+   // TODO - read the number of files to store in history from preferences
+   mRecentFiles = new wxFileHistory(/* number of files */);
+   gPrefs->SetPath(wxT("/RecentFiles"));
+   mRecentFiles->Load(*gPrefs);
+   gPrefs->SetPath(wxT(".."));
 
    //
    // Paths: set search path and temp dir path
@@ -1342,6 +1342,11 @@ void AudacityApp::OnKeyUp(wxKeyEvent & event)
       event.Skip(false);
 }
 
+void AudacityApp::AddFileToHistory(const wxString & name)
+{
+   mRecentFiles->AddFileToHistory(name);
+}
+
 int AudacityApp::OnExit()
 {
    gIsQuitting = true;
@@ -1367,6 +1372,11 @@ int AudacityApp::OnExit()
          gPrefs->Write(wxT("/DeleteCmdCfgLocation"), true);
       }
    }
+
+   gPrefs->SetPath(wxT("/RecentFiles"));
+   mRecentFiles->Save(*gPrefs);
+   gPrefs->SetPath(wxT(".."));
+   delete mRecentFiles;
 
    FinishPreferences();
 
