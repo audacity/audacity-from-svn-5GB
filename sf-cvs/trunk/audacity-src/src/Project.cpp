@@ -2034,8 +2034,6 @@ void AudacityProject::OpenFiles(AudacityProject *proj)
       // all relevant member variables are in their initial state,
       // and it's okay to open a new project inside this window.
       proj->OpenFile(fileName);
-
-      wxGetApp().AddFileToHistory(fileName);
    }
 }
 
@@ -2195,7 +2193,7 @@ void AudacityProject::OpenFile(wxString fileName)
          mLastSavedTracks->Add(t->Duplicate());
          t = iter.Next();
       }
-      
+
       InitialState();
       mTrackPanel->SetFocusedTrack(iter.First());
       HandleResize();
@@ -2203,6 +2201,8 @@ void AudacityProject::OpenFile(wxString fileName)
       mTrackPanel->Update(); // force any repaint to happen now,
       // else any asynch calls into the blockfile code will not have
       // finished logging errors (if any) before the call to ProjectFSCK()
+
+      wxGetApp().AddFileToHistory(fileName);
 
       if (mIsRecovered)
       {
@@ -3053,13 +3053,6 @@ void AudacityProject::Import(wxString fileName, WaveTrackArray* pTrackArray /*= 
                                             errorMessage);
 
    if (!errorMessage.IsEmpty()) {
-// Old code, without the help button.
-#if 0
-      wxMessageBox(errorMessage,
-                   _("Error importing"),
-                   wxOK | wxCENTRE, this);
-#endif      
-
 // Version that goes to internet...
 //      ShowErrorDialog(this, _("Error importing"),
 //                 errorMessage, wxT("http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary"));   
@@ -3069,6 +3062,8 @@ void AudacityProject::Import(wxString fileName, WaveTrackArray* pTrackArray /*= 
    }
    if (numTracks <= 0)
       return;
+
+   wxGetApp().AddFileToHistory(fileName);
 
    // for LOF ("list of files") files, do not import the file as if it
    // were an audio file itself

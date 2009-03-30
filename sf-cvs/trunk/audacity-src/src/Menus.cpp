@@ -4138,8 +4138,6 @@ void AudacityProject::OnImport()
       gPrefs->Write(wxT("/DefaultOpenPath"), path);
       
       Import(fileName);
-      //Saving in history
-      wxGetApp().AddFileToHistory(fileName);
    }
 	
    HandleResize(); // Adjust scrollers for new track sizes.
