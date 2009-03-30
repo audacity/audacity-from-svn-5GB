@@ -26,6 +26,7 @@
 #endif
 
 class wxBitmap;
+class wxCursor;
 class wxImage;
 class wxSize;
 class wxPoint;
@@ -101,6 +102,9 @@ class LWSlider
    wxWindowID GetId();
    void SetId(wxWindowID id);
 
+   void SetDefaultValue(float value);
+   void SetDefaultShortcut(bool value);
+
    float Get( bool convert = true );
    void Set(float value);
 
@@ -172,6 +176,9 @@ class LWSlider
    float mSpeed;
  
    float mCurrentValue;
+
+   bool mDefaultShortcut;
+   float mDefaultValue;
 
    bool mCanUseShift;
 

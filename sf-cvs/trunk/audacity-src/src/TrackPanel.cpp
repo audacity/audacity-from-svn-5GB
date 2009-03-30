@@ -7236,6 +7236,7 @@ void TrackInfo::MakeMoreSliders()
                                    wxPoint(gainRect.x, gainRect.y),
                                    wxSize(gainRect.width, gainRect.height),
                                    DB_SLIDER);
+   slider->SetDefaultValue(1.0);
    mGains.Add(slider);
    
    /* i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically */
@@ -7243,6 +7244,7 @@ void TrackInfo::MakeMoreSliders()
                          wxPoint(panRect.x, panRect.y),
                          wxSize(panRect.width, panRect.height),
                          PAN_SLIDER);
+   slider->SetDefaultValue(0.0);
    mPans.Add(slider);
 }
 
