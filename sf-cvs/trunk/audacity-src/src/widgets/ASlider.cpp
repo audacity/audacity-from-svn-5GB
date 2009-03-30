@@ -267,30 +267,29 @@ SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
    wxDialog(parent,id,title,position),
    mStyle(style)
 {
-   //Use a vertical sizer
-   wxBoxSizer * vs = new wxBoxSizer(wxVERTICAL);
-
-   //Add the text
-   mTextCtrl = new wxTextCtrl(this,
-                              SLIDER_DIALOG_TEXTCTRL,
-                              wxT(""),
-                              wxDefaultPosition,
-                              wxDefaultSize,
-                              0,
-                              wxTextValidator(wxFILTER_NUMERIC));
-   vs->Add(mTextCtrl,0,wxEXPAND|wxALL,5);
-
-   //Add a slider 
-   mSlider = new ASlider(this,wxID_ANY,title,wxDefaultPosition,size,style,false);
-   vs->Add(mSlider, 0, wxEXPAND | wxLEFT | wxRIGHT, 5 );
+   ShuttleGui S(this, eIsCreating);
    
-   //Create buttons 
-   vs->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
-      
-   //lay it out
-   SetSizerAndFit(vs);
+   S.StartVerticalLay();
+   {
+      mTextCtrl = S.AddTextBox(wxEmptyString,
+                               wxEmptyString,
+                               15);
+      mTextCtrl->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
 
-   mTextCtrl->SetSelection(-1,-1);
+      mSlider = new ASlider(this,
+                            wxID_ANY,
+                            title,
+                            wxDefaultPosition,
+                            size,
+                            style,
+                            false);
+      S.AddWindow(mSlider, wxEXPAND);
+   }
+   S.EndVerticalLay();
+   
+   S.AddStandardButtons(eOkButton | eCancelButton);
+
+   Fit();
 
    mSlider->Set(value);
 }
