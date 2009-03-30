@@ -354,15 +354,19 @@ bool EffectSBSMS::Process()
       mCurTrackNum++;
    }
    
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
-   
    AudacityProject *p = (AudacityProject*)mParent;
-   if( p && p->IsSticky() ){
+   if (p && p->IsSticky()) {
       double newLen = saveLeft->GetEndTime() - saveLeft->GetStartTime();
       double timeAdded = newLen-len;
       double sel = mCurT1-mCurT0;
       double percent = (sel/(timeAdded+sel))*100 - 100;
-      if ( !(HandleGroupChangeSpeed(percent, mCurT0, mCurT1)) ) bGoodResult = false;
+      ReplaceProcessedWaveTracks(bGoodResult); 
+      if (!(HandleGroupChangeSpeed(percent, mCurT0, mCurT1))) {
+         bGoodResult = false;
+      }
+   }
+   else {
+      ReplaceProcessedWaveTracks(bGoodResult); 
    }
 
    // Update selection

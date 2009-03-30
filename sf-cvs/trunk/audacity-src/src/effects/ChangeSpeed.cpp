@@ -138,16 +138,20 @@ bool EffectChangeSpeed::Process()
       mCurTrackNum++;
    }
 
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
-
    AudacityProject *p = (AudacityProject*)mParent;
-   if( p && p->IsSticky() ){
+   if (p && p->IsSticky()) {
       pOutWaveTrack = (WaveTrack*)(iter.First());
       double newLen = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();
-      double timeAdded = newLen-len;
+      double timeAdded = newLen - len;
       double sel = mCurT1-mCurT0;
-      double percent = (sel/(timeAdded+sel))*100 - 100;
-      if ( !(HandleGroupChangeSpeed(percent, mCurT0, mCurT1)) ) bGoodResult = false;
+      double percent = (sel / (timeAdded + sel)) * 100 - 100;
+      ReplaceProcessedWaveTracks(bGoodResult);
+      if (!(HandleGroupChangeSpeed(percent, mCurT0, mCurT1))) {
+         bGoodResult = false;
+      }
+   }
+   else {
+      ReplaceProcessedWaveTracks(bGoodResult);
    }
 
    mT1 = mT0 + m_maxNewLength; // Update selection.
