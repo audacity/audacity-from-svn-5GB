@@ -579,6 +579,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("ShowTranscriptionTB"), _("Transcri&ption Toolbar"), FN(OnShowTranscriptionToolBar), 0);
    c->AddSeparator();
    c->AddItem(wxT("ResetToolbars"),       _("&Reset Toolbars"),              FN(OnResetToolBars));
+   c->SetCommandFlags(wxT("ResetToolbars"), AudioIONotBusyFlag, AudioIONotBusyFlag);
    c->EndSubMenu();
    c->AddItem(wxT("SimplifiedView"),      _("!Simplified View"),       FN(OnSimplifiedView), mCommandManager.mbHideFlaggedItems ? 1:0);
    c->EndMenu();
@@ -2995,7 +2996,7 @@ void AudacityProject::OnPaste()
    TrackListIterator iter2(mTracks);
    Track *countTrack = iter2.First();
 
-   int numSelected =0;
+   int numSelected = 0;
 
    // Pastes text into the first label track or counts selected wave tracks
    while (countTrack) {
