@@ -429,6 +429,8 @@ void LWSlider::Init(wxWindow * parent,
    mStepValue = stepValue;
    mCanUseShift = canUseShift;
    mCurrentValue = 0.0f;
+   mDefaultValue = 0.0f;
+   mDefaultShortcut = false;
    mBitmap = NULL;
 
    // Get the Thumb bitmap.  Generic version fo rnow...
@@ -463,6 +465,17 @@ wxWindowID LWSlider::GetId()
 void LWSlider::SetId(wxWindowID id)
 {
    mID = id;
+}
+
+void LWSlider::SetDefaultValue(float value)
+{
+   SetDefaultShortcut(true);
+   mDefaultValue = value;
+}
+
+void LWSlider::SetDefaultShortcut(bool value)
+{
+   mDefaultShortcut = value; 
 }
 
 wxWindow* LWSlider::GetToolTipParent() const
@@ -772,6 +785,11 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
    }
    else if( event.ButtonDown() )
    {
+      if( mDefaultShortcut && event.CmdDown() )
+      {
+         mCurrentValue = mDefaultValue;
+      }
+
       // Thumb clicked?
       //
       // Do not change position until first drag.  This helps
@@ -791,6 +809,7 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       }
 
       mParent->CaptureMouse();
+      wxSetCursor(wxCURSOR_BLANK);
 
       FormatPopWin();
       SetPopWinPosition();
@@ -803,6 +822,7 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
          mParent->ReleaseMouse();
       mPopWin->Hide();
       ((TipPanel *)mPopWin)->SetPos(wxPoint(-1000, -1000));
+      wxSetCursor(wxNullCursor);
    }
    else if( event.Dragging() && mIsDragging )
    {
@@ -972,8 +992,14 @@ float LWSlider::ClickPositionToValue(int xPos, bool shiftDown)
 float LWSlider::DragPositionToValue(int xPos, bool shiftDown)
 {
    int delta = (xPos - mClickX);
+   
+   float speed = mSpeed;
+   // Precision enhancement for Shift drags
+   if (mCanUseShift && shiftDown)
+      speed *= 0.4f;
+
    float val = mClickValue +
-      mSpeed * (delta / (float)mWidthX) * (mMaxValue - mMinValue);
+      speed * (delta / (float)mWidthX) * (mMaxValue - mMinValue);
 
    if (val < mMinValue)
       val = mMinValue;
@@ -983,8 +1009,8 @@ float LWSlider::DragPositionToValue(int xPos, bool shiftDown)
    if (!(mCanUseShift && shiftDown) && mStepValue != STEP_CONTINUOUS)
    {
       // MM: If shift is not down, or we don't allow usage
-      // of shift key at all, trim value to steps of
-      // provided size.
+      // of shift key at all, and the slider has not continuous values,
+      // trim value to steps of provided size.
       val = (int)(val / mStepValue + 0.5 * (val>0?1.0f:-1.0f)) * mStepValue;
    }
 
