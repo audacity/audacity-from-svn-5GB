@@ -97,7 +97,6 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
    mHeight = 73;     
    CreateCustomGlyphs();
    mSelIndex = -1;
-   mStickyTrack = NULL;
 
    // reset flags
    ResetFlags();
@@ -119,7 +118,6 @@ LabelTrack::LabelTrack(const LabelTrack &orig) :
       mLabels.Add(l);
    }
    mSelIndex = orig.mSelIndex;
-   mStickyTrack = NULL;
    
    // reset flags
    ResetFlags();
