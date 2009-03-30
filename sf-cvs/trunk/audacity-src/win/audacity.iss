@@ -24,8 +24,9 @@ DefaultDirName={pf}\Audacity 1.3 Beta
 DirExistsWarning=yes
 DisableProgramGroupPage=yes
 UninstallDisplayIcon="{app}\audacity.exe"
-LicenseFile=..\LICENSE.txt
-InfoBeforeFile=..\README.txt
+; No longer force them to accept the license, just display it.   LicenseFile=..\LICENSE.txt
+InfoBeforeFile=..\LICENSE.txt
+InfoAfterFile=..\README.txt
 ; min versions: Win95, NT 4.0
 MinVersion=4.0,4.0
 
@@ -57,11 +58,16 @@ Name: associate_aup; Description: "&Associate Audacity project files"; GroupDesc
 
 
 [Files]
+; Don't display in separate window, rather as InfoAfterFile.   Source: "..\README.txt"; DestDir: "{app}"; Flags: ignoreversion isreadme
 Source: "..\README.txt"; DestDir: "{app}"; Flags: ignoreversion
+
 Source: "..\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\Release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 ; wxWidgets DLLs. Be specific (not *.dll) so we don't accidentally distribute avformat.dll, for example.
+; Don't use the WXWIN environment variable, because...
+; 1) Can't get the documented {%WXWIN|default dir} parsing to work.
+; 2) Need the DLL's in the release dir for testing, anyway.
 Source: "..\win\Release\wxbase28_net_vc_custom.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\Release\wxbase28_vc_custom.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\Release\wxmsw28_adv_vc_custom.dll"; DestDir: "{app}"; Flags: ignoreversion

@@ -24,8 +24,9 @@ DefaultDirName={pf}\Audacity 1.3 Beta (Unicode)
 DirExistsWarning=yes
 DisableProgramGroupPage=yes
 UninstallDisplayIcon="{app}\audacity.exe"
-LicenseFile=..\LICENSE.txt
-InfoBeforeFile=..\README.txt
+; No longer force them to accept the license, just display it.   LicenseFile=..\LICENSE.txt
+InfoBeforeFile=..\LICENSE.txt
+InfoAfterFile=..\README.txt
 ; min versions: Win95, NT 4.0
 MinVersion=4.0,4.0
 
@@ -57,7 +58,9 @@ Name: associate_aup; Description: "&Associate Audacity project files"; GroupDesc
 
 
 [Files]
+; Don't display in separate window, rather as InfoAfterFile.   Source: "..\README.txt"; DestDir: "{app}"; Flags: ignoreversion isreadme
 Source: "..\README.txt"; DestDir: "{app}"; Flags: ignoreversion
+
 Source: "..\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\unicode release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
 
