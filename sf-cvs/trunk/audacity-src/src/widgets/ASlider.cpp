@@ -809,7 +809,7 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       }
 
       mParent->CaptureMouse();
-      wxSetCursor(wxCURSOR_BLANK);
+//      wxSetCursor(wxCURSOR_BLANK);
 
       FormatPopWin();
       SetPopWinPosition();
@@ -822,7 +822,7 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
          mParent->ReleaseMouse();
       mPopWin->Hide();
       ((TipPanel *)mPopWin)->SetPos(wxPoint(-1000, -1000));
-      wxSetCursor(wxNullCursor);
+//      wxSetCursor(wxNullCursor);
    }
    else if( event.Dragging() && mIsDragging )
    {
