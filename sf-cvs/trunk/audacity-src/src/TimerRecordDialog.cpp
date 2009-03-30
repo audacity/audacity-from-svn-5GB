@@ -199,8 +199,6 @@ void TimerRecordDialog::OnTimeText_Duration(wxCommandEvent& event)
 
 void TimerRecordDialog::OnOK(wxCommandEvent& event)
 {
-   m_timer.Stop(); // Don't need to keep updating m_DateTime_Start to prevent backdating.
-
    this->TransferDataFromWindow();
    if (!m_TimeSpan_Duration.IsPositive())
    {
@@ -208,6 +206,8 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
                      _("Error in Duration"), wxICON_EXCLAMATION | wxOK);
       return;
    }
+
+   m_timer.Stop(); // Don't need to keep updating m_DateTime_Start to prevent backdating.
 
    int updateResult = eProgressSuccess;
    if (m_DateTime_Start > wxDateTime::UNow()) 
