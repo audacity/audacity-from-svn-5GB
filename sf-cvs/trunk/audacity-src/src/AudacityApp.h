@@ -70,7 +70,8 @@ enum {
    CutCopyAvailableFlag   = 0x00200000,
    WaveTracksExistFlag    = 0x00400000,
    NoteTracksExistFlag    = 0x00800000,  //gsw
-   NoteTracksSelectedFlag = 0x01000000   //gsw
+   NoteTracksSelectedFlag = 0x01000000,  //gsw
+   HaveRecentFiles        = 0x02000000
 };
 
 class AudacityApp:public wxApp {

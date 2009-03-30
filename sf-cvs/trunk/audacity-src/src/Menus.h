@@ -163,6 +163,7 @@ void OnSaveAs();
 #ifdef USE_LIBVORBIS
    void OnSaveCompressed();
 #endif
+void OnClearRecent();
 
 void OnCheckDependencies();
 

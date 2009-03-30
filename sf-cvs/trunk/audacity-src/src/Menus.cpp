@@ -204,6 +204,8 @@ void AudacityProject::CreateMenusAndCommands()
 
    CreateRecentFilesMenu(c);
 
+   c->AddSeparator();
+
    c->AddItem(wxT("Close"),          _("&Close\tCtrl+W"),                 FN(OnClose));
    if( !mCleanSpeechMode )
    {
@@ -1170,9 +1172,14 @@ void AudacityProject::CreateRecentFilesMenu(CommandManager *c)
       wxMenu* pm = c->BeginSubMenu(_("Recent &Files"));
    #endif
 
-   c->EndSubMenu();
    if( pm==NULL )
       return;
+
+   c->AddItem(wxT("ClearRecent"),  _("Clear"), FN(OnClearRecent));
+   c->SetCommandFlags(wxT("ClearRecent"),
+                      HaveRecentFiles, HaveRecentFiles);
+
+
    // TODO - read the number of files to store in history from preferences
    mRecentFiles = new wxFileHistory();
    mRecentFiles->UseMenu(pm);
@@ -1180,7 +1187,8 @@ void AudacityProject::CreateRecentFilesMenu(CommandManager *c)
    mRecentFiles->Load(*gPrefs);
    gPrefs->SetPath(wxT(".."));
 
-   c->AddSeparator();
+   c->EndSubMenu();
+
 }
 
 void AudacityProject::ModifyUndoMenus()
@@ -1417,6 +1425,9 @@ wxUint32 AudacityProject::GetUpdateFlags()
          }
       }
    }
+
+   if (mRecentFiles && mRecentFiles->GetCount() > 0)
+      flags |= HaveRecentFiles;
 
    return flags;
 }
@@ -2535,6 +2546,14 @@ void AudacityProject::OnSaveAs()
       SaveAs(true);
    }
 #endif
+
+void AudacityProject::OnClearRecent()
+{
+   while (mRecentFiles->GetCount()) {
+      mRecentFiles->RemoveFileFromHistory(0);
+   }
+}
+
 
 void AudacityProject::OnCheckDependencies()
 {
