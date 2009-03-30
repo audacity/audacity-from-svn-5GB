@@ -521,9 +521,6 @@ bool AudacityApp::MRUOpen(wxString fileName) {
          // all relevant member variables are in their initial state,
          // and it's okay to open a new project inside this window.
          proj->OpenFile(fileName);
-
-         // Add file to "recent files" list.
-         AddFileToHistory(fileName);
       }
       else {
          // File doesn't exist - remove file from history
