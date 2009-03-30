@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: utf16.c,v 1.3 2004-06-08 06:38:15 dmazzoni Exp $
+ * $Id: utf16.c,v 1.4 2009-03-30 10:00:58 llucius Exp $
  */
 
 # ifdef HAVE_CONFIG_H
@@ -163,12 +163,12 @@ id3_length_t id3_utf16_put(id3_byte_t **ptr, id3_utf16_t utf16,
 {
   if (ptr) {
     switch (byteorder) {
-    default:
     case ID3_UTF16_BYTEORDER_BE:
       (*ptr)[0] = (utf16 >> 8) & 0xff;
       (*ptr)[1] = (utf16 >> 0) & 0xff;
       break;
 
+    default:
     case ID3_UTF16_BYTEORDER_LE:
       (*ptr)[0] = (utf16 >> 0) & 0xff;
       (*ptr)[1] = (utf16 >> 8) & 0xff;
