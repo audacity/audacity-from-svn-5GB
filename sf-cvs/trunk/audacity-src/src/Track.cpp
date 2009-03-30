@@ -413,10 +413,15 @@ Track *TrackGroupIterator::First(Track * member)
 {
    Track *t = NULL;
 
-   if (member->GetKind() == Track::Label) {
-      member = l->GetPrev(member);
+   while (member->GetKind() == Track::Wave) {
+      member = l->GetNext(member);
    }
 
+   if (member->GetKind() != Track::Label) {
+      return NULL;
+   }
+
+   member = l->GetPrev(member);
    while (member && member->GetKind() == Track::Wave) {
       t = member;
       member = l->GetPrev(member);
