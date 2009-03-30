@@ -398,6 +398,50 @@ Track *VisibleTrackIterator::Next(bool skiplinked)
    return NULL;
 }
 
+// TrackGroupIterator
+//
+// Based on TrackListIterator returns only tracks belonging to the group
+// in which the starting track is a member.
+//
+TrackGroupIterator::TrackGroupIterator(TrackList * val)
+:  TrackListIterator(val)
+{
+   mEndOfGroup = false;
+}
+
+Track *TrackGroupIterator::First(Track * member)
+{
+   Track *t = NULL;
+
+   if (member->GetKind() == Track::Label) {
+      member = l->GetPrev(member);
+   }
+
+   while (member && member->GetKind() == Track::Wave) {
+      t = member;
+      member = l->GetPrev(member);
+   }
+
+   cur = (TrackListNode *) t->GetNode();
+
+   return t;
+}
+
+Track *TrackGroupIterator::Next(bool skiplinked)
+{
+   Track *t = TrackListIterator::Next(skiplinked);
+
+   if (!t || mEndOfGroup) {
+      return NULL;
+   }
+
+   if (t->GetKind() == Track::Label) {
+      mEndOfGroup = true;
+   }
+
+   return t;
+}
+
 // TrackList
 //
 // The TrackList sends itself events whenever an update occurs to the list it

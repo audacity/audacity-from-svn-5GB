@@ -2217,10 +2217,11 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
 
          mCapturedClipIsSelection = true;
 
-         TrackListIterator iter(mTracks);
-         Track *t = iter.First();
-         while (t) {
-            if (t->GetSelected()) {
+         Track *t;
+         if (GetProject()->IsSticky()) {
+            TrackGroupIterator iter(mTracks);
+
+            for (t = iter.First(wt); t; t = iter.Next()) {
                if (t->GetKind() == Track::Wave) {
                   WaveTrack *wt = (WaveTrack *)t;
                   WaveClipList::Node* it;
@@ -2239,22 +2240,67 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
                   mCapturedClipArray.Add(TrackClip(t, NULL));
                }
             }
-            t = iter.Next();
+         }
+         else {
+            TrackListIterator iter(mTracks);
+            Track *t = iter.First();
+            while (t) {
+               if (t->GetSelected()) {
+                  if (t->GetKind() == Track::Wave) {
+                     WaveTrack *wt = (WaveTrack *)t;
+                     WaveClipList::Node* it;
+                     for (it = wt->GetClipIterator(); it; it = it->GetNext()) {
+                        WaveClip *clip = it->GetData();
+                        double clip0 = clip->GetStartTime();
+                        double clip1 = clip->GetEndTime();
+                        
+                        if (clip0 <= mViewInfo->sel1 &&
+                            clip1 >= mViewInfo->sel0) {
+                           mCapturedClipArray.Add(TrackClip(wt, clip));
+                        }
+                     }
+                  }
+                  else {
+                     mCapturedClipArray.Add(TrackClip(t, NULL));
+                  }
+               }
+               t = iter.Next();
+            }
          }
       }
       else {
-         // Only add mCapturedClip, and possibly its stereo partner,
-         // to the list of clips to move.
+         Track *t;
+         if (GetProject()->IsSticky()) {
+            TrackGroupIterator iter(mTracks);
 
-         mCapturedClipIsSelection = false;
+            for (t = iter.First(wt); t; t = iter.Next()) {
+               if (t->GetKind() == Track::Wave) {
+                  WaveTrack *wt = (WaveTrack *)t;
+                  WaveClipList::Node* it;
+                  for (it = wt->GetClipIterator(); it; it = it->GetNext()) {
+                     WaveClip *clip = it->GetData();
+                     mCapturedClipArray.Add(TrackClip(wt, clip));
+                  }
+               }
+               else {
+                  mCapturedClipArray.Add(TrackClip(t, NULL));
+               }
+            }
+         }
+         else {
+            // Only add mCapturedClip, and possibly its stereo partner,
+            // to the list of clips to move.
 
-         mCapturedClipArray.Add(TrackClip(wt, mCapturedClip));
+            mCapturedClipIsSelection = false;
 
-         Track *partner = mTracks->GetLink(wt);
-         if (partner && partner->GetKind()==Track::Wave) {
-            WaveClip *clip = ((WaveTrack *)partner)->GetClipAtX(event.m_x);
-            if (clip) {
-               mCapturedClipArray.Add(TrackClip(partner, clip));
+            mCapturedClipArray.Add(TrackClip(wt, mCapturedClip));
+
+            Track *partner = mTracks->GetLink(wt);
+            if (partner && partner->GetKind()==Track::Wave) {
+               WaveClip *clip = ((WaveTrack *)partner)->GetClipAtX(event.m_x);
+               if (clip) {
+                  mCapturedClipArray.Add(TrackClip(partner, clip));
+               }
             }
          }
       }

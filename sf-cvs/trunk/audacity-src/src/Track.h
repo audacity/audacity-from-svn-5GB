@@ -204,7 +204,7 @@ class AUDACITY_DLL_API TrackListIterator
    Track *ReplaceCurrent(Track *t);                // returns original
    Track *RemoveCurrent(bool deletetrack = false); // returns next
   
- private:
+ protected:
    TrackList *l;
    TrackListNode *cur;
 };
@@ -244,6 +244,25 @@ class AUDACITY_DLL_API VisibleTrackIterator: public TrackListIterator
  private:
    AudacityProject *mProject;
    wxRect mPanelRect;
+};
+
+//
+// TrackGroupIterator
+//
+// Based on TrackListIterator returns only tracks belonging to the group
+// in which the starting track is a member.
+//
+class AUDACITY_DLL_API TrackGroupIterator: public TrackListIterator
+{
+ public:
+   TrackGroupIterator(TrackList * val);
+
+   // Iterate functions
+   Track *First(Track *member);
+   Track *Next(bool skiplinked = false);
+
+ private:
+   bool mEndOfGroup;
 };
 
 /** \brief TrackList is a flat linked list of tracks supporting Add,  Remove,
