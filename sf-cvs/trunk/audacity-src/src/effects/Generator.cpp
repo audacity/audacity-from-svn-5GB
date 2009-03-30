@@ -25,7 +25,6 @@ bool Generator::Process()
 
    // Set up mOutputWaveTracks
    this->CopyInputWaveTracks();
-   HandleLinkedTracksOnGenerate(mDuration, mT0);
 
    // Iterate over the tracks
    bool bGoodResult = true;
@@ -67,9 +66,12 @@ bool Generator::Process()
    }
 
    Success();
-   mT1 = mT0 + mDuration; // Update selection.
 
    this->ReplaceProcessedWaveTracks(bGoodResult);
+   HandleLinkedTracksOnGenerate(mDuration, mT0);
+
+   mT1 = mT0 + mDuration; // Update selection.
+
    return true;
 }
 
