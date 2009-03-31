@@ -4408,6 +4408,7 @@ void AudacityProject::OnCursorSelStart()
    mViewInfo.sel1 = mViewInfo.sel0;
    ModifyState();
    mTrackPanel->ScrollIntoView(mViewInfo.sel0);
+   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnCursorSelEnd()
@@ -4415,6 +4416,7 @@ void AudacityProject::OnCursorSelEnd()
    mViewInfo.sel0 = mViewInfo.sel1;
    ModifyState();
    mTrackPanel->ScrollIntoView(mViewInfo.sel1);
+   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::HandleAlign(int index, bool moveSel)
