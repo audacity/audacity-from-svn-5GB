@@ -193,6 +193,33 @@ private:
    T mValExit;
 };
 
+// This wrapper prevents the scrollbars from retaining focus after being
+// used.  Otherwise, the only way back to the track panel is to click it
+// and that causes your original location to be lost.
+class ScrollBar:public wxScrollBar
+{
+public:
+   ScrollBar(wxWindow* parent, wxWindowID id, long style)
+   :   wxScrollBar(parent, id, wxDefaultPosition, wxDefaultSize, style)
+   {
+   }
+
+   void OnSetFocus(wxFocusEvent & e)
+   {
+      wxWindow *w = e.GetWindow();
+      if (w != NULL) {
+         w->SetFocus();
+      }
+   }
+
+private:
+   DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(ScrollBar, wxScrollBar)
+   EVT_SET_FOCUS(ScrollBar::OnSetFocus)
+END_EVENT_TABLE()
+
 /* Define Global Variables */
 //The following global counts the number of documents that have been opened
 //for the purpose of project placement (not to keep track of the number)
@@ -772,16 +799,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    SetSizer( bs );
    bs->Layout();
 
-   mHsbar = new wxScrollBar(pPage,
-                            HSBarID,
-                            wxDefaultPosition,
-                            wxDefaultSize,
-                            wxSB_HORIZONTAL);
-   mVsbar = new wxScrollBar(pPage,
-                            VSBarID,
-                            wxDefaultPosition,
-                            wxDefaultSize,
-                            wxSB_VERTICAL);
+   mHsbar = new ScrollBar(pPage, HSBarID, wxSB_HORIZONTAL);
+   mVsbar = new ScrollBar(pPage, VSBarID, wxSB_VERTICAL);
 
    mTrackPanel = new TrackPanel(pPage,
                                 TrackPanelID,
