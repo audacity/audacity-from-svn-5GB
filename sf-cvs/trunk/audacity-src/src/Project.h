@@ -157,7 +157,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
    static wxArrayString ShowOpenDialog(wxString extra = wxEmptyString);
    static void OpenFiles(AudacityProject *proj);
-   void OpenFile(wxString fileName);
+   void OpenFile(wxString fileName, bool addtohistory = true);
    bool WarnOfLegacyFile( );
 
    // If pNewTrackList is passed in non-NULL, it gets filled with the pointers to new tracks.

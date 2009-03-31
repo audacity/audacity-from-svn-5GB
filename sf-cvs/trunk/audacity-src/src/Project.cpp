@@ -2077,7 +2077,7 @@ bool AudacityProject::WarnOfLegacyFile( )
 
 
 
-void AudacityProject::OpenFile(wxString fileName)
+void AudacityProject::OpenFile(wxString fileName, bool addtohistory)
 {
    // On Win32, we may be given a short (DOS-compatible) file name on rare
    // occassions (e.g. stuff like "C:\PROGRA~1\AUDACI~1\PROJEC~1.AUP"). We
@@ -2221,7 +2221,9 @@ void AudacityProject::OpenFile(wxString fileName)
       // else any asynch calls into the blockfile code will not have
       // finished logging errors (if any) before the call to ProjectFSCK()
 
-      wxGetApp().AddFileToHistory(fileName);
+      if (addtohistory) {
+         wxGetApp().AddFileToHistory(fileName);
+      }
 
       if (mIsRecovered)
       {
