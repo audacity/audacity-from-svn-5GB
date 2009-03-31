@@ -1655,10 +1655,6 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    double rate = clip->GetRate();
    double sps = 1./rate;
 
-   // if nothing is on the screen
-   if ((sampleCount) (h * rate + 0.5) >= numSamples)
-      return;
-
    if (!track->GetSelected())
       sel0 = sel1 = 0.0;
 
