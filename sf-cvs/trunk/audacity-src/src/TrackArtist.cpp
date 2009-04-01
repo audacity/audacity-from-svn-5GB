@@ -2756,7 +2756,7 @@ int TrackArtist::GetSpectrumWindowSize()
 }
 
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-int GetSpectrumFftSkipPoints()
+int TrackArtist::GetSpectrumFftSkipPoints()
 {
    return mFftSkipPoints;
 }
