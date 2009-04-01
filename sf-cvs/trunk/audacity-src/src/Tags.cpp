@@ -767,8 +767,11 @@ TagsEditor::TagsEditor(wxWindow * parent,
 TagsEditor::~TagsEditor()
 {
    delete mGrid;
+// TODO:  Need to figure out if these should be deleted.  Looks like the wxGrid
+//        code takes ownership and uses reference counting, but there's been
+//        cases where they show up as memory leaks.
 //   delete mStringRenderer;
-   delete mComboEditor;
+//   delete mComboEditor;
 }
 
 void TagsEditor::PopulateOrExchange(ShuttleGui & S)
