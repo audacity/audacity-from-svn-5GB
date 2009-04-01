@@ -65,7 +65,7 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
 
    t = iter.First();
    while (t) {
-      if (t->GetSelected() && t->GetKind() == Track::Wave) {
+      if (t->GetSelected() && t->GetKind() == Track::Wave && !t->GetMute()) {
          numWaves++;
          float pan = ((WaveTrack*)t)->GetPan();
          if (t->GetChannel() == Track::MonoChannel && pan == 0)
@@ -83,7 +83,7 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
    w = 0;
    t = iter.First();
    while (t) {
-      if (t->GetSelected() && t->GetKind() == Track::Wave) {
+      if (t->GetSelected() && t->GetKind() == Track::Wave && !t->GetMute()) {
          waveArray[w++] = (WaveTrack *) t;
          if (t->GetEndTime() > totalTime)
             totalTime = t->GetEndTime();

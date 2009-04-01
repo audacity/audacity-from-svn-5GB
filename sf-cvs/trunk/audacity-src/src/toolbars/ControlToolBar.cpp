@@ -439,6 +439,7 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
    }
 
    double maxofmins,minofmaxs;
+   double init_seek = 0.0;
    
    // JS: clarified how the final play region is computed;
    if (t1 == t0) {
@@ -449,10 +450,16 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
          t0 = t->GetStartTime();
       } else {
          // move t0 to valid range
-         if (t0 < 0)
+         if (t0 < 0) {
             t0 = t->GetStartTime();
-         if (t0 > t->GetEndTime())
+         }
+         else if (t0 > t->GetEndTime()) {
             t0 = t->GetEndTime();
+         }
+         else {
+            init_seek = t0;         //AC: init_seek is where playback will 'start'
+            t0 = t->GetStartTime();
+         }
       }
       
       // always play to end
@@ -532,6 +539,8 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
          success = true;
          p->SetAudioIOToken(token);
          mBusyProject = p;
+         //AC: If init_seek was set, now's the time to make it happen.
+         gAudioIO->SeekStream(init_seek);
          SetVUMeters(p);
       }
       else {
