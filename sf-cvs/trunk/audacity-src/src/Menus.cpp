@@ -4273,7 +4273,7 @@ void AudacityProject::HandleMixAndRender(bool toNewTrack)
       wxString firstName;
 
       while (t) {
-         if (t->GetSelected() && (t->GetKind() == Track::Wave) && !t->GetMute()) {
+         if (t->GetSelected() && (t->GetKind() == Track::Wave)) {
             if (selectedCount==0)
                firstName = t->GetName();
 
