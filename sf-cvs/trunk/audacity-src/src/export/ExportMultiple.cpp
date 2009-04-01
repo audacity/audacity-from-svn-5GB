@@ -505,7 +505,8 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
    }
 
 //   bool overwrite = mOverwrite->GetValue();
-   bool ok;
+   int ok;
+   mExported.Empty();
 
    if (mLabel->GetValue()) {
       ok = ExportMultipleByLabel(mByName->GetValue(),
@@ -516,11 +517,42 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
                                  mPrefix->GetValue());
    }
 
-   if (!ok) {
-      return;
+   // Give 'em the result
+   {
+      wxString msg;
+      msg.Printf(
+         ok == eProgressSuccess ? _("Successfully exported the following %ld file(s).")
+           : (ok == eProgressFailed ? _("Something went wrong after exporting the folliwing %ld file(s).")
+             : (ok == eProgressCancelled ? _("Export canceled after exporting the following %ld file(s).") 
+               : (ok == eProgressStopped ? _("Export stopped after exporting the following %ld file(s).")
+                 : _("Something went really wrong after exporting the following %ld file(s).")
+                 )
+               )
+             ), mExported.GetCount());
+
+      wxDialog dlg(this,
+                   wxID_ANY,
+                   wxString(_("ExportMultiple")));
+      ShuttleGui S(&dlg, eIsCreating);
+      S.StartVerticalLay();
+      {
+         S.AddTitle(msg);
+         S.SetStyle(wxLC_LIST | wxLC_SINGLE_SEL | wxLC_HRULES | wxSUNKEN_BORDER);
+         wxListCtrl *l = S.AddListControl();
+         for (size_t i = 0; i < mExported.GetCount(); i++) {
+            l->InsertItem(i, mExported[i]);
+         }
+         
+         S.AddStandardButtons(eOkButton);
+      }
+      dlg.Fit();
+      dlg.Center();
+      dlg.ShowModal();
    }
 
-   EndModal(1);
+   if (ok == eProgressSuccess || ok == eProgressStopped) {
+      EndModal(1);
+   }
 }
 
 bool ExportMultiple::DirOk()
@@ -548,7 +580,7 @@ bool ExportMultiple::DirOk()
    return fn.Mkdir(0777, wxPATH_MKDIR_FULL);
 }
 
-bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
+int ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
 {
    wxASSERT(mProject);
    bool tagsPrompt = mProject->GetShowId3Dialog();
@@ -620,11 +652,6 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
       // store sanitised and user checjed name in object
       setting.destfile.SetName(MakeFileName(name));
 
-      if (setting.destfile.GetName().IsEmpty())
-         {  // user cancelled dialogue, or deleted everything in feild.
-         // either way, cancel
-         return false;
-         }
       wxASSERT(setting.destfile.IsOk());     // scream if file name is broke
 
       // Make sure the (final) file name is unique within the set of exports
@@ -651,7 +678,7 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
    ExportKit activeSetting;  // pointer to the settings in use for this export
    /* Go round again and do the exporting (so this run is slow but
     * non-interactive) */
-   for(count = 0; count < (numFiles); count++) {
+   for (count = 0; count < numFiles; count++) {
       /* get the settings to use for the export from the array */
       activeSetting = exportSettings[count];
 
@@ -662,19 +689,11 @@ bool ExportMultiple::ExportMultipleByLabel(bool byName, wxString prefix)
       }
    }
 
-   // Give 'em the result
-   ::wxMessageBox(wxString::Format(ok
-                                   ? _("Successfully exported %d file(s).")
-                                   : _("Something went wrong after exporting %d file(s)."),
-                                   count),
-                  _("Export Multiple"),
-                  wxOK | wxCENTRE, this);
-
-   return (ok == eProgressSuccess || ok == eProgressStopped);
+   return ok;
 }
 
-bool ExportMultiple::ExportMultipleByTrack(bool byName,
-                                           wxString prefix)
+int ExportMultiple::ExportMultipleByTrack(bool byName,
+                                          wxString prefix)
 {
    wxASSERT(mProject);
    bool tagsPrompt = mProject->GetShowId3Dialog();
@@ -839,21 +858,7 @@ bool ExportMultiple::ExportMultipleByTrack(bool byName,
       ((Track *) selected[i])->SetSelected(true);
    }
 
-   // Give 'em the result
-   ::wxMessageBox(wxString::Format(
-      ok == eProgressSuccess ? _("Successfully exported %d file(s).")
-        : (ok == eProgressFailed ? _("Something went wrong after exporting %d file(s).")
-          : (ok == eProgressCancelled ? _("Export canceled after exporting %d file(s).") 
-            : (ok == eProgressStopped ? _("Export stopped after exporting %d file(s).")
-              : _("Something went really wrong after exporting %d file(s).")
-              )
-            )
-          ),
-                                   count),
-                  _("Export Multiple"),
-                  wxOK | wxCENTRE, this);
-
-   return (ok == eProgressSuccess || ok == eProgressStopped);
+   return ok;
 }
 
 int ExportMultiple::DoExport(int channels,
@@ -867,6 +872,10 @@ int ExportMultiple::DoExport(int channels,
    wxLogDebug(wxT("Channels: %i, Start: %lf, End: %lf "), channels, t0, t1);
    if (selectedOnly) wxLogDebug(wxT("Selected Region Only"));
    else wxLogDebug(wxT("Whole Project"));
+
+   if (name.GetName().IsEmpty()) {
+      name.SetName(wxT("untitled"));
+   }
 
    if (mOverwrite->GetValue()) {
       // Make sure we don't overwrite (corrupt) alias files
@@ -892,6 +901,10 @@ int ExportMultiple::DoExport(int channels,
                                                 NULL,
                                                 &tags,
                                                 mSubFormatIndex);
+
+   if (success == eProgressSuccess || success == eProgressStopped) {
+      mExported.Add(name.GetFullPath());
+   }
 
    return success;
 }
