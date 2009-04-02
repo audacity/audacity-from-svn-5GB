@@ -1595,7 +1595,7 @@ void EqualizationDialog::setCurve(int currentCurve)
    wxASSERT( currentCurve < (int) mCurves.GetCount() );
    bool changed = false;
 
-   if( mFaderOrDraw[0]->GetValue() & mLinFreq->IsChecked() )   // linear freq mode?
+   if( mLinFreq->IsChecked() )   // linear freq mode?
    {
       Envelope *env = mLinEnvelope;
       env->Flatten(0.);
