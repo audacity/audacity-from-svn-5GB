@@ -753,6 +753,14 @@ void CommandManager::Modify(wxString name, wxString newLabel)
    }
 }
 
+void CommandManager::SetKeyFromName(wxString name, wxString key)
+{
+   CommandListEntry *entry = mCommandNameHash[name];
+   if (entry) {
+      entry->key = key;
+   }
+}
+
 void CommandManager::HandleMenuOpen(wxMenuEvent &evt)
 {
    // Ensure we have a menu and that it's a top-level menu.

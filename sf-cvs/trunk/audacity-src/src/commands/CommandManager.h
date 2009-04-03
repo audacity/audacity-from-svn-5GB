@@ -127,6 +127,11 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
    void Modify(wxString name, wxString newLabel);
 
    //
+   // Modifying accelerators
+   //
+   void SetKeyFromName(wxString name, wxString key);
+
+   //
    // Displaying menus
    //
    void HandleMenuOpen(wxMenuEvent &evt);
@@ -139,7 +144,8 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
    bool HandleMenuID(int id, wxUint32 flags, wxUint32 mask);
    bool HandleKey(wxKeyEvent &evt, wxUint32 flags, wxUint32 mask);
    bool HandleTextualCommand(wxString & Str, wxUint32 flags, wxUint32 mask);
-   void TellUserWhyDisallowed( wxUint32 flagsGot, wxUint32 flagsRequired );
+   void TellUserWhyDisallowed(wxUint32 flagsGot, wxUint32 flagsRequired);
+
    //
    // Accessing
    //
@@ -147,7 +153,7 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
    void GetAllCommandNames(wxArrayString &names, bool includeMultis);
 
    wxString GetLabelFromName(wxString name);
-   wxString GetPrefixedLabelFromName( wxString name );
+   wxString GetPrefixedLabelFromName(wxString name);
    wxString GetKeyFromName(wxString name);
    wxString GetDefaultKeyFromName(wxString name);
 
