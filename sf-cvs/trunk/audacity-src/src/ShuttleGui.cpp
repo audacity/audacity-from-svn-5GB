@@ -1010,6 +1010,46 @@ wxCheckBox * ShuttleGuiBase::TieCheckBox(const wxString &Prompt, WrappedType & W
    }
    return pCheckBox;
 }
+
+wxCheckBox * ShuttleGuiBase::TieCheckBoxOnRight(const wxString &Prompt, WrappedType & WrappedRef)
+{
+   // The Add function does a UseUpId(), so don't do it here in that case.
+   if( mShuttleMode == eIsCreating )
+      return AddCheckBoxOnRight( Prompt, WrappedRef.ReadAsString());
+
+   UseUpId();
+
+   wxWindow * pWnd      = wxWindow::FindWindowById( miId, mpDlg);
+   wxCheckBox * pCheckBox = wxDynamicCast(pWnd, wxCheckBox);
+
+   switch( mShuttleMode )
+   {
+   // IF setting internal storage from the controls.
+   case eIsGettingFromDialog:
+      {
+         wxASSERT( pCheckBox );
+         WrappedRef.WriteToAsBool( pCheckBox->GetValue() );
+      }
+      break;
+   case eIsSettingToDialog:
+      {
+         wxASSERT( pCheckBox );
+         pCheckBox->SetValue( WrappedRef.ReadAsBool() );
+      }
+      break;
+   // IF Saving settings to external storage...
+   // or IF Getting settings from external storage.
+   case eIsSavingViaShuttle:
+   case eIsGettingViaShuttle:
+      DoDataShuttle( Prompt, WrappedRef );
+      break;
+   default:
+      wxASSERT( false );
+      break;
+   }
+   return pCheckBox;
+}
+
 wxSpinCtrl * ShuttleGuiBase::TieSpinCtrl( const wxString &Prompt, WrappedType & WrappedRef, const int max, const int min )
 {
    // The Add function does a UseUpId(), so don't do it here in that case.
@@ -1468,16 +1508,38 @@ bool ShuttleGuiBase::DoStep( int iStep )
 
 /// Variant of the standard TieCheckBox which does the two step exchange 
 /// between gui and stack variable and stack variable and shuttle.
-void ShuttleGuiBase::TieCheckBox(
+wxCheckBox * ShuttleGuiBase::TieCheckBox(
    const wxString &Prompt, 
    const wxString &SettingName, 
    const bool bDefault)
 {
+   wxCheckBox * pCheck=NULL;
+
    bool bValue=bDefault;
    WrappedType WrappedRef( bValue );
    if( DoStep(1) ) DoDataShuttle( SettingName, WrappedRef );
-   if( DoStep(2) ) TieCheckBox( Prompt, WrappedRef );
+   if( DoStep(2) ) pCheck = TieCheckBox( Prompt, WrappedRef );
    if( DoStep(3) ) DoDataShuttle( SettingName, WrappedRef );
+
+   return pCheck;
+}
+
+/// Variant of the standard TieCheckBox which does the two step exchange 
+/// between gui and stack variable and stack variable and shuttle.
+wxCheckBox * ShuttleGuiBase::TieCheckBoxOnRight(
+   const wxString &Prompt, 
+   const wxString &SettingName, 
+   const bool bDefault)
+{
+   wxCheckBox * pCheck=NULL;
+
+   bool bValue=bDefault;
+   WrappedType WrappedRef( bValue );
+   if( DoStep(1) ) DoDataShuttle( SettingName, WrappedRef );
+   if( DoStep(2) ) pCheck = TieCheckBoxOnRight( Prompt, WrappedRef );
+   if( DoStep(3) ) DoDataShuttle( SettingName, WrappedRef );
+
+   return pCheck;
 }
 
 /// Variant of the standard TieSlider which does the two step exchange 
