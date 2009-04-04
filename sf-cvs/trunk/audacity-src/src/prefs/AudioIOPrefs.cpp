@@ -64,8 +64,6 @@ void PlaybackPrefs::Populate()
    ShuttleGui S(this, eIsCreatingFromPrefs);
    PopulateOrExchange(S);
    // ----------------------- End of main section --------------
-
-   // GUI is built, now do any post processing of it.
 }
 
 void PlaybackPrefs::GetNamesAndLabels()
@@ -96,6 +94,7 @@ void PlaybackPrefs::PopulateOrExchange(ShuttleGui & S)
       S.StartMultiColumn(2, wxEXPAND);
       {
          S.SetStretchyCol(1);
+
          mPlay = S.TieChoice(_("Device") + wxString(wxT(":")),
                              wxT("/AudioIO/PlaybackDevice"), 
                              wxT(""),
@@ -148,17 +147,19 @@ void PlaybackPrefs::PopulateOrExchange(ShuttleGui & S)
    S.StartStatic(_("Seek Time when playing"));
    {
       S.StartThreeColumn();
-      S.TieTextBox(_("Short period:"),
-                   wxT("/AudioIO/SeekShortPeriod"),
-                   1.0,
-                   9);
-      S.AddUnits(_("seconds"));
+      {
+         S.TieTextBox(_("Short period:"),
+                      wxT("/AudioIO/SeekShortPeriod"),
+                      1.0,
+                      9);
+         S.AddUnits(_("seconds"));
 
-      S.TieTextBox(_("Long period:"),
-                   wxT("/AudioIO/SeekLongPeriod"),
-                   15.0,
-                   9);
-      S.AddUnits(_("seconds"));
+         S.TieTextBox(_("Long period:"),
+                      wxT("/AudioIO/SeekLongPeriod"),
+                      15.0,
+                      9);
+         S.AddUnits(_("seconds"));
+      }
       S.EndThreeColumn();
    }
    S.EndStatic();
@@ -236,8 +237,7 @@ void RecordingPrefs::GetNamesAndLabels()
    }
 
    // Channel counts, mono, stereo etc...
-   for (int i = 0; i < 16; i++)
-   {
+   for (int i = 0; i < 16; i++) {
       mChannelNames.Add(wxString::Format(wxT("%d"), i + 1));
       mChannelLabels.Add(i + 1);
    }
@@ -254,6 +254,7 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
       S.StartMultiColumn(2, wxEXPAND);
       {
          S.SetStretchyCol(1);
+
          mRec = S.TieChoice(_("Device") + wxString(wxT(":")),
                             wxT("/AudioIO/RecordingDevice"),
                             wxT(""),
@@ -322,6 +323,7 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
       S.StartMultiColumn(2, wxEXPAND);
       {
          S.SetStretchyCol(1);
+
          int dBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
          S.TieSlider(_("Sound Activation Level (dB):"),
                      wxT("/AudioIO/SilenceLevel"),

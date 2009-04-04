@@ -38,6 +38,34 @@ SpectrumPrefs::~SpectrumPrefs()
 
 void SpectrumPrefs::Populate()
 {
+   mSizeChoices.Add(_("8 - most wideband"));
+   mSizeChoices.Add(_("16"));
+   mSizeChoices.Add(_("32"));
+   mSizeChoices.Add(_("64"));
+   mSizeChoices.Add(_("128"));
+   mSizeChoices.Add(_("256 - default"));
+   mSizeChoices.Add(_("512"));
+   mSizeChoices.Add(_("1024"));
+   mSizeChoices.Add(_("2048"));
+#ifdef EXPERIMENTAL_FIND_NOTES
+   mSizeChoices.Add(_("4096"));
+   mSizeChoices.Add(_("8192"));
+   mSizeChoices.Add(_("16384"));
+   mSizeChoices.Add(_("32768 - most narrowband"));
+#else
+   mSizeChoices.Add(_("4096 - most narrowband"));
+#endif //LOGARITHMIC_SPECTRUM
+
+   for (size_t i = 0; i < mSizeChoices.GetCount(); i++) {
+      mSizeCodes.Add(1 << (i + 3));
+   }
+
+   for (int i = 0; i < NumWindowFuncs(); i++) {
+      mTypeChoices.Add(WindowFuncName(i));
+      mTypeCodes.Add(i);
+   }
+
+
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
    // Use 'eIsCreatingFromPrefs' so that the GUI is
@@ -49,57 +77,27 @@ void SpectrumPrefs::Populate()
 
 void SpectrumPrefs::PopulateOrExchange(ShuttleGui & S)
 {
-   wxArrayString wsizen;
-   wxArrayInt wsizev;
-   wxArrayString wtypen;
-   wxArrayInt wtypev;
-   
-   wsizen.Add(_("8 - most wideband"));
-   wsizen.Add(_("16"));
-   wsizen.Add(_("32"));
-   wsizen.Add(_("64"));
-   wsizen.Add(_("128"));
-   wsizen.Add(_("256 - default"));
-   wsizen.Add(_("512"));
-   wsizen.Add(_("1024"));
-   wsizen.Add(_("2048"));
-#ifdef EXPERIMENTAL_FIND_NOTES
-   wsizen.Add(_("4096"));
-   wsizen.Add(_("8192"));
-   wsizen.Add(_("16384"));
-   wsizen.Add(_("32768 - most narrowband"));
-#else
-   wsizen.Add(_("4096 - most narrowband"));
-#endif //LOGARITHMIC_SPECTRUM
-
-   for (size_t i = 0; i < wsizen.GetCount(); i++) {
-      wsizev.Add(1 << (i + 3));
-   }
-
-   for (int i = 0; i < NumWindowFuncs(); i++) {
-      wtypen.Add(WindowFuncName(i));
-      wtypev.Add(i);
-   }
-
    S.SetBorder(2);
 
    S.StartStatic(_("FFT Window"));
    {
-      S.StartTwoColumn();
+      S.StartMultiColumn(2, wxEXPAND);
       {
+         S.SetStretchyCol(1);
+
          S.TieChoice(_("Window size") + wxString(wxT(":")),
                      wxT("/Spectrum/FFTSize"), 
                      256,
-                     wsizen,
-                     wsizev);
+                     mSizeChoices,
+                     mSizeCodes);
 
          S.TieChoice(_("Window type") + wxString(wxT(":")),
                      wxT("/Spectrum/WindowType"), 
                      3,
-                     wtypen,
-                     wtypev);
+                     mTypeChoices,
+                     mTypeCodes);
       }
-      S.EndTwoColumn();
+      S.EndMultiColumn();
    }
    S.EndStatic();
 
@@ -114,15 +112,17 @@ void SpectrumPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("FFT Skip Points"));
    {
-      S.StartTwoColumn();
+      S.StartMultiColumn(2, wxEXPAND);
       {
+         S.SetStretchyCol(1);
+
          S.TieChoice(_("Skip Points") + wxString(wxT(":")),
                      wxT("/Spectrum/FFTSkipPoints"),
                      0,
                      wskipn,
                      wskipv);
       }
-      S.EndTwoColumn();
+      S.EndMultiColumn();
    }
    S.EndStatic();
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
