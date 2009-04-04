@@ -58,22 +58,22 @@ bool EffectAmplify::Init()
    peak = float(0.0);
 
    TrackListOfKindIterator iter(Track::Wave, mTracks);
-   Track *t = iter.First();
-   int count = 0;
-   while(t) {
+
+   for (Track *t = iter.First(); t; t = iter.Next()) {
+      if (!t->GetSelected()) {
+         continue;
+      }
+
       float min, max;
       ((WaveTrack *)t)->GetMinMax(&min, &max, mT0, mT1);
       float newpeak = (fabs(min) > fabs(max) ? fabs(min) : fabs(max));
       
-      if (newpeak > peak)
+      if (newpeak > peak) {
          peak = newpeak;
-   
-      t = iter.Next();
-      count++;
+      }
    }
-   
-   return true;
 
+   return true;
 }
 
 bool EffectAmplify::TransferParameters( Shuttle & shuttle )
