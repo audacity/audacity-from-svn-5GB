@@ -158,6 +158,10 @@ void Effect::CopyInputWaveTracks()
       return;
    }
 
+   // Reset map
+   mIMap.Clear();
+   mOMap.Clear();
+
    // Copy the wavetracks, to process the copies.
    TrackListOfKindIterator iter(Track::Wave, mTracks);
    mOutputWaveTracks = new TrackList();
@@ -166,7 +170,11 @@ void Effect::CopyInputWaveTracks()
          continue;
       }
 
-      mOutputWaveTracks->Add(mFactory->DuplicateWaveTrack(*(WaveTrack*)t));
+      Track *o = mFactory->DuplicateWaveTrack(*(WaveTrack*)t);
+      mOutputWaveTracks->Add(o);
+
+      mIMap.Add(t);
+      mOMap.Add(o);
    }
 }
 
@@ -182,44 +190,60 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
       // Processing failed or was cancelled so throw away the processed tracks.
       mOutputWaveTracks->Clear(true); // true => delete the tracks
       
+      // Reset map
+      mIMap.Clear();
+      mOMap.Clear();
+
       //TODO:undo the non-gui ODTask transfer
       return;
    }
 
-   // Circular replacement of the input wave tracks with the processed mOutputWaveTracks tracks. 
-   // But mWaveTracks is temporary, so replace in mTracks. More bookkeeping.
-   TrackListOfKindIterator iterIn(Track::Wave, mTracks);
    TrackListIterator iterOut(mOutputWaveTracks);
 
-   Track *n = iterOut.First();
-   Track *x = NULL;
-   for (Track *t = iterIn.First(); t; t = iterIn.Next()) {
-      if (!t->GetSelected()) {
-         continue;
+   size_t cnt = mOMap.GetCount();
+   size_t i = 0;
+   Track *x;
+
+   for (Track *o = iterOut.First(); o; o = x, i++) {
+      // If tracks were removed from mOutputWaveTracks, then there will be
+      // tracks in the map that must be removed from mTracks.
+      while (i < cnt && mOMap[i] != o) {
+         mTracks->Remove((Track *)mIMap[i], true);
+         i++;
       }
 
-      // Replace input track with processed output track.
-      if (n != NULL) { // Can be NULL as result of Tracks > Stereo to Mono.
-         // Remove the track from the output list...this clears the backpointer
-         // to the node.
-         x = iterOut.RemoveCurrent();
+      // This should never happen
+      wxASSERT(i < cnt);
 
-         // Replace the track in mTracks with the new one
-         t = iterIn.ReplaceCurrent(n);
+      // Remove the track from the output list...don't delete it
+      x = iterOut.RemoveCurrent(false);
 
-         // Swap the wavecache track the ondemand task uses, since now the new one will be kept in the project
-         if (ODManager::IsInstanceCreated()) {
-            ODManager::Instance()->ReplaceWaveTrack((WaveTrack *)t, (WaveTrack *)n);
-         }
+      // Replace mTracks entry with the new track...don't delete original track
+      Track *t = (Track *) mIMap[i];
+      mTracks->Replace(t, o, false);
 
-         // No longer need the original track from mTracks
-         delete t;
-
-         // Set next output track
-         n = x;
+      // Swap the wavecache track the ondemand task uses, since now the new
+      // one will be kept in the project
+      if (ODManager::IsInstanceCreated()) {
+         ODManager::Instance()->ReplaceWaveTrack((WaveTrack *)t, (WaveTrack *)o);
       }
+
+      // No longer need the original track
+      delete t;
    }
 
+   // If tracks were removed from mOutputWaveTracks, then there may be tracks
+   // left at the end of the map that must be removed from mTracks.
+   while (i < cnt) {
+      mTracks->Remove((Track *)mIMap[i], true);
+      i++;
+   }
+
+   // Reset map
+   mIMap.Clear();
+   mOMap.Clear();
+
+   // Make sure we processed everything
    wxASSERT(iterOut.First() == NULL);
    
    // The output list is no longer needed
@@ -253,7 +277,7 @@ void Effect::CountWaveTracks()
 void Effect::HandleLinkedTracksOnGenerate(double length, double t0)
 {
    AudacityProject *p = (AudacityProject*)mParent;
-   if ( !p || !(p->IsSticky()) || (mT1!=mT0) ) return;
+   if ( !p || !(p->IsSticky())) return;
    
    TrackListIterator iter(p->GetTracks());
    

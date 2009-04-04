@@ -296,6 +296,9 @@ class AUDACITY_DLL_API TrackList:public wxEvtHandler
    void Add(Track * t);
    void AddToHead(Track * t);
 
+   /// Replace first track with second track
+   void Replace(Track * t, Track * with, bool deletetrack = false);
+
    /// Remove this Track or all children of this TrackGroup
    void Remove(Track * t, bool deletetrack = false);
 
