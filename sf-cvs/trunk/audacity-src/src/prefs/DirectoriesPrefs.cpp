@@ -50,7 +50,8 @@ END_EVENT_TABLE()
 
 DirectoriesPrefs::DirectoriesPrefs(wxWindow * parent)
 :  PrefsPanel(parent, _("Directories")),
-   mTempDir(NULL)
+   mTempDir(NULL),
+   mFreeSpace(NULL)
 {
    Populate();
 }
@@ -158,7 +159,7 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent & e)
    wxString tempDir;
    wxString label;
 
-   if (!mTempDir) {
+   if (mTempDir != NULL) {
       tempDir = mTempDir->GetValue();
    }
 
@@ -171,7 +172,9 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent & e)
       label = _("unavailable - above location doesn't exist");
    }
 
-   mFreeSpace->SetLabel(label);
+   if( mFreeSpace != NULL ) {
+      mFreeSpace->SetLabel(label);
+   }
 }
 
 bool DirectoriesPrefs::Validate()
