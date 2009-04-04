@@ -347,6 +347,7 @@ int ExportFLAC::Export(AudacityProject *project,
       }
       updateResult = progress->Update(mixer->MixGetCurrentTime()-t0, t1-t0);
    }
+   f.Detach(); // libflac closes the file
    encoder.finish();
 
    delete progress;
