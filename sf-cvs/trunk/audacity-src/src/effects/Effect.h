@@ -258,6 +258,8 @@ class AUDACITY_DLL_API Effect {
  // Used only by the base Effect class
  //
  private:
+   wxArrayPtrVoid mIMap;
+   wxArrayPtrVoid mOMap;
 
    int mNumTracks; //v This is really mNumWaveTracks, per CountWaveTracks() and GetNumWaveTracks().
    int mNumGroups;

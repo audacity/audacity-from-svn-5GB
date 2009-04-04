@@ -558,7 +558,24 @@ void TrackList::AddToHead(Track * t)
    ResizedEvent(n);
 }
 
-// TODO: Removing a track does not free the track resources.
+void TrackList::Replace(Track * t, Track * with, bool deletetrack)
+{
+   if (t && with) {
+      TrackListNode *node = (TrackListNode *) t->GetNode();
+
+      t->SetOwner(NULL, NULL);
+      if (deletetrack) {
+         delete t;
+      }
+
+      node->t = with;
+      with->SetOwner(this, node);
+      RecalcPositions(node);
+      UpdatedEvent(node);
+      ResizedEvent(node);
+   }
+}
+
 void TrackList::Remove(Track * t, bool deletetrack)
 {
    if (t) {
