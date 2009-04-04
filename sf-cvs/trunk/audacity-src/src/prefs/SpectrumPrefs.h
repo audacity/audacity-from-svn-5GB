@@ -45,6 +45,13 @@ class SpectrumPrefs:public PrefsPanel
    wxTextCtrl *mMinFreq;
    wxTextCtrl *mMaxFreq;
 
+   wxArrayString mSizeChoices;
+   wxArrayInt mSizeCodes;
+
+   wxArrayString mTypeChoices;
+   wxArrayInt mTypeCodes;
+
+
 #ifdef EXPERIMENTAL_FIND_NOTES
    wxTextCtrl *mFindNotesMinA;
    wxTextCtrl *mFindNotesN;

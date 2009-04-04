@@ -284,10 +284,27 @@ void FileFormatPrefs::PopulateOrExchange(ShuttleGui & S)
       S.TieCheckBox(_("S&how Metadata Editor prior to export step"),
                     wxT("/AudioFiles/ShowId3Dialog"),
                     true);
+      S.AddFixedText(_("Note: Export quality options can be chosen by clicking the Options\nbutton in the Export dialog."));
    }
    S.EndStatic();
 
-   S.AddFixedText(_("Note: Export quality options can be chosen by clicking the Options button in the Export dialog.\n"));
+   S.StartStatic(_("Auto save"));
+   {
+      S.TieCheckBox(_("Auto save a copy of the project in a separate folder"),
+                    wxT("/Directories/AutoSaveEnabled"),
+                    true);
+
+      S.StartThreeColumn();
+      {
+         S.TieTextBox(_("Auto save interval:"),
+                      wxT("/Directories/AutoSaveMinutes"),
+                      2.0,
+                      9);
+         S.AddUnits(_("minutes"));
+      }
+      S.EndThreeColumn();
+   }
+   S.EndStatic();
 }
 
 bool FileFormatPrefs::Apply()

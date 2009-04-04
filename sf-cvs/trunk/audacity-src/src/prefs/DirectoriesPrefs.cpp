@@ -84,6 +84,7 @@ void DirectoriesPrefs::PopulateOrExchange(ShuttleGui & S)
       S.StartMultiColumn(3, wxEXPAND);
       {
          S.SetStretchyCol(1);
+
          S.Id(TempDirID);
          mTempDir = S.TieTextBox(_("Location:"),
                                  wxT("/Directories/TempDir"),
@@ -99,37 +100,22 @@ void DirectoriesPrefs::PopulateOrExchange(ShuttleGui & S)
    }
    S.EndStatic();
 
-   S.StartStatic(_("Auto save"));
-   {
-      S.TieCheckBox(_("Auto save a copy of the project in a separate folder"),
-                    wxT("/Directories/AutoSaveEnabled"),
-                    true);
-      S.StartThreeColumn();
-      {
-         S.TieTextBox(_("Auto save interval:"),
-                      wxT("/Directories/AutoSaveMinutes"),
-                      2.0,
-                      9);
-         S.AddUnits(_("minutes"));
-      }
-      S.EndThreeColumn();
-   }
-   S.EndStatic();
-   
    S.StartStatic(_("Audio cache"));
    {
       S.TieCheckBox(_("Play and/or record using RAM (useful for slow drives)"),
                     wxT("/Directories/CacheBlockFiles"),
                     false);
+
       S.StartTwoColumn();
       {
          S.TieTextBox(_("Minimum Free Memory (MB):"),
                       wxT("/Directories/CacheLowMem"),
                       16,
                       9);
-         S.EndThreeColumn();
       }
-      S.AddVariableText(_("If the available system memory falls below this value, audio will no longer be cached in memory and will be written to disk."))->Wrap(600);
+      S.EndTwoColumn();
+
+      S.AddVariableText(_("If the available system memory falls below this value, audio will no longer\nbe cached in memory and will be written to disk."))->Wrap(600);
    }
    S.EndStatic();
 }

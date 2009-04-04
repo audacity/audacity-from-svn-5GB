@@ -126,12 +126,16 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Sampling"));
    {
-      S.StartTwoColumn();
+      S.StartMultiColumn(2, wxEXPAND);
       {
+         S.SetStretchyCol(1);
+
          S.AddPrompt(_("Default Sample Rate:"));
 
-         S.StartHorizontalLay(wxALIGN_LEFT);
+         S.StartMultiColumn(2, wxEXPAND);
          {
+            S.SetStretchyCol(0);
+
             // If the value in Prefs isn't in the list, then we want
             // the last item, 'Other...' to be shown.
             S.SetNoMatchSelector(mSampleRateNames.GetCount() - 1);
@@ -147,7 +151,7 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
             // Now do the edit box...
             mOtherSampleRate = S.TieTextBox(wxT(""),
                                             mOtherSampleRateValue,
-                                            9);
+                                            15);
          }
          S.EndHorizontalLay();
 
@@ -157,14 +161,16 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
                      mSampleFormatNames,
                      mSampleFormatLabels);
       }
-      S.EndTwoColumn();
+      S.EndMultiColumn();
    }
    S.EndStatic();
 
    S.StartStatic(_("Real-time Conversion"));
    {
-      S.StartTwoColumn();
+      S.StartMultiColumn(2, wxEXPAND);
       {
+         S.SetStretchyCol(1);
+
          S.TieChoice(_("Sample Rate Converter:"),
                      Resample::GetFastMethodKey(),
                      Resample::GetFastMethodDefault(),
@@ -176,14 +182,15 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
                      mDitherNames,
                      mDitherLabels);
       }
-      S.EndTwoColumn();
+      S.EndMultiColumn();
    }
    S.EndStatic();
 
    S.StartStatic(_("High-quality Conversion"));
    {
-      S.StartTwoColumn();
+      S.StartMultiColumn(2, wxEXPAND);
       {
+         S.SetStretchyCol(1);
          S.TieChoice(_("Sample Rate Converter:"),
                      Resample::GetBestMethodKey(),
                      Resample::GetBestMethodDefault(),
@@ -195,7 +202,7 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
                      mDitherNames,
                      mDitherLabels);
       }
-      S.EndTwoColumn();
+      S.EndMultiColumn();
    }
    S.EndStatic();
 }

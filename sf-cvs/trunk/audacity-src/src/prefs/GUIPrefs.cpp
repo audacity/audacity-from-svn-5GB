@@ -138,16 +138,17 @@ void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
 
       S.AddSpace(10);
 
-      S.StartTwoColumn();
+      S.StartMultiColumn(2, wxEXPAND);
       {
+         S.SetStretchyCol(1);
+
          S.TieChoice(_("Default View Mode:"),
                      wxT("/GUI/DefaultViewMode"),
                      wxT("Waveform"),
                      mViewChoices,
                      mViewCodes);
       }
-      S.EndTwoColumn();
-
+      S.EndMultiColumn();
    }
    S.EndStatic();
 
@@ -168,15 +169,17 @@ void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
 
       S.AddSpace(10);
 
-      S.StartTwoColumn();
+      S.StartMultiColumn(2, wxEXPAND);
       {
+         S.SetStretchyCol(1);
+
          S.TieChoice(_("Solo Button:"),
                      wxT("/GUI/Solo"),
                      wxT("Standard"),
                      mSoloChoices,
                      mSoloCodes);
       }
-      S.EndTwoColumn();
+      S.EndMultiColumn();
    }
    S.EndStatic();
 }
@@ -264,8 +267,10 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
 
       S.AddSpace(10);
 
-      S.StartTwoColumn();
+      S.StartMultiColumn(2, wxEXPAND);
       {
+         S.SetStretchyCol(1);
+
          S.TieChoice(_("Display range:"),
                      wxT("/GUI/EnvdBRange"),
                      wxT("60"),
@@ -277,7 +282,7 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
                      mLangNames,
                      mLangCodes);
       }
-      S.EndTwoColumn();
+      S.EndMultiColumn();
    }
    S.EndStatic();
 
@@ -292,15 +297,17 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
 
       S.AddSpace(10);
 
-      S.StartTwoColumn();
+      S.StartMultiColumn(2, wxEXPAND);
       {
+         S.SetStretchyCol(1);
+
          S.TieChoice(_("Help:"),
                      wxT("/GUI/Help"),
                      wxT("Standard"),
                      mHtmlHelpChoices,
                      mHtmlHelpCodes);
       }
-      S.EndTwoColumn();
+      S.EndMultiColumn();
    }
    S.EndStatic();
 

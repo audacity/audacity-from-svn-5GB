@@ -88,20 +88,20 @@ void ThemePrefs::PopulateOrExchange(ShuttleGui & S)
    S.StartStatic(_("Info"));
    {
       S.AddFixedText(
-         _("Themability is an experimental feature.\n\nTo try it out, click \"Save Theme Cache\" then find and modify the images and colors in\nImageCacheVxx.png using an image editor such as the Gimp.\n\nClick \"Load Theme Cache\" to load the changed images and colors back into Audacity.\n\n[Only the control toolbar and the colors on the wavetrack are currently affected, even though\nthe image file shows other icons too.]")
+         _("Themability is an experimental feature.\n\nTo try it out, click \"Save Theme Cache\" then find and modify the images and colors in\nImageCacheVxx.png using an image editor such as the Gimp.\n\nClick \"Load Theme Cache\" to load the changed images and colors back into Audacity.\n\n[Only the control toolbar and the colors on the wavetrack are currently affected, even\nthough the image file shows other icons too.]")
          );
 
 #ifdef __WXDEBUG__
       S.AddFixedText(
-         _("You have compiled Audacity with an extra button, 'Output Sourcery'.  This will save a C version\nof the image cache that can be compiled in as a default.")
+         _("You have compiled Audacity with an extra button, 'Output Sourcery'.  This will save a\nC version of the image cache that can be compiled in as a default.")
          );
 #endif
 
       S.AddFixedText(
-         _("If 'Load Theme Cache At Startup' is checked, then the Theme Cache will be loaded when the\nprogram starts up.")
+         _("If 'Load Theme Cache At Startup' is checked, then the Theme Cache will be loaded\nwhen the program starts up.")
          );
       S.AddFixedText(
-         _("Saving and loading individual theme files uses a separate file for each image, but is otherwise\nthe same idea.")
+         _("Saving and loading individual theme files uses a separate file for each image, but is\notherwise the same idea.")
          );
    }
    S.EndStatic();
