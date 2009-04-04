@@ -6222,7 +6222,9 @@ void TrackPanel::OnSplitStereoMono(wxCommandEvent &event)
    //make the split tracks mono
    mPopupMenuTarget->SetChannel(Track::MonoChannel);
    if (partner) {
-      partner->SetChannel(Track::MonoChannel); 
+      partner->SetChannel(Track::MonoChannel);
+      if (partner->GetName() == _("Audio Track"))  // still the default
+         partner->SetName(mPopupMenuTarget->GetName());  // so set to something sensible
 
    //On Demand - have each channel add it's own.
 //#ifdef EXPERIMENTAL_ONDEMAND 
