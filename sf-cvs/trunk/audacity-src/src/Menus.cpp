@@ -1008,8 +1008,6 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddCommand(wxT("PlayOneSec"),     _("Play One Second\t1"),       FN(OnPlayOneSecond));
    c->AddCommand(wxT("PlayToSelection"),_("Play To Selection\tB"),       FN(OnPlayToSelection));
-   c->AddCommand(wxT("PlayLooped"),     _("Play Looped\tL"),           FN(OnPlayLooped));
-   c->AddCommand(wxT("PlayLoopAlt"),    _("Play Looped\tShift+Space"), FN(OnPlayLooped));
    c->AddCommand(wxT("PlayCutPreview"), _("Play Cut Preview\tC"),      FN(OnPlayCutPreview));
 
    c->AddCommand(wxT("SkipStart"),   _("Skip to Start\tHome"),         FN(OnSkipStart));
@@ -2753,18 +2751,22 @@ void AudacityProject::OnExportMultiple()
 void AudacityProject::OnPreferences()
 {
    PrefsDialog dialog(this /* parent */ );
-   dialog.ShowModal();
+
+   if (!dialog.ShowModal()) {
+      // Canceled
+      return;
+   }
 
    // LL:  Moved from PrefsDialog since wxWidgets on OSX can't deal with
    //      rebuilding the menus while the PrefsDialog is still in the modal
    //      state.
-   for (unsigned int j = 0; j < gAudacityProjects.GetCount(); j++) {
-      gAudacityProjects[j]->UpdatePrefsVariables();
-      gAudacityProjects[j]->RebuildMenuBar();
-      gAudacityProjects[j]->RebuildOtherMenus();
-      if (gAudacityProjects[j]->GetSelectionBar()) {
-         gAudacityProjects[j]->GetSelectionBar()->UpdateDisplay();
-      }
+   for (size_t i = 0; i < gAudacityProjects.GetCount(); i++) {
+      AudacityProject *p = gAudacityProjects[i];
+
+      p->UpdatePrefsVariables();
+      p->RebuildMenuBar();
+      p->RebuildOtherMenus();
+      p->GetSelectionBar()->UpdateDisplay();
    }
 }
 

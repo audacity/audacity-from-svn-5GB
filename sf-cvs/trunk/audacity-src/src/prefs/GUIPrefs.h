@@ -14,23 +14,54 @@
 #define __AUDACITY_GUI_PREFS__
 
 #include <wx/defs.h>
+
+#include <wx/arrstr.h>
 #include <wx/string.h>
+#include <wx/window.h>
+
+#include "../ShuttleGui.h"
 
 #include "PrefsPanel.h"
 
-class wxWindow;
-class ShuttleGui;
-
-class GUIPrefs : public PrefsPanel 
+class ShowPrefs:public PrefsPanel
 {
-public:
+ public:
+   ShowPrefs(wxWindow * parent);
+   ~ShowPrefs();
+   virtual bool Apply();
+
+ private:
+   void Populate();
+   void PopulateOrExchange(ShuttleGui & S);
+};
+
+class TracksPrefs:public PrefsPanel
+{
+ public:
+   TracksPrefs(wxWindow * parent);
+   ~TracksPrefs();
+   virtual bool Apply();
+
+ private:
+   void Populate();
+   void PopulateOrExchange(ShuttleGui & S);
+
+   wxArrayString mSoloCodes;
+   wxArrayString mSoloChoices;
+   wxArrayString mViewCodes;
+   wxArrayString mViewChoices;
+};
+
+class GUIPrefs:public PrefsPanel 
+{
+ public:
    GUIPrefs(wxWindow * parent);
    ~GUIPrefs();
    virtual bool Apply();
 
-private:
+ private:
    void Populate();
-   void PopulateOrExchange( ShuttleGui & S );
+   void PopulateOrExchange(ShuttleGui & S);
 
    wxArrayString mLangCodes;
    wxArrayString mLangNames;
@@ -38,12 +69,8 @@ private:
    wxArrayString mHtmlHelpCodes;
    wxArrayString mHtmlHelpChoices;
 
-   wxArrayString mSoloCodes;
-   wxArrayString mSoloChoices;
-
-#ifdef EXPERIMENTAL_SAVE_DEFAULT_VIEW
-   int mDefaultViewMode;
-#endif //EXPERIMENTAL_SAVE_DEFAULT_VIEW
+   wxArrayString mRangeCodes;
+   wxArrayString mRangeChoices;
 };
 
 #endif

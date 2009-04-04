@@ -12,47 +12,30 @@
 #ifndef __AUDACITY_PREFS_DIALOG__
 #define __AUDACITY_PREFS_DIALOG__
 
+#include <wx/button.h>
+#include <wx/event.h>
 #include <wx/dialog.h>
 #include <wx/string.h>
+#include <wx/treebook.h>
+#include <wx/window.h>
 
-class wxNotebook;
-class wxListbook;
-class wxTreebook;
-class wxChoicebook;
-class wxWindow;
-class wxButton;
-class wxCommandEvent;
-class wxFrame;
-
-extern bool gPrefsDialogVisible;
-
-class PrefsDialog:public wxDialog {
-
+class PrefsDialog:public wxDialog
+{
  public:
    PrefsDialog(wxWindow * parent);
-   ~PrefsDialog();
+   virtual ~PrefsDialog();
 
-   void OnCategoryChange(wxCommandEvent & event);
-   void OnOK(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
+   void OnCategoryChange(wxCommandEvent & e);
+   void OnOK(wxCommandEvent & e);
+   void OnCancel(wxCommandEvent & e);
 
    void SelectPageByName(wxString pageName);
    void ShowTempDirPage();
 
  private:
-// wxListbook *mCategories;
    wxTreebook *mCategories;
-   wxButton *mOK;
-   wxButton *mCancel;
 
-   int mSelected;
-
-   #ifdef __WXMAC__
-   wxFrame *mMacHiddenFrame;
-   #endif
-
- public:
-    DECLARE_EVENT_TABLE()
+   DECLARE_EVENT_TABLE()
 };
 
 #endif

@@ -1014,7 +1014,7 @@ wxString CommandManager::GetKeyFromName(wxString name)
    CommandListEntry *entry = mCommandNameHash[name];
    if (!entry)
       return wxT("");
- 
+
    return entry->key;
 }
 
@@ -1023,7 +1023,7 @@ wxString CommandManager::GetDefaultKeyFromName(wxString name)
    CommandListEntry *entry = mCommandNameHash[name];
    if (!entry)
       return wxT("");
- 
+
    return entry->defaultKey;
 }
 
@@ -1043,11 +1043,11 @@ bool CommandManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          
          if (!value)
             break;
-         
+
          if (!wxStrcmp(attr, wxT("name")) && XMLValueChecker::IsGoodString(value))
             name = value;
          if (!wxStrcmp(attr, wxT("key")) && XMLValueChecker::IsGoodString(value))
-            key = value;
+            key = KeyStringNormalize(value);
       }
 
       if (mCommandNameHash[name]) {

@@ -14,7 +14,6 @@
 
 *//*******************************************************************/
 
-#include "../Experimental.h"
 #include "../Audacity.h"
 
 #include <wx/defs.h>
@@ -25,13 +24,10 @@
 #include <wx/gdicmn.h>
 #include <wx/intl.h>
 #include <wx/listbox.h>
-#include <wx/imaglist.h>
 #include <wx/msgdlg.h>
-#include <wx/notebook.h>
-//#include <wx/choicebk.h>
-#include <wx/listbook.h>
-#include <wx/listctrl.h>
 #include <wx/sizer.h>
+
+#include <wx/listbook.h>
 
 #if wxCHECK_VERSION(2, 8, 4)
 #include <wx/treebook.h>
@@ -39,15 +35,15 @@
 #include "../widgets/treebook.h"
 #endif
 
+#include "../Experimental.h"
 #include "../Project.h"
-
 #include "../Prefs.h"
 
 #include "PrefsDialog.h"
 #include "PrefsPanel.h"
 
 #include "AudioIOPrefs.h"
-#include "SmartRecordPrefs.h"
+#include "QualityPrefs.h"
 
 /* REQUIRES PORTMIDI */
 //#include "MidiIOPrefs.h"
@@ -57,210 +53,127 @@
 #include "GUIPrefs.h"
 #include "ThemePrefs.h"
 #include "BatchPrefs.h"
-#include "KeyConfigPrefs.h"
-#include "QualityPrefs.h"
 #include "SpectrumPrefs.h"
+#include "SmartRecordPrefs.h"
+#include "KeyConfigPrefs.h"
 #include "MousePrefs.h"
-#include "../Experimental.h"
-
-//JKC: Experimental treebook, backported from wxWidgets 2.7.x
-//#include "../widgets/treebook.h"
-
-
-enum {
-   CategoriesID = 1000
-};
 
 BEGIN_EVENT_TABLE(PrefsDialog, wxDialog)
    EVT_BUTTON(wxID_OK, PrefsDialog::OnOK)
    EVT_BUTTON(wxID_CANCEL, PrefsDialog::OnCancel)
 END_EVENT_TABLE()
 
-bool gPrefsDialogVisible = false;
-
-// wxListBook doesn't let you use report mode for the list.
-// We don't want images, we do want a single column, 
-// so we work around the limitations by defining a thin and empty image.
-static const char * TrialImage[] = {
-"64 1 3 1",
-"+	c #004010",
-".	c None", // mask color = RGB:255,0,0
-"#	c #00AA30",
-"................................................................"};
-
-
-
-PrefsDialog::PrefsDialog(wxWindow * parent):
-   wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
-         wxDefaultSize, wxCAPTION)
-//         wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
+PrefsDialog::PrefsDialog(wxWindow * parent)
+:  wxDialog(parent, wxID_ANY, wxString(_("Audacity Preferences")))
 {
-   gPrefsDialogVisible = true;
+   ShuttleGui S(this, eIsCreating);
 
-   wxRect rect = GetRect();
-   if(rect.x < 0) rect.x = 0;
-   if(rect.y < 0) rect.y = 0;
-   SetSize(rect);
+   S.StartVerticalLay(true);
+   {
+      S.StartHorizontalLay(wxALIGN_LEFT);
+      {
+         mCategories = new wxTreebook(this, wxID_ANY);
+         S.AddWindow(mCategories);
 
-   wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
-// mCategories = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize
-// mCategories = new wxChoicebook(this, -1, wxDefaultPosition, wxDefaultSize
-// mCategories = new wxListbook(this, -1, wxDefaultPosition, wxDefaultSize
-   mCategories = new wxTreebook(this, -1, wxDefaultPosition, wxDefaultSize
-#ifdef __WXGTK__
-                                ,wxNB_LEFT
-#endif
-                                );
-
-#if !wxCHECK_VERSION(2, 8, 4)
-   // The list width is determined by the width of the images.
-   // If you don't add some images the list will be too narrow.
-   wxImageList *pImages = new wxImageList(64,1);
-   wxBitmap bmpTrial(TrialImage);
-   pImages->Add( bmpTrial );
-   mCategories->SetImageList(pImages);
-#endif
-
-   //These two lines were an attempt to size the list correctly.
-   //They don't work (in wxWidgets 2.6.1/XP)
-//   wxListView * pList = mCategories->GetListView();
-   // Can't use wxLC_REPORT because of limitations in wxListBook.
-//   pList->SetWindowStyleFlag(wxLC_ICON | wxLC_SINGLE_SEL );//| wxLC_ALIGN_LEFT);
-   //pList->SetMinSize( wxSize(300,100));
-   
-   topSizer->Add(mCategories, 1, wxGROW | wxALL, 0);
-
-   /* All panel additions belong here */
-   wxWindow *w;
-
-   // Parameters are: AppPage( page, name, IsSelected, imageId)
-   w = new AudioIOPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
-/* REQUIRES PORTMIDI */
-//   w = new MidiIOPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
-   w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
-   w = new FileFormatPrefs(mCategories);  mCategories->AddPage(w, w->GetName(),false,0);
-   w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName(),false,0);
-   w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName(),false,0);
-   w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName(),false,0);
-   w = new SmartRecordPrefs(mCategories); mCategories->AddPage(w, w->GetName(),false,0);
+         wxWindow *w;
+         // Parameters are: AppPage( page, name, IsSelected, imageId)
+         w = new PlaybackPrefs(mCategories);    mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new RecordingPrefs(mCategories);   mCategories->AddPage(w, w->GetName(), false, 0);
+//       REQUIRES PORTMIDI
+//       w = new MidiIOPrefs(mCategories);      mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new FileFormatPrefs(mCategories);  mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new LibraryPrefs(mCategories);     mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new ShowPrefs(mCategories);        mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new TracksPrefs(mCategories);      mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName(), false, 0);
+//         w = new SmartRecordPrefs(mCategories); mCategories->AddPage(w, w->GetName(), false, 0);
 
 #ifdef EXPERIMENTAL_THEME_PREFS
-   w = new ThemePrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
+         w = new ThemePrefs(mCategories);       mCategories->AddPage(w, w->GetName(), false, 0);
 #endif
 
-//   w = new BatchPrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
-   w = new KeyConfigPrefs(mCategories);   mCategories->AddPage(w, w->GetName(),false,0);
-   w = new MousePrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
+//       w = new BatchPrefs(mCategories);       mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new KeyConfigPrefs(mCategories);   mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new MousePrefs(mCategories);       mCategories->AddPage(w, w->GetName(), false, 0);
+      }
+      S.EndHorizontalLay();
+   }
+   S.EndVerticalLay();
 
-   long selected = gPrefs->Read(wxT("/Prefs/PrefsCategory"), 0L);
-   if (selected < 0 || selected >= (int)mCategories->GetPageCount())
-      mSelected = 0;
+   S.AddStandardButtons(eOkButton | eCancelButton);
 
-
-// This code to hide the roots of the tree doesn't work...
-#if 0
-   wxTreeCtrl * pTree = mCategories->GetTreeCtrl();
-   long Style = pTree->GetWindowStyle();
-   Style |= wxTR_HIDE_ROOT;
-   pTree->SetWindowStyle(Style);
-#endif
-
+   size_t selected = gPrefs->Read(wxT("/Prefs/PrefsCategory"), 0L);
+   if (selected < 0 || selected >= mCategories->GetPageCount()) {
+      selected = 0;
+   }
    mCategories->SetSelection(selected);
 
 #if defined(__WXGTK__)
    mCategories->GetTreeCtrl()->EnsureVisible(mCategories->GetTreeCtrl()->GetRootItem());
 #endif
-   
-   topSizer->Add(CreateStdButtonSizer(this, eCancelButton|eOkButton), 0, wxEXPAND);
 
-   wxBoxSizer *outSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer->Add(topSizer, 1, wxGROW|wxTOP, TOP_LEVEL_BORDER);
+   mCategories->SetSizeHints(-1, -1, 790, 600);  // 790 = 800 - (border * 2)
+   Layout();
+   Fit();
+   SetSizeHints(-1, -1, 800, 600);
 
-   SetAutoLayout(true);
-   SetSizerAndFit(outSizer);
-   outSizer->FitInside(this);
-   outSizer->SetSizeHints(this);
-
-   #ifdef __WXMAC__
-   // Until sizing works properly on the Mac
-   SetSize(620, 350);
-   #endif
-
-   #ifdef __WXMSW__
-   // Because it looks nice (tm)   (you can see all the tabs at once)
-   //SetSize(525, 363);
-   #endif
-
-   
    // Center after all that resizing, but make sure it doesn't end up
    // off-screen
    CentreOnParent();
-
-   #ifdef __WXMAC__
-   wxPoint where = GetPosition();
-   if (where.x < 2)
-      where.x = 2;
-   if (where.y < 44)
-      where.y = 44;
-   if (where != GetPosition())
-      Move(where);
-   #endif
-}
-
-void PrefsDialog::OnCancel(wxCommandEvent & event)
-{
-   int i;
-
-   for (i = 0; i < (int)mCategories->GetPageCount(); i++) {
-      ((PrefsPanel *) mCategories->GetPage(i))->Cancel();
-   }
-
-   EndModal(0);
-}
-
-void PrefsDialog::OnOK(wxCommandEvent & event)
-{
-   int i;
-   unsigned int j;
-
-   gPrefs->Write(wxT("/Prefs/PrefsCategory"), (long)mCategories->GetSelection());
-   for (i = 0; i < (int)mCategories->GetPageCount(); i++) {
-      PrefsPanel *panel = (PrefsPanel *) mCategories->GetPage(i);
-
-      /* The dialog doesn't end until all the input is valid */
-      if (!panel->Apply()) {
-         mCategories->SetSelection(i);
-         mSelected = i;
-         return;
-      }
-   }
-
-   // BG: Send all Audacity projects a preference update notification
-   for(j = 0; j < gAudacityProjects.GetCount(); j++)
-   {
-      gAudacityProjects[j]->UpdatePrefs();
-   }
-   EndModal(0);
 }
 
 PrefsDialog::~PrefsDialog()
 {
-   gPrefsDialogVisible = false;
+}
+
+void PrefsDialog::OnCancel(wxCommandEvent & event)
+{
+   for (size_t i = 0; i < mCategories->GetPageCount(); i++) {
+      ((PrefsPanel *) mCategories->GetPage(i))->Cancel();
+   }
+
+   EndModal(false);
+}
+
+void PrefsDialog::OnOK(wxCommandEvent & event)
+{
+   // Validate all pages first
+   for (size_t i = 0; i < mCategories->GetPageCount(); i++) {
+      PrefsPanel *panel = (PrefsPanel *) mCategories->GetPage(i);
+
+      // The dialog doesn't end until all the input is valid
+      if (!panel->Validate()) {
+         mCategories->SetSelection(i);
+         return;
+      }
+   }
+
+   // Now apply the changes
+   for (size_t i = 0; i < mCategories->GetPageCount(); i++) {
+      PrefsPanel *panel = (PrefsPanel *) mCategories->GetPage(i);
+
+      panel->Apply();
+   }
+
+   gPrefs->Write(wxT("/Prefs/PrefsCategory"), (long)mCategories->GetSelection());
+
+   EndModal(true);
 }
 
 void PrefsDialog::SelectPageByName(wxString pageName)
 {
-   int n = mCategories->GetPageCount();
+   size_t n = mCategories->GetPageCount();
 
-   int i;
-
-   for(i=0; i<n; i++)
+   for (size_t i = 0; i < n; i++) {
       if (mCategories->GetPageText(i) == pageName) {
          mCategories->SetSelection(i);
          return;
       }
+   }
 }
-
 
 void PrefsDialog::ShowTempDirPage()
 {

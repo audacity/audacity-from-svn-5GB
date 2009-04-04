@@ -9,33 +9,33 @@
 #ifndef __AUDACITY_MOUSE_PREFS__
 #define __AUDACITY_MOUSE_PREFS__
 
+#include <wx/defs.h>
+
+#include <wx/listctrl.h>
 #include <wx/string.h>
+#include <wx/window.h>
+
+#include "../ShuttleGui.h"
 
 #include "PrefsPanel.h"
 
-class wxWindow;
-class wxListCtrl;
-class ShuttleGui;
-
-class MousePrefs:public PrefsPanel {
-
-public:
+class MousePrefs:public PrefsPanel
+{
+ public:
    MousePrefs(wxWindow * parent);
    ~MousePrefs();
    virtual bool Apply();
 
-private:
+ private:
    void Populate();
-   void PopulateOrExchange( ShuttleGui & S );
+   void PopulateOrExchange(ShuttleGui & S);
    void CreateList();
-   void AddItem( wxString const & MouseButtons, 
-      wxString const & Tool, 
-      wxString const & Action,
-      wxString const & Comment = wxString(wxT("")));
+   void AddItem(wxString const & buttons, 
+                wxString const & tool, 
+                wxString const & action,
+                wxString const & comment = wxEmptyString);
 
    wxListCtrl * mList;
-public:
-   DECLARE_EVENT_TABLE()
 };
 
 #endif

@@ -24,15 +24,187 @@
 #include "../Languages.h"
 #include "../Prefs.h"
 #include "../Project.h"
-#include "../ShuttleGui.h"
 
 #include "GUIPrefs.h"
 
-GUIPrefs::GUIPrefs(wxWindow * parent):
-   PrefsPanel(parent)
+////////////////////////////////////////////////////////////////////////////////
+
+ShowPrefs::ShowPrefs(wxWindow * parent)
+:  PrefsPanel(parent, _("Show"))
 {
-   SetLabel(_("Interface"));         // Provide visual label
-   SetName(_("Interface"));          // Provide audible label
+   Populate();
+}
+
+ShowPrefs::~ShowPrefs()
+{
+}
+
+void ShowPrefs::Populate()
+{
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+}
+
+void ShowPrefs::PopulateOrExchange(ShuttleGui & S)
+{
+   S.SetBorder(2);
+
+   S.StartStatic(_("Show"));
+   {
+	   S.TieCheckBox(_("Enable cut &lines"),
+                    wxT("/GUI/EnableCutLines"),
+                    false);
+      S.TieCheckBox(_("Show warnings about &temp files"),
+                    wxT("/GUI/WarnAboutTempFiles"),
+                    true);
+      S.TieCheckBox(_("Show prompt to sa&ve, even if project is empty"),    
+                    wxT("/GUI/EmptyCanBeDirty"),
+                    true);
+      S.TieCheckBox(_("Show &Welcome Message at program start up"),
+                    wxT("/GUI/ShowSplashScreen"),
+                    true);
+   }
+   S.EndStatic();
+}
+
+bool ShowPrefs::Apply()
+{
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
+
+   return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+TracksPrefs::TracksPrefs(wxWindow * parent)
+:  PrefsPanel(parent, _("Tracks"))
+{
+   Populate();
+}
+
+TracksPrefs::~TracksPrefs()
+{
+}
+
+void TracksPrefs::Populate()
+{
+   mSoloCodes.Add(wxT("Standard"));
+   mSoloCodes.Add(wxT("Simple"));
+   mSoloCodes.Add(wxT("None"));
+
+   mSoloChoices.Add(_("Standard"));
+   mSoloChoices.Add(_("Simple"));
+   mSoloChoices.Add(_("None"));
+
+   mViewCodes.Add(wxT("Waveform"));
+   mViewCodes.Add(wxT("WaveformdB"));
+   mViewCodes.Add(wxT("Spectrum"));
+   mViewCodes.Add(wxT("SpectrumLogF"));
+   mViewCodes.Add(wxT("PitchEAC"));
+
+   mViewChoices.Add(_("Waveform"));
+   mViewChoices.Add(_("Waveform (dB)"));
+   mViewChoices.Add(_("Spectrum"));
+   mViewChoices.Add(_("Spectrum log(f)"));
+   mViewChoices.Add(_("Pitch (EAC)"));
+
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+}
+
+void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
+{
+   S.SetBorder(2);
+
+   S.StartStatic(_("Display"));
+   {
+      S.TieCheckBox(_("&Update display while playing"),
+                    wxT("/GUI/AutoScroll"),
+                    true);
+      S.TieCheckBox(_("Automatically &fit tracks vertically zoomed"), 
+                    wxT("/GUI/TracksFitVerticallyZoomed"),
+                    false);
+
+      S.AddSpace(10);
+
+      S.StartTwoColumn();
+      {
+         S.TieChoice(_("Default View Mode:"),
+                     wxT("/GUI/DefaultViewMode"),
+                     wxT("Waveform"),
+                     mViewChoices,
+                     mViewCodes);
+      }
+      S.EndTwoColumn();
+
+   }
+   S.EndStatic();
+
+   S.StartStatic(_("Behaviors"));
+   {
+      S.TieCheckBox(_("Enable &dragging of left and right selection edges"),
+                    wxT("/GUI/AdjustSelectionEdges"),
+                    true);
+      S.TieCheckBox(_("\"Move track focus\" c&ycles repeatedly through tracks"), 
+                    wxT("/GUI/CircularTrackNavigation"),
+                    false);
+      S.TieCheckBox(_("Editing a &clip can move other clips"),
+                    wxT("/GUI/EditClipCanMove"),
+                    true);
+      S.TieCheckBox(_("&Select all audio in project, if none selected"),    
+                    wxT("/GUI/SelectAllOnNone"),
+                    true);
+
+      S.AddSpace(10);
+
+      S.StartTwoColumn();
+      {
+         S.TieChoice(_("Solo Button:"),
+                     wxT("/GUI/Solo"),
+                     wxT("Standard"),
+                     mSoloChoices,
+                     mSoloCodes);
+      }
+      S.EndTwoColumn();
+   }
+   S.EndStatic();
+}
+
+bool TracksPrefs::Apply()
+{
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
+
+   return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+GUIPrefs::GUIPrefs(wxWindow * parent)
+:  PrefsPanel(parent, _("Interface"))
+{
+   Populate();
+}
+
+GUIPrefs::~GUIPrefs()
+{
+}
+
+void GUIPrefs::Populate()
+{
+   // First any pre-processing for constructing the GUI.
+   GetLanguages(mLangCodes, mLangNames);
 
    mHtmlHelpCodes.Add(wxT("Standard"));
    mHtmlHelpCodes.Add(wxT("InBrowser"));
@@ -42,29 +214,25 @@ GUIPrefs::GUIPrefs(wxWindow * parent):
    mHtmlHelpChoices.Add(_("In Browser"));
    mHtmlHelpChoices.Add(_("From Internet"));
 
-   mSoloCodes.Add( wxT("Standard") );
-   mSoloCodes.Add( wxT("Simple") );
-   mSoloCodes.Add( wxT("None") );
+   mRangeCodes.Add(_("36"));
+   mRangeCodes.Add(_("48"));
+   mRangeCodes.Add(_("60"));
+   mRangeCodes.Add(_("96"));
+   mRangeCodes.Add(_("120"));
+   mRangeCodes.Add(_("145"));
 
-   mSoloChoices.Add(_("Standard") );
-   mSoloChoices.Add(_("Simple") );
-   mSoloChoices.Add(_("None") );
+   mRangeChoices.Add(_("-36 dB (shallow range for high-amplitude editing)"));
+   mRangeChoices.Add(_("-48 dB (PCM range of 8 bit samples)"));
+   mRangeChoices.Add(_("-60 dB (PCM range of 10 bit samples)"));
+   mRangeChoices.Add(_("-96 dB (PCM range of 16 bit samples)"));
+   mRangeChoices.Add(_("-120 dB (approximate limit of human hearing)"));
+   mRangeChoices.Add(_("-145 dB (PCM range of 24 bit samples)"));
 
-   Populate( );
-}
-
-void GUIPrefs::Populate( )
-{
-   // First any pre-processing for constructing the GUI.
-   GetLanguages(mLangCodes, mLangNames);
 #if 0
    // only for testing...
    mLangCodes.Add("kg");   mLangNames.Add("Klingon");
    mLangCodes.Add("ep");   mLangNames.Add("Esperanto");
 #endif
-#ifdef EXPERIMENTAL_SAVE_DEFAULT_VIEW
-   gPrefs->Read(wxT("/GUI/DefaultViewMode"), &mDefaultViewMode, 0L);
-#endif //EXPERIMENTAL_SAVE_DEFAULT_VIEW
 
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
@@ -84,109 +252,82 @@ void GUIPrefs::Populate( )
 #endif
 // End code duplication warning
 
-void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
+void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
 {
-   S.SetBorder( 2 );
-   S.StartHorizontalLay( wxEXPAND, 1 );
-   S.StartVerticalLay();
-   S.StartStatic( _("Behaviors"),1 );
+   S.SetBorder(2);
+
+   S.StartStatic(_("Display"));
    {
-      S.TieCheckBox( _("&Update display while playing"),
-         wxT("/GUI/AutoScroll"), true);
-      S.TieCheckBox( _("Cl&osing last window quits Audacity"),
-         wxT("/GUI/QuitOnClose"), bQuitOnCloseDefault );
-      S.TieCheckBox( _("Enable &dragging of left and right selection edges"),
-         wxT("/GUI/AdjustSelectionEdges"), true);
-      S.TieCheckBox( _("Er&gonomic order of audio I/O buttons"),
-         wxT("/GUI/ErgonomicTransportButtons"), true);
-      S.TieCheckBox( _("Automatically &fit tracks vertically zoomed"), 
-         wxT("/GUI/TracksFitVerticallyZoomed"), false );
-      S.TieCheckBox( _("\"Move track focus\" c&ycles repeatedly through tracks"), 
-         wxT("/GUI/CircularTrackNavigation"), false );
-      S.TieCheckBox( _("Editing a &clip can move other clips"),
-         wxT("/GUI/EditClipCanMove"), true );
-      S.TieCheckBox( _("&Select all audio in project, if none selected"),    
-         wxT("/GUI/SelectAllOnNone"), true );   
-      S.TieCheckBox( _("&Beep on completion of longer activities"),    
-         wxT("/GUI/BeepOnCompletion"), false );   
+      S.TieCheckBox(_("Er&gonomic order of audio I/O buttons"),
+                    wxT("/GUI/ErgonomicTransportButtons"),
+                    true);
+
+      S.AddSpace(10);
+
+      S.StartTwoColumn();
+      {
+         S.TieChoice(_("Display range:"),
+                     wxT("/GUI/EnvdBRange"),
+                     wxT("60"),
+                     mRangeChoices,
+                     mRangeCodes);
+         S.TieChoice(_("Language:"),
+                     wxT("/Locale/Language"),
+                     wxT("en"),
+                     mLangNames,
+                     mLangCodes);
+      }
+      S.EndTwoColumn();
    }
    S.EndStatic();
-   S.StartStatic( _("Show / Hide"),0 );
+
+   S.StartStatic(_("Behaviors"));
    {
-	   S.TieCheckBox( _("Enable cut &lines"),
-         wxT("/GUI/EnableCutLines"), false);
-      S.TieCheckBox( _("Show warnings about &temp files"), 
-         wxT("/GUI/WarnAboutTempFiles"), true );
-      S.TieCheckBox( _("Show prompt to sa&ve, even if project is empty"),    
-         wxT("/GUI/EmptyCanBeDirty"), true );
-      S.TieCheckBox( _("Show &Welcome Message at program start up"),    
-         wxT("/GUI/ShowSplashScreen"), true );
+      S.TieCheckBox(_("Cl&osing last window quits Audacity"),
+                    wxT("/GUI/QuitOnClose"),
+                    bQuitOnCloseDefault);
+      S.TieCheckBox(_("&Beep on completion of longer activities"),
+                    wxT("/GUI/BeepOnCompletion"),
+                    false);
+
+      S.AddSpace(10);
+
+      S.StartTwoColumn();
+      {
+         S.TieChoice(_("Help:"),
+                     wxT("/GUI/Help"),
+                     wxT("Standard"),
+                     mHtmlHelpChoices,
+                     mHtmlHelpCodes);
+      }
+      S.EndTwoColumn();
    }
    S.EndStatic();
-   S.StartStatic( _("Modes"),0 );
+
+   S.StartStatic(_("Modes"));
    {
 #ifdef __WXDEBUG__
-      S.TieCheckBox( _("Don't a&pply effects in batch mode"),  
-         wxT("/Batch/Debug"), false);
+      S.TieCheckBox(_("Don't a&pply effects in batch mode"),  
+                    wxT("/Batch/Debug"),
+                    false);
 #endif
-      S.TieCheckBox( _("Cl&eanSpeech Mode (Customized GUI)"), 
-         wxT("/Batch/CleanSpeechMode"), false);
+      S.TieCheckBox(_("Cl&eanSpeech Mode (Customized GUI)"), 
+                    wxT("/Batch/CleanSpeechMode"),
+                    false);
    }
    S.EndStatic();
-   S.EndVerticalLay();
-   S.StartVerticalLay();
-   S.StartStatic( _("Display range minimum: meters and 'Waveform (dB)'"),0 );
-   {
-      S.StartRadioButtonGroup( wxT("/GUI/EnvdBRange"), ENV_DB_RANGE );
-      S.TieRadioButton( _("-36 dB (shallow range for high-amplitude editing)"),36);
-      S.TieRadioButton( _("-48 dB (PCM range of 8 bit samples)"),48);
-      S.TieRadioButton( _("-60 dB (PCM range of 10 bit samples)"),60);
-      S.TieRadioButton( _("-96 dB (PCM range of 16 bit samples)"),96);
-      S.TieRadioButton( _("-120 dB (approximate limit of human hearing)"),120);
-      S.TieRadioButton( _("-145 dB (PCM range of 24 bit samples)"),145);
-      S.EndRadioButtonGroup();
-   }
-   S.EndStatic();
-#ifdef EXPERIMENTAL_SAVE_DEFAULT_VIEW
-   S.StartStatic( _("Default View Mode") );
-   {
-      S.StartRadioButtonGroup( wxT("/GUI/DefaultViewMode"), mDefaultViewMode );
-      S.TieRadioButton( _("Waveform"), 0);
-      S.TieRadioButton( _("Waveform (dB)"), 1);
-      S.TieRadioButton( _("Spectrum"), 2);
-      S.TieRadioButton( _("Spectrum log(f)"), 3);
-      S.TieRadioButton( _("Pitch (EAC)"), 4);
-      S.EndRadioButtonGroup();
-   }
-   S.EndStatic();
-#endif //EXPERIMENTAL_SAVE_DEFAULT_VIEW
-
-   S.StartStatic( _("Other interface choices"),1 );
-   S.StartTwoColumn();
-   S.TieChoice(_("Language:"),   wxT("/Locale/Language"),wxT("en"),mLangNames, mLangCodes );  
-   S.TieChoice(_("Help:"),       wxT("/GUI/Help"),wxT("Standard"),mHtmlHelpChoices, mHtmlHelpCodes );  
-   S.TieChoice(_("Solo Button:"),wxT("/GUI/Solo"),wxT("Standard"),mSoloChoices, mSoloCodes );  
-   S.EndTwoColumn();
-   S.EndStatic();
-
-   S.EndVerticalLay();
-   S.EndHorizontalLay();
 }
 
 bool GUIPrefs::Apply()
 {
-   ShuttleGui S( this, eIsSavingToPrefs );
-   PopulateOrExchange( S );
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
 
    // If language has changed, we want to change it now, not on the next reboot.
    wxString lang = gPrefs->Read(wxT("/Locale/Language"), wxT(""));
-   wxGetApp().InitLang( lang );
+   wxGetApp().InitLang(lang);
 
    return true;
-}
-
-GUIPrefs::~GUIPrefs()
-{
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
