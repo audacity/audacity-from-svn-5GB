@@ -6216,11 +6216,11 @@ void TrackPanel::OnSplitStereo(wxCommandEvent &event)
 void TrackPanel::OnSplitStereoMono(wxCommandEvent &event)
 {
    wxASSERT(mPopupMenuTarget);
+   Track *partner = mPopupMenuTarget->GetLink();
    mPopupMenuTarget->SetLinked(false);
      
    //make the split tracks mono
    mPopupMenuTarget->SetChannel(Track::MonoChannel);
-   Track *partner = mPopupMenuTarget->GetLink();
    if (partner) {
       partner->SetChannel(Track::MonoChannel); 
 
