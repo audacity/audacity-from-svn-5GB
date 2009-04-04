@@ -298,6 +298,11 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       bev.width += 1;
       AColor::BevelTrackInfo(*dc, true, bev);
 
+      // Pitch doesn't have a ruler
+      if (((WaveTrack *)t)->GetDisplay() == WaveTrack::PitchDisplay) {
+         return;
+      }
+
       // Right align the ruler
       wxRect rr = r;
       if (t->vrulerSize.GetWidth() < r.GetWidth()) {
