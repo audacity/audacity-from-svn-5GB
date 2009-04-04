@@ -1048,19 +1048,16 @@ ExportMixerDialog::ExportMixerDialog( TrackList *tracks, bool selectedOnly,
 {
    int numTracks = 0;
    TrackListIterator iter( tracks );
-   
+
    for( Track *t = iter.First(); t; t = iter.Next() )
    {
-      if( t->GetKind() == Track::Wave && ( t->GetSelected() || !selectedOnly ) )
+      if( t->GetKind() == Track::Wave && ( t->GetSelected() || !selectedOnly ) && !t->GetMute() )
       {
          numTracks++;
          if( t->GetChannel() == Track::LeftChannel )
-         {
             mTrackNames.Add( t->GetName() + _( " - Left" ) );
+         else if( t->GetChannel() == Track::RightChannel )
             mTrackNames.Add( t->GetName() + _( " - Right" ) );
-            t = iter.Next();
-            numTracks++;
-         }
          else
             mTrackNames.Add( t->GetName() );
       }
