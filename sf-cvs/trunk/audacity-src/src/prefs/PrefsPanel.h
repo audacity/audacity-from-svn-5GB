@@ -29,10 +29,7 @@ ThemePrefs.
 #define __AUDACITY_PREFS_PANEL__
 
 #include <wx/panel.h>
-
-class wxWindow;
-class wxStaticBoxSizer;
-class wxBoxSizer;
+#include <wx/window.h>
 
 /* A few constants for an attempt at semi-uniformity */
 #define PREFS_FONT_SIZE     8
@@ -45,21 +42,23 @@ class wxBoxSizer;
 
 class PrefsPanel:public wxPanel 
 {
-
-public:
-   PrefsPanel(wxWindow * parent):wxPanel(parent, -1) {
-      /* I'm not sure if we should be setting this... I'll play around
-       * and see what looks best on different platforms under
-       * differing circumstances...*/
-//    SetFont(wxFont(PREFS_FONT_SIZE, wxDEFAULT, wxNORMAL, wxNORMAL));
+ public:
+   PrefsPanel(wxWindow * parent, wxString title)
+   :  wxPanel(parent, wxID_ANY)
+   {
+      SetLabel(title);     // Provide visual label
+      SetName(title);      // Provide audible label
    }
    
-   virtual ~ PrefsPanel() {}
+   virtual ~PrefsPanel()
+   {
+   }
+
    virtual bool Apply() = 0;
-   virtual void Cancel() {};
-protected:
-   wxBoxSizer *topSizer;
-   wxBoxSizer *outSizer;
+
+   virtual void Cancel()
+   {
+   }
 };
 
 #endif

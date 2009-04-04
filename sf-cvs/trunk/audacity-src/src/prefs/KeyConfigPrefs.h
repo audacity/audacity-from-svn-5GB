@@ -13,78 +13,50 @@
 #define __AUDACITY_KEY_CONFIG_PREFS__
 
 #include <wx/defs.h>
+#include <wx/listctrl.h>
 #include <wx/textctrl.h>
 #include <wx/string.h>
 
+#include "../ShuttleGui.h"
+#include "../commands/CommandManager.h"
+
 #include "PrefsPanel.h"
-#include "../Project.h"
-
-class wxChoice;
-class wxCharEvent;
-class wxStaticText;
-class wxListCtrl;
-class wxListEvent;
-class wxWindow;
-
-class SysKeyTextCtrl;
-class CommandManager;
-class ShuttleGui;
 
 class KeyConfigPrefs:public PrefsPanel 
 {
-
-public:
+ public:
    KeyConfigPrefs(wxWindow * parent);
    ~KeyConfigPrefs();
    virtual bool Apply();
+   virtual void Cancel();
 
-private:
+ private:
    void Populate();
-   void PopulateOrExchange( ShuttleGui & S );
+   void PopulateOrExchange(ShuttleGui & S);
    void CreateList();
-
-   void OnDefaults(wxCommandEvent& event);
-   void OnLoad(wxCommandEvent& event);
-   void OnSave(wxCommandEvent& event);
-   void OnSet(wxCommandEvent& event);
-   void OnClear(wxCommandEvent& event);
-   void OnItemSelected(wxListEvent &event);
-   void OnKeyDown(wxListEvent &event);
    void RepopulateBindingsList();
 
-   SysKeyTextCtrl *mCurrentComboText;
-   wxListCtrl * mList;
-   CommandManager *mManager;
-   int mCommandSelected;
-   wxArrayString mNames;
+   void OnDefaults(wxCommandEvent & e);
+   void OnLoad(wxCommandEvent & e);
+   void OnSave(wxCommandEvent & e);
+   void OnSet(wxCommandEvent & e);
+   void OnClear(wxCommandEvent & e);
+   void OnItemSelected(wxListEvent & e);
+   void OnKeyDown(wxListEvent & e);
 
-public:
+   void OnCaptureKeyDown(wxKeyEvent & e);
+   void OnCaptureChar(wxKeyEvent & e);
+
+   wxTextCtrl *mKey;
+   wxListCtrl *mList;
+
+   CommandManager *mManager;
+   size_t mCommandSelected;
+   wxArrayString mNames;
+   wxArrayString mKeys;
+
    DECLARE_EVENT_TABLE();
 };
-
-/// \brief BG: A quick and dirty override of wxTextCtrl to capture keys like Ctrl, Alt
-///
-/// This is only ever used by KeyConfigPrefs.
-class SysKeyTextCtrl:public wxTextCtrl
-{
-public:
-   SysKeyTextCtrl(wxWindow *parent, wxWindowID id,
-                  const wxString& value = wxEmptyString,
-                  const wxPoint& pos = wxDefaultPosition,
-                  const wxSize& size = wxDefaultSize,
-                  long style = 0,
-                  const wxValidator& validator = wxDefaultValidator,
-                  const wxString& name = wxTextCtrlNameStr);
-   ~SysKeyTextCtrl();
-
-private:
-   void OnKey(wxKeyEvent& event);
-   void OnChar(wxKeyEvent& event);
-
-protected:
-   DECLARE_EVENT_TABLE()
-};
-
 #endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

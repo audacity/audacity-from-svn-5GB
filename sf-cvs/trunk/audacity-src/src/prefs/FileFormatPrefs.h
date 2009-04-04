@@ -13,35 +13,49 @@
 #ifndef __AUDACITY_FILE_FORMAT_PREFS__
 #define __AUDACITY_FILE_FORMAT_PREFS__
 
+#include <wx/defs.h>
+
+#include <wx/stattext.h>
+#include <wx/window.h>
+
+#include "../ShuttleGui.h"
+
 #include "PrefsPanel.h"
 
-class wxCommandEvent;
-class wxStaticText;
-class wxWindow;
-class ShuttleGui;
-
-class FileFormatPrefs:public PrefsPanel 
+class LibraryPrefs:public PrefsPanel 
 {
-public:
-   FileFormatPrefs(wxWindow * parent);
-   ~FileFormatPrefs();
+ public:
+   LibraryPrefs(wxWindow * parent);
+   ~LibraryPrefs();
    virtual bool Apply();
    
-private:
+ private:
    void Populate();
    void PopulateOrExchange(ShuttleGui & S);
-   void OnMP3FindButton(wxCommandEvent& evt);
-   void OnMP3DownButton(wxCommandEvent& evt);
    void SetMP3VersionText(bool prompt = false);
-   void OnFFmpegFindButton(wxCommandEvent& evt);
-   void OnFFmpegDownButton(wxCommandEvent& evt);
-   void SetFFmpegVersionText();
+	void SetFFmpegVersionText();
+
+   void OnMP3FindButton(wxCommandEvent & e);
+   void OnMP3DownButton(wxCommandEvent & e);
+   void OnFFmpegFindButton(wxCommandEvent & e);
+   void OnFFmpegDownButton(wxCommandEvent & e);
 
    wxStaticText *mMP3Version;
    wxStaticText *mFFmpegVersion;
 
-public:
    DECLARE_EVENT_TABLE();
+};
+
+class FileFormatPrefs:public PrefsPanel 
+{
+ public:
+   FileFormatPrefs(wxWindow * parent);
+   ~FileFormatPrefs();
+   virtual bool Apply();
+   
+ private:
+   void Populate();
+   void PopulateOrExchange(ShuttleGui & S);
 };
 
 #endif

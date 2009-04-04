@@ -23,20 +23,15 @@ Provides:
 #include "../Audacity.h"
 
 #include <wx/wxprec.h>
-#include "../Prefs.h"
-#include "../Theme.h"
-#include "../Project.h"
-#include "../ShuttleGui.h"
-#include "SmartRecordPrefs.h"
-#include "../AColor.h"
-#include "../Envelope.h"
 
-SmartRecordPrefs::SmartRecordPrefs(wxWindow * parent) :
-   PrefsPanel(parent)
+#include "../Envelope.h"
+#include "../Prefs.h"
+
+#include "SmartRecordPrefs.h"
+
+SmartRecordPrefs::SmartRecordPrefs(wxWindow * parent)
+:  PrefsPanel(parent, _("Smart Recording"))
 {
-   SetLabel(_("Smart Recording"));         // Provide visual label
-   SetName(_("Smart Recording"));          // Provide audible label
-  
    Populate();
 }
 
@@ -45,7 +40,7 @@ SmartRecordPrefs::~SmartRecordPrefs(void)
 }
 
 /// Creates the dialog and its contents.
-void SmartRecordPrefs::Populate( )
+void SmartRecordPrefs::Populate()
 {
    // First any pre-processing for constructing the GUI.
 
@@ -59,16 +54,26 @@ void SmartRecordPrefs::Populate( )
 }
 
 /// Create the dialog contents, or exchange data with it.
-void SmartRecordPrefs::PopulateOrExchange( ShuttleGui & S)
+void SmartRecordPrefs::PopulateOrExchange(ShuttleGui & S)
 {
-   S.StartStatic( _("Sound Activated Recording") );
+   S.SetBorder(2);
+
+   S.StartStatic(_("Sound Activated Recording"));
    {
-      S.TieCheckBox( _("Sound Activated Recording"), wxT("/AudioIO/SoundActivatedRecord"),false);
+      S.TieCheckBox(_("Sound Activated Recording"),
+                    wxT("/AudioIO/SoundActivatedRecord"),
+                    false);
+
       S.StartMultiColumn(2, wxEXPAND);
+      {
          S.SetStretchyCol(1);
-         int dBRange;
-         dBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
-         S.TieSlider(_("Sound Activation Level (dB):"), wxT("/AudioIO/SilenceLevel"), -50, 0, -dBRange);
+         int dBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
+         S.TieSlider(_("Sound Activation Level (dB):"),
+                     wxT("/AudioIO/SilenceLevel"),
+                     -50,
+                     0,
+                     -dBRange);
+      }
       S.EndMultiColumn();
    }
    S.EndStatic();
@@ -77,8 +82,20 @@ void SmartRecordPrefs::PopulateOrExchange( ShuttleGui & S)
 /// Update the preferences stored on disk.
 bool SmartRecordPrefs::Apply()
 {
-   ShuttleGui S( this, eIsSavingToPrefs );
-   PopulateOrExchange( S );
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
 
    return true;
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: ccb794d2-45d5-4f7b-ba0c-6a4d2438ac93
+

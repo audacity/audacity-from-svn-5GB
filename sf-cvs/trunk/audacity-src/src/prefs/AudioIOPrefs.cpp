@@ -24,30 +24,39 @@ other settings.
 *//********************************************************************/
 
 #include "../Audacity.h"
+
 #include <wx/defs.h>
+
 #include <wx/choice.h>
 #include <wx/intl.h>
 
-#include "../Prefs.h"
-#include "../AudioIO.h"
-#include "../Project.h"
-#include "../Internat.h"
-#include "../ShuttleGui.h"
 #include "portaudio.h"
+
+#include "../AudioIO.h"
+#include "../Envelope.h"
+#include "../Internat.h"
+#include "../Prefs.h"
+#include "../Project.h"
+#include "../ShuttleGui.h"
+
+
 #include "AudioIOPrefs.h"
 
-AudioIOPrefs::AudioIOPrefs(wxWindow * parent):
-   PrefsPanel(parent)
+PlaybackPrefs::PlaybackPrefs(wxWindow * parent)
+:  PrefsPanel(parent, _("Playback"))
 {
-   SetLabel(_("Audio I/O"));         // Provide visual label
-   SetName(_("Audio I/O"));          // Provide audible label
    Populate();
 }
 
-void AudioIOPrefs::Populate( )
+PlaybackPrefs::~PlaybackPrefs()
+{
+}
+
+void PlaybackPrefs::Populate()
 {
    // First any pre-processing for constructing the GUI.
    GetNamesAndLabels();
+
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
    // Use 'eIsCreatingFromPrefs' so that the GUI is 
@@ -55,22 +64,161 @@ void AudioIOPrefs::Populate( )
    ShuttleGui S(this, eIsCreatingFromPrefs);
    PopulateOrExchange(S);
    // ----------------------- End of main section --------------
-   // GUI is built, now do any post processing of it.
 
-   // Fit(); // JKC: Doesn't seem to make any difference...
+   // GUI is built, now do any post processing of it.
+}
+
+void PlaybackPrefs::GetNamesAndLabels()
+{
+   // Get lists of devices both for play and record.
+#if USE_PORTAUDIO_V19
+   int nDevices = Pa_GetDeviceCount();
+#else
+   int nDevices = Pa_CountDevices();
+#endif
+
+   for (int i = 0; i < nDevices; i++) {
+      const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
+      if (info->maxOutputChannels > 0) {
+         wxString name = DeviceName(info);
+         mPlayNames.Add(name);
+         mPlayLabels.Add(name);
+      }
+   }
+}
+
+void PlaybackPrefs::PopulateOrExchange(ShuttleGui & S)
+{
+   S.SetBorder(2);
+
+   S.StartStatic(_("Playback"));
+   {
+      S.StartMultiColumn(2, wxEXPAND);
+      {
+         S.SetStretchyCol(1);
+         mPlay = S.TieChoice(_("Device") + wxString(wxT(":")),
+                             wxT("/AudioIO/PlaybackDevice"), 
+                             wxT(""),
+                             mPlayNames,
+                             mPlayLabels);
+
+         S.AddPrompt(_("Using:"));
+
+         S.AddFixedText(_("Portaudio v") +
+                        wxString((USE_PORTAUDIO_V19 ? wxT("19") : wxT("18"))));
+      }
+      S.EndMultiColumn();
+   }                              
+   S.EndStatic();
+
+   S.StartStatic(_("Effects Preview"));
+   {
+      S.StartThreeColumn();
+      {
+         S.TieTextBox(_("Length of preview:"),
+                      wxT("/AudioIO/EffectsPreviewLen"),
+                      3.0,
+                      9);
+         S.AddUnits(_("seconds"));
+      }
+      S.EndThreeColumn();
+   }
+   S.EndStatic();
+
+   S.StartStatic(_("Cut Preview"));
+   {
+      S.StartThreeColumn();
+      {
+         S.TieTextBox(_("Preview before cut region:"),
+                      wxT("/AudioIO/CutPreviewBeforeLen"),
+                      1.0,
+                      9);
+         S.AddUnits(_("seconds"));
+
+         S.TieTextBox(_("Preview after cut region:"),
+                      wxT("/AudioIO/CutPreviewAfterLen"),
+                      1.0,
+                      9);
+         S.AddUnits(_("seconds"));
+      }
+      S.EndThreeColumn();
+   }
+   S.EndStatic();
+
+   S.StartStatic(_("Seek Time when playing"));
+   {
+      S.StartThreeColumn();
+      S.TieTextBox(_("Short period:"),
+                   wxT("/AudioIO/SeekShortPeriod"),
+                   1.0,
+                   9);
+      S.AddUnits(_("seconds"));
+
+      S.TieTextBox(_("Long period:"),
+                   wxT("/AudioIO/SeekLongPeriod"),
+                   15.0,
+                   9);
+      S.AddUnits(_("seconds"));
+      S.EndThreeColumn();
+   }
+   S.EndStatic();
+}
+
+bool PlaybackPrefs::Apply()
+{
+#if 0
+#if USE_PORTAUDIO_V19
+   if (!AudioIO::ValidateDeviceNames(mPlay->GetStringSelection(), mRec->GetStringSelection())) {
+      wxMessageBox(_("Playback and Recording device must use the same type, i.e., MME, DirectSound, etc."));
+      return false;
+   }
+#endif
+#endif
+
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
+
+#if 0
+#if USE_PORTMIXER
+   if (gAudioIO)
+      gAudioIO->HandleDeviceChange();
+#endif // USE_PORTMIXER
+#endif
+
+   return true;
+}
+
+RecordingPrefs::RecordingPrefs(wxWindow * parent)
+:  PrefsPanel(parent, _("Recording"))
+{
+   Populate();
+}
+
+RecordingPrefs::~RecordingPrefs()
+{
+}
+
+void RecordingPrefs::Populate()
+{
+   // First any pre-processing for constructing the GUI.
+   GetNamesAndLabels();
+
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
 }
 
 /// Gets the lists of names and lists of labels which are
 /// used in the choice controls.
 /// The names are what the user sees in the wxChoice.
 /// The corresponding labels are what gets stored.
-void AudioIOPrefs::GetNamesAndLabels()
+void RecordingPrefs::GetNamesAndLabels()
 {
    // Get lists of devices both for play and record.
-   int j;
-   wxString Name;
-   wxString Label;
-
 #if USE_PORTAUDIO_V19
    int nDevices = Pa_GetDeviceCount();
 #else
@@ -78,196 +226,140 @@ void AudioIOPrefs::GetNamesAndLabels()
 #endif
 
 //   int numChannels = 0; // find max no. of record channels available
-   for(j=0; j<nDevices; j++) {
-      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
-      Name = DeviceName(info);
-      Label = Name;
-      if (info->maxOutputChannels > 0) {
-         mmPlayNames.Add( Name );
-         mmPlayLabels.Add( Label );
-      }
+   for (int i = 0; i < nDevices; i++) {
+      const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
       if (info->maxInputChannels > 0) {
-         mmRecordNames.Add( Name );
-         mmRecordLabels.Add( Label );
-//         if (info->maxInputChannels > numChannels)
-//            numChannels = info->maxInputChannels;
+         wxString name = DeviceName(info);
+         mRecordNames.Add(name);
+         mRecordNames.Add(name);
       }
    }
 
    // Channel counts, mono, stereo etc...
-   const int numChannels = 16;
-   for(int c=0; c<numChannels; c++)
+   for (int i = 0; i < 16; i++)
    {
-      mmChannelNames.Add(  wxString::Format(wxT("%d"), c+1));
-      mmChannelLabels.Add( c+1 );
+      mChannelNames.Add(wxString::Format(wxT("%d"), i + 1));
+      mChannelLabels.Add(i + 1);
    }
-   mmChannelNames[0] = wxString::Format(_("1 (Mono)"));
-   mmChannelNames[1] = wxString::Format(_("2 (Stereo)"));
+   mChannelNames[0] = _("1 (Mono)");
+   mChannelNames[1] = _("2 (Stereo)");
 }
 
-void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
+void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
 {
-   /// \todo
-   /// JKC: I think setting paths in gPrefs is bad practice.
-   /// Suppose we are using gPrefs from elsewhere at the same time?
-   /// Change these all to full paths?
-   gPrefs->SetPath(wxT("/AudioIO"));
+   S.SetBorder(2);
 
-   S.SetBorder( 2 );
-
-   S.StartHorizontalLay(wxEXPAND, 0 );
-   S.StartStatic( _("Playback"),1 );
+   S.StartStatic(_("Recording"));
    {
       S.StartMultiColumn(2, wxEXPAND);
-      S.SetStretchyCol(1);
-      mPlay = S.TieChoice( _("Device") + wxString(wxT(":")), wxT("PlaybackDevice"), 
-         wxT(""), mmPlayNames, mmPlayLabels );
+      {
+         S.SetStretchyCol(1);
+         mRec = S.TieChoice(_("Device") + wxString(wxT(":")),
+                            wxT("/AudioIO/RecordingDevice"),
+                            wxT(""),
+                            mRecordNames,
+                            mRecordLabels);
 
-      S.AddPrompt( _("Using:") );
-      wxString ver = _("Portaudio v");
-#if USE_PORTAUDIO_V19
-      ver += wxT("19");
-#else
-      ver += wxT("18");
-#endif
-      S.AddFixedText( ver );
-      S.EndMultiColumn();
-   }                              
-   S.EndStatic();
-   S.StartStatic( _("Recording"), 1 );
-   {
-      S.StartMultiColumn(2, wxEXPAND);
-      S.SetStretchyCol(1);
-      mRec = S.TieChoice( _("Device") + wxString(wxT(":")), wxT("RecordingDevice"), 
-         wxT(""), mmRecordNames, mmRecordLabels );
-      S.TieChoice( _("Channels") + wxString(wxT(":")), wxT("RecordChannels"), 
-         2, mmChannelNames, mmChannelLabels );
-      S.EndMultiColumn();
-   }
-   S.EndStatic();
-   S.EndHorizontalLay();
-   S.StartStatic( _("Playthrough") );
-   {
-      S.TieCheckBox( _("Overdub: &Play other tracks while recording new one"),
-         wxT("Duplex"),true);
-#ifdef __WXMAC__
-      S.TieCheckBox( _("&Hardware Playthrough: Play new track while recording it"),
-         wxT("Playthrough"),false);
-      S.TieCheckBox( _("&Software Playthrough: Play new track while recording it"),
-         wxT("SWPlaythrough"),false);
-#else
-      S.TieCheckBox( _("&Software Playthrough: Play new track while recording or monitoring"),
-         wxT("SWPlaythrough"),false);
-      wxString Temp = wxT("     ");
-      Temp += _("(uncheck when recording \"stereo mix\")");
-      // AddUnits abused here to get left aligned text.
-      S.AddUnits(Temp);
-#endif
-
-   }
-   S.EndStatic();
-   S.StartHorizontalLay( wxEXPAND, 0 );
-   S.StartStatic( _("Effects Preview"),1 );
-   {
-      S.StartThreeColumn();
-      S.TieTextBox( _("Length of preview:"), wxT("EffectsPreviewLen"), 3.0,9);
-      S.AddUnits( _("seconds") );
-      S.EndThreeColumn();
-   }
-   S.EndStatic();
-   S.StartStatic( _("Cut Preview"),1 );
-   {
-      S.StartThreeColumn();
-      S.TieTextBox( _("Preview before cut region:"), wxT("CutPreviewBeforeLen"),1.0,9);
-      S.AddUnits(  _("seconds") );
-      S.TieTextBox( _("Preview after cut region:"),wxT("CutPreviewAfterLen"), 1.0,9);
-      S.AddUnits(  _("seconds") );
-      S.EndThreeColumn();
-   }
-   S.EndStatic();
-   S.EndHorizontalLay();
-   S.StartHorizontalLay( wxEXPAND, 0 );
-
-   S.StartStatic( _("Latency"),1 );
-   {
-      S.StartThreeColumn();
-#if USE_PORTAUDIO_V19
-      // only show the following controls if we use Portaudio v19, because
-      // for Portaudio v18 we always use default buffer sizes
-      S.TieTextBox( _("Audio to buffer:\n(higher = more latency)"),wxT("LatencyDuration"),
-         DEFAULT_LATENCY_DURATION,9);
-      S.AddUnits(  _("milliseconds") );
-#endif
-      S.TieTextBox( _("Latency correction:\n(negative = backwards)"),wxT("LatencyCorrection"),
-         DEFAULT_LATENCY_CORRECTION,9);
-      S.AddUnits(  _("milliseconds") );
-      S.EndThreeColumn();
-   }
-   S.EndStatic();
-   S.StartStatic( _("Seek Time when playing"),1 );
-   {
-      S.StartThreeColumn();
-      S.TieTextBox( _("Short period:"), wxT("SeekShortPeriod"),1.0,9);
-      S.AddUnits(  _("seconds") );
-      S.TieTextBox( _("Long period:"),wxT("SeekLongPeriod"), 15.0,9);
-      S.AddUnits(  _("seconds") );
-      S.EndThreeColumn();
-   }
-   S.EndStatic();
-
-   gPrefs->SetPath(wxT("/"));
-}
-
-
-// JKC: This is some old code that was sizing control labels all the same, 
-// even if in different static controls.  It made for a nicer layout.
-// We might want to do something like that again in future.
-#if 0
-
-   // find out the biggest minimum size of labels
-   int maxIndex = 0,r;
-   wxSize maxMinSize = textSizer[0]->GetMinSize();
-   for (r = 1; r < 3; r++) {
-      if (textSizer[r]->GetMinSize().GetWidth() > maxMinSize.GetWidth()) {
-         maxMinSize = textSizer[r]->GetMinSize();
-         maxIndex = r;
+         S.TieChoice(_("Channels") + wxString(wxT(":")),
+                     wxT("/AudioIO/RecordChannels"),
+                     2,
+                     mChannelNames,
+                     mChannelLabels);
       }
+      S.EndMultiColumn();
    }
+   S.EndStatic();
 
-   // set small minimum sizes to max minumum size
-   for (r = 0; r < 3; r++) {
-      if (r != maxIndex) 
-         textSizer[r]->SetMinSize( maxMinSize );
+   S.StartStatic(_("Playthrough"));
+   {
+      S.TieCheckBox(_("Overdub: &Play other tracks while recording new one"),
+                    wxT("/AudioIO/Duplex"),
+                    true);
+#if defined(__WXMAC__)
+      S.TieCheckBox(_("&Hardware Playthrough: Play new track while recording it"),
+                    wxT("/AudioIO/Playthrough"),
+                    false);
+#endif
+      S.TieCheckBox(_("&Software Playthrough: Play new track while recording or monitoring"),
+                    wxT("/AudioIO/SWPlaythrough"),
+                    false);
+#if !defined(__WXMAC__)
+      S.AddUnits(wxString(wxT("     ")) + _("(uncheck when recording \"stereo mix\")"));
+#endif
    }
+   S.EndStatic();
+
+   S.StartStatic( _("Latency"));
+   {
+      S.StartThreeColumn();
+      {
+#if USE_PORTAUDIO_V19
+         // only show the following controls if we use Portaudio v19, because
+         // for Portaudio v18 we always use default buffer sizes
+         S.TieTextBox(_("Audio to buffer:"),
+                      wxT("/AudioIO/LatencyDuration"),
+                      DEFAULT_LATENCY_DURATION,
+                      9);
+         S.AddUnits(_("milliseconds (higher = more latency)"));
 #endif
 
+         S.TieTextBox(_("Latency correction:"),
+                      wxT("/AudioIO/LatencyCorrection"),
+                      DEFAULT_LATENCY_CORRECTION,
+                      9);
+         S.AddUnits(_("milliseconds (negative = backwards)"));
+      }
+      S.EndThreeColumn();
+   }
+   S.EndStatic();
 
-AudioIOPrefs::~AudioIOPrefs()
-{
+   S.StartStatic(_("Sound Activated Recording"));
+   {
+      S.TieCheckBox(_("Sound Activated Recording"),
+                    wxT("/AudioIO/SoundActivatedRecord"),
+                    false);
+
+      S.StartMultiColumn(2, wxEXPAND);
+      {
+         S.SetStretchyCol(1);
+         int dBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
+         S.TieSlider(_("Sound Activation Level (dB):"),
+                     wxT("/AudioIO/SilenceLevel"),
+                     -50,
+                     0,
+                     -dBRange);
+      }
+      S.EndMultiColumn();
+   }
+   S.EndStatic();
 }
 
-bool AudioIOPrefs::Apply()
+bool RecordingPrefs::Apply()
 {
+#if 0
 #if USE_PORTAUDIO_V19
    if (!AudioIO::ValidateDeviceNames(mPlay->GetStringSelection(), mRec->GetStringSelection())) {
       wxMessageBox(_("Playback and Recording device must use the same type, i.e., MME, DirectSound, etc."));
       return false;
    }
 #endif
+#endif
 
-   ShuttleGui S( this, eIsSavingToPrefs );
-   PopulateOrExchange( S );
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
 
    double latencyDuration = DEFAULT_LATENCY_DURATION;
    gPrefs->Read(wxT("/AudioIO/LatencyDuration"), &latencyDuration);
-   if (latencyDuration < 0)
+   if (latencyDuration < 0) {
       gPrefs->Write(wxT("/AudioIO/LatencyDuration"), DEFAULT_LATENCY_DURATION);
+   }
 
+#if 0
 #if USE_PORTMIXER
    if (gAudioIO)
       gAudioIO->HandleDeviceChange();
 #endif // USE_PORTMIXER
-
+#endif
    return true;
 }
 

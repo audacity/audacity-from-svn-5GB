@@ -50,10 +50,8 @@ enum { CleanSpeechID,
 
 /// Constructor
 BatchPrefs::BatchPrefs(wxWindow * parent):
-   PrefsPanel(parent)
+   PrefsPanel(parent, _("Batch"))
 {
-   SetLabel(_("Batch"));         // Provide visual label
-   SetName(_("Batch"));          // Provide audible label
    Populate();
 }
 

@@ -43,31 +43,25 @@ enum {
    ChooseButtonID
 };
 
-BEGIN_EVENT_TABLE(DirectoriesPrefs, wxPanel)
+BEGIN_EVENT_TABLE(DirectoriesPrefs, PrefsPanel)
    EVT_TEXT(TempDirID, DirectoriesPrefs::UpdateFreeSpace)
    EVT_BUTTON(ChooseButtonID, DirectoriesPrefs::OnChooseTempDir)
 END_EVENT_TABLE()
 
-DirectoriesPrefs::DirectoriesPrefs(wxWindow * parent):
-   PrefsPanel(parent),
-   mTempDirText( NULL )  // JKC: Must be initialised, ready for UpdateFreeSpace to look at.
+DirectoriesPrefs::DirectoriesPrefs(wxWindow * parent)
+:  PrefsPanel(parent, _("Directories")),
+   mTempDir(NULL)
 {
-   SetLabel(_("Directories"));         // Provide visual label
-   SetName(_("Directories"));          // Provide audible label
    Populate();
 }
 
-/// Creates the dialog and its contents.
-void DirectoriesPrefs::Populate( )
+DirectoriesPrefs::~DirectoriesPrefs()
 {
-   // First any pre-processing for constructing the GUI.
+}
 
-   mTempDir = gPrefs->Read(wxT("/Directories/TempDir"), wxT(""));
-   mOldTempDir = mTempDir;
-   //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
-   wxLongLong freeSpace;
-   wxGetDiskSpace(mTempDir, NULL, &freeSpace);
-   mStrFreeSpace = Internat::FormatSize(freeSpace);
+/// Creates the dialog and its contents.
+void DirectoriesPrefs::Populate()
+{
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
    // Use 'eIsCreatingFromPrefs' so that the GUI is 
@@ -75,56 +69,76 @@ void DirectoriesPrefs::Populate( )
    ShuttleGui S(this, eIsCreatingFromPrefs);
    PopulateOrExchange(S);
    // ----------------------- End of main section --------------
+
+   wxCommandEvent e;
+   UpdateFreeSpace(e);
 }
 
-/// Places controls on the panel and also exchanges data with them.
-/// As of Jun/2006 the only gPrefs value, mTempDir is
-/// actually retrieved from gPrefs earlier, so the exchange is
-/// with that variable rather than with gPrefs.
-void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
+void DirectoriesPrefs::PopulateOrExchange(ShuttleGui & S)
 {
-   S.SetBorder( 2 );
-   S.StartStatic( _("Temporary files directory"),0);
+   S.SetBorder(2);
+
+   S.StartStatic(_("Temporary files directory"));
    {
       S.StartMultiColumn(3, wxEXPAND);
-      S.SetStretchyCol( 1 );// Column 1 is stretchy...
-      mTempDirText = S.Id( TempDirID ).AddTextBox( _("Location:"),  mTempDir, 30);
-      S.Id( ChooseButtonID ).AddButton( _("Choose..."));
-      S.AddFixedText( _("Free Space:"));
-      mFreeSpace = S.AddVariableText( mStrFreeSpace );
+      {
+         S.SetStretchyCol(1);
+         S.Id(TempDirID);
+         mTempDir = S.TieTextBox(_("Location:"),
+                                 wxT("/Directories/TempDir"),
+                                 wxT(""),
+                                 30);
+         S.Id(ChooseButtonID);
+         S.AddButton(_("Choose..."));
+
+         S.AddFixedText(_("Free Space:"));
+         mFreeSpace = S.AddVariableText(wxT(""));
+      }
       S.EndMultiColumn();
    }
    S.EndStatic();
 
-   S.StartStatic( _("Auto save"),0);
+   S.StartStatic(_("Auto save"));
    {
-      S.TieCheckBox( _("Auto save a copy of the project in a separate folder"),
-                     wxT("/Directories/AutoSaveEnabled"), true);
+      S.TieCheckBox(_("Auto save a copy of the project in a separate folder"),
+                    wxT("/Directories/AutoSaveEnabled"),
+                    true);
       S.StartThreeColumn();
-      S.TieTextBox( _("Auto save interval:"), wxT("/Directories/AutoSaveMinutes"), 2.0, 9);
-      S.AddUnits(  _("minutes") );
+      {
+         S.TieTextBox(_("Auto save interval:"),
+                      wxT("/Directories/AutoSaveMinutes"),
+                      2.0,
+                      9);
+         S.AddUnits(_("minutes"));
+      }
       S.EndThreeColumn();
    }
    S.EndStatic();
    
-   S.StartStatic( _("Audio cache"),0);
+   S.StartStatic(_("Audio cache"));
    {
-      S.TieCheckBox( _("Play and/or record using RAM (useful for slow drives)"),
-                     wxT("/Directories/CacheBlockFiles"), false);
+      S.TieCheckBox(_("Play and/or record using RAM (useful for slow drives)"),
+                    wxT("/Directories/CacheBlockFiles"),
+                    false);
       S.StartTwoColumn();
-      S.TieTextBox( _("Minimum Free Memory (MB):"), wxT("/Directories/CacheLowMem"), 16, 9);
-      S.EndThreeColumn();
-      S.AddVariableText( _("If the available system memory falls below this value, audio will no longer be cached in memory and will be written to disk.") );
+      {
+         S.TieTextBox(_("Minimum Free Memory (MB):"),
+                      wxT("/Directories/CacheLowMem"),
+                      16,
+                      9);
+         S.EndThreeColumn();
+      }
+      S.AddVariableText(_("If the available system memory falls below this value, audio will no longer be cached in memory and will be written to disk."))->Wrap(600);
    }
    S.EndStatic();
 }
 
-void DirectoriesPrefs::OnChooseTempDir(wxCommandEvent &event)
+void DirectoriesPrefs::OnChooseTempDir(wxCommandEvent & e)
 {
    wxDirDialog dlog(this, 
-                     _("Choose a location to place the temporary directory"), 
-                     gPrefs->Read(wxT("/Directories/TempDir"), 
-                     wxGetApp().defaultTempDir));
+                    _("Choose a location to place the temporary directory"), 
+                    gPrefs->Read(wxT("/Directories/TempDir"), 
+                                 wxGetApp().defaultTempDir));
    dlog.ShowModal();
    if (dlog.GetPath() != wxT("")) {
       wxFileName tmpDirPath;
@@ -134,83 +148,87 @@ void DirectoriesPrefs::OnChooseTempDir(wxCommandEvent &event)
 #else
       tmpDirPath.AppendDir(wxT(".audacity_temp"));
 #endif
-      mTempDirText->SetValue(tmpDirPath.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR));
-      UpdateFreeSpace(event);
+      mTempDir->SetValue(tmpDirPath.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR));
+      UpdateFreeSpace(e);
    }
 }
 
-void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
+void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent & e)
 {
-   static wxLongLong space;
-   static wxString tempDir;
+   wxString tempDir;
+   wxString label;
 
-   if (!mTempDirText)
-      return;
+   if (!mTempDir) {
+      tempDir = mTempDir->GetValue();
+   }
 
-   tempDir = mTempDirText->GetValue();
+   if (wxDirExists(tempDir)) {
+      wxLongLong space;
+      wxGetDiskSpace(tempDir, NULL, &space);
+      label = Internat::FormatSize(space);
+   }
+   else {
+      label = _("unavailable - above location doesn't exist");
+   }
 
-   /* Try to be smart: if the directory doesn't exist, go up the
-    * directory path until one is, because that's the volume that
-    * the new directory would be created on */
-   while(!wxDirExists(tempDir) && tempDir.Find(wxFILE_SEP_PATH) != -1)
-      tempDir = tempDir.BeforeLast(wxFILE_SEP_PATH);
-
-   //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
-   wxLogNull nolog;
-   wxGetDiskSpace(tempDir, NULL, &space);
-   mFreeSpace->SetLabel(Internat::FormatSize(space));
+   mFreeSpace->SetLabel(label);
 }
-   
-bool DirectoriesPrefs::Apply()
+
+bool DirectoriesPrefs::Validate()
 {
-   mTempDir = mTempDirText->GetValue();
+   wxFileName tempDir;
+   tempDir.SetPath(mTempDir->GetValue());
 
-   if(!wxDirExists(mTempDir)) {
+   if (!tempDir.DirExists()) {
       int ans = wxMessageBox(
-            wxString::Format(_("Directory %s does not exist. Create it?"),
-                             mTempDir.c_str()),
-            _("New Temporary Directory"),
-            wxYES_NO|wxCENTRE|wxICON_EXCLAMATION);
+         wxString::Format(_("Directory %s does not exist. Create it?"),
+                          tempDir.GetPath().c_str()),
+         _("New Temporary Directory"),
+         wxYES_NO | wxCENTRE | wxICON_EXCLAMATION);
 
-      if(ans == wxYES) {
-         if(!wxMkdir(mTempDir, 0755)) {
-            /* wxWindows throws up a decent looking dialog */
-            return false;
-         }
-      } 
-      else {
+      if (ans != wxYES) {
+         return false;
+      }
+
+      if (!tempDir.Mkdir(0755, wxPATH_MKDIR_FULL)) {
+         /* wxWindows throws up a decent looking dialog */
          return false;
       }
    }
    else {
       /* If the directory already exists, make sure it is writable */
       wxLogNull logNo;
-      wxString tempDir = mTempDir + wxFILE_SEP_PATH + wxT("canicreate");
-      if(!wxMkdir(tempDir, 0755)) {
+      tempDir.AppendDir(wxT("canicreate"));
+      if (!tempDir.Mkdir(0755)) {
          wxMessageBox(
-               wxString::Format(_("Directory %s is not writable"),
-                                mTempDir.c_str()),
-               _("Error"), wxOK|wxICON_ERROR);
+            wxString::Format(_("Directory %s is not writable"),
+                             tempDir.GetPath().c_str()),
+            _("Error"),
+            wxOK | wxICON_ERROR);
          return false;
       }
-      wxRmdir(tempDir);
+      tempDir.Rmdir();
+      tempDir.RemoveLastDir();
    }
 
-   gPrefs->Write(wxT("/Directories/TempDir"), mTempDir);
-
-   if (mTempDir != mOldTempDir)
+   wxFileName oldDir;
+   oldDir.SetPath(gPrefs->Read(wxT("/Directories/TempDir")));
+   if (tempDir != oldDir) {
       wxMessageBox(
-            _("Changes to temporary directory will not take effect until Audacity is restarted"),
-            wxT("Temp Directory Update"), wxOK|wxCENTRE|wxICON_INFORMATION);
-
-   ShuttleGui S( this, eIsSavingToPrefs );
-   PopulateOrExchange( S );
+         _("Changes to temporary directory will not take effect until Audacity is restarted"),
+         wxT("Temp Directory Update"),
+         wxOK | wxCENTRE | wxICON_INFORMATION);
+   }
 
    return true;
 }
 
-DirectoriesPrefs::~DirectoriesPrefs()
+bool DirectoriesPrefs::Apply()
 {
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
+
+   return true;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

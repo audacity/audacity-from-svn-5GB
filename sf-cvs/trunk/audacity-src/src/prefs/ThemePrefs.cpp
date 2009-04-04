@@ -47,21 +47,18 @@ enum eThemePrefsIds {
    idSaveThemeAsCode
 };
 
-BEGIN_EVENT_TABLE(ThemePrefs, wxPanel)
-   EVT_BUTTON( idLoadThemeCache,      ThemePrefs::OnLoadThemeCache)
-   EVT_BUTTON( idSaveThemeCache,      ThemePrefs::OnSaveThemeCache)
-   EVT_BUTTON( idLoadThemeComponents, ThemePrefs::OnLoadThemeComponents)
-   EVT_BUTTON( idSaveThemeComponents, ThemePrefs::OnSaveThemeComponents)
-   EVT_BUTTON( idReadThemeInternal,   ThemePrefs::OnReadThemeInternal)
-   EVT_BUTTON( idSaveThemeAsCode,     ThemePrefs::OnSaveThemeAsCode)
+BEGIN_EVENT_TABLE(ThemePrefs, PrefsPanel)
+   EVT_BUTTON(idLoadThemeCache,      ThemePrefs::OnLoadThemeCache)
+   EVT_BUTTON(idSaveThemeCache,      ThemePrefs::OnSaveThemeCache)
+   EVT_BUTTON(idLoadThemeComponents, ThemePrefs::OnLoadThemeComponents)
+   EVT_BUTTON(idSaveThemeComponents, ThemePrefs::OnSaveThemeComponents)
+   EVT_BUTTON(idReadThemeInternal,   ThemePrefs::OnReadThemeInternal)
+   EVT_BUTTON(idSaveThemeAsCode,     ThemePrefs::OnSaveThemeAsCode)
 END_EVENT_TABLE()
 
-ThemePrefs::ThemePrefs(wxWindow * parent) :
-   PrefsPanel(parent)
+ThemePrefs::ThemePrefs(wxWindow * parent)
+:  PrefsPanel(parent, _("Theme"))
 {
-   SetLabel(_("Theme"));         // Provide visual label
-   SetName(_("Theme"));          // Provide audible label
-  
    Populate();
 }
 
@@ -70,7 +67,7 @@ ThemePrefs::~ThemePrefs(void)
 }
 
 /// Creates the dialog and its contents.
-void ThemePrefs::Populate( )
+void ThemePrefs::Populate()
 {
    // First any pre-processing for constructing the GUI.
 
@@ -84,27 +81,58 @@ void ThemePrefs::Populate( )
 }
 
 /// Create the dialog contents, or exchange data with it.
-void ThemePrefs::PopulateOrExchange( ShuttleGui & S)
+void ThemePrefs::PopulateOrExchange(ShuttleGui & S)
 {
-   S.StartHorizontalLay(wxEXPAND,1);
-   S.StartVerticalLay(0);
-   /* i18n-hint: && in here is an escape character to get a single & on screen,
-	* so keep it as is */
-   S.StartStatic( _("Theme Cache - Images && Color"));
+   S.SetBorder(2);
+
+   S.StartStatic(_("Info"));
    {
-      S.Id( idSaveThemeCache ).AddButton( _("Save Theme Cache"));
-      S.Id( idLoadThemeCache ).AddButton( _("Load Theme Cache"));
-// This next button is only provided in Debug mode.
-// It is for developers who are compiling Audacity themselves
-// and who who wish to generate a new ThemeAsCeeCode.h and compile it in.
+      S.AddFixedText(
+         _("Themability is an experimental feature.\n\nTo try it out, click \"Save Theme Cache\" then find and modify the images and colors in\nImageCacheVxx.png using an image editor such as the Gimp.\n\nClick \"Load Theme Cache\" to load the changed images and colors back into Audacity.\n\n[Only the control toolbar and the colors on the wavetrack are currently affected, even though\nthe image file shows other icons too.]")
+         );
+
 #ifdef __WXDEBUG__
-//      S.Id( idSaveThemeAsCode ).AddButton( wxT("Save Code" ));
-      S.Id( idSaveThemeAsCode ).AddButton( wxT("Output Sourcery" ));
+      S.AddFixedText(
+         _("You have compiled Audacity with an extra button, 'Output Sourcery'.  This will save a C version\nof the image cache that can be compiled in as a default.")
+         );
 #endif
 
-      S.Id( idReadThemeInternal ).AddButton( _("&Defaults" ));
-      S.TieCheckBox( _("Load Theme Cache At Startup"),  
-         wxT("/Theme/LoadAtStart"), false);
+      S.AddFixedText(
+         _("If 'Load Theme Cache At Startup' is checked, then the Theme Cache will be loaded when the\nprogram starts up.")
+         );
+      S.AddFixedText(
+         _("Saving and loading individual theme files uses a separate file for each image, but is otherwise\nthe same idea.")
+         );
+   }
+   S.EndStatic();
+
+   /* i18n-hint: && in here is an escape character to get a single & on screen,
+	* so keep it as is */
+   S.StartStatic(		_("Theme Cache - Images && Color"));
+   {
+      S.StartHorizontalLay(wxALIGN_LEFT);
+      {
+         S.Id(idSaveThemeCache).AddButton(_("Save Theme Cache"));
+         S.Id(idLoadThemeCache).AddButton(_("Load Theme Cache"));
+
+         // This next button is only provided in Debug mode.
+         // It is for developers who are compiling Audacity themselves
+         // and who who wish to generate a new ThemeAsCeeCode.h and compile it in.
+#ifdef __WXDEBUG__
+         S.Id(idSaveThemeAsCode).AddButton(wxT("Output Sourcery"));
+#endif
+
+         S.Id(idReadThemeInternal).AddButton(_("&Defaults"));
+      }
+      S.EndHorizontalLay();
+      
+      S.StartHorizontalLay(wxALIGN_LEFT);
+      {
+         S.TieCheckBox(_("Load Theme Cache At Startup"),  
+                       wxT("/Theme/LoadAtStart"),
+                       false);
+      }
+      S.EndHorizontalLay();
    }
    S.EndStatic();
 
@@ -117,58 +145,31 @@ void ThemePrefs::PopulateOrExchange( ShuttleGui & S)
    // buttons smaller and less tempting to click.
    S.StartStatic( _("Individual Theme Files"),1);
    {
-      S.Id( idSaveThemeComponents ).AddButton( _("Save Files"));
-      S.Id( idLoadThemeComponents ).AddButton( _("Load Files"));
+      S.StartHorizontalLay(wxALIGN_LEFT);
+      {
+         S.Id(idSaveThemeComponents).AddButton( _("Save Files"));
+         S.Id(idLoadThemeComponents).AddButton( _("Load Files"));
+      }
+      S.EndHorizontalLay();
    }
    S.EndStatic();
-   S.EndVerticalLay();
-
-   S.StartStatic( _("Info"), 1 );
-   {
-      S.AddFixedText( 
-         _("Themability is an experimental feature.\n\nTo try it out, click \"Save Theme Cache\" then\nfind and modify the images and colors in \nImageCacheVxx.png using an image editor such \nas the Gimp.\n\nClick \"Load Theme Cache\" to load the changed images\nand colors back into Audacity.\n\n[Only the control toolbar and the colors on the \nwavetrack are currently affected, even though the\nimage file shows other icons too.]\n")
-         );
-
-#ifdef __WXDEBUG__
-      S.AddFixedText( 
-         _("You have compiled Audacity with an extra button, \n'Output Sourcery'.  This will save a C version of \nthe image cache that can be compiled in as a default.\n")
-         );
-#endif
-
-      S.AddFixedText( 
-         _("If 'Load Theme Cache At Startup' is checked, then \nthe Theme Cache will be loaded when the program \nstarts up.\n\n")
-		 );
-      S.AddFixedText(
-         _("Saving and loading individual theme files uses a \nseparate file for each image, but is otherwise the \nsame idea.\n\n")
-         );
-   }
-   S.EndStatic();
-}
-
-/// Update the preferences stored on disk.
-bool ThemePrefs::Apply()
-{
-   ShuttleGui S( this, eIsSavingToPrefs );
-   PopulateOrExchange( S );
-
-   return true;
 }
 
 /// Load Theme from multiple png files.
-void ThemePrefs::OnLoadThemeComponents(wxCommandEvent &event)
+void ThemePrefs::OnLoadThemeComponents(wxCommandEvent & e)
 {
    theTheme.LoadComponents();
    theTheme.ApplyUpdatedImages();
 }
 
 /// Save Theme to multiple png files.
-void ThemePrefs::OnSaveThemeComponents(wxCommandEvent &event)
+void ThemePrefs::OnSaveThemeComponents(wxCommandEvent & e)
 {
    theTheme.SaveComponents();
 }
 
 /// Load Theme from single png file.
-void ThemePrefs::OnLoadThemeCache(wxCommandEvent &event)
+void ThemePrefs::OnLoadThemeCache(wxCommandEvent & e)
 {
    theTheme.ReadImageCache();
    AColor::ReInit();
@@ -176,23 +177,42 @@ void ThemePrefs::OnLoadThemeCache(wxCommandEvent &event)
 }
 
 /// Save Theme to single png file.
-void ThemePrefs::OnSaveThemeCache(wxCommandEvent &event)
+void ThemePrefs::OnSaveThemeCache(wxCommandEvent & e)
 {
    theTheme.CreateImageCache();
-   theTheme.WriteImageMap( );// bonus - give them the html version.
+   theTheme.WriteImageMap();// bonus - give them the html version.
 }
 
 /// Read Theme from internal storage.
-void ThemePrefs::OnReadThemeInternal( wxCommandEvent &event)
+void ThemePrefs::OnReadThemeInternal(wxCommandEvent & e)
 {
    theTheme.ReadThemeInternal();
    theTheme.ApplyUpdatedImages();
 }
 
 /// Save Theme as C source code.
-void ThemePrefs::OnSaveThemeAsCode(wxCommandEvent &event)
+void ThemePrefs::OnSaveThemeAsCode(wxCommandEvent & e)
 {
    theTheme.SaveThemeAsCode();
-   theTheme.WriteImageDefs( );// bonus - give them the Defs too.
+   theTheme.WriteImageDefs();// bonus - give them the Defs too.
 }
 
+/// Update the preferences stored on disk.
+bool ThemePrefs::Apply()
+{
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
+
+   return true;
+}
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: f09afeeb-9805-463a-b3ca-e3e3bfe05549

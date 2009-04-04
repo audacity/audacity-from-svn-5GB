@@ -1672,7 +1672,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       gFreqWindow = NULL;
    }
 
-   if (gPrefsDialogVisible || wxIsBusy()) {
+   if (wxIsBusy()) {
       event.Veto();
       return;
    }

@@ -23,40 +23,31 @@
 
 #include <wx/defs.h>
 #include <wx/string.h>
+#include <wx/window.h>
+
+#include "../Experimental.h"
+#include "../ShuttleGui.h"
 
 #include "PrefsPanel.h"
-#include "../Experimental.h"
-
-class wxWindow;
-class ShuttleGui;
 
 class SpectrumPrefs:public PrefsPanel
 {
-public:
+ public:
    SpectrumPrefs(wxWindow * parent);
-   ~SpectrumPrefs();
+   virtual ~SpectrumPrefs();
    virtual bool Apply();
+   virtual bool Validate();
 
-private:
+ private:
    void Populate();
-   void PopulateOrExchange( ShuttleGui & S );
-   wxString minFreqStr;
-   wxString maxFreqStr;
-   int windowType;
+   void PopulateOrExchange(ShuttleGui & S);
 
-#ifdef EXPERIMENTAL_FFT_SKIP_POINTS
-   int fftSkipPoints;
-#endif //EXPERIMENTAL_FFT_SKIP_POINTS
-#ifdef EXPERIMENTAL_FFT_Y_GRID
-   bool fftYGrid;
-#endif //EXPERIMENTAL_FFT_Y_GRID
+   wxTextCtrl *mMinFreq;
+   wxTextCtrl *mMaxFreq;
+
 #ifdef EXPERIMENTAL_FIND_NOTES
-   bool fftFindNotes;
-   bool findNotesQuantize;
-   wxString findNotesMinAStr;
-   int findNotesMinA;
-   wxString findNotesNStr;
-   int findNotesN;
+   wxTextCtrl *mFindNotesMinA;
+   wxTextCtrl *mFindNotesN;
 #endif
 };
 

@@ -12,41 +12,52 @@
 #ifndef __AUDACITY_AUDIO_IO_PREFS__
 #define __AUDACITY_AUDIO_IO_PREFS__
 
-#include <wx/string.h>
-
-#include "PrefsPanel.h"
-
-class wxWindow;
-class wxCheckBox;
-class wxChoice;
 #include <wx/defs.h>
+
+#include <wx/checkbox.h>
+#include <wx/choice.h>
 #include <wx/string.h>
+#include <wx/window.h>
+
+#include "../ShuttleGui.h"
 
 #include "PrefsPanel.h"
 
-class wxWindow;
-class ShuttleGui;
-
-class AudioIOPrefs:public PrefsPanel 
+class PlaybackPrefs:public PrefsPanel
 {
-public:
-   AudioIOPrefs(wxWindow * parent);
-   ~AudioIOPrefs();
+ public:
+   PlaybackPrefs(wxWindow * parent);
+   virtual ~PlaybackPrefs();
    virtual bool Apply();
 
-private:
+ private:
    void Populate();
-   void PopulateOrExchange( ShuttleGui & S );
+   void PopulateOrExchange(ShuttleGui & S);
    void GetNamesAndLabels();
 
-   wxArrayString mmPlayNames;
-   wxArrayString mmPlayLabels;
-   wxArrayString mmRecordNames;
-   wxArrayString mmRecordLabels;
-   wxArrayString mmChannelNames;
-   wxArrayInt    mmChannelLabels;
+   wxArrayString mPlayNames;
+   wxArrayString mPlayLabels;
 
    wxChoice *mPlay;
+};
+
+class RecordingPrefs:public PrefsPanel
+{
+ public:
+   RecordingPrefs(wxWindow * parent);
+   virtual ~RecordingPrefs();
+   virtual bool Apply();
+
+ private:
+   void Populate();
+   void PopulateOrExchange(ShuttleGui & S);
+   void GetNamesAndLabels();
+
+   wxArrayString mRecordNames;
+   wxArrayString mRecordLabels;
+   wxArrayString mChannelNames;
+   wxArrayInt    mChannelLabels;
+
    wxChoice *mRec;
 };
 
