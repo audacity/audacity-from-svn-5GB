@@ -228,7 +228,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
 
    mAxisChoice->SetSelection(mAxis);
 
-   mLogAxis = false;
+   mLogAxis = mAxis?true:false;
 
    mExportButton = new wxButton(this, FreqExportButtonID,
                                 _("&Export..."));
