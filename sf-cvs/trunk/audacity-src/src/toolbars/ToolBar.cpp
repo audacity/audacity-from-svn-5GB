@@ -392,10 +392,15 @@ void ToolBar::MakeRecoloredImage( teBmps eBmpOut, teBmps eBmpIn )
 {
    wxImage * pPattern;
    wxImage * pSrc = &theTheme.Image( eBmpIn );
-   wxColour newColour = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-   wxColour baseColour = wxColour(204, 204, 204);
+#if defined( __WXGTK__ )
+   wxColour newColour = wxSystemSettings::GetColour( wxSYS_COLOUR_MENUBAR );
+#else
+   wxColour newColour = wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE );
+#endif
+   wxColour baseColour = wxColour( 204, 204, 204 );
 
-   pPattern = ChangeImageColour( pSrc,     baseColour, newColour );
+   pPattern = ChangeImageColour( pSrc, baseColour, newColour );
+
    theTheme.ReplaceImage( eBmpOut, pPattern);
    delete pPattern;
 }
