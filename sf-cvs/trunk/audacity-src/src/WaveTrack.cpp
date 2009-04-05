@@ -132,10 +132,8 @@ WaveTrack::~WaveTrack()
 {   
    //Let the ODManager know this WaveTrack is disappearing.  
    //Deschedules tasks associated with this track.  
-//#ifdef EXPERIMENTAL_ONDEMAND
    if(ODManager::IsInstanceCreated())
       ODManager::Instance()->RemoveWaveTrack(this);
-//#endif
    
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
       delete it->GetData();

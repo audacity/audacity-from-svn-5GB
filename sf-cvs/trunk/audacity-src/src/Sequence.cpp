@@ -619,14 +619,9 @@ bool Sequence::AppendAlias(wxString fullPath,
    SeqBlock *newBlock = new SeqBlock();
 
    newBlock->start = mNumSamples;
-   newBlock->f =
-//#ifdef EXPERIMENTAL_ONDEMAND
-   useOD?
+   newBlock->f = useOD?
       mDirManager->NewODAliasBlockFile(fullPath, start, len, channel):
       mDirManager->NewAliasBlockFile(fullPath, start, len, channel);
-//#else
-//      mDirManager->NewAliasBlockFile(fullPath, start, len, channel);
-//#endif
    mBlock->Add(newBlock);
    mNumSamples += newBlock->f->GetLength();
 
