@@ -2291,41 +2291,36 @@ void AudacityProject::OpenFile(wxString fileName, bool addtohistory)
    }
 
    GetDirManager()->FillBlockfilesCache();
-   
-   
 
-//#ifdef EXPERIMENTAL_ONDEMAND
-      //check the ODManager to see if we should add the tracks to the ODManager.
-      //this flag would have been set in the HandleXML calls from above, if there were
-      //OD***Blocks.
-      if(ODManager::HasLoadedODFlag())
-      {
-         Track *tr;
-         TrackListIterator triter(mTracks);         
-         tr = triter.First();
-         
-         ODComputeSummaryTask* computeTask;
-         bool odUsed = false;
-         while (tr) {
-            if (tr->GetKind() == Track::Wave)
+   //check the ODManager to see if we should add the tracks to the ODManager.
+   //this flag would have been set in the HandleXML calls from above, if there were
+   //OD***Blocks.
+   if(ODManager::HasLoadedODFlag())
+   {
+      Track *tr;
+      TrackListIterator triter(mTracks);         
+      tr = triter.First();
+      
+      ODComputeSummaryTask* computeTask;
+      bool odUsed = false;
+      while (tr) {
+         if (tr->GetKind() == Track::Wave)
+         {
+            if(!odUsed)
             {
-               if(!odUsed)
-               {
-                  computeTask=new ODComputeSummaryTask;
-                  odUsed=true;
-               }
-               computeTask->AddWaveTrack((WaveTrack*)tr);
+               computeTask=new ODComputeSummaryTask;
+               odUsed=true;
             }
-            tr = triter.Next();
+            computeTask->AddWaveTrack((WaveTrack*)tr);
          }
-         if(odUsed)
-            ODManager::Instance()->AddNewTask(computeTask);
-            
-            //release the flag.
-         ODManager::UnmarkLoadedODFlag();
+         tr = triter.Next();
       }
-//#endif
-
+      if(odUsed)
+         ODManager::Instance()->AddNewTask(computeTask);
+         
+         //release the flag.
+      ODManager::UnmarkLoadedODFlag();
+   }
 }
 
 bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
@@ -3248,8 +3243,6 @@ void AudacityProject::PopState(TrackList * l)
       copyTrack=t->Duplicate();
       mTracks->Add(copyTrack);
      
-
-//#ifdef EXPERIMENTAL_ONDEMAND
       //add the track to OD if the manager exists.  later we might do a more rigorous check...
       if (copyTrack->GetKind() == Track::Wave)
       {
@@ -3265,8 +3258,6 @@ void AudacityProject::PopState(TrackList * l)
             computeTask->AddWaveTrack((WaveTrack*)copyTrack);
          }
       }
-//#endif
-      
       t = iter.Next();
    }
 
