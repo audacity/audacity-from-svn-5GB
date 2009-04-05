@@ -344,6 +344,7 @@ class TrackPanel:public wxPanel {
 
    void OnSplitStereo(wxCommandEvent &event);
    void OnSplitStereoMono(wxCommandEvent &event);
+   void SplitStereo(bool stereo);
    void OnMergeStereo(wxCommandEvent &event);
    void OnCutSelectedText(wxCommandEvent &event);
    void OnCopySelectedText(wxCommandEvent &event);
