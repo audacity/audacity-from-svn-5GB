@@ -6182,11 +6182,9 @@ void TrackPanel::OnChannelChange(wxCommandEvent & event)
    wxASSERT(mPopupMenuTarget);
    mPopupMenuTarget->SetChannel(channels[id - OnChannelLeftID]);
    MakeParentPushState(wxString::Format(_("Changed '%s' to %s"),
-                                        mPopupMenuTarget->GetName().
-                                        c_str(),
-                                        channelmsgs[id -
-                                                    OnChannelLeftID]),
-                       _("Channel"));
+                        mPopupMenuTarget->GetName().c_str(),
+                        channelmsgs[id - OnChannelLeftID]),
+                        _("Channel"));
    mPopupMenuTarget = NULL;
    Refresh(false);
 }
@@ -6194,49 +6192,46 @@ void TrackPanel::OnChannelChange(wxCommandEvent & event)
 /// Split a stereo track into two tracks...
 void TrackPanel::OnSplitStereo(wxCommandEvent &event)
 {
-   wxASSERT(mPopupMenuTarget);
-   mPopupMenuTarget->SetLinked(false);
-     
-   //On Demand - have each channel add it's own.
-//#ifdef EXPERIMENTAL_ONDEMAND 
-   Track *partner = mPopupMenuTarget->GetLink();
-   if (ODManager::IsInstanceCreated() && partner && partner->GetKind() == Track::Wave)
-      ODManager::Instance()->MakeWaveTrackIndependent((WaveTrack*)partner);
-//#endif
-   
-   MakeParentPushState(wxString::Format(_("Split stereo track '%s'"),
-                                        mPopupMenuTarget->GetName().
-                                        c_str()),
-                       _("Split"));
-
-   Refresh(false);
+   SplitStereo(true);
 }
 
 /// Split a stereo track into two mono tracks...
 void TrackPanel::OnSplitStereoMono(wxCommandEvent &event)
 {
+   SplitStereo(false);
+}
+
+/// Split a stereo track into two tracks...
+void TrackPanel::SplitStereo(bool stereo)
+{
    wxASSERT(mPopupMenuTarget);
+
+   if (!stereo)
+      mPopupMenuTarget->SetChannel(Track::MonoChannel);
+   
    Track *partner = mPopupMenuTarget->GetLink();
-   mPopupMenuTarget->SetLinked(false);
-     
-   //make the split tracks mono
-   mPopupMenuTarget->SetChannel(Track::MonoChannel);
-   if (partner) {
-      partner->SetChannel(Track::MonoChannel);
-      if (partner->GetName() == _("Audio Track"))  // still the default
-         partner->SetName(mPopupMenuTarget->GetName());  // so set to something sensible
+   if (partner)
+   {
+      partner->SetName(mPopupMenuTarget->GetName());
+      if (!stereo)
+         partner->SetChannel(Track::MonoChannel);  // Keep original stereo track name.
 
    //On Demand - have each channel add it's own.
-//#ifdef EXPERIMENTAL_ONDEMAND 
+//#ifdef EXPERIMENTAL_ONDEMAND
       if (ODManager::IsInstanceCreated() && partner->GetKind() == Track::Wave)
          ODManager::Instance()->MakeWaveTrackIndependent((WaveTrack*)partner);
 //#endif
    }
-   
-   MakeParentPushState(wxString::Format(_("Split Stereo to Mono '%s'"),
-                                        mPopupMenuTarget->GetName().
-                                        c_str()),
-                       _("Split"));
+
+   mPopupMenuTarget->SetLinked(false);
+
+   wxString msg;
+   if(stereo)
+      msg.Printf(_("Split stereo track '%s'"), mPopupMenuTarget->GetName().c_str());
+   else
+      msg.Printf(_("Split Stereo to Mono '%s'"), mPopupMenuTarget->GetName().c_str());
+
+   MakeParentPushState(msg, _("Split"));
 
    Refresh(false);
 }
