@@ -209,6 +209,9 @@ from there.  Audacity will look for a file called "Pause.png".
 #ifndef HAVE_AUDACITYLOGOWITHNAME
    #define HAVE_AUDACITYLOGOWITHNAME
    #include "../images/AudacityLogoWithName.xpm"
+#ifdef __WXGTK__
+   #include "../images/AudacityLogoAlpha.xpm"
+#endif
 #endif
 
    DEFINE_IMAGE( bmpAudacityLogo, wxImage( 215, 190 ), wxT("AudacityLogo")); //vvv
