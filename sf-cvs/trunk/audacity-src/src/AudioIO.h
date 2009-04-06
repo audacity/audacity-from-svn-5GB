@@ -379,15 +379,7 @@ private:
    double              mMaxPlaybackSecsToCopy;
    double              mMinCaptureSecsToCopy;
    bool                mPaused;
-#if USE_PORTAUDIO_V19
    PaStream           *mPortStreamV19;
-/* REQUIRES PORTMIDI */
-//   volatile bool       mInCallbackFinishedState;
-
-#else /* USE_PORTAUDIO_V19 */
-   PortAudioStream    *mPortStreamV18;
-   volatile bool       mInCallbackFinishedState;
-#endif /* USE_PORTAUDIO_V19 */
    bool                mSoftwarePlaythrough;
    bool                mPauseRec;
    float               mSilenceLevel;
@@ -435,8 +427,7 @@ private:
    friend void DeinitAudioIO();
 
    TimeTrack *mTimeTrack;
-   
-#if USE_PORTAUDIO_V19
+
    /** brief The function which is called from PortAudio's callback thread
     * context to collect and deliver audio for / from the sound device.
     *
@@ -456,13 +447,6 @@ private:
                 unsigned long framesPerBuffer,
                 const PaStreamCallbackTimeInfo *timeInfo,
                 PaStreamCallbackFlags statusFlags, void *userData );
-#else /* USE_PORTAUDIO_V19 */
-   friend int audacityAudioCallback(
-                void *inputBuffer, void *outputBuffer,
-                unsigned long framesPerBuffer,
-                PaTimestamp outTime, void *userData );
-#endif /* USE_PORTAUDIO_V19 */
-
 };
 
 #endif

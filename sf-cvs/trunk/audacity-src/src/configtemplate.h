@@ -115,9 +115,6 @@
 /* Define if Nyquist support should be enabled */
 #undef USE_NYQUIST
 
-/* Define if PortAudio v19 is being used (instead of v18) */
-#undef USE_PORTAUDIO_V19
-
 /* Define if PortMixer support should be enabled */
 #undef USE_PORTMIXER
 

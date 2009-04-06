@@ -79,11 +79,7 @@ void DeviceToolBar::Populate()
    wxArrayString inputs;
    wxArrayString outputs;
 
-#if USE_PORTAUDIO_V19
    int nDevices = Pa_GetDeviceCount();
-#else
-   int nDevices = Pa_CountDevices();
-#endif
 
    for (i = 0; i < nDevices; i++) {
       const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
