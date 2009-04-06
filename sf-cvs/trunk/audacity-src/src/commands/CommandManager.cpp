@@ -654,7 +654,7 @@ wxString CommandManager::GetKey(wxString label)
 {
    int loc;
 
-   wxString key = label.AfterFirst(wxT('\t')).BeforeLast(wxT('\t'));
+   wxString key = label.AfterFirst(wxT('\t')).BeforeFirst(wxT('\t'));
    if (key.IsEmpty()) {
       return key;
    }
