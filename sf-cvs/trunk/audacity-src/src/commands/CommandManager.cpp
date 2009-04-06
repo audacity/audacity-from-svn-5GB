@@ -580,8 +580,9 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    CommandListEntry *tmpEntry = new CommandListEntry;
    
    wxString labelPrefix;
-   if( !mSubMenuList.IsEmpty() )
-      labelPrefix = mSubMenuList[ mSubMenuList.GetCount() - 1 ]->name;
+   if (!mSubMenuList.IsEmpty()) {
+      labelPrefix = mSubMenuList[mSubMenuList.GetCount() - 1]->name;
+   }
 
    // wxMac 2.5 and higher will do special things with the
    // Preferences, Exit (Quit), and About menu items,
@@ -594,7 +595,7 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
 
    mCurrentID = NextIdentifier(mCurrentID);
    tmpEntry->id = mCurrentID;
-   tmpEntry->key = KeyStringNormalize(GetKey(label));
+   tmpEntry->key = GetKey(label);
 
 #if defined(__WXMAC__)
    if (name == wxT("Preferences"))
@@ -628,27 +629,53 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    mCommandList.Add(tmpEntry);
    mCommandIDHash[tmpEntry->id] = tmpEntry;   
 
-   if (index==0 || !multi)
+   if (index == 0 || !multi) {
+#if defined(__WXDEBUG__)
+      CommandListEntry *prev = mCommandNameHash[name];
+      if (prev) {
+         wxLogDebug(wxT("Command '%s' defined by '%s' and '%s'"),
+                   name.c_str(),
+                   prev->label.BeforeFirst(wxT('\t')).c_str(),
+                   tmpEntry->label.BeforeFirst(wxT('\t')).c_str());
+         wxASSERT(!prev);
+      }
+#endif
       mCommandNameHash[name] = tmpEntry;
+   }
 
-   if (tmpEntry->key != wxT(""))
+   if (tmpEntry->key != wxT("")) {
       mCommandKeyHash[tmpEntry->key] = tmpEntry;
+   }
 
    return tmpEntry->id;
 }
 
 wxString CommandManager::GetKey(wxString label)
 {
-   int loc = -1;
+   int loc;
 
-   loc = label.Find(wxT('\t'));
-   if (loc == -1)
-      loc = label.Find(wxT("\\t"));
+   wxString key = label.AfterFirst(wxT('\t')).BeforeLast(wxT('\t'));
+   if (key.IsEmpty()) {
+      return key;
+   }
 
-   if (loc == -1)
-      return wxT("");
+   key = KeyStringNormalize(key);
 
-   return label.Right(label.Length() - (loc+1));
+#if defined(__WXDEBUG__)
+   if (label.AfterLast(wxT('\t')) != wxT("allowdup")) {
+      for (size_t i = 0; i < mCommandList.GetCount(); i++) {
+         if (mCommandList[i]->key == key) {
+            wxLogDebug(wxT("key combo '%s' assigned to '%s' and '%s'"),
+                      key.c_str(),
+                      mCommandList[i]->label.BeforeFirst(wxT('\t')).c_str(),
+                      label.BeforeFirst(wxT('\t')).c_str());
+            wxASSERT(mCommandList[i]->key != key);
+         }
+      }
+   }
+#endif
+
+   return key;
 }
 
 ///Enables or disables a menu item based on its name (not the
