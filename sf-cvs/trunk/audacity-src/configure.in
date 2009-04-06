@@ -501,20 +501,6 @@ AC_ARG_WITH(portmixer,
    use_portmixer=$withval,
    use_portmixer="yes")
 
-AC_ARG_WITH(portaudio,
-   [AS_HELP_STRING([--with-portaudio],
-      [which version of PortAudio to use (=[v18,v19]) [default=v19]])],
-   use_portaudio=$withval,
-   use_portaudio="v19")
-
-dnl RTaudio doesn't work right now, so commenting this out RA 30/07/07
-dnl AC_ARG_WITH(rtaudio,
-dnl   [AS_HELP_STRING([--with-rtaudio],
-dnl      [compile with RTAudio instead of PortAudio [default=no]])],
-dnl   use_rtaudio=$withval,
-dnl   use_rtaudio="no")
-
-
 AC_CANONICAL_HOST
 
 dnl OS-specific configuration
@@ -557,112 +543,53 @@ esac
 
 dnl PortAudio configuration
 
-if [[ "$use_portaudio" = "v19" ]] ; then
-   dnl PortAudio v19
-   AC_DEFINE(USE_PORTAUDIO_V19, 1,
-      [Define if PortAudio v19 is being used (instead of v18)])
+AC_DEFINE(USE_PORTAUDIO_V19, 1,
+   [Define if PortAudio v19 is being used (instead of v18)])
 
-   LOCAL_LIBS="$LOCAL_LIBS portaudio-v19/lib/libportaudio.a"
-   EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
-   CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/include $CXXFLAGS"
+LOCAL_LIBS="$LOCAL_LIBS portaudio-v19/lib/libportaudio.a"
+EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
+CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/include $CXXFLAGS"
 
-   AC_CONFIG_SUBDIRS([lib-src/portaudio-v19])
+AC_CONFIG_SUBDIRS([lib-src/portaudio-v19])
 
-   case "${host_os}" in
-      darwin* | rhapsody*)
-         LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
-         LIBS="-framework CoreAudio $LIBS -lz"
-         ;;
-      cygwin*)
-         ;;
-      *)
-         dnl Unix
-         AC_CHECK_LIB(asound, snd_pcm_open, have_alsa=yes, have_alsa=no)
-         if [[ $have_alsa = "yes" ]] ; then
-            LIBS="$LIBS -lasound"
-         fi
-         PKG_CHECK_MODULES(JACK, jack, have_jack=yes, have_jack=no)
-         if [[ $have_jack = "yes" ]] ; then
-            LIBS="$LIBS $JACK_LIBS"
-         fi
-         AC_CHECK_LIB(hpi, HPI_SubSysCreate, have_asihpi=yes, have_asihpi=no, -lm)
-         if [[ $have_asihpi = "yes" ]] ; then
-            LIBS="$LIBS -lhpi"
-         fi    
-         AC_CHECK_LIB(rt, clock_gettime, [rt_libs=" -lrt"])
-         LIBS="${LIBS}${rt_libs}"
-         AC_CHECK_FUNCS([clock_gettime nanosleep])
-         ;;
-   esac
+case "${host_os}" in
+   darwin* | rhapsody*)
+      LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
+      LIBS="-framework CoreAudio $LIBS -lz"
+      ;;
+   cygwin*)
+      ;;
+   *)
+      dnl Unix
+      AC_CHECK_LIB(asound, snd_pcm_open, have_alsa=yes, have_alsa=no)
+      if [[ $have_alsa = "yes" ]] ; then
+         LIBS="$LIBS -lasound"
+      fi
+      PKG_CHECK_MODULES(JACK, jack, have_jack=yes, have_jack=no)
+      if [[ $have_jack = "yes" ]] ; then
+         LIBS="$LIBS $JACK_LIBS"
+      fi
+      AC_CHECK_LIB(hpi, HPI_SubSysCreate, have_asihpi=yes, have_asihpi=no, -lm)
+      if [[ $have_asihpi = "yes" ]] ; then
+         LIBS="$LIBS -lhpi"
+      fi    
+      AC_CHECK_LIB(rt, clock_gettime, [rt_libs=" -lrt"])
+      LIBS="${LIBS}${rt_libs}"
+      AC_CHECK_FUNCS([clock_gettime nanosleep])
+      ;;
+esac
 
-else
-   dnl PortAudio v18
-   CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio/pa_common $CXXFLAGS"
-
-   case "${host_os}" in
-      darwin* | rhapsody*)
-         LOCAL_LIBS="$LOCAL_LIBS portaudio/pa_mac_core/portaudio.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
-
-         LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
-         LIBS="-framework CoreAudio $LIBS -lz"
-         ;;
-      cygwin*)
-         LOCAL_LIBS="$LOCAL_LIBS portaudio/pa_win_wmme/portaudio.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_win_wmme/portaudio.a"
-         ;;
-      *)
-         dnl Unix
-         LOCAL_LIBS="$LOCAL_LIBS portaudio/pa_unix_oss/portaudio.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
-         ;;
-   esac
-fi
-
-dnl Again, not in use now so disable
-dnl if [[ "$use_rtaudio" = "yes" ]] ; then
-dnl    AC_CONFIG_SUBDIRS([lib-src/rtaudio])
-dnl    AC_DEFINE(USE_RTAUDIO, 1,   
-dnl     [Define if RTAudio support should be enabled])
-dnl    CXXFLAGS="-I\$(top_srcdir)/lib-src/rtaudio $CXXFLAGS"
-dnl    CXXFLAGS="\`../lib-src/rtaudio/rtaudio-config --cflags\` $CXXFLAGS"
-dnl    LOCAL_LIBS="$LOCAL_LIBS rtaudio/librtaudio.a"
-dnl    EXTRAOBJS="$EXTRAOBJS ../lib-src/librtaudio.a"
-dnl    LIBS = "$LIBS \`../lib-src/rtaudio/rtaudio-config --libs\`"
-dnl fi
 
 if [[ "$use_portmixer" = "yes" ]] ; then
    AC_DEFINE(USE_PORTMIXER, 1,   
    [Define if PortMixer support should be enabled])
-   if [[ "$use_portaudio" = "v19" ]] ; then
-      dnl PortMixer with PortAudio v19
 
-      CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/include $CXXFLAGS"
-      LOCAL_LIBS="$LOCAL_LIBS portmixer/libportmixer.a"
-      EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/libportmixer.a"
+   CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/include $CXXFLAGS"
+   LOCAL_LIBS="$LOCAL_LIBS portmixer/libportmixer.a"
+   EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/libportmixer.a"
 
-      AC_CONFIG_SUBDIRS([lib-src/portmixer])
-      ac_configure_args="$ac_configure_args --with-pa-include=../portaudio-v19/include"
-   else
-      dnl PortMixer with PortAudio v18
-
-      CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/px_common $CXXFLAGS"
-      case "${host_os}" in
-         darwin* | rhapsody*)
-            LOCAL_LIBS="$LOCAL_LIBS portmixer/px_mac_core/portmixer.a"
-            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"     
-            ;;
-         cygwin*)
-            LOCAL_LIBS="$LOCAL_LIBS portmixer/px_win_wmme/portmixer.a"
-            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
-            ;;
-         *)
-            dnl Unix
-            LOCAL_LIBS="$LOCAL_LIBS portmixer/px_unix_oss/portmixer.a"
-            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"     
-            ;;
-      esac
-   fi
+   AC_CONFIG_SUBDIRS([lib-src/portmixer])
+   ac_configure_args="$ac_configure_args --with-pa-include=../portaudio-v19/include"
 fi
 
 dnl Check for lrint/lrintf
@@ -721,9 +648,6 @@ dnl has been enabled previously
 if [[ "x$LIBEXPAT_USE_LOCAL" = "xyes" ]]; then
    AC_CONFIG_FILES([lib-src/expat/Makefile])
 fi
-if [[ "$use_portaudio" != "v19" ]]; then
-   AC_CONFIG_FILES([lib-src/portaudio/pa_unix_oss/Makefile])
-fi
 if [[ -e tests/Makefile.in ]]; then
    AC_CONFIG_FILES([tests/Makefile])
 fi
@@ -734,9 +658,7 @@ dnl
 dnl Substitute any addition libraries that portaudio (v19) requires
 dnl
 pa_libs=
-if [[ "$use_portaudio" = "v19" ]] ; then
-   pa_libs=`grep 'Libs:' lib-src/portaudio-v19/portaudio-2.0.pc | sed -e 's/Libs://;s/-L${libdir}//;s/-lportaudio//'`
-fi
+pa_libs=`grep 'Libs:' lib-src/portaudio-v19/portaudio-2.0.pc | sed -e 's/Libs://;s/-L${libdir}//;s/-lportaudio//'`
 sed -i -e "s/@PA_LIBS@/$pa_libs/" src/Makefile
 
 echo ""
@@ -755,13 +677,6 @@ for lib in $LIBRARIES ; do
    fi
 done
 
-dnl disabled as not working
-dnl if [[ "$use_rtaudio" = "yes" ]] ; then
-dnl   echo "RTAudio: enabled"
-dnl else
-dnl   echo "RTAudio: disabled"        
-dnl fi
-
 if [[ "$use_ladspa" = "yes" ]] ; then
    echo "ladspa: enabled"
 else
@@ -775,20 +690,6 @@ else
 fi
 
 echo "prefix=$prefix";
-
-case "${host_os}" in
-  darwin* | rhapsody*)
-    ;;
-  cygwin*)
-    ;;
-  *)
-    if [[ "$use_portaudio" = "v19" ]] ; then
-       echo "portaudio: v19"
-    else
-       echo "portaudio: v18 (OSS only)"
-    fi
-    ;;
-esac
 
 echo ""
 echo "Run 'configure --help' for an explanation of these options,"
