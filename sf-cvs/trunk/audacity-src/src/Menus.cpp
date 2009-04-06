@@ -980,8 +980,8 @@ void AudacityProject::CreateMenusAndCommands()
    SetMenuBar(menubar);
 
    c->SetDefaultFlags(0, 0);
-   c->AddCommand(wxT("PrevFrame"),   _("Cycle backward through toolbars and Track View\tCtrl+Shift+F6"), FN(PrevFrame));
-   c->AddCommand(wxT("NextFrame"),   _("Cycle forward through toolbars and Track View\tCtrl+F6"), FN(NextFrame));
+   c->AddCommand(wxT("PrevFrame"),   _("Move backward from toolbars to tracks\tCtrl+Shift+F6"), FN(PrevFrame));
+   c->AddCommand(wxT("NextFrame"),   _("Move forward from toolbars to tracks\tCtrl+F6"), FN(NextFrame));
 
 //   c->SetDefaultFlags(TrackPanelHasFocus, TrackPanelHasFocus);
    c->AddCommand(wxT("SelectTool"),  _("Selection Tool\tF1"),          FN(OnSelectTool));
@@ -1014,17 +1014,17 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag);
 
    c->SetDefaultFlags(AudioIOBusyFlag, AudioIOBusyFlag);
-   c->AddCommand(wxT("SeekLeftShort"), _("Seek left short period during playback\tLeft\tallowdup"),        FN(OnSeekLeftShort));
-   c->AddCommand(wxT("SeekRightShort"),_("Seek right short period during playback\tRight\tallowdup"),      FN(OnSeekRightShort));
-   c->AddCommand(wxT("SeekLeftLong"),  _("Seek left long period during playback\tShift+Left\tallowdup"),   FN(OnSeekLeftLong));
-   c->AddCommand(wxT("SeekRightLong"), _("Seek right long period during playback\tShift+Right\tallowdup"), FN(OnSeekRightLong));
+   c->AddCommand(wxT("SeekLeftShort"), _("Short seek left during playback\tLeft\tallowdup"),        FN(OnSeekLeftShort));
+   c->AddCommand(wxT("SeekRightShort"),_("Short seek right during playback\tRight\tallowdup"),      FN(OnSeekRightShort));
+   c->AddCommand(wxT("SeekLeftLong"),  _("Long seek left during playback\tShift+Left\tallowdup"),   FN(OnSeekLeftLong));
+   c->AddCommand(wxT("SeekRightLong"), _("Long Seek right during playback\tShift+Right\tallowdup"), FN(OnSeekRightLong));
 
    c->SetDefaultFlags(TracksExistFlag | TrackPanelHasFocus,
                       TracksExistFlag | TrackPanelHasFocus);
    c->AddCommand(wxT("PrevTrack"),     _("Move Focus to Previous Track\tUp"),                      FN(OnCursorUp));
-   c->AddCommand(wxT("ShiftUp"),       _("Move Focus to Previous and Change Selection\tShift+Up"), FN(OnShiftUp));
+   c->AddCommand(wxT("ShiftUp"),       _("Move Focus to Previous and Select\tShift+Up"), FN(OnShiftUp));
    c->AddCommand(wxT("NextTrack"),     _("Move Focus to Next Track\tDown"),                        FN(OnCursorDown));
-   c->AddCommand(wxT("ShiftDown"),     _("Move Focus to Next and Change Selection\tShift+Down"),   FN(OnShiftDown));
+   c->AddCommand(wxT("ShiftDown"),     _("Move Focus to Next and Select\tShift+Down"),   FN(OnShiftDown));
    c->AddCommand(wxT("Toggle"),        _("Toggle Focused Track\tReturn"),                          FN(OnToggle));
 
    c->AddCommand(wxT("CursorLeft"),           _("Cursor Left\tLeft\tallowdup"),              FN(OnCursorLeft));
