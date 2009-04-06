@@ -1027,15 +1027,15 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("ShiftDown"),     _("Move Focus to Next and Change Selection\tShift+Down"),   FN(OnShiftDown));
    c->AddCommand(wxT("Toggle"),        _("Toggle Focused Track\tReturn"),                          FN(OnToggle));
 
-   c->AddCommand(wxT("CursorLeft"),    _("Cursor Left\tLeft"),                               FN(OnCursorLeft));
-   c->AddCommand(wxT("CursorRight"),   _("Cursor Right\tRight"),                             FN(OnCursorRight));
-   c->AddCommand(wxT("CursorShortJumpLeft"),    _("Cursor Short Jump Left\t,"),              FN(OnCursorShortJumpLeft));
-   c->AddCommand(wxT("CursorShortJumpRight"),   _("Cursor Short Jump Right\t."),             FN(OnCursorShortJumpRight));
-   c->AddCommand(wxT("CursorLongJumpLeft"),    _("Cursor Long Jump Left\tShift+,"),          FN(OnCursorLongJumpLeft));
-   c->AddCommand(wxT("CursorLongJumpRight"),   _("Cursor Long Jump Right\tShift+."),         FN(OnCursorLongJumpRight));
+   c->AddCommand(wxT("CursorLeft"),           _("Cursor Left\tLeft\tallowdup"),              FN(OnCursorLeft));
+   c->AddCommand(wxT("CursorRight"),          _("Cursor Right\tRight\tallowdup"),            FN(OnCursorRight));
+   c->AddCommand(wxT("CursorShortJumpLeft"),  _("Cursor Short Jump Left\t,"),                FN(OnCursorShortJumpLeft));
+   c->AddCommand(wxT("CursorShortJumpRight"), _("Cursor Short Jump Right\t."),               FN(OnCursorShortJumpRight));
+   c->AddCommand(wxT("CursorLongJumpLeft"),   _("Cursor Long Jump Left\tShift+,"),           FN(OnCursorLongJumpLeft));
+   c->AddCommand(wxT("CursorLongJumpRight"),  _("Cursor Long Jump Right\tShift+."),          FN(OnCursorLongJumpRight));
 
-   c->AddCommand(wxT("SelExtLeft"),    _("Selection Extend Left\tShift+Left"),               FN(OnSelExtendLeft));
-   c->AddCommand(wxT("SelExtRight"),   _("Selection Extend Right\tShift+Right"),             FN(OnSelExtendRight));
+   c->AddCommand(wxT("SelExtLeft"),    _("Selection Extend Left\tShift+Left\tallowdup"),     FN(OnSelExtendLeft));
+   c->AddCommand(wxT("SelExtRight"),   _("Selection Extend Right\tShift+Right\tallowdup"),   FN(OnSelExtendRight));
 
    c->AddCommand(wxT("SelSetExtLeft"),    _("Set (or Extend) Left Selection"),               FN(OnSelSetExtendLeft));
    c->AddCommand(wxT("SelSetExtRight"),   _("Set (or Extend) Right Selection"),              FN(OnSelSetExtendRight));
