@@ -18,12 +18,15 @@
 *//*******************************************************************/
 
 #include <wx/defs.h>
+#include <wx/choice.h>
+
 #include "../Audacity.h"
 #include "../AudacityApp.h"
 #include "../Envelope.h"
 #include "../Languages.h"
 #include "../Prefs.h"
 #include "../Project.h"
+#include "../ShuttleGui.h"
 
 #include "GUIPrefs.h"
 
@@ -56,17 +59,26 @@ void ShowPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Show"));
    {
-	   S.TieCheckBox(_("Enable cut &lines"),
-                    wxT("/GUI/EnableCutLines"),
-                    false);
-      S.TieCheckBox(_("Show warnings about &temp files"),
-                    wxT("/GUI/WarnAboutTempFiles"),
+      S.TieCheckBox(_("Show &welcome message at program start up"),
+                    wxT("/GUI/ShowSplashScreen"),
                     true);
       S.TieCheckBox(_("Show prompt to sa&ve, even if project is empty"),    
                     wxT("/GUI/EmptyCanBeDirty"),
                     true);
-      S.TieCheckBox(_("Show &Welcome Message at program start up"),
-                    wxT("/GUI/ShowSplashScreen"),
+      S.TieCheckBox(_("Show warnings about &temp files"),
+                    wxT("/GUI/WarnAboutTempFiles"),
+                    true);
+      S.TieCheckBox(_("Show warnings about &low disk space"),
+                    wxT("/Warnings/DiskSpaceWarning"),
+                    true);
+      S.TieCheckBox(_("Show warning when saving projects"),
+                    wxT("/Warnings/FirstProjectSave"),
+                    true);
+      S.TieCheckBox(_("Show warning about mixdown to stereo during export"),
+                    wxT("/Warnings/MixStereo"),
+                    true);
+      S.TieCheckBox(_("Show warning about mixdown to mono during export"),
+                    wxT("/Warnings/MixMono"),
                     true);
    }
    S.EndStatic();
@@ -138,15 +150,14 @@ void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
 
       S.AddSpace(10);
 
-      S.StartMultiColumn(2, wxEXPAND);
+      S.StartMultiColumn(2);
       {
-         S.SetStretchyCol(1);
-
          S.TieChoice(_("Default View Mode:"),
                      wxT("/GUI/DefaultViewMode"),
                      wxT("Waveform"),
                      mViewChoices,
                      mViewCodes);
+         S.SetSizeHints(mViewChoices);
       }
       S.EndMultiColumn();
    }
@@ -154,6 +165,9 @@ void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Behaviors"));
    {
+	   S.TieCheckBox(_("Enable cut &lines"),
+                    wxT("/GUI/EnableCutLines"),
+                    false);
       S.TieCheckBox(_("Enable &dragging of left and right selection edges"),
                     wxT("/GUI/AdjustSelectionEdges"),
                     true);
@@ -169,15 +183,14 @@ void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
 
       S.AddSpace(10);
 
-      S.StartMultiColumn(2, wxEXPAND);
+      S.StartMultiColumn(2);
       {
-         S.SetStretchyCol(1);
-
          S.TieChoice(_("Solo Button:"),
                      wxT("/GUI/Solo"),
                      wxT("Standard"),
                      mSoloChoices,
                      mSoloCodes);
+         S.SetSizeHints(mSoloChoices);
       }
       S.EndMultiColumn();
    }
@@ -267,20 +280,28 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
 
       S.AddSpace(10);
 
-      S.StartMultiColumn(2, wxEXPAND);
+      S.StartMultiColumn(2);
       {
-         S.SetStretchyCol(1);
-
-         S.TieChoice(_("Display range:"),
+         S.TieChoice(_("Meter/Waveform dB range:"),
                      wxT("/GUI/EnvdBRange"),
                      wxT("60"),
                      mRangeChoices,
                      mRangeCodes);
+         S.SetSizeHints(mRangeChoices);
+
          S.TieChoice(_("Language:"),
                      wxT("/Locale/Language"),
                      wxT("en"),
                      mLangNames,
                      mLangCodes);
+         S.SetSizeHints(mLangNames);
+
+         S.TieChoice(_("Help:"),
+                     wxT("/GUI/Help"),
+                     wxT("Standard"),
+                     mHtmlHelpChoices,
+                     mHtmlHelpCodes);
+         S.SetSizeHints(mHtmlHelpChoices);
       }
       S.EndMultiColumn();
    }
@@ -294,20 +315,6 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
       S.TieCheckBox(_("&Beep on completion of longer activities"),
                     wxT("/GUI/BeepOnCompletion"),
                     false);
-
-      S.AddSpace(10);
-
-      S.StartMultiColumn(2, wxEXPAND);
-      {
-         S.SetStretchyCol(1);
-
-         S.TieChoice(_("Help:"),
-                     wxT("/GUI/Help"),
-                     wxT("Standard"),
-                     mHtmlHelpChoices,
-                     mHtmlHelpCodes);
-      }
-      S.EndMultiColumn();
    }
    S.EndStatic();
 

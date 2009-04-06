@@ -2081,3 +2081,67 @@ void ShuttleGui::AddSpace( int width, int height )
 
    mpSizer->Add( width, height, 0);
 }
+
+void ShuttleGui::SetSizeHints( wxWindow *window, const wxArrayString & items )
+{
+   int maxw = 0;
+
+   for( size_t i = 0; i < items.GetCount(); i++ )
+   {
+      int x;
+      int y;
+      
+      window->GetTextExtent(items[i], &x, &y );
+      if( x > maxw )
+      {
+         maxw = x;
+      }
+   }
+
+   // Would be nice to know the sizes of the button and borders, but this is
+   // the best we can do for now.
+#if defined(__WXMAC__)
+   maxw += 50;
+#elif defined(__WXMSW__)
+   maxw += 75;
+#elif defined(__WXGTK__)
+   maxw += 75;
+#else
+   maxw += 75;
+#endif
+
+   window->SetSizeHints( maxw, -1 );
+}
+
+void ShuttleGui::SetSizeHints( wxWindow *window, const wxArrayInt & items )
+{
+   wxArrayString strs;
+
+   for( size_t i = 0; i < items.GetCount(); i++ )
+   {
+      strs.Add( wxString::Format( wxT("%d"), items[i] ) );
+   }
+
+   SetSizeHints( window, strs );
+}
+
+void ShuttleGui::SetSizeHints( const wxArrayString & items )
+{
+   if( mShuttleMode != eIsCreating )
+      return;
+
+   SetSizeHints( mpLastWind, items );
+}
+
+void ShuttleGui::SetSizeHints( const wxArrayInt & items )
+{
+   if( mShuttleMode != eIsCreating )
+      return;
+
+   SetSizeHints( mpLastWind, items );
+}
+
+void ShuttleGui::SetSizeHints( int minX, int minY )
+{
+   ShuttleGuiBase::SetSizeHints( minX, minY );
+}

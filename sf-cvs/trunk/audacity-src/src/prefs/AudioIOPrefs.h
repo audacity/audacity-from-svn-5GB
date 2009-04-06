@@ -23,6 +23,35 @@
 
 #include "PrefsPanel.h"
 
+class DevicePrefs:public PrefsPanel
+{
+ public:
+   DevicePrefs(wxWindow * parent);
+   virtual ~DevicePrefs();
+   virtual bool Apply();
+
+ private:
+   void Populate();
+   void PopulateOrExchange(ShuttleGui & S);
+   void GetNamesAndLabels();
+
+   void OnHost(wxCommandEvent & e);
+
+   wxArrayString mHostNames;
+   wxArrayString mHostLabels;
+   wxArrayString mChannelNames;
+   wxArrayInt    mChannelLabels;
+
+   wxString mPlayDevice;
+   wxString mRecordDevice;
+
+   wxChoice *mHost;
+   wxChoice *mPlay;
+   wxChoice *mRecord;
+
+   DECLARE_EVENT_TABLE();
+};
+
 class PlaybackPrefs:public PrefsPanel
 {
  public:

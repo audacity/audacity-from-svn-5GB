@@ -42,6 +42,189 @@ other settings.
 
 #include "AudioIOPrefs.h"
 
+enum {
+   HostID = 10000
+};
+
+BEGIN_EVENT_TABLE(DevicePrefs, PrefsPanel)
+   EVT_CHOICE(HostID, DevicePrefs::OnHost)
+END_EVENT_TABLE()
+
+DevicePrefs::DevicePrefs(wxWindow * parent)
+:  PrefsPanel(parent, _("Devices"))
+{
+   Populate();
+}
+
+DevicePrefs::~DevicePrefs()
+{
+}
+
+void DevicePrefs::Populate()
+{
+   // First any pre-processing for constructing the GUI.
+   GetNamesAndLabels();
+
+   // Get current setting for devices
+   mPlayDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
+   mRecordDevice = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
+
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+
+   wxCommandEvent e;
+   OnHost(e);
+}
+
+void DevicePrefs::GetNamesAndLabels()
+{
+   // Get lists of devices both for play and record.
+   int nHosts = Pa_GetHostApiCount();
+
+   for (int i = 0; i < nHosts; i++) {
+      wxString name = LAT1CTOWX(Pa_GetHostApiInfo(i)->name);
+      mHostNames.Add(name);
+      mHostLabels.Add(name);
+   }
+
+   // Channel counts, mono, stereo etc...
+   for (int i = 0; i < 16; i++) {
+      mChannelNames.Add(wxString::Format(wxT("%d"), i + 1));
+      mChannelLabels.Add(i + 1);
+   }
+   mChannelNames[0] = _("1 (Mono)");
+   mChannelNames[1] = _("2 (Stereo)");
+}
+
+void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
+{
+   wxArrayString empty;
+
+   S.SetBorder(2);
+
+   S.StartStatic(_("Interface"));
+   {
+      S.StartMultiColumn(2);
+      {
+         mHost = S.TieChoice(_("Host") + wxString(wxT(":")),
+                             wxT("/AudioIO/Host"), 
+                             wxT(""),
+                             mHostNames,
+                             mHostLabels);
+         S.SetSizeHints(mHostNames);
+
+         S.AddPrompt(_("Using:"));
+
+         S.AddFixedText(LAT1CTOWX(Pa_GetVersionText()));
+      }
+      S.EndMultiColumn();
+   }                              
+   S.EndStatic();
+
+   S.StartStatic(_("Playback"));
+   {
+      S.StartMultiColumn(2);
+      {
+         mPlay = S.AddChoice(_("Device") + wxString(wxT(":")),
+                             wxEmptyString,
+                             &empty);
+      }
+      S.EndMultiColumn();
+   }
+   S.EndStatic();
+
+   S.StartStatic(_("Recording"));
+   {
+      S.StartMultiColumn(2);
+      {
+         mRecord = S.AddChoice(_("Device") + wxString(wxT(":")),
+                               wxEmptyString,
+                               &empty);
+
+         S.TieChoice(_("Channels") + wxString(wxT(":")),
+                     wxT("/AudioIO/RecordChannels"),
+                     2,
+                     mChannelNames,
+                     mChannelLabels);
+         S.SetSizeHints(mChannelNames);
+      }
+      S.EndMultiColumn();
+   }
+   S.EndStatic();
+}
+
+void DevicePrefs::OnHost(wxCommandEvent & e)
+{
+   int index = mHost->GetCurrentSelection();
+   int nDevices = Pa_GetDeviceCount();
+
+   mPlay->Clear();
+   mRecord->Clear();
+
+   wxArrayString playnames;
+   wxArrayString recordnames;
+
+   for (int i = 0; i < nDevices; i++) {
+      const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
+      if (info->hostApi == index) {
+         wxString name = LAT1CTOWX(info->name);
+         wxString device = DeviceName(info);
+         int index;
+
+         if (info->maxOutputChannels > 0) {
+            playnames.Add(name);
+            index = mPlay->Append(name, (void *) info);
+            if (device == mPlayDevice) {
+               mPlay->SetSelection(index);
+            }
+         }
+
+         if (info->maxInputChannels > 0) {
+            recordnames.Add(name);
+            index = mRecord->Append(name, (void *) info);
+            if (device == mRecordDevice) {
+               mRecord->SetSelection(index);
+            }
+         }
+      }
+   }
+
+   if (mPlay->GetCount() && mPlay->GetSelection() == wxNOT_FOUND) {
+      mPlay->SetSelection(0);
+   }
+
+   if (mRecord->GetCount() && mRecord->GetSelection() == wxNOT_FOUND) {
+      mRecord->SetSelection(0);
+   }
+
+   ShuttleGui S(this, eIsCreating);
+   S.SetSizeHints(mPlay, playnames);
+   S.SetSizeHints(mRecord, recordnames);
+}
+
+bool DevicePrefs::Apply()
+{
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
+
+   const PaDeviceInfo *info;
+
+   info = (const PaDeviceInfo *) mPlay->GetClientData(mPlay->GetSelection());
+   gPrefs->Write(wxT("/AudioIO/PlaybackDevice"),
+                 DeviceName(info));
+
+   info = (const PaDeviceInfo *) mRecord->GetClientData(mPlay->GetSelection());
+   gPrefs->Write(wxT("/AudioIO/RecordingDevice"),
+                 DeviceName(info));
+
+   return true;
+}
+
 PlaybackPrefs::PlaybackPrefs(wxWindow * parent)
 :  PrefsPanel(parent, _("Playback"))
 {
@@ -54,9 +237,6 @@ PlaybackPrefs::~PlaybackPrefs()
 
 void PlaybackPrefs::Populate()
 {
-   // First any pre-processing for constructing the GUI.
-   GetNamesAndLabels();
-
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
    // Use 'eIsCreatingFromPrefs' so that the GUI is 
@@ -66,49 +246,9 @@ void PlaybackPrefs::Populate()
    // ----------------------- End of main section --------------
 }
 
-void PlaybackPrefs::GetNamesAndLabels()
-{
-   // Get lists of devices both for play and record.
-#if USE_PORTAUDIO_V19
-   int nDevices = Pa_GetDeviceCount();
-#else
-   int nDevices = Pa_CountDevices();
-#endif
-
-   for (int i = 0; i < nDevices; i++) {
-      const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
-      if (info->maxOutputChannels > 0) {
-         wxString name = DeviceName(info);
-         mPlayNames.Add(name);
-         mPlayLabels.Add(name);
-      }
-   }
-}
-
 void PlaybackPrefs::PopulateOrExchange(ShuttleGui & S)
 {
    S.SetBorder(2);
-
-   S.StartStatic(_("Playback"));
-   {
-      S.StartMultiColumn(2, wxEXPAND);
-      {
-         S.SetStretchyCol(1);
-
-         mPlay = S.TieChoice(_("Device") + wxString(wxT(":")),
-                             wxT("/AudioIO/PlaybackDevice"), 
-                             wxT(""),
-                             mPlayNames,
-                             mPlayLabels);
-
-         S.AddPrompt(_("Using:"));
-
-         S.AddFixedText(_("Portaudio v") +
-                        wxString((USE_PORTAUDIO_V19 ? wxT("19") : wxT("18"))));
-      }
-      S.EndMultiColumn();
-   }                              
-   S.EndStatic();
 
    S.StartStatic(_("Effects Preview"));
    {
@@ -167,24 +307,8 @@ void PlaybackPrefs::PopulateOrExchange(ShuttleGui & S)
 
 bool PlaybackPrefs::Apply()
 {
-#if 0
-#if USE_PORTAUDIO_V19
-   if (!AudioIO::ValidateDeviceNames(mPlay->GetStringSelection(), mRec->GetStringSelection())) {
-      wxMessageBox(_("Playback and Recording device must use the same type, i.e., MME, DirectSound, etc."));
-      return false;
-   }
-#endif
-#endif
-
    ShuttleGui S(this, eIsSavingToPrefs);
    PopulateOrExchange(S);
-
-#if 0
-#if USE_PORTMIXER
-   if (gAudioIO)
-      gAudioIO->HandleDeviceChange();
-#endif // USE_PORTMIXER
-#endif
 
    return true;
 }
@@ -201,9 +325,6 @@ RecordingPrefs::~RecordingPrefs()
 
 void RecordingPrefs::Populate()
 {
-   // First any pre-processing for constructing the GUI.
-   GetNamesAndLabels();
-
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
    // Use 'eIsCreatingFromPrefs' so that the GUI is 
@@ -213,63 +334,9 @@ void RecordingPrefs::Populate()
    // ----------------------- End of main section --------------
 }
 
-/// Gets the lists of names and lists of labels which are
-/// used in the choice controls.
-/// The names are what the user sees in the wxChoice.
-/// The corresponding labels are what gets stored.
-void RecordingPrefs::GetNamesAndLabels()
-{
-   // Get lists of devices both for play and record.
-#if USE_PORTAUDIO_V19
-   int nDevices = Pa_GetDeviceCount();
-#else
-   int nDevices = Pa_CountDevices();
-#endif
-
-//   int numChannels = 0; // find max no. of record channels available
-   for (int i = 0; i < nDevices; i++) {
-      const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
-      if (info->maxInputChannels > 0) {
-         wxString name = DeviceName(info);
-         mRecordNames.Add(name);
-         mRecordNames.Add(name);
-      }
-   }
-
-   // Channel counts, mono, stereo etc...
-   for (int i = 0; i < 16; i++) {
-      mChannelNames.Add(wxString::Format(wxT("%d"), i + 1));
-      mChannelLabels.Add(i + 1);
-   }
-   mChannelNames[0] = _("1 (Mono)");
-   mChannelNames[1] = _("2 (Stereo)");
-}
-
 void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
 {
    S.SetBorder(2);
-
-   S.StartStatic(_("Recording"));
-   {
-      S.StartMultiColumn(2, wxEXPAND);
-      {
-         S.SetStretchyCol(1);
-
-         mRec = S.TieChoice(_("Device") + wxString(wxT(":")),
-                            wxT("/AudioIO/RecordingDevice"),
-                            wxT(""),
-                            mRecordNames,
-                            mRecordLabels);
-
-         S.TieChoice(_("Channels") + wxString(wxT(":")),
-                     wxT("/AudioIO/RecordChannels"),
-                     2,
-                     mChannelNames,
-                     mChannelLabels);
-      }
-      S.EndMultiColumn();
-   }
-   S.EndStatic();
 
    S.StartStatic(_("Playthrough"));
    {
@@ -294,7 +361,6 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartThreeColumn();
       {
-#if USE_PORTAUDIO_V19
          // only show the following controls if we use Portaudio v19, because
          // for Portaudio v18 we always use default buffer sizes
          S.TieTextBox(_("Audio to buffer:"),
@@ -302,7 +368,6 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
                       DEFAULT_LATENCY_DURATION,
                       9);
          S.AddUnits(_("milliseconds (higher = more latency)"));
-#endif
 
          S.TieTextBox(_("Latency correction:"),
                       wxT("/AudioIO/LatencyCorrection"),
@@ -338,15 +403,6 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
 
 bool RecordingPrefs::Apply()
 {
-#if 0
-#if USE_PORTAUDIO_V19
-   if (!AudioIO::ValidateDeviceNames(mPlay->GetStringSelection(), mRec->GetStringSelection())) {
-      wxMessageBox(_("Playback and Recording device must use the same type, i.e., MME, DirectSound, etc."));
-      return false;
-   }
-#endif
-#endif
-
    ShuttleGui S(this, eIsSavingToPrefs);
    PopulateOrExchange(S);
 
@@ -356,12 +412,6 @@ bool RecordingPrefs::Apply()
       gPrefs->Write(wxT("/AudioIO/LatencyDuration"), DEFAULT_LATENCY_DURATION);
    }
 
-#if 0
-#if USE_PORTMIXER
-   if (gAudioIO)
-      gAudioIO->HandleDeviceChange();
-#endif // USE_PORTMIXER
-#endif
    return true;
 }
 

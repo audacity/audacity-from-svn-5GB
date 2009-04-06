@@ -77,6 +77,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent)
 
          wxWindow *w;
          // Parameters are: AppPage( page, name, IsSelected, imageId)
+         w = new DevicePrefs(mCategories);      mCategories->AddPage(w, w->GetName(), false, 0);
          w = new PlaybackPrefs(mCategories);    mCategories->AddPage(w, w->GetName(), false, 0);
          w = new RecordingPrefs(mCategories);   mCategories->AddPage(w, w->GetName(), false, 0);
 //       REQUIRES PORTMIDI
