@@ -126,16 +126,12 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Sampling"));
    {
-      S.StartMultiColumn(2, wxEXPAND);
+      S.StartMultiColumn(2);
       {
-         S.SetStretchyCol(1);
-
          S.AddPrompt(_("Default Sample Rate:"));
 
-         S.StartMultiColumn(2, wxEXPAND);
+         S.StartMultiColumn(2);
          {
-            S.SetStretchyCol(0);
-
             // If the value in Prefs isn't in the list, then we want
             // the last item, 'Other...' to be shown.
             S.SetNoMatchSelector(mSampleRateNames.GetCount() - 1);
@@ -148,6 +144,8 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
                                        AudioIO::GetOptimalSupportedSampleRate(),
                                        mSampleRateNames,
                                        mSampleRateLabels);
+            S.SetSizeHints(mSampleRateNames);
+
             // Now do the edit box...
             mOtherSampleRate = S.TieTextBox(wxT(""),
                                             mOtherSampleRateValue,
@@ -160,6 +158,7 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
                      floatSample,
                      mSampleFormatNames,
                      mSampleFormatLabels);
+         S.SetSizeHints(mSampleFormatNames);
       }
       S.EndMultiColumn();
    }
@@ -169,18 +168,21 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartMultiColumn(2, wxEXPAND);
       {
-         S.SetStretchyCol(1);
+         S.SetStretchyCol(2);
 
          S.TieChoice(_("Sample Rate Converter:"),
                      Resample::GetFastMethodKey(),
                      Resample::GetFastMethodDefault(),
                      mConverterNames,
                      mConverterLabels),
+         S.SetSizeHints(mConverterNames);
+
          S.TieChoice(_("Dither"),
                      wxT("/Quality/DitherAlgorithm"),
                      Dither::none,
                      mDitherNames,
                      mDitherLabels);
+         S.SetSizeHints(mDitherNames);
       }
       S.EndMultiColumn();
    }
@@ -188,19 +190,21 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("High-quality Conversion"));
    {
-      S.StartMultiColumn(2, wxEXPAND);
+      S.StartMultiColumn(2);
       {
-         S.SetStretchyCol(1);
          S.TieChoice(_("Sample Rate Converter:"),
                      Resample::GetBestMethodKey(),
                      Resample::GetBestMethodDefault(),
                      mConverterNames,
                      mConverterLabels),
+         S.SetSizeHints(mConverterNames);
+
          S.TieChoice(_("Dither"),
                      wxT("/Quality/HQDitherAlgorithm"),
                      Dither::shaped,
                      mDitherNames,
                      mDitherLabels);
+         S.SetSizeHints(mDitherNames);
       }
       S.EndMultiColumn();
    }

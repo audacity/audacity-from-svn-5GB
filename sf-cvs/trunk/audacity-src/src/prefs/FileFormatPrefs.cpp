@@ -287,6 +287,53 @@ void FileFormatPrefs::PopulateOrExchange(ShuttleGui & S)
       S.AddFixedText(_("Note: Export quality options can be chosen by clicking the Options\nbutton in the Export dialog."));
    }
    S.EndStatic();
+}
+
+bool FileFormatPrefs::Apply()
+{  
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);    
+   
+   return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+ProjectPrefs::ProjectPrefs(wxWindow * parent)
+:   PrefsPanel(parent, _("Projects"))
+{
+   Populate();
+}
+
+ProjectPrefs::~ProjectPrefs()
+{
+}
+
+/// Creates the dialog and its contents.
+void ProjectPrefs::Populate()
+{
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+}
+
+void ProjectPrefs::PopulateOrExchange(ShuttleGui & S)
+{
+   S.SetBorder(2);
+
+   S.StartStatic(_("When saving a project that depends on other audio files"));
+   {
+      S.StartRadioButtonGroup(wxT("/FileFormats/SaveProjectWithDependencies"),wxT("ask"));
+      S.TieRadioButton(_("Always &copy all audio into project (safest)"), wxT("copy"));
+      S.TieRadioButton(_("&Do not copy any audio"), wxT("never"));
+      S.TieRadioButton(_("&Ask user"), wxT("ask"));
+      S.EndRadioButtonGroup();
+   }
+   S.EndStatic();
 
    S.StartStatic(_("Auto save"));
    {
@@ -307,7 +354,7 @@ void FileFormatPrefs::PopulateOrExchange(ShuttleGui & S)
    S.EndStatic();
 }
 
-bool FileFormatPrefs::Apply()
+bool ProjectPrefs::Apply()
 {  
    ShuttleGui S(this, eIsSavingToPrefs);
    PopulateOrExchange(S);    

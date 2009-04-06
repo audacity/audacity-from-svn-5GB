@@ -81,21 +81,21 @@ void SpectrumPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("FFT Window"));
    {
-      S.StartMultiColumn(2, wxEXPAND);
+      S.StartMultiColumn(2);
       {
-         S.SetStretchyCol(1);
-
          S.TieChoice(_("Window size") + wxString(wxT(":")),
                      wxT("/Spectrum/FFTSize"), 
                      256,
                      mSizeChoices,
                      mSizeCodes);
+         S.SetSizeHints(mSizeChoices);
 
          S.TieChoice(_("Window type") + wxString(wxT(":")),
                      wxT("/Spectrum/WindowType"), 
                      3,
                      mTypeChoices,
                      mTypeCodes);
+         S.SetSizeHints(mTypeChoices);
       }
       S.EndMultiColumn();
    }
@@ -112,15 +112,14 @@ void SpectrumPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("FFT Skip Points"));
    {
-      S.StartMultiColumn(2, wxEXPAND);
+      S.StartMultiColumn(2);
       {
-         S.SetStretchyCol(1);
-
          S.TieChoice(_("Skip Points") + wxString(wxT(":")),
                      wxT("/Spectrum/FFTSkipPoints"),
                      0,
                      wskipn,
                      wskipv);
+         S.SetSizeHints(wskipn);
       }
       S.EndMultiColumn();
    }

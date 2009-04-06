@@ -46,11 +46,23 @@ class LibraryPrefs:public PrefsPanel
    DECLARE_EVENT_TABLE();
 };
 
-class FileFormatPrefs:public PrefsPanel 
+class FileFormatPrefs:public PrefsPanel
 {
  public:
    FileFormatPrefs(wxWindow * parent);
    ~FileFormatPrefs();
+   virtual bool Apply();
+   
+ private:
+   void Populate();
+   void PopulateOrExchange(ShuttleGui & S);
+};
+
+class ProjectPrefs:public PrefsPanel
+{
+ public:
+   ProjectPrefs(wxWindow * parent);
+   ~ProjectPrefs();
    virtual bool Apply();
    
  private:
