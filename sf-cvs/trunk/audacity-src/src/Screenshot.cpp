@@ -552,6 +552,14 @@ void ScreenFrame::Capture(wxString basename,
       r.SetPosition(window->GetParent()->ClientToScreen(r.GetPosition()));
    }
 
+   if (bg && !mBackground) {  // background colour not selected but we want a background
+      wxRect b = GetBackgroundRect();
+      r.x = (r.x - b.x) >= 0 ? (r.x - b.x): 0;
+      r.y = (r.y - b.y) >= 0 ? (r.y - b.y): 0;
+      r.width += b.width;
+      r.height += b.height;
+   }
+
    // Extract the actual image
    wxBitmap part = full.GetSubBitmap(r);
 
