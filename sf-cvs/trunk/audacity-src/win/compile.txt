@@ -244,23 +244,8 @@ If you wish ASIO support, install the ASIO SDK from Steinberg
 Developers), then define an environment variable called
 ASIOSDK_DIR, as you did for WXWIN, above. The value should be 
 the full path to the base directory of the ASIO SDK, e.g., 
+
          set ASIOSDK_DIR=C:\ASIOSDK2
-
-
-PortAudio (http://www.portaudio.com/) is a cross-platform OSS library 
-that Audacity uses for recording and playback. The default build 
-settings use PortAudio v19, but v18 is still supported. If you want 
-to build with v18: 
-
-   1) Change the Audacity Project Dependencies to have PAStaticWMME 
-      checked and PAStaticWMMEv19 unchecked.
-   2) In "audacity\win\portaudio.h", change 
-         #define USE_PORTAUDIO_V19 1
-      to 
-         #define USE_PORTAUDIO_V19 0
-   3) In the Configuration Manager, for each configuration, check 
-      PAStaticWMME and uncheck PAStaticWMMEv19.
-
 
 Build Audacity
 

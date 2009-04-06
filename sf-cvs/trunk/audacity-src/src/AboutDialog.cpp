@@ -396,14 +396,9 @@ void AboutDialog::PopulateInformationPage( ShuttleGui & S )
    AddBuildinfoRow(&informationStr, wxT("libsamplerate"),
          _("Sample rate conversion"), disabled);
    #endif
-   
-   #if USE_PORTAUDIO_V19
+
    AddBuildinfoRow(&informationStr, wxT("PortAudio"),
          _("Audio playback and recording"), wxString(wxT("v19")));
-   #else
-   AddBuildinfoRow(&informationStr, wxT("PortAudio"),
-         _("Audio playback and recording"), wxString(wxT("v18")));
-   #endif
 
    informationStr += wxT("<tr><td>");  // start new row
    // wxWindows version:
