@@ -963,20 +963,17 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("Help"),             _("&Index..."),                      FN(OnHelp));
    c->AddItem(wxT("Log"),             _("Show &Log..."),                      FN(OnLog));
 
-
-#if 1 // Debugging tools are enabled in unstable builds
    if( !mCleanSpeechMode )
    {
-#ifdef __WXDEBUG__
       c->AddSeparator();   
       c->AddItem(wxT("Screenshot"),     _("&Screenshot Tools..."),        FN(OnScreenshot));
-#endif
+#ifdef __WXDEBUG__
       c->AddSeparator();   
       c->AddItem(wxT("Benchmark"),      _("&Run Benchmark..."),           FN(OnBenchmark));
+#endif
       c->AddSeparator();   
       c->AddItem(wxT("DeviceInfo"),     _("&Audio Device Info..."),       FN(OnAudioDeviceInfo));
    }
-#endif 
 
    c->EndMenu();
 
