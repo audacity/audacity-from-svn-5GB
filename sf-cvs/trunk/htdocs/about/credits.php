@@ -38,13 +38,14 @@
 
 <h3><?=_("Technical Leadership Council")?></h3>
 <ul>
-  <li><a href="http://dominic-mazzoni.com/">Dominic Mazzoni</a> - (dominic (at) audacityteam.org)</li>
-  <li><a href="http://claimid.com/mbrubeck">Matt Brubeck</a> - (mbrubeck (at) audacityteam.org)</li>
-  <li>James Crook - (james (at) audacityteam.org)</li>
-  <li>Vaughan Johnson - (vaughan (at) audacityteam.org)</li>
-  <li>Leland Lucius - (leland (at) audacityteam.org)</li>
-  <li>Markus Meyer - (markus (at) audacityteam.org)</li>
-  <li>Martyn Shaw - (martynshaw99 (at) googlemail.com)</li>
+  <li><a href="http://dominic-mazzoni.com/">Dominic Mazzoni</a> - originator of Audacity</li>
+  <li><a href="http://claimid.com/mbrubeck">Matt Brubeck</a> - major early contributor</li>
+  <li>Richard Ash</li>
+  <li>James Crook</li>
+  <li>Vaughan Johnson</li>
+  <li>Leland Lucius</li>
+  <li>Markus Meyer</li>
+  <li>Martyn Shaw</li>
 </ul>
 
 <h3><?=_("Emeritus: distinguished Audacity team members, not currently active")?></h3>
