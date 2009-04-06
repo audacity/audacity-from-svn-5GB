@@ -32,6 +32,7 @@
 #include <wx/gdicmn.h>
 #include <wx/intl.h>
 #include <wx/panel.h>
+#include <wx/settings.h>
 #include <wx/window.h>
 #endif  /*  */
 
@@ -515,11 +516,12 @@ void ToolDock::OnPaint( wxPaintEvent & event )
 
    // Start with a clean background
    //
-   // Under GTK, clearing will cause the background to be white and
-   // rather than setting a background color, just bypass the clear.
-#if !defined(__WXGTK__)
-   dc.Clear();
+   // Under GTK, we specifically set the toolbar background to the background
+   // colour in the system theme.
+#if defined( __WXGTK__ )
+   dc.SetBackground( wxBrush( wxSystemSettings::GetColour( wxSYS_COLOUR_BACKGROUND ) ) );
 #endif
+   dc.Clear();
 
    // Set the gap color
    AColor::Dark( &dc, false );

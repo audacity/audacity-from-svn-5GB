@@ -393,7 +393,7 @@ void ToolBar::MakeRecoloredImage( teBmps eBmpOut, teBmps eBmpIn )
    wxImage * pPattern;
    wxImage * pSrc = &theTheme.Image( eBmpIn );
 #if defined( __WXGTK__ )
-   wxColour newColour = wxSystemSettings::GetColour( wxSYS_COLOUR_MENUBAR );
+   wxColour newColour = wxSystemSettings::GetColour( wxSYS_COLOUR_BACKGROUND );
 #else
    wxColour newColour = wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE );
 #endif
@@ -503,11 +503,13 @@ void ToolBar::OnPaint( wxPaintEvent & event )
 
    // Start with a clean background
    //
-   // Under GTK, clearing will cause the background to be white and
-   // rather than setting a background color, just bypass the clear.
-#if !defined(__WXGTK__)
-   dc.Clear();
+   // Under GTK, we specifically set the toolbar background to the background
+   // colour in the system theme.
+#if defined( __WXGTK__ )
+   dc.SetBackground( wxBrush( wxSystemSettings::GetColour( wxSYS_COLOUR_BACKGROUND ) ) );
 #endif
+
+   dc.Clear();
 
 // EXPERIMENTAL_THEMING is set to not apply the gradient
 // on wxMAC builds.  on wxMAC we have the AQUA_THEME.
