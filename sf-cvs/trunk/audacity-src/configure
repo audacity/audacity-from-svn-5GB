@@ -775,7 +775,6 @@ enable_audiounits
 enable_ladspa
 enable_quicktime
 with_portmixer
-with_portaudio
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1481,8 +1480,6 @@ Optional Packages:
   --with-midi             use portSMF for Midi support
   --with-taglib           use TagLib for metadata support
   --with-portmixer        compile with PortMixer [default=yes]
-  --with-portaudio        which version of PortAudio to use (=[v18,v19])
-                          [default=v19]
 
 Some influential environment variables:
   CC          C compiler command
@@ -9005,17 +9002,6 @@ else
 fi
 
 
-
-# Check whether --with-portaudio was given.
-if test "${with_portaudio+set}" = set; then
-  withval=$with_portaudio; use_portaudio=$withval
-else
-  use_portaudio="v19"
-fi
-
-
-
-
 # Make sure we can run config.sub.
 $SHELL "$ac_aux_dir/config.sub" sun4 >/dev/null 2>&1 ||
   { { $as_echo "$as_me:$LINENO: error: cannot run $SHELL $ac_aux_dir/config.sub" >&5
@@ -9143,29 +9129,28 @@ _ACEOF
 esac
 
 
-if [ "$use_portaudio" = "v19" ] ; then
 
 cat >>confdefs.h <<\_ACEOF
 #define USE_PORTAUDIO_V19 1
 _ACEOF
 
 
-   LOCAL_LIBS="$LOCAL_LIBS portaudio-v19/lib/libportaudio.a"
-   EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
-   CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/include $CXXFLAGS"
+LOCAL_LIBS="$LOCAL_LIBS portaudio-v19/lib/libportaudio.a"
+EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
+CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/include $CXXFLAGS"
 
-   subdirs="$subdirs lib-src/portaudio-v19"
+subdirs="$subdirs lib-src/portaudio-v19"
 
 
-   case "${host_os}" in
-      darwin* | rhapsody*)
-         LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
-         LIBS="-framework CoreAudio $LIBS -lz"
-         ;;
-      cygwin*)
-         ;;
-      *)
-                  { $as_echo "$as_me:$LINENO: checking for snd_pcm_open in -lasound" >&5
+case "${host_os}" in
+   darwin* | rhapsody*)
+      LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
+      LIBS="-framework CoreAudio $LIBS -lz"
+      ;;
+   cygwin*)
+      ;;
+   *)
+            { $as_echo "$as_me:$LINENO: checking for snd_pcm_open in -lasound" >&5
 $as_echo_n "checking for snd_pcm_open in -lasound... " >&6; }
 if test "${ac_cv_lib_asound_snd_pcm_open+set}" = set; then
   $as_echo_n "(cached) " >&6
@@ -9236,9 +9221,9 @@ else
   have_alsa=no
 fi
 
-         if [ $have_alsa = "yes" ] ; then
-            LIBS="$LIBS -lasound"
-         fi
+      if [ $have_alsa = "yes" ] ; then
+         LIBS="$LIBS -lasound"
+      fi
 
 pkg_failed=no
 { $as_echo "$as_me:$LINENO: checking for JACK" >&5
@@ -9306,10 +9291,10 @@ else
 $as_echo "yes" >&6; }
 	have_jack=yes
 fi
-         if [ $have_jack = "yes" ] ; then
-            LIBS="$LIBS $JACK_LIBS"
-         fi
-         { $as_echo "$as_me:$LINENO: checking for HPI_SubSysCreate in -lhpi" >&5
+      if [ $have_jack = "yes" ] ; then
+         LIBS="$LIBS $JACK_LIBS"
+      fi
+      { $as_echo "$as_me:$LINENO: checking for HPI_SubSysCreate in -lhpi" >&5
 $as_echo_n "checking for HPI_SubSysCreate in -lhpi... " >&6; }
 if test "${ac_cv_lib_hpi_HPI_SubSysCreate+set}" = set; then
   $as_echo_n "(cached) " >&6
@@ -9380,10 +9365,10 @@ else
   have_asihpi=no
 fi
 
-         if [ $have_asihpi = "yes" ] ; then
-            LIBS="$LIBS -lhpi"
-         fi
-         { $as_echo "$as_me:$LINENO: checking for clock_gettime in -lrt" >&5
+      if [ $have_asihpi = "yes" ] ; then
+         LIBS="$LIBS -lhpi"
+      fi
+      { $as_echo "$as_me:$LINENO: checking for clock_gettime in -lrt" >&5
 $as_echo_n "checking for clock_gettime in -lrt... " >&6; }
 if test "${ac_cv_lib_rt_clock_gettime+set}" = set; then
   $as_echo_n "(cached) " >&6
@@ -9452,7 +9437,7 @@ if test "x$ac_cv_lib_rt_clock_gettime" = x""yes; then
   rt_libs=" -lrt"
 fi
 
-         LIBS="${LIBS}${rt_libs}"
+      LIBS="${LIBS}${rt_libs}"
 
 
 for ac_func in clock_gettime nanosleep
@@ -9555,30 +9540,8 @@ _ACEOF
 fi
 done
 
-         ;;
-   esac
-
-else
-      CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio/pa_common $CXXFLAGS"
-
-   case "${host_os}" in
-      darwin* | rhapsody*)
-         LOCAL_LIBS="$LOCAL_LIBS portaudio/pa_mac_core/portaudio.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
-
-         LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
-         LIBS="-framework CoreAudio $LIBS -lz"
-         ;;
-      cygwin*)
-         LOCAL_LIBS="$LOCAL_LIBS portaudio/pa_win_wmme/portaudio.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_win_wmme/portaudio.a"
-         ;;
-      *)
-                  LOCAL_LIBS="$LOCAL_LIBS portaudio/pa_unix_oss/portaudio.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
-         ;;
-   esac
-fi
+      ;;
+esac
 
 
 if [ "$use_portmixer" = "yes" ] ; then
@@ -9587,33 +9550,14 @@ cat >>confdefs.h <<\_ACEOF
 #define USE_PORTMIXER 1
 _ACEOF
 
-   if [ "$use_portaudio" = "v19" ] ; then
 
-      CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/include $CXXFLAGS"
-      LOCAL_LIBS="$LOCAL_LIBS portmixer/libportmixer.a"
-      EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/libportmixer.a"
+   CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/include $CXXFLAGS"
+   LOCAL_LIBS="$LOCAL_LIBS portmixer/libportmixer.a"
+   EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/libportmixer.a"
 
-      subdirs="$subdirs lib-src/portmixer"
+   subdirs="$subdirs lib-src/portmixer"
 
-      ac_configure_args="$ac_configure_args --with-pa-include=../portaudio-v19/include"
-   else
-
-      CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/px_common $CXXFLAGS"
-      case "${host_os}" in
-         darwin* | rhapsody*)
-            LOCAL_LIBS="$LOCAL_LIBS portmixer/px_mac_core/portmixer.a"
-            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"
-            ;;
-         cygwin*)
-            LOCAL_LIBS="$LOCAL_LIBS portmixer/px_win_wmme/portmixer.a"
-            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
-            ;;
-         *)
-                        LOCAL_LIBS="$LOCAL_LIBS portmixer/px_unix_oss/portmixer.a"
-            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"
-            ;;
-      esac
-   fi
+   ac_configure_args="$ac_configure_args --with-pa-include=../portaudio-v19/include"
 fi
 
 { $as_echo "$as_me:$LINENO: checking for lrint" >&5
@@ -9802,10 +9746,6 @@ ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile locale/
 
 if [ "x$LIBEXPAT_USE_LOCAL" = "xyes" ]; then
    ac_config_files="$ac_config_files lib-src/expat/Makefile"
-
-fi
-if [ "$use_portaudio" != "v19" ]; then
-   ac_config_files="$ac_config_files lib-src/portaudio/pa_unix_oss/Makefile"
 
 fi
 if [ -e tests/Makefile.in ]; then
@@ -10414,7 +10354,6 @@ do
     "lib-src/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/Makefile" ;;
     "locale/Makefile") CONFIG_FILES="$CONFIG_FILES locale/Makefile" ;;
     "lib-src/expat/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/expat/Makefile" ;;
-    "lib-src/portaudio/pa_unix_oss/Makefile") CONFIG_FILES="$CONFIG_FILES lib-src/portaudio/pa_unix_oss/Makefile" ;;
     "tests/Makefile") CONFIG_FILES="$CONFIG_FILES tests/Makefile" ;;
 
   *) { { $as_echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
@@ -11253,9 +11192,7 @@ fi
 
 
 pa_libs=
-if [ "$use_portaudio" = "v19" ] ; then
-   pa_libs=`grep 'Libs:' lib-src/portaudio-v19/portaudio-2.0.pc | sed -e 's/Libs://;s/-L${libdir}//;s/-lportaudio//'`
-fi
+pa_libs=`grep 'Libs:' lib-src/portaudio-v19/portaudio-2.0.pc | sed -e 's/Libs://;s/-L${libdir}//;s/-lportaudio//'`
 sed -i -e "s/@PA_LIBS@/$pa_libs/" src/Makefile
 
 echo ""
@@ -11274,7 +11211,6 @@ for lib in $LIBRARIES ; do
    fi
 done
 
-
 if [ "$use_ladspa" = "yes" ] ; then
    echo "ladspa: enabled"
 else
@@ -11288,20 +11224,6 @@ else
 fi
 
 echo "prefix=$prefix";
-
-case "${host_os}" in
-  darwin* | rhapsody*)
-    ;;
-  cygwin*)
-    ;;
-  *)
-    if [ "$use_portaudio" = "v19" ] ; then
-       echo "portaudio: v19"
-    else
-       echo "portaudio: v18 (OSS only)"
-    fi
-    ;;
-esac
 
 echo ""
 echo "Run 'configure --help' for an explanation of these options,"
