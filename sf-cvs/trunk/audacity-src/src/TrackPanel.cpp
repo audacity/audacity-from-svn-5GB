@@ -3019,7 +3019,10 @@ void TrackPanel::HandleSampleEditingClick( wxMouseEvent & event )
    //First, calculate the starting sample.  To get this, we need the time
    double t0 = PositionToTime(event.m_x, GetLeftOffset());
    double rate = ((WaveTrack *)mDrawingTrack)->GetRate();
-   float newLevel;   //Declare this for use later
+
+   // Default to zero for ALT case, so it doesn't cause a runtime fault on MSVC in 
+   // the mDrawingLastDragSampleValue assignment at the bottom of this method. 
+   float newLevel = 0.0f;   //Declare this for use later
 
    //convert t0 to samples
    mDrawingStartSample = (sampleCount) (double)(t0 * rate + 0.5 );
