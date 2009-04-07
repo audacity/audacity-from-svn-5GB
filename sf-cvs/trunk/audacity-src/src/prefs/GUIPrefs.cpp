@@ -32,17 +32,17 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-ShowPrefs::ShowPrefs(wxWindow * parent)
-:  PrefsPanel(parent, _("Show"))
+WarningsPrefs::WarningsPrefs(wxWindow * parent)
+:  PrefsPanel(parent, _("Warnings"))
 {
    Populate();
 }
 
-ShowPrefs::~ShowPrefs()
+WarningsPrefs::~WarningsPrefs()
 {
 }
 
-void ShowPrefs::Populate()
+void WarningsPrefs::Populate()
 {
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
@@ -53,38 +53,32 @@ void ShowPrefs::Populate()
    // ----------------------- End of main section --------------
 }
 
-void ShowPrefs::PopulateOrExchange(ShuttleGui & S)
+void WarningsPrefs::PopulateOrExchange(ShuttleGui & S)
 {
    S.SetBorder(2);
 
-   S.StartStatic(_("Show"));
+   S.StartStatic(_("Show Warnings/Prompts"));
    {
-      S.TieCheckBox(_("Show &welcome message at program start up"),
-                    wxT("/GUI/ShowSplashScreen"),
-                    true);
-      S.TieCheckBox(_("Show prompt to sa&ve, even if project is empty"),    
-                    wxT("/GUI/EmptyCanBeDirty"),
-                    true);
-      S.TieCheckBox(_("Show warnings about &temp files"),
-                    wxT("/GUI/WarnAboutTempFiles"),
-                    true);
-      S.TieCheckBox(_("Show warnings about &low disk space"),
-                    wxT("/Warnings/DiskSpaceWarning"),
-                    true);
-      S.TieCheckBox(_("Show warning when saving projects"),
+      S.TieCheckBox(_("When saving &projects"),
                     wxT("/Warnings/FirstProjectSave"),
                     true);
-      S.TieCheckBox(_("Show warning about mixdown to stereo during export"),
+      S.TieCheckBox(_("When saving &empty project"),    
+                    wxT("/GUI/EmptyCanBeDirty"),
+                    true);
+      S.TieCheckBox(_("When &disk space is getting low"),
+                    wxT("/Warnings/DiskSpaceWarning"),
+                    true);
+      S.TieCheckBox(_("When mixing tracks down to &stereo during export"),
                     wxT("/Warnings/MixStereo"),
                     true);
-      S.TieCheckBox(_("Show warning about mixdown to mono during export"),
+      S.TieCheckBox(_("When mixing tracks down to &mono during export"),
                     wxT("/Warnings/MixMono"),
                     true);
    }
    S.EndStatic();
 }
 
-bool ShowPrefs::Apply()
+bool WarningsPrefs::Apply()
 {
    ShuttleGui S(this, eIsSavingToPrefs);
    PopulateOrExchange(S);
@@ -165,6 +159,9 @@ void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Behaviors"));
    {
+      S.TieCheckBox(_("&Select all audio in project, if none selected"),    
+                    wxT("/GUI/SelectAllOnNone"),
+                    true);
 	   S.TieCheckBox(_("Enable cut &lines"),
                     wxT("/GUI/EnableCutLines"),
                     false);
@@ -176,9 +173,6 @@ void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
                     false);
       S.TieCheckBox(_("Editing a &clip can move other clips"),
                     wxT("/GUI/EditClipCanMove"),
-                    true);
-      S.TieCheckBox(_("&Select all audio in project, if none selected"),    
-                    wxT("/GUI/SelectAllOnNone"),
                     true);
 
       S.AddSpace(10);
@@ -276,6 +270,9 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.TieCheckBox(_("Er&gonomic order of audio I/O buttons"),
                     wxT("/GUI/ErgonomicTransportButtons"),
+                    true);
+      S.TieCheckBox(_("Show &welcome message at program start up"),
+                    wxT("/GUI/ShowSplashScreen"),
                     true);
 
       S.AddSpace(10);

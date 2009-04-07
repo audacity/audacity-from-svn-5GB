@@ -23,11 +23,11 @@
 
 #include "PrefsPanel.h"
 
-class ShowPrefs:public PrefsPanel
+class WarningsPrefs:public PrefsPanel
 {
  public:
-   ShowPrefs(wxWindow * parent);
-   ~ShowPrefs();
+   WarningsPrefs(wxWindow * parent);
+   ~WarningsPrefs();
    virtual bool Apply();
 
  private:

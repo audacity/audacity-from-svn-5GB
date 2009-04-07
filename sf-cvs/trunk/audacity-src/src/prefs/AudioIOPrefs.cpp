@@ -83,13 +83,17 @@ void DevicePrefs::Populate()
 
 void DevicePrefs::GetNamesAndLabels()
 {
-   // Get lists of devices both for play and record.
-   int nHosts = Pa_GetHostApiCount();
-
-   for (int i = 0; i < nHosts; i++) {
-      wxString name = LAT1CTOWX(Pa_GetHostApiInfo(i)->name);
-      mHostNames.Add(name);
-      mHostLabels.Add(name);
+   // Gather list of hosts.  Only added hosts that have devices attached.
+   int nDevices = Pa_GetDeviceCount();
+   for (int i = 0; i < nDevices; i++) {
+      const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
+      if (info->maxOutputChannels > 0 || info->maxInputChannels > 0) {
+         wxString name = LAT1CTOWX(Pa_GetHostApiInfo(info->hostApi)->name);
+         if (mHostNames.Index(name) == wxNOT_FOUND) {
+            mHostNames.Add(name);
+            mHostLabels.Add(name);
+         }
+      }
    }
 
    // Channel counts, mono, stereo etc...
