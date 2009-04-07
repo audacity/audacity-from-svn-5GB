@@ -2217,11 +2217,10 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
 
          mCapturedClipIsSelection = true;
 
+         TrackGroupIterator iter(mTracks);
          Track *t;
-         if (GetProject()->IsSticky()) {
-            TrackGroupIterator iter(mTracks);
-
-            for (t = iter.First(wt); t; t = iter.Next()) {
+         if (GetProject()->IsSticky() && (t = iter.First(wt))) {
+            while (t) {
                if (t->GetKind() == Track::Wave) {
                   WaveTrack *wt = (WaveTrack *)t;
                   WaveClipList::Node* it;
@@ -2239,6 +2238,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
                else {
                   mCapturedClipArray.Add(TrackClip(t, NULL));
                }
+               t = iter.Next();
             }
          }
          else {
@@ -2269,11 +2269,10 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
          }
       }
       else {
+         TrackGroupIterator iter(mTracks);
          Track *t;
-         if (GetProject()->IsSticky()) {
-            TrackGroupIterator iter(mTracks);
-
-            for (t = iter.First(wt); t; t = iter.Next()) {
+         if (GetProject()->IsSticky() && (t = iter.First(wt))) {
+            while (t) {
                if (t->GetKind() == Track::Wave) {
                   WaveTrack *wt = (WaveTrack *)t;
                   WaveClipList::Node* it;
@@ -2285,6 +2284,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
                else {
                   mCapturedClipArray.Add(TrackClip(t, NULL));
                }
+               t = iter.Next();
             }
          }
          else {
