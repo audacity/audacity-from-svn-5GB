@@ -187,26 +187,6 @@ void Dither::Apply(enum DitherType ditherType,
             }
         }
 
-        if (destFormat == floatSample)
-        {
-            // Only float samples can contain a value that
-            // must be clipped.
-            
-/* mchinen jan31 2009 commenting out because this introduces uneccessary clipping.
-  this change may cause problems when floats are converted to ints, or are assumed to be below 1.0/-1.0
-  afaik the only conversion that happens is here.
-*/  
-#ifndef EXPERIMENTAL_NOCLIP_FLOAT
-            float* p = (float*)dest;
-
-
-            for (i = 0; i < len; i++, p++)
-                if (*p > 1.0)
-                    *p = 1.0;
-                else if (*p < -1.0)
-                    *p = -1.0;
-#endif
-        }
     } else
     if (destFormat == floatSample)
     {
