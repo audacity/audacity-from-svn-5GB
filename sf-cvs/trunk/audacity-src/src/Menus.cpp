@@ -594,12 +594,12 @@ void AudacityProject::CreateMenusAndCommands()
    play, record, pause etc. */
    c->BeginMenu(_("T&ransport"));
    c->SetDefaultFlags(0, 0);
-      c->AddItem(wxT("Play"), _("Play\tSpace\tallowdup"), FN(OnPlayStop));
+      c->AddItem(wxT("Play"), _("Play"), FN(OnPlayStop));
       c->SetCommandFlags(wxT("Play"), AudioIONotBusyFlag, AudioIONotBusyFlag);
       c->AddItem(wxT("PlayLooped"), _("&Loop Play\tShift+Space"), FN(OnPlayLooped));
       c->SetCommandFlags(wxT("PlayLooped"), AudioIONotBusyFlag, AudioIONotBusyFlag);
       c->AddItem(wxT("Pause"), _("&Pause\tP"), FN(OnPause));
-      c->AddItem(wxT("Stop"), _("&Stop\tSpace\tallowdup"), FN(OnStop));
+      c->AddItem(wxT("Stop"), _("&Stop"), FN(OnStop));
       c->AddItem(wxT("SkipStart"), _("Skip to Start\tHome"), FN(OnSkipStart));
       c->SetCommandFlags(wxT("SkipStart"), AudioIONotBusyFlag, AudioIONotBusyFlag);
       c->AddItem(wxT("SkipEnd"), _("Skip to End\tEnd"), FN(OnSkipEnd));
@@ -994,6 +994,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("NextTool"),   _("Next Tool\tD"),                 FN(OnNextTool));
    c->AddCommand(wxT("PrevTool"),   _("Previous Tool\tA"),             FN(OnPrevTool));
 
+   c->AddCommand(wxT("PlayStop"),    _("Play/Stop\tSpace"),            FN(OnPlayStop));
+
    c->AddCommand(wxT("PlayStopSelect"),  _("Play/Stop and Set Cursor\tShift+A"),    FN(OnPlayStopSelect));
 
    c->AddCommand(wxT("PlayOneSec"),     _("Play One Second\t1"),       FN(OnPlayOneSecond));
@@ -1025,7 +1027,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("ShiftUp"),       _("Move Focus to Previous and Select\tShift+Up"), FN(OnShiftUp));
    c->AddCommand(wxT("NextTrack"),     _("Move Focus to Next Track\tDown"),                        FN(OnCursorDown));
    c->AddCommand(wxT("ShiftDown"),     _("Move Focus to Next and Select\tShift+Down"),   FN(OnShiftDown));
-   c->AddCommand(wxT("Toggle"),        _("Toggle Focused Track\tReturn"),                          FN(OnToggle));
+   c->AddCommand(wxT("Toggle"),        _("Toggle Focused Track\tReturn"),                    FN(OnToggle));
 
    c->AddCommand(wxT("CursorLeft"),           _("Cursor Left\tLeft\tallowdup"),              FN(OnCursorLeft));
    c->AddCommand(wxT("CursorRight"),          _("Cursor Right\tRight\tallowdup"),            FN(OnCursorRight));
