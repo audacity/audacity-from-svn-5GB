@@ -413,20 +413,24 @@ Track *TrackGroupIterator::First(Track * member)
 {
    Track *t = NULL;
 
-   while (member->GetKind() == Track::Wave) {
+   // Scan forward for a label track
+   while (member && member->GetKind() == Track::Wave) {
       member = l->GetNext(member);
    }
 
-   if (member->GetKind() != Track::Label) {
+   // It's not part of a group if one wasn't found
+   if (!member || member->GetKind() != Track::Label) {
       return NULL;
    }
 
+   // Find first wave track in the group
    member = l->GetPrev(member);
    while (member && member->GetKind() == Track::Wave) {
       t = member;
       member = l->GetPrev(member);
    }
 
+   // Make it current
    cur = (TrackListNode *) t->GetNode();
 
    return t;
@@ -436,10 +440,12 @@ Track *TrackGroupIterator::Next(bool skiplinked)
 {
    Track *t = TrackListIterator::Next(skiplinked);
 
+   // End of the group has been reached
    if (!t || mEndOfGroup) {
       return NULL;
    }
 
+   // Found the end of the group, so signal for next iteration
    if (t->GetKind() == Track::Label) {
       mEndOfGroup = true;
    }
