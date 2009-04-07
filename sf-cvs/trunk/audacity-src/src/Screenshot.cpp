@@ -539,6 +539,16 @@ void ScreenFrame::Capture(wxString basename,
    } while (::wxFileExists(filename));
 
    Hide();
+
+   if (window) {
+      if (window->IsTopLevel()) {
+         window->Raise();
+      }
+      else {
+         wxGetTopLevelParent(window)->Raise();
+      }
+   }
+
    Yield();
 
    int screenW, screenH;
