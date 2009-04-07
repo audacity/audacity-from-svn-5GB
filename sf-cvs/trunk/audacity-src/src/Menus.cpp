@@ -1023,11 +1023,12 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->SetDefaultFlags(TracksExistFlag | TrackPanelHasFocus,
                       TracksExistFlag | TrackPanelHasFocus);
-   c->AddCommand(wxT("PrevTrack"),     _("Move Focus to Previous Track\tUp"),                      FN(OnCursorUp));
-   c->AddCommand(wxT("ShiftUp"),       _("Move Focus to Previous and Select\tShift+Up"), FN(OnShiftUp));
-   c->AddCommand(wxT("NextTrack"),     _("Move Focus to Next Track\tDown"),                        FN(OnCursorDown));
-   c->AddCommand(wxT("ShiftDown"),     _("Move Focus to Next and Select\tShift+Down"),   FN(OnShiftDown));
+   c->AddCommand(wxT("PrevTrack"),     _("Move Focus to Previous Track\tUp"),                FN(OnCursorUp));
+   c->AddCommand(wxT("ShiftUp"),       _("Move Focus to Previous and Select\tShift+Up"),     FN(OnShiftUp));
+   c->AddCommand(wxT("NextTrack"),     _("Move Focus to Next Track\tDown"),                  FN(OnCursorDown));
+   c->AddCommand(wxT("ShiftDown"),     _("Move Focus to Next and Select\tShift+Down"),       FN(OnShiftDown));
    c->AddCommand(wxT("Toggle"),        _("Toggle Focused Track\tReturn"),                    FN(OnToggle));
+   c->AddCommand(wxT("ToggleAlt"),     _("Toggle Focused Track\tNUMPAD_ENTER"),              FN(OnToggle));
 
    c->AddCommand(wxT("CursorLeft"),           _("Cursor Left\tLeft\tallowdup"),              FN(OnCursorLeft));
    c->AddCommand(wxT("CursorRight"),          _("Cursor Right\tRight\tallowdup"),            FN(OnCursorRight));
