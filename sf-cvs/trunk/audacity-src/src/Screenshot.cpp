@@ -78,6 +78,7 @@ class ScreenFrame:public wxFrame
    void OnToggleBackgroundBlue(wxCommandEvent & e);
    void OnToggleBackgroundWhite(wxCommandEvent & e);
    void OnCaptureWindowContents(wxCommandEvent & e);
+   void OnCaptureFullWindow(wxCommandEvent & e);
    void OnCaptureWindowPlus(wxCommandEvent & e);
    void OnCaptureFullScreen(wxCommandEvent & e);
 
@@ -223,6 +224,7 @@ enum
    IdAllDelayedEvents,
 
    IdCaptureWindowContents,
+   IdCaptureFullWindow,
    IdCaptureWindowPlus,
    IdCaptureFullScreen,
 
@@ -237,8 +239,8 @@ BEGIN_EVENT_TABLE(ScreenFrame, wxFrame)
    EVT_TOGGLEBUTTON(IdToggleBackgroundBlue,   ScreenFrame::OnToggleBackgroundBlue)
    EVT_TOGGLEBUTTON(IdToggleBackgroundWhite,  ScreenFrame::OnToggleBackgroundWhite)
    EVT_BUTTON(IdCaptureWindowContents,  ScreenFrame::OnCaptureWindowContents)
+   EVT_BUTTON(IdCaptureFullWindow,      ScreenFrame::OnCaptureFullWindow)
    EVT_BUTTON(IdCaptureWindowPlus,      ScreenFrame::OnCaptureWindowPlus)
-
    EVT_BUTTON(IdCaptureFullScreen,      ScreenFrame::OnCaptureFullScreen)
 
    EVT_BUTTON(IdCaptureToolbars,        ScreenFrame::OnCaptureToolbars)
@@ -345,7 +347,13 @@ void ScreenFrame::PopulateOrExchange(ShuttleGui & S)
          S.StartHorizontalLay();
          {
             S.Id(IdCaptureWindowContents).AddButton(_("Capture Window Only"));
+            S.Id(IdCaptureFullWindow).AddButton(_("Capture Full Window"));
             S.Id(IdCaptureWindowPlus).AddButton(_("Capture Window Plus"));
+         }
+         S.EndHorizontalLay();
+
+         S.StartHorizontalLay();
+         {
             S.Id(IdCaptureFullScreen).AddButton(_("Capture Full Screen"));
          }
          S.EndHorizontalLay();
@@ -552,14 +560,6 @@ void ScreenFrame::Capture(wxString basename,
       r.SetPosition(window->GetParent()->ClientToScreen(r.GetPosition()));
    }
 
-   if (bg && !mBackground) {  // background colour not selected but we want a background
-      wxRect b = GetBackgroundRect();
-      r.x = (r.x - b.x) >= 0 ? (r.x - b.x): 0;
-      r.y = (r.y - b.y) >= 0 ? (r.y - b.y): 0;
-      r.width += b.width;
-      r.height += b.height;
-   }
-
    // Extract the actual image
    wxBitmap part = full.GetSubBitmap(r);
 
@@ -696,6 +696,32 @@ void ScreenFrame::OnCaptureWindowContents(wxCommandEvent & e)
    Capture(basename, w, x, y, width, height);
 }
 
+void ScreenFrame::OnCaptureFullWindow(wxCommandEvent & e)
+{
+   wxTopLevelWindow *w = GetFrontWindow();
+   if (!w) {
+      return;
+   }
+
+   wxRect r = w->GetRect();
+   r.SetPosition(w->GetScreenPosition());
+   r = w->GetScreenRect();
+
+   wxString basename = wxT("fullwindow");
+   if (w != GetActiveProject() && w->GetTitle() != wxT("")) {
+      basename += (wxT("-") + w->GetTitle() + wxT("-"));
+   }
+
+#if defined(__WXGTK__)
+   // In wxGTK, we need to include decoration sizes
+   r.width += (wxSystemSettings::GetMetric(wxSYS_BORDER_X, w) * 2);
+   r.height += wxSystemSettings::GetMetric(wxSYS_CAPTION_Y, w) +
+               wxSystemSettings::GetMetric(wxSYS_BORDER_Y, w);
+#endif
+
+   Capture(basename, w, r.x, r.y, r.width, r.height, true);
+}
+
 void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent & e)
 {
    wxTopLevelWindow *w = GetFrontWindow();
@@ -718,6 +744,14 @@ void ScreenFrame::OnCaptureWindowPlus(wxCommandEvent & e)
    r.height += wxSystemSettings::GetMetric(wxSYS_CAPTION_Y, w) +
                wxSystemSettings::GetMetric(wxSYS_BORDER_Y, w);
 #endif
+
+   if (!mBackground) {  // background colour not selected but we want a background
+      wxRect b = GetBackgroundRect();
+      r.x = (r.x - b.x) >= 0 ? (r.x - b.x): 0;
+      r.y = (r.y - b.y) >= 0 ? (r.y - b.y): 0;
+      r.width += b.width;
+      r.height += b.height;
+   }
 
    Capture(basename, w, r.x, r.y, r.width, r.height, true);
 }
