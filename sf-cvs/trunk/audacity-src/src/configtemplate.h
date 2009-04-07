@@ -90,10 +90,6 @@
 /* Define if libid3tag is present */
 #undef USE_LIBID3TAG
 
-/* Define if liblrdf (metadata for LADSPA plugins) support should be enabled
-   */
-#undef USE_LIBLRDF
-
 /* Define if mp3 support is implemented with the libmad library */
 #undef USE_LIBMAD
 
@@ -120,9 +116,6 @@
 
 /* Define if QuickTime importing is enabled (Mac OS X only) */
 #undef USE_QUICKTIME
-
-/* Define if SLV2 (library for loading LV2 plugins) should be enabled */
-#undef USE_SLV2
 
 /* Define if SBSMS support should be enabled */
 #undef USE_SBSMS
