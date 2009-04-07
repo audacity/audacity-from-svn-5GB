@@ -71,7 +71,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="filedialog.lib libsndfile.lib wxbase28u.lib wxbase28u_net.lib wxmsw28u_adv.lib wxmsw28u_core.lib wxmsw28u_html.lib wxexpat.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
+				AdditionalDependencies="filedialog.lib libsndfile.lib portaudio-v19.lib wxbase28u.lib wxbase28u_net.lib wxmsw28u_adv.lib wxmsw28u_core.lib wxmsw28u_html.lib wxexpat.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;&quot;$(WXWIN)\lib\vc_dll&quot;"
 				IgnoreDefaultLibraryNames="dsound.lib"
 				SubSystem="2"
@@ -161,7 +161,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="filedialog.lib libsndfile.lib wxbase28ud.lib wxbase28ud_net.lib wxmsw28ud_adv.lib wxmsw28ud_core.lib wxmsw28ud_html.lib wxexpatd.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
+				AdditionalDependencies="filedialog.lib libsndfile.lib portaudio-v19.lib wxbase28ud.lib wxbase28ud_net.lib wxmsw28ud_adv.lib wxmsw28ud_core.lib wxmsw28ud_html.lib wxexpatd.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;&quot;$(WXWIN)\lib\vc_dll&quot;"
 				IgnoreDefaultLibraryNames="dsound.lib"
@@ -253,7 +253,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="filedialog.lib libsndfile.lib wxbase28d.lib wxbase28d_net.lib wxmsw28d_adv.lib wxmsw28d_core.lib wxmsw28d_html.lib wxexpatd.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
+				AdditionalDependencies="filedialog.lib libsndfile.lib portaudio-v19.lib wxbase28d.lib wxbase28d_net.lib wxmsw28d_adv.lib wxmsw28d_core.lib wxmsw28d_html.lib wxexpatd.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;&quot;$(WXWIN)\lib\vc_dll&quot;"
 				IgnoreDefaultLibraryNames="dsound.lib"
@@ -341,7 +341,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="filedialog.lib libsndfile.lib wxbase28.lib wxbase28_net.lib wxmsw28_adv.lib wxmsw28_core.lib wxmsw28_html.lib wxexpat.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
+				AdditionalDependencies="filedialog.lib libsndfile.lib portaudio-v19.lib wxbase28.lib wxbase28_net.lib wxmsw28_adv.lib wxmsw28_core.lib wxmsw28_html.lib wxexpat.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;&quot;$(WXWIN)\lib\vc_dll&quot;"
 				IgnoreDefaultLibraryNames="dsound.lib"
 				SubSystem="2"

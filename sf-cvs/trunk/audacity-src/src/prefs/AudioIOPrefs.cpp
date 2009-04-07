@@ -111,11 +111,11 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartMultiColumn(2);
       {
-         mHost = S.TieChoice(_("Host") + wxString(wxT(":")),
-                             wxT("/AudioIO/Host"), 
-                             wxT(""),
-                             mHostNames,
-                             mHostLabels);
+         mHost = S.Id(HostID).TieChoice(_("Host") + wxString(wxT(":")),
+                                        wxT("/AudioIO/Host"), 
+                                        wxT(""),
+                                        mHostNames,
+                                        mHostLabels);
          S.SetSizeHints(mHostNames);
 
          S.AddPrompt(_("Using:"));
