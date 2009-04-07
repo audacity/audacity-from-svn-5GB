@@ -72,6 +72,9 @@ class ScreenFrame:public wxFrame
    void CaptureToolbar(int type, wxString name);
 
    void OnCloseWindow(wxCloseEvent & e);
+   void OnUIUpdate(wxUpdateUIEvent & e);
+
+   void OnDirChoose(wxCommandEvent & e);
 
    void OnMainWindowSmall(wxCommandEvent & e);
    void OnMainWindowLarge(wxCommandEvent & e);
@@ -107,8 +110,6 @@ class ScreenFrame:public wxFrame
    void OnCaptureTracks(wxCommandEvent & e);
    void OnCaptureFirstTrack(wxCommandEvent & e);
    void OnCaptureSecondTrack(wxCommandEvent & e);
-
-   void OnDirChoose(wxCommandEvent & e);
 
    wxCheckBox *mDelayCheckBox;
    wxTextCtrl *mDirectoryTextBox;
@@ -234,6 +235,8 @@ enum
 BEGIN_EVENT_TABLE(ScreenFrame, wxFrame)
    EVT_CLOSE(ScreenFrame::OnCloseWindow)
 
+   EVT_UPDATE_UI(IdCaptureFullScreen,   ScreenFrame::OnUIUpdate)
+
    EVT_BUTTON(IdMainWindowSmall,        ScreenFrame::OnMainWindowSmall)
    EVT_BUTTON(IdMainWindowLarge,        ScreenFrame::OnMainWindowLarge)
    EVT_TOGGLEBUTTON(IdToggleBackgroundBlue,   ScreenFrame::OnToggleBackgroundBlue)
@@ -270,7 +273,6 @@ BEGIN_EVENT_TABLE(ScreenFrame, wxFrame)
    EVT_BUTTON(IdCaptureSecondTrack,     ScreenFrame::OnCaptureSecondTrack)
 
    EVT_BUTTON(IdDirChoose,              ScreenFrame::OnDirChoose)
-
 END_EVENT_TABLE();
 
 ScreenFrame::ScreenFrame(wxWindow * parent, wxWindowID id)
@@ -278,6 +280,8 @@ ScreenFrame::ScreenFrame(wxWindow * parent, wxWindowID id)
            wxDefaultPosition, wxDefaultSize,
 #if !defined(__WXMSW__)
            wxFRAME_TOOL_WINDOW|
+#else
+           wxSTAY_ON_TOP|
 #endif
            wxSYSTEM_MENU|wxCAPTION|wxCLOSE_BOX)
 {
@@ -556,7 +560,7 @@ void ScreenFrame::Capture(wxString basename,
    r.Intersect(wxRect(0, 0, screenW, screenH));
 
    // Convert to screen coordinates if needed
-   if (window->GetParent() && !window->IsTopLevel()) {
+   if (window && window->GetParent() && !window->IsTopLevel()) {
       r.SetPosition(window->GetParent()->ClientToScreen(r.GetPosition()));
    }
 
@@ -626,6 +630,31 @@ void ScreenFrame::OnCloseWindow(wxCloseEvent & e)
    Destroy();
 }
 
+void ScreenFrame::OnUIUpdate(wxUpdateUIEvent & e)
+{
+   wxTopLevelWindow *top = GetFrontWindow();
+   bool needupdate = false;
+   bool enable = false;
+
+   if ((!top || top->IsIconized()) && mDirectoryTextBox->IsEnabled()) {
+      needupdate = true;
+      enable = false;
+   }
+   else if ((top && !top->IsIconized()) && !mDirectoryTextBox->IsEnabled()) {
+      needupdate = true;
+      enable = true;
+   }
+
+   if (needupdate) {
+      for (int i = IdMainWindowSmall; i < IdLastDelayedEvent; i++) {
+         wxWindow *w = wxWindow::FindWindowById(i, this);
+         if (w) {
+            w->Enable(enable);
+         }
+      }
+   }
+}
+
 void ScreenFrame::OnDirChoose(wxCommandEvent & e)
 {
    wxString current = mDirectoryTextBox->GetValue();
@@ -682,6 +711,10 @@ void ScreenFrame::OnToggleBackgroundWhite(wxCommandEvent & e)
 void ScreenFrame::OnCaptureWindowContents(wxCommandEvent & e)
 {
    wxTopLevelWindow *w = GetFrontWindow();
+   if (!w) {
+      return;
+   }
+
    int x = 0, y = 0;
    int width, height;
 
