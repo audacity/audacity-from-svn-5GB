@@ -1341,6 +1341,7 @@ bool LabelTrack::CaptureKey(wxKeyEvent & event)
          case WXK_LEFT:
          case WXK_RIGHT:
          case WXK_RETURN:
+         case WXK_NUMPAD_ENTER:
          case WXK_ESCAPE:
          case WXK_TAB:
             return true;
@@ -1513,6 +1514,7 @@ bool LabelTrack::OnKeyDown(double & newSel0, double & newSel1, wxKeyEvent & even
          break;
 
       case WXK_RETURN:
+      case WXK_NUMPAD_ENTER:
 
       case WXK_ESCAPE:
          if (mLabels[mSelIndex]->title == wxT("")) {
