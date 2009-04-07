@@ -84,13 +84,13 @@ PrefsDialog::PrefsDialog(wxWindow * parent)
 //       w = new MidiIOPrefs(mCategories);      mCategories->AddPage(w, w->GetName(), false, 0);
          w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName(), false, 0);
          w = new FileFormatPrefs(mCategories);  mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new ProjectPrefs(mCategories);     mCategories->AddPage(w, w->GetName(), false, 0);
          w = new LibraryPrefs(mCategories);     mCategories->AddPage(w, w->GetName(), false, 0);
          w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName(), false, 0);
-         w = new ShowPrefs(mCategories);        mCategories->AddPage(w, w->GetName(), false, 0);
          w = new TracksPrefs(mCategories);      mCategories->AddPage(w, w->GetName(), false, 0);
          w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName(), false, 0);
          w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName(), false, 0);
-//         w = new SmartRecordPrefs(mCategories); mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new WarningsPrefs(mCategories);    mCategories->AddPage(w, w->GetName(), false, 0);
 
 #ifdef EXPERIMENTAL_THEME_PREFS
          w = new ThemePrefs(mCategories);       mCategories->AddPage(w, w->GetName(), false, 0);
