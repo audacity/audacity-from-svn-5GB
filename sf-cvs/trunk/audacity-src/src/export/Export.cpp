@@ -413,8 +413,8 @@ bool Exporter::ExamineTracks()
    // Tally how many are right, left, mono, and make sure at
    // least one track is selected (if selectedOnly==true)
 
-   float earliestBegin = mT1;
-   float latestEnd = mT0;
+   double earliestBegin = mT1;
+   double latestEnd = mT0;
 
    TrackList *tracks = mProject->GetTracks();
    TrackListIterator iter1(tracks);
