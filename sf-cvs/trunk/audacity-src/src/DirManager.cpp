@@ -122,20 +122,18 @@ DirManager::DirManager()
       for(i=0; i< 256; i++) dirTopPool[i]=0;
    }
 
+   //create a temporary null log to capture the log dialog
+   //that wxGetDiskSpace creates.  It gets destroyed when
+   //it goes out of context.
+   //JKC: Please explain why.
+   wxLogNull logNo;
+
    // Make sure there is plenty of space for temp files
    wxLongLong freeSpace = 0;
-
-   {
-      //create a temporary null log to capture the log dialog
-      //that wxGetDiskSpace creates.  It gets destroyed when
-      //it goes out of context.
-		//JKC: Please explain why.
-      wxLogNull logNo;
-      if (wxGetDiskSpace(globaltemp, NULL, &freeSpace)) {
-         if (freeSpace < 1048576) {
-            ShowWarningDialog(NULL, wxT("DiskSpaceWarning"),
-                              _("Warning: there is very little free disk space left on this volume.\nPlease select another temporary directory in your preferences."));
-         }
+   if (wxGetDiskSpace(globaltemp, NULL, &freeSpace)) {
+      if (freeSpace < wxLongLong(wxLL(10 * 1048576))) {
+         ShowWarningDialog(NULL, wxT("DiskSpaceWarning"),
+                           _("Warning: there is very little free disk space left on this volume.\nPlease select another temporary directory in your preferences."));
       }
    }
 }
