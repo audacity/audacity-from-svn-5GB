@@ -33,9 +33,9 @@
 
 <h3 id="advertising"><?=_("Advertisements Policy")?></h3>
 
-<?=_('<p>On some pages on our main site, we show advertisements from Google's AdSense program. See our &ldquo;<a href="http://audacity.sourceforge.net/community/donate">How Does Audacity Raise Money?</a>&rdquo; page for the reasons we show advertisements.</p>
+<?=_('<p>On some pages on our main site, we show advertisements from Google\'s AdSense program. See our &ldquo;<a href="http://audacity.sourceforge.net/community/donate">How Does Audacity Raise Money?</a>&rdquo; page for the reasons we show advertisements.</p>
 
-<p>As of April 8, 2009, this includes "interest-based" advertising, which utilizes cookies to try to determine users' areas of interest (for example, audio editing), to show advertisements of likelier interest. Please see <a href="https://www.google.com/adsense/support/bin/answer.py?hl=en&answer=100557">Google Advertising Cookie and Privacy Policies</a> for information regarding your privacy and how to opt out of this tracking.</p>')?>
+<p>As of April 8, 2009, this includes "interest-based" advertising, which utilizes cookies to try to determine users\' areas of interest (for example, audio editing), to show advertisements of likelier interest. Please see <a href="https://www.google.com/adsense/support/bin/answer.py?hl=en&answer=100557">Google Advertising Cookie and Privacy Policies</a> for information regarding your privacy and how to <a href="http://www.google.com/privacy_ads.html">opt out</a> of this tracking.</p>')?>
 
 <?php
   include "../include/footer.inc.php";
