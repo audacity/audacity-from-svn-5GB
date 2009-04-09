@@ -36,8 +36,6 @@ class WarningDialog : public wxDialog
    // constructors and destructors
    WarningDialog(wxWindow *parent, 
                  wxString message);
-
-   bool dontShow;
    
  private:
    void OnOK(wxCommandEvent& event);
@@ -52,8 +50,7 @@ BEGIN_EVENT_TABLE(WarningDialog, wxDialog)
 END_EVENT_TABLE()
 
 WarningDialog::WarningDialog(wxWindow *parent, wxString message)
-:  wxDialog(parent, wxID_ANY, (wxString)_("Warning")),
-   dontShow( false )
+:  wxDialog(parent, wxID_ANY, (wxString)_("Warning"))
 {
    ShuttleGui S(this, eIsCreating);
 
@@ -61,44 +58,33 @@ WarningDialog::WarningDialog(wxWindow *parent, wxString message)
    S.StartVerticalLay(false);
    {
       S.AddUnits(message);
-      mCheckBox = S.TieCheckBox(_("Don't show this warning again"), dontShow);
+      mCheckBox = S.AddCheckBox(_("Don't show this warning again"), wxT("false"));
    }
 
    S.SetBorder(0);
    S.AddStandardButtons(eOkButton);
 
    Fit();
+   CentreOnParent();
 }
 
 void WarningDialog::OnOK(wxCommandEvent& event)
 {
-   dontShow = mCheckBox->GetValue();
-
-   EndModal(wxID_OK);
+   EndModal(mCheckBox->GetValue() == false);
 }
 
 void ShowWarningDialog(wxWindow *parent,
                        wxString internalDialogName,
                        wxString message)
 {
-   bool dontShow = false;
-
-   gPrefs->SetPath(wxT("/Warnings"));
-   gPrefs->Read(internalDialogName, &dontShow, false);
-   gPrefs->SetPath(wxT("/"));
-
-   if (dontShow)
+   wxString key(wxT("/Warnings/") + internalDialogName);
+   if (!gPrefs->Read(key, (long) true)) {
       return;
+   }
 
    WarningDialog dlog(parent, message);
-   dlog.CentreOnParent();
-   dlog.ShowModal();
 
-   if (dlog.dontShow) {
-      gPrefs->SetPath(wxT("/Warnings"));
-      gPrefs->Write(internalDialogName, true);
-      gPrefs->SetPath(wxT("/"));
-   }
+   gPrefs->Write(key, (bool) dlog.ShowModal());
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
