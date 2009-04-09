@@ -224,10 +224,11 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1,
 
    consolidationCount = 0;
 
-   for (i = current + 1; i < stack.Count(); i++) {
+   i = current + 1;
+   while (i < stack.Count()) {
       RemoveStateAt(i);
    }
-
+             
    TrackList *tracksCopy = new TrackList();
    TrackListIterator iter(l);
    Track *t = iter.First();
