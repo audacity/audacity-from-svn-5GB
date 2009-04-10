@@ -1877,7 +1877,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
       w1 = (sampleCount) ((t0*rate + (x+1) *rate *tstep) + .5);
       if (!logF)
       {
-         for (int yy = 0; yy < mid.height; yy++) {
+         for (int yy = 0; yy < mid.height - 1; yy++) {
             bool selflag = (ssel0 <= w0 && w1 < ssel1);
             unsigned char rv, gv, bv;
             float value;
