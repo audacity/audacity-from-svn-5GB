@@ -2751,7 +2751,7 @@ void AudacityProject::OnPreferences()
    for (size_t i = 0; i < gAudacityProjects.GetCount(); i++) {
       AudacityProject *p = gAudacityProjects[i];
 
-      p->UpdatePrefsVariables();
+      p->UpdatePrefs();
       p->RebuildMenuBar();
       p->RebuildOtherMenus();
       p->GetSelectionBar()->UpdateDisplay();
