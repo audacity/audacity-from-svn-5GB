@@ -84,7 +84,7 @@ void ShowWarningDialog(wxWindow *parent,
 
    WarningDialog dlog(parent, message);
 
-   gPrefs->Write(key, (bool) dlog.ShowModal());
+   gPrefs->Write(key, dlog.ShowModal());
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
