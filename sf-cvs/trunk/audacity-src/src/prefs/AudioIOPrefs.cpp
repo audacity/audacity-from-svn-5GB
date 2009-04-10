@@ -222,7 +222,7 @@ bool DevicePrefs::Apply()
    gPrefs->Write(wxT("/AudioIO/PlaybackDevice"),
                  DeviceName(info));
 
-   info = (const PaDeviceInfo *) mRecord->GetClientData(mPlay->GetSelection());
+   info = (const PaDeviceInfo *) mRecord->GetClientData(mRecord->GetSelection());
    gPrefs->Write(wxT("/AudioIO/RecordingDevice"),
                  DeviceName(info));
 
