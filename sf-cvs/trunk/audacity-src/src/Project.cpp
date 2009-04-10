@@ -2491,7 +2491,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       }
       else
       {
-         msg.Printf(_("This file was saved by Audacity %s.\nYou can open the file with this version of Audacity, but if you save it with this version you will no longer be able to open it in older versions.\n\nOpen this file now?"),
+         msg.Printf(_("This file was saved by Audacity %s.\n\nAudacity can open and save this file, but saving it in this version\nwill then prevent any 1.2 or earlier version opening it.\n\nOpen this file now?"),
                  audacityVersion.c_str());
       }
       int action;
