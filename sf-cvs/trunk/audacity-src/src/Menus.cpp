@@ -2745,6 +2745,12 @@ void AudacityProject::OnPreferences()
       return;
    }
 
+#if USE_PORTMIXER
+   if (gAudioIO) {
+      gAudioIO->HandleDeviceChange();
+   }
+#endif
+
    // LL:  Moved from PrefsDialog since wxWidgets on OSX can't deal with
    //      rebuilding the menus while the PrefsDialog is still in the modal
    //      state.
