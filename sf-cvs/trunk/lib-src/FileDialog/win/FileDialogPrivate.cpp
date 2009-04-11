@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.15 2009-03-01 19:13:25 msmeyer Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.16 2009-04-11 05:53:09 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -228,18 +228,16 @@ FileDialogHookFunction(HWND      hDlg,
          {
             OPENFILENAME *ofn = (OPENFILENAME *)
             GetWindowLongPtr(hDlg, GWLP_USERDATA);
-            FileDialog *me = (FileDialog *)
-            ofn->lCustData;
-            me->FilterFiles(hDlg);
+            FileDialog *me = (FileDialog *) ofn->lCustData;
+            me->FilterFiles(hDlg, false);
          }
          else if (CDN_TYPECHANGE == (pNotifyCode->hdr).code)
          {
             OPENFILENAME *ofn = (OPENFILENAME *)
             GetWindowLongPtr(hDlg, GWLP_USERDATA);
-            FileDialog *me = (FileDialog *)
-            ofn->lCustData;
+            FileDialog *me = (FileDialog *) ofn->lCustData;
             me->ParseFilter(ofn->nFilterIndex);
-            me->FilterFiles(hDlg);
+            me->FilterFiles(hDlg, true);
          }
          break;
       }
@@ -249,10 +247,15 @@ FileDialogHookFunction(HWND      hDlg,
    return 0;
 }
 
-void FileDialog::FilterFiles(HWND hDlg)
+#define WM_GETISHELLBROWSER WM_USER + 7
+
+void FileDialog::FilterFiles(HWND hDlg, bool refresh)
 {
    HWND parent = ::GetParent(hDlg);
    IShellFolder *ishell = NULL;
+   IShellBrowser *ishellbrowser = NULL;  // Does not have to be released
+   IShellView *ishellview = NULL;
+   IFolderView *ifolderview = NULL;
    LPMALLOC imalloc = NULL;
    HRESULT hr;
    
@@ -271,13 +274,25 @@ void FileDialog::FilterFiles(HWND hDlg)
       wxASSERT((hr == NOERROR) && (imalloc != NULL));
       return;
    }
-   
+
+   // Get IShellBrowser interface for current dialog
+   ishellbrowser = (IShellBrowser*)::SendMessage(parent, WM_GETISHELLBROWSER, 0, 0);
+   if (ishellbrowser)
+   {
+      // Get IShellBrowser interface for returned browser
+      if (ishellbrowser->QueryActiveShellView(&ishellview) == S_OK)
+      {
+         // Get the IFolderView interface...available on XP or greater
+         ishellview->QueryInterface(IID_IFolderView, (void **)&ifolderview);
+      }
+   }
+
    // Init
    LVITEM lvi;
    wxZeroMemory(lvi);
-   
+
    // Process all items
-   int fltcnt = m_Filters.GetCount();
+   int fltcnt = (int) m_Filters.GetCount();
    int itmcnt = ::SendMessage(lv, LVM_GETITEMCOUNT, 0, 0);
    for (int itm = 0; itm < itmcnt; itm++)
    {
@@ -289,8 +304,24 @@ void FileDialog::FilterFiles(HWND hDlg)
          wxASSERT(FALSE);
          break;
       }
+
       LPCITEMIDLIST fidl = (LPCITEMIDLIST) lvi.lParam;
-      
+
+      // On Vista, lParam no longer contains the pidl so retrieve it via the
+      // IFolderView interface.  This interface is only available on XP or higher
+      // so if that limitation isn't workable, use IShellView::GetItemObject() to
+      // retrieve items.
+      if (fidl == NULL && ifolderview != NULL)
+      {
+         ifolderview->Item(itm, (LPITEMIDLIST *) &fidl);
+      }
+
+      if (fidl == NULL)
+      {
+         wxASSERT(fidl != NULL);
+         break;
+      }
+
       // Retrieve the IShellFolder interface of the parent (must be Release()'d)
       if (ishell == NULL)
       {
@@ -370,9 +401,28 @@ void FileDialog::FilterFiles(HWND hDlg)
          itmcnt--;
       }
    }
-   
-done:
-   
+
+   // On Vista and maybe XP, we seem to need to refresh the view after
+   // changing the filters.  But, only refresh for type changes and not
+   // selection changes since it causes additional selection change
+   // events to occur.
+   if (ishellview && refresh)
+   {
+      ishellview->Refresh();
+   }
+
+   // Release the interface
+   if (ifolderview)
+   {
+      ifolderview->Release();
+   }
+
+   // Release the interface
+   if (ishellview)
+   {
+      ishellview->Release();
+   }
+
    // Release the interface
    if (ishell)
    {
