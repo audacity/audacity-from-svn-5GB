@@ -86,14 +86,14 @@ int open_mixers(px_mixer *Px, UINT deviceIn, UINT deviceOut)
    info->numInputs = 0;
    info->muxID = 0;
    info->speakerID = 0;
-	info->waveID = 0;
+   info->waveID = 0;
 
    if (deviceIn != UINT_MAX) {
       res = mixerOpen((LPHMIXER) &info->hInputMixer,
                       deviceIn,
                       0,
                       0,
-                      MIXER_OBJECTF_WAVEIN);
+                      MIXER_OBJECTF_MIXER);
       if (res != MMSYSERR_NOERROR) {
          return cleanup(Px);
       }
@@ -121,7 +121,7 @@ int open_mixers(px_mixer *Px, UINT deviceIn, UINT deviceOut)
                       deviceOut,
                       0,
                       0,
-                      MIXER_OBJECTF_WAVEOUT);
+                      MIXER_OBJECTF_MIXER);
       if (res != MMSYSERR_NOERROR) {
          return cleanup(Px);
       }
