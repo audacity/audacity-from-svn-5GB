@@ -565,7 +565,7 @@ static int get_current_input_source(px_mixer *Px)
    MIXERCONTROLDETAILS_LISTTEXT *list;
    MIXERCONTROLDETAILS_BOOLEAN *flags;
    MMRESULT res;
-   int i = -1;
+   int i = 0;
    int j;
 
    if (!info->hInputMixer) {
