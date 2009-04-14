@@ -1681,6 +1681,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\widgets\FileHistory.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\widgets\FileHistory.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\widgets\Grabber.cpp"
 				>
 			</File>

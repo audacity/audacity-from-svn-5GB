@@ -473,6 +473,7 @@ BEGIN_EVENT_TABLE(AudacityApp, wxApp)
    EVT_COMMAND(wxID_ANY, EVT_OPEN_AUDIO_FILE, AudacityApp::OnMacOpenFile)
 #endif
    // Recent file event handlers.  
+   EVT_MENU(wxID_FILE, AudacityApp::OnMRUClear)
    EVT_MENU_RANGE(wxID_FILE1, wxID_FILE9, AudacityApp::OnMRUFile)
 // EVT_MENU_RANGE(6050, 6060, AudacityApp::OnMRUProject)
 END_EVENT_TABLE()
@@ -530,6 +531,11 @@ bool AudacityApp::MRUOpen(wxString fileName) {
       }
    }
    return(true);
+}
+
+void AudacityApp::OnMRUClear(wxCommandEvent& event)
+{
+   mRecentFiles->Clear();
 }
 
 void AudacityApp::OnMRUFile(wxCommandEvent& event) {
@@ -643,10 +649,8 @@ bool AudacityApp::OnInit()
 	#endif
 
    // TODO - read the number of files to store in history from preferences
-   mRecentFiles = new wxFileHistory(/* number of files */);
-   gPrefs->SetPath(wxT("/RecentFiles"));
-   mRecentFiles->Load(*gPrefs);
-   gPrefs->SetPath(wxT(".."));
+   mRecentFiles = new FileHistory(/* number of files */);
+   mRecentFiles->Load(*gPrefs, wxT("RecentFiles"));
 
    //
    // Paths: set search path and temp dir path
@@ -1370,9 +1374,7 @@ int AudacityApp::OnExit()
       }
    }
 
-   gPrefs->SetPath(wxT("/RecentFiles"));
-   mRecentFiles->Save(*gPrefs);
-   gPrefs->SetPath(wxT(".."));
+   mRecentFiles->Save(*gPrefs, wxT("RecentFiles"));
    delete mRecentFiles;
 
    FinishPreferences();
