@@ -1158,11 +1158,6 @@ void AudacityProject::CreateRecentFilesMenu(CommandManager *c)
    mRecentFilesMenu = c->BeginSubMenu(_("Recent &Files"));
 #endif
 
-   c->AddItem(wxT("ClearRecent"),  _("Clear"), FN(OnClearRecent));
-   c->SetCommandFlags(wxT("ClearRecent"),
-                      HaveRecentFiles, HaveRecentFiles);
-
-
    wxGetApp().GetRecentFiles()->UseMenu(mRecentFilesMenu);
    wxGetApp().GetRecentFiles()->AddFilesToMenu(mRecentFilesMenu);
 
@@ -2525,15 +2520,6 @@ void AudacityProject::OnSaveAs()
       SaveAs(true);
    }
 #endif
-
-void AudacityProject::OnClearRecent()
-{
-   wxFileHistory *h = wxGetApp().GetRecentFiles();
-   while (h->GetCount()) {
-      h->RemoveFileFromHistory(0);
-   }
-}
-
 
 void AudacityProject::OnCheckDependencies()
 {

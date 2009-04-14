@@ -23,6 +23,8 @@
 #include <wx/snglinst.h>
 #include <wx/log.h>
 
+#include "widgets/FileHistory.h"
+
 class IPCServ;
 class Importer;
 
@@ -105,6 +107,7 @@ class AudacityApp:public wxApp {
    void OnReleaseKeyboard(wxCommandEvent & event);
 
    // Most Recently Used File support (for all platforms).
+   void OnMRUClear(wxCommandEvent &event);
    void OnMRUFile(wxCommandEvent &event);
 // void OnMRUProject(wxCommandEvent &event);
    // Backend for above - returns true for success, false for failure
@@ -146,14 +149,14 @@ class AudacityApp:public wxApp {
                                    int flags, // wxFILE, wxDIR, or 0
                                    wxArrayString &results);
 
-   wxFileHistory *GetRecentFiles() {return mRecentFiles;}
+   FileHistory *GetRecentFiles() {return mRecentFiles;}
    void AddFileToHistory(const wxString & name);
 
    Importer *mImporter;
 
    wxLogWindow *mLogger;
  private:
-   wxFileHistory *mRecentFiles;
+   FileHistory *mRecentFiles;
 
    wxLocale *mLocale;
 

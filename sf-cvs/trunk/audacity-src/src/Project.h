@@ -39,8 +39,6 @@
 #include <wx/intl.h>
 #include <wx/dcclient.h>
 
-class wxFileHistory;
-
 const int AudacityProjectTimerID = 5200;
 
 class wxWindow;
