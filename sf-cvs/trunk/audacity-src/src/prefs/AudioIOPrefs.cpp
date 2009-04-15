@@ -43,11 +43,15 @@ other settings.
 #include "AudioIOPrefs.h"
 
 enum {
-   HostID = 10000
+   HostID = 10000,
+   PlayID,
+   RecordID,
+   ChannelsID
 };
 
 BEGIN_EVENT_TABLE(DevicePrefs, PrefsPanel)
    EVT_CHOICE(HostID, DevicePrefs::OnHost)
+   EVT_CHOICE(RecordID, DevicePrefs::OnDevice)
 END_EVENT_TABLE()
 
 DevicePrefs::DevicePrefs(wxWindow * parent)
@@ -68,6 +72,7 @@ void DevicePrefs::Populate()
    // Get current setting for devices
    mPlayDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
    mRecordDevice = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
+   mRecordChannels = gPrefs->Read(wxT("/AudioIO/RecordChannels"), 2L);
 
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
@@ -79,6 +84,7 @@ void DevicePrefs::Populate()
 
    wxCommandEvent e;
    OnHost(e);
+   OnDevice(e);
 }
 
 void DevicePrefs::GetNamesAndLabels()
@@ -95,14 +101,6 @@ void DevicePrefs::GetNamesAndLabels()
          }
       }
    }
-
-   // Channel counts, mono, stereo etc...
-   for (int i = 0; i < 16; i++) {
-      mChannelNames.Add(wxString::Format(wxT("%d"), i + 1));
-      mChannelLabels.Add(i + 1);
-   }
-   mChannelNames[0] = _("1 (Mono)");
-   mChannelNames[1] = _("2 (Stereo)");
 }
 
 void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
@@ -115,11 +113,12 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartMultiColumn(2);
       {
-         mHost = S.Id(HostID).TieChoice(_("Host") + wxString(wxT(":")),
-                                        wxT("/AudioIO/Host"), 
-                                        wxT(""),
-                                        mHostNames,
-                                        mHostLabels);
+         S.Id(HostID);
+         mHost = S.TieChoice(_("Host") + wxString(wxT(":")),
+                             wxT("/AudioIO/Host"), 
+                             wxT(""),
+                             mHostNames,
+                             mHostLabels);
          S.SetSizeHints(mHostNames);
 
          S.AddPrompt(_("Using:"));
@@ -134,6 +133,7 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartMultiColumn(2);
       {
+         S.Id(PlayID);
          mPlay = S.AddChoice(_("Device") + wxString(wxT(":")),
                              wxEmptyString,
                              &empty);
@@ -146,16 +146,15 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartMultiColumn(2);
       {
+         S.Id(RecordID);
          mRecord = S.AddChoice(_("Device") + wxString(wxT(":")),
                                wxEmptyString,
                                &empty);
 
-         S.TieChoice(_("Channels") + wxString(wxT(":")),
-                     wxT("/AudioIO/RecordChannels"),
-                     2,
-                     mChannelNames,
-                     mChannelLabels);
-         S.SetSizeHints(mChannelNames);
+         S.Id(ChannelsID);
+         mChannels = S.AddChoice(_("Channels") + wxString(wxT(":")),
+                                 wxEmptyString,
+                                 &empty);
       }
       S.EndMultiColumn();
    }
@@ -211,6 +210,62 @@ void DevicePrefs::OnHost(wxCommandEvent & e)
    S.SetSizeHints(mRecord, recordnames);
 }
 
+void DevicePrefs::OnDevice(wxCommandEvent & e)
+{
+   const PaDeviceInfo *info =
+      (const PaDeviceInfo *) mRecord->GetClientData(mRecord->GetSelection());
+   int cnt = info->maxInputChannels;
+   int sel = mChannels->GetSelection();
+
+   if (sel != wxNOT_FOUND) {
+      mRecordChannels = sel + 1;
+   }
+
+   mChannels->Clear();
+
+   // Mimic old behavior
+   if (cnt <= 0) {
+      cnt = 16;
+   }
+
+   // Place and artifical limit on the number of channels to prevent an
+   // outrageous number.  I don't know if this is really necessary, but
+   // it doesn't hurt. 
+   if (cnt > 256) {
+      cnt = 256;
+   }
+      
+   wxArrayString channelnames;
+
+   // Channel counts, mono, stereo etc...
+   for (int i = 0; i < cnt; i++) {
+      wxString name;
+
+      if (i == 0) {
+         name = _("1 (Mono)");
+      }
+      else if (i == 1) {
+         name = _("2 (Stereo)");
+      }
+      else {
+         name = wxString::Format(wxT("%d"), i + 1);
+      }
+
+      channelnames.Add(name);
+      int index = mChannels->Append(name);
+      if (i == mRecordChannels - 1) {
+         mChannels->SetSelection(index);
+      }
+   }
+
+   if (mChannels->GetCount() && mChannels->GetSelection() == wxNOT_FOUND) {
+      mChannels->SetSelection(0);
+   }
+
+   ShuttleGui S(this, eIsCreating);
+   S.SetSizeHints(mChannels, channelnames);
+}
+
 bool DevicePrefs::Apply()
 {
    ShuttleGui S(this, eIsSavingToPrefs);
@@ -225,6 +280,9 @@ bool DevicePrefs::Apply()
    info = (const PaDeviceInfo *) mRecord->GetClientData(mRecord->GetSelection());
    gPrefs->Write(wxT("/AudioIO/RecordingDevice"),
                  DeviceName(info));
+
+   gPrefs->Write(wxT("/AudioIO/RecordChannels"),
+                 mChannels->GetSelection() + 1);
 
    return true;
 }

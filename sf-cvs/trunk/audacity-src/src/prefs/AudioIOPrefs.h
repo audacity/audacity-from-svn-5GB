@@ -36,18 +36,19 @@ class DevicePrefs:public PrefsPanel
    void GetNamesAndLabels();
 
    void OnHost(wxCommandEvent & e);
+   void OnDevice(wxCommandEvent & e);
 
    wxArrayString mHostNames;
    wxArrayString mHostLabels;
-   wxArrayString mChannelNames;
-   wxArrayInt    mChannelLabels;
 
    wxString mPlayDevice;
    wxString mRecordDevice;
+   long mRecordChannels;
 
    wxChoice *mHost;
    wxChoice *mPlay;
    wxChoice *mRecord;
+   wxChoice *mChannels;
 
    DECLARE_EVENT_TABLE();
 };
