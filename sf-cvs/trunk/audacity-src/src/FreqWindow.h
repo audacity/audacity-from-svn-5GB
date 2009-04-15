@@ -88,6 +88,7 @@ class FreqWindow:public wxDialog {
    int mAlg;
    int mFunc;
    int mAxis;
+   int dBRange;
 
 #ifdef __WXMSW__
    static const int fontSize = 8;
