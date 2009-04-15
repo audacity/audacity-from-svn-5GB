@@ -10,14 +10,14 @@ Personal support with Audacity is not provided by e-mail,
 but on our Forum:
   http://audacityteam.org/forum/
 
-Audacity is copyright (c) 1999-2008 by Audacity Team.
+Audacity is copyright (c) 1999-2009 by Audacity Team.
 This copyright notice applies to all documents in the
 Audacity source code archive, except as otherwise noted
 (mostly in the lib-src subdirectories).
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Version 1.3.7 Beta
+Version 1.3.8 Beta
 
 Contents of this README:
 
