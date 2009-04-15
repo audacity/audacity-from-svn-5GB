@@ -154,6 +154,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    gPrefs->Read(wxT("/FreqWindow/AlgChoice"), &mAlg, 0);
    gPrefs->Read(wxT("/FreqWindow/FuncChoice"), &mFunc, 3);
    gPrefs->Read(wxT("/FreqWindow/AxisChoice"), &mAxis, 0);
+   gPrefs->Read(wxT("/GUI/EnvdBRange"), &dBRange, ENV_DB_RANGE);
 
    mFreqPlot = new FreqPlot(this, 0,
                             wxDefaultPosition, wxDefaultSize);
@@ -307,7 +308,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    vRuler = new RulerPanel(this, wxID_ANY);
    vRuler->ruler.SetBounds(0, 0, 100, 100); // Ruler can't handle small sizes
    vRuler->ruler.SetOrientation(wxVERTICAL);
-   vRuler->ruler.SetRange(10.0, -90.0);
+   vRuler->ruler.SetRange(10.0, -dBRange);
    vRuler->ruler.SetFormat(Ruler::LinearDBFormat);
    vRuler->ruler.SetUnits(_("dB"));
    vRuler->ruler.SetLabelEdges(true);
@@ -1087,9 +1088,12 @@ void FreqWindow::Recalc()
          else if(mProcessed[i] < mYMin)
             mYMin = mProcessed[i];
       }
-      if(mYMin < -90.)
-         mYMin = -90.;
-      mYMax += .5;
+      if(mYMin < -dBRange)
+         mYMin = -dBRange;
+      if(mYMax <= -dBRange)
+         mYMax = -dBRange + 10.; // it's all out of range, but show a scale.
+      else
+         mYMax += .5;
 
       mProcessedSize = half;
       mYStep = 10;
@@ -1231,6 +1235,7 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
 
 void FreqWindow::OnReplot(wxCommandEvent & WXUNUSED(event))
 {
+   gPrefs->Read(wxT("/GUI/EnvdBRange"), &dBRange, ENV_DB_RANGE);
    GetAudio();
    gFreqWindow->Plot();
 }
