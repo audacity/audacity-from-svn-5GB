@@ -155,6 +155,8 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    gPrefs->Read(wxT("/FreqWindow/FuncChoice"), &mFunc, 3);
    gPrefs->Read(wxT("/FreqWindow/AxisChoice"), &mAxis, 0);
    gPrefs->Read(wxT("/GUI/EnvdBRange"), &dBRange, ENV_DB_RANGE);
+   if(dBRange < 90.)
+      dBRange = 90.;
 
    mFreqPlot = new FreqPlot(this, 0,
                             wxDefaultPosition, wxDefaultSize);
@@ -1236,6 +1238,8 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
 void FreqWindow::OnReplot(wxCommandEvent & WXUNUSED(event))
 {
    gPrefs->Read(wxT("/GUI/EnvdBRange"), &dBRange, ENV_DB_RANGE);
+   if(dBRange < 90.)
+      dBRange = 90.;
    GetAudio();
    gFreqWindow->Plot();
 }
