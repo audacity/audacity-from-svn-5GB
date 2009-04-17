@@ -907,6 +907,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
 AudacityProject::~AudacityProject()
 {
+   wxGetApp().GetRecentFiles()->RemoveMenu(mRecentFilesMenu);
 }
 
 void AudacityProject::UpdatePrefsVariables()
