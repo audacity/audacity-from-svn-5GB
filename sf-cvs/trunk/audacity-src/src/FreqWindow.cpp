@@ -313,7 +313,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    vRuler->ruler.SetRange(10.0, -dBRange);
    vRuler->ruler.SetFormat(Ruler::LinearDBFormat);
    vRuler->ruler.SetUnits(_("dB"));
-   vRuler->ruler.SetLabelEdges(true);
+   vRuler->ruler.SetLabelEdges(false);
 
    int w, h;
    vRuler->ruler.GetMaxSize(&w, NULL);
@@ -1003,6 +1003,10 @@ void FreqWindow::Recalc()
    for(int i=0; i<mWindowSize; i++)
       win[i] = 1.0;
    WindowFunc(windowFunc, mWindowSize, win);
+   double wss = 0.;
+   for(int i=0; i<mWindowSize; i++)
+      wss += win[i]*win[i];
+   wss *= mWindowSize;
 
    int start = 0;
    int windows = 0;
@@ -1081,7 +1085,7 @@ void FreqWindow::Recalc()
       // Convert to decibels
       mYMin = 1000000.;
       mYMax = -1000000.;
-      scale = (double)mWindowSize * (double)mWindowSize * (double)windows;
+      scale = (double)windows * wss;
       for (i = 0; i < half; i++)
       {
          mProcessed[i] = 10 * log10(mProcessed[i] / scale);
