@@ -106,9 +106,8 @@ void InitFreqWindow(wxWindow * parent)
 
       gFreqWindow = new FreqWindow(parent, -1, _("Frequency Analysis"), where);
    }
-
-   gFreqWindow->GetAudio();
-   gFreqWindow->Plot();
+   wxCommandEvent dummy;
+   gFreqWindow->OnReplot(dummy);
    gFreqWindow->Show(true);
    gFreqWindow->Raise();
    gFreqWindow->SetFocus();
