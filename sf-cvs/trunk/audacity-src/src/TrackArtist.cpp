@@ -279,9 +279,11 @@ void TrackArtist::DrawTracks(TrackList * tracks,
 
 void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 {
-   // Label tracks do not have a vruler
-   // But give it beveled area
-   if (t->GetKind() == Track::Label) {
+   int kind = t->GetKind();
+
+   // Label and Time tracks do not have a vruler
+   // But give it a beveled area
+   if (kind == Track::Label || kind == Track::Time) {
       wxRect bev = r;
       bev.Inflate(-1, -1);
       bev.width += 1;
@@ -292,7 +294,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 
    // All waves have a ruler in the info panel
    // The ruler needs a bevelled surround.
-   if (t->GetKind() == Track::Wave) {
+   if (kind == Track::Wave) {
       wxRect bev = r;
       bev.Inflate(-1, -1);
       bev.width += 1;
@@ -321,7 +323,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 #ifdef USE_MIDI
    // The note track isn't drawing a ruler at all!
    // But it needs to!
-   if (t->GetKind() == Track::Note) {
+   if (kind == Track::Note) {
       UpdateVRuler(t, r);
 
       dc->SetPen(*wxTRANSPARENT_PEN);
