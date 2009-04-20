@@ -232,7 +232,7 @@ void TrackArtist::DrawTracks(TrackList * tracks,
          case Track::Wave:
          {
             WaveTrack* wt = (WaveTrack*)t;
-            for (WaveClipList::Node* it=wt->GetClipIterator(); it; it=it->GetNext()) {
+            for (WaveClipList::compatibility_iterator it=wt->GetClipIterator(); it; it=it->GetNext()) {
                it->GetData()->ClearDisplayRect();
             }
 
@@ -778,7 +778,7 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
                                         bool drawSamples,
                                         bool showPoints, bool muted)
 {
-   for (WaveClipList::Node* it = track->GetClipIterator(); it; it = it->GetNext())
+   for (WaveClipList::compatibility_iterator it = track->GetClipIterator(); it; it = it->GetNext())
       DrawIndividualClipSamples(dc, r, it->GetData(), t0, pps, h,
          zoomMin, zoomMax, dB, drawSamples, showPoints, muted);
 }
@@ -1220,7 +1220,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    dc.SetBrush(blankBrush);
    dc.DrawRectangle(r);
 
-   for (WaveClipList::Node* it=track->GetClipIterator(); it; it=it->GetNext())
+   for (WaveClipList::compatibility_iterator it=track->GetClipIterator(); it; it=it->GetNext())
       DrawClipWaveform(track, it->GetData(), dc, r, viewInfo, drawEnvelope, drawSamples,
                        drawSliders, dB, muted);
 
@@ -1613,7 +1613,7 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
       return;
    }
 
-   for (WaveClipList::Node* it=track->GetClipIterator(); it; it=it->GetNext())
+   for (WaveClipList::compatibility_iterator it=track->GetClipIterator(); it; it=it->GetNext())
       DrawClipSpectrum(track, it->GetData(), dc, r, viewInfo, autocorrelation, logF);
 }
 
@@ -2113,7 +2113,7 @@ void TrackArtist::InvalidateSpectrumCache(TrackList *tracks)
 
 void TrackArtist::InvalidateSpectrumCache(WaveTrack *track)
 {
-   WaveClipList::Node* it;
+   WaveClipList::compatibility_iterator it;
    for (it = track->GetClipIterator(); it; it = it->GetNext()) {
       it->GetData()->mSpecPxCache->valid = false;
    }

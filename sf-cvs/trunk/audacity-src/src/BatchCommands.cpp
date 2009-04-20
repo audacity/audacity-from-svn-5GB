@@ -251,7 +251,7 @@ void BatchCommands::SetWavToMp3Chain()
 // Gets all commands that are valid for this mode.
 wxArrayString BatchCommands::GetAllCommands()
 {
-   wxArrayString commands(true);
+   wxArrayString commands;
    wxString command;
    commands.Clear();
 

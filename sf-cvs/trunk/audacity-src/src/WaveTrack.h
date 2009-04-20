@@ -246,7 +246,7 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    // Get access to the clips in the tracks. This is used by
    // track artists and also by TrackPanel when sliding...it would
    // be cleaner if this could be removed, though...
-   WaveClipList::Node* GetClipIterator() { return mClips.GetFirst(); }
+   WaveClipList::compatibility_iterator GetClipIterator() { return mClips.GetFirst(); }
 
    // Create new clip and add it to this track. Returns a pointer
    // to the newly created clip.

@@ -335,7 +335,7 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
 
    // Find the last sample
    sampleCount last = -1;
-   WaveClipList::Node* it = track->GetClipIterator();
+   WaveClipList::compatibility_iterator it = track->GetClipIterator();
    while (it) {
       sampleCount end = it->GetData()->GetEndSample();
       if (end > last) {

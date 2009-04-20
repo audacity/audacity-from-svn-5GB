@@ -99,7 +99,7 @@ Importer::~Importer()
 
 void Importer::GetSupportedImportFormats(FormatList *formatList)
 {
-   ImportPluginList::Node *importPluginNode = mImportPluginList->GetFirst();
+   ImportPluginList::compatibility_iterator importPluginNode = mImportPluginList->GetFirst();
    while(importPluginNode)
    {
       ImportPlugin *importPlugin = importPluginNode->GetData();
@@ -126,7 +126,7 @@ int Importer::Import(wxString fName,
 
    bool haveCompatiblePlugin = false;
 
-   ImportPluginList::Node *importPluginNode;
+   ImportPluginList::compatibility_iterator importPluginNode;
    
    // If user explicitly selected a filter,
    // then we should try importing via corresponding plugin first
@@ -224,7 +224,7 @@ int Importer::Import(wxString fName,
    // None of our plugins can handle this file.  It might be that
    // Audacity supports this format, but support was not compiled in.
    // If so, notify the user of this fact
-   UnusableImportPluginList::Node *unusableImporterNode
+   UnusableImportPluginList::compatibility_iterator unusableImporterNode
       = mUnusableImportPluginList->GetFirst();
    while(unusableImporterNode)
    {

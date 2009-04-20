@@ -77,7 +77,7 @@ bool CrossFader::CrossFadeMix(samplePtr buffer, sampleFormat format, sampleCount
   WaveClip * tmpclip = NULL;
   Sequence * tmp = NULL;
   
-  WaveClipList::Node * it;
+  WaveClipList::compatibility_iterator  it;
   
   
   //Go through each clip, adding it to the total in the appropriate way.

@@ -53,7 +53,7 @@ SnapManager::SnapManager(TrackList *tracks, TrackClipArray *exclusions,
       }
       if (track->GetKind() == Track::Wave) {
          WaveTrack *waveTrack = (WaveTrack *)track;
-         WaveClipList::Node* it;
+         WaveClipList::compatibility_iterator it;
          for (it=waveTrack->GetClipIterator(); it; it=it->GetNext()) {
             WaveClip *clip = it->GetData();
             if (exclusions) {
