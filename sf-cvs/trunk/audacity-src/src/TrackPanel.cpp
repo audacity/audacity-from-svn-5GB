@@ -715,6 +715,7 @@ void TrackPanel::UpdatePrefs()
    // All vertical rulers must be recalculated since the minimum and maximum
    // frequences may have been changed.
    UpdateVRulers();
+   Refresh();
 }
 
 void TrackPanel::SetStop(bool bStopped)
