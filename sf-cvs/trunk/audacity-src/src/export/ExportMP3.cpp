@@ -1292,6 +1292,7 @@ void MP3Exporter::PutInfoTag(wxFFile & f, wxFileOffset off)
       else if (beWriteInfoTag) {
          f.Flush();
          beWriteInfoTag(mGF, OSOUTPUT(f.GetName()));
+         mGF = NULL;
       }
 #endif
       else if (lame_mp3_tags_fid) {   
@@ -1727,6 +1728,9 @@ int ExportMP3::Export(AudacityProject *project,
    // Always write the info (Xing/Lame) tag.  Until we stop supporting Lame
    // versions before 3.98, we must do this after the MP3 file has been
    // closed.
+   //
+   // Also, if beWriteInfoTag() is used, mGF will no longer be valid after
+   // this call, so do not use it.
    exporter.PutInfoTag(outFile, pos);
 
    // Close the file
