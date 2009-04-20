@@ -2224,7 +2224,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
             while (t) {
                if (t->GetKind() == Track::Wave) {
                   WaveTrack *wt = (WaveTrack *)t;
-                  WaveClipList::Node* it;
+                  WaveClipList::compatibility_iterator it;
                   for (it = wt->GetClipIterator(); it; it = it->GetNext()) {
                      WaveClip *clip = it->GetData();
                      double clip0 = clip->GetStartTime();
@@ -2249,7 +2249,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
                if (t->GetSelected()) {
                   if (t->GetKind() == Track::Wave) {
                      WaveTrack *wt = (WaveTrack *)t;
-                     WaveClipList::Node* it;
+                     WaveClipList::compatibility_iterator it;
                      for (it = wt->GetClipIterator(); it; it = it->GetNext()) {
                         WaveClip *clip = it->GetData();
                         double clip0 = clip->GetStartTime();
@@ -2276,7 +2276,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
             while (t) {
                if (t->GetKind() == Track::Wave) {
                   WaveTrack *wt = (WaveTrack *)t;
-                  WaveClipList::Node* it;
+                  WaveClipList::compatibility_iterator it;
                   for (it = wt->GetClipIterator(); it; it = it->GetNext()) {
                      WaveClip *clip = it->GetData();
                      mCapturedClipArray.Add(TrackClip(wt, clip));

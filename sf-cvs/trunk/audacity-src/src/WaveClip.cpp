@@ -286,7 +286,7 @@ WaveClip::WaveClip(WaveClip& orig, DirManager *projDirManager)
    mSpecCache = new SpecCache(1, 1, false);
    mSpecPxCache = new SpecPxCache(1);
 
-   for (WaveClipList::Node* it=orig.mCutLines.GetFirst(); it; it=it->GetNext())
+   for (WaveClipList::compatibility_iterator it=orig.mCutLines.GetFirst(); it; it=it->GetNext())
       mCutLines.Append(new WaveClip(*it->GetData(), projDirManager));
  
    mAppendBuffer = NULL;
@@ -1035,7 +1035,7 @@ void WaveClip::WriteXML(XMLWriter &xmlFile)
    mSequence->WriteXML(xmlFile);
    mEnvelope->WriteXML(xmlFile);
 
-   for (WaveClipList::Node* it=mCutLines.GetFirst(); it; it=it->GetNext())
+   for (WaveClipList::compatibility_iterator it=mCutLines.GetFirst(); it; it=it->GetNext())
       it->GetData()->WriteXML(xmlFile);
 
    xmlFile.EndTag(wxT("waveclip"));
@@ -1100,7 +1100,7 @@ bool WaveClip::Paste(double t0, WaveClip* other)
       OffsetCutLines(t0, other->GetEndTime()-other->GetStartTime());
       
       // Paste cut lines contained in pasted clip
-      for (WaveClipList::Node* it=other->mCutLines.GetFirst(); it; it=it->GetNext())
+      for (WaveClipList::compatibility_iterator it=other->mCutLines.GetFirst(); it; it=it->GetNext())
       {
          WaveClip* cutline = it->GetData();
          WaveClip* newCutLine = new WaveClip(*cutline,
@@ -1167,9 +1167,9 @@ bool WaveClip::Clear(double t0, double t1)
       if (clip_t1 > GetEndTime())
          clip_t1 = GetEndTime();
 
-      WaveClipList::Node* nextIt = (WaveClipList::Node*)-1;
+      WaveClipList::compatibility_iterator nextIt;
 
-      for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=nextIt)
+      for (WaveClipList::compatibility_iterator it = mCutLines.GetFirst(); it; it=nextIt)
       {
          nextIt = it->GetNext();
          WaveClip* clip = it->GetData();
@@ -1218,9 +1218,9 @@ bool WaveClip::ClearAndAddCutLine(double t0, double t1)
    newClip->SetOffset(clip_t0-mOffset);
 
    // Sort out cutlines that belong to the new cutline
-   WaveClipList::Node* nextIt = (WaveClipList::Node*)-1;
+   WaveClipList::compatibility_iterator nextIt;
 
-   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=nextIt)
+   for (WaveClipList::compatibility_iterator it = mCutLines.GetFirst(); it; it=nextIt)
    {
       nextIt = it->GetNext();
       WaveClip* clip = it->GetData();
@@ -1265,7 +1265,7 @@ bool WaveClip::FindCutLine(double cutLinePosition,
                            double* cutlineStart /* = NULL */,
                            double* cutlineEnd /* = NULL */)
 {
-   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+   for (WaveClipList::compatibility_iterator it = mCutLines.GetFirst(); it; it=it->GetNext())
    {
       WaveClip* cutline = it->GetData();
       if (fabs(mOffset + cutline->GetOffset() - cutLinePosition) < 0.0001)
@@ -1283,7 +1283,7 @@ bool WaveClip::FindCutLine(double cutLinePosition,
 
 bool WaveClip::ExpandCutLine(double cutLinePosition)
 {
-   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+   for (WaveClipList::compatibility_iterator it = mCutLines.GetFirst(); it; it=it->GetNext())
    {
       WaveClip* cutline = it->GetData();
       if (fabs(mOffset + cutline->GetOffset() - cutLinePosition) < 0.0001)
@@ -1301,7 +1301,7 @@ bool WaveClip::ExpandCutLine(double cutLinePosition)
 
 bool WaveClip::RemoveCutLine(double cutLinePosition)
 {
-   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+   for (WaveClipList::compatibility_iterator it = mCutLines.GetFirst(); it; it=it->GetNext())
    {
       if (fabs(mOffset + it->GetData()->GetOffset() - cutLinePosition) < 0.0001)
       {
@@ -1318,7 +1318,7 @@ void WaveClip::RemoveAllCutLines()
 {
    while (!mCutLines.IsEmpty())
    {
-      WaveClipList::Node* head = mCutLines.GetFirst();
+      WaveClipList::compatibility_iterator head = mCutLines.GetFirst();
       delete head->GetData();
       mCutLines.DeleteNode(head);
    }
@@ -1326,7 +1326,7 @@ void WaveClip::RemoveAllCutLines()
 
 void WaveClip::OffsetCutLines(double t0, double len)
 {
-   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+   for (WaveClipList::compatibility_iterator it = mCutLines.GetFirst(); it; it=it->GetNext())
    {
       WaveClip* cutLine = it->GetData();
       if (mOffset + cutLine->GetOffset() >= t0)
@@ -1337,21 +1337,21 @@ void WaveClip::OffsetCutLines(double t0, double len)
 void WaveClip::Lock()
 {
    GetSequence()->Lock();
-   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+   for (WaveClipList::compatibility_iterator it = mCutLines.GetFirst(); it; it=it->GetNext())
       it->GetData()->Lock();
 }
 
 void WaveClip::CloseLock()
 {
    GetSequence()->CloseLock();
-   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+   for (WaveClipList::compatibility_iterator it = mCutLines.GetFirst(); it; it=it->GetNext())
       it->GetData()->Lock();
 }
 
 void WaveClip::Unlock()
 {
    GetSequence()->Unlock();
-   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+   for (WaveClipList::compatibility_iterator it = mCutLines.GetFirst(); it; it=it->GetNext())
       it->GetData()->Unlock();
 }
 

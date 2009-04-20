@@ -186,7 +186,7 @@ void ODComputeSummaryTask::Update()
          Sequence *seq;
          
          //gather all the blockfiles that we should process in the wavetrack.
-         WaveClipList::Node* node = mWaveTracks[j]->GetClipIterator();
+         WaveClipList::compatibility_iterator node = mWaveTracks[j]->GetClipIterator();
          
          int numBlocksDone;         
          while(node) {

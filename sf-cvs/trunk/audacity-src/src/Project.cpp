@@ -980,7 +980,7 @@ void AudacityProject::RedrawProject(const bool bForceWaveTracks /*= false*/)
          if (pTrack->GetKind() == Track::Wave)
          {
             WaveTrack* pWaveTrack = (WaveTrack*)pTrack;
-            WaveClipList::Node* node = pWaveTrack->GetClipIterator();
+            WaveClipList::compatibility_iterator node = pWaveTrack->GetClipIterator();
             while (node) 
             {
                WaveClip *clip = node->GetData();
@@ -1920,7 +1920,7 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
    l.DeleteContents(true);
    wxGetApp().mImporter->GetSupportedImportFormats(&l);
 
-   for (FormatList::Node *n = l.GetFirst(); n; n = n->GetNext()) {
+   for (FormatList::compatibility_iterator n = l.GetFirst(); n; n = n->GetNext()) {
       Format *f = n->GetData();
 
       wxString newfilter = f->formatName + wxT("|");
@@ -2263,7 +2263,7 @@ void AudacityProject::OpenFile(wxString fileName, bool addtohistory)
                if (t->GetKind() == Track::Wave)
                {
                   // Only wave tracks have a notion of "changed"
-                  for (WaveClipList::Node* it=((WaveTrack*)t)->GetClipIterator(); it; it=it->GetNext())
+                  for (WaveClipList::compatibility_iterator it=((WaveTrack*)t)->GetClipIterator(); it; it=it->GetNext())
                      it->GetData()->MarkChanged();
                }
                t = iter.Next();

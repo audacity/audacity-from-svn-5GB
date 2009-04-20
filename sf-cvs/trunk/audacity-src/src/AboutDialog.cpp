@@ -815,7 +815,7 @@ wxString AboutDialog::GetCreditsByRole(AboutDialog::Role role)
 {
    wxString s;
    
-   for (AboutDialogCreditItemsList::Node* p=creditItems.GetFirst(); p; p = p->GetNext())
+   for (AboutDialogCreditItemsList::compatibility_iterator p=creditItems.GetFirst(); p; p = p->GetNext())
    {
       AboutDialogCreditItem* item = p->GetData();
       if (item->role == role)

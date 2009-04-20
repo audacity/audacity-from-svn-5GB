@@ -52,7 +52,7 @@ void GetAllSeqBlocks(AudacityProject *project,
    while (t) {
       if (t->GetKind() == Track::Wave) {
          WaveTrack *waveTrack = (WaveTrack *)t;
-         WaveClipList::Node* node = waveTrack->GetClipIterator();
+         WaveClipList::compatibility_iterator node = waveTrack->GetClipIterator();
          while(node) {
             WaveClip *clip = node->GetData();
             Sequence *sequence = clip->GetSequence();

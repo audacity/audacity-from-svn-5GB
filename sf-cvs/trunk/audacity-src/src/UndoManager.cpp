@@ -53,7 +53,7 @@ wxLongLong UndoManager::GetSpaceUsage(int index)
 {
    TrackListOfKindIterator iter(Track::Wave);
    WaveTrack *wt;
-   WaveClipList::Node *it;
+   WaveClipList::compatibility_iterator it;
    BlockArray *blocks;
    unsigned int i;
 
