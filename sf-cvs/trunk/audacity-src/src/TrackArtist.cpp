@@ -1877,7 +1877,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
       w1 = (sampleCount) ((t0*rate + (x+1) *rate *tstep) + .5);
       if (!logF)
       {
-         for (int yy = 0; yy < mid.height - 1; yy++) {
+         for (int yy = 0; yy < mid.height; yy++) {
             bool selflag = (ssel0 <= w0 && w1 < ssel1);
             unsigned char rv, gv, bv;
             float value;
@@ -1898,6 +1898,12 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
                      value += freq[half * x + int (bin0)];
                      bin0 += 1.0;
                   }
+
+                  // Do not reference past end of freq array.
+                  if (int(bin1) >= mid.height) {
+                     bin1 -= 1.0;
+                  }
+
                   value += freq[half * x + int (bin1)] * (bin1 - int (bin1));
 
                   value /= binwidth;
