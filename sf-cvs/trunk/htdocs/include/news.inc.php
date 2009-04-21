@@ -40,45 +40,27 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
-  "March 19 2009",
+  "April 21, 2009",
   	"GSoC_2009",
-  _("Call for Students! Audacity is a mentoring organisation in Google Summer of Code (GSoC) 2009"),
+  _("Audacity is mentoring two Google Summer of Code (GSoC) 2009 students"),
   _("
 <p>
-Following our successful participation in last year's GSoC, Audacity has been approved 
-as a mentoring organisation for 
-<a href=\"http://socghop.appspot.com/\">
-GSoC 2009</a>. GSoC offers student developers a $4,500 stipend to write code for open 
-source projects. This year, Audacity is seeking proposals that will move us towards
-a new stable 1.4 Release soon after GSoC. 
+	Audacity has been approved to mentor two
+   <a href=\"http://socghop.appspot.com/org/home/google/gsoc2009/audacity#blog\">
+   students</a> for
+   <a href=\"http://socghop.appspot.com/\">
+   Google Summer of Code 2009</a>!
+	GSoC offers student developers $4,500 stipends to write code for various open source projects.
 </p>
 <p align=\"center\">
 	<a href=\"http://socghop.appspot.com\">
-	  <img src=\"images/GSoC2009.png\" alt=\"Google Summer of Code 2009\"></img>
+   <img src=\"images/GSoC2009.png\" alt=\"Google Summer of Code 2009\"></img>
 	</a>
 </p>
 <p>
-Student applicants are encouraged to contact us now to discuss
-their proposals prior to start of official applications at 19:00 UTC on March 23, 2009.
-See the 
-<a href=\"http://socghop.appspot.com/document/show/program/google/gsoc2009/timeline\">
-GSoC 2009 timeline</a> to be aware of relevant program deadlines.  
-</p>
+   The two projects will combine bug fixing with work on developing new features.  
 <p>
-Prospective students should review our 
-<a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Ideas\">
-Ideas</a> page, check out the 
-<a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Skills\">
-skills required</a>, and review all our 
-<a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_FAQ\">
-GSOC Frequently Asked Questions</a>. Also see our
-<a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Student_Guidelines\">
-Student Guidelines and Requirements</a>. Then contact us at the summerofcode e-mail address
-given on any of those pages. 
-</p>
-
-If you know any students who may be interested, please direct them to our 
-<a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Ideas\">GSoC Ideas</a> page.  
+	Congratulations to the approved students and thanks to all who applied for their interest in Audacity!
 </p>
 "));
 
