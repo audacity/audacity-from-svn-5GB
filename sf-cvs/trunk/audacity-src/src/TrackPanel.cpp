@@ -3622,8 +3622,17 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    SelectNone();
    mTracks->Select(t);
    SetFocusedTrack(t);
-   mViewInfo->sel0 = t->GetOffset();
-   mViewInfo->sel1 = t->GetEndTime();
+   Track *t1 = t->GetLink();
+   if(t1)
+   {
+      mViewInfo->sel0 = wxMin(t->GetOffset(), t1->GetOffset());
+      mViewInfo->sel1 = wxMax(t->GetEndTime(), t1->GetEndTime());
+   }
+   else
+   {
+      mViewInfo->sel0 = t->GetOffset();
+      mViewInfo->sel1 = t->GetEndTime();
+   }
 
    Refresh(false);  
    if (!unsafe)
