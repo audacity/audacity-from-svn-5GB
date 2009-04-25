@@ -59,6 +59,7 @@ wxString Effect::StripAmpersand(const wxString& str)
 
 Effect::Effect()
 {
+   mTracks = NULL;
    mOutputWaveTracks = NULL;
 
    // Can change effect flags later (this is the new way)
