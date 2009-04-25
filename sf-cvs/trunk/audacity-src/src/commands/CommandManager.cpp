@@ -652,28 +652,12 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
 
 wxString CommandManager::GetKey(wxString label)
 {
-   int loc;
-
    wxString key = label.AfterFirst(wxT('\t')).BeforeFirst(wxT('\t'));
    if (key.IsEmpty()) {
       return key;
    }
 
    key = KeyStringNormalize(key);
-
-#if defined(__WXDEBUG__)
-   if (label.AfterLast(wxT('\t')) != wxT("allowdup")) {
-      for (size_t i = 0; i < mCommandList.GetCount(); i++) {
-         if (mCommandList[i]->key == key) {
-            wxLogDebug(wxT("key combo '%s' assigned to '%s' and '%s'"),
-                      key.c_str(),
-                      mCommandList[i]->label.BeforeFirst(wxT('\t')).c_str(),
-                      label.BeforeFirst(wxT('\t')).c_str());
-            wxASSERT(mCommandList[i]->key != key);
-         }
-      }
-   }
-#endif
 
    return key;
 }
@@ -1165,6 +1149,37 @@ void CommandManager::SetCommandFlags(wxUint32 flags, wxUint32 mask, ...)
    }
    va_end(list);
 }
+
+#if defined(__WXDEBUG__)
+void CommandManager::CheckDups()
+{
+   int cnt = mCommandList.GetCount();
+   for (size_t j = 0;  j < cnt; j++) {
+      if (mCommandList[j]->key.IsEmpty()) {
+         continue;
+      }
+
+      if (mCommandList[j]->label.AfterLast(wxT('\t')) == wxT("allowdup")) {
+         continue;
+      }
+
+      for (size_t i = 0; i < cnt; i++) {
+         if (i == j) {
+            continue;
+         }
+
+         if (mCommandList[i]->key == mCommandList[j]->key) {
+            wxString msg;
+            msg.Printf(wxT("key combo '%s' assigned to '%s' and '%s'"),
+                       mCommandList[i]->key.c_str(),
+                       mCommandList[i]->label.BeforeFirst(wxT('\t')).c_str(),
+                       mCommandList[j]->label.BeforeFirst(wxT('\t')).c_str());
+            wxASSERT_MSG(mCommandList[i]->key != mCommandList[j]->key, msg);
+         }
+      }
+   }
+}
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
