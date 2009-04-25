@@ -157,6 +157,10 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
    wxString GetKeyFromName(wxString name);
    wxString GetDefaultKeyFromName(wxString name);
 
+#if defined(__WXDEBUG__)
+   void CheckDups();
+#endif
+
    //
    // Loading/Saving
    //
