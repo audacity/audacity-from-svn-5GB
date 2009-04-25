@@ -1413,7 +1413,7 @@ wxUint32 AudacityProject::GetUpdateFlags()
 void AudacityProject::SelectAllIfNone()
 {
    wxUint32 flags = GetUpdateFlags();
-   if((flags & TracksSelectedFlag) ==0)
+   if(((flags & TracksSelectedFlag) ==0) || (mViewInfo.sel0 >= mViewInfo.sel1))
       OnSelectAll();
 }
 
