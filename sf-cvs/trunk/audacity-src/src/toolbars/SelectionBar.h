@@ -102,6 +102,8 @@ class SelectionBar:public ToolBar {
    wxComboBox     *mRateBox;
    wxCheckBox     *mSnapTo;
 
+   wxWindow       *mRateText;
+
  public:
    TimeTextCtrl   *mLeftTime;
 
