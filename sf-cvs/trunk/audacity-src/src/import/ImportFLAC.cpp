@@ -329,7 +329,13 @@ bool FLACImportFileHandle::Init()
    // Even though there is an init() method that takes a filename, use the one that
    // takes a file handle because wxWidgets can open a file with a Unicode name and
    // libflac can't (under Windows).
-   if (mFile->init(mHandle.fp()) != FLAC__STREAM_DECODER_INIT_STATUS_OK) {
+   //
+   // Responsibility for closing the file is passed to libflac.
+   // (it happens when mFile->finish() is called)
+   bool result = mFile->init(mHandle.fp());
+   mHandle.Detach();
+
+   if (result != FLAC__STREAM_DECODER_INIT_STATUS_OK) {
       return false;
    }
 #endif
@@ -443,8 +449,6 @@ FLACImportFileHandle::~FLACImportFileHandle()
 {
    mFile->finish();
    delete mFile;
-
-   mHandle.Close();
 }
 
 #endif /* USE_LIBFLAC */
