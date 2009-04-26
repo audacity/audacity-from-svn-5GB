@@ -6393,7 +6393,7 @@ void TrackPanel::SetMenuCheck( wxMenu & menu, int newId )
    wxMenuItem * item;
    int id;
 
-   for ( wxwxMenuItemListNode * node = list.GetFirst(); node; node = node->GetNext() )
+   for ( wxMenuItemList::compatibility_iterator node = list.GetFirst(); node; node = node->GetNext() )
    {
       item = node->GetData();
       id = item->GetId();
