@@ -10,6 +10,7 @@
   //ToDo ... BlendFrames on "fade-out"
   //ToDo ... BlendFrameCount is a user-selectable parameter
   //ToDo ... Detect transient signals that are too short to interrupt the TruncatableSilence
+  Philip Van Baren (more options and boundary fixes)
 
 **********************************************************************/
 
@@ -55,8 +56,10 @@ public:
 
  private:
    sampleCount mBlendFrameCount;
+   int mTruncInitialAllowedSilentMs;
    int mTruncLongestAllowedSilentMs;
    int mTruncDbChoiceIndex;
+   double mSilenceCompressRatio;
 
 friend class TruncSilenceDialog;
 };
@@ -79,6 +82,10 @@ public:
 private:
    EffectTruncSilence *mEffect;
    wxStaticText * pWarning;
+
+   wxStaticText *mRatioLabel;
+   wxSlider *mRatioSlider;
+   wxStaticText *mRatioText;
 
 private:
    DECLARE_EVENT_TABLE()
