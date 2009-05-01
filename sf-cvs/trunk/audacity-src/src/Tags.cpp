@@ -1157,46 +1157,50 @@ void TagsEditor::OnSave(wxCommandEvent & event)
 
    // Create/Open the file
    XMLFileWriter writer;
-   writer.Open(fn, wxT("wb"));
 
-   // Complain if open failed
-   if (!writer.IsOpened())
+   try
    {
-      // Constructor will emit message
-      return;
+      writer.Open(fn, wxT("wb"));
+
+      // Remember title and track in case they're read only
+      wxString title = mLocal.GetTag(TAG_TITLE);
+      wxString track = mLocal.GetTag(TAG_TRACK);
+
+      // Clear title
+      if (!mEditTitle) {
+         mLocal.SetTag(TAG_TITLE, wxEmptyString);
+      }
+
+      // Clear track
+      if (!mEditTrack) {
+         mLocal.SetTag(TAG_TRACK, wxEmptyString);
+      }
+
+      // Write the metadata
+      mLocal.WriteXML(writer);
+
+      // Restore title
+      if (!mEditTitle) {
+         mLocal.SetTag(TAG_TITLE, title);
+      }
+
+      // Restore track
+      if (!mEditTrack) {
+         mLocal.SetTag(TAG_TRACK, track);
+      }
+
+      // Close the file
+      writer.Close();
    }
+   catch (XMLFileWriterException* pException)
+   {
+      wxMessageBox(wxString::Format(
+         _("Couldn't write to file \"%s\": %s"),
+         fn.c_str(), pException->GetMessage().c_str()),
+         _("Error saving tags file"), wxICON_ERROR, this);
 
-   // Remember title and track in case they're read only
-   wxString title = mLocal.GetTag(TAG_TITLE);
-   wxString track = mLocal.GetTag(TAG_TRACK);
-
-   // Clear title
-   if (!mEditTitle) {
-      mLocal.SetTag(TAG_TITLE, wxEmptyString);
+      delete pException;
    }
-
-   // Clear track
-   if (!mEditTrack) {
-      mLocal.SetTag(TAG_TRACK, wxEmptyString);
-   }
-
-   // Write the metadata
-   mLocal.WriteXML(writer);
-
-   // Restore title
-   if (!mEditTitle) {
-      mLocal.SetTag(TAG_TITLE, title);
-   }
-
-   // Restore track
-   if (!mEditTrack) {
-      mLocal.SetTag(TAG_TRACK, track);
-   }
-
-   // Close the file
-   writer.Close();
-
-   return;
 }
 
 void TagsEditor::OnSaveDefaults(wxCommandEvent & event)

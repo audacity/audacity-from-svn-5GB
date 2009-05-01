@@ -1079,22 +1079,26 @@ void EqualizationDialog::SaveCurves()
 
    // Create/Open the file
    XMLFileWriter eqFile;
-   eqFile.Open( fn.GetFullPath(), wxT("wb") );
 
-   // Complain if open failed
-   if( !eqFile.IsOpened() )
+   try
    {
-      // Constructor will emit message
-      return;
+      eqFile.Open( fn.GetFullPath(), wxT("wb") );
+
+      // Write the curves
+      WriteXML( eqFile );
+
+      // Close the file
+      eqFile.Close();
    }
+   catch (XMLFileWriterException* pException)
+   {
+      wxMessageBox(wxString::Format(
+         _("Couldn't write to file \"%s\": %s"),
+         fn.GetFullPath().c_str(), pException->GetMessage().c_str()),
+         _("Error saving equalization curves"), wxICON_ERROR, this);
 
-   // Write the curves
-   WriteXML( eqFile );
-
-   // Close the file
-   eqFile.Close();
-
-   return;
+      delete pException;
+   }
 }
 
 //

@@ -419,6 +419,7 @@ FFmpegPresets::FFmpegPresets()
 FFmpegPresets::~FFmpegPresets()
 {
    XMLFileWriter writer;
+   // FIXME: Catch XMLFileWriterException
    wxFileName xmlFileName(FileNames::DataDir(), wxT("ffmpeg_presets.xml"));
    writer.Open(xmlFileName.GetFullPath(),wxT("wb"));
    WriteXMLHeader(writer);
@@ -435,6 +436,7 @@ void FFmpegPresets::ImportPresets(wxString &filename)
 void FFmpegPresets::ExportPresets(wxString &filename)
 {
    XMLFileWriter writer;
+   // FIXME: Catch XMLFileWriterException
    writer.Open(filename,wxT("wb"));
    WriteXMLHeader(writer);
    WriteXML(writer);
