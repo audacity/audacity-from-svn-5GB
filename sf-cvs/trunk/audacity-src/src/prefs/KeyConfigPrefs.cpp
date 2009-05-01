@@ -265,18 +265,20 @@ void KeyConfigPrefs::OnSave(wxCommandEvent & e)
 
    XMLFileWriter prefFile;
    
-   prefFile.Open(file, wxT("wb"));
-
-   if (!prefFile.IsOpened()) {
+   try
+   {
+      prefFile.Open(file, wxT("wb"));
+      mManager->WriteXML(prefFile);
+      prefFile.Close();
+   }
+   catch (XMLFileWriterException* pException)
+   {
       wxMessageBox(_("Couldn't write to file: ") + file,
                    _("Error saving keyboard shortcuts"),
                    wxOK | wxCENTRE, this);
-      return;
+
+      delete pException;
    }
-
-   mManager->WriteXML(prefFile);
-
-   prefFile.Close();
 }
 
 void KeyConfigPrefs::OnDefaults(wxCommandEvent & e)

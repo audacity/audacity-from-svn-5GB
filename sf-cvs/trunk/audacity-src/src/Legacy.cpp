@@ -310,46 +310,62 @@ bool ConvertLegacyProjectFile(wxFileName filename)
 
    wxString name = filename.GetFullPath();
 
-   xmlFile.Open(name, wxT("wb"));
-   if (!xmlFile.IsOpened())
+   try
+   {
+      xmlFile.Open(name, wxT("wb"));
+   }
+   catch (XMLFileWriterException* pException)
+   {
+      delete pException;
       return false;
+   }
 
    renamer.SetNewFile(xmlFile.fp());
 
-   xmlFile.Write(wxT("<?xml version=\"1.0\"?>\n"));
+   try
+   {
+      xmlFile.Write(wxT("<?xml version=\"1.0\"?>\n"));
 
-   wxString label;
-   wxString value;
+      wxString label;
+      wxString value;
 
-   if (f.GetFirstLine() != wxT("AudacityProject"))
-      return false;
-   if (f.GetNextLine() != wxT("Version"))
-      return false;
-   if (f.GetNextLine() != wxT("0.95"))
-      return false;
-   if (f.GetNextLine() != wxT("projName"))
-      return false;
-
-   xmlFile.StartTag(wxT("audacityproject"));
-   xmlFile.WriteAttr(wxT("projname"), f.GetNextLine());
-   xmlFile.WriteAttr(wxT("version"), wxT("1.1.0"));
-   xmlFile.WriteAttr(wxT("audacityversion"),AUDACITY_VERSION_STRING);
-
-   label = f.GetNextLine();
-   while (label != wxT("BeginTracks")) {
-      xmlFile.WriteAttr(label, f.GetNextLine());
-      label = f.GetNextLine();
-   }
-
-   label = f.GetNextLine();
-   while (label != wxT("EndTracks")) {
-      bool success = ConvertLegacyTrack(&f, xmlFile);
-      if (!success)
+      if (f.GetFirstLine() != wxT("AudacityProject"))
          return false;
-      label = f.GetNextLine();
-   }
+      if (f.GetNextLine() != wxT("Version"))
+         return false;
+      if (f.GetNextLine() != wxT("0.95"))
+         return false;
+      if (f.GetNextLine() != wxT("projName"))
+         return false;
 
-   xmlFile.EndTag(wxT("audacityproject"));
+      xmlFile.StartTag(wxT("audacityproject"));
+      xmlFile.WriteAttr(wxT("projname"), f.GetNextLine());
+      xmlFile.WriteAttr(wxT("version"), wxT("1.1.0"));
+      xmlFile.WriteAttr(wxT("audacityversion"),AUDACITY_VERSION_STRING);
+
+      label = f.GetNextLine();
+      while (label != wxT("BeginTracks")) {
+         xmlFile.WriteAttr(label, f.GetNextLine());
+         label = f.GetNextLine();
+      }
+
+      label = f.GetNextLine();
+      while (label != wxT("EndTracks")) {
+         bool success = ConvertLegacyTrack(&f, xmlFile);
+         if (!success)
+            return false;
+         label = f.GetNextLine();
+      }
+
+      xmlFile.EndTag(wxT("audacityproject"));
+      xmlFile.Close();
+   }
+   catch (XMLFileWriterException* pException)
+   {
+      // Error writing XML file (e.g. disk full)
+      delete pException;
+      return false;
+   }
 
    renamer.Finished();
 

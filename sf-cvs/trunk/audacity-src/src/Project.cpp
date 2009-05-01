@@ -2085,7 +2085,20 @@ void AudacityProject::OpenFile(wxString fileName, bool addtohistory)
    // On Win32, we may be given a short (DOS-compatible) file name on rare
    // occassions (e.g. stuff like "C:\PROGRA~1\AUDACI~1\PROJEC~1.AUP"). We
    // convert these to long file name first.
-   fileName = PlatformCompatibility::ConvertSlashInFileName(PlatformCompatibility::GetLongFileName(fileName));
+   fileName = PlatformCompatibility::ConvertSlashInFileName(
+      PlatformCompatibility::GetLongFileName(fileName));
+
+   // Data loss may occur if users mistakenly try to open ".aup.bak" files
+   // left over from an unsuccessful save or by previous versions of Audacity.
+   // So we always refuse to open such files.
+   if (fileName.Lower().EndsWith(wxT(".aup.bak")))
+   {
+      wxMessageBox(
+         _("You are trying to open an automatically created backup file. Doing this may result in severe dataloss. Please open the actual Audacity project file instead."),
+         _("Backup file detected"),
+         wxOK | wxCENTRE, this);
+      return;
+   }
 
    // We want to open projects using wxTextFile, but if it's NOT a project
    // file (but actually a WAV file, for example), then wxTextFile will spin
@@ -2803,8 +2816,8 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
          wxMessageBox(wxString::Format(_("Could not save project. Perhaps %s \nis not writable or the disk is full."),
                                        project.c_str()),
                       _("Error saving project"),
-                      wxOK | wxCENTRE, this);
-         if (safetyFileName)
+                      wxICON_ERROR, this);
+         if (safetyFileName != wxT(""))
             wxRename(safetyFileName, mFileName);
          
          return false;
@@ -2814,22 +2827,35 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    // Write the AUP file. 
    XMLFileWriter saveFile;
 
-   saveFile.Open(mFileName, wxT("wb"));
-   if (!saveFile.IsOpened()) {
-      wxMessageBox(_("Couldn't write to file: ") + mFileName,
-                   _("Error saving project"),
-                   wxOK | wxCENTRE, this);
+   try
+   {
+      saveFile.Open(mFileName, wxT("wb"));
 
-      if (safetyFileName)
+      WriteXMLHeader(saveFile);
+      WriteXML(saveFile);
+
+      saveFile.Close();
+   }
+   catch (XMLFileWriterException* pException)
+   {
+      wxMessageBox(wxString::Format(
+         _("Couldn't write to file \"%s\": %s"),
+         mFileName.c_str(), pException->GetMessage().c_str()),
+         _("Error saving project"), wxICON_ERROR);
+
+      delete pException;
+
+      // When XMLWriter throws an exception, it tries to close it before,
+      // so we can at least try to delete the incomplete file and move the
+      // backup file over.
+      if (safetyFileName != wxT(""))
+      {
+         wxRemove(mFileName);
          wxRename(safetyFileName, mFileName);
+      }
       
       return false;
    }
-
-   WriteXMLHeader(saveFile);
-   WriteXML(saveFile);
-
-   saveFile.Close();
    
 #ifdef __WXMAC__
    wxFileName fn(mFileName);
@@ -2886,6 +2912,12 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    
       mUndoManager.StateSaved();
    }
+
+   // If we get here, saving the project was successful, so we can delete
+   // the .bak file (because it now does not fit our block files anymore
+   // anyway).
+   if (safetyFileName != wxT(""))
+      wxRemoveFile(safetyFileName);
 
    mStatusBar->SetStatusText(wxString::Format(_("Saved %s"),
                                               mFileName.c_str()));
@@ -3889,27 +3921,34 @@ void AudacityProject::AutoSave()
    
    XMLFileWriter saveFile;
 
-   saveFile.Open(fn + wxT(".tmp"), wxT("wb"));
-   if (!saveFile.IsOpened())
+   try
    {
-      wxMessageBox(_("Couldn't write to file: ") + fn + wxT(".tmp"),
-                   _("Error writing autosave file"),
-                   wxICON_STOP, this);
+      saveFile.Open(fn + wxT(".tmp"), wxT("wb"));
+
+      {
+         VarSetter<bool> setter(&mAutoSaving, true, false);
+         WriteXMLHeader(saveFile);
+         WriteXML(saveFile);
+      }
+
+      // JKC Calling XMLFileWriter::Close will close the <project> scope.
+      // We certainly don't want to do that, if we're doing recordingrecovery,
+      // because the recordingrecovery tags need to be inside <project></project>.
+      // So instead we do not call Close() but CloseWithoutEndingTags().
+      saveFile.CloseWithoutEndingTags();
+   }
+   catch (XMLFileWriterException* pException)
+   {
+      wxMessageBox(wxString::Format(
+         _("Couldn't write to file \"%s\": %s"),
+         (fn + wxT(".tmp")).c_str(), pException->GetMessage().c_str()),
+         _("Error writing autosave file"), wxICON_ERROR, this);
+
+      delete pException;
+
       return;
    }
 
-   {
-      VarSetter<bool> setter(&mAutoSaving, true, false);
-      WriteXMLHeader(saveFile);
-      WriteXML(saveFile);
-   }
-
-   // JKC Calling XMLFileWriter::Close will close the <project> scope.
-   // We certainly don't want to do that, if we're doing recordingrecovery,
-   // because the recordingrecovery tags need to be inside <project></project>
-   // So instead we close the file directly.
-   saveFile.wxFFile::Close();
-   
    // Now that we have a new auto-save file, delete the old one
    DeleteCurrentAutoSaveFile();
    

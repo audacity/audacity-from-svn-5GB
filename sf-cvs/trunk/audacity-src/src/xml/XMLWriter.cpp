@@ -256,23 +256,45 @@ XMLFileWriter::~XMLFileWriter()
    }
 }
 
-bool XMLFileWriter::Open(const wxString &name, const wxString &mode)
+void XMLFileWriter::Open(const wxString &name, const wxString &mode)
 {
-   return wxFFile::Open(name, mode);
+   if (!wxFFile::Open(name, mode))
+      throw new XMLFileWriterException(_("Error opening file"));
 }
 
-bool XMLFileWriter::Close()
+void XMLFileWriter::Close()
 {
    while (mTagstack.GetCount()) {
       EndTag(mTagstack[0]);
    }
 
-   return wxFFile::Close();
+   CloseWithoutEndingTags();
+}
+
+void XMLFileWriter::CloseWithoutEndingTags()
+{
+   // Before closing, we first flush it, because if Flush() fails because of a
+   // "disk full" condition, we can still at least try to close the file.
+   if (!wxFFile::Flush())
+   {
+      wxFFile::Close();
+      throw new XMLFileWriterException(_("Error flushing file"));
+   }
+
+   // Note that this should never fail if flushing worked.
+   if (!wxFFile::Close())
+      throw new XMLFileWriterException(_("Error closing file"));
 }
 
 void XMLFileWriter::Write(const wxString &data)
 {
-   wxFFile::Write(data);
+   if (!wxFFile::Write(data, wxConvUTF8))
+   {
+      // When writing fails, we try to close the file before throwing the
+      // exception, so it can at least be deleted.
+      wxFFile::Close();
+      throw new XMLFileWriterException(_("Error writing to file"));
+   }
 }
 
 ///
