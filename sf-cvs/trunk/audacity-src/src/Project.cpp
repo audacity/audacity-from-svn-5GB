@@ -2094,7 +2094,7 @@ void AudacityProject::OpenFile(wxString fileName, bool addtohistory)
    if (fileName.Lower().EndsWith(wxT(".aup.bak")))
    {
       wxMessageBox(
-         _("You are trying to open an automatically created backup file. Doing this may result in severe dataloss. Please open the actual Audacity project file instead."),
+         _("You are trying to open an automatically created backup file.\nDoing this may result in severe data loss.\n\nPlease open the actual Audacity project file instead."),
          _("Backup file detected"),
          wxOK | wxCENTRE, this);
       return;
