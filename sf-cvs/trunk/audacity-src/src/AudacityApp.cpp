@@ -791,8 +791,10 @@ bool AudacityApp::OnInit()
    // Create a menubar that will show when all project windows are closed.
 
    wxMenu *fileMenu = new wxMenu();
+   wxMenu *recentMenu = new wxMenu();
    fileMenu->Append(wxID_NEW, wxT("&New\tCtrl+N"));
    fileMenu->Append(wxID_OPEN, wxT("&Open...\tCtrl+O"));
+   fileMenu->AppendSubMenu(recentMenu, wxT("Open &Recent..."));
    fileMenu->Append(wxID_ABOUT, _("&About Audacity..."));
    /* i18n-hint: Mac OS X shortcut should be Ctrl+, */
    fileMenu->Append(wxID_PREFERENCES, _("&Preferences...\tCtrl+,"));
@@ -801,6 +803,9 @@ bool AudacityApp::OnInit()
    menuBar->Append(fileMenu, wxT("&File"));
 
    wxMenuBar::MacSetCommonMenuBar(menuBar);
+
+   mRecentFiles->UseMenu(recentMenu);
+   mRecentFiles->AddFilesToMenu(recentMenu);
 
    // This invisibale frame will be the "root" of all other frames and will
    // become the active frame when no projects are open.
