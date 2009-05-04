@@ -759,7 +759,12 @@ Cases:
          e->Delete(0);  // they were not there when we entered this
 }
 
-void Envelope::RemoveUnneededPoints(double tolerence)
+// Deletes 'unneeded' points, starting from the left.
+// If 'time' is set and positive, just deletes points in a small region
+// around that value.
+// 'Unneeded' means that the envelope doesn't change by more than
+// 'tolerence' without the point being there.
+void Envelope::RemoveUnneededPoints(double time, double tolerence)
 {
    unsigned int len = mEnv.Count();
    unsigned int i;
@@ -770,6 +775,11 @@ void Envelope::RemoveUnneededPoints(double tolerence)
 
    for (i = 0; i < len; i++) {
       when = mEnv[i]->t;
+      if(time >= 0)
+      {
+         if(fabs(when + mOffset - time) > 0.00025) // 2 samples at 8kHz, 11 at 44.1kHz
+            continue;
+      }
       val = mEnv[i]->val;
       Delete(i);  // try it to see if it's doing anything
       val1 = GetValue(when + mOffset);
@@ -777,7 +787,7 @@ void Envelope::RemoveUnneededPoints(double tolerence)
       {
          Insert(when,val); // put it back, we needed it
          
-         //Insert may have modified instead of inserting, if two points were at the same tinme.
+         //Insert may have modified instead of inserting, if two points were at the same time.
          // in which case len needs to shrink i and len, because the array size decreased.
          if(mEnv.Count()!=len)
          {
