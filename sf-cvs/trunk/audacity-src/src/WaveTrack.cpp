@@ -771,6 +771,7 @@ bool WaveTrack::HandleClear(double t0, double t1,
                }
                if (!clip->Clear(t0,t1))
                   return false;
+               clip->GetEnvelope()->RemoveUnneededPoints(t0);
             }
          }
       } else
@@ -1461,7 +1462,7 @@ bool WaveTrack::Unlock()
    return true;
 }
 
-sampleCount WaveTrack::TimeToLongSamples(double t0) const
+AUDACITY_DLL_API sampleCount WaveTrack::TimeToLongSamples(double t0) const
 {
    return (sampleCount)floor(t0 * mRate + 0.5);
 }
