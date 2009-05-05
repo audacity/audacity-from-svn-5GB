@@ -392,6 +392,10 @@ wxArrayString AudioIO::GetInputSourceNames()
       for( int source = 0; source < numSources; source++ )
          deviceNames.Add(LAT1CTOWX(Px_GetInputSourceName(mPortMixer, source)));
    }
+   else
+   {
+      wxLogDebug(wxT("AudioIO::GetInputSourceNames(): PortMixer not initialised!"));
+   }
 
    return deviceNames;
 
