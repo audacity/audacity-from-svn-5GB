@@ -44,6 +44,7 @@ ODTask::ODTask()
    mDemandSample=0;
 }
 
+//outside code must ensure this task is not scheduled again.
 void ODTask::TerminateAndBlock()
 {  
    //one mutex pair for the value of mTerminate
@@ -57,7 +58,7 @@ void ODTask::TerminateAndBlock()
 //TODO lock mTerminate?
    mBlockUntilTerminateMutex.Unlock();
    
-   //wait till we are out of doSome() to terminate.
+   //wait till we are out of doSome() to terminate. 
    Terminate();
 }
    
@@ -82,9 +83,9 @@ void ODTask::DoSome(float amountWork)
    mTerminateMutex.Lock();
    if(mTerminate)
    {
-      mBlockUntilTerminateMutex.Unlock();
       mTerminateMutex.Unlock();
       SetIsRunning(false);
+      mBlockUntilTerminateMutex.Unlock();
       return;
    }  
    mTerminateMutex.Unlock();
@@ -168,9 +169,8 @@ void ODTask::DoSome(float amountWork)
 //      printf("%s %i complete\n", GetTaskName(),GetTaskNumber());
    }
    mTerminateMutex.Unlock();
-   mBlockUntilTerminateMutex.Unlock();
    SetIsRunning(false);
-   
+   mBlockUntilTerminateMutex.Unlock();
 }
 
 bool ODTask::IsTaskAssociatedWithProject(AudacityProject* proj)
