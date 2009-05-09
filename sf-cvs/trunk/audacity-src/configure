@@ -9130,11 +9130,6 @@ esac
 
 
 
-cat >>confdefs.h <<\_ACEOF
-#define USE_PORTAUDIO_V19 1
-_ACEOF
-
-
 LOCAL_LIBS="$LOCAL_LIBS portaudio-v19/lib/libportaudio.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
 CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/include $CXXFLAGS"
