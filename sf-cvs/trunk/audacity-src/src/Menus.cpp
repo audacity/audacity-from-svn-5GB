@@ -1420,6 +1420,12 @@ void AudacityProject::SelectAllIfNone()
 
 void AudacityProject::ModifyToolbarMenus()
 {
+   // Refreshes can occur during shutdown and the toolmanager may already
+   // be deleted, so protect against it.
+   if (!mToolManager) {
+      return;
+   }
+
    mCommandManager.Check(wxT("ShowControlTB"),
                         mToolManager->IsVisible(ControlBarID));
    mCommandManager.Check(wxT("ShowDeviceTB"),
@@ -1436,14 +1442,11 @@ void AudacityProject::ModifyToolbarMenus()
                          mToolManager->IsVisible(ToolsBarID));
    mCommandManager.Check(wxT("ShowTranscriptionTB"),
                          mToolManager->IsVisible(TranscriptionBarID));
-   mCommandManager.Check(wxT("StickyLabels"), mStickyFlag);                         
-   bool active;
-   gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"),&active, false);
-   mCommandManager.Check(wxT("SoundActivation"), active);
-   gPrefs->Read(wxT("/AudioIO/Duplex"),&active, true);
-   mCommandManager.Check(wxT("Duplex"), active);
-   gPrefs->Read(wxT("/AudioIO/SWPlaythrough"),&active, false);
-   mCommandManager.Check(wxT("SWPlaythrough"), active);
+
+   // Now, go through each toolbar, and call EnableDisableButtons()
+   for (int i = 0; i < ToolBarCount; i++) {
+      mToolManager->GetToolBar(i)->EnableDisableButtons();
+   }
 }
 
 void AudacityProject::UpdateMenus()
@@ -1484,11 +1487,15 @@ void AudacityProject::UpdateMenus()
 
    ModifyToolbarMenus();
 
-   // Now, go through each toolbar, and call EnableDisableButtons()
-   for( int i = 0; i < ToolBarCount; i++ )
-   {
-      mToolManager->GetToolBar( i )->EnableDisableButtons();
-   }
+   bool active;
+   gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"),&active, false);
+   mCommandManager.Check(wxT("SoundActivation"), active);
+   gPrefs->Read(wxT("/AudioIO/Duplex"),&active, true);
+   mCommandManager.Check(wxT("Duplex"), active);
+   gPrefs->Read(wxT("/AudioIO/SWPlaythrough"),&active, false);
+   mCommandManager.Check(wxT("SWPlaythrough"), active);
+
+   mCommandManager.Check(wxT("StickyLabels"), mStickyFlag);                         
 }
 
 //
