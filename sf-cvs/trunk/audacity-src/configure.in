@@ -543,9 +543,6 @@ esac
 
 dnl PortAudio configuration
 
-AC_DEFINE(USE_PORTAUDIO_V19, 1,
-   [Define if PortAudio v19 is being used (instead of v18)])
-
 LOCAL_LIBS="$LOCAL_LIBS portaudio-v19/lib/libportaudio.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
 CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/include $CXXFLAGS"
