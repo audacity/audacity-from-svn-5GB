@@ -648,113 +648,231 @@ msgstr "Nyquistによるプログラミング"
 msgid "Creating Nyquist Plug-ins"
 msgstr "Nyquistプラグインの作成"
 
-#: htdocs/help/nyquist.php:22
-#: help/nyquist.php:22
-msgid "<p>Beginning with version 1.1.1, Audacity allows you to use the Nyquist programming language to write your own plug-in effects for Audacity.  Unlike VST and LADSPA plug-ins, Nyquist plug-ins can be written using an ordinary text editor and don't need to be compiled.</p>\n"
-"\n"
-"<p>Nyquist was written by <a href=\"http://www-2.cs.cmu.edu/~rbd/\">Roger B. Dannenberg</a> and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging and more.  Audacity uses only a subset of Nyquist's functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn't include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project:</p>\n"
-"<ul>\n"
-"\t<li><a href=\"http://www-2.cs.cmu.edu/~music/music.software.html\">CMU Computer Music Project Software</a> - download the full Nyquist here</a></li>\n"
-"</ul>\n"
-"\n"
-"<p>To write plug-ins for use with Audacity, you will need the older <a href=\"http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html\">Nyquist version 2.37 Manual</a>, not the version 3 manual available from CMU. This is because in Nyquist version 3 the code notation has changed to SAL instead of LISP. We will investigate integrating SAL with the Audacity implementation of Nyquist in the future.</p>\n"
-"\n"
-"<p>Note that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity.  All of the instructions you need are below.</p>\n"
-"\n"
-"<h3>Lisp</h3>\n"
-"\n"
-"<p>Nyquist is based on Lisp.  If you have programmed in Lisp before, you can skim this section or go directly to the <a href=\"nyquist2\">next page</a>.  Otherwise, here's an extremely brief introduction to Lisp:</p>\n"
-"\n"
-"<p>In Lisp (and therefore Nyquist), everything is an S-Expression, which is just a list of tokens (words) separated by whitespace and enclosed in parentheses.  The name of the function is always the first token in an S-Expression, and all of the other tokens are arguments to this function.  Here's a simple example:</p>\n"
-"\n"
-"<pre>\n"
-"  (setf area (* 3.14159 (expt radius 2)))\n"
-"</pre>\n"
-"\n"
-"<p>Let's break down this example.  The outermost S-expression has three members.  The first one, <code>setf</code>, is the name of the function (it stands for set-field).  <code>setf</code> is used to assign a value to a variable.  (There are other similar functions, like <code>set</code> and <code>setq</code>, but <code>setf</code> is the most powerful, so it's the one we'll use in our examples.) After <code>setf</code> comes <code>area</code>, which is the name of the variable we're going to set.  Next comes the value to assign to this variable, which in this case is another S-expression.</p>\n"
-"\n"
-"<p>Lisp doesn't have any special operators for Math functions - they're all functions like everything else, using <i>prefix</i> notation, where the name of the function (or operator) come before its arguments.  So instead of 3*7 for the product of 3 and 7, in Lisp you would write (* 3 7).  In Nyquist, the <code>expt</code> (exponent) function raises its first argument to the power of the second argument.  Therefore <code>(* 3.14159 (expt radius 2))</code> means 3.14159 times the square of <code>radius</code>, or the formula for the area of a circle.</p>\n"
-"\n"
-"<p>Rather than typing in this full expression every time, let's define a function for the area of the circle, that we can call every time we need it:</p>\n"
-"\n"
-"<pre>\n"
-"  (defun circlearea (radius) (* 3.14159 (expt radius 2)))\n"
-"</pre>\n"
-"\n"
-"<p>The <code>defun</code> function is used to define a new function.  The first argument is the name of the function, in this case <code>circlearea</code>.  The second argument is a list of arguments to the function to be defined - this is one of the few cases where you have an S-expression that is not interpreted as a function call.  Finally the last expression is the value of the function.  Now if we want to compute the area of a circle of radius <code>r</code>, we just need to compute:</p>\n"
-"\n"
-"<pre>\n"
-"  (setf area (circlearea r))\n"
-"</pre>\n"
-"\n"
-"<p>An S-expression is just a representation of a list.  Lisp uses lists to represent just about everything (the name LISP comes from LISt Processing language), so it's helpful to know how to manipulate lists.  Let's start by assigning a list of numbers to a variable.  You can't quite do this:</p>\n"
-"\n"
-"<pre>\n"
-"  (setf mylist (1 2 3 4 5))  <font color=#cc0000><--  error!</font>\n"
-"</pre>\n"
-"\n"
-"<p>The reason this doesn't work is that whenever Nyquist sees an S-expression, it tries to evaluate it as a function unless you tell it otherwise.  Since there's no function named \"1\" that takes arguments <code>(2 3 4 5)</code>, this will generate an error.  To tell lisp that you want to treat an S-expression literally, and not to evaluate it as a function, you <i>quote</i> it.  In Nyquist, you can quote a list by putting a single quotation mark before it, like this:</p>\n"
-"\n"
-"<pre>\n"
-"  (setf mylist '(1 2 3 4 5))\n"
-"</pre>\n"
-"\n"
-"<p>Nyquist also provides a <code>list</code> function that you can use to construct lists - this is useful if some of the elements of the list are functions:</p>\n"
-"\n"
-"<pre>\n"
-"  (setf mylist (list 1 2 3 4 (sqrt 25)))\n"
-"</pre>\n"
-"\n"
-"<p>To get things off of a list, you can use the <code>first</code> and <code>rest</code> functions.  (Traditionally, these were called <code>car</code> and <code>cdr</code>, respectively, but <code>first</code> and <code>rest</code> are much easier to remember.  Both sets of names are supported in Nyquist.)  The output of <code>(first mylist)</code> is 1, and the output of <code>(rest mylist)</code> is the list <code>(2 3 4 5)</code>.  So the second element of the list is <code>(first (rest mylist))</code>.</p>\n"
-"\n"
-"<h3>Lisp function reference</h3>\n"
-"\n"
-"<p>Here's a list of some of the basic lisp functions you might need.  For a complete list of Lisp / Nyquist functions, see the <a href=\"http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html\">Nyquist version 2.37 Reference Manual</a>.</p>\n"
-"\n"
-"<p><b>Note: Symbols in Nyquist (like variable names and function names) are not case-sensitive.  They are converted to uppercase internally.</b></p>\n"
-"\n"
-"<h4>Math functions</h4>\n"
-"<table class=\"function-list\" summary=\"List of functions and explanations\">\n"
-"<tr><td><code>(+ a b)</code></td><td>addition</td></tr>\n"
-"<tr><td><code>(- a b)</code></td><td>subtraction</td></tr>\n"
-"<tr><td><code>(* a b)</code></td><td>multiplication</td></tr>\n"
-"<tr><td><code>(/ a b)</code></td><td>division</td></tr>\n"
-"<tr><td><code>(truncate a b)</code></td><td>round down to integer (floor)</td></tr>\n"
-"<tr><td><code>(float a b)</code></td><td>integer to floating-point</td></tr>\n"
-"<tr><td><code>(rem a b c ...)</code></td><td>remainder</td></tr>\n"
-"<tr><td><code>(min a b c ...)</code></td><td>minimum</td></tr>\n"
-"<tr><td><code>(max a b c ...)</code></td><td>maximum </td></tr>\n"
-"<tr><td><code>(abs a)</code></td><td>absolute value</td></tr>\n"
-"<tr><td><code>(random n)</code></td><td>random integer between 1 and n-1</td></tr>\n"
-"<tr><td><code>(sin a b)</code></td><td>sine</td></tr>\n"
-"<tr><td><code>(cos a b)</code></td><td>cosine</td></tr>\n"
-"<tr><td><code>(tan a b)</code></td><td>tangent</td></tr>\n"
-"<tr><td><code>(expt a b)</code></td><td>exponent (a to the power of b)</td></tr>\n"
-"<tr><td><code>(sqrt a b)</code></td><td>square root</td></tr>\n"
-"<tr><td><code>(< a b)</code></td><td>test for a less than b</td></tr>\n"
-"<tr><td><code>(<= a b)</code></td><td>test for a less than or equal to b</td></tr>\n"
-"<tr><td><code>(> a b)</code></td><td>test for a greater than b</td></tr>\n"
-"<tr><td><code>(>= a b)</code></td><td>test for a greater than or equal to b</td></tr>\n"
-"<tr><td><code>(= a b)</code></td><td>test for equality</td></tr>\n"
-"<tr><td><code>(/= a b)</code></td><td>test for inequality</td></tr>\n"
-"</table>\n"
-"<h4>List functions</h4>\n"
-"<table class=\"function-list\" summary=\"List of functions and explanations\">\n"
-"<tr><td><code>(first l)</code></td><td>first element of a list (car)</td></tr>\n"
-"<tr><td><code>(rest l)</code></td><td>rest of the list (cdr)</td></tr>\n"
-"<tr><td><code>(reverse l)</code></td><td>reverse a list</td></tr>\n"
-"<tr><td><code>(list a b ...)</code></td><td>construct a list</td></tr>\n"
-"<tr><td><code>(append l1 l2)</code></td><td>append two lists</td></tr>\n"
-"<tr><td><code>(length l)</code></td><td>length of a list</td></tr>\n"
-"<tr><td><code>(maplist function l)</code></td><td>apply a function to every element in a list</td></tr>\n"
-"</table>\n"
-"\n"
-"<h4>Control</h4>\n"
-"<table class=\"function-list\" summary=\"List of functions and explanations\">\n"
-"<tr><td><code>(if expr expr1 expr2)</code></td><td>if expr is true, evaluates expr1, otherwise evaluates expr2</td></tr>\n"
-"</table>\n"
-"\n"
-"<h3><a href=\"nyquist2\">Next: Programming in Nyquist</a></h3>"
+#: help/nyquist.php:24
+msgid "Beginning with version 1.1.1, Audacity allows you to use the Nyquist programming language to write your own plug-in effects for Audacity.  Unlike VST and LADSPA plug-ins, Nyquist plug-ins can be written using an ordinary text editor and don't need to be compiled."
+msgstr ""
+
+#. i18n-hint: All the %s sequences become HTML tags to make the name
+#. "Roger B. Dannenberg" into a link to his home page. So we need the same %s
+#. in the translated strings for it to work, but there will be no visible text
+#. inserted in those places.
+#: help/nyquist.php:29
+#, php-format
+msgid "%sNyquist was written by %sRoger B. Dannenberg%s and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging and more.  Audacity uses only a subset of Nyquist's functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn't include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project: %sCMU Computer Music Project Software%s - download the full Nyquist here%s"
+msgstr ""
+
+#: help/nyquist.php:34
+#, php-format
+msgid "%sTo write plug-ins for use with Audacity, you will need the older %sNyquist version 2.37 Manual%s, not the version 3 manual available from CMU. This is because in Nyquist version 3 the code notation has changed to SAL instead of LISP. We will investigate integrating SAL with the Audacity implementation of Nyquist in the future."
+msgstr ""
+
+#: help/nyquist.php:36
+msgid "Note that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity.  All of the instructions you need are below."
+msgstr ""
+
+#: help/nyquist.php:39
+msgid "Lisp"
+msgstr ""
+
+#: help/nyquist.php:40
+#, php-format
+msgid "%sNyquist is based on Lisp.  If you have programmed in Lisp before, you can skim this section or go directly to the %snext page%s.  Otherwise, here's an extremely brief introduction to Lisp:"
+msgstr ""
+
+#: help/nyquist.php:41
+msgid "In Lisp (and therefore Nyquist), everything is an S-Expression, which is just a list of tokens (words) separated by whitespace and enclosed in parentheses.  The name of the function is always the first token in an S-Expression, and all of the other tokens are arguments to this function.  Here's a simple example:"
+msgstr ""
+
+#: help/nyquist.php:53
+#, php-format
+msgid "%sLet's break down this example.  The outermost S-expression has three members.  The first one, %s, is the name of the function (it stands for set-field).  %s is used to assign a value to a variable.  (There are other similar functions, like %s and %s, but %s is the most powerful, so it's the one we'll use in our examples.) After %s comes %s, which is the name of the variable we're going to set.  Next comes the value to assign to this variable, which in this case is another S-expression.%s"
+msgstr ""
+
+#: help/nyquist.php:57
+#, php-format
+msgid "%sLisp doesn't have any special operators for Math functions - they're all functions like everything else, using%s prefix %snotation, where the name of the function (or operator) comes before its arguments.  So instead of 3*7 for the product of 3 and 7, in Lisp you would write (* 3 7).  In Nyquist, the %s (exponent) function raises its first argument to the power of the second argument.  Therefore %s means 3.14159 times the square of %s, or the formula for the area of a circle.%s"
+msgstr ""
+
+#: help/nyquist.php:61
+msgid "Rather than typing in this full expression every time, let's define a function for the area of the circle, that we can call every time we need it:"
+msgstr ""
+
+#: help/nyquist.php:65
+#, php-format
+msgid "%sThe %s function is used to define a new function.  The first argument is the name of the function, in this case %s.  The second argument is a list of arguments to the function to be defined - this is one of the few cases where you have an S-expression that is not interpreted as a function call.  Finally the last expression is the value of the function.  Now if we want to compute the area of a circle of radius <code>r</code>, we just need to compute:%s"
+msgstr ""
+
+#: help/nyquist.php:72
+msgid "An S-expression is just a representation of a list.  Lisp uses lists to represent just about everything (the name LISP comes from LISt Processing language), so it's helpful to know how to manipulate lists.  Let's start by assigning a list of numbers to a variable.  You can't quite do this:"
+msgstr ""
+
+#: help/nyquist.php:78
+#, php-format
+msgid "%sThe reason this doesn't work is that whenever Nyquist sees an S-expression, it tries to evaluate it as a function unless you tell it otherwise.  Since there's no function named \"1\" that takes arguments %s, this will generate an error.  To tell Lisp that you want to treat an S-expression literally, and not to evaluate it as a function, you %squote%s it.  In Nyquist, you can quote a list by putting a single quotation mark before it, like this:%s"
+msgstr ""
+
+#: help/nyquist.php:84
+#, php-format
+msgid "%sNyquist also provides a %s function that you can use to construct lists - this is useful if some of the elements of the list are functions:%s"
+msgstr ""
+
+#: help/nyquist.php:90
+#, php-format
+msgid "%sTo get things off of a list, you can use the %s and %s functions. (Traditionally, these were called %s and %s, respectively, but %s and %s are much easier to remember.  Both sets of names are supported in Nyquist.)  The output of %s is 1, and the output of %s is the list %s.  So the second element of the list is %s."
+msgstr ""
+
+#: help/nyquist.php:96
+msgid "Lisp function reference"
+msgstr ""
+
+#: help/nyquist.php:97
+#, php-format
+msgid "%sHere's a list of some of the basic lisp functions you might need.  For a complete list of Lisp / Nyquist functions, see the %sNyquist version 2.37 Reference Manual%s.%s"
+msgstr ""
+
+#: help/nyquist.php:100
+msgid "Note: Symbols in Nyquist (like variable names and function names) are not case-sensitive.  They are converted to uppercase internally."
+msgstr ""
+
+#: help/nyquist.php:102
+msgid "Math functions"
+msgstr ""
+
+#. i18n-hint: This is the summary of a table - so not really a sentance
+#: help/nyquist.php:105 help/nyquist.php:132 help/nyquist.php:143
+msgid "List of functions and explanations"
+msgstr ""
+
+#: help/nyquist.php:106
+msgid "addition"
+msgstr ""
+
+#: help/nyquist.php:107
+msgid "subtraction"
+msgstr ""
+
+#: help/nyquist.php:108
+msgid "multiplication"
+msgstr ""
+
+#: help/nyquist.php:109
+msgid "division"
+msgstr ""
+
+#: help/nyquist.php:110
+msgid "round down to integer (floor)"
+msgstr ""
+
+#: help/nyquist.php:111
+msgid "integer to floating-point"
+msgstr ""
+
+#: help/nyquist.php:112
+msgid "remainder"
+msgstr ""
+
+#: help/nyquist.php:113
+msgid "minimum"
+msgstr ""
+
+#: help/nyquist.php:114
+msgid "maximum"
+msgstr ""
+
+#: help/nyquist.php:115
+msgid "absolute value"
+msgstr ""
+
+#: help/nyquist.php:116
+msgid "random integer between 1 and n-1"
+msgstr ""
+
+#: help/nyquist.php:117
+msgid "sine"
+msgstr ""
+
+#: help/nyquist.php:118
+msgid "cosine"
+msgstr ""
+
+#: help/nyquist.php:119
+msgid "tangent"
+msgstr ""
+
+#: help/nyquist.php:120
+msgid "exponent (a to the power of b)"
+msgstr ""
+
+#: help/nyquist.php:121
+msgid "square root"
+msgstr ""
+
+#: help/nyquist.php:122
+msgid "test for a less than b"
+msgstr ""
+
+#: help/nyquist.php:123
+msgid "test for a less than or equal to b"
+msgstr ""
+
+#: help/nyquist.php:124
+msgid "test for a greater than b"
+msgstr ""
+
+#: help/nyquist.php:125
+msgid "test for a greater than or equal to b"
+msgstr ""
+
+#: help/nyquist.php:126
+msgid "test for equality"
+msgstr ""
+
+#: help/nyquist.php:127
+msgid "test for inequality"
+msgstr ""
+
+#: help/nyquist.php:130
+msgid "List functions"
+msgstr ""
+
+#: help/nyquist.php:133
+msgid "first element of a list (car)"
+msgstr ""
+
+#: help/nyquist.php:134
+msgid "rest of the list (cdr)"
+msgstr ""
+
+#: help/nyquist.php:135
+msgid "reverse a list"
+msgstr ""
+
+#: help/nyquist.php:136
+msgid "construct a list"
+msgstr ""
+
+#: help/nyquist.php:137
+msgid "append two lists"
+msgstr ""
+
+#: help/nyquist.php:138
+msgid "length of a list"
+msgstr ""
+
+#: help/nyquist.php:139
+msgid "apply a function to every element in a list"
+msgstr ""
+
+#: help/nyquist.php:141
+msgid "Control"
+msgstr ""
+
+#: help/nyquist.php:144
+msgid "if expr is true, evaluates expr1, otherwise evaluates expr2"
+msgstr ""
+
+#: help/nyquist.php:146
+msgid "Next: Programming in Nyquist"
 msgstr ""
 
 #: help/index.php:9
@@ -787,443 +905,329 @@ msgstr ""
 msgid "<p><b>Still need help?</b> Please <a href=\"../contact/\">contact us</a>.</p>"
 msgstr ""
 
-#: help/nyquist2.php:22
-#, fuzzy
-msgid "<p>What makes Nyquist distinct from Lisp is that it is designed to work with sound, and has lots of built-in primitives and functions that synthesize, analyze, and manipulate sounds.  Within Audacity, this makes it relatively easy to build complicated effects out of Nyquist's palette of built-in functions.</p>\n"
-"\n"
-"<p>In Nyquist, a variable can hold a sound just as easily as it can hold a number or a string.  There are a lot of functions provided that allow you to stretch, distort, and combine sounds very efficiently.  It is even possible to \"rip apart\" a sound and access its individual samples, but that's beyond the scope of this tutorial.</p>\n"
-"\n"
-"<p>To try out a Nyquist expression in Audacity, you can use \"Nyquist Prompt\" in the Effect menu.  Whatever audio you have selected will be in the variable <code>s</code>, and the selection will be replaced with the result of the Nyquist expression you enter.  In Part 3, you will learn how to create a plug-in effect using Nyquist.</p>\n"
-"\n"
-"<h3>Synthesizing</h3>\n"
-"\n"
-"<p>The following functions all create new sounds.  You can use them to create \"generate\" plug-in effects, or you can combine these synthesized sounds with selected audio to produce interesting effects.</p>\n"
-"\n"
-"<table class=\"function-list\" class=\"function-list\">\n"
-"<tr>\n"
-"<td>(noise)</td>\n"
-"<td>Generates white noise</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(const value [duration])</td>\n"
-"<td>Generates a constant (silent) signal</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(sine pitch [duration])</td>\n"
-"<td>Generates a sine wave at an indicated pitch and duration.<br>\n"
-"    The pitch is a MIDI note number, with 60 for middle C.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(hzosc hz)</td>\n"
-"<td>Generates a sine wave at a particular frequency in Hz.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(osc-saw hz)</td>\n"
-"<td>Generates a sawtooth wave at a particular frequency in Hz.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(osc-tri hz)</td>\n"
-"<td>Generates a triangle wave at a particular frequency in Hz.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(osc-pulse hz bias)</td>\n"
-"<td>Generates a square pulse with variable width at the indicated\n"
-"    frequency (in Hertz). The bias parameter controls the pulse width \n"
-"    and should be between -1 and +1, giving a pulse width from 0%\n"
-"    (always at -1) to 100% (always at +1). When bias is zero,\n"
-"    a square wave is generated.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(pluck pitch)</td>\n"
-"<td>Generates a sound at the given pitch created using a\n"
-"    modified Karplus-Strong plucked string algorithm.</td>\n"
-"</tr>\n"
-"\n"
-"</table>\n"
-"\n"
-"<p>\n"
-"<b>Envelopes</b>\n"
-"</p>\n"
-"\n"
-"<p>Nyquist has support for envelopes.  By applying an envelope to a sound, you can control the overall shape of its amplitude.  One of the easiest ways to construct an envelope is with the <code>env</code> function, which takes 7 parameters that are commonly used for shaping synthesized musical notes: attack time, decay time, release time, attack level, decay level, sustain level, and overall duration.  See the figure below:</p>\n"
-"\n"
-"<p><img alt=\"Nyquist envelope diagram.\" src=\"../images/nyquist-envelope\" width=\"467\" height=\"200\"></p>\n"
-"\n"
-"<p>To apply an envelope to a sound, just use the <code>mult</code> function.  So if <code>s</code> is a sound, then this is the sound with a simple envelope applied to it:</p>\n"
-"\n"
-"<pre>\n"
-"  (mult s (env 0.1 0.1 0.2 1.0 0.5 0.3 1.0))\n"
-"</pre>\n"
-"\n"
-"<p>One of the most general type of envelope is a piece-wise linear function, which can be constructed with the <code>pwl</code> function.  The pwl function takes a list of parameters which denote (time, value) pairs. There is an implicit initial (time, value) pair of (0, 0), and an implicit final value of 0. There should always be an odd number of parameters, since the final time is not implicit.  For example:</p>\n"
-"\n"
-"<pre>\n"
-"  ; symmetric rise to 0.7 (at time 1) and fall back to 0 (at time 2):\n"
-"  (pwl 1.0 0.7 2.0)\n"
-"</pre>\n"
-"\n"
-"<h3>Combining sounds</h3>\n"
-"\n"
-"<p>Besides multiplying two sounds with the <code>mult</code> function, you can add two sounds (or envelopes) with the <code>add</code> function.</p>\n"
-"\n"
-"<h3>Filters</h3>\n"
-"\n"
-"<p>Nyquist comes with a number of common filters built-in.  Here are some of the more common ones:</p>\n"
-"\n"
-"<table class=\"function-list\">\n"
-"\n"
-"<tr>\n"
-"<td>(lp sound cutoff)</td>\n"
-"<td>Low-pass filter (first-order Butterworth). Cutoff may be a float or a signal (for time-varying filtering) and expresses hertz.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(hp sound cutoff)</td>\n"
-"<td>High-pass filter (first-order Butterworth). Cutoff may be a float or a signal (for time-varying filtering) and expresses hertz.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(comb sound hz decay)</td>\n"
-"<td>Applies a comb filter to sound, which emphasizes\n"
-"    (resonates at) frequencies that are multiples of a hz.\n"
-"</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(alpass sound decay hz)</td>\n"
-"<td>All-pass filter, creating a delay effect without the resonances\n"
-"    of a comb filter.  </td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(notch2 sound hz)</td>\n"
-"<td>Second-order notch filter centered at a frequency of hz.</td>\n"
-"</tr>\n"
-"\n"
-"</table>\n"
-"\n"
-"<h3>Transforming and combining sounds</h3>\n"
-"\n"
-"<p>It is beyond the scope of this introductory tutorial to explain all of the ways that a sound can be transformed in Nyquist.  These functions do not modify sounds directly, but instead modify the Nyquist <em>environment</em>.  In order for these changes to affect sounds, you must use the <code>cue</code> function.</p>\n"
-"\n"
-"<table class=\"function-list\">\n"
-"\n"
-"<tr>\n"
-"<td>(stretch factor (cue sound))</td>\n"
-"<td>Changes the length of the sound being cued by the given factor.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(scale factor (cue sound))</td>\n"
-"<td>Scales the amplitude of the sound being cued by the given factor.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(loud dB (cue sound))</td>\n"
-"<td>Increases or decreases the volume of the sound being cued by the<br>\n"
-"    given number of decibels.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(at t (cue sound))</td>\n"
-"<td>Starts the given sound at a particular time in seconds.<br>\n"
-"    This can't be used to add silence at the beginning or end,<br>\n"
-"    but it can be used when combining two or more sounds.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(seq (cue s1) (cue s2))</td>\n"
-"<td>Creates a sequence of sound s1 followed by sound s2.</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(sim (cue s1) (cue s2))</td>\n"
-"<td>Combines two sounds so that they are played simultaneously.\n"
-"</tr>\n"
-"\n"
-"</table>\n"
-"\n"
-"<h3><a href=\"nyquist3\">Next: Creating Nyquist Plug-Ins</a></h3>"
-msgstr "<p>NyquistがLispと異なっている点は、Nyquistはサウンドの作業に特化されているということです。だから、サウンドを生成したり、解析したり、操作したりするためのたくさんのビルトイン・プリミッティブや関数が用意されています。Audacityの中では、Nyquistの内蔵関数を使ってエフェクトを組み立てることが簡単にできます。</p>\n"
-"\n"
-"<p>Nyquistでは、変数が数値や文字列を保持するのと同じぐらい簡単に、変数がサウンドを保持しています。サウンドをとても効率的に引き伸ばしたり、歪ませたり、結合させたりする関数が多く用意されています。 サウンドを \"rip apart\"することや個々のサンプルにアクセスすることさえ可能です。しかし、それはこのチュートリアルの範囲を超えています。</p>\n"
-"\n"
-"<p>Nyquistの式をAudacityで試行するには、エフェクトメニューの中にある「Nyquistプロンプト」を使います。あなたが選択したオーディオは、<code>s</code>という変数に内蔵されています。そして、選択範囲はあなたが入力したNyquist式の結果と置き換わるでしょう。パート3では、Nyquistを使ってプラグインエフェクトを生成する方法を学びます。</p>\n"
-"\n"
-"<h3>シンセサイジング</h3>\n"
-"\n"
-"<p>次の関数はすべて新しいサウンドを生成します。あなたは「生成」プラグインエフェクトを作成するのに使うことができます。また、あなたはこれらの生成されたサウンドを、面白いエフェクトを生み出すために選択されたオーディオに結合することができます。</p>\n"
-"\n"
-"<table class=\"function-list\" class=\"function-list\">\n"
-"<tr>\n"
-"<td>(noise)</td>\n"
-"<td>ホワイトノイズを生成します</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(const value [duration])</td>\n"
-"<td>一定の(静寂)信号を生成します</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(sine pitch [duration])</td>\n"
-"<td>指定されたピッチと長さのサイン波(sine wave)を生成します。.<br>\n"
-"    ピッチはMIDIノート番号であり、60が真ん中のドとなっています。</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(hzosc hz)</td>\n"
-"<td>特定の周波数[Hz]のサイン波(sine wave)を生成します。</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(osc-saw hz)</td>\n"
-"<td>特定の周波数[Hz]のノコギリ波(sawtooth wave)を生成します。</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(osc-tri hz)</td>\n"
-"<td>特定の周波数[Hz]の三角波(triangle wave)を生成します。</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(osc-pulse hz bias)</td>\n"
-"<td>指定された周波数[Hz]の可変幅の方形パルス波を生成します。\n"
-"    biasパラメータはパルスの幅をコントロールするものであり、\n"
-"    -1から+1の間の値でなければなりません。パルスの幅は-1で0％、\n"
-"    +1で100％となります。biasの値が0のとき、\n"
-"    方形波(square wave)が生成されます。</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(pluck pitch)</td>\n"
-"<td>弦をつまびくアルゴリズムを採用した音を、\n"
-"    与えられたピッチで生成します。</td>\n"
-"</tr>\n"
-"\n"
-"</table>\n"
-"\n"
-"<p>\n"
-"<b>エンベロープ</b>\n"
-"</p>\n"
-"\n"
-"<p>Nyquistはエンベロープをサポートしています。サウンドにエンベロープを適用することによって、あなたは全長に渡って振幅をコントロールすることができます。エンベロープを構築する最も簡単な方法は、<code>env</code>関数を使うことです。それは合成された音楽の音を形成するために共通に使われる、7つの引数をとります。すなわちアタックタイム、ディケイタイム、リリースタイム、アタックレベル、ディケイレベル、サスティンレベル、そして全長です。下の図を見てください：</p>\n"
-"\n"
-"<p><img alt=\"Nyquist envelope diagram.\" src=\"../images/nyquist-envelope\" width=\"467\" height=\"200\"></p>\n"
-"\n"
-"<p>サウンドにエンベロープを適用するには、<code>mult</code>関数を使います。もし<code>s</code>がサウンドならば、これはシンプルなエンベロープが適用されたサウンドとなります：</p>\n"
-"\n"
-"<pre>\n"
-"  (mult s (env 0.1 0.1 0.2 1.0 0.5 0.3 1.0))\n"
-"</pre>\n"
-"\n"
-"<p>最も一般的なタイプのエンベロープのひとつは、ピースワイズ(piece-wise)リニア関数です。 それは、<code>pwl</code>関数で生成することができます。pwl関数は、(タイム, 値)のペアで示される引数のリストをとります。引数には暗黙の初期値があり、(タイム, 値)のペアは、(0, 0)となります。最後の値は暗黙の0となります。最後のタイムは暗黙ではないため、常に奇数個の引数をもたなければなりません。例えば：</p>\n"
-"\n"
-"<pre>\n"
-"  ; symmetric rise to 0.7 (at time 1) and fall back to 0 (at time 2):\n"
-"  (pwl 1.0 0.7 2.0)\n"
-"</pre>\n"
-"\n"
-"<h3>サウンドの結合</h3>\n"
-"\n"
-"<p><code>mult</code>関数を使って2つのサウンドを掛け合わせることができ、<code>add</code>関数を使って2つのサウンド(又はエンベロープ)を足し合わせることができます。</p>\n"
-"\n"
-"<h3>フィルター</h3>\n"
-"\n"
-"<p>Nyquistは一般的なの内蔵フィルターを用意しています。ここによく使うフィルターを紹介します：</p>\n"
-"\n"
-"<table class=\"function-list\">\n"
-"\n"
-"<tr>\n"
-"<td>(lp sound cutoff)</td>\n"
-"<td>ローパスフィルター(1次のバターワースフィルタ)。 Cutoffは浮動小数点か信号(for time-varying filtering)で、[Hz]で表します。</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(hp sound cutoff)</td>\n"
-"<td>ハイパスフィルター(1次のバターワースフィルタ)。 Cutoffは浮動小数点か信号(for time-varying filtering)で、[Hz]で表します。</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(comb sound hz decay)</td>\n"
-"<td>コンブフィルタをサウンドに適用します。周波数[Hz]の倍音成分を強調します。\n"
-"    \n"
-"</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(alpass sound decay hz)</td>\n"
-"<td>オールパスフィルター。コンブフィルターのレゾナンス効果なしにディレイエフェクトを生成します。\n"
-"    </td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(notch2 sound hz)</td>\n"
-"<td>周波数[Hz]を中心とする2次のノッチフィルター。</td>\n"
-"</tr>\n"
-"\n"
-"</table>\n"
-"\n"
-"<h3>サウンドの変形と結合</h3>\n"
-"\n"
-"<p>Nyquistでサウンドを変化させる方法のすべてを説明することは、この紹介的なチュートリアルの範囲を超えています。これらの関数はサウンドを直接変化させることはありませんが、Nyquistの<em>環境</em>を変化させます。これらの変更がサウンドに影響を与えるようにするには、<code>cue</code>関数を使わなければなりません。</p>\n"
-"\n"
-"<table class=\"function-list\">\n"
-"\n"
-"<tr>\n"
-"<td>(stretch factor (cue sound))</td>\n"
-"<td>サウンドの長さを、与えられたfactorによってキューされた長さになるように変更します。</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(scale factor (cue sound))</td>\n"
-"<td>サウンドの振幅を、与えられたfactorによってキューされた振幅になるように増幅します。</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(loud dB (cue sound))</td>\n"
-"<td>サウンドのボリュームを、与えられたデシベル数によってキューされた量だけ増加又は減少させます。<br>\n"
-"    </td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(at t (cue sound))</td>\n"
-"<td>与えられたサウンドを、特定のタイムで開始します。<br>\n"
-"    これは無音を最初や最後に追加するのに使うのではありません。<br>\n"
-"    2つかそれ以上のサウンドを結合するときに使うのです。</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(seq (cue s1) (cue s2))</td>\n"
-"<td>サウンドs2についていくサウンドs1のシーケンスを生成します。</td>\n"
-"</tr>\n"
-"\n"
-"<tr>\n"
-"<td>(sim (cue s1) (cue s2))</td>\n"
-"<td>2つのサウンドが同時に再生されるように結合します。\n"
-"</tr>\n"
-"\n"
-"</table>\n"
-"\n"
-"<h3><a href=\"nyquist3\">次：Nyquistプラグインの作成</a></h3>"
+#: help/nyquist2.php:23
+msgid "What makes Nyquist distinct from Lisp is that it is designed to work with sound, and has lots of built-in primitives and functions that synthesize, analyze, and manipulate sounds.  Within Audacity, this makes it relatively easy to build complicated effects out of Nyquist's palette of built-in functions."
+msgstr ""
 
-#: help/nyquist3.php:22
-msgid "<p>Creating a plug-in for Audacity using Nyquist is as simple as creating a text file with the extension \".ny\" with some Nyquist code, adding a few comments to indicate the type of plug-in, and placing the file in Audacity's <code>plug-ins</code> directory.  Here's a very simple plug-in as an example:</p>\n"
-"\n"
-"<pre>\n"
-"  ;nyquist plug-in\n"
-"  ;version 1\n"
-"  ;type process\n"
-"  ;name \"Fade In\"\n"
-"  ;action \"Fading In...\"\n"
-"  (mult (ramp) s)\n"
-"</pre>\n"
-"\n"
-"<p>The first two lines of a Nyquist plug-in must be exactly as in the example above, or Audacity will not load it.  (The version number is to support future expansions of the plug-in format.) The next line is the type of plug-in, which is discussed below.  Then comes the name of the plug-in, which is what is displayed in the menu bar, and then the \"action\", which is what Audacity displays while it is busy processing the plug-in.  There are other optional lines that may follow.  Any line that does not begin with a semicolon (;) is assumed to contain Nyquist code and will be executed.</p>\n"
-"\n"
-"<p>Audacity has support for three types of plug-ins that can be written in Nyquist:</p>\n"
-"\n"
-"<pre>\n"
-"  ;type generate\n"
-"  ;type process\n"
-"  ;type analyze\n"
-"</pre>\n"
-"\n"
-"<p>These correspond to the three menus that can contain plug-ins: Generate, Effect, and Analyze.  Generate plug-ins are expected to generate new audio from scratch, Effect plug-ins (\"process\") modify existing audio in-place, and Analyze plug-ins process audio but do not modify it (though they are allowed to add labels).</p>\n"
-"\n"
-"<p>For Effect and Analyze plug-ins, Audacity sets up the Nyquist environment so that the audio the user has selected is in the variable <code>s</code>.  All of the expressions in the plug-in file are executed in order, and the return value of the last expression is substituted for the selection in Audacity.  If the last expression does not return audio, Audacity returns an error.</p>\n"
-"\n"
-"<h3>Parameter dialogs</h3>\n"
-"\n"
-"<p>Audacity has limited support for plug-ins showing a dialog to get parameters from the user.  Here is an example of a plug-in that opens a dialog:</p>\n"
-"\n"
-"<pre>\n"
-"  ;nyquist plug-in\n"
-"  ;version 1\n"
-"  ;type process\n"
-"  ;name \"Delay...\"\n"
-"  ;action \"Performing Delay Effect...\"\n"
-"  ;info \"Demo effect for Nyquist by Roger Dannenberg.\\n"
-"This effect \n"
-"     creates a fixed number of echos.\"  ; (should be all on one line)\n"
-"  ;control decay \"Decay amount\" int \"dB\" 6 0 24\n"
-"  ;control delay \"Delay time\" real \"seconds\" 0.5 0.0 5.0\n"
-"  ;control count \"Number of echos\" int \"times\" 5 1 30\n"
-"\n"
-"  (defun delays (s decay delay count)\n"
-"    (if (= count 0) (cue s)\n"
-"\t   (sim (cue s)\n"
-"        (loud decay (at delay (delays s decay delay (- count 1)))))))\n"
-"  (stretch-abs 1 (delays s (- 0 decay) delay count))\n"
-"</pre>\n"
-"\n"
-"<p>If Audacity finds at least one \"control\" line, it will open a dialog to prompt the user for certain parameters to the plug-in.  Each parameter consists of a text box and a slider, and after the user has entered each one, the final value will be stored in a Nyquist variable with a name that you specify on the \"control\" line.  Here's what the dialog for the Delay effect shown above looks like in Audacity for Linux:</p>\n"
-"\n"
-"<p><img alt=\"Nyquist plugin screenshot\" src=\"../images/nyquist-plugin-screenshot\" width=\"414\" height=\"221\"></p>\n"
-"\n"
-"<p>Note that the \"info\" line is displayed at the top of the dialog, and that the \"\\n"
-"\" becomes a newline.  The parameters to the \"control\" line affect the appearance and limitations of the parameter.  Each \"control\" line must consist of exactly the following 8 elements, in order:</p>\n"
-"\n"
-"<ol>\n"
-"\t<li>The word \"control\"</li>\n"
-"\t<li>The name of the control - this is the name of the Nyquist variable that will get set when the user manipulates the dialog.</li>\n"
-"\t<li>The label to the left of the control</li>\n"
-"\t<li>The type of value: either <code>int</code> (integer) or <code>real</code>.</li>\n"
-"\t<li>The label to the right of the value (usually the units like \"Hz\" or \"dB\").</li>\n"
-"\t<li>The default/initial value of the parameter</li>\n"
-"\t<li>The minimum value of the parameter</li>\n"
-"\t<li>The maximum value of the parameter</li>\n"
-"</ol>\n"
-"\n"
-"<h3>Returning labels</h3>\n"
-"\n"
-"<p>Instead of returning audio, a Nyquist plug-in can instead return a list of labels.  A list of labels is simply a list of time/label pairs, for example:</p>\n"
-"\n"
-"<pre>\n"
-"  ((0.0 \"start\") (30.0 \"middle\") (60.0 \"end\"))\n"
-"</pre>\n"
-"\n"
-"<p>When a plug-in returns a list of exactly this form, Audacity will create a new label track and add the labels at those positions.  This style of plug-in is usually of type \"analyze\".</p>\n"
-"\n"
-"<p>New!  Beginning with Audacity version 1.3.1, you can now optionally return both a start and an end time, like this:</p>\n"
-"\n"
-"<pre>\n"
-"  ((0.0 25.0 \"start\") (30.0 45.0 \"middle\") (60.0 75.0 \"end\"))\n"
-"</pre>\n"
-"\n"
-"<p>Note that labels are allowed to overlap in Audacity 1.3; the end time of one can be after the start time of the next.</p>\n"
-"\n"
-"<h3>Processing stereo tracks</h3>\n"
-"\n"
-"<p>Nyquist represents stereo tracks as an array of sounds (not a list).  Many Nyquist functions automatically work with these arrays, but not all, so sometimes you may find it necessary to split up a stereo array, or reassemble one.  Here are some useful functions:</p>\n"
-"\n"
-"<table class=\"function-list\">\n"
-"<tr><td><code>(arrayp s)</code></td><td>returns true if <code>s</code> is an array</td></tr>\n"
-"<tr><td><code>(aref s 0)</code></td><td>the first element in array <code>s</code> - the left channel</td></tr>\n"
-"<tr><td><code>(aref s 1)</code></td><td>the second element in array <code>s</code> - the right channel</td></tr>\n"
-"<tr><td><code>(setf s (make-array 2))</code></td><td>makes <code>s</code> into a new array of length 2</td></tr>\n"
-"<tr><td><code>(setf (aref s 0) left)</code></td><td>makes <code>left</code> the first element of array <code>s</code></td></tr>\n"
-"<tr><td><code>(setf (aref s 1) right)</code></td><td>makes <code>right</code> the second element of array <code>s</code></td></tr>\n"
-"</table>\n"
-"\n"
-"<p>As a convenience, if the input to your Nyquist plug-in is stereo, but you only output a single (mono) sound, Audacity will automatically copy it to both the left and right channels.</p>\n"
-"\n"
-"<h3>Where to go from here</h3>\n"
-"\n"
-"<p>Audacity comes with some sample plug-ins that you can examine or modify as a starting point.  The best way to learn Nyquist is to try it.  If you're having trouble debugging, consider downloading the standalone version of Nyquist (see the link in Part 1).</p>\n"
-"\n"
-"<p>If you're having trouble getting Nyquist to work at all, please <a href=\"../contact/\">contact us</a>.</p>\n"
-"\n"
-"<p>If you are working on Nyquist plug-in effects and would like to share them with others, or if you would like to discuss general details of how to achieve certain effects in Nyquist, please join the <a href=\"../contact/lists#nyquist\">audacity-nyquist mailing list</a>.</p>\n"
-"\n"
-"<p>Don't forget to consult the full <a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Nyquist Reference Manual</a> for more details of how Nyquist works.</p>"
+#: help/nyquist2.php:24
+msgid "In Nyquist, a variable can hold a sound just as easily as it can hold a number or a string.  There are a lot of functions provided that allow you to stretch, distort, and combine sounds very efficiently.  It is even possible to \"rip apart\" a sound and access its individual samples, but that's beyond the scope of this tutorial."
+msgstr ""
+
+#: help/nyquist2.php:25
+#, php-format
+msgid "%sTo try out a Nyquist expression in Audacity, you can use \"Nyquist Prompt\" in the Effect menu.  Whatever audio you have selected will be in the variable %s, and the selection will be replaced with the result of the Nyquist expression you enter.  In Part 3, you will learn how to create a plug-in effect using Nyquist.%s"
+msgstr ""
+
+#: help/nyquist2.php:27
+msgid "Synthesizing"
+msgstr ""
+
+#: help/nyquist2.php:29
+msgid "The following functions all create new sounds.  You can use them to create \"generate\" plug-in effects, or you can combine these synthesized sounds with selected audio to produce interesting effects."
+msgstr ""
+
+#: help/nyquist2.php:33
+msgid "Generates white noise"
+msgstr ""
+
+#: help/nyquist2.php:34
+msgid "Generates a constant (silent) signal"
+msgstr ""
+
+#: help/nyquist2.php:35
+msgid "Generates a sine wave at an indicated pitch and duration."
+msgstr ""
+
+#: help/nyquist2.php:35
+msgid "The pitch is a MIDI note number, with 60 for middle C."
+msgstr ""
+
+#: help/nyquist2.php:36
+msgid "Generates a sine wave at a particular frequency in Hz."
+msgstr ""
+
+#: help/nyquist2.php:37
+msgid "Generates a sawtooth wave at a particular frequency in Hz."
+msgstr ""
+
+#: help/nyquist2.php:38
+msgid "Generates a triangle wave at a particular frequency in Hz."
+msgstr ""
+
+#: help/nyquist2.php:39
+msgid "Generates a square pulse with variable width at the indicated frequency (in Hertz). The bias parameter controls the pulse width and should be between -1 and +1, giving a pulse width from 0% (always at -1) to 100% (always at +1). When bias is zero, a square wave is generated."
+msgstr ""
+
+#: help/nyquist2.php:40
+msgid "Generates a sound at the given pitch created using a modified Karplus-Strong plucked string algorithm."
+msgstr ""
+
+#: help/nyquist2.php:43
+msgid "Envelopes"
+msgstr ""
+
+#: help/nyquist2.php:44
+#, php-format
+msgid "%sNyquist has support for envelopes.  By applying an envelope to a sound, you can control the overall shape of its amplitude.  One of the easiest ways to construct an envelope is with the %s function, which takes 7 parameters that are commonly used for shaping synthesized musical notes: attack time, decay time, release time, attack level, decay level, sustain level, and overall duration."
+msgstr ""
+
+#: help/nyquist2.php:45
+#, php-format
+msgid "See the figure below:"
+msgstr ""
+
+#: help/nyquist2.php:49
+msgid "Nyquist envelope diagram."
+msgstr ""
+
+#: help/nyquist2.php:50
+#, php-format
+msgid "%sTo apply an envelope to a sound, just use the %s function.  So if %s is a sound, then this is the sound with a simple envelope applied to it:%s"
+msgstr ""
+
+#: help/nyquist2.php:56
+#, php-format
+msgid "%sOne of the most general type of envelope is a piece-wise linear function, which can be constructed with the %s function.  The pwl function takes a list of parameters which denote (time, value) pairs. There is an implicit initial (time, value) pair of (0, 0), and an implicit final value of 0. There should always be an odd number of parameters, since the final time is not implicit.  For example:"
+msgstr ""
+
+#: help/nyquist2.php:63
+msgid "Combining sounds"
+msgstr ""
+
+#: help/nyquist2.php:65
+#, php-format
+msgid "%sBesides multiplying two sounds with the %s function, you can add two sounds (or envelopes) with the %s function.%s"
+msgstr ""
+
+#: help/nyquist2.php:67
+msgid "Filters"
+msgstr ""
+
+#: help/nyquist2.php:69
+msgid "Nyquist comes with a number of common filters built-in.  Here are some of the more common ones:"
+msgstr ""
+
+#. i18n-hint: Butterworth is the name of the filter design. Not normally something you'd want to translate.
+#: help/nyquist2.php:75
+msgid "Low-pass filter (first-order Butterworth). Cutoff may be a float or a signal (for time-varying filtering) and expresses hertz."
+msgstr ""
+
+#: help/nyquist2.php:76
+msgid "High-pass filter (first-order Butterworth). Cutoff may be a float or a signal (for time-varying filtering) and expresses hertz."
+msgstr ""
+
+#: help/nyquist2.php:77
+msgid "Applies a comb filter to sound, which emphasizes (resonates at) frequencies that are multiples of a Hz."
+msgstr ""
+
+#: help/nyquist2.php:78
+msgid "All-pass filter, creating a delay effect without the resonances of a comb filter."
+msgstr ""
+
+#: help/nyquist2.php:79
+msgid "Second-order notch filter centered at a frequency of hz."
+msgstr ""
+
+#: help/nyquist2.php:83
+msgid "Transforming and combining sounds"
+msgstr ""
+
+#: help/nyquist2.php:85
+#, php-format
+msgid "%sIt is beyond the scope of this introductory tutorial to explain all of the ways that a sound can be transformed in Nyquist.  These functions do not modify sounds directly, but instead modify the Nyquist %senvironment%s.  In order for these changes to affect sounds, you must use the %s function.%s"
+msgstr ""
+
+#: help/nyquist2.php:89
+msgid "Changes the length of the sound being cued by the given factor."
+msgstr ""
+
+#: help/nyquist2.php:90
+msgid "Scales the amplitude of the sound being cued by the given factor."
+msgstr ""
+
+#: help/nyquist2.php:91
+msgid "Increases or decreases the volume of the sound being cued by the given number of decibels."
+msgstr ""
+
+#: help/nyquist2.php:92
+msgid "Starts the given sound at a particular time in seconds. This can't be used to add silence at the beginning or end, but it can be used when combining two or more sounds."
+msgstr ""
+
+#: help/nyquist2.php:93
+msgid "Creates a sequence of sound s1 followed by sound s2."
+msgstr ""
+
+#: help/nyquist2.php:94
+msgid "Combines two sounds so that they are played simultaneously."
+msgstr ""
+
+#: help/nyquist2.php:100
+msgid "Next: Creating Nyquist Plug-Ins"
+msgstr ""
+
+#: help/nyquist3.php:23
+#, php-format
+msgid "%sCreating a plug-in for Audacity using Nyquist is as simple as creating a text file with the extension \".ny\" with some Nyquist code, adding a few comments to indicate the type of plug-in, and placing the file in Audacity's %s directory.  Here's a very simple plug-in as an example:%s"
+msgstr ""
+
+#: help/nyquist3.php:34
+msgid "The first two lines of a Nyquist plug-in must be exactly as in the example above, or Audacity will not load it.  (The version number is to support future expansions of the plug-in format.) The next line is the type of plug-in, which is discussed below.  Then comes the name of the plug-in, which is what is displayed in the menu bar, and then the \"action\", which is what Audacity displays while it is busy processing the plug-in.  There are other optional lines that may follow.  Any line that does not begin with a semicolon (;) is assumed to contain Nyquist code and will be executed."
+msgstr ""
+
+#: help/nyquist3.php:35
+msgid "Audacity has support for three types of plug-ins that can be written in Nyquist:"
+msgstr ""
+
+#: help/nyquist3.php:43
+msgid "These correspond to the three menus that can contain plug-ins: Generate, Effect, and Analyze.  Generate plug-ins are expected to generate new audio from scratch, Effect plug-ins (\"process\") modify existing audio in-place, and Analyze plug-ins process audio but do not modify it (though they are allowed to add labels)."
+msgstr ""
+
+#: help/nyquist3.php:45
+#, php-format
+msgid "%sFor Effect and Analyze plug-ins, Audacity sets up the Nyquist environment so that the audio the user has selected is in the variable %s.  All of the expressions in the plug-in file are executed in order, and the return value of the last expression is substituted for the selection in Audacity.  If the last expression does not return audio, Audacity returns an error.%s"
+msgstr ""
+
+#: help/nyquist3.php:47
+msgid "Parameter dialogs"
+msgstr ""
+
+#: help/nyquist3.php:49
+msgid "Audacity has limited support for plug-ins showing a dialog to get parameters from the user.  Here is an example of a plug-in that opens a dialog:"
+msgstr ""
+
+#: help/nyquist3.php:70
+msgid "If Audacity finds at least one \"control\" line, it will open a dialog to prompt the user for certain parameters to the plug-in.  Each parameter consists of a text box and a slider, and after the user has entered each one, the final value will be stored in a Nyquist variable with a name that you specify on the \"control\" line.  Here's what the dialog for the Delay effect shown above looks like in Audacity for Linux:"
+msgstr ""
+
+#: help/nyquist3.php:72
+msgid "Nyquist plugin screenshot"
+msgstr ""
+
+#: help/nyquist3.php:74
+msgid "Note that the \"info\" line is displayed at the top of the dialog, and that the \"\\n"
+"\" becomes a newline.  The parameters to the \"control\" line affect the appearance and limitations of the parameter.  Each \"control\" line must consist of exactly the following 8 elements, in order:"
+msgstr ""
+
+#: help/nyquist3.php:76
+msgid "The word \"control\""
+msgstr ""
+
+#: help/nyquist3.php:77
+msgid "The name of the control - this is the name of the Nyquist variable that will get set when the user manipulates the dialog."
+msgstr ""
+
+#: help/nyquist3.php:78
+msgid "The label to the left of the control"
+msgstr ""
+
+#: help/nyquist3.php:79
+#, php-format
+msgid "%sThe type of value: either %s (integer) or %s."
+msgstr ""
+
+#: help/nyquist3.php:80
+msgid "The label to the right of the value (usually the units like \"Hz\" or \"dB\")."
+msgstr ""
+
+#: help/nyquist3.php:81
+msgid "The default/initial value of the parameter"
+msgstr ""
+
+#: help/nyquist3.php:82
+msgid "The minimum value of the parameter"
+msgstr ""
+
+#: help/nyquist3.php:83
+msgid "The maximum value of the parameter"
+msgstr ""
+
+#: help/nyquist3.php:85
+msgid "Returning labels"
+msgstr ""
+
+#: help/nyquist3.php:87
+msgid "Instead of returning audio, a Nyquist plug-in can instead return a list of labels.  A list of labels is simply a list of time/label pairs, for example:"
+msgstr ""
+
+#: help/nyquist3.php:93
+msgid "When a plug-in returns a list of exactly this form, Audacity will create a new label track and add the labels at those positions.  This style of plug-in is usually of type \"analyze\"."
+msgstr ""
+
+#: help/nyquist3.php:95
+msgid "New!  Beginning with Audacity version 1.3.1, you can now optionally return both a start and an end time, like this:"
+msgstr ""
+
+#: help/nyquist3.php:101
+msgid "Note that labels are allowed to overlap in Audacity 1.3; the end time of one can be after the start time of the next."
+msgstr ""
+
+#: help/nyquist3.php:103
+msgid "Processing stereo tracks"
+msgstr ""
+
+#: help/nyquist3.php:105
+msgid "Nyquist represents stereo tracks as an array of sounds (not a list).  Many Nyquist functions automatically work with these arrays, but not all, so sometimes you may find it necessary to split up a stereo array, or reassemble one.  Here are some useful functions:"
+msgstr ""
+
+#. i18n-hint: The first and last are html tags, the middle one is a variable name
+#: help/nyquist3.php:110
+#, php-format
+msgid "%sreturns true if %s is an array%s"
+msgstr ""
+
+#: help/nyquist3.php:111
+#, php-format
+msgid "%sthe first element in array %s - the left channel%s"
+msgstr ""
+
+#: help/nyquist3.php:112
+#, php-format
+msgid "%sthe second element in array %s - the right channel%s"
+msgstr ""
+
+#: help/nyquist3.php:113
+#, php-format
+msgid "%smakes %s into a new array of length 2%s"
+msgstr ""
+
+#: help/nyquist3.php:114
+#, php-format
+msgid "%smakes %s the first element of array %s"
+msgstr ""
+
+#: help/nyquist3.php:115
+#, php-format
+msgid "%smakes %s the second element of array %s"
+msgstr ""
+
+#: help/nyquist3.php:118
+msgid "As a convenience, if the input to your Nyquist plug-in is stereo, but you only output a single (mono) sound, Audacity will automatically copy it to both the left and right channels."
+msgstr ""
+
+#: help/nyquist3.php:120
+msgid "Where to go from here"
+msgstr ""
+
+#: help/nyquist3.php:122
+msgid "Audacity comes with some sample plug-ins that you can examine or modify as a starting point.  The best way to learn Nyquist is to try it.  If you're having trouble debugging, consider downloading the standalone version of Nyquist (see the link in Part 1)."
+msgstr ""
+
+#. i18n-hint: All the %s are HTML tags which makes "contact us" into a link
+#: help/nyquist3.php:124
+#, php-format
+msgid "%sIf you're having trouble getting Nyquist to work at all, please %scontact us%s.%s"
+msgstr ""
+
+#. i18n-hint: All the %s are HTML tags which makes "audacity-nyquist mailing list" into a link
+#: help/nyquist3.php:126
+#, php-format
+msgid "%sIf you are working on Nyquist plug-in effects and would like to share them with others, or if you would like to discuss general details of how to achieve certain effects in Nyquist, please join the %saudacity-nyquist mailing list%s.%s"
+msgstr ""
+
+#. i18n-hint: All the %s are HTML tags which makes "Nyquist Reference Manual" into a link
+#: help/nyquist3.php:128
+#, php-format
+msgid "%sDon't forget to consult the full %sNyquist Reference Manual%s for more details of how Nyquist works.%s"
 msgstr ""
 
 #: main.inc.php:39
@@ -1258,6 +1262,16 @@ msgid "<p>(This applies to <a href=\"http://lists.sourceforge.net/lists/listinfo
 "<p>These are public mailing lists.  When you send a message to any of these addresses, it will be forwarded to all the list subscribers, including Audacity developers and others.  SourceForge and other web sites may publish archives of these lists.</p>\n"
 "<p><b>Your e-mail address will always be truncated in published archives for your privacy, and the Audacity developers will not share your address with anyone.</b>  However, we <b>cannot</b> prevent other subscribers from seeing or publishing your messages. Therefore we recommend you avoid putting contact details such as street addresses or telephone numbers in your e-mails.</p>\n"
 "<p>If you have any questions about this policy or are not comfortable writing to a public mailing list, please send a private e-mail to our <a href=\"&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x64;&#111;&#x6d;&#105;&#x6e;&#x69;&#x63;&#64;&#97;&#x75;&#100;&#x61;&#99;&#105;&#116;&#121;&#x74;&#x65;&#97;&#109;&#x2e;&#x6f;&#x72;&#x67;&#x3f;&#115;&#x75;&#98;&#106;&#101;&#99;&#116;&#x3d;&#x4d;&#97;&#x69;&#108;&#105;&#110;&#x67;&#x20;&#76;&#x69;&#115;&#x74;&#115;\">lead developer</a>.</p>"
+msgstr ""
+
+#: contact/privacy.php:34
+msgid "Advertisements Policy"
+msgstr ""
+
+#: contact/privacy.php:36
+msgid "<p>On some pages on our main site, we show advertisements from Google's AdSense program. See our &ldquo;<a href=\"http://audacity.sourceforge.net/community/donate\">How Does Audacity Raise Money?</a>&rdquo; page for the reasons we show advertisements.</p>\n"
+"\n"
+"<p>As of April 8, 2009, this includes \"interest-based\" advertising, which utilizes cookies to try to determine users' areas of interest (for example, audio editing), to show advertisements of likelier interest. Please see <a href=\"https://www.google.com/adsense/support/bin/answer.py?hl=en&answer=100557\">Google Advertising Cookie and Privacy Policies</a> for information regarding your privacy and how to <a href=\"http://www.google.com/privacy_ads.html\">opt out</a> of this tracking.</p>"
 msgstr ""
 
 #: main.inc.php:47
@@ -1808,12 +1822,12 @@ msgstr ""
 msgid "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company for construction industry professionals."
 msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a>は建設産業の研究会社です。"
 
-#: about/links.php:18
-msgid "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> is a street-rock band from Finland."
-msgstr "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a>はフィンランドのストリートロックバンドです。"
-
 #: about/links.php:19
 msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides janitorial services for businesses and individuals in the Seattle, WA metro area."
+msgstr ""
+
+#: about/links.php:19
+msgid "Two different rock bands from <a href=\"http://www.myspace.com/audacityrocks\">Finland</a> and <a href=\"http://www.unsigned.com/audacity\">England</a> are named \"Audacity\"."
 msgstr ""
 
 #: about/links.php:22
@@ -1821,8 +1835,8 @@ msgid "Other Audio Software"
 msgstr "他のオーディオソフトウェア"
 
 #: about/links.php:23
-msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux."
-msgstr "<a href=\"http://ardour.org/\">Ardour</a> は、GNU/Linux上で動く、強力なデジタルオーディオワークステーションです。"
+msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux and Mac OS X."
+msgstr ""
 
 #: about/links.php:24
 msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper for Microsoft Windows."
@@ -2078,11 +2092,6 @@ msgstr ""
 msgid "Audacity Store"
 msgstr ""
 
-#: community/donate.php:84
-#: htdocs/community/donate.php:84
-msgid "We can accept donations via the Amazon Honor System, or by Paypal. To use Amazon, click the button below. You can make a donation securely by credit card, as little as US$1.00, or up to US$50.00:"
-msgstr ""
-
 #: community/donate.php:95
 #: htdocs/community/donate.php:95
 msgid "Alternatively, click the button below to donate securely by Paypal. You can send any amount, using either your credit card or your Paypal account:"
@@ -2097,9 +2106,12 @@ msgstr ""
 msgid "We would also like to hear from any companies or groups interested in <a href=\"http://audacityteam.org/sponsor.php\">sponsoring Audacity development</a>."
 msgstr "私たちは、<a href=\"http://audacityteam.org/sponsor.php\">sponsoring Audacity development</a>に興味のあるいくつかの会社やグループからも、ぜひ手紙をもらいたいと思っています。"
 
-#: community/translation.php:16
-#: htdocs/community/translation.php:16
-msgid "A group of volunteers is translating the free Audacity sound editor into many different languages.  If you would like to help, please join the <a href=\"../contact/lists#translation\">audacity-translation mailing list</a> and introduce yourself."
+#. i18n-hint: The two %s will be replaced by HTML tags to make the text
+#. inbetween into a link to the mailing list page. They are thus invisible in
+#. the final text.
+#: community/translation.php:21
+#, php-format
+msgid "A group of volunteers is translating the free Audacity sound editor into many different languages.  If you would like to help, please join the %saudacity-translation mailing list%s and introduce yourself."
 msgstr ""
 
 #: community/translation.php:18
@@ -2115,13 +2127,23 @@ msgstr "翻訳者のためのリソース"
 msgid "Mailing list and archives"
 msgstr "メーリングリストとアーカイブ"
 
-#: community/translation.php:21
-msgid "Latest audacity.pot file"
-msgstr "最も新しい audacity.pot ファイル"
+#. i18n-hint: The three numbers will be year, month, day. Remember you
+#. can re-order the numbers if you want to - to get Day, Month, Year,
+#. translate the values as %4$02d/%3$02d/%2$04d. The string (%s) inserts
+#. a html tag to end the link, and is not visible.
+#: community/translation.php:33
+#, php-format
+msgid "Latest audacity.pot file%s (last updated %04d/%02d/%02d)"
+msgstr ""
 
-#: community/translation.php:22
-msgid "Latest audacity_website.pot file"
-msgstr "最も新しい audacity_website.pot ファイル"
+#. i18n-hint: The three numbers will be year, month, day. Remember you
+#. can re-order the numbers if you want to - to get Day, Month, Year,
+#. translate the values as %4$02d/%3$02d/%2$04d. The string (%s) inserts
+#. a html tag to end the link, and is not visible.
+#: community/translation.php:41
+#, php-format
+msgid "Latest audacity_website.pot file%s (last updated %04d/%02d/%02d)"
+msgstr ""
 
 #: community/translation.php:23
 msgid "wxWidgets i18n"
@@ -4093,91 +4115,90 @@ msgid "%B %d, %Y"
 msgstr "%B %d, %Y"
 
 #: include/news.inc.php:45
-msgid "Audacity 1.3.7 released"
+msgid "Audacity is mentoring two Google Summer of Code (GSoC) 2009 students"
 msgstr ""
 
 #: include/news.inc.php:46
+msgid "\n"
+"<p>\n"
+"\tAudacity has been approved to mentor two\n"
+"   <a href=\"http://socghop.appspot.com/org/home/google/gsoc2009/audacity#blog\">\n"
+"   students</a> for\n"
+"   <a href=\"http://socghop.appspot.com/\">\n"
+"   Google Summer of Code 2009</a>!\n"
+"\tGSoC offers student developers $4,500 stipends to write code for various open source projects.\n"
+"</p>\n"
+"<p align=\"center\">\n"
+"\t<a href=\"http://socghop.appspot.com\">\n"
+"   <img src=\"images/GSoC2009.png\" alt=\"Google Summer of Code 2009\"></img>\n"
+"\t</a>\n"
+"</p>\n"
+"<p>\n"
+"   The two projects will combine bug fixing with work on developing new features.  \n"
+"<p>\n"
+"\tCongratulations to the approved students and thanks to all who applied for their interest in Audacity!\n"
+"</p>\n"
+msgstr ""
+
+#: include/news.inc.php:45
+msgid "Audacity 1.3.7 released"
+msgstr ""
+
+#: include/news.inc.php:71
 msgid "\n"
 "<p>\n"
 "The Audacity Team is pleased to announce the release of\n"
 "<a href=\"/download\">Audacity 1.3.7 (Beta)</a> \n"
 "for Windows, Mac and Linux/Unix. \n"
 "</p>\n"
-"<p>This is primarily a bug-fix release which significantly improves\n"
-"stability and usability, especially on Mac OS X. It incorporates some\n"
-"new features too, including DirectSound device support for Windows.\n"
-"</p>\n"
-"\n"
-"<dl>\n"
-"\t<dt> Cross-Platform Bug Fixes include: </dt>\n"
-"\t      <dd>   <ul>\n"
+"<p>This is primarily a bug-fix release. It significantly improves\n"
+"stability and usability, especially on Mac OS X, but incorporates some\n"
+"new features too. \n"
+"<p>\n"
+"<b>Cross-Platform Bug Fixes include:</b>\n"
+"                <ul>\n"
 "                       <li>Muting/soloing caused incorrect channel results in exported\n"
 "                            stereo files</li>\n"
-"                       <li>Nyquist effects: pasted unmodified audio into the result,\n"
-"                            no progress bar, truncation of processed audio on\n"
-"                            cancel</li> \n"
-"                       <li>Noise Removal: pasted unmodified audio into the result, \n"
-"                            unwanted filtering tail</li>\n"
-"                       <li>Uncompressed exports:</li>\n"
+"                       <li>Effects: Noise Removal added unwanted paste and filtering \n"
+"                            tail; Nyquist effects added unwanted paste, had no progress\n"
+"                            bar, and truncated audio if canceled</li>\n"
+"                       <li>Exports:</li>\n"
 "                                <ul>\n"
 "                                       <li>Export as WAV could be corrupted if overwriting\n"
-"                                            to same file</li>\n"
-"                                       <li>Export multiple to uncompressed formats only \n"
-"                                            produced 16-bit WAV</li>\n"
+"                                            to same file, uncompressed Export Multiple \n"
+"                                            only produced 16-bit WAV</li>\n"
+"                                       <li>MP3 and WMA now export correctly with all supported \n"
+"                                            metadata</li>\n"
 "                                </ul>\n"
-"                       <li>Compressed exports:</li>\n"
-"                                <ul>\n"
-"                                       <li>MP3 exports now produce correct bit rate\n"
-"                                            mode, quality and length, with improved metadata \n"
-"                                            visibility in player applications</li>\n"
-"                                       <li>WMA exports containing metadata are now correct</li> \n"
-"                                </ul>                               \n"
 "                        <li>Restored support for multi-channel recording devices that\n"
 "                            can record more than two channels using Audacity</li>\n"
 "                </ul>\n"
-"         </dd>    \n"
-"\n"
-"\t<dt> Platform-specific Bug Fixes</dt>\n"
-"\t      <dd>   <ul>\n"
-"                       <li><i>Windows Vista:</i> fixed crash opening Preferences with no sound\n"
-"                            devices enabled and connected </li>\n"
-"                       <li><i>Mac OS X and Linux:</i></li>\n"
-"                                <ul>\n"
-"                                       <li>fixes for spurious clipping, label typing, no shortcuts\n"
-"                                            after running effects</li>\n"
-"                                       <li>project rate now always changes to respect that of \n"
-"                                            first imported file</li>\n"
-"                                </ul> \n"
-"                       <li><i>Mac OS X only:</i></li>\n"
-"                                <ul>\n"
-"                                       <li>fixes for inactive or corrupted menus and hidden\n"
-"                                            dialogues, portable settings not detected, and\n"
-"                                            inability to set independent Command and Control shortcuts</li>\n"
-"                                       <li>FFmpeg installer now available</li>\n"
-"                                </ul>\n"
+"</p>\n"
+"<p>\n"
+"<b>Platform-specific Bug Fixes:</b>\n"
+"                <ul>\n"
+"                       <li><i>Windows Vista:</i> fixed crash opening Preferences</li>\n"
+"                       <li><i>Mac OS X and Linux:</i> fixes for spurious clipping, \n"
+"                               label typing, no shortcuts after running effects, \n"
+"                               project rate when importing files </li>\n"
+"                       <li><i>Mac OS X only:</i> fixes for inactive or corrupted \n"
+"                               menus and hidden dialogues, portable settings not\n"
+"                               detected, inability to set independent Command and \n"
+"                               Control shortcuts; FFmpeg installer now available</li>\n"
 "                </ul>\n"
-"         </dd>    \n"
-"\n"
-"\t<dt> New Features </dt>\n"
-"\t      <dd>   <ul>\n"
+"</p>\n"
+"<p>\n"
+"<b>New Features and other changes:</b>\n"
+"                <ul>\n"
 "                       <li>F11 Full Screen mode, high-quality \"Sliding Time Scale/Pitch Shift\"\n"
 "                            effect, Audio Contrast Analyzer </li>\n"
 "                       <li>Windows: sound devices can now be opened using the more efficient\n"
-"                            DirectSound API\n"
-"                </ul>\n"
-"         </dd>    \n"
-"\n"
-"\t<dt> Other changes </dt>\n"
-"\t      <dd>   <ul>\n"
+"                            DirectSound API</li>\n"
 "                       <li>As a first step towards improving latency correction,\n"
 "                            a fixed rather than variable correction is now applied</li>\n"
-"\t\t\t\t\t\t\t  <li>Numerous minor interface fixes and improvements</li>\n"
 "                </ul>\n"
-"         </dd>    \n"
-"</dl>\n"
-"\n"
-"<p>\n"
-"Because it is a work in progress and does not yet come with \n"
+"</p>\n"
+"<p>Because it is a work in progress and does not yet come with \n"
 "complete documentation or translations into foreign languages, \n"
 "it is recommended for more advanced users. For all users, \n"
 "<a href=\"/download\">Audacity 1.2.6</a> is a stable release, \n"
