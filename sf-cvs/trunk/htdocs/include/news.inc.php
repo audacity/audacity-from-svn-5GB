@@ -40,6 +40,75 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "May 10, 2009",
+  	"Linux_Journal_and_Bestcovery_Awards_and_Audacity_compact_book",
+  _("Linux Journal and Bestcovery Awards, and new \"Audacity compact\" book"),
+  _("
+<p>
+   Audacity has been chosen as \"Favorite Audio Tool\" in Linux Journal's 
+   <a href=\"http://www.linuxjournal.com/content/linux-journal-announces-winners-its-2009-readers-choice-awards\">
+   2009 Readers' Choice Awards.</a>
+</p>
+<p align=\"center\">
+	<a href=\"http://www.linuxjournal.com/content/linux-journal-announces-winners-its-2009-readers-choice-awards\">
+   <img src=\"../images/Linux_Readers_Choice2009.png\" alt=\"Linux Journal Readers' Choice 2009 Awards\"</img>
+   </a>
+</p>
+<p>
+   Nearly 5,000 individuals voted for their favorite Linux solution 
+   in categories ranging from favorite version control system to 
+   favorite Linux laptop. 
+</p>
+<p>Audacity was also chosen this Spring as Bestcovery's 
+   <a href=\"http://www.bestcovery.com/node/17870?whybest=1&best=17871\">
+   \"Best Free Sound Editor\"</a>.  
+<p>
+</p>
+<p align=\"center\">
+	<a href=\"http://www.bestcovery.com/node/17870?whybest=1&best=17871\">
+   <img src=\"../images/Bestcovery.png\" alt=\"Bestcovery Winners' logo\"</img>
+	</a>
+</p>
+<p>
+   <a href=\"http://www.bestcovery.com/node/13\">
+   Bestcovery</a> uses a team of independent experts to \"help you discover the 
+   best products and services for a wide range of categories all at one 
+   convenient site\".
+</p>      
+      <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
+   <tr>
+   <td>
+      <table border=\"0\" cellpadding=\"15\">
+   <tr><td>
+   <a href=\"http://www.bomots.de/audacity/english.htm\">
+   <img src=\"../images/Audacity_Compact_book_cover.jpg\" alt=\"'Audacity compact' book cover\" border=\"0\"></img>
+   </a></td></tr>
+      </table>
+   </td>
+   <td>
+<p>
+   <b>\"Audacity compact\"</b>, an English translation of Markus Priemer's German-language 
+   <a href=\"http://www.audacity-buch.de/buch.php?partner=homepage\">
+   \"Audacity kompakt\"</a> book, is <b>now available</b>.     
+</p>
+<p>
+   The book aims to be a \"getting started\" introduction for new Audacity users,
+   while serving as a reference tool and source of Audacity tips and tricks for all.   
+</p>
+<p>
+	Learn more, download a 40-page sample PDF, or <b>purchase using Paypal</b> by clicking
+   <a href=\"http://www.bomots.de/audacity/english.htm\">
+   here</a>! Every purchase made through our web sites will directly benefit Audacity development.
+</p>
+<p>
+   \"Audacity compact\" is also available online from major retailers such as Amazon.  
+</p>
+</td>
+</tr>
+</table>
+"));
+
+add_news_item(
   "April 21, 2009",
   	"GSoC_2009",
   _("Audacity is mentoring two Google Summer of Code (GSoC) 2009 students"),
@@ -54,7 +123,7 @@ add_news_item(
 </p>
 <p align=\"center\">
 	<a href=\"http://socghop.appspot.com\">
-   <img src=\"images/GSoC2009.png\" alt=\"Google Summer of Code 2009\"></img>
+   <img src=\"../images/GSoC2009.png\" alt=\"Google Summer of Code 2009\"></img>
 	</a>
 </p>
 <p>
