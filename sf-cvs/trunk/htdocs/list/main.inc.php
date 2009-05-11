@@ -12,7 +12,7 @@ function Top($title)
 
 	print "<center>\n";
 	print "<a href=\"http://audacity.sourceforge.net\">\n";
-	print "<img src=../images/audacity.jpg width=253 height=100 border=0>\n";
+	print "<img src=\"../images/Audacity-logo-r_50pct.jpg\" border=\"0\">\n";
 	print "</a>\n";
 
 	print '<table border="0" cellpadding="1" cellspacing="0" bgcolor="#000099" width="80%"><tr><td>';
