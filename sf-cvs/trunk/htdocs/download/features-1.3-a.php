@@ -274,7 +274,7 @@ Please see the included README.txt for full details of changes, and for issues k
       <dd>Clipping detected more reliably.</dd>
       <dd>Nyquist plug-ins reviewed and enhanced.</dd>
       <dd>Better (and more) progress bars.</dd>
-      <dd>Cancelling effect always restores previous audio.</dd>
+      <dd>Canceling effect always restores previous audio.</dd>
       <dd>Several improvement to effects in batch mode.</dd>
 
       <dt> Recording/Playback </dt>
