@@ -4,7 +4,7 @@ Audacity: A Digital Audio Editor
 
 FFmpeg.cpp
 
-Audacity(R) is copyright (c) 1999-2008 Audacity Team.
+Audacity(R) is copyright (c) 1999-2009 Audacity Team.
 License: GPL v2.  See License.txt.
 
 ******************************************************************//**
@@ -102,7 +102,7 @@ void FFmpegStartup()
    {
      wxMessageBox(_("FFmpeg was configured in Preferences and successfully loaded before, \
                       \nbut this time Audacity failed to load it at startup. \
-                      \n\nYou may want to go back to Preferences > Import/Export and re-configure it."),
+                      \n\nYou may want to go back to Preferences > Libraries and re-configure it."),
                   _("FFmpeg startup failed"));
    }
 }
