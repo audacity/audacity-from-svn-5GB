@@ -4,7 +4,7 @@
 
    ExportFFmpeg.cpp
 
-   Audacity(R) is copyright (c) 1999-2008 Audacity Team.
+   Audacity(R) is copyright (c) 1999-2009 Audacity Team.
    License: GPL v2.  See License.txt.
 
    LRN
@@ -58,7 +58,7 @@ bool CheckFFmpegPresence()
    PickFFmpegLibs();
    if (!FFmpegLibsInst->ValidLibsLoaded())
    {
-      wxMessageBox(_("Properly configured FFmpeg is required to proceed.\nYou can configure it in Preferences->Import/Export."));
+      wxMessageBox(_("Properly configured FFmpeg is required to proceed.\nYou can configure it at Preferences > Libraries."));
       result = false;
    }
    DropFFmpegLibs();
@@ -200,6 +200,7 @@ ExportFFmpeg::ExportFFmpeg()
       {
       case FMT_M4A:
          AddExtension(wxString(wxT("3gp")),fmtindex);
+         AddExtension(wxString(wxT("m4r")),fmtindex);
          AddExtension(wxString(wxT("mp4")),fmtindex);
          break;
       case FMT_WMA2:
@@ -228,7 +229,7 @@ bool ExportFFmpeg::CheckFileName(wxFileName &filename, int format)
    int subFormat = AdjustFormatIndex(format);
    if (format == FMT_AMRNB || format == FMT_AMRWB)
    {
-      wxMessageBox(_("Properly configured FFmpeg is required to proceed. You can configure it in Preferences->Import/Export.\nHowever AMR support is not available with our FFmpeg installer, but requires you compile FFmpeg yourself."), _("AMR support is unlikely"));
+      wxMessageBox(_("Properly configured FFmpeg is required to proceed.\nYou can configure it at Preferences > Libraries.\n\nNote that AMR support is not available with our FFmpeg\ninstaller, but requires you compile FFmpeg yourself."), _("AMR support not distributable"));
       result = false;
    }
    else if (!CheckFFmpegPresence())
@@ -348,7 +349,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    mSampleRate = (int)project->GetRate();
    mEncAudioCodecCtx->global_quality = -99999; //quality mode is off by default;
 
-   // Each export type has it's own settings
+   // Each export type has its own settings
    switch (mSubFormat)
    {
    case FMT_M4A:
