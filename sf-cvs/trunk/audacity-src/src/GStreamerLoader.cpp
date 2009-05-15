@@ -4,7 +4,7 @@ Audacity: A Digital Audio Editor
 
 GStreamerLoader.cpp
 
-Audacity(R) is copyright (c) 1999-2008 Audacity Team.
+Audacity(R) is copyright (c) 1999-2009 Audacity Team.
 License: GPL v2.  See License.txt.
 
 ******************************************************************//**
@@ -211,7 +211,7 @@ void GStreamerStartup()
    {
      wxMessageBox(_("GStreamer was configured in preferences and successfully loaded before,\n\
                       but this time Audacity failed to load it at startup.\n\
-                      You may want to go back to Preferences->Import/Export and re-configure it."),
+                      You may want to go back to Preferences > Libraries and re-configure it."),
                       _("GStreamer startup failed"));
      delete GStreamerInst;
    }

@@ -13,7 +13,7 @@
 
 \class FileFormatPrefs
 \brief A PrefsPanel used to select file format preferences and to 
-locate the MP3 encoding library.  Now called 'Import/Export' in the
+locate the MP3 encoding library.  Now called 'Libraries' in the
 preferences.  Later we will rename this panel and source files.
 
 *//*******************************************************************/

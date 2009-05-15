@@ -4,7 +4,7 @@ Audacity: A Digital Audio Editor
 
 FFmpeg.h
 
-Audacity(R) is copyright (c) 1999-2008 Audacity Team.
+Audacity(R) is copyright (c) 1999-2009 Audacity Team.
 License: GPL v2.  See License.txt.
 
 ******************************************************************//**
@@ -108,10 +108,10 @@ public:
       S.StartVerticalLay(true);
       {
          S.AddFixedText(_(
-"Audacity attempted to use FFmpeg libraries to import an audio file,\n\
-but libraries were not found.\n\
-If you want to use the FFmpeg import feature, please go to Preferences->Import/Export\n\
-and tell Audacity where to look for the libraries."
+"Audacity attempted to use FFmpeg to import an audio file,\n\
+but the libraries were not found.\n\n\
+To use FFmpeg import, go to Preferences > Libraries\n\
+to download or locate the FFmpeg libraries."
          ));
 
          int dontShowDlg = 0;
