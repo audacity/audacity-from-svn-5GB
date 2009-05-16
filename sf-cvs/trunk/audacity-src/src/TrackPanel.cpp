@@ -6917,13 +6917,11 @@ TrackInfo::TrackInfo(wxWindow * pParentIn)
    //which won't ever be shown.
    pParent = pParentIn;
    int i;
-   for(i=0; i<16; i++)
+   for (i = 0; i < 16; i++) {
       MakeMoreSliders();
+   }
 
    int fontSize = 10;
-#if defined(__WXMSW__) || defined(__WXGTK__)
-   fontSize = 10;
-#endif
    mFont.Create(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
 
    int allowableWidth = GetTitleWidth() - 2; // 2 to allow for left/right borders
