@@ -23,6 +23,7 @@
 #include <wx/print.h>
 #include <wx/printdlg.h>
 
+#include "AColor.h"
 #include "Track.h"
 #include "TrackArtist.h"
 #include "ViewInfo.h"
@@ -96,43 +97,10 @@ bool AudacityPrintout::OnPrintPage(int page)
       r.width = width;
       r.height = (int)(n->GetHeight() * scale);
 
-      switch(n->GetKind()) {
-      case Track::Wave:
-         switch (((WaveTrack *)n)->GetDisplay()) {
-         case WaveTrack::WaveformDisplay:
-            artist.DrawWaveform((WaveTrack *)n, *dc, r,
-                                &viewInfo, false, false, false, false, false);
-            break;
-         case WaveTrack::WaveformDBDisplay:
-            artist.DrawWaveform((WaveTrack *)n, *dc, r,
-                                &viewInfo, false, false, false, true, false);
-            break;
-         case WaveTrack::SpectrumDisplay:
-            artist.DrawSpectrum((WaveTrack *)n, *dc, r, &viewInfo, false, false);
-            break;
-         case WaveTrack::SpectrumLogDisplay:
-            artist.DrawSpectrum((WaveTrack *)n, *dc, r, &viewInfo, false, true);
-            break;
-         case WaveTrack::PitchDisplay:
-            artist.DrawSpectrum((WaveTrack *)n, *dc, r, &viewInfo, true, false);
-            break;
-         }
-         break;
-#ifdef USE_MIDI 
-      case Track::Note:
-         artist.DrawNoteTrack((NoteTrack *)n, *dc, r, &viewInfo);
-         break;
-#endif // USE_MIDI
-      case Track::Label:
-         artist.DrawLabelTrack((LabelTrack *)n, *dc, r, &viewInfo);
-         break;
-      case Track::Time:
-         artist.DrawTimeTrack((TimeTrack *)n, *dc, r, &viewInfo);
-         break;
-      }
+      artist.DrawTrack(n, *dc, r, &viewInfo, false, false, false, false);
 
       dc->SetPen(*wxBLACK_PEN);
-      dc->DrawLine(0, r.y, width, r.y);
+      AColor::Line(*dc, 0, r.y, width, r.y);
 
       n = iter.Next();
       y += r.height;

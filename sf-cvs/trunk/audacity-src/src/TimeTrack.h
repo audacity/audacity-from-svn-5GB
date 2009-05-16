@@ -40,7 +40,7 @@ class TimeTrack: public Track {
    virtual double GetStartTime() { return 0.0; };
    virtual double GetEndTime() { return 0.0; };
 
-   void Draw(wxDC & dc, wxRect & r, double h, double pps);
+   void Draw(wxDC & dc, const wxRect & r, double h, double pps);
 
    // XMLTagHandler callback methods for loading and saving
 

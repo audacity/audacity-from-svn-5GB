@@ -196,10 +196,10 @@ class ToolFrame:public wxFrame
          r.width = sizerW + 2;
          r.height = sizerW + 2;
 
-         dc.DrawLine( r.GetLeft(), r.GetBottom(), r.GetRight(), r.GetTop() );
-         dc.DrawLine( r.GetLeft() + 3, r.GetBottom(), r.GetRight(), r.GetTop() + 3 );
-         dc.DrawLine( r.GetLeft() + 6, r.GetBottom(), r.GetRight(), r.GetTop() + 6 );
-         dc.DrawLine( r.GetLeft() + 9, r.GetBottom(), r.GetRight(), r.GetTop() + 9 );
+         AColor::Line(dc, r.GetLeft(), r.GetBottom(), r.GetRight(), r.GetTop() );
+         AColor::Line(dc, r.GetLeft() + 3, r.GetBottom(), r.GetRight(), r.GetTop() + 3 );
+         AColor::Line(dc, r.GetLeft() + 6, r.GetBottom(), r.GetRight(), r.GetTop() + 6 );
+         AColor::Line(dc, r.GetLeft() + 9, r.GetBottom(), r.GetRight(), r.GetTop() + 9 );
       }
 
    }

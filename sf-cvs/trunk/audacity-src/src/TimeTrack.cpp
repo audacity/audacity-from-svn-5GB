@@ -176,7 +176,7 @@ void TimeTrack::WriteXML(XMLWriter &xmlFile)
    xmlFile.EndTag(wxT("timetrack"));
 }
 
-void TimeTrack::Draw(wxDC & dc, wxRect & r, double h, double pps)
+void TimeTrack::Draw(wxDC & dc, const wxRect & r, double h, double pps)
 {
    double tstep = 1.0 / pps;                     // Seconds per point
    double t0 = h;
@@ -227,7 +227,7 @@ void TimeTrack::Draw(wxDC & dc, wxRect & r, double h, double pps)
    for (x = 0; x < mid.width; x++)
       {
          int thisy = r.y + heights[x];
-         dc.DrawLine(mid.x + x, thisy, mid.x + x, thisy+3);
+         AColor::Line(dc, mid.x + x, thisy, mid.x + x, thisy+3);
       }
 
    if (heights)

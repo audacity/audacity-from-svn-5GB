@@ -89,13 +89,14 @@ void NoteTrack::DrawLabelControls(wxDC & dc, wxRect & r)
    int wid = 23;
    int ht = 16;
 
-   if (r.height < ht * 4)
+   if (r.height < ht * 4) {
       return;
+   }
 
-   int x = r.x + r.width / 2 - wid * 2;
-   int y = r.y + 4;
+   int x = r.x + (r.width / 2 - wid * 2) + 2;
+   int y = r.y + 5;
 
-   for (int row = 0; row < 4; row++)
+   for (int row = 0; row < 4; row++) {
       for (int col = 0; col < 4; col++) {
          int channel = row * 4 + col + 1;
 
@@ -110,23 +111,31 @@ void NoteTrack::DrawLabelControls(wxDC & dc, wxRect & r)
             dc.DrawRectangle(box);
 
             AColor::LightMIDIChannel(&dc, channel);
-            dc.DrawLine(box.x, box.y, box.x + box.width - 1, box.y);
-            dc.DrawLine(box.x, box.y, box.x, box.y + box.height - 1);
+            AColor::Line(dc, box.x, box.y, box.x + box.width - 1, box.y);
+            AColor::Line(dc, box.x, box.y, box.x, box.y + box.height - 1);
 
             AColor::DarkMIDIChannel(&dc, channel);
-            dc.DrawLine(box.x + box.width - 1, box.y,
-                        box.x + box.width - 1, box.y + box.height);
-            dc.DrawLine(box.x, box.y + box.height - 1, box.x + box.width,
-                        box.y + box.height - 1);
+            AColor::Line(dc,
+                         box.x + box.width - 1, box.y,
+                         box.x + box.width - 1, box.y + box.height - 1);
+            AColor::Line(dc,
+                         box.x, box.y + box.height - 1,
+                         box.x + box.width - 1, box.y + box.height - 1);
          } else {
             AColor::MIDIChannel(&dc, 0);
             dc.DrawRectangle(box);
          }
 
-         dc.DrawText(wxString::Format(wxT("%d"), channel), box.x + 5,
-                     box.y + 3);
-      }
+         wxString t;
+         long w;
+         long h;
 
+         t.Printf(wxT("%d"), channel);
+         dc.GetTextExtent(t, &w, &h);
+   
+         dc.DrawText(t, box.x + (box.width - w) / 2, box.y + (box.height - h) / 2);
+      }
+   }
 }
 
 bool NoteTrack::LabelClick(wxRect & r, int mx, int my, bool right)
@@ -137,8 +146,8 @@ bool NoteTrack::LabelClick(wxRect & r, int mx, int my, bool right)
    if (r.height < ht * 4)
       return false;
 
-   int x = r.x + r.width / 2 - wid * 2;
-   int y = r.y + 4;
+   int x = r.x + (r.width / 2 - wid * 2);
+   int y = r.y + 1;
 
    int col = (mx - x) / wid;
    int row = (my - y) / ht;

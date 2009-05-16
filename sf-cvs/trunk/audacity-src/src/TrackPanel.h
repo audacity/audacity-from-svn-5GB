@@ -92,13 +92,14 @@ private:
    void MakeMoreSliders();
    void EnsureSufficientSliders(int index);
 
+   void SetTrackInfoFont(wxDC *dc);
    void DrawBackground(wxDC * dc, const wxRect r, bool bSelected, bool bHasMuteSolo, const int labelw, const int vrul);
    void DrawBordersWithin(wxDC * dc, const wxRect r, bool bHasMuteSolo );
    void DrawCloseBox(wxDC * dc, const wxRect r, bool down);
    void DrawTitleBar(wxDC * dc, const wxRect r, Track * t, bool down);
    void DrawMuteSolo(wxDC * dc, const wxRect r, Track * t, bool down, bool solo, bool bHasSoloButton);
    void DrawVRuler(wxDC * dc, const wxRect r, Track * t);
-   void DrawSliders(wxDC *dc, WaveTrack *t, wxRect r);
+   void DrawSliders(wxDC * dc, WaveTrack *t, wxRect r);
    void DrawMinimize(wxDC * dc, const wxRect r, Track * t, bool down, bool minimized);
 
    void GetTrackControlsRect(const wxRect r, wxRect &dest) const;
@@ -113,6 +114,7 @@ public:
    LWSliderArray mGains;
    LWSliderArray mPans;
    wxWindow * pParent;
+   wxFont mFont;
 
    friend class TrackPanel;
 };

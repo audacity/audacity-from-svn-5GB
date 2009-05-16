@@ -591,7 +591,7 @@ void FreqWindow::DrawPlot()
          lineheight = r.height - 2;
 
       if (ynorm > 0.0)
-         memDC.DrawLine(r.x + 1 + i, r.y + r.height - 1 - lineheight,
+         AColor::Line(memDC, r.x + 1 + i, r.y + r.height - 1 - lineheight,
                         r.x + 1 + i, r.y + r.height - 1);
 
       if (mLogAxis)
@@ -869,7 +869,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
          px = int ((bestpeak - xMin) * width / (xMax - xMin));
 
       dc.SetPen(wxPen(wxColour(160,160,160), 1, wxSOLID));
-      dc.DrawLine(r.x + 1 + px, r.y, r.x + 1 + px, r.y + r.height);
+      AColor::Line(dc, r.x + 1 + px, r.y, r.x + 1 + px, r.y + r.height);
 
        // print out info about the cursor location
 

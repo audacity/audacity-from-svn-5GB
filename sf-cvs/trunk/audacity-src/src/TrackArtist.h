@@ -48,12 +48,17 @@ class AUDACITY_DLL_API TrackArtist {
    ~TrackArtist();
 
    void SetColours();
-   void DrawTracks(TrackList * tracks, Track * start,
+   void DrawTracks(TrackList *tracks, Track *start,
                    wxDC & dc, wxRegion & reg,
-                   wxRect & r, wxRect & clip, ViewInfo * viewInfo, 
-                   bool drawEnvelope,bool drawSamples,bool drawSliders);
+                   wxRect & r, wxRect & clip, ViewInfo *viewInfo, 
+                   bool drawEnvelope, bool drawSamples, bool drawSliders);
 
-   void DrawVRuler(Track * t, wxDC * dc, wxRect & r);
+   void DrawTrack(const Track *t,
+                  wxDC & dc, const wxRect & r, const ViewInfo *viewInfo, 
+                  bool drawEnvelope, bool drawSamples, bool drawSliders,
+                  bool hasSolo);
+
+   void DrawVRuler(Track *t, wxDC *dc, wxRect & r);
 
    void UpdateVRuler(Track *t, wxRect & r);
 
@@ -61,57 +66,8 @@ class AUDACITY_DLL_API TrackArtist {
 
    void UpdatePrefs();
 
-   //
-   // Lower-level drawing functions
-   // 
-
-   void DrawWaveform(WaveTrack *track,
-                     wxDC & dc, wxRect & r,
-                     ViewInfo * viewInfo, 
-                     bool drawEnvelope, bool drawSamples,
-                     bool drawSliders, bool dB, bool muted);
-
-   void DrawSpectrum(WaveTrack *track,
-                     wxDC & dc, wxRect & r,
-                     ViewInfo * viewInfo, bool autocorrelation, bool logF);
-#ifdef USE_MIDI
-   void DrawNoteTrack(NoteTrack *track,
-                      wxDC & dc, wxRect & r, ViewInfo * viewInfo);
-#endif // USE_MIDI
-
-   void DrawLabelTrack(LabelTrack *track,
-                       wxDC & dc, wxRect & r, ViewInfo * viewInfo);
-
-   void DrawTimeTrack(TimeTrack *track,
-                       wxDC & dc, wxRect & r, ViewInfo * viewInfo);
-
-   void DrawTimeSlider(WaveTrack *track,
-                       wxDC & dc, wxRect & r, ViewInfo * viewInfo,
-                       bool rightwards);
-
-   void DrawClipWaveform(WaveTrack* track, WaveClip* clip,
-                         wxDC & dc, wxRect & r,
-                         ViewInfo * viewInfo,
-                         bool drawEnvelope,
-                         bool drawSamples,
-                         bool drawSliders,
-                         bool dB, bool muted);
-
-   void DrawClipSpectrum(WaveTrack *track, WaveClip *clip,
-                         wxDC & dc, wxRect & r,
-                         ViewInfo * viewInfo, bool autocorrelation, bool logF);
-
    void InvalidateSpectrumCache(TrackList *tracks);
    void InvalidateSpectrumCache(WaveTrack *track);
-
-   void SetBackgroundBrushes(wxBrush unselectedBrush, wxBrush selectedBrush,
-			     wxPen unselectedPen, wxPen selectedPen) {
-     this->unselectedBrush = unselectedBrush;
-     this->selectedBrush = selectedBrush;
-     this->unselectedPen = unselectedPen;
-     this->selectedPen = selectedPen;
-   }
-
    int GetSpectrumMinFreq(int deffreq);
    int GetSpectrumMaxFreq(int deffreq);
    int GetSpectrumLogMinFreq(int deffreq);
@@ -127,7 +83,76 @@ class AUDACITY_DLL_API TrackArtist {
    void SetSpectrumLogMinFreq(int freq);
    void SetSpectrumLogMaxFreq(int freq);
 
+   void SetBackgroundBrushes(wxBrush unselectedBrush, wxBrush selectedBrush,
+			     wxPen unselectedPen, wxPen selectedPen) {
+     this->unselectedBrush = unselectedBrush;
+     this->selectedBrush = selectedBrush;
+     this->unselectedPen = unselectedPen;
+     this->selectedPen = selectedPen;
+   }
+
  private:
+
+   //
+   // Lower-level drawing functions
+   // 
+
+   void DrawWaveform(WaveTrack *track,
+                     wxDC & dc, const wxRect & r, const ViewInfo *viewInfo, 
+                     bool drawEnvelope, bool drawSamples, bool drawSliders,
+                     bool dB, bool muted);
+
+   void DrawSpectrum(WaveTrack *track,
+                     wxDC & dc, const wxRect & r, const ViewInfo *viewInfo,
+                     bool autocorrelation, bool logF);
+#ifdef USE_MIDI
+   void DrawNoteTrack(NoteTrack *track,
+                      wxDC & dc, const wxRect & r, const ViewInfo *viewInfo);
+#endif // USE_MIDI
+
+   void DrawLabelTrack(LabelTrack *track,
+                       wxDC & dc, const wxRect & r, const ViewInfo *viewInfo);
+
+   void DrawTimeTrack(TimeTrack *track,
+                      wxDC & dc, const wxRect & r, const ViewInfo *viewInfo);
+
+   void DrawTimeSlider(WaveTrack *track,
+                       wxDC & dc, const wxRect & r, const ViewInfo *viewInfo,
+                       bool rightwards);
+
+   void DrawClipWaveform(WaveTrack *track, WaveClip *clip,
+                         wxDC & dc, const wxRect & r, const ViewInfo *viewInfo,
+                         bool drawEnvelope, bool drawSamples, bool drawSliders,
+                         bool dB, bool muted);
+
+   void DrawClipSpectrum(WaveTrack *track, WaveClip *clip,
+                         wxDC & dc, const wxRect & r, const ViewInfo *viewInfo,
+                         bool autocorrelation, bool logF);
+
+   // Waveform utility functions
+
+   void DrawWaveformBackground(wxDC & dc, const wxRect &r, const double env[],
+                               float zoomMin, float zoomMax, bool dB,
+                               const sampleCount where[],
+                               sampleCount ssel0, sampleCount ssel1,
+                               bool drawEnvelope);
+
+   void DrawMinMaxRMS(wxDC & dc, const wxRect & r, const double env[],
+                      float zoomMin, float zoomMax, bool dB,
+                      const float min[], const float max[], const float rms[],
+                      const int bl[], bool showProgress, bool muted);
+
+   void DrawIndividualSamples(wxDC & dc, const wxRect & r,
+                              float zoomMin, float zoomMax, bool dB,
+                              WaveClip *clip,
+                              double t0, double pps, double h,
+                              bool drawSamples, bool showPoints, bool muted);
+
+   void DrawNegativeOffsetTrackArrows(wxDC & dc, const wxRect & r);
+
+   void DrawEnvelope(wxDC & dc, const wxRect & r, const double env[],
+                     float zoomMin, float zoomMax, bool dB);
+   void DrawEnvLine(wxDC & dc, const wxRect & r, int x, int y, int cy, bool top);
 
    // Preference values
    float mdBrange;            // "/GUI/EnvdBRange"
@@ -192,41 +217,6 @@ class AUDACITY_DLL_API TrackArtist {
    int findNotesNOld;
    bool findNotesQuantizeOld;
 #endif
-
-   // Waveform utility functions
-
-   void DrawWaveformBackground(wxDC &dc, wxRect r, uchar *imageBuffer,
-                               sampleCount *where, sampleCount ssel0, sampleCount ssel1,
-                               double *env, 
-                               float zoomMin, float zoomMax,
-                               bool dB, bool drawEnvelope);
-
-   void DrawIndividualSamples(wxDC &dc, wxRect r,
-                              WaveTrack *track,                
-                              double t0, double pps, double h,
-                              float zoomMin, float zoomMax,
-                              bool dB,
-                              bool drawSamples,
-                              bool showPoints, bool muted);
-
-   void DrawIndividualClipSamples(wxDC &dc, wxRect r,
-                                        WaveClip *clip,
-                                        double t0, double pps, double h,
-                                        float zoomMin, float zoomMax,
-                                        bool dB,
-                                        bool drawSamples,
-                                        bool showPoints, bool muted);
-
-   void DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
-                      float zoomMin, float zoomMax,
-                      double *envValues,
-                      float *min, float *max, float *rms,int* bl,
-                      bool dB, bool muted, bool showProgress);
-
-   void DrawNegativeOffsetTrackArrows(wxDC &dc, wxRect &r);
-
-   void DrawEnvLine(wxDC &dc, wxRect r, int x, int y, bool top);
-
 };
 
 extern int GetWaveYPos(float value, float min, float max,

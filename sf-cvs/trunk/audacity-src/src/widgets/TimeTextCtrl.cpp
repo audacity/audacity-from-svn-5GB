@@ -835,13 +835,12 @@ bool TimeTextCtrl::Layout()
    if (mMenuEnabled) {
       wxRect r(mWidth, 0, mButtonWidth - 1, mHeight - 1);
       AColor::Bevel(memDC, true, r);
+      memDC.SetBrush(*wxBLACK_BRUSH);
       memDC.SetPen(*wxBLACK_PEN);
-      int triWid = mButtonWidth - 2;
-      int xStart = mWidth + 1;
-      int yStart = (mHeight / 2) - 2;
-      for (i = 0; i <= (unsigned int)(triWid / 2); i++) {
-         memDC.DrawLine(xStart + i, yStart + i, xStart + triWid - i, yStart + i);
-      }
+      AColor::Arrow(memDC,
+                    mWidth + 1,
+                    (mHeight / 2) - 2,
+                    mButtonWidth - 2);
    }
    return true;
 }

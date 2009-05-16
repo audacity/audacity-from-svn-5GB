@@ -61,6 +61,7 @@ various graphing code, such as provided by FreqWindow and FilterPanel.
 
 #include "../Audacity.h"
 #include "Equalization.h"
+#include "../AColor.h"
 #include "../ShuttleGui.h"
 #include "../PlatformCompatibility.h"
 #include "../FileNames.h"
@@ -731,13 +732,15 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    memDC.DrawRectangle(border);
 
    mEnvRect = border;
-   mEnvRect.Deflate( 2, 2 );
+   mEnvRect.Deflate(2, 2);
+//   mEnvRect.height--;
 
    // Pure blue x-axis line
    memDC.SetPen(wxPen(theTheme.Colour( clrGraphLines ), 1, wxSOLID));
    int center = (int) (mEnvRect.height * dBMax/(dBMax-dBMin) + .5);
-   memDC.DrawLine(mEnvRect.x, mEnvRect.y + center,
-                  mEnvRect.x + mEnvRect.width, mEnvRect.y + center);
+   AColor::Line(memDC,
+                mEnvRect.GetLeft(), mEnvRect.y + center,
+                mEnvRect.GetRight(), mEnvRect.y + center);
 
    // Med-blue envelope line
    memDC.SetPen(wxPen(theTheme.Colour( clrGraphLines ), 3, wxSOLID));
@@ -751,9 +754,9 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    {
       x = mEnvRect.x + i;
       y = lrint(mEnvRect.height*((dBMax-values[i])/(dBMax-dBMin)) + .25 ); //needs more optimising, along with'what you get'?
-      if( y > mEnvRect.height)
+      if( y >= mEnvRect.height)
       {
-         y = mEnvRect.height;
+         y = mEnvRect.height - 1;
          off = true;
       }
       else
@@ -763,8 +766,8 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
       }
       if ( (i != 0) & (!off1) )
       {
-         memDC.DrawLine(xlast, ylast,
-                        x, mEnvRect.y + y);
+         AColor::Line(memDC, xlast, ylast,
+                      x, mEnvRect.y + y);
       }
       off1 = off;
       xlast = x;
@@ -818,14 +821,14 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
          yF = dBMin;
       yF = center-scale*yF;
       if(yF>mEnvRect.height)
-         yF = mEnvRect.height;
+         yF = mEnvRect.height - 1;
       if(yF<0.)
          yF=0.;
       y = (int)(yF+.5);
 
       if (i != 0)
       {
-         memDC.DrawLine(xlast, ylast, x, mEnvRect.y + y);
+         AColor::Line(memDC, xlast, ylast, x, mEnvRect.y + y);
       }
       xlast = x;
       ylast = mEnvRect.y + y;
