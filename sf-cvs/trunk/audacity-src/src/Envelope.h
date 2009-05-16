@@ -95,7 +95,7 @@ class Envelope : public XMLTagHandler {
 
    // Event Handlers
 
-   void Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
+   void Draw(wxDC & dc, const wxRect & r, double h, double pps, bool dB,
              float zoomMin=-1.0, float zoomMax=1.0);
 
    // Each ofthese returns true if parents needs to be redrawn
@@ -134,7 +134,7 @@ class Envelope : public XMLTagHandler {
    /** \brief Get envelope value at time t */
    double GetValue(double t) const;
    /** \brief Get envelope value at pixel X */
-   double GetValueAtX( int x, wxRect & r, double h, double pps); 
+   double GetValueAtX(int x, const wxRect & r, double h, double pps);
 
    /** \brief Get many envelope points at once.
     *

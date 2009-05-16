@@ -25,6 +25,8 @@ class AColor {
    static void Init();
    static void ReInit();
 
+   static void Arrow(wxDC & dc, wxCoord x, wxCoord y, int width, bool down = true);
+   static void Line(wxDC & dc, wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2);
    static void DrawFocus(wxDC & dc, wxRect & r);
    static void Bevel(wxDC & dc, bool up, wxRect & r);
    static void BevelTrackInfo(wxDC & dc, bool up, wxRect & r);

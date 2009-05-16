@@ -133,7 +133,7 @@ void Grabber::DrawGrabber( wxDC & dc )
 
    // Cache
    left = r.GetLeft();
-   right = r.GetRight() + 1;  //+1 for DrawLine()'s lack of not plotting last pixel
+   right = r.GetRight();
    top = r.GetTop();
    bottom = r.GetBottom();
 
@@ -146,7 +146,7 @@ void Grabber::DrawGrabber( wxDC & dc )
    }
 
    for (y = top; y < bottom; y += 4) {
-      dc.DrawLine(left, y, right, y);
+      AColor::Line(dc, left, y, right, y);
    }
 
    // Draw the pushed bumps
@@ -158,7 +158,7 @@ void Grabber::DrawGrabber( wxDC & dc )
    }
 
    for (y = top + 1; y <= bottom; y += 4) {
-      dc.DrawLine(left, y, right, y);
+      AColor::Line(dc, left, y, right, y);
    }
 }
 

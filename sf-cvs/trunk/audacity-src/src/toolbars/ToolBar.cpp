@@ -547,7 +547,7 @@ void ToolBar::OnPaint( wxPaintEvent & event )
          }
          wxPen Pen( col );
          dc.SetPen(Pen );
-         dc.DrawLine( 0, y, sz.x, y );
+         AColor::Line(dc, 0, y, sz.x, y );
       }
    }
 #endif
@@ -558,8 +558,8 @@ void ToolBar::OnPaint( wxPaintEvent & event )
       wxSize sz = GetSize();
 
       AColor::Dark( &dc, false );
-      dc.DrawLine( sz.x - 4,  0, sz.x - 4, sz.y );
-      dc.DrawLine( sz.x - 1,  0, sz.x - 1, sz.y );
+      AColor::Line(dc, sz.x - 4,  0, sz.x - 4, sz.y );
+      AColor::Line(dc, sz.x - 1,  0, sz.x - 1, sz.y );
    }
 }
 

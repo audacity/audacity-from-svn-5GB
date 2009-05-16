@@ -67,6 +67,80 @@ wxBrush AColor::tooltipBrush;
 wxPen AColor::sparePen;
 wxBrush AColor::spareBrush;
 
+//
+// Draw an upward or downward pointing arrow.
+//
+void AColor::Arrow(wxDC & dc, wxCoord x, wxCoord y, int width, bool down)
+{
+   if (width & 0x01) {
+      width--;
+   }
+
+   wxPoint pt[3];
+   int half = width / 2;
+
+   if (down) {
+      pt[0].x =     0; pt[0].y = 0;
+      pt[1].x = width; pt[1].y = 0;
+      pt[2].x =  half; pt[2].y = half;
+   }
+   else {
+      pt[0].x =     0; pt[0].y = half;
+      pt[1].x =  half; pt[1].y = 0;
+      pt[2].x = width; pt[2].y = half;
+   }
+   
+   dc.DrawPolygon(3, pt, x, y);
+}
+
+//
+// Draw a line while accounting for differences in wxWidgets versions 
+//
+void AColor::Line(wxDC & dc, wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2)
+{
+   // As of 2.8.9 (possibly earlier), wxDC::DrawLine() on the Mac draws the
+   // last point since it is now based on the new wxGraphicsContext system.
+   // Make the other platforms do the same thing since the other platforms
+   // "may" follow they get wxGraphicsContext going.
+#if defined(__WXMAC__)
+   dc.DrawLine(x1, y1, x2, y2);
+#else
+   bool point = false;
+
+   if (x1 == x2) {
+      if (y1 < y2) {
+         y2++;
+      }
+      else if (y2 < y1) {
+         y1++;
+      }
+      else {
+         point = true;
+      }
+   }
+   else if (y1 == y2) {
+      if (x1 < x2) {
+         x2++;
+      }
+      else if (x2 < x1) {
+         x1++;
+      }
+      else {
+         point = true;
+      }
+   }
+   else {
+      dc.DrawPoint(x2, y2);
+   }
+
+   if (point) {
+      dc.DrawPoint(x2, y2);
+   }
+   else {
+      dc.DrawLine(x1, y1, x2, y2);
+   }
+#endif
+}
 
 //
 // Draws a focus rectangle (Taken directly from wxWidgets source)
@@ -113,16 +187,16 @@ void AColor::Bevel(wxDC & dc, bool up, wxRect & r)
    else
       AColor::Dark(&dc, false);
 
-   dc.DrawLine(r.x, r.y, r.x + r.width, r.y);
-   dc.DrawLine(r.x, r.y, r.x, r.y + r.height);
+   AColor::Line(dc, r.x, r.y, r.x + r.width, r.y);
+   AColor::Line(dc, r.x, r.y, r.x, r.y + r.height);
 
    if (!up)
       AColor::Light(&dc, false);
    else
       AColor::Dark(&dc, false);
 
-   dc.DrawLine(r.x + r.width, r.y, r.x + r.width, r.y + r.height);
-   dc.DrawLine(r.x, r.y + r.height, r.x + r.width, r.y + r.height);
+   AColor::Line(dc, r.x + r.width, r.y, r.x + r.width, r.y + r.height);
+   AColor::Line(dc, r.x, r.y + r.height, r.x + r.width, r.y + r.height);
 }
 
 wxColour AColor::Blend( const wxColour & c1, const wxColour & c2 )

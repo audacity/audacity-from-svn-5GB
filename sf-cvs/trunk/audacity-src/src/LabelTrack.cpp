@@ -244,7 +244,7 @@ void LabelTrack::ResetFont()
 /// take priority over the ones earlier, so because centering 
 /// is the first thing we do, it's the first thing we lose if 
 /// we can't do everything we want to.
-void LabelTrack::ComputeTextPosition(wxRect & r, int index)
+void LabelTrack::ComputeTextPosition(const wxRect & r, int index)
 {
    // xExtra is extra space 
    // between the text and the endpoints.
@@ -386,7 +386,7 @@ void LabelTrack::ComputeTextPosition(wxRect & r, int index)
 /// ComputeLayout determines which row each label
 /// should be placed on, and reserves space for it.
 /// Function assumes that the labels are sorted.
-void LabelTrack::ComputeLayout( wxRect & r, double h, double pps)
+void LabelTrack::ComputeLayout(const wxRect & r, double h, double pps)
 {
    int i;
    int iRow;
@@ -459,7 +459,7 @@ LabelStruct::LabelStruct() {
 /// of the start or end of a label.
 ///   @param  dc the device context
 ///   @param  r  the LabelTrack rectangle.
-void LabelStruct::DrawLines( wxDC & dc, wxRect & r)
+void LabelStruct::DrawLines(wxDC & dc, const wxRect & r)
 {
    // How far out from the centre line should the vertical lines
    // start, i.e. what is the y position of the icon?
@@ -475,21 +475,21 @@ void LabelStruct::DrawLines( wxDC & dc, wxRect & r)
    if((x  >= r.x) && (x  <= (r.x+r.width)))
    {
       // Draw line above and below left dragging widget.
-      dc.DrawLine(x, r.y,  x, yIconStart);
-      dc.DrawLine(x, yIconEnd, x, r.y + r.height);
+      AColor::Line(dc, x, r.y,  x, yIconStart - 1);
+      AColor::Line(dc, x, yIconEnd, x, r.y + r.height);
    }
    if((x1 >= r.x) && (x1 <= (r.x+r.width)))
    {
       // Draw line above and below right dragging widget.
-      dc.DrawLine(x1, r.y,  x1, yIconStart);
-      dc.DrawLine(x1, yIconEnd, x1, r.y + r.height);
+      AColor::Line(dc, x1, r.y,  x1, yIconStart - 1);
+      AColor::Line(dc, x1, yIconEnd, x1, r.y + r.height);
    }
 }
 
 /// DrawGlyphs draws the wxIcons at the start and end of a label.
 ///   @param  dc the device context
 ///   @param  r  the LabelTrack rectangle.
-void LabelStruct::DrawGlyphs( wxDC & dc, wxRect & r, int GlyphLeft, int GlyphRight)
+void LabelStruct::DrawGlyphs(wxDC & dc, const wxRect & r, int GlyphLeft, int GlyphRight)
 {
    if (y<0) 
       return;
@@ -510,7 +510,7 @@ void LabelStruct::DrawGlyphs( wxDC & dc, wxRect & r, int GlyphLeft, int GlyphRig
 /// behind the text itself.
 ///   @param  dc the device context
 ///   @param  r  the LabelTrack rectangle.
-void LabelStruct::DrawText( wxDC & dc, wxRect & r)
+void LabelStruct::DrawText(wxDC & dc, const wxRect & r)
 {
    if (y<0) 
       return;
@@ -532,7 +532,7 @@ void LabelStruct::DrawText( wxDC & dc, wxRect & r)
    }
 }
 
-void LabelStruct::DrawTextBox( wxDC & dc, wxRect & r) 
+void LabelStruct::DrawTextBox(wxDC & dc, const wxRect & r) 
 {
    if (y<0) 
       return;
@@ -629,7 +629,7 @@ bool LabelTrack::CalcCursorX(wxWindow * parent, int * x)
 /// Draw calls other functions to draw the LabelTrack.
 ///   @param  dc the device context
 ///   @param  r  the LabelTrack rectangle.
-void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
+void LabelTrack::Draw(wxDC & dc, const wxRect & r, double h, double pps,
                       double sel0, double sel1)
 {
    if(msFont.Ok())
@@ -794,7 +794,9 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
       const int CursorWidth=2;
       if (mDrawCursor) {
          currentPen.SetWidth(CursorWidth);
-         dc.DrawLine(xPos-1, mLabels[i]->y - mFontHeight/2 + 1, xPos-1, mLabels[i]->y + mFontHeight/2);
+         AColor::Line(dc,
+                      xPos-1, mLabels[i]->y - mFontHeight/2 + 1,
+                      xPos-1, mLabels[i]->y + mFontHeight/2 - 1);
          currentPen.SetWidth(1);
       }
    }

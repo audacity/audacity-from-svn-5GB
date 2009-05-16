@@ -848,13 +848,12 @@ void Meter::HandlePaint(wxDC &dc)
       {
          wxRect r = mMenuRect;
          AColor::Bevel(dc, true, r);
+         dc.SetBrush(*wxBLACK_BRUSH);
          dc.SetPen(*wxBLACK_PEN);
-         int triWid = 11;
-         int xStart = r.x+3;
-         int yStart = r.y+4;
-         for(i=0;i<=triWid/2;i++){
-            dc.DrawLine(xStart+i, yStart+i, xStart + triWid - i,yStart+i);
-         }
+         AColor::Arrow(dc,
+                       r.x + 3,
+                       r.y + 5,
+                       10);
       }
 
       if (mNumBars>0)
@@ -920,9 +919,9 @@ void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
    AColor::Dark(&dc, false);
    for(i=0; i<mNumTicks; i++)
       if (meterBar->vert)
-         dc.DrawLine(r.x+r.width/2-1, mTick[i], r.x+r.width/2+1, mTick[i]);
+         AColor::Line(dc, r.x+r.width/2-1, mTick[i], r.x+r.width/2+1, mTick[i]);
       else
-         dc.DrawLine(mTick[i], r.y+r.height/2-1, mTick[i], r.y+r.height/2+1);
+         AColor::Line(dc, mTick[i], r.y+r.height/2-1, mTick[i], r.y+r.height/2+1);
    */
 
    dc.SetBrush(*wxTRANSPARENT_BRUSH);
@@ -930,18 +929,18 @@ void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
 
    if (meterBar->vert) {
       int ht = (int)(meterBar->peakHold * r.height + 0.5);
-      dc.DrawLine(r.x+1, r.y + r.height - ht,
-                  r.x+r.width, r.y + r.height - ht);
+      AColor::Line(dc, r.x+1, r.y + r.height - ht,
+                   r.x+r.width-1, r.y + r.height - ht);
       if (ht > 1)
-         dc.DrawLine(r.x+1, r.y + r.height - ht + 1,
-                     r.x+r.width, r.y + r.height - ht + 1);
+         AColor::Line(dc, r.x+1, r.y + r.height - ht + 1,
+                      r.x+r.width-1, r.y + r.height - ht + 1);
       dc.SetPen(mPeakPeakPen);
       ht = (int)(meterBar->peakPeakHold * r.height + 0.5);
-      dc.DrawLine(r.x+1, r.y + r.height - ht,
-                  r.x+r.width, r.y + r.height - ht);
+      AColor::Line(dc, r.x+1, r.y + r.height - ht,
+                   r.x+r.width-1, r.y + r.height - ht);
       if (ht > 1)
-         dc.DrawLine(r.x+1, r.y + r.height - ht + 1,
-                     r.x+r.width, r.y + r.height - ht + 1);
+         AColor::Line(dc, r.x+1, r.y + r.height - ht + 1,
+                      r.x+r.width-1, r.y + r.height - ht + 1);
 
       dc.SetPen(mPen);
       ht = (int)(meterBar->peak * r.height + 0.5);
@@ -954,15 +953,15 @@ void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
    }
    else {
       int wd = (int)(meterBar->peakHold * r.width + 0.5);
-      dc.DrawLine(r.x + wd, r.y + 1, r.x + wd, r.y + r.height);
+      AColor::Line(dc, r.x + wd, r.y + 1, r.x + wd, r.y + r.height - 1);
       if (wd > 1)
-         dc.DrawLine(r.x + wd - 1, r.y + 1, r.x + wd - 1, r.y + r.height);
+         AColor::Line(dc, r.x + wd - 1, r.y + 1, r.x + wd - 1, r.y + r.height - 1);
 
       dc.SetPen(mPeakPeakPen);
       wd = (int)(meterBar->peakPeakHold * r.width + 0.5);
-      dc.DrawLine(r.x + wd, r.y + 1, r.x + wd, r.y + r.height);
+      AColor::Line(dc, r.x + wd, r.y + 1, r.x + wd, r.y + r.height - 1);
       if (wd > 1)
-         dc.DrawLine(r.x + wd - 1, r.y + 1, r.x + wd - 1, r.y + r.height);
+         AColor::Line(dc, r.x + wd - 1, r.y + 1, r.x + wd - 1, r.y + r.height - 1);
       
       dc.SetPen(mPen);
       wd = (int)(meterBar->peak * r.width + 0.5);
@@ -980,11 +979,11 @@ void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
 
    dc.SetBrush(*wxTRANSPARENT_BRUSH);
    dc.SetPen(mLightPen);
-   dc.DrawLine(r.x, r.y, r.x + r.width, r.y);
-   dc.DrawLine(r.x, r.y, r.x, r.y + r.height);
+   AColor::Line(dc, r.x, r.y, r.x + r.width, r.y);
+   AColor::Line(dc, r.x, r.y, r.x, r.y + r.height);
    dc.SetPen(mDarkPen);
-   dc.DrawLine(r.x + r.width, r.y, r.x + r.width, r.y + r.height);
-   dc.DrawLine(r.x, r.y + r.height, r.x + r.width + 1, r.y + r.height);
+   AColor::Line(dc, r.x + r.width, r.y, r.x + r.width, r.y + r.height);
+   AColor::Line(dc, r.x, r.y + r.height, r.x + r.width, r.y + r.height);
 
    if (mClip) {
       if (meterBar->clipping)

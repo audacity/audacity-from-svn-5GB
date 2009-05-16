@@ -740,8 +740,8 @@ void EffectAutoDuckPanel::OnPaint(wxPaintEvent& evt)
       
       dc.SetPen(wxPen(*wxBLACK, 1, wxDOT));
       
-      dc.DrawLine(FADE_DOWN_START, 10, FADE_DOWN_START, clientHeight - 10);
-      dc.DrawLine(FADE_UP_START, 10, FADE_UP_START, clientHeight - 10);
+      AColor::Line(dc, FADE_DOWN_START, 10, FADE_DOWN_START, clientHeight - 10);
+      AColor::Line(dc, FADE_UP_START, 10, FADE_UP_START, clientHeight - 10);
       
       dc.SetPen(AColor::envelopePen);
       dc.SetBrush(*wxWHITE_BRUSH);

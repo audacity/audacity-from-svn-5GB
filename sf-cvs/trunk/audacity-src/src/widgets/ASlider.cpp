@@ -568,6 +568,7 @@ void LWSlider::Draw()
    }
 
    mCenterY = mHeight - 9;
+
    mThumbWidth = mThumbBitmap->GetWidth();
    mThumbHeight = mThumbBitmap->GetHeight();
 
@@ -595,7 +596,7 @@ void LWSlider::Draw()
    dc->Clear();
 
    AColor::Dark(dc, false);
-   dc->DrawLine(mLeftX, mCenterY+1, mRightX+2, mCenterY+1);
+   AColor::Line(*dc, mLeftX, mCenterY+1, mRightX+2, mCenterY+1);
 
    // Draw +/- or L/R first.  We need to draw these before the tick marks.
    if (mStyle == PAN_SLIDER)
@@ -634,9 +635,9 @@ void LWSlider::Draw()
 #else
       dc->SetPen(*wxBLACK_PEN);
 #endif
-      dc->DrawLine(mLeftX, mCenterY-10, mLeftX+5, mCenterY-10);
-      dc->DrawLine(mRightX-5, mCenterY-10, mRightX, mCenterY-10);
-      dc->DrawLine(mRightX-3, mCenterY-12, mRightX-3, mCenterY-7);
+      AColor::Line(*dc, mLeftX, mCenterY-10, mLeftX+4, mCenterY-10);
+      AColor::Line(*dc, mRightX-5, mCenterY-10, mRightX-1, mCenterY-10);
+      AColor::Line(*dc, mRightX-3, mCenterY-12, mRightX-3, mCenterY-8);
    }
 
 
@@ -649,9 +650,9 @@ void LWSlider::Draw()
          int_d = (int)d;
          int ht = (int_d==0 || int_d==divs? 5: 3);
          AColor::Light(dc, false);
-         dc->DrawLine(mLeftX+p, mCenterY-ht, mLeftX+p, mCenterY);
+         AColor::Line(*dc, mLeftX+p, mCenterY-ht, mLeftX+p, mCenterY-1);
          AColor::Dark(dc, false);
-         dc->DrawLine(mLeftX+p+1, mCenterY-ht+1, mLeftX+p+1, mCenterY);
+         AColor::Line(*dc, mLeftX+p+1, mCenterY-ht+1, mLeftX+p+1, mCenterY-1);
       }
       d += upp;
    }

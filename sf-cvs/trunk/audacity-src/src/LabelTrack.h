@@ -40,10 +40,10 @@ class LabelStruct
 {
 public:
    LabelStruct();
-   void DrawLines( wxDC & dc, wxRect & r);
-   void DrawGlyphs( wxDC & dc, wxRect & r, int GlyphLeft, int GlyphRight);
-   void DrawText( wxDC & dc, wxRect & r);
-   void DrawTextBox( wxDC & dc, wxRect & r);
+   void DrawLines( wxDC & dc, const wxRect & r);
+   void DrawGlyphs( wxDC & dc, const wxRect & r, int GlyphLeft, int GlyphRight);
+   void DrawText( wxDC & dc, const wxRect & r);
+   void DrawTextBox( wxDC & dc, const wxRect & r);
    void DrawHighlight( wxDC & dc, int xPos1, int xPos2, int charHeight);
    void getXPos( wxDC & dc, int * xPos1, int cursorPos);
    
@@ -88,7 +88,7 @@ class LabelTrack:public Track {
 
    static void ResetFont();
 
-   void Draw(wxDC & dc, wxRect & r, double h, double pps,
+   void Draw(wxDC & dc, const wxRect & r, double h, double pps,
              double sel0, double sel1);
 
    int getSelectedIndex() const { return mSelIndex; }
@@ -210,8 +210,8 @@ class LabelTrack:public Track {
    // Used only for a LabelTrack on the clipboard
    double mClipLen;
 
-   void ComputeLayout(wxRect & r, double h, double pps);
-   void ComputeTextPosition(wxRect & r, int index);
+   void ComputeLayout(const wxRect & r, double h, double pps);
+   void ComputeTextPosition(const wxRect & r, int index);
    void SetCurrentCursorPosition(wxDC & dc, int xPos);
 
    void calculateFontHeight(wxDC & dc);

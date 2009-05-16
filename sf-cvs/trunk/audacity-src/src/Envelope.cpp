@@ -158,22 +158,15 @@ double Envelope::fromDB(double value) const
    return pow(10.0, ((fabs(value) * envdBRange) - envdBRange) / 20.0)*sign;;
 }
 
-void DrawPoint(wxDC & dc, wxRect & r, int x, int y, bool top, bool contour)
+void DrawPoint(wxDC & dc, const wxRect & r, int x, int y, bool top)
 {
    if (y >= 0 && y <= r.height) {
-      if(contour){
-         wxRect circle(r.x + x - 2, r.y + y - 2,
-                       4, 4);
-         dc.DrawEllipse(circle);
-      }else{
-         wxRect circle(r.x + x - 2, r.y + (top? y-1: y-4),
-                       4, 4);
-         dc.DrawEllipse(circle);
-      }
+      wxRect circle(r.x + x, r.y + (top ? y - 1: y - 2), 4, 4);
+      dc.DrawEllipse(circle);
    }
 }
 
-void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
+void Envelope::Draw(wxDC & dc, const wxRect & r, double h, double pps, bool dB,
                     float zoomMin, float zoomMax)
 {
    h -= mOffset;
@@ -193,25 +186,36 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
 
          double v = mEnv[i]->val;
          int x = int ((mEnv[i]->t - h) * pps);
-         int y,y2;
+         int y, y2;
 
          y = GetWaveYPos(v, zoomMin, zoomMax, r.height, dB,
             true, dBr, false);
-         DrawPoint(dc, r, x, y, true, false);
-
-         if (mMirror) {
+         if (!mMirror) {
+            DrawPoint(dc, r, x, y, true);
+         }
+         else {
             y2 = GetWaveYPos(-v-.000000001, zoomMin, zoomMax, r.height, dB,
                true, dBr, false);
-            DrawPoint(dc, r, x, y2, false, false);
+
+            // This follows the same logic as the envelop drawing in
+            // TrackArtist::DrawEnvelope().
+            if (y2 - y < 9) {
+               int value = (int)((zoomMax / (zoomMax - zoomMin)) * r.height);
+               y = value - 4;
+               y2 = value + 4;
+            }
+
+            DrawPoint(dc, r, x, y, true);
+            DrawPoint(dc, r, x, y2, false);
 	   
             // Contour
             y = GetWaveYPos(v, zoomMin, zoomMax, r.height, dB,
                false, dBr, false);
             y2 = GetWaveYPos(-v-.000000001, zoomMin, zoomMax, r.height, dB,
                false, dBr, false);
-            if(y<=y2){
-               DrawPoint(dc, r, x, y, true, true);
-               DrawPoint(dc, r, x, y2, false, true);
+            if (y <= y2) {
+               DrawPoint(dc, r, x, y, true);
+               DrawPoint(dc, r, x, y2, false);
             }
          }
 
@@ -965,11 +969,11 @@ double Envelope::GetValue(double t) const
 }
 
 // 'X' is in pixels and relative to track.
-double Envelope::GetValueAtX( int x, wxRect & r, double h, double pps )
+double Envelope::GetValueAtX(int x, const wxRect & r, double h, double pps)
 {
    // Convert x to time.
    double t = (x - r.x) / pps + h ;//-mOffset;
-   return GetValue( t );
+   return GetValue(t);
 }
 
 

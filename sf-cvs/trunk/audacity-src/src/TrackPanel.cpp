@@ -260,18 +260,6 @@ template < class CLIPPEE, class CLIPVAL >
       clippee = val;
 }
 
-/// \todo Probably should move to 'Utils.cpp'.
-void SetTrackInfoFont(wxDC * dc)
-{
-   int fontSize = 10;
-#if defined __WXMSW__ || __WXGTK__
-   fontSize = 8;
-#endif
-
-   wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-   dc->SetFont(labelFont);
-}
-
 enum {
    TrackPanelFirstID = 2000,
    OnSetNameID,
@@ -1040,10 +1028,11 @@ void TrackPanel::DoDrawIndicator(wxDC & dc)
       int y = t->GetY() - mViewInfo->vpos;
 
       // Draw the new indicator in its new location
-      dc.DrawLine( x,
+      AColor::Line(dc,
+                   x,
                    y + kTopInset + 1,
                    x,
-                   y + t->GetHeight() - 2 );
+                   y + t->GetHeight() - 3 );
    }
 
    mRuler->DrawIndicator( pos, rec );
@@ -1111,11 +1100,11 @@ void TrackPanel::DoDrawCursor(wxDC & dc)
             TimeTrack *tt = (TimeTrack *) t;
             double t0 = tt->warp( mLastCursor - mViewInfo->h );
             int warpedX = GetLeftOffset() + int ( t0 * mViewInfo->zoom );
-            dc.DrawLine( warpedX, top, warpedX, bottom );
+            AColor::Line( dc, warpedX, top, warpedX, bottom );
          }
          else
          {
-            dc.DrawLine( x, top, x, bottom ); // <-- The whole point of this routine.
+            AColor::Line( dc, x, top, x, bottom ); // <-- The whole point of this routine.
          }
       }
    }
@@ -1211,7 +1200,8 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
 
 #if DEBUG_DRAW_TIMING
    sw.Pause();
-   wxLogDebug(wxT("Total: %d milliseconds"), sw.Time() );
+   wxLogDebug(wxT("Total: %d milliseconds"), sw.Time());
+   wxPrintf(wxT("Total: %d milliseconds\n"), sw.Time());
 #endif
 }
 
@@ -3540,8 +3530,13 @@ void TrackPanel::OnContextMenu(wxContextMenuEvent & event)
 void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 {
    // AS: If not a click, ignore the mouse event.
-   if (!(event.LeftDown() || event.LeftDClick()))
+   if (!event.ButtonDown() && !event.ButtonDClick()) {
       return;
+   }
+
+   // MIDI tracks use the right mouse button, but other tracks get confused
+   // if they see anything other than a left click.
+   bool isleft = event.Button(wxMOUSE_BTN_LEFT);
 
    AudacityProject *p = GetProject();
    bool unsafe = (p->GetAudioIOToken()>0 &&
@@ -3560,19 +3555,19 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    }
 
    // LL: Check close box
-   if (CloseFunc(t, r, event.m_x, event.m_y))
+   if (isleft && CloseFunc(t, r, event.m_x, event.m_y))
       return;
 
    // LL: Check title bar for popup
-   if (PopupFunc(t, r, event.m_x, event.m_y))
+   if (isleft &&PopupFunc(t, r, event.m_x, event.m_y))
       return;
 
    // MM: Check minimize buttons on WaveTracks. Must be before
    //     solo/mute buttons, sliders etc.
-   if (MinimizeFunc(t, r, event.m_x, event.m_y))
+   if (isleft && MinimizeFunc(t, r, event.m_x, event.m_y))
       return;
 
-   if (t->GetKind() == Track::Wave)
+   if (isleft && t->GetKind() == Track::Wave)
    {
       // DM: Check Mute and Solo buttons on WaveTracks:
       if (MuteSoloFunc(t, r, event.m_x, event.m_y, false) ||
@@ -3593,13 +3588,16 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
       mTrackInfo.GetTrackControlsRect(r, midiRect);
       if (midiRect.Contains(event.m_x, event.m_y)) {
          ((NoteTrack *) t)->LabelClick(midiRect, event.m_x, event.m_y,
-                                       event.RightDown()
-                                       || event.RightDClick());
+                                       event.Button(wxMOUSE_BTN_RIGHT));
          Refresh(false);
          return;
       }
    }
    #endif // USE_MIDI
+
+   if (!isleft) {
+      return;
+   }
 
    // DM: If they weren't clicking on a particular part of a track label,
    //  deselect other tracks and select this one.
@@ -4844,9 +4842,9 @@ void TrackPanel::DrawEverythingElse(wxDC * dc,
       // changed.  An example is during recording.
 
 #if DEBUG_DRAW_TIMING
-      wxRect rbox = region.GetBox();
-      wxPrintf(wxT("Update Region: %d %d %d %d\n"),
-             rbox.x, rbox.y, rbox.width, rbox.height);
+//      wxRect rbox = region.GetBox();
+//      wxPrintf(wxT("Update Region: %d %d %d %d\n"),
+//             rbox.x, rbox.y, rbox.width, rbox.height);
 #endif
 
       if (region.Contains(0, 0, GetLeftOffset(), trackRect.height)) {
@@ -4882,10 +4880,10 @@ void TrackPanel::DrawEverythingElse(wxDC * dc,
    if (mSnapManager && (mSnapLeft >= 0 || mSnapRight >= 0)) {
       AColor::SnapGuidePen(dc);
       if (mSnapLeft >= 0) {
-         dc->DrawLine((int)mSnapLeft, 0, mSnapLeft, 30000);
+         AColor::Line(*dc, (int)mSnapLeft, 0, mSnapLeft, 30000);
       }
       if (mSnapRight >= 0) {
-         dc->DrawLine((int)mSnapRight, 0, mSnapRight, 30000);
+         AColor::Line(*dc, (int)mSnapRight, 0, mSnapRight, 30000);
       }
    }
 }
@@ -4935,7 +4933,7 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    r.width -= kLeftInset * 2;
    r.height -= kTopInset;
 
-   SetTrackInfoFont(dc);
+   mTrackInfo.SetTrackInfoFont(dc);
    dc->SetTextForeground(theTheme.Colour(clrTrackPanelText));
 
    bool bIsWave = (t->GetKind() == Track::Wave);
@@ -6123,14 +6121,14 @@ void TrackPanel::DrawBordersAroundTrack(Track * t, wxDC * dc,
    dc->SetPen(*wxBLACK_PEN);
    dc->DrawRectangle(r.x, r.y, r.width - 1, r.height - 1);
 
-   dc->DrawLine(labelw, r.y, labelw, r.y + r.height - 1);       // between vruler and TrackInfo
+   AColor::Line(*dc, labelw, r.y, labelw, r.y + r.height - 1);       // between vruler and TrackInfo
 
    // The lines at bottom of 1st track and top of second track of stereo group
    // Possibly replace with DrawRectangle to add left border.
    if (t->GetLinked()) {
       int h1 = r.y + t->GetHeight() - kTopInset;
-      dc->DrawLine(vrul, h1 - 2, r.x + r.width - 1, h1 - 2);
-      dc->DrawLine(vrul, h1 + kTopInset, r.x + r.width - 1, h1 + kTopInset);
+      AColor::Line(*dc, vrul, h1 - 2, r.x + r.width - 1, h1 - 2);
+      AColor::Line(*dc, vrul, h1 + kTopInset, r.x + r.width - 1, h1 + kTopInset);
    }
 }
 
@@ -6143,17 +6141,17 @@ void TrackPanel::DrawShadow(Track * /* t */ , wxDC * dc, const wxRect r)
    dc->SetPen(*wxBLACK_PEN);
 
    // bottom
-   dc->DrawLine(r.x, bottom, right, bottom);
+   AColor::Line(*dc, r.x, bottom, right, bottom);
    // right
-   dc->DrawLine(right, r.y, right, bottom);
+   AColor::Line(*dc, right, r.y, right, bottom);
 
    // background
    AColor::Dark(dc, false);
 
    // bottom
-   dc->DrawLine(r.x, bottom, r.x + 1, bottom);
+   AColor::Line(*dc, r.x, bottom, r.x + 1, bottom);
    // right
-   dc->DrawLine(right, r.y, right, r.y + 1);   
+   AColor::Line(*dc, right, r.y, right, r.y + 1);   
 }
 
 /// Returns the string to be displayed in the track label
@@ -6921,6 +6919,25 @@ TrackInfo::TrackInfo(wxWindow * pParentIn)
    int i;
    for(i=0; i<16; i++)
       MakeMoreSliders();
+
+   int fontSize = 10;
+#if defined(__WXMSW__) || defined(__WXGTK__)
+   fontSize = 10;
+#endif
+   mFont.Create(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
+
+   int allowableWidth = GetTitleWidth() - 2; // 2 to allow for left/right borders
+   int textWidth, textHeight;
+   do {
+      mFont.SetPointSize(fontSize);
+      pParent->GetTextExtent(_("Stereo, 999999Hz"),
+                             &textWidth,
+                             &textHeight,
+                             NULL,
+                             NULL,
+                             &mFont);
+      fontSize--;
+   } while (textWidth >= allowableWidth);
 }
 
 TrackInfo::~TrackInfo()
@@ -7005,21 +7022,27 @@ void TrackInfo::GetMinimizeRect(const wxRect r, wxRect &dest, bool minimized) co
    dest.height = 15;
 }
 
+/// \todo Probably should move to 'Utils.cpp'.
+void TrackInfo::SetTrackInfoFont(wxDC * dc)
+{
+   dc->SetFont(mFont);
+}
+
 void TrackInfo::DrawBordersWithin(wxDC * dc, const wxRect r, bool bHasMuteSolo )
 {
    dc->SetPen(*wxBLACK_PEN);
    // These black lines are actually within TrackInfo...
-   dc->DrawLine(r.x, r.y + 16, GetTitleWidth(), r.y + 16);      // title bar
-   dc->DrawLine(r.x + 16, r.y, r.x + 16, r.y + 16);     // close box
+   AColor::Line(*dc, r.x, r.y + 16, GetTitleWidth(), r.y + 16);      // title bar
+   AColor::Line(*dc, r.x + 16, r.y, r.x + 16, r.y + 16);     // close box
 
    if( bHasMuteSolo && (r.height > (66+18) ))
    {
-      dc->DrawLine(r.x, r.y + 50, GetTitleWidth(), r.y + 50);  // bevel above mute/solo
-      dc->DrawLine(r.x+48 , r.y+50, r.x+48, r.y + 66);         // line between mute/solo
-      dc->DrawLine(r.x, r.y + 66, GetTitleWidth(), r.y + 66);  // bevel below mute/solo
+      AColor::Line(*dc, r.x, r.y + 50, GetTitleWidth(), r.y + 50);  // bevel above mute/solo
+      AColor::Line(*dc, r.x+48 , r.y+50, r.x+48, r.y + 66);         // line between mute/solo
+      AColor::Line(*dc, r.x, r.y + 66, GetTitleWidth(), r.y + 66);  // bevel below mute/solo
    }
 
-   dc->DrawLine(r.x, r.y + r.height - 19, GetTitleWidth(), r.y + r.height - 19);  // minimize bar
+   AColor::Line(*dc, r.x, r.y + r.height - 19, GetTitleWidth(), r.y + r.height - 19);  // minimize bar
 }
 
 void TrackInfo::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
@@ -7062,8 +7085,8 @@ void TrackInfo::GetTrackControlsRect(const wxRect r, wxRect & dest) const
 
 void TrackInfo::DrawCloseBox(wxDC * dc, const wxRect r, bool down)
 {
-   const int xSize=7;
-   const int offset=5;
+   wxRect bev;
+   GetCloseBoxRect(r, bev);
 
 #ifdef EXPERIMENTAL_THEMING
    wxPen pen( theTheme.Colour( clrTrackPanelText ));
@@ -7072,13 +7095,19 @@ void TrackInfo::DrawCloseBox(wxDC * dc, const wxRect r, bool down)
    dc->SetPen(*wxBLACK_PEN);
 #endif
 
-   // close "x"
-   dc->DrawLine(r.x + offset  ,         r.y + offset, r.x + offset+xSize  , r.y + offset+xSize);
-   dc->DrawLine(r.x + offset+1,         r.y + offset, r.x + offset+xSize+1, r.y + offset+xSize);
-   dc->DrawLine(r.x + xSize + offset  , r.y + offset, r.x + offset,         r.y + offset+xSize);
-   dc->DrawLine(r.x + xSize + offset-1, r.y + offset, r.x + offset-1,       r.y + offset+xSize);
-   wxRect bev;
-   GetCloseBoxRect(r, bev);
+   // Draw the "X" 
+   const int s = 6;
+
+   int ls = bev.x + ((bev.width - s) / 2);
+   int ts = bev.y + ((bev.height - s) / 2);
+   int rs = ls + s;
+   int bs = ts + s;
+
+   AColor::Line(*dc, ls,     ts, rs,     bs);
+   AColor::Line(*dc, ls + 1, ts, rs + 1, bs);
+   AColor::Line(*dc, rs,     ts, ls,     bs);
+   AColor::Line(*dc, rs + 1, ts, ls + 1, bs);
+
    bev.Inflate(-1, -1);
    AColor::BevelTrackInfo(*dc, !down, bev);
 }
@@ -7110,21 +7139,19 @@ void TrackInfo::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
 
    // Pop-up triangle
 #ifdef EXPERIMENTAL_THEMING
-   wxPen pen( theTheme.Colour( clrTrackPanelText ));
-   dc->SetPen( pen );
+   wxColour c = theTheme.Colour( clrTrackPanelText );
 #else
-   dc->SetPen(*wxBLACK_PEN);
+   wxColour c = *wxBLACK;
 #endif
 
-   int xx = r.x + GetTitleWidth() - 16 - kLeftInset;
-   int yy = r.y + 5;
-   int triWid = 11;
-   while (triWid >= 1) {
-      dc->DrawLine(xx, yy, xx + triWid, yy);
-      xx++;
-      yy++;
-      triWid -= 2;
-   }
+   dc->SetPen(c);
+   dc->SetBrush(c);
+
+   int s = 10; // Width of dropdown arrow...height is half of width
+   AColor::Arrow(*dc,
+                 bev.GetRight() - s - 3, // 3 to offset from right border
+                 bev.y + ((bev.height - (s / 2)) / 2),
+                 s);
 
    AColor::BevelTrackInfo(*dc, !down, bev);
 }
@@ -7183,45 +7210,23 @@ void TrackInfo::DrawMinimize(wxDC * dc, const wxRect r, Track * t, bool down, bo
    wxRect bev;
    GetMinimizeRect(r, bev, minimized);
     
+   // Clear background to get rid of previous arrow
    AColor::MediumTrackInfo(dc, t->GetSelected());
    dc->DrawRectangle(bev);
     
-
-   // Calculate center
-   int x = bev.x + bev.width / 2;
-   int y = bev.y + bev.height / 2;
-
-   wxPoint pts[3];
-
-   if (minimized)
-   {
-      pts[0].x = x - 4;
-      pts[0].y = y - 3;
-      pts[1].x = x + 4;
-      pts[1].y = y - 3;
-      pts[2].x = x;
-      pts[2].y = y + 3;
-
-   } else
-   {
-      pts[0].x = x;
-      pts[0].y = y - 3;
-      pts[1].x = x + 4;
-      pts[1].y = y + 3;
-      pts[2].x = x - 4;
-      pts[2].y = y + 3;
-   }
-
 #ifdef EXPERIMENTAL_THEMING
-   wxPen pen( theTheme.Colour( clrTrackPanelText ));
-   wxBrush brush( theTheme.Colour( clrTrackPanelText ));
-   dc->SetPen( pen );
-   dc->SetBrush( brush );
+   wxColour c = theTheme.Colour(clrTrackPanelText);
+   dc->SetBrush(c);
+   dc->SetPen(c);
 #else
    AColor::Dark(dc, t->GetSelected());
 #endif
-   
-   dc->DrawPolygon(3, pts);
+
+   AColor::Arrow(*dc,
+                 bev.x - 5 + bev.width / 2,
+                 bev.y - 2 + bev.height / 2,
+                 10,
+                 minimized);
 
    AColor::BevelTrackInfo(*dc, !down, bev);
 }
