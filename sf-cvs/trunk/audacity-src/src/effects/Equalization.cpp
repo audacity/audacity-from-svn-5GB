@@ -733,7 +733,6 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
 
    mEnvRect = border;
    mEnvRect.Deflate(2, 2);
-//   mEnvRect.height--;
 
    // Pure blue x-axis line
    memDC.SetPen(wxPen(theTheme.Colour( clrGraphLines ), 1, wxSOLID));
