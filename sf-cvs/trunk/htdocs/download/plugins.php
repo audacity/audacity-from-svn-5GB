@@ -12,6 +12,7 @@
 
 <h2><?=$pageTitle?></h2>
 <p><?=_('You can download and install plug-ins to add extra effects to Audacity, or to add more audio generation and analysis capability. Plug-ins appear at the bottom of the "Effect", "Generate" or "Analyze" menus.  To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under "Program Files."  On Mac OS X, it is usually under "Applications."')?></p>
+<p><?=_('<b>Note:</b> You must restart Audacity to make newly added plug-ins appear in the menus.')?></p>   
 
 <h3><?=_("LADSPA Plug-Ins")?></h3>
 <p><?=_('Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity includes some sample LADSPA effects. Windows users can install an additional <a href="http://audacity.sourceforge.net/beta/ladspa/ladspa-0.4.15.exe">set of over 90 LADSPA plug-ins</a>. There is a similar set of LADSPA plug-ins for <a href="http://ardour.org/files/releases/swh-plugins-0.4.15.dmg">Mac</a>. More information and many LADSPA plug-ins for Linux can be found on the <a href="http://www.ladspa.org/">LADSPA web site</a>.')?></p>
