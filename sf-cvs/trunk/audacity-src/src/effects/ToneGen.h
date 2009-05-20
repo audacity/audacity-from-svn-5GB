@@ -57,10 +57,6 @@ class EffectToneGen : public BlockGenerator {
    // Useful only after PromptUser values have been set.
    virtual wxString GetEffectDescription(); 
 
-   virtual int GetEffectFlags() {
-      return BUILTIN_EFFECT | INSERT_EFFECT;
-   }
-
    virtual bool PromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
 

@@ -106,6 +106,7 @@ class AUDACITY_DLL_API Effect {
       // covers most built-in effects.
       return mFlags;
    }
+
    virtual bool TransferParameters( Shuttle & shuttle ){
       return true;
    }
@@ -226,6 +227,9 @@ class AUDACITY_DLL_API Effect {
 
    int GetNumWaveGroups() { return mNumGroups; }
 
+   // Calculates the start time and selection length in samples
+   void GetSamples(WaveTrack *track, sampleCount *start, sampleCount *len);
+
  //
  // protected static data
  //
@@ -234,6 +238,7 @@ class AUDACITY_DLL_API Effect {
  protected:
    static double sDefaultGenerateLen;
    int mFlags;
+   double mLength;
  
  //
  // private methods

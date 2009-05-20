@@ -61,10 +61,11 @@ Effect::Effect()
 {
    mTracks = NULL;
    mOutputWaveTracks = NULL;
+   mLength = 0;
 
    // Can change effect flags later (this is the new way)
    // OR using the old way, over-ride GetEffectFlags().
-   mFlags = BUILTIN_EFFECT | PROCESS_EFFECT | ADVANCED_EFFECT ;
+   mFlags = BUILTIN_EFFECT | PROCESS_EFFECT | ADVANCED_EFFECT;
 }
 
 bool Effect::DoEffect(wxWindow *parent, int flags,
@@ -146,6 +147,32 @@ bool Effect::TrackGroupProgress(int whichGroup, double frac)
    if (updateResult == eProgressSuccess)
      return false;
    return true;
+}
+
+void Effect::GetSamples(WaveTrack *track, sampleCount *start, sampleCount *len)
+{
+   double trackStart = track->GetStartTime();
+   double trackEnd = track->GetEndTime();
+   double t0 = mT0 < trackStart ? trackStart : mT0;
+   double t1 = mT1 > trackEnd ? trackEnd : mT1;
+
+   if (mFlags & INSERT_EFFECT) {
+      t1 = t0 + mLength;
+      if (mT0 == mT1) {
+         // Not really part of the calculation, but convenient to put here
+         track->InsertSilence(t0, t1);
+      }
+   }
+
+   if (t1 > t0) {
+      *start = track->TimeToLongSamples(t0);
+      sampleCount end = track->TimeToLongSamples(t1);
+      *len = (sampleCount)(end - *start);
+   }
+   else {
+      *start = 0;
+      *len  = 0;
+   }
 }
 
 //

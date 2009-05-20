@@ -36,10 +36,6 @@ class LadspaEffect:public Effect {
    
    virtual wxString GetEffectAction();
 
-   virtual int GetEffectFlags() {
-      return flags;
-   }
- 
    virtual bool Init();
 
    virtual bool PromptUser();
@@ -53,12 +49,7 @@ class LadspaEffect:public Effect {
                       sampleCount lstart, sampleCount rstart,
                       sampleCount len);
 
-   void GetSamples(WaveTrack *track,
-                   sampleCount *start,
-                   sampleCount *len);
- 
    wxString pluginName;
-   int flags;
 
    const LADSPA_Descriptor *mData;
    sampleCount mBlockSize;
@@ -72,7 +63,6 @@ class LadspaEffect:public Effect {
    float *inputControls;
    float *outputControls;
    int mainRate;
-   double mLength;
 
    std::set<wxString> mCategories;
 };

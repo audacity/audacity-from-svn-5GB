@@ -71,11 +71,6 @@ class LV2Effect:public Effect {
    /** Get the action string. */
    virtual wxString GetEffectAction();
    
-   /** Get the flags that describe the type of the effect. */
-   virtual int GetEffectFlags() {
-      return flags;
-   }
-   
    virtual bool Init();
 
    virtual bool PromptUser();
@@ -106,20 +101,14 @@ class LV2Effect:public Effect {
                       sampleCount lstart, sampleCount rstart,
                       sampleCount len);
 
-   void GetSamples(WaveTrack *track,
-                   sampleCount *start,
-                   sampleCount *len);
- 
    bool mValid;
    wxString pluginName;
-   int flags;
 
    SLV2Plugin mData;
    sampleCount mBlockSize;
    float **fInBuffer;
    float **fOutBuffer;
    int mainRate;
-   double mLength;
 
    std::set<wxString> mCategories;
    

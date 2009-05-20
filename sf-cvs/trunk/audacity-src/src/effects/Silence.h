@@ -26,7 +26,9 @@ class wxTextCtrl;
 class EffectSilence : public Generator {
 
  public:
-   EffectSilence() { }
+   EffectSilence() {
+      SetEffectFlags(BUILTIN_EFFECT | INSERT_EFFECT);
+   }
 
    virtual wxString GetEffectName() {
       return wxString(_("Silence..."));
@@ -50,10 +52,6 @@ class EffectSilence : public Generator {
    virtual wxString GetEffectDescription() { 
       return wxString::Format(_("Applied effect: Generate Silence, %.6lf seconds"), mDuration); 
    } 
-
-   virtual int GetEffectFlags() {
-      return BUILTIN_EFFECT | INSERT_EFFECT;
-   }
 
    virtual bool PromptUser();
  protected:

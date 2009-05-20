@@ -95,6 +95,7 @@ AudioUnitEffect::AudioUnitEffect(wxString name, Component component):
    mName(name),
    mComponent(component)
 {
+   SetEffectFlags(PLUGIN_EFFECT | PROCESS_EFFECT);
    OSErr result;
 
    mUnit = NULL;
@@ -139,13 +140,6 @@ wxString AudioUnitEffect::GetEffectAction()
                            mName.c_str());
 }
 
-int AudioUnitEffect::GetEffectFlags()
-{
-   int flags = PLUGIN_EFFECT | PROCESS_EFFECT;
-
-   return flags;
-}
- 
 bool AudioUnitEffect::Init()
 {
    ComponentResult auResult;
@@ -242,26 +236,6 @@ bool AudioUnitEffect::Process()
 void AudioUnitEffect::End()
 {
    AudioUnitUninitialize(mUnit);
-}
-
-void AudioUnitEffect::GetSamples(WaveTrack *track,
-                                 sampleCount *start,
-                                 sampleCount *len)
-{
-   double trackStart = track->GetStartTime();
-   double trackEnd = track->GetEndTime();
-   double t0 = mT0 < trackStart? trackStart: mT0;
-   double t1 = mT1 > trackEnd? trackEnd: mT1;
-   
-   if (t1 > t0) {
-      *start = track->TimeToLongSamples(t0);
-      sampleCount end = track->TimeToLongSamples(t1);
-      *len = (sampleCount)(end - *start);
-   }
-   else {
-      *start = 0;
-      *len  = 0;
-   }
 }
 
 bool AudioUnitEffect::SetRateAndChannels(AudioUnit unit,

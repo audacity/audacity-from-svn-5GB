@@ -40,6 +40,7 @@
 
 EffectFindClipping::EffectFindClipping()
 {
+   SetEffectFlags(BUILTIN_EFFECT | ANALYZE_EFFECT);
    mStart = 3;
    mStop = 3;
 }
