@@ -343,9 +343,9 @@ public:
    int GetBorder() { return miBorder; };
 
    void SetSizeHints( int minX = -1, int minY = -1 );
-   void SetSizeHints( wxWindow *window, const wxArrayString & items );
-   void SetSizeHints( wxWindow *window, const wxArrayInt & items );
    void SetSizeHints( const wxArrayString & items );
    void SetSizeHints( const wxArrayInt & items );
+   static void SetSizeHints( wxWindow *window, const wxArrayString & items );
+   static void SetSizeHints( wxWindow *window, const wxArrayInt & items );
 };
 #endif
