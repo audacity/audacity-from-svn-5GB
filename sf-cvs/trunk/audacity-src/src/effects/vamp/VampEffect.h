@@ -45,8 +45,6 @@ class VampEffect : public Effect {
 
    virtual wxString GetEffectAction();
 
-   virtual int GetEffectFlags();
-
    virtual bool Init();
 
    virtual bool PromptUser();
@@ -68,10 +66,6 @@ class VampEffect : public Effect {
    wxString mCategory;
    
    Vamp::Plugin *mPlugin;
-
-   void GetSamples(WaveTrack *track,
-                   sampleCount *start,
-                   sampleCount *len);
 
    void AddFeatures(LabelTrack *track,
                     Vamp::Plugin::FeatureSet &features);

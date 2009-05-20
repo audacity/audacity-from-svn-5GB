@@ -72,7 +72,7 @@ EffectNyquist::EffectNyquist(wxString fName)
 {
    mAction = _("Applying Nyquist Effect...");
    mCmd = wxEmptyString;
-   mFlags = HIDDEN_EFFECT;
+   SetEffectFlags(HIDDEN_EFFECT);
    mInteractive = false;
    mExternal = false;
    mCompiler = false;
@@ -89,7 +89,7 @@ EffectNyquist::EffectNyquist(wxString fName)
       mOK = true;
       mInteractive = true;
       mName = _("Nyquist Prompt...");
-      mFlags = PROCESS_EFFECT | BUILTIN_EFFECT | ADVANCED_EFFECT;
+      SetEffectFlags(PROCESS_EFFECT | BUILTIN_EFFECT | ADVANCED_EFFECT);
       return;
    }
 
@@ -195,13 +195,13 @@ void EffectNyquist::Parse(wxString line)
 
    if (len >= 2 && tokens[0] == wxT("type")) {
       if (tokens[1] == wxT("process")) {
-         mFlags = PROCESS_EFFECT | PLUGIN_EFFECT;
+         SetEffectFlags(PROCESS_EFFECT | PLUGIN_EFFECT);
       }
       else if (tokens[1] == wxT("generate")) {
-         mFlags = INSERT_EFFECT | PLUGIN_EFFECT;
+         SetEffectFlags(INSERT_EFFECT | PLUGIN_EFFECT);
       }
       else if (tokens[1] == wxT("analyze")) {
-         mFlags = ANALYZE_EFFECT | PLUGIN_EFFECT;
+         SetEffectFlags(ANALYZE_EFFECT | PLUGIN_EFFECT);
       }
       return;
    }
@@ -309,7 +309,7 @@ void EffectNyquist::ParseFile()
       return;
 
    mCmd = wxT("");
-   mFlags = PROCESS_EFFECT | PLUGIN_EFFECT;
+   SetEffectFlags(PROCESS_EFFECT | PLUGIN_EFFECT);
    mOK = false;
    mIsSal = false;
    mControls.Clear();
@@ -333,7 +333,7 @@ void EffectNyquist::SetCommand(wxString cmd)
    mExternal = true;
    mInteractive = false;
    mCmd = wxT("");
-   mFlags = INSERT_EFFECT | HIDDEN_EFFECT;
+   SetEffectFlags(INSERT_EFFECT | HIDDEN_EFFECT);
    mOK = false;
    mIsSal = false;
    mControls.Clear();
@@ -496,7 +496,7 @@ bool EffectNyquist::Process()
    mProgressIn = 0;
    mProgressOut = 0;
    mProgressTot = 0;
-   mScale = (mFlags & PROCESS_EFFECT ? 0.5 : 1.0) / GetNumWaveGroups();
+   mScale = (GetEffectFlags() & PROCESS_EFFECT ? 0.5 : 1.0) / GetNumWaveGroups();
 
    mStop = false;
    mBreak = false;
@@ -572,7 +572,7 @@ bool EffectNyquist::ProcessOne()
 {
    nyx_rval rval;
 
-   if (mFlags & INSERT_EFFECT) {
+   if (GetEffectFlags() & INSERT_EFFECT) {
       nyx_set_audio_params(mCurTrack[0]->GetRate(), 0);
    }
    else {
@@ -932,7 +932,7 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
 
    wxFlexGridSizer *grid = new wxFlexGridSizer(4, 0, 0);
 
-   for(unsigned int i=0; i<mControls->GetCount(); i++) {
+   for (size_t i = 0; i < mControls->GetCount(); i++) {
       wxControl  *item;
       NyqControl *ctrl = &((*mControls)[i]);
 
@@ -1029,7 +1029,7 @@ void NyquistDialog::OnSlider(wxCommandEvent & /* event */)
 
    mInHandler = true;
 
-   for (unsigned int i=0; i < mControls->GetCount(); i++) {
+   for (size_t i = 0; i < mControls->GetCount(); i++) {
       NyqControl *ctrl = &((*mControls)[i]);
 
       if (ctrl->type == NYQ_CTRL_STRING || ctrl->type == NYQ_CTRL_CHOICE) {

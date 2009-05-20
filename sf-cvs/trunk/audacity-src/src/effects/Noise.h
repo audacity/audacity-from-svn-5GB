@@ -33,8 +33,9 @@ class EffectNoise : public BlockGenerator {
 
  public:
    EffectNoise() {
-       noiseType=0;
-       noiseAmplitude=1.0;
+      SetEffectFlags(BUILTIN_EFFECT | INSERT_EFFECT);
+      noiseType = 0;
+      noiseAmplitude = 1.0;
    }
 
    virtual wxString GetEffectName() {
@@ -57,10 +58,6 @@ class EffectNoise : public BlockGenerator {
 
    virtual wxString GetEffectAction() {
       return wxString(_("Generating Noise"));
-   }
-
-   virtual int GetEffectFlags() {
-      return BUILTIN_EFFECT | INSERT_EFFECT;
    }
 
    virtual bool PromptUser();

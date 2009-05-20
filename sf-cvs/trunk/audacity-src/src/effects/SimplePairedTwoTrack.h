@@ -66,11 +66,6 @@ protected:
 							sampleCount rstart, sampleCount len);
 
    // It is not usually necessary to override this method
-   void GetSamples(WaveTrack *track, 
-	               sampleCount *start,
-				   sampleCount *len);
-
-   // It is not usually necessary to override this method
    void End();
 
  protected:  
@@ -223,27 +218,6 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::ProcessTwo(int count,
    }
 
    return true;
-}
-
-template<class _DataType,sampleFormat _xxxSample>
-void EffectSimplePairedTwoTrack<_DataType,_xxxSample>::GetSamples(WaveTrack *track,
-										         sampleCount *start,
-										         sampleCount *len)
-{
-   double trackStart = track->GetStartTime();
-   double trackEnd = track->GetEndTime();
-   double t0 = mT0 < trackStart? trackStart: mT0;
-   double t1 = mT1 > trackEnd? trackEnd: mT1;
-   
-   if (t1 > t0) {
-      *start = track->TimeToLongSamples(t0);
-      sampleCount end = track->TimeToLongSamples(t1);
-      *len = (sampleCount)(end - *start);
-   }
-   else {
-      *start = 0;
-      *len  = 0;
-   }
 }
 
 template<class _DataType,sampleFormat _xxxSample>

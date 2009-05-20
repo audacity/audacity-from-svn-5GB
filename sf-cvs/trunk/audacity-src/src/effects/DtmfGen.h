@@ -33,6 +33,7 @@ class EffectDtmf : public Generator {
 
  public:
    EffectDtmf() {
+      SetEffectFlags(BUILTIN_EFFECT | INSERT_EFFECT);
    }
 
    virtual wxString GetEffectName() {
@@ -55,10 +56,6 @@ class EffectDtmf : public Generator {
 
    virtual wxString GetEffectAction() {
       return wxString(_("Generating DTMF tones"));
-   }
-
-   virtual int GetEffectFlags() {
-      return BUILTIN_EFFECT | INSERT_EFFECT;
    }
 
    virtual bool PromptUser();

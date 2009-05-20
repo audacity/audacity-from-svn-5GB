@@ -34,8 +34,6 @@ class AudioUnitEffect:public Effect {
    
    virtual wxString GetEffectAction();
 
-   virtual int GetEffectFlags();
- 
    virtual bool Init();
 
    virtual bool PromptUser();
@@ -47,10 +45,6 @@ class AudioUnitEffect:public Effect {
  private:
    bool SetRateAndChannels(AudioUnit unit,
                            int numChannels, Float64 sampleRate);
-
-   void GetSamples(WaveTrack *track,
-                   sampleCount *start,
-                   sampleCount *len);
 
    bool ProcessStereo(int count, WaveTrack * left, WaveTrack *right,
                       sampleCount lstart, sampleCount rstart,

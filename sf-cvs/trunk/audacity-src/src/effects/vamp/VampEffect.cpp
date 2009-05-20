@@ -42,14 +42,15 @@ VampEffect::VampEffect(Vamp::HostExt::PluginLoader::PluginKey key,
    mName(name),
    mRate(0),
    mCategory(category),
-   mPlugin(0)
+   mPlugin(NULL)
 {
+   SetEffectFlags(PLUGIN_EFFECT | ANALYZE_EFFECT);
 }
 
 VampEffect::~VampEffect()
 {
    delete mPlugin;
-   mPlugin = 0;
+   mPlugin = NULL;
 }
 
 wxString VampEffect::GetEffectName()
@@ -79,11 +80,6 @@ wxString VampEffect::GetEffectAction()
 {
    return wxString::Format(_("Extracting features: %s"),
                            GetEffectName().c_str());
-}
-
-int VampEffect::GetEffectFlags()
-{
-   return PLUGIN_EFFECT | ANALYZE_EFFECT;
 }
 
 bool VampEffect::Init()
@@ -141,26 +137,6 @@ bool VampEffect::PromptUser()
    if (!dlog.GetReturnCode()) return false;
 
    return true;
-}
-
-void VampEffect::GetSamples(WaveTrack *track,
-                            sampleCount *start,
-                            sampleCount *len)
-{
-   double trackStart = track->GetStartTime();
-   double trackEnd = track->GetEndTime();
-   double t0 = mT0 < trackStart ? trackStart : mT0;
-   double t1 = mT1 > trackEnd ? trackEnd : mT1;
-
-   if (t1 > t0) {
-      *start = track->TimeToLongSamples(t0);
-      sampleCount end = track->TimeToLongSamples(t1);
-      *len = (sampleCount)(end - *start);
-   }
-   else {
-      *start = 0;
-      *len  = 0;
-   }
 }
 
 bool VampEffect::Process()

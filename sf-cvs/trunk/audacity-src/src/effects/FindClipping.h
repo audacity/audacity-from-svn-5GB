@@ -53,10 +53,6 @@ class EffectFindClipping:public Effect
    {
       return wxString(_("Detecting clipping"));
    }
-   
-   virtual int GetEffectFlags() {
-      return BUILTIN_EFFECT | ANALYZE_EFFECT;
-   }
 
    virtual wxString GetEffectDescription(); 
 
