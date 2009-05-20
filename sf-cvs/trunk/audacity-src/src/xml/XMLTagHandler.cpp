@@ -150,51 +150,6 @@ bool XMLValueChecker::IsValidSampleFormat(const int nValue)
    return (nValue == int16Sample) || (nValue == int24Sample) || (nValue == floatSample);
 }
 
-
-// See http://www.w3.org/TR/REC-xml for reference
-wxString XMLTagHandler::XMLEsc(wxString s)
-{
-   wxString result;
-   int len = s.Length();
-
-   for(int i=0; i<len; i++) {
-      wxChar c = s.GetChar(i);
-
-      switch (c) {
-         case wxT('\''):
-            result += wxT("&apos;");
-         break;
-
-         case wxT('"'):
-            result += wxT("&quot;");
-         break;
-
-         case wxT('&'):
-            result += wxT("&amp;");
-         break;
-
-         case wxT('<'):
-            result += wxT("&lt;");
-         break;
-
-         case wxT('>'):
-            result += wxT("&gt;");
-         break;
-
-         default:
-            if (!wxIsprint(c)) {
-               result += wxString::Format(wxT("&#x%04x;"), c);
-            }
-            else {
-               result += c;
-            }
-         break;
-      }
-   }
-
-   return result;
-}
-
 bool XMLTagHandler::ReadXMLTag(const char *tag, const char **attrs)
 {
    wxArrayString tmp_attrs;
