@@ -48,13 +48,11 @@ bool TranslationExists(wxArrayString &audacityPathList, wxString code)
    wxGetApp().FindFilesInPathList(wxString::Format(wxT("%s/audacity.mo"),
                                                    code.c_str()),
                                   audacityPathList,
-                                  wxFILE,
                                   results);
    
    wxGetApp().FindFilesInPathList(wxString::Format(wxT("%s/LC_MESSAGES/audacity.mo"),
                                                    code.c_str()),
                                   audacityPathList,
-                                  wxFILE,
                                   results);
    
    return (results.GetCount() > 0);

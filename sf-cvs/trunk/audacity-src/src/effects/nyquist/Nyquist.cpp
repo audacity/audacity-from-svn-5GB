@@ -372,7 +372,7 @@ bool EffectNyquist::SetXlispPath()
                                             pathList);
       }
 
-      wxGetApp().FindFilesInPathList(wxT("nyquist.lsp"), pathList, wxFILE, files);
+      wxGetApp().FindFilesInPathList(wxT("nyquist.lsp"), pathList, files);
 
       if (files.GetCount() > 0) {
          mXlispPath = ::wxPathOnly(files[0]);
