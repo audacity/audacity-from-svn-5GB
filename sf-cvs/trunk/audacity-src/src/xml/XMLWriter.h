@@ -56,6 +56,10 @@ class XMLWriter {
 
    virtual void Write(const wxString &data) = 0;
 
+   // Escape a string, replacing certain characters with their
+   // XML encoding, i.e. '<' becomes '&lt;'
+   wxString XMLEsc(const wxString & s);
+
  protected:
 
    bool mInTag;

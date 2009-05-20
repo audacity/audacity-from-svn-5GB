@@ -103,7 +103,7 @@ void XMLWriter::WriteAttr(const wxString &name, const wxString &value)
 {
    Write(wxString::Format(wxT(" %s=\"%s\""),
       name.c_str(),
-      XMLTagHandler::XMLEsc(value).c_str()));
+      XMLEsc(value).c_str()));
 }
 
 void XMLWriter::WriteAttr(const wxChar *name, const wxChar *value)
@@ -213,7 +213,7 @@ void XMLWriter::WriteData(const wxString &value)
       Write(wxT("\t"));
    }
 
-   Write(XMLTagHandler::XMLEsc(value));
+   Write(XMLEsc(value));
 }
 
 void XMLWriter::WriteData(const wxChar *value)
@@ -240,6 +240,50 @@ void XMLWriter::WriteSubTree(const wxChar *value)
 void XMLWriter::Write(const wxChar *value)
 {
    Write(wxString(value));
+}
+
+// See http://www.w3.org/TR/REC-xml for reference
+wxString XMLWriter::XMLEsc(const wxString & s)
+{
+   wxString result;
+   int len = s.Length();
+
+   for(int i=0; i<len; i++) {
+      wxChar c = s.GetChar(i);
+
+      switch (c) {
+         case wxT('\''):
+            result += wxT("&apos;");
+         break;
+
+         case wxT('"'):
+            result += wxT("&quot;");
+         break;
+
+         case wxT('&'):
+            result += wxT("&amp;");
+         break;
+
+         case wxT('<'):
+            result += wxT("&lt;");
+         break;
+
+         case wxT('>'):
+            result += wxT("&gt;");
+         break;
+
+         default:
+            if (!wxIsprint(c)) {
+               result += wxString::Format(wxT("&#x%04x;"), c);
+            }
+            else {
+               result += c;
+            }
+         break;
+      }
+   }
+
+   return result;
 }
 
 ///

@@ -72,20 +72,6 @@ class AUDACITY_DLL_API XMLTagHandler {
    // handle this child, return NULL and it will be ignored.
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag) = 0;
 
-   // When this method is called, write your own tag and tags for
-   // all of your children to the file.  One tag should appear
-   // per line, and each tag should be preceded with [depth]
-   // tab characters.
-   virtual void WriteXML(XMLWriter &xmlFile) = 0;
-
-   //
-   // Utility methods you should call
-   //
-
-   // Escape a string, replacing certain characters with their
-   // XML encoding, i.e. '<' becomes '&lt;'
-   static wxString XMLEsc(wxString s);
-
    // These functions recieve data from expat.  They do charset
    // conversion and then pass the data to the handlers above.
    bool ReadXMLTag(const char *tag, const char **attrs);
