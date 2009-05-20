@@ -58,8 +58,8 @@
 #include "audiounits/LoadAudioUnits.h"
 #endif
 
-#if defined(__WXMSW__) && !defined(__CYGWIN__)
-#include "VST/LoadVSTWin.h"
+#ifdef USE_VST
+#include "VST/LoadVST.h"
 #endif
 
 #ifdef USE_LADSPA
@@ -274,6 +274,10 @@ void LoadEffects()
 
 #ifdef USE_LADSPA
    LoadLadspaPlugins();
+#endif
+
+#ifdef USE_VST
+   LoadVSTPlugins();
 #endif
 
 #ifdef USE_SLV2
