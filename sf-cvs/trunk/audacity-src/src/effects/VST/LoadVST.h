@@ -2,17 +2,17 @@
 
   Audacity: A Digital Audio Editor
 
-  LoadVSTMac.h
+  LoadVST.h
 
-  Dominic Mazzoni
+  Mark Tomlinson
 
 **********************************************************************/
 
-extern "C" {
-
+extern "C"
+{
    void LoadVSTPlugins();
-
 };
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
@@ -23,5 +23,4 @@ extern "C" {
 // End:
 //
 // vim: et sts=3 sw=3
-// arch-tag: dbb07871-e39e-4ff0-a73d-58209159aea7
-
+// arch-tag: 3a891fd3-bbb4-430f-8486-f2e31bc8da78

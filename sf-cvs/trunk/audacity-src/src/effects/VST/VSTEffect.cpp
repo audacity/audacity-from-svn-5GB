@@ -18,164 +18,734 @@
 
 #if USE_VST
 
-#include "AEffect.h"            // VST API
-#include "AEffEditor.hpp"
-
 #include <wx/defs.h>
 #include <wx/button.h>
+#include <wx/combobox.h>
 #include <wx/dialog.h>
+#include <wx/filename.h>
 #include <wx/frame.h>
-#include <wx/slider.h>
-#include <wx/sizer.h>
 #include <wx/msgdlg.h>
+#include <wx/sizer.h>
+#include <wx/slider.h>
+#include <wx/scrolwin.h>
+#include <wx/stattext.h>
 
-#include "../Effect.h"          // Audacity Effect base class
-#include "VSTEffect.h"          // This class's header file
-
-#ifdef __MACOSX__
-#include <Carbon/Carbon.h>
+#if defined(__WXMAC__)
+#include <wx/mac/private.h>
+#else
+#include <wx/dynlib.h>
 #endif
 
-const int VSTEFFECT_SLIDER_ID = 13100;
-const int PREVIEW_ID          = 13101;
+#include "../../FileNames.h"
+#include "../../xml/XMLFileReader.h"
+#include "../../xml/XMLWriter.h"
+#include "FileDialog.h"
 
-class VSTEffectGUIDialog : public wxDialog
+#include "VSTEffect.h"          // This class's header file
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// VSTEffectDialog
+//
+///////////////////////////////////////////////////////////////////////////////
+
+class VSTEffectDialog:public wxDialog, XMLTagHandler
 {
-public:
-   VSTEffectGUIDialog(wxWindow * parent, wxWindowID id,
+ public:
+   VSTEffectDialog(wxWindow * parent,
                       const wxString & title,
-                      VSTEffect *effect, AEffect *aEffect);
+                      VSTEffect *effect,
+                      AEffect *aeffect);
 
-   void OnOk(wxCommandEvent &event);
-   void OnCancel(wxCommandEvent &event);
-   void OnPreview(wxCommandEvent &event);
+   void OnIdle(wxIdleEvent & evt);
 
-   void OnIdle(wxIdleEvent &event);
+   void OnProgram(wxCommandEvent & evt);
+   void OnProgramText(wxCommandEvent & evt);
+   void OnLoad(wxCommandEvent & evt);
+   void OnSave(wxCommandEvent & evt);
 
-private:
+   void OnSlider(wxCommandEvent &event);
+
+   void OnOk(wxCommandEvent & evt);
+   void OnCancel(wxCommandEvent & evt);
+   void OnPreview(wxCommandEvent & evt);
+
+ private:
+
+   void BuildPlain();
+   void BuildFancy();
+   wxSizer *BuildProgramBar();
+
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
+
    VSTEffect *mEffect;
-   AEffect   *mAEffect;
+   AEffect *mAEffect;
+
+   wxComboBox *mProgram;
 
    DECLARE_EVENT_TABLE()
 };
 
-BEGIN_EVENT_TABLE(VSTEffectGUIDialog,wxDialog)
-   EVT_BUTTON( wxID_OK, VSTEffectGUIDialog::OnOk )
-   EVT_BUTTON( wxID_CANCEL, VSTEffectGUIDialog::OnCancel )
-   EVT_BUTTON( ID_EFFECT_PREVIEW, VSTEffectGUIDialog::OnPreview )
-   EVT_IDLE( VSTEffectGUIDialog::OnIdle )
+enum
+{
+   ID_VST_PROGRAM = 11000,
+   ID_VST_LOAD,
+   ID_VST_SAVE,
+   ID_VST_SLIDERS
+};
+
+BEGIN_EVENT_TABLE(VSTEffectDialog, wxDialog)
+   EVT_IDLE(VSTEffectDialog::OnIdle)
+   EVT_BUTTON(wxID_OK, VSTEffectDialog::OnOk)
+   EVT_BUTTON(wxID_CANCEL, VSTEffectDialog::OnCancel)
+   EVT_BUTTON(ID_EFFECT_PREVIEW, VSTEffectDialog::OnPreview)
+
+   EVT_COMBOBOX(ID_VST_PROGRAM, VSTEffectDialog::OnProgram)
+   EVT_TEXT(ID_VST_PROGRAM, VSTEffectDialog::OnProgramText)
+   EVT_BUTTON(ID_VST_LOAD, VSTEffectDialog::OnLoad)
+   EVT_BUTTON(ID_VST_SAVE, VSTEffectDialog::OnSave)
+
+   EVT_SLIDER(wxID_ANY, VSTEffectDialog::OnSlider)
 END_EVENT_TABLE()
 
-VSTEffectGUIDialog::VSTEffectGUIDialog(wxWindow *parent, wxWindowID id,
+VSTEffectDialog::VSTEffectDialog(wxWindow *parent,
                                        const wxString & title,
                                        VSTEffect *effect,
-                                       AEffect *aEffect):
-   wxDialog(parent, id, title, wxDefaultPosition, wxDefaultSize,
-            wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION),
+                                       AEffect *aeffect)
+:  wxDialog(parent, wxID_ANY, title),
    mEffect(effect),
-   mAEffect(aEffect)
+   mAEffect(aeffect)
 {
-   ERect *rect;
+   if (mAEffect->flags & effFlagsHasEditor) {
+      BuildFancy();
+   }
+   else {
+      BuildPlain();
+   }
+}
 
-   mEffect->callDispatcher(mAEffect, effEditGetRect, 0, 0, &rect, 0.0);
-   mEffect->callDispatcher(mAEffect, effEditOpen, 0, 0, (void *)GetHWND(), 0.0);
+void VSTEffectDialog::BuildFancy()
+{
+#if defined(__WXMAC__)
+   ControlRef view;
+   WindowRef win = (WindowRef) MacGetTopLevelWindowRef();
+   OSStatus status = HIViewFindByID(HIViewGetRoot(win), kHIViewWindowContentID, &view);
+   wxASSERT(status == 0);
 
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+   mEffect->callDispatcher(effEditOpen, 0, 0, win, 0.0);
 
-   mainSizer->Add(rect->right-rect->left, rect->bottom-rect->top);
+   HIViewRef subview = HIViewGetFirstSubview(view);
+   wxASSERT(subview != NULL);
+
+#elif defined(__WXMSW__)
+   mEffect->callDispatcher(effEditOpen, 0, 0, GetHWND(), 0.0);
+
+   HWND child = FindWindowEx((HWND) GetHWND(), NULL, NULL, NULL);
+#else
+#endif
+
+   struct
+   {
+      short top, left, bottom, right;
+   } *rect;
+
+   mEffect->callDispatcher(effEditGetRect, 0, 0, &rect, 0.0);
+
+   wxBoxSizer *vs = new wxBoxSizer(wxVERTICAL);
+   wxBoxSizer *hs = new wxBoxSizer(wxHORIZONTAL);
+   wxSizerItem *si;
+
+   vs->Add(BuildProgramBar(), 0, wxCENTER);
+   
+   si = hs->Add(rect->right - rect->left, rect->bottom - rect->top);
+   vs->Add(hs, 0, wxCENTER);
+
+   vs->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
+
+   SetSizerAndFit(vs);
+
+   wxPoint pos = si->GetPosition();
+
+#if defined(__WXMAC__)
+   HIViewPlaceInSuperviewAt(subview, pos.x, pos.y);
+
+   // LL:  Some VST effects do not work unless this is done.  But, it must be
+   //      done last since proper window sizing will not occur otherwise.
+   ::RemoveEventHandler((EventHandlerRef)MacGetEventHandler());
+
+#elif defined(__WXMSW__)
+   SetWindowPos(child, NULL, pos.x, pos.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+#else
+#endif
+}
+
+void VSTEffectDialog::BuildPlain()
+{
+   wxControl *item;
+
+   wxBoxSizer *vSizer = new wxBoxSizer(wxVERTICAL);
+   vSizer->Add(BuildProgramBar(), 0,  wxALIGN_CENTER);
+
+   wxScrolledWindow *sw = new wxScrolledWindow(this,
+                                               wxID_ANY,
+                                               wxDefaultPosition,
+                                               wxDefaultSize,
+                                               wxVSCROLL | wxTAB_TRAVERSAL);
+
+   // Try to give the window a sensible default/minimum size
+   wxSize sz = GetParent()->GetSize();
+   sw->SetMinSize(wxSize(wxMax(600, sz.GetWidth() * 2 / 3), sz.GetHeight() / 2));
+                                              
+   sw->SetScrollRate(0, 20);
+   vSizer->Add(sw, 1, wxEXPAND | wxALL, 5);
 
    // Preview, OK, & Cancel buttons
-   mainSizer->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
+   vSizer->Add(CreateStdButtonSizer(this, ePreviewButton|eCancelButton|eOkButton), 0, wxEXPAND);
 
-   SetAutoLayout(true);
-   SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
+   SetSizer(vSizer);
 
-   mEffect->SetDialog(this);
+   wxSizer *paramSizer = new wxStaticBoxSizer(wxVERTICAL, sw, _("Effect Settings"));
+
+   wxFlexGridSizer *gridSizer = new wxFlexGridSizer(4, 0, 0);
+   gridSizer->AddGrowableCol(1);
+
+   wxString text;
+   int w;
+   int h;
+   GetTextExtent(wxT("HHHHHHHH"), &w, &h);
+
+   for (int i = 0; i < mAEffect->numParams; i++) {
+      char buf[256];
+      buf[0] = 0;
+      mEffect->callDispatcher(effGetParamName, i, 0, buf, 0.0);
+      text = LAT1CTOWX(buf);
+
+      item = new wxStaticText(sw, 0, text + wxT(":"));
+      gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+
+      item = new wxSlider(sw,
+                          ID_VST_SLIDERS + i,
+                          mEffect->callGetParameter(i) * 1000,
+                          0,
+                          1000,
+                          wxDefaultPosition,
+                          wxSize(200, -1));
+      item->SetName(text);
+      gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALL, 5);
+
+      buf[0] = 0;
+      mEffect->callDispatcher(effGetParamDisplay, i, 0, buf, 0.0);
+      text.Printf(wxT("%8s"), LAT1CTOWX(buf).c_str());
+      item = new wxStaticText(sw,
+                              wxID_ANY,
+                              text,
+                              wxDefaultPosition,
+                              wxSize(w, -1),
+                              wxALIGN_RIGHT | wxST_NO_AUTORESIZE);
+      gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+
+      buf[0] = 0;
+      mEffect->callDispatcher(effGetParamLabel, i, 0, buf, 0.0);
+      text.Printf(wxT("%-8s"), LAT1CTOWX(buf).c_str());
+      item = new wxStaticText(sw,
+                              wxID_ANY,
+                              text,
+                              wxDefaultPosition,
+                              wxSize(w, -1),
+                              wxALIGN_LEFT | wxST_NO_AUTORESIZE);
+      gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 5);
+   }
+
+   paramSizer->Add(gridSizer, 1, wxEXPAND | wxALL, 5);
+   sw->SetSizer(paramSizer);
+
+   Layout();
+   Fit();
+   SetSizeHints(GetSize());
 }
 
-void VSTEffectGUIDialog::OnIdle(wxIdleEvent &event)
+wxSizer *VSTEffectDialog::BuildProgramBar()
 {
-   mEffect->callDispatcher(mAEffect, effEditIdle, 0, 0, NULL, 0.0);
+   wxArrayString progs;
+
+   for (int i = 0; i < mAEffect->numPrograms; i++) {
+      char buf[256];
+      buf[0] = 0;
+      mEffect->callDispatcher(effGetProgramNameIndexed, i, 0, buf, 0.0);
+      if (buf[0] != 0) {
+         progs.Add(LAT1CTOWX(buf));
+      }
+   }
+
+   if (progs.GetCount() == 0) {
+      progs.Add(_("None"));
+   }
+
+   int progn = mEffect->callDispatcher(effGetProgram, 0, 0, NULL, 0.0);
+
+   wxBoxSizer *hs = new wxBoxSizer(wxHORIZONTAL);
+
+   wxStaticText *st = new wxStaticText(this, wxID_ANY, _("Presets:"));
+   hs->Add(st, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+   mProgram = new wxComboBox(this,
+                             ID_VST_PROGRAM,
+                             progs[progn],
+                             wxDefaultPosition,
+                             wxSize(200, -1),
+                             progs
+                             );
+   hs->Add(mProgram, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+   wxButton *bt = new wxButton(this, ID_VST_LOAD, _("Load"));
+   hs->Add(bt, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+   bt = new wxButton(this, ID_VST_SAVE, _("Save"));
+   hs->Add(bt, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+   return hs;
 }
 
-void VSTEffectGUIDialog::OnPreview(wxCommandEvent &event)
+void VSTEffectDialog::OnIdle(wxIdleEvent & evt)
+{
+   mEffect->callDispatcher(effEditIdle, 0, 0, NULL, 0.0);
+}
+
+void VSTEffectDialog::OnSlider(wxCommandEvent & evt)
+{
+   wxSlider *s = (wxSlider *) evt.GetEventObject();
+   wxStaticText *d = (wxStaticText *) s->GetNextSibling();
+   wxStaticText *l = (wxStaticText *) d->GetNextSibling();
+   int i = s->GetId() - ID_VST_SLIDERS;
+   char buf[256];
+   wxString text;
+
+   mEffect->callSetParameter(i, s->GetValue() / 1000.0);
+
+   buf[0] = 0;
+   mEffect->callDispatcher(effGetParamDisplay, i, 0, buf, 0.0);
+   text.Printf(wxT("%8s"), LAT1CTOWX(buf).c_str());
+   d->SetLabel(text);
+
+   buf[0] = 0;
+   mEffect->callDispatcher(effGetParamLabel, i, 0, buf, 0.0);
+   text.Printf(wxT("%-8s"), LAT1CTOWX(buf).c_str());
+   l->SetLabel(text);
+}
+
+void VSTEffectDialog::OnProgram(wxCommandEvent & evt)
+{
+   mEffect->callDispatcher(effSetProgram, 0, evt.GetInt(), NULL, 0.0);
+}
+
+void VSTEffectDialog::OnProgramText(wxCommandEvent & evt)
+{
+   wxString str = mProgram->GetValue();
+   int ndx = mProgram->GetCurrentSelection();
+
+   char name[255];
+   name[0] = 0;
+   mEffect->callDispatcher(effGetProgramName, ndx, 0, name, 0.0);
+
+   if (str.Length() > 24) {
+      mProgram->SetValue(LAT1CTOWX(name));
+      return;
+   }
+
+   strcpy(name, str.mb_str());
+
+   mEffect->callDispatcher(effSetProgramName, ndx, 0, name, 0.0);
+}
+
+void VSTEffectDialog::OnLoad(wxCommandEvent & evt)
+{
+   wxString fn;
+
+   // Ask the user for the real name
+   fn = FileSelector(_("Load VST Program:"),
+                     FileNames::DataDir(),
+                     wxEmptyString,
+                     wxT("xml"),
+                     wxT("*.xml"),
+                     wxFD_OPEN | wxRESIZE_BORDER,
+                     this);
+
+   // User canceled...
+   if (fn.IsEmpty()) {
+      return;
+   }
+
+   // Load the program
+   XMLFileReader reader;
+   if (!reader.Parse(this, fn)) {
+      // Inform user of load failure
+      wxMessageBox(reader.GetErrorStr(),
+                   _("Error loading program"),
+                   wxOK | wxCENTRE,
+                   this);
+   }
+
+   return;
+}
+
+void VSTEffectDialog::OnSave(wxCommandEvent & evt)
+{
+   int i = mProgram->GetCurrentSelection();
+   wxString fn;
+   char buf[255];
+
+   // Ask the user for the real name
+   fn = FileSelector(_("Save VST Program As:"),
+                     FileNames::DataDir(),
+                     mProgram->GetValue() + wxT(".xml"),
+                     wxT("xml"),
+                     wxT("*.xml"),
+                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER,
+                     this);
+
+   // User canceled...
+   if (fn.IsEmpty()) {
+      return;
+   }
+
+   XMLFileWriter xmlFile;
+
+   // Create/Open the file
+   xmlFile.Open(fn, wxT("wb"));
+
+   xmlFile.StartTag(wxT("vstprogrampersistence"));
+   xmlFile.WriteAttr(wxT("version"), wxT("1"));
+
+   i = mEffect->callDispatcher(effGetVendorVersion, 0, 0, NULL, 0.0);
+   xmlFile.StartTag(wxT("effect"));
+   xmlFile.WriteAttr(wxT("name"), mEffect->GetEffectIdentifier());
+   xmlFile.WriteAttr(wxT("version"), i);
+
+   xmlFile.StartTag(wxT("program"));
+   xmlFile.WriteAttr(wxT("name"), mProgram->GetValue());
+
+   for (i = 1; i < mAEffect->numParams; i++) {
+      xmlFile.StartTag(wxT("param"));
+
+      buf[0] = 0;
+      mEffect->callDispatcher(effGetParamName, i, 0, buf, 0.0);
+      xmlFile.WriteAttr(wxT("index"), i);
+      xmlFile.WriteAttr(wxT("name"), LAT1CTOWX(buf));
+      xmlFile.WriteAttr(wxT("value"),
+                        wxString::Format(wxT("%f"),
+                        mEffect->callGetParameter(i)));
+
+      xmlFile.EndTag(wxT("param"));
+   }
+
+   xmlFile.EndTag(wxT("program"));
+
+   xmlFile.EndTag(wxT("effect"));
+
+   xmlFile.EndTag(wxT("vstprogrampersistence"));
+
+   // Close the file
+   xmlFile.Close();
+}
+
+void VSTEffectDialog::OnPreview(wxCommandEvent & evt)
 {
    mEffect->Preview();
 }
 
-void VSTEffectGUIDialog::OnOk(wxCommandEvent &event)
+void VSTEffectDialog::OnOk(wxCommandEvent & evt)
 {
-   mEffect->callDispatcher(mAEffect, effEditClose, 0, 0, NULL, 0.0);
+   mEffect->callDispatcher(effEditClose, 0, 0, NULL, 0.0);
    EndModal(true);
 }
 
-void VSTEffectGUIDialog::OnCancel(wxCommandEvent &event)
+void VSTEffectDialog::OnCancel(wxCommandEvent & evt)
 {
-   mEffect->callDispatcher(mAEffect, effEditClose, 0, 0, NULL, 0.0);
+   mEffect->callDispatcher(effEditClose, 0, 0, NULL, 0.0);
    EndModal(false);
 }
 
-
-VSTEffect::VSTEffect(wxString pluginName, AEffect * aEffect)
+bool VSTEffectDialog::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
-   this->aEffect = aEffect;
-   this->pluginName = pluginName;
+   if (wxStrcmp(tag, wxT("vstprogrampersistence")) == 0) {
+      while (*attrs) {
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
+         
+         if (!value) {
+            break;
+         }
 
-   buffer = NULL;
-   fInBuffer = NULL;
-   fOutBuffer = NULL;
+         const wxString strValue = value;
 
-   isOpened = false;
+         if (wxStrcmp(attr, wxT("version")) == 0) {
+            if (!XMLValueChecker::IsGoodInt(strValue)) {
+               return false;
+            }
+            // Nothing to do with it for now
+         }
+         else {
+            return false;
+         }
+      }
+
+      return true;
+   }
+
+   if (wxStrcmp(tag, wxT("effect")) == 0) {
+      while (*attrs) {
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
+         
+         if (!value) {
+            break;
+         }
+
+         const wxString strValue = value;
+
+         if (wxStrcmp(attr, wxT("name")) == 0) {
+            if (!XMLValueChecker::IsGoodString(strValue)) {
+               return false;
+            }
+
+            if (value != mEffect->GetEffectIdentifier()) {
+               wxString msg;
+               msg.Printf(_("This parameter file was saved from %s.  Continue?"), value);
+               int result = wxMessageBox(msg, wxT("Confirm"), wxYES_NO, this);
+               if (result == wxNO) {
+                  return false;
+               }
+            }
+         }
+         else if (wxStrcmp(attr, wxT("version")) == 0) {
+            if (!XMLValueChecker::IsGoodInt(strValue)) {
+               return false;
+            }
+            // Nothing to do with it for now
+         }
+         else {
+            return false;
+         }
+      }
+
+      return true;
+   }
+      
+   if (wxStrcmp(tag, wxT("program")) == 0) {
+      while (*attrs) {
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
+         
+         if (!value) {
+            break;
+         }
+
+         const wxString strValue = value;
+
+         if (wxStrcmp(attr, wxT("name")) == 0) {
+            if (!XMLValueChecker::IsGoodString(strValue)) {
+               return false;
+            }
+
+            if (strValue.Length() > 24) {
+               return false;
+            }
+
+            int ndx = mProgram->GetCurrentSelection();
+            mProgram->SetString(ndx, strValue);
+            mProgram->SetValue(strValue);
+
+            char buf[255];
+            strcpy(buf, strValue.mb_str());
+            mEffect->callDispatcher(effSetProgramName, ndx, 0, buf, 0.0);
+         }
+         else {
+            return false;
+         }
+      }
+
+      return true;
+   }
+
+   if (wxStrcmp(tag, wxT("param")) == 0) {
+      long ndx = -1;
+      double val = -1.0;
+      while (*attrs) {
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
+
+         if (!value) {
+            break;
+         }
+
+         const wxString strValue = value;
+
+         if (wxStrcmp(attr, wxT("index")) == 0) {
+            if (!XMLValueChecker::IsGoodInt(strValue) || !strValue.ToLong(&ndx)) {
+               return false;
+            }
+
+            if (ndx < 1 || ndx > mAEffect->numParams) {
+               // Could be a different version of the effect...probably should
+               // tell the user
+               return false;
+            }
+         }
+         else if (wxStrcmp(attr, wxT("name")) == 0) {
+            if (!XMLValueChecker::IsGoodString(strValue)) {
+               return false;
+            }
+            // Nothing to do with it for now
+         }
+         if (wxStrcmp(attr, wxT("index")) == 0) {
+            if (!XMLValueChecker::IsGoodInt(strValue) ||
+               !Internat::CompatibleToDouble(strValue, &val)) {
+               return false;
+            }
+
+            if (val < 0.0 || val > 1.0) {
+               return false;
+            }
+         }
+      }
+
+      if (ndx == -1 || val == -1.0) {
+         return false;
+      }
+
+      mEffect->callSetParameter(ndx, val);
+
+      return true;
+   }
+
+   return false;
+}
+
+XMLTagHandler *VSTEffectDialog::HandleXMLChild(const wxChar *tag)
+{
+   if (wxStrcmp(tag, wxT("vstprogrampersistence")) == 0) {
+      return this;
+   }
+
+   if (wxStrcmp(tag, wxT("effect")) == 0) {
+      return this;
+   }
+
+   if (wxStrcmp(tag, wxT("program")) == 0) {
+      return this;
+   }
+
+   if (wxStrcmp(tag, wxT("param")) == 0) {
+      return this;
+   }
+
+   return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// VSTEffect
+//
+///////////////////////////////////////////////////////////////////////////////
+
+VSTEffect::VSTEffect(const wxString & path, void *module, AEffect * aeffect)
+{
+   SetEffectFlags(PLUGIN_EFFECT | PROCESS_EFFECT);
+   mPath = path;
+   mModule = module;
+   mAEffect = aeffect;
+
+   char vendor[256];
+   char name[256];
+
+   vendor[0] = 0;
+   name[0] = 0;
+
+   callDispatcher(effGetVendorString, 0, 0, vendor, 0.0);
+   callDispatcher(effGetProductString, 0, 0, name, 0.0);
+
+   mVendor = LAT1CTOWX(vendor);
+   mName = LAT1CTOWX(name);
+
+   if (mVendor.IsEmpty()) {
+      mVendor = wxT("VST");
+   }
+
+   if (mName.IsEmpty()) {
+      wxFileName fn(mPath);
+      mName = fn.GetName();
+   }
+
+   mBuffer = NULL;
+   mInBuffer = NULL;
+   mOutBuffer = NULL;
 }
 
 VSTEffect::~VSTEffect()
 {
+   callDispatcher(effClose, 0, 0, NULL, 0.0);
+
+#if defined(__WXMAC__)
+   CFRelease((CFBundleRef) mModule);
+#else
+   delete (wxDynamicLibrary *) mModule;
+#endif
 }
 
 wxString VSTEffect::GetEffectName()
 {
-   return pluginName + "...";
+   if (mVendor.IsEmpty()) {
+      return mName + wxT("...");
+   }
+
+   return mVendor + wxT(": ") + mName + wxT("...");
 }
 
-wxString VSTEffect::GetEffectCategories()
+wxString VSTEffect::GetEffectIdentifier()
+{
+   return mName;
+}
+
+std::set<wxString> VSTEffect::GetEffectCategories()
 {
    return std::set<wxString>();
 }
 
 wxString VSTEffect::GetEffectAction()
 {
-   return "Performing VST Effect: \""+pluginName+"\"";
+   return _("Performing Effect: ") + mName;
 }
 
 bool VSTEffect::Init()
 {
-   inputs = aEffect->numInputs;
-   outputs = aEffect->numOutputs;
-
+   mInputs = mAEffect->numInputs;
+   mOutputs = mAEffect->numOutputs;
    mBlockSize = 0;
 
-   if (inputs > 1) {
-      TrackListIterator iter(mWaveTracks);
-      Track *left = iter.First();
-      while(left) {
-         longSampleCount lstart, rstart;
-         sampleCount llen, rlen;
-         GetSamples((WaveTrack *)left, &lstart, &llen);
-         
-         if (left->GetLinked()) {
-            Track *right = iter.Next();
-            GetSamples((WaveTrack *)right, &rstart, &rlen);
-            
-            if (llen != rlen || ((WaveTrack *)left)->GetRate() != ((WaveTrack *)right)->GetRate()) {
-               wxMessageBox(_("Sorry, VST Effects cannot be performed on stereo tracks where the individual channels of the track do not match."));
-               return false;
-            }
+   TrackListOfKindIterator iter(Track::Wave, mTracks);
+   WaveTrack *left = (WaveTrack *) iter.First();
+   while (left) {
+      sampleCount lstart, rstart = 0;
+      sampleCount llen, rlen = 0;
+      GetSamples(left, &lstart, &llen);
+      
+      if (left->GetLinked()) {
+         WaveTrack *right = (WaveTrack *) iter.Next();
+         GetSamples(right, &rstart, &rlen);         
+
+         if (left->GetRate() != right->GetRate()) {
+            wxMessageBox(_("Sorry, VST Effects cannot be performed on stereo tracks where the individual channels of the track do not match."));
+            return false;
          }
-         
-         left = iter.Next();
+
+         if (llen != rlen) {
+            wxMessageBox(_("Both channels of a stereo track must be the same length."));
+            return false;
+         }
       }
+      
+      left = (WaveTrack *) iter.Next();
    }
 
    return true;
@@ -183,72 +753,11 @@ bool VSTEffect::Init()
 
 bool VSTEffect::PromptUser()
 {
-   if (!(aEffect->flags & effFlagsCanReplacing)) {
-      wxMessageBox(_("Can't process replacing"));
-      return false;
-   }
+   VSTEffectDialog dlog(mParent, mName, this, mAEffect);
+   dlog.CentreOnParent();
+   dlog.ShowModal();
 
-   if (aEffect->flags & effFlagsHasEditor) {
-      // Show native GUI
-      VSTEffectGUIDialog dlog(mParent, -1, pluginName, this, aEffect);
-      dlog.CentreOnParent();
-      dlog.ShowModal();
-
-      return dlog.GetReturnCode();
-   }
-
-   // Try to figure out how many parameters it takes by seeing how
-   // many parameters have names
-   char temp[8][256];
-   numParameters = 0;
-   do {
-      long result;
-
-      temp[numParameters][0] = 0;
-      result = callDispatcher(aEffect, effGetParamName, numParameters, 0,
-                              (void *) temp[numParameters], 0.0);
-
-      if (temp[numParameters][0]==0)
-         break;
-      if (strstr(temp[numParameters], "ABOUT"))
-         break;
-      if (numParameters > 0
-          && !strcmp(temp[numParameters], temp[numParameters - 1]))
-         break;
-
-      numParameters++;
-   } while (temp[0] != 0 && numParameters < 8);
-
-   if (numParameters > 0) {
-      VSTEffectDialog dlog(mParent, pluginName, numParameters, this, aEffect);
-      dlog.CentreOnParent();
-      dlog.ShowModal();
-
-      if (!dlog.GetReturnCode())
-         return false;
-   }
-
-   return true;
-}
-
-void VSTEffect::GetSamples(WaveTrack *track,
-                           longSampleCount *start,
-                           sampleCount *len)
-{
-   double trackStart = track->GetStartTime();
-   double trackEnd = track->GetEndTime();
-   double t0 = mT0 < trackStart? trackStart: mT0;
-   double t1 = mT1 > trackEnd? trackEnd: mT1;
-   
-   if (t1 > t0) {
-      *start = track->TimeToLongSamples(t0);
-      longSampleCount end = track->TimeToLongSamples(t1);
-      *len = (sampleCount)(end - *start);
-   }
-   else {
-      *start = 0;
-      *len  = 0;
-   }
+   return dlog.GetReturnCode() != 0;
 }
 
 bool VSTEffect::Process()
@@ -256,27 +765,27 @@ bool VSTEffect::Process()
    this->CopyInputWaveTracks(); // Set up m_pOutputWaveTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(m_pOutputWaveTracks);
+   TrackListIterator iter(mOutputWaveTracks);
    int count = 0;
    Track *left = iter.First();
    Track *right;
    while(left) {
-      longSampleCount lstart, rstart;
+      sampleCount lstart, rstart = 0;
       sampleCount len;
       GetSamples((WaveTrack *)left, &lstart, &len);
 
       right = NULL;
-      if (left->GetLinked() && inputs>1) {
+      if (left->GetLinked() && mInputs>1) {
          right = iter.Next();         
          GetSamples((WaveTrack *)right, &rstart, &len);
       }
 
       // Reset the effect
-      callDispatcher(aEffect, effOpen, 0, 0, NULL, 0.0);
+      callDispatcher(effOpen, 0, 0, NULL, 0.0);
       
       bGoodResult = ProcessStereo(count,
-                                   (WaveTrack *)left, (WaveTrack *)right,
-                                   lstart, rstart, len);
+                                  (WaveTrack *)left, (WaveTrack *)right,
+                                  lstart, rstart, len);
 
       if (!bGoodResult)
          break;
@@ -285,70 +794,69 @@ bool VSTEffect::Process()
       count++;
    }
    
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   ReplaceProcessedWaveTracks(bGoodResult); 
    return bGoodResult;
 }
 
 bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
-                              longSampleCount lstart,
-                              longSampleCount rstart, sampleCount len)
+                              sampleCount lstart,
+                              sampleCount rstart, sampleCount len)
 {
    bool rc = true;
    if (mBlockSize == 0) {
       mBlockSize = left->GetMaxBlockSize() * 2;
 
-      buffer = new float[mBlockSize];
-      fInBuffer = new float *[inputs];
+      mBuffer = new float[mBlockSize];
+      mInBuffer = new float *[mInputs];
       int i;
-      for (i = 0; i < inputs; i++)
-         fInBuffer[i] = new float[mBlockSize];
-      fOutBuffer = new float *[outputs];
-      for (i = 0; i < outputs; i++)
-         fOutBuffer[i] = new float[mBlockSize];
+      for (i = 0; i < mInputs; i++)
+         mInBuffer[i] = new float[mBlockSize];
+      mOutBuffer = new float *[mOutputs];
+      for (i = 0; i < mOutputs; i++)
+         mOutBuffer[i] = new float[mBlockSize];
 
    }
 
-   callDispatcher(aEffect, effSetSampleRate, 0, 0, NULL,
-                       (float) left->GetRate());
-   callDispatcher(aEffect, effSetBlockSize, 0, mBlockSize * 2, NULL, 0.0);
+   callDispatcher(effSetSampleRate, 0, 0, NULL, (float) left->GetRate());
+   callDispatcher(effSetBlockSize, 0, mBlockSize * 2, NULL, 0.0);
 
    // Actually perform the effect here
 
    sampleCount originalLen = len;
-   longSampleCount ls = lstart;
-   longSampleCount rs = rstart;
+   sampleCount ls = lstart;
+   sampleCount rs = rstart;
    while (len) {
       int i;
       int block = mBlockSize;
       if (block > len)
          block = len;
 
-      left->Get((samplePtr)buffer, floatSample, ls, block);
+      left->Get((samplePtr)mBuffer, floatSample, ls, block);
       for (i = 0; i < block; i++)
-         fInBuffer[0][i] = buffer[i];
+         mInBuffer[0][i] = mBuffer[i];
       if (right) {
-         right->Get((samplePtr)buffer, floatSample, rs, block);
+         right->Get((samplePtr)mBuffer, floatSample, rs, block);
          for (i = 0; i < block; i++)
-            fInBuffer[1][i] = buffer[i];
+            mInBuffer[1][i] = mBuffer[i];
       }
 
-      callProcessReplacing(aEffect, fInBuffer, fOutBuffer, block);
+      callProcessReplacing(mInBuffer, mOutBuffer, block);
 
       for (i = 0; i < block; i++)
-         buffer[i] = fOutBuffer[0][i];
-      left->Set((samplePtr)buffer, floatSample, ls, block);
+         mBuffer[i] = mOutBuffer[0][i];
+      left->Set((samplePtr)mBuffer, floatSample, ls, block);
       
       if (right) {
          for (i = 0; i < block; i++)
-            buffer[i] = fOutBuffer[1][i];
-         right->Set((samplePtr)buffer, floatSample, rs, block);
+            mBuffer[i] = mOutBuffer[1][i];
+         right->Set((samplePtr)mBuffer, floatSample, rs, block);
       }      
 
       len -= block;
       ls += block;
       rs += block;
       
-      if (inputs > 1) {      
+      if (mInputs > 1) {      
          if (TrackGroupProgress(count, (ls-lstart)/(double)originalLen)) {
             rc = false;
             break;
@@ -367,303 +875,52 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
 
 void VSTEffect::End()
 {
-   if (buffer) {
+   if (mBuffer) {
       int i;
 
-      delete[]buffer;
-      for (i = 0; i < inputs; i++)
-         delete fInBuffer[i];
-      for (i = 0; i < outputs; i++)
-         delete fOutBuffer[i];
-      delete[]fInBuffer;
-      delete[]fOutBuffer;
+      delete[]mBuffer;
+      for (i = 0; i < mInputs; i++)
+         delete mInBuffer[i];
+      for (i = 0; i < mOutputs; i++)
+         delete mOutBuffer[i];
+      delete[]mInBuffer;
+      delete[]mOutBuffer;
 
    }
-   buffer = NULL;
-   fInBuffer = NULL;
-   fOutBuffer = NULL;
+   mBuffer = NULL;
+   mInBuffer = NULL;
+   mOutBuffer = NULL;
 }
 
-BEGIN_EVENT_TABLE(VSTEffectDialog, wxDialog)
-    EVT_BUTTON(wxID_OK, VSTEffectDialog::OnOK)
-    EVT_BUTTON(wxID_CANCEL, VSTEffectDialog::OnCancel)
-    EVT_BUTTON(PREVIEW_ID, VSTEffectDialog::OnPreview)
-    EVT_COMMAND_SCROLL(VSTEFFECT_SLIDER_ID, VSTEffectDialog::OnSlider)
-    EVT_SLIDER(VSTEFFECT_SLIDER_ID, VSTEffectDialog::OnSliderCmd)
-END_EVENT_TABLE()
-
-VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
-                                 wxString effectName,
-                                 int numParams,
-                                 VSTEffect * vst,
-                                 AEffect * aEffect,
-                                 const wxPoint & pos)
-:wxDialog(parent, -1, effectName, pos, wxSize(320, 430),
-          wxDEFAULT_DIALOG_STYLE)
+long VSTEffect::callDispatcher(long opcode,
+                               long index, long value, void *ptr, float opt)
 {
-   this->vst = vst;
-   this->aEffect = aEffect;
-   this->numParams = numParams;
-
-   int y = 10;
-
-   new wxStaticText(this, 0, _("VST Plug-in parameters:"), wxPoint(10, y),
-                    wxSize(300, 15));
-   y += 20;
-
-   sliders = new wxSlider *[numParams];
-   labels = new wxStaticText *[numParams];
-
-   for (int p = 0; p < numParams; p++) {
-
-      char paramName[256];
-      vst->callDispatcher(aEffect, effGetParamName, p, 0,
-                     (void *) paramName, 0.0);
-      new wxStaticText(this, 0, wxString(paramName), wxPoint(10, y),
-                       wxSize(85, 15));
-
-      float val = vst->callGetParameter(aEffect, p);
-
-      sliders[p] =
-          new wxSlider(this, VSTEFFECT_SLIDER_ID,
-                       1000 * val, 0, 1000,
-                       wxPoint(100, y + 5), wxSize(200, 25));
-
-      char label[256];
-      vst->callDispatcher(aEffect, effGetParamDisplay, p, 0,
-                          (void *) label, 0.0);
-      char units[256];
-      vst->callDispatcher(aEffect, effGetParamLabel, p, 0, (void *) units,
-                          0.0);
-
-      labels[p] =
-          new wxStaticText(this, 0,
-                           wxString::Format("%s %s", label, units),
-                           wxPoint(10, y + 15), wxSize(85, 15));
-
-      y += 35;
-   }
-
-   y += 20;
-   wxButton *preview =
-      new wxButton(this, PREVIEW_ID,
-                   vst->GetPreviewName(),
-                   wxPoint(10, y), wxSize(80, 30));
-   wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, _("&Cancel"), wxPoint(130, y), wxSize(80, 30));
-   wxButton *ok =
-       new wxButton(this, wxID_OK, _("OK"), wxPoint(220, y), wxSize(80, 30));
-
-   y += 40;
-
-   wxSize size;
-   size.x = 320;
-   size.y = y;
-
-#ifdef __WXMSW__
-   size.y += 20;
-#endif
-
-   Centre(wxBOTH | wxCENTER_FRAME);
-
-   SetSize(size);
-   vst->SetDialog(this);
+   return mAEffect->dispatcher(mAEffect, opcode, index, value, ptr, opt);
 }
 
-VSTEffectDialog::~VSTEffectDialog()
+void VSTEffect::callProcess(float **inputs, float **outputs, long sampleframes)
 {
-   // TODO: proper disposal here
-
-   delete[]sliders;
-   delete[]labels;
+   mAEffect->process(mAEffect, inputs, outputs, sampleframes);
 }
 
-void VSTEffectDialog::OnSlider(wxScrollEvent & WXUNUSED(event))
-{
-   for (int p = 0; p < numParams; p++) {
-      float val;
-
-      val = sliders[p]->GetValue() / 1000.;
-      vst->callSetParameter(aEffect, p, val);
-
-      char label[256];
-      vst->callDispatcher(aEffect, effGetParamDisplay, p, 0,
-                          (void *) label, 0.0);
-      char units[256];
-      vst->callDispatcher(aEffect, effGetParamLabel, p, 0, (void *) units,
-                          0.0);
-      labels[p]->SetLabel(wxString::Format("%s %s", label, units));
-   }
-}
-
-void VSTEffectDialog::OnSliderCmd(wxCommandEvent & WXUNUSED(event))
-{
-   for (int p = 0; p < numParams; p++) {
-      float val;
-
-      val = sliders[p]->GetValue() / 1000.;
-      vst->callSetParameter(aEffect, p, val);
-
-      char label[256];
-      vst->callDispatcher(aEffect, effGetParamDisplay, p, 0,
-                          (void *) label, 0.0);
-      char units[256];
-      vst->callDispatcher(aEffect, effGetParamLabel, p, 0, (void *) units,
-                          0.0);
-      labels[p]->SetLabel(wxString::Format("%s %s", label, units));
-   }
-}
-
-void VSTEffectDialog::OnOK(wxCommandEvent & WXUNUSED(event))
-{
-   EndModal(TRUE);
-}
-
-void VSTEffectDialog::OnCancel(wxCommandEvent & WXUNUSED(event))
-{
-   EndModal(FALSE);
-}
-
-void VSTEffectDialog::OnPreview(wxCommandEvent & WXUNUSED(event))
-{
-   vst->Preview();
-}
-
-#ifdef __MACOSX__
-
-// Mac OS X methods
-//
-// Cross-platform VST plug-ins on the Mac are compiled as Carbon,
-// CFM code.  Audacity is compiled as Carbon, Mach-O code.  Special care
-// must be taken when calling funtions in the other mode - these
-// functions make it easier.
-//
-
-// MachOFunctionPointerForCFMFunctionPointer(void *cfmfp)
-//
-// Borrowed from the Apple Sample Code file "CFM_MachO_CFM.c"
-// This function allocates a block of CFM glue code which contains
-// the instructions to call CFM routines
-
-void *NewMachOFromCFM(void *cfmfp)
-{
-   UInt32 CFMTemplate[6] = {0x3D800000, 0x618C0000, 0x800C0000,
-                            0x804C0004, 0x7C0903A6, 0x4E800420};
-   UInt32	*mfp = (UInt32*)NewPtr(sizeof(CFMTemplate));
-   
-   mfp[0] = CFMTemplate[0] | ((UInt32)cfmfp >> 16);
-   mfp[1] = CFMTemplate[1] | ((UInt32)cfmfp & 0xFFFF);
-   mfp[2] = CFMTemplate[2];
-   mfp[3] = CFMTemplate[3];
-   mfp[4] = CFMTemplate[4];
-   mfp[5] = CFMTemplate[5];
-   MakeDataExecutable(mfp, sizeof(CFMTemplate));
-   
-   return(mfp);
-}
-
-void DisposeMachOFromCFM(void *ptr)
-{
-   DisposePtr((Ptr)ptr);
-}
-
-void *NewCFMFromMachO(void *machofp)
-{
-   void *result = NewPtr(8);
-   ((void **)result)[0] = machofp;
-   ((void **)result)[1] = result;
-
-   return result;
-}
-
-void DisposeCFMFromMachO(void *ptr)
-{
-   DisposePtr((Ptr)ptr);
-}
-
-long VSTEffect::callDispatcher(AEffect * effect, long opCode,
-                               long index, long value, void *ptr,
-                               float opt)
-{
-   long rval;
-
-   dispatcherFn fp = (dispatcherFn)NewMachOFromCFM(effect->dispatcher);
-   rval = fp(effect, opCode, index, value, ptr, opt);
-   DisposeMachOFromCFM(fp);
-
-   return rval;
-}
-
-void VSTEffect::callProcess(AEffect * effect, float **inputs,
-                            float **outputs, long sampleframes)
-{
-   processFn fp = (processFn)NewMachOFromCFM(effect->process);
-   fp(effect, inputs, outputs, sampleframes);
-   DisposeMachOFromCFM(fp);
-}
-
-void VSTEffect::callProcessReplacing(AEffect * effect, float **inputs,
+void VSTEffect::callProcessReplacing(float **inputs,
                                      float **outputs, long sampleframes)
 {
-   processFn fp = (processFn)NewMachOFromCFM(effect->processReplacing);
-   fp(effect, inputs, outputs, sampleframes);
-   DisposeMachOFromCFM(fp);
+   mAEffect->processReplacing(mAEffect, inputs, outputs, sampleframes);
 }
 
-void VSTEffect::callSetParameter(AEffect * effect, long index,
-                                 float parameter)
+void VSTEffect::callSetParameter(long index, float parameter)
 {
-   setParameterFn fp = (setParameterFn)NewMachOFromCFM(effect->setParameter);
-   fp(effect, index, parameter);
-   DisposeMachOFromCFM(fp);
+   mAEffect->setParameter(mAEffect, index, parameter);
 }
 
-float VSTEffect::callGetParameter(AEffect * effect, long index)
+float VSTEffect::callGetParameter(long index)
 {
-   float rval;
-
-   getParameterFn fp = (getParameterFn)NewMachOFromCFM(effect->getParameter);
-   rval = fp(effect, index);
-   DisposeMachOFromCFM(fp);
-
-   return rval;
+   return mAEffect->getParameter(mAEffect, index);
 }
-
-#else // ifdef __MACOSX__
-
-long VSTEffect::callDispatcher(AEffect * effect, long opCode,
-                               long index, long value, void *ptr,
-                               float opt)
-{
-   return effect->dispatcher(effect, opCode, index, value, ptr, opt);
-}
-
-void VSTEffect::callProcess(AEffect * effect, float **inputs,
-                            float **outputs, long sampleframes)
-{
-   effect->process(effect, inputs, outputs, sampleframes);
-}
-
-void VSTEffect::callProcessReplacing(AEffect * effect, float **inputs,
-                                     float **outputs, long sampleframes)
-{
-   effect->processReplacing(effect, inputs, outputs, sampleframes);
-}
-
-void VSTEffect::callSetParameter(AEffect * effect, long index,
-                                 float parameter)
-{
-   effect->setParameter(effect, index, parameter);
-}
-
-float VSTEffect::callGetParameter(AEffect * effect, long index)
-{
-   return effect->getParameter(effect, index);
-}
-
-#endif // MACOSX
 
 #endif // USE_VST
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

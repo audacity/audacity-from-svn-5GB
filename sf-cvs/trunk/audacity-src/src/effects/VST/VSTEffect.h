@@ -12,15 +12,11 @@
 
 #if USE_VST
 
-#include "AudioEffect.hpp"      // VST API
-
-class wxSlider;
-class labels;
-
-#include <wx/dialog.h>
-#include <wx/stattext.h>
-
 #include "../Effect.h"
+
+#include "aeffectx.h"
+
+#define audacityVSTID CCONST('a', 'u', 'D', 'y');
 
 typedef long (*dispatcherFn)(AEffect * effect, long opCode,
                              long index, long value, void *ptr,
@@ -34,23 +30,20 @@ typedef void (*setParameterFn)(AEffect * effect, long index,
 
 typedef float (*getParameterFn)(AEffect * effect, long index);
 
-class VSTEffect:public Effect {
-
+class VSTEffect:public Effect
+{
  public:
 
-   VSTEffect(wxString pluginName, AEffect * aEffect);
-
+   VSTEffect(const wxString & path, void *module, AEffect * aeffect);
    virtual ~VSTEffect();
 
    virtual wxString GetEffectName();
-   
+
+   virtual wxString GetEffectIdentifier();
+
    virtual std::set<wxString> GetEffectCategories();
 
    virtual wxString GetEffectAction();
-   
-   virtual int GetEffectFlags() {
-      return PLUGIN_EFFECT | PROCESS_EFFECT;
-   }
 
    virtual bool Init();
 
@@ -62,74 +55,36 @@ class VSTEffect:public Effect {
 
    // VST methods
 
-   long callDispatcher(AEffect * effect, long opCode,
-                       long index, long value, void *ptr,
-                       float opt);
-   void callProcess(AEffect * effect, float **inputs,
-                    float **outputs, long sampleframes);
-   void callProcessReplacing(AEffect * effect, float **inputs,
-                             float **outputs, long sampleframes);
-   void callSetParameter(AEffect * effect, long index,
-                         float parameter);
-   float callGetParameter(AEffect * effect, long index);
+   long callDispatcher(long opcode, long index, long value, void *ptr, float opt);
+   void callProcess(float **inputs, float **outputs, long sampleframes);
+   void callProcessReplacing(float **inputs, float **outputs, long sampleframes);
+   void callSetParameter(long index, float parameter);
+   float callGetParameter(long index);
 
  private:
-   bool ProcessStereo(int count, WaveTrack * left, WaveTrack *right,
-                      longSampleCount lstart,
-                      longSampleCount rstart, sampleCount len);
 
-   void GetSamples(WaveTrack *track,
-                   longSampleCount *start,
-                   sampleCount *len);
-      
-   bool isOpened;
-   wxString pluginName;
-   AEffect *aEffect;
+   bool ProcessStereo(int count,
+                      WaveTrack *left,
+                      WaveTrack *right,
+                      sampleCount lstart,
+                      sampleCount rstart,
+                      sampleCount len);
+
+   wxString mPath;
+   void *mModule;
+   AEffect *mAEffect;
+
+   wxString mVendor;
+   wxString mName;
 
    sampleCount mBlockSize;
-   float *buffer;
-   float **fInBuffer;
-   float **fOutBuffer;
-   int inputs;
-   int outputs;
-   int numParameters;
+   float *mBuffer;
+   float **mInBuffer;
+   float **mOutBuffer;
+   int mInputs;
+   int mOutputs;
+   int mNumParameters;
 };
-
-class VSTEffectDialog:public wxDialog {
- public:
-   VSTEffectDialog(wxWindow * parent,
-                   wxString effectName,
-                   int numParams,
-                   VSTEffect * vst,
-                   AEffect * aEffect,
-                   const wxPoint & pos = wxDefaultPosition);
-
-   ~VSTEffectDialog();
-
-   void OnSlider(wxScrollEvent & event);
-   void OnSliderCmd(wxCommandEvent & event);
-   void OnOK(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
-   void OnPreview(wxCommandEvent & event);
-
-   DECLARE_EVENT_TABLE()
-
- private:
-   VSTEffect * vst;
-   AEffect * aEffect;
-   wxSlider **sliders;
-   wxStaticText **labels;
-   int numParams;
-};
-
-#if defined(__WXMAC__) && defined(__UNIX__)
-
-void *NewMachOFromCFM(void *cfmfp);
-void DisposeMachOFromCFM(void *ptr);
-void *NewCFMFromMachO(void *machofp);
-void DisposeCFMFromMachO(void *ptr);
-
-#endif
 
 #endif // USE_VST
 

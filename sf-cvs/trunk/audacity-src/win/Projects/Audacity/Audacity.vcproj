@@ -1345,11 +1345,11 @@
 			Name="src/effects/VST"
 			>
 			<File
-				RelativePath="..\..\..\src\effects\VST\LoadVSTWin.cpp"
+				RelativePath="..\..\..\src\effects\VST\LoadVST.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\src\effects\VST\LoadVSTWin.h"
+				RelativePath="..\..\..\src\effects\VST\LoadVST.h"
 				>
 			</File>
 			<File
