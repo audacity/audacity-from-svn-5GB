@@ -176,9 +176,9 @@ void LoadModules()
    }
 
    #ifdef __WXMSW__
-   wxGetApp().FindFilesInPathList(wxT("*.dll"), pathList, wxFILE, files);   
+   wxGetApp().FindFilesInPathList(wxT("*.dll"), pathList, files);   
    #else
-   wxGetApp().FindFilesInPathList(wxT("*.so"), pathList, wxFILE, files);
+   wxGetApp().FindFilesInPathList(wxT("*.so"), pathList, files);
    #endif
 
    for(i=0; i<files.GetCount(); i++)
@@ -294,11 +294,11 @@ void ModuleManager::Initialize()
    }
 
    #if defined(__WXMSW__)
-   wxGetApp().FindFilesInPathList(wxT("*.dll"), pathList, wxFILE, files);   
+   wxGetApp().FindFilesInPathList(wxT("*.dll"), pathList, files);   
 //   #elif defined(__WXMAC__)
-//   wxGetApp().FindFilesInPathList(wxT("*.dylib"), pathList, wxFILE, files);
+//   wxGetApp().FindFilesInPathList(wxT("*.dylib"), pathList, files);
    #else
-   wxGetApp().FindFilesInPathList(wxT("*.so"), pathList, wxFILE, files);
+   wxGetApp().FindFilesInPathList(wxT("*.so"), pathList, files);
    #endif
 
    for (i = 0; i < files.GetCount(); i++) {

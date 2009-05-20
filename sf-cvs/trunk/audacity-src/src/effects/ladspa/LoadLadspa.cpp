@@ -214,9 +214,8 @@ void LoadLadspaPlugins()
                                          rdfPathList);
    }
 
-   wxGetApp().FindFilesInPathList(wxT("*.rdf"), rdfPathList, wxFILE, rdfFiles);
-   wxGetApp().FindFilesInPathList(wxT("*.rdfs"), 
-                                  rdfPathList, wxFILE, rdfFiles);
+   wxGetApp().FindFilesInPathList(wxT("*.rdf"), rdfPathList, rdfFiles);
+   wxGetApp().FindFilesInPathList(wxT("*.rdfs"), rdfPathList, rdfFiles);
    for(size_t i = 0; i < rdfFiles.GetCount(); ++i) {
       wxString fileUri(wxT("file://"));
       fileUri += rdfFiles[i];
@@ -299,9 +298,9 @@ void LoadLadspaPlugins()
    }
 
    #ifdef __WXMSW__
-   wxGetApp().FindFilesInPathList(wxT("*.dll"), pathList, wxFILE, files);   
+   wxGetApp().FindFilesInPathList(wxT("*.dll"), pathList, files);   
    #else
-   wxGetApp().FindFilesInPathList(wxT("*.so"), pathList, wxFILE, files);
+   wxGetApp().FindFilesInPathList(wxT("*.so"), pathList, files);
    #endif
 
    for(i=0; i<files.GetCount(); i++)

@@ -50,7 +50,7 @@ void LoadNyquistPlugins()
                                          pathList);
    }
 
-   wxGetApp().FindFilesInPathList(wxT("*.ny"), pathList, wxFILE, files);
+   wxGetApp().FindFilesInPathList(wxT("*.ny"), pathList, files);
 
    for(i=0; i<files.GetCount(); i++)
       LoadNyquistEffect(files[i]);

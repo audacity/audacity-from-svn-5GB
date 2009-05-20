@@ -1267,21 +1267,22 @@ void AudacityApp::AddMultiPathsToPathList(wxString multiPathString,
 }
 
 // static
-void AudacityApp::FindFilesInPathList(wxString pattern,
-                                      wxArrayString pathList,
-                                      int flags,
-                                      wxArrayString &results)
+void AudacityApp::FindFilesInPathList(const wxString & pattern,
+                                      const wxArrayString & pathList,
+                                      wxArrayString & results,
+                                      int flags)
 {
    wxLogNull nolog;
 
-   if (pattern == wxT(""))
+   if (pattern == wxT("")) {
       return;
+   }
 
    wxFileName f;
 
-   for(unsigned i=0; i<pathList.GetCount(); i++) {
+   for(size_t i = 0; i < pathList.GetCount(); i++) {
       f = pathList[i] + wxFILE_SEP_PATH + pattern;
-      wxDir::GetAllFiles(f.GetPath(), &results, f.GetFullName(), wxDIR_FILES);
+      wxDir::GetAllFiles(f.GetPath(), &results, f.GetFullName(), flags);
    }
 }
 

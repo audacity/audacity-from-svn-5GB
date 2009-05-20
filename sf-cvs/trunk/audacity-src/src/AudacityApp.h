@@ -17,6 +17,7 @@
 #include "Audacity.h"
 
 #include <wx/app.h>
+#include <wx/dir.h>
 #include <wx/event.h>
 #include <wx/docview.h>
 #include <wx/intl.h>
@@ -144,10 +145,10 @@ class AudacityApp:public wxApp {
                                        wxArrayString &pathList);
    static void AddMultiPathsToPathList(wxString multiPathString,
                                        wxArrayString &pathList);
-   static void FindFilesInPathList(wxString pattern,
-                                   wxArrayString pathList,
-                                   int flags, // wxFILE, wxDIR, or 0
-                                   wxArrayString &results);
+   static void FindFilesInPathList(const wxString & pattern,
+                                   const wxArrayString & pathList,
+                                   wxArrayString &results,
+                                   int flags = wxDIR_FILES);
 
    FileHistory *GetRecentFiles() {return mRecentFiles;}
    void AddFileToHistory(const wxString & name);
