@@ -195,15 +195,14 @@ void LoadVSTPlugins()
                             dpath,
                             sizeof(dpath));
 
-   LSTATUS s = SHRegGetUSValue(_T("Software\\VST"),
-                               _T("VSTPluginsPath"),
-                               NULL,
-                               tpath,
-                               &len,
-                               FALSE,
-                               dpath,
-                               (DWORD) _tcslen(dpath));
-   if (s == ERROR_SUCCESS) {
+   if (SHRegGetUSValue(_T("Software\\VST"),
+                          _T("VSTPluginsPath"),
+                          NULL,
+                          tpath,
+                          &len,
+                          FALSE,
+                          dpath,
+                          (DWORD) _tcslen(dpath)) == ERROR_SUCCESS) {
       tpath[len] = 0;
       ExpandEnvironmentStrings(tpath, dpath, sizeof(dpath));
       wxGetApp().AddUniquePathToPathList(LAT1CTOWX(dpath), pathList);
