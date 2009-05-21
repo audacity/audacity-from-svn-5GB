@@ -214,7 +214,7 @@ bool EffectTruncSilence::Process()
    bool cancelled = false;
    // Reset
    bool ignoringFrames = false;
-   bool ignoringFirst = true;  // Ignore the initial samples until we get above the noise floor
+   bool truncToMinimum = true;  // Ignore the initial samples until we get above the noise floor
    sampleCount consecutiveSilentFrames = 0;
    sampleCount truncIndex = 0;
    sampleCount i = 0;
@@ -250,6 +250,13 @@ bool EffectTruncSilence::Process()
                break;
             }
          }
+         // Make sure we cross-fade and output the last silence
+         // so we get a smooth transition into whatever follows the selected region
+         // Also set the 'truncToMinimum' flag so that the last silence is truncated to the minimum amount
+         if(below && ((index+i+1) == end)) {
+            below = false;
+            truncToMinimum = true;
+         }
 
          // Count frame if it's below threshold
          if (below) {
@@ -269,15 +276,23 @@ bool EffectTruncSilence::Process()
                keep = consecutiveSilentFrames - truncInitialAllowedSilentSamples;
                keep /= mSilenceCompressRatio;
 
-               // The first samples always get truncated to the minimum amount
-               if(ignoringFirst == true)
+               // The first and last samples always get truncated to the minimum amount
+               if(truncToMinimum == true)
                   keep = 0;
                if(keep > truncLongestAllowedSilentSamples)
                   keep = truncLongestAllowedSilentSamples;
                if(keep < 0)
                   keep = 0;
 
-               //. Include the cross-fade samples in the count to make the loop logic easier
+               // Compute the location of the cross-fade to be halfway through the silence
+               // with restriction to the samples we still have available to use
+               rampInFrames = (truncInitialAllowedSilentSamples - keep + mBlendFrameCount) / 2;
+               if(rampInFrames > truncInitialAllowedSilentSamples)
+                  rampInFrames = truncInitialAllowedSilentSamples;
+               if(rampInFrames < mBlendFrameCount)
+                  rampInFrames = mBlendFrameCount;
+
+               // Include the cross-fade samples in the count to make the loop logic easier
                keep += rampInFrames;
                truncIndex -= rampInFrames;
 
@@ -310,7 +325,7 @@ bool EffectTruncSilence::Process()
             }
             consecutiveSilentFrames = 0;
             ignoringFrames = false;
-            ignoringFirst = false;
+            truncToMinimum = false;
          }
 
          // Can get here either because > dbThreshold
