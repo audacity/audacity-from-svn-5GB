@@ -37,6 +37,7 @@
 #endif
 
 #include "../../FileNames.h"
+#include "../../Prefs.h"
 #include "../../xml/XMLFileReader.h"
 #include "../../xml/XMLWriter.h"
 #include "FileDialog.h"
@@ -117,7 +118,8 @@ VSTEffectDialog::VSTEffectDialog(wxWindow *parent,
    mEffect(effect),
    mAEffect(aeffect)
 {
-   if (mAEffect->flags & effFlagsHasEditor) {
+   bool gui = (gPrefs->Read(wxT("/VST/GUI"), (long) true) != 0);
+   if (gui && mAEffect->flags & effFlagsHasEditor) {
       BuildFancy();
    }
    else {
