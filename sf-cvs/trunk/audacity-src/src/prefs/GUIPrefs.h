@@ -16,41 +16,11 @@
 #include <wx/defs.h>
 
 #include <wx/arrstr.h>
-#include <wx/string.h>
 #include <wx/window.h>
 
 #include "../ShuttleGui.h"
 
 #include "PrefsPanel.h"
-
-class WarningsPrefs:public PrefsPanel
-{
- public:
-   WarningsPrefs(wxWindow * parent);
-   ~WarningsPrefs();
-   virtual bool Apply();
-
- private:
-   void Populate();
-   void PopulateOrExchange(ShuttleGui & S);
-};
-
-class TracksPrefs:public PrefsPanel
-{
- public:
-   TracksPrefs(wxWindow * parent);
-   ~TracksPrefs();
-   virtual bool Apply();
-
- private:
-   void Populate();
-   void PopulateOrExchange(ShuttleGui & S);
-
-   wxArrayString mSoloCodes;
-   wxArrayString mSoloChoices;
-   wxArrayString mViewCodes;
-   wxArrayString mViewChoices;
-};
 
 class GUIPrefs:public PrefsPanel 
 {
@@ -85,4 +55,3 @@ class GUIPrefs:public PrefsPanel
 //
 // vim: et sts=3 sw=3
 // arch-tag: 57018e2b-d264-4f93-bfa7-06752ebf631e
-

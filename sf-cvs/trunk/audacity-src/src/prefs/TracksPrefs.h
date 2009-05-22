@@ -2,36 +2,41 @@
 
   Audacity: A Digital Audio Editor
 
-  BatchPrefs.h
+  TracksPrefs.h
 
-  Dominic Mazzoni
+  Brian Gunlogson
+  Joshua Haberman
   James Crook
 
 **********************************************************************/
 
-#ifndef __AUDACITY_BATCH_PREFS__
-#define __AUDACITY_BATCH_PREFS__
+#ifndef __AUDACITY_TRACKS_PREFS__
+#define __AUDACITY_TRACKS_PREFS__
 
 #include <wx/defs.h>
 
+#include <wx/arrstr.h>
 #include <wx/window.h>
 
 #include "../ShuttleGui.h"
 
 #include "PrefsPanel.h"
 
-class BatchPrefs : public PrefsPanel 
+class TracksPrefs:public PrefsPanel
 {
-public:
-   BatchPrefs(wxWindow * parent);
-   ~BatchPrefs();
+ public:
+   TracksPrefs(wxWindow * parent);
+   ~TracksPrefs();
    virtual bool Apply();
 
-private:
+ private:
    void Populate();
    void PopulateOrExchange(ShuttleGui & S);
 
-   DECLARE_EVENT_TABLE();
+   wxArrayString mSoloCodes;
+   wxArrayString mSoloChoices;
+   wxArrayString mViewCodes;
+   wxArrayString mViewChoices;
 };
 
 #endif

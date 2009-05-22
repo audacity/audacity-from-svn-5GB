@@ -2,15 +2,16 @@
 
   Audacity: A Digital Audio Editor
 
-  BatchPrefs.h
+  ProjectsPrefs.h
 
+  Joshua Haberman
   Dominic Mazzoni
   James Crook
 
 **********************************************************************/
 
-#ifndef __AUDACITY_BATCH_PREFS__
-#define __AUDACITY_BATCH_PREFS__
+#ifndef __AUDACITY_PROJECT_PREFS__
+#define __AUDACITY_PROJECT_PREFS__
 
 #include <wx/defs.h>
 
@@ -20,18 +21,16 @@
 
 #include "PrefsPanel.h"
 
-class BatchPrefs : public PrefsPanel 
+class ProjectsPrefs:public PrefsPanel
 {
-public:
-   BatchPrefs(wxWindow * parent);
-   ~BatchPrefs();
+ public:
+   ProjectsPrefs(wxWindow * parent);
+   ~ProjectsPrefs();
    virtual bool Apply();
-
-private:
+   
+ private:
    void Populate();
    void PopulateOrExchange(ShuttleGui & S);
-
-   DECLARE_EVENT_TABLE();
 };
 
 #endif
@@ -45,4 +44,4 @@ private:
 // End:
 //
 // vim: et sts=3 sw=3
-// arch-tag: 57018e2b-d264-4f93-bfa7-06752ebf631e
+// arch-tag: 300a00cc-0770-45a1-8ab5-88cfb7ae1239

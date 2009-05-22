@@ -42,21 +42,26 @@
 #include "PrefsDialog.h"
 #include "PrefsPanel.h"
 
-#include "AudioIOPrefs.h"
+#include "BatchPrefs.h"
+#include "DevicePrefs.h"
+#include "DirectoriesPrefs.h"
+#include "GUIPrefs.h"
+#include "ImportExportPrefs.h"
+#include "KeyConfigPrefs.h"
+#include "LibraryPrefs.h"
+#include "MousePrefs.h"
+#include "PlaybackPrefs.h"
+#include "ProjectsPrefs.h"
 #include "QualityPrefs.h"
+#include "RecordingPrefs.h"
+#include "SpectrumPrefs.h"
+#include "ThemePrefs.h"
+#include "TracksPrefs.h"
+#include "WarningsPrefs.h"
 
 /* REQUIRES PORTMIDI */
 //#include "MidiIOPrefs.h"
 
-#include "DirectoriesPrefs.h"
-#include "FileFormatPrefs.h"
-#include "GUIPrefs.h"
-#include "ThemePrefs.h"
-#include "BatchPrefs.h"
-#include "SpectrumPrefs.h"
-#include "SmartRecordPrefs.h"
-#include "KeyConfigPrefs.h"
-#include "MousePrefs.h"
 
 BEGIN_EVENT_TABLE(PrefsDialog, wxDialog)
    EVT_BUTTON(wxID_OK, PrefsDialog::OnOK)
@@ -83,11 +88,11 @@ PrefsDialog::PrefsDialog(wxWindow * parent)
 //       REQUIRES PORTMIDI
 //       w = new MidiIOPrefs(mCategories);      mCategories->AddPage(w, w->GetName(), false, 0);
          w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName(), false, 0);
-         w = new FileFormatPrefs(mCategories);  mCategories->AddPage(w, w->GetName(), false, 0);
-         w = new ProjectPrefs(mCategories);     mCategories->AddPage(w, w->GetName(), false, 0);
-         w = new LibraryPrefs(mCategories);     mCategories->AddPage(w, w->GetName(), false, 0);
          w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName(), false, 0);
          w = new TracksPrefs(mCategories);      mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new ImportExportPrefs(mCategories);mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new ProjectsPrefs(mCategories);    mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new LibraryPrefs(mCategories);     mCategories->AddPage(w, w->GetName(), false, 0);
          w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName(), false, 0);
          w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName(), false, 0);
          w = new WarningsPrefs(mCategories);    mCategories->AddPage(w, w->GetName(), false, 0);

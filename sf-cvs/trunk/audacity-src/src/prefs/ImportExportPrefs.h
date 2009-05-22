@@ -2,32 +2,32 @@
 
   Audacity: A Digital Audio Editor
 
-  SmartRecordPrefs.h
+  ImportExportPrefs.h
 
-  Martyn Shaw
-
-  Audacity is free software.
-  This file is licensed under the wxWindows license, see License.txt
+  Joshua Haberman
+  Dominic Mazzoni
+  James Crook
 
 **********************************************************************/
 
-#ifndef __AUDACITY_SMARTRECORDING_PREFS__
-#define __AUDACITY_SMARTRECORDING_PREFS__
+#ifndef __AUDACITY_IMPORT_EXPORT_PREFS__
+#define __AUDACITY_IMPORT_EXPORT_PREFS__
 
 #include <wx/defs.h>
+
 #include <wx/window.h>
 
 #include "../ShuttleGui.h"
 
 #include "PrefsPanel.h"
 
-class SmartRecordPrefs:public PrefsPanel
+class ImportExportPrefs:public PrefsPanel
 {
  public:
-   SmartRecordPrefs(wxWindow * parent);
-   ~SmartRecordPrefs(void);
+   ImportExportPrefs(wxWindow * parent);
+   ~ImportExportPrefs();
    virtual bool Apply();
-
+   
  private:
    void Populate();
    void PopulateOrExchange(ShuttleGui & S);
@@ -44,4 +44,4 @@ class SmartRecordPrefs:public PrefsPanel
 // End:
 //
 // vim: et sts=3 sw=3
-// arch-tag: ccb794d2-45d5-4f7b-ba0c-6a4d2438ac93
+// arch-tag: 300a00cc-0770-45a1-8ab5-88cfb7ae1239

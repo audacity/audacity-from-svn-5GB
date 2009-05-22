@@ -172,18 +172,24 @@ OBJS = \
 	ondemand/ODTask.o \
 	ondemand/ODTaskThread.o \
 	ondemand/ODWaveTrackTaskQueue.o \
-	prefs/AudioIOPrefs.o \
-	prefs/BatchPrefs.o \
-	prefs/DirectoriesPrefs.o \
-	prefs/FileFormatPrefs.o \
-	prefs/GUIPrefs.o \
-	prefs/KeyConfigPrefs.o \
-	prefs/MousePrefs.o \
-	prefs/PrefsDialog.o \
-	prefs/QualityPrefs.o \
-	prefs/SmartRecordPrefs.o \
-	prefs/SpectrumPrefs.o \
-	prefs/ThemePrefs.o \
+   prefs/BatchPrefs.o \
+   prefs/DevicePrefs.o \
+   prefs/DirectoriesPrefs.o \
+   prefs/GUIPrefs.o \
+   prefs/ImportExportPrefs.o \
+   prefs/KeyConfigPrefs.o \
+   prefs/LibraryPrefs.o \
+   prefs/MidiIOPrefs.o \
+   prefs/MousePrefs.o \
+   prefs/PlaybackPrefs.o \
+   prefs/PrefsDialog.o \
+   prefs/ProjectsPrefs.o \
+   prefs/QualityPrefs.o \
+   prefs/RecordingPrefs.o \
+   prefs/SpectrumPrefs.o \
+   prefs/ThemePrefs.o \
+   prefs/TracksPrefs.o \
+   prefs/WarningsPrefs.o \
 	toolbars/ControlToolBar.o \
 	toolbars/DeviceToolBar.o \
 	toolbars/EditToolBar.o \

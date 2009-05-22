@@ -1537,19 +1537,19 @@
 			Name="src/prefs"
 			>
 			<File
-				RelativePath="..\..\..\src\prefs\AudioIOPrefs.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\prefs\AudioIOPrefs.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\src\prefs\BatchPrefs.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\src\prefs\BatchPrefs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\DevicePrefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\DevicePrefs.h"
 				>
 			</File>
 			<File
@@ -1561,19 +1561,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\src\prefs\FileFormatPrefs.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\prefs\FileFormatPrefs.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\src\prefs\GUIPrefs.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\src\prefs\GUIPrefs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\ImportExportPrefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\ImportExportPrefs.h"
 				>
 			</File>
 			<File
@@ -1585,11 +1585,35 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\prefs\LibraryPrefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\LibraryPrefs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\MidiIOPrefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\MidiIOPrefs.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\prefs\MousePrefs.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\src\prefs\MousePrefs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\PlaybackPrefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\PlaybackPrefs.h"
 				>
 			</File>
 			<File
@@ -1605,6 +1629,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\prefs\ProjectsPrefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\ProjectsPrefs.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\prefs\QualityPrefs.cpp"
 				>
 			</File>
@@ -1613,11 +1645,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\src\prefs\SmartRecordPrefs.cpp"
+				RelativePath="..\..\..\src\prefs\RecordingPrefs.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\src\prefs\SmartRecordPrefs.h"
+				RelativePath="..\..\..\src\prefs\RecordingPrefs.h"
 				>
 			</File>
 			<File
@@ -1634,6 +1666,22 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\prefs\ThemePrefs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\TracksPrefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\TracksPrefs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\WarningsPrefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\WarningsPrefs.h"
 				>
 			</File>
 		</Filter>

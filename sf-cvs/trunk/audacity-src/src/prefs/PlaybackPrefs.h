@@ -2,15 +2,15 @@
 
   Audacity: A Digital Audio Editor
 
-  BatchPrefs.h
+  PlaybackPrefs.h
 
-  Dominic Mazzoni
+  Joshua Haberman
   James Crook
 
 **********************************************************************/
 
-#ifndef __AUDACITY_BATCH_PREFS__
-#define __AUDACITY_BATCH_PREFS__
+#ifndef __AUDACITY_PLAYBACK_PREFS__
+#define __AUDACITY_PLAYBACK_PREFS__
 
 #include <wx/defs.h>
 
@@ -20,18 +20,16 @@
 
 #include "PrefsPanel.h"
 
-class BatchPrefs : public PrefsPanel 
+class PlaybackPrefs:public PrefsPanel
 {
-public:
-   BatchPrefs(wxWindow * parent);
-   ~BatchPrefs();
+ public:
+   PlaybackPrefs(wxWindow * parent);
+   virtual ~PlaybackPrefs();
    virtual bool Apply();
 
-private:
+ private:
    void Populate();
    void PopulateOrExchange(ShuttleGui & S);
-
-   DECLARE_EVENT_TABLE();
 };
 
 #endif
@@ -45,4 +43,4 @@ private:
 // End:
 //
 // vim: et sts=3 sw=3
-// arch-tag: 57018e2b-d264-4f93-bfa7-06752ebf631e
+// arch-tag: df22b108-e989-4ec4-a8b6-dddbcc7be6a7
