@@ -17,189 +17,16 @@
 
 *//*******************************************************************/
 
-#include <wx/defs.h>
-#include <wx/choice.h>
-
 #include "../Audacity.h"
+
+#include <wx/defs.h>
+
 #include "../AudacityApp.h"
-#include "../Envelope.h"
 #include "../Languages.h"
 #include "../Prefs.h"
-#include "../Project.h"
 #include "../ShuttleGui.h"
 
 #include "GUIPrefs.h"
-
-////////////////////////////////////////////////////////////////////////////////
-
-WarningsPrefs::WarningsPrefs(wxWindow * parent)
-:  PrefsPanel(parent, _("Warnings"))
-{
-   Populate();
-}
-
-WarningsPrefs::~WarningsPrefs()
-{
-}
-
-void WarningsPrefs::Populate()
-{
-   //------------------------- Main section --------------------
-   // Now construct the GUI itself.
-   // Use 'eIsCreatingFromPrefs' so that the GUI is 
-   // initialised with values from gPrefs.
-   ShuttleGui S(this, eIsCreatingFromPrefs);
-   PopulateOrExchange(S);
-   // ----------------------- End of main section --------------
-}
-
-void WarningsPrefs::PopulateOrExchange(ShuttleGui & S)
-{
-   S.SetBorder(2);
-
-   S.StartStatic(_("Show Warnings/Prompts"));
-   {
-      S.TieCheckBox(_("When saving &projects"),
-                    wxT("/Warnings/FirstProjectSave"),
-                    true);
-      S.TieCheckBox(_("When saving &empty project"),    
-                    wxT("/GUI/EmptyCanBeDirty"),
-                    true);
-      S.TieCheckBox(_("When &disk space is getting low"),
-                    wxT("/Warnings/DiskSpaceWarning"),
-                    true);
-      S.TieCheckBox(_("When mixing down to &stereo during export"),
-                    wxT("/Warnings/MixStereo"),
-                    true);
-      S.TieCheckBox(_("When mixing down to &mono during export"),
-                    wxT("/Warnings/MixMono"),
-                    true);
-   }
-   S.EndStatic();
-}
-
-bool WarningsPrefs::Apply()
-{
-   ShuttleGui S(this, eIsSavingToPrefs);
-   PopulateOrExchange(S);
-
-   return true;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-TracksPrefs::TracksPrefs(wxWindow * parent)
-:  PrefsPanel(parent, _("Tracks"))
-{
-   Populate();
-}
-
-TracksPrefs::~TracksPrefs()
-{
-}
-
-void TracksPrefs::Populate()
-{
-   mSoloCodes.Add(wxT("Standard"));
-   mSoloCodes.Add(wxT("Simple"));
-   mSoloCodes.Add(wxT("None"));
-
-   mSoloChoices.Add(_("Standard"));
-   mSoloChoices.Add(_("Simple"));
-   mSoloChoices.Add(_("None"));
-
-   mViewCodes.Add(wxT("Waveform"));
-   mViewCodes.Add(wxT("WaveformdB"));
-   mViewCodes.Add(wxT("Spectrum"));
-   mViewCodes.Add(wxT("SpectrumLogF"));
-   mViewCodes.Add(wxT("PitchEAC"));
-
-   mViewChoices.Add(_("Waveform"));
-   mViewChoices.Add(_("Waveform (dB)"));
-   mViewChoices.Add(_("Spectrum"));
-   mViewChoices.Add(_("Spectrum log(f)"));
-   mViewChoices.Add(_("Pitch (EAC)"));
-
-   //------------------------- Main section --------------------
-   // Now construct the GUI itself.
-   // Use 'eIsCreatingFromPrefs' so that the GUI is 
-   // initialised with values from gPrefs.
-   ShuttleGui S(this, eIsCreatingFromPrefs);
-   PopulateOrExchange(S);
-   // ----------------------- End of main section --------------
-}
-
-void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
-{
-   S.SetBorder(2);
-
-   S.StartStatic(_("Display"));
-   {
-      S.TieCheckBox(_("&Update display while playing"),
-                    wxT("/GUI/AutoScroll"),
-                    true);
-      S.TieCheckBox(_("Automatically &fit tracks vertically zoomed"), 
-                    wxT("/GUI/TracksFitVerticallyZoomed"),
-                    false);
-
-      S.AddSpace(10);
-
-      S.StartMultiColumn(2);
-      {
-         S.TieChoice(_("Default View Mode:"),
-                     wxT("/GUI/DefaultViewMode"),
-                     wxT("Waveform"),
-                     mViewChoices,
-                     mViewCodes);
-         S.SetSizeHints(mViewChoices);
-      }
-      S.EndMultiColumn();
-   }
-   S.EndStatic();
-
-   S.StartStatic(_("Behaviors"));
-   {
-      S.TieCheckBox(_("&Select all audio in project, if none selected"),    
-                    wxT("/GUI/SelectAllOnNone"),
-                    true);
-	   S.TieCheckBox(_("Enable cut &lines"),
-                    wxT("/GUI/EnableCutLines"),
-                    false);
-      S.TieCheckBox(_("Enable &dragging of left and right selection edges"),
-                    wxT("/GUI/AdjustSelectionEdges"),
-                    true);
-      S.TieCheckBox(_("\"Move track focus\" c&ycles repeatedly through tracks"), 
-                    wxT("/GUI/CircularTrackNavigation"),
-                    false);
-      S.TieCheckBox(_("Editing a &clip can move other clips"),
-                    wxT("/GUI/EditClipCanMove"),
-                    true);
-
-      S.AddSpace(10);
-
-      S.StartMultiColumn(2);
-      {
-         S.TieChoice(_("Solo Button:"),
-                     wxT("/GUI/Solo"),
-                     wxT("Standard"),
-                     mSoloChoices,
-                     mSoloCodes);
-         S.SetSizeHints(mSoloChoices);
-      }
-      S.EndMultiColumn();
-   }
-   S.EndStatic();
-}
-
-bool TracksPrefs::Apply()
-{
-   ShuttleGui S(this, eIsSavingToPrefs);
-   PopulateOrExchange(S);
-
-   return true;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 
 GUIPrefs::GUIPrefs(wxWindow * parent)
 :  PrefsPanel(parent, _("Interface"))
@@ -344,6 +171,7 @@ bool GUIPrefs::Apply()
    return true;
 }
 
+
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //
@@ -354,4 +182,3 @@ bool GUIPrefs::Apply()
 //
 // vim: et sts=3 sw=3
 // arch-tag: 7e997d04-6b94-4abb-b3d6-748400f86598
-

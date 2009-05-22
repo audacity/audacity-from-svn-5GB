@@ -46,30 +46,6 @@ class LibraryPrefs:public PrefsPanel
    DECLARE_EVENT_TABLE();
 };
 
-class FileFormatPrefs:public PrefsPanel
-{
- public:
-   FileFormatPrefs(wxWindow * parent);
-   ~FileFormatPrefs();
-   virtual bool Apply();
-   
- private:
-   void Populate();
-   void PopulateOrExchange(ShuttleGui & S);
-};
-
-class ProjectPrefs:public PrefsPanel
-{
- public:
-   ProjectPrefs(wxWindow * parent);
-   ~ProjectPrefs();
-   virtual bool Apply();
-   
- private:
-   void Populate();
-   void PopulateOrExchange(ShuttleGui & S);
-};
-
 #endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
@@ -82,4 +58,3 @@ class ProjectPrefs:public PrefsPanel
 //
 // vim: et sts=3 sw=3
 // arch-tag: 300a00cc-0770-45a1-8ab5-88cfb7ae1239
-

@@ -2,15 +2,16 @@
 
   Audacity: A Digital Audio Editor
 
-  BatchPrefs.h
+  WarningsPrefs.h
 
-  Dominic Mazzoni
+  Brian Gunlogson
+  Joshua Haberman
   James Crook
 
 **********************************************************************/
 
-#ifndef __AUDACITY_BATCH_PREFS__
-#define __AUDACITY_BATCH_PREFS__
+#ifndef __AUDACITY_WARNINGS_PREFS__
+#define __AUDACITY_WARNINGS_PREFS__
 
 #include <wx/defs.h>
 
@@ -20,18 +21,16 @@
 
 #include "PrefsPanel.h"
 
-class BatchPrefs : public PrefsPanel 
+class WarningsPrefs:public PrefsPanel
 {
-public:
-   BatchPrefs(wxWindow * parent);
-   ~BatchPrefs();
+ public:
+   WarningsPrefs(wxWindow * parent);
+   ~WarningsPrefs();
    virtual bool Apply();
 
-private:
+ private:
    void Populate();
    void PopulateOrExchange(ShuttleGui & S);
-
-   DECLARE_EVENT_TABLE();
 };
 
 #endif

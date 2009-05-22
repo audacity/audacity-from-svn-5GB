@@ -2,38 +2,31 @@
 
   Audacity: A Digital Audio Editor
 
-  FileFormatPrefs.cpp
+  LibraryPrefs.cpp
 
   Joshua Haberman
   Dominic Mazzoni
   James Crook
 
-
 *******************************************************************//**
 
-\class FileFormatPrefs
-\brief A PrefsPanel used to select file format preferences and to 
-locate the MP3 encoding library.  Now called 'Libraries' in the
-preferences.  Later we will rename this panel and source files.
+\class LibraryPrefs
+\brief A PrefsPanel used to select manage external libraries like the
+MP3 and FFmpeg encoding libraries.
 
 *//*******************************************************************/
 
- 
-
 #include "../Audacity.h"
-#include "../FFmpeg.h"  // always needs to go before wx headers
 
 #include <wx/defs.h>
-#include <wx/intl.h>
-#include <wx/stattext.h>
 #include <wx/button.h>
 
-#include "../export/ExportMP3.h"
-#include "../Prefs.h"
+#include "../FFmpeg.h"
 #include "../ShuttleGui.h"
+#include "../export/ExportMP3.h"
 #include "../widgets/LinkingHtmlWindow.h"
 
-#include "FileFormatPrefs.h"
+#include "LibraryPrefs.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -225,147 +218,6 @@ bool LibraryPrefs::Apply()
    return true;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
-FileFormatPrefs::FileFormatPrefs(wxWindow * parent)
-:   PrefsPanel(parent, _("Import / Export"))
-{
-   Populate();
-}
-
-FileFormatPrefs::~FileFormatPrefs()
-{
-}
-
-/// Creates the dialog and its contents.
-void FileFormatPrefs::Populate()
-{
-   //------------------------- Main section --------------------
-   // Now construct the GUI itself.
-   // Use 'eIsCreatingFromPrefs' so that the GUI is 
-   // initialised with values from gPrefs.
-   ShuttleGui S(this, eIsCreatingFromPrefs);
-   PopulateOrExchange(S);
-   // ----------------------- End of main section --------------
-}
-
-void FileFormatPrefs::PopulateOrExchange(ShuttleGui & S)
-{
-   S.SetBorder(2);
-
-   S.StartStatic(_("When importing audio files"));
-   {
-      S.StartRadioButtonGroup(wxT("/FileFormats/CopyOrEditUncompressedData"), wxT("edit"));
-      {
-         S.TieRadioButton(_("&Make a copy of uncompressed audio files before editing (safer)"),
-                          wxT("copy"));
-         S.TieRadioButton(_("&Read uncompressed audio files directly from the original (faster)"),
-                          wxT("edit"));
-      }
-      S.EndRadioButtonGroup();
-
-      S.TieCheckBox(_("&Normalize all tracks in project"), 
-                    wxT("/AudioFiles/NormalizeOnLoad"),
-                    false);
-   }
-   S.EndStatic();
-
-   S.StartStatic(_("When exporting tracks to an audio file"));
-   {
-      S.StartRadioButtonGroup(wxT("/FileFormats/ExportDownMix"), true);
-      {
-         S.TieRadioButton(_("A&lways mix all tracks down to Stereo or Mono channel(s)."),
-                          true);
-         S.TieRadioButton(_("&Use custom mix (for example to export a 5.1 multichannel file)"),
-                          false);
-      }
-      S.EndRadioButtonGroup();
-
-      S.TieCheckBox(_("S&how Metadata Editor prior to export step"),
-                    wxT("/AudioFiles/ShowId3Dialog"),
-                    true);
-      S.AddFixedText(_("Note: Export quality options can be chosen by clicking the Options\nbutton in the Export dialog."));
-   }
-   S.EndStatic();
-}
-
-bool FileFormatPrefs::Apply()
-{  
-   ShuttleGui S(this, eIsSavingToPrefs);
-   PopulateOrExchange(S);    
-   
-   return true;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-ProjectPrefs::ProjectPrefs(wxWindow * parent)
-:   PrefsPanel(parent, _("Projects"))
-{
-   Populate();
-}
-
-ProjectPrefs::~ProjectPrefs()
-{
-}
-
-/// Creates the dialog and its contents.
-void ProjectPrefs::Populate()
-{
-   //------------------------- Main section --------------------
-   // Now construct the GUI itself.
-   // Use 'eIsCreatingFromPrefs' so that the GUI is 
-   // initialised with values from gPrefs.
-   ShuttleGui S(this, eIsCreatingFromPrefs);
-   PopulateOrExchange(S);
-   // ----------------------- End of main section --------------
-}
-
-void ProjectPrefs::PopulateOrExchange(ShuttleGui & S)
-{
-   S.SetBorder(2);
-
-   S.StartStatic(_("When saving a project that depends on other audio files"));
-   {
-      S.StartRadioButtonGroup(wxT("/FileFormats/SaveProjectWithDependencies"), wxT("ask"));
-      {
-         S.TieRadioButton(_("Always &copy all audio into project (safest)"),
-                          wxT("copy"));
-         S.TieRadioButton(_("&Do not copy any audio"),
-                          wxT("never"));
-         S.TieRadioButton(_("&Ask user"),
-                          wxT("ask"));
-      }
-      S.EndRadioButtonGroup();
-   }
-   S.EndStatic();
-
-   S.StartStatic(_("Auto save"));
-   {
-      S.TieCheckBox(_("Auto save a copy of the project in a separate folder"),
-                    wxT("/Directories/AutoSaveEnabled"),
-                    true);
-
-      S.StartThreeColumn();
-      {
-         S.TieTextBox(_("Auto save interval:"),
-                      wxT("/Directories/AutoSaveMinutes"),
-                      2.0,
-                      9);
-         S.AddUnits(_("minutes"));
-      }
-      S.EndThreeColumn();
-   }
-   S.EndStatic();
-}
-
-bool ProjectPrefs::Apply()
-{  
-   ShuttleGui S(this, eIsSavingToPrefs);
-   PopulateOrExchange(S);    
-   
-   return true;
-}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
@@ -377,4 +229,3 @@ bool ProjectPrefs::Apply()
 //
 // vim: et sts=3 sw=3
 // arch-tag: 427b9e64-3fc6-40ef-bbf8-e6fff1d442f0
-

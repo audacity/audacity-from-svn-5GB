@@ -19,11 +19,9 @@
 #include <wx/dynarray.h>
 #include <wx/textctrl.h>
 
-#include <../ShuttleGui.h>
+#include "../ShuttleGui.h"
 
 #include "PrefsPanel.h"
-
-class ShuttleGui;
 
 class QualityPrefs:public PrefsPanel 
 {
@@ -67,4 +65,3 @@ class QualityPrefs:public PrefsPanel
 //
 // vim: et sts=3 sw=3
 // arch-tag: ccb794d2-45d5-4f7b-ba0c-6a4d2438ac93
-

@@ -15,6 +15,9 @@
 #define SHUTTLE_GUI
 
 #include "Audacity.h"
+
+#include <wx/string.h>
+
 #include "WrappedType.h" 
 
 const int nMaxNestedSizers = 20;
