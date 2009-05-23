@@ -66,7 +66,7 @@ private:
     * Called once for each file in the list to do a (non-interactive) export
     * @param channels Number of channels to export
     * @param name The file name (and path) to export to
-    * @param selectecOnly Should we  export the selected tracks only?
+    * @param selectedOnly Should we  export the selected tracks only?
     * @param t0 Start time for export
     * @param t1 End time for export
     * @param tags Metadata to include in the file (if possible).
