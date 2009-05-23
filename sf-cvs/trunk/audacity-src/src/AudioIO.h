@@ -155,7 +155,7 @@ class AUDACITY_DLL_API AudioIO {
     * soundcard mixer (driven by PortMixer) */
    wxArrayString GetInputSourceNames();
 
-   /** \Brief update state after changing what audio devices are selected 
+   /** \brief update state after changing what audio devices are selected 
     *
     * Called when the devices stored in the preferences are changed to update
     * the audio mixer capabilities
@@ -436,11 +436,19 @@ private:
     * with the two buffers needs some care to ensure that the right things
     * happen for all possible cases.
     * @param inputBuffer Buffer of length framesPerBuffer containing samples
-    * from the sound card, or null if not capturing audio.
+    * from the sound card, or null if not capturing audio. Note that the data
+    * type will depend on the format of audio data that was chosen when the
+    * stream was created (so could be floats or various integers)
     * @param outputBuffer Uninitialised buffer of length framesPerBuffer which
     * will be sent to the sound card after the callback, or null if not playing
     * audio back.
     * @param framesPerBuffer The length of the playback and recording buffers
+    * @param PaStreamCallbackTimeInfo Pointer to PortAudio time information
+    * structure, which tells us how long we have been playing / recording
+    * @param statusFlags PortAudio stream status flags
+    * @param userData pointer to user-defined data structure. Provided for
+    * flexibility by PortAudio, but not used by Audacity - the data is stored in
+    * the AudioIO class instead.
     */
    friend int audacityAudioCallback(
                 const void *inputBuffer, void *outputBuffer,
