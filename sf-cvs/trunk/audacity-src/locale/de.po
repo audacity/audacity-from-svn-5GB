@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Audacity 1.3.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-03-11 19:51+0100\n"
-"PO-Revision-Date: 2009-02-25 21:47+0100\n"
+"PO-Revision-Date: 2009-05-23 19:52+0100\n"
 "Last-Translator: Andreas Klug <sammel@mediensyndikat.de>\n"
 "Language-Team: Andreas Klug, Edgar M. Franke, Pennywize, Heiko Abler <andreas.klug@mediensyndikat.de>\n"
 "MIME-Version: 1.0\n"
@@ -32,15 +32,15 @@ msgstr "OK... Audacious!"
 
 #: AboutDialog.cpp:175
 msgid "Audacity is a free program written by a team of volunteer <a href=\"http://audacity.sourceforge.net/community/developers\">developers</a> around the world. We are grateful to <a href=\"http://sourceforge.net\">SourceForge.net</a> for our project hosting. Audacity is available for Windows 98 and later, Mac OS X, Linux and other Unix-like operating systems. Older versions of Audacity are available for Mac OS 9."
-msgstr ""
+msgstr "Audacity ist freie Software, die von vielen freien <a href=\"http://audacity.sourceforge.net/community/developers\">Mitarbeiter/-innen</a> weltweit entwickelt wird. Wir freuen uns, dass  <a href=\"http://sourceforge.net\">SourceForge.net</a> Serverplatz für unser Projekt bereitstellt. Audacity ist verfügbar für Windows (ab 98), Mac OS X, Linux und andere Unix-artige Betriebssysteme. Ältere Audacity-Versionen gibt es auch für Mac OS 9."
 
 #: AboutDialog.cpp:179
 msgid "This is a Beta version of the program. It may contain bugs and unfinished features. We depend on your feedback: please send bug reports and feature requests to <b>feedback@audacityteam.org</b>. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
-msgstr ""
+msgstr "Sie arbeiten mit einer Beta-Version, die deutlich weiterentwickelt ist, aber an einigen Stellen noch unfertig sein kann. Wir freuen uns über Feedback: Wenn wirkliche Programmfehler vorliegen bitte an <b>feedback@audacityteam.org</b>. (Englischsprachige) Hilfe auch unter <a href=\"http://audacityteam.org/forum/\">Forum</a>."
 
 #: AboutDialog.cpp:182
 msgid "This is a stable, completed release of the program. However, if you find a bug or have a suggestion for us, please write to <b>feedback@audacityteam.org</b>. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
-msgstr ""
+msgstr "Dies ist eine stabile Programmversion. Wenn Sie dennoch Fehler finden oder Anregungen haben schreiben Sie an <b>feedback@audacityteam.org</b>. (Englischsprachige) Hilfe gibts unter <a href=\"http://audacityteam.org/forum/\">Forum</a>."
 
 #. i18n-hint: The translation of "translator_credits" will appear
 #. in the credits in the About Audacity window.  Use this to add
@@ -93,7 +93,7 @@ msgstr "Besonderer Dank geht an"
 
 #: AboutDialog.cpp:250
 msgid "<b>Audacity&reg;</b> software is copyright &copy; 1999-2009 Audacity Team. <br>The name <b>Audacity&reg;</b> is a registered trademark of Dominic Mazzoni."
-msgstr ""
+msgstr "<b>Audacity&reg;</b> Software is copyright &copy; 1999-2009 Audacity Team. <br>Der Name <b>Audacity&reg;</b> ist ein eingetragenes Warenzeichen von Dominic Mazzoni."
 
 #: AboutDialog.cpp:320
 msgid "Audacity"
@@ -213,7 +213,6 @@ msgstr "Software-Version"
 msgid "Installation Prefix: "
 msgstr "Installations-Verzeichnis:"
 
-# ??? zu langer text? --> Schau Dir den About-Dialog an (Hilfe/Über Audacity), dann siehst Du, wie's aussieht. Würde eher "Einstellungs-Ordner:" schreiben oder so.
 #: ../src/AboutDialog.cpp:194
 msgid "Settings folder: "
 msgstr "Einstellungs-Ordner:"
@@ -409,6 +408,9 @@ msgid ""
 "Audacity has brought it back to start at zero.\n"
 "You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
 msgstr ""
+"Die Latenz-Korrektur-Einstellungen führen dazu, dass Audio nun vor der Null-Linie (auf der Zeitachse) starten müsste.\n"
+"Audacity hat das Audio nun auf die Null-Linie zurückverschoben.\n"
+"Sie müssen nun das Verschiebewerkzeug verwenden, um das Audio an die von Ihnen gewünschte Stelle zu schieben."
 
 #: AudioIO.cpp:1236
 msgid "Latency problem"
@@ -460,7 +462,7 @@ msgstr ""
 
 #: AutoRecovery.cpp:128
 msgid "Confirm?"
-msgstr ""
+msgstr "Bestätigen?"
 
 #: ../src/AutoRecovery.cpp:132
 #: ../src/AutoRecovery.cpp:167
@@ -519,7 +521,7 @@ msgstr "Stereo-in-Mono-Effekt nicht gefunden"
 #: ../src/export/Export.cpp:410
 #: ../src/BatchCommands.cpp:489
 msgid "Ogg Vorbis support is not included in this build of Audacity"
-msgstr "Ogg-Vorbis wird in dieser Version von Audacity nicht unterstützt"
+msgstr "Ogg Vorbis wird in dieser Version von Audacity nicht unterstützt"
 
 #: BatchCommands.cpp:509
 msgid "FLAC support is not included in this build of Audacity"
@@ -640,7 +642,7 @@ msgstr "Bitte speichern und schließen Sie zunächst das Projekt."
 
 #: BatchProcessDialog.cpp:206
 msgid "Select vocal file(s) for batch CleanSpeech Chain..."
-msgstr ""
+msgstr "Wählen Sie Audio aus für die CleanSpeech-Verarbeitung..."
 
 #: ../src/BatchProcessDialog.cpp:204
 msgid "Select file(s) for batch processing..."
@@ -889,7 +891,7 @@ msgstr "'%s' kann nicht in '%s' umbenannt werden"
 #: DirManager.cpp:1183
 #, c-format
 msgid "Changed block %s to new alias name\n"
-msgstr ""
+msgstr "Block %s geändert auf neuen Alias-Name\n"
 
 #: ../src/DirManager.cpp:1115
 #: ../src/DirManager.cpp:1403
@@ -1067,6 +1069,10 @@ msgid ""
 "\n"
 "You may want to go back to Preferences > Import/Export and re-configure it."
 msgstr ""
+"FFmpeg ist bereits konfiguriert und vormals bereits geladen worden,                       \n"
+"aber diesmal konnte Audacity es beim starten nicht laden.                       \n"
+"\n"
+"Unter Bearbeiten > Einstellungen > Import/Export können sie es konfigurieren."
 
 #: FFmpeg.cpp:104
 msgid "FFmpeg startup failed"
@@ -1131,6 +1137,10 @@ msgid ""
 "If you want to use the FFmpeg import feature, please go to Preferences->Import/Export\n"
 "and tell Audacity where to look for the libraries."
 msgstr ""
+"Audacity versuchte, die FFmpeg-Bibliotheken für den Import zu verwenden,\n"
+"doch die Bibliotheken wurden nicht gefunden.\n"
+"Wenn Sie das FFmpeg-Import-Feature nutzen wollen, lassen sie Audacity unter Bearbeiten > Einstellungen > Import/Export\n"
+"nach den Bibliotheken suchen."
 
 #: FFmpeg.h:109
 msgid "Do not show this warning again"
@@ -1195,7 +1205,7 @@ msgstr "-Fenster"
 #: FreqWindow.cpp:187
 #: FreqWindow.cpp:191
 msgid "Function"
-msgstr ""
+msgstr "Funktion"
 
 #: ../src/FreqWindow.cpp:189
 msgid "Linear frequency"
@@ -1208,7 +1218,7 @@ msgstr "Log. Darstellung"
 #: FreqWindow.cpp:201
 #: FreqWindow.cpp:205
 msgid "Axis"
-msgstr ""
+msgstr "Axis"
 
 #: ../src/LabelDialog.cpp:128
 msgid "&Export..."
@@ -1299,6 +1309,9 @@ msgid ""
 "                      but this time Audacity failed to load it at startup.\n"
 "                      You may want to go back to Preferences->Import/Export and re-configure it."
 msgstr ""
+"GSstreamer ist bereits konfiguriert und vormals bereits geladen\n"
+"worden, aber diesmal konnte Audacity es beim starten nicht\n"
+"laden. Unter Bearbeiten > Einstellungen > Import/Export können sie es konfigurieren."
 
 #: GStreamerLoader.cpp:240
 msgid "GStreamer startup failed"
@@ -1367,7 +1380,7 @@ msgstr "Hallo bei Audacity "
 
 #: HelpText.cpp:151
 msgid "Learn how to: <ul><li>[[play|play]] an existing audio file <li>[[record|record]] your voice, LP or tape <li>[[edit|edit]] sounds <li>[[save|save or open an Audacity project]] <li>[[export|export]] to an MP3 or other audio file, or [[burncd|burn to a CD]]  </ul></p><p>"
-msgstr "Mit Audacity können Sie: <ul><li>Audiodateien [[play|abspielen]] <li>[[record|Aufnahmen erstellen]] von MIkrofon, Plattenspieler oder Cassetten <li>Töne [[edit|bearbeiten]] <li>Projekte [[save|speichern und wieder öffnen]] <li>Töne [[export|exportieren]] in MP3- oder andere Audiodateien oder auch [[burncd|eine CD brennen]]  </ul></p><p>"
+msgstr "Mit Audacity können Sie: <ul><li>Audiodateien [[play|abspielen]] <li>[[record|Aufnahmen erstellen]] von Mikrofon, Plattenspieler oder Kassetten <li>Töne [[edit|bearbeiten]] <li>Projekte [[save|speichern und wieder öffnen]] <li>Töne [[export|exportieren]] in MP3- oder andere Audiodateien oder auch [[burncd|eine CD brennen]]  </ul></p><p>"
 
 #: HelpText.cpp:159
 msgid "This screen can be viewed at any time by clicking the <i>Help</i> menu, then <i>Show Welcome Message</i>. For a detailed guide to all the Audacity menus and controls, click  <i>Help</i> menu then <i>Index</i>, or download our <a href=\"http://audacity.sourceforge.net/help/documentation/manual_1.4.pdf\">full Manual</a> in PDF format.</p>"
@@ -1375,47 +1388,47 @@ msgstr "(Dieser Text kann jederzeit angezeigt werden über das Menü <i>Hilfe: Beg
 
 #: HelpText.cpp:172
 msgid "<p><b>Opening audio files:</b> Either drag the files into the current project window, or click <i>File &gt; Import &gt; Audio</i>. Files can be opened into a new project window with <i>File &gt; Open</i>. The main formats Audacity plays are <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis</b> and <b>WAV</b>. Click [[wma-proprietary|here]] if your file is in some other format. <b>To import a CD:</b> extract it to WAV or AIFF using iTunes, Windows Media Player 11 or similar. See our online guide: [[wiki:How_to_import_CDs|importing CDs]].</p><p> <p><b>Playing audio:</b> Press the green Play button to start playback. Press the blue Pause button once to pause playback, and again to resume. To stop, press the yellow Stop button. Spacebar can be used to either play or stop. After stopping, playback resumes from its last starting point. To change the starting point, click in the track at your desired starting point. The <b>|&lt;&lt;</b> and <b>&gt;&gt;|</b> buttons can be used to skip to the start or end of the track respectively. </p><br><br>"
-msgstr ""
+msgstr "<p><b>Audio-Dateien öffnen:</ b> Entweder ziehen Sie die Dateien in das aktuelle Projekt-Fenster, oder klicken Sie auf <i>Datei &gt; Importieren &gt; Audio</ i>. Dateien können in einem weiteren Projekt-Fenster geöffnet werden mit <i> Datei &gt; Öffnen</ i>. Die wichtigsten Formate, die Audacity spielt, sind <b>AIFF, AU, FLAC, M4A </ b> (letzteres zunächst nur auf dem Mac), <b> MP2/MP3, Ogg-Vorbis</ b> und <b> WAV</ b>. Klicken Sie [[wma-proprietary|hier]], wenn Sie eine Datei in einem anderen Format haben. <b> Um eine CD zu importieren </ b> lesen Sie sie zunächst mit einem CD-Grabber in ein unterstütztes Format aus. Schauen Sie auch in unseren Online-Ratgeber: [[wiki:How_to_import_CDs|CDs importieren]].</ p> <p> Audio wiedergeben:</ b> Drücken Sie die grüne Play-Taste um die Wiedergabe zu starten. Drücken Sie die blaue Pause-Taste, um die Wiedergabe anzuhalten bzw. fortzusetzen. Stopp mit der gelben Taste Stopp. Leertaste für Wiedergabe und Stopp. Bei Stopp springt der Cursor zum letzten Ausgangspunkt. Um den Ausgangspunkt zu ändern klicken Sie in der Spur an Ihren gewünschten Ausgangspunkt. Die Knöpfe <b>|&lt;&lt;</b> and <b>&gt;&gt;|</b> können verwendet werden, um zum Anfang bzw. Ende der Spur zu springen.</p><br><br>"
 
 #: HelpText.cpp:194
 msgid "<p><b>To record:</b> Set the recording device and input source, adjust the input level, then press the red Record button.</b></p><p> 1) [[inputdevice|Set Recording Device]] either in the <i>Audio I/O tab of Preferences</i> or in <i>Device Toolbar</i>. Audio I/O Preferences lets you choose stereo recording if required.<br> 2) [[inputsource|Set input source]] for that device (for example, microphone or line-in) in the dropdown selector of the <i>Mixer Toolbar</i>, or (on some systems) at Recording Device in the <i>Audio I/O tab of Preferences</i> or in <i>Device Toolbar</i>.<br> 3) [[inputlevel|Adjust input level]] using the right-hand slider on the <i>Mixer Toolbar</i>. Correct adjustment of level before recording is essential to avoid noise or distortion. </p><p> More help at: \"Recording\" <a href=\"http://audacity.sourceforge.net/help/faq\">FAQs</a>, our Tutorial <a href=\"http://www.audacityteam.org/manual/index.php?title=Tutorial_-_Your_First_Recording\"> Your First Recording</a> in the <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">Manual</a>, and our Wiki [[wiki:Recording_Tips|Recording Tips]] and [[wiki:Troubleshooting_Recordings|Troubleshooting Recordings]] pages. </p><br><br>"
-msgstr ""
+msgstr "<p><b>Aufnahme:</ b> Stellen Sie Soundkarte, Input-Quelle und den Eingangspegel ein und drücken Sie dann auf den roten Aufnahme-Knopf.</ b> </ p><p> 1) [[inputdevice|Soundkarte]] entweder in den Einstellungen <i> Audio E/A-Registerkarte </ i> oder in der <i>Werkzeugleiste Aufnahmegeräte</ i>. Dort können Sie ggf. wählen zwischen Mono- und Stereo-Aufnahmen.<br> 2) [[inputsource| Input-Quelle]] für diese Soundkarte (zum Beispiel Mikrofon oder Line-in) in der Dropdown-Liste der <i>Werkzeugleiste Pegelregler</ i> oder (auf manchen Systemen) auf der Registerkarte <i> Audio E/A</ i> bzw. in der<i> Werkzeugleiste Aufnahmegeräte</ i>. <br> 3) Der [[inputlevel|Eingangspegel]] muss mit dem Schieberegler der<i> Werkzeugleiste Pegelregler</ i> eingestellt werden, die korrekte Einstellung vor der Aufnahme ist wesentlich zur Vermeidung von Rauschen oder Verzerrungen. </ p> Mehr Hilfe in der \"Aufnahme\" <a href=\"http://audacity.sourceforge.net/help/faq\">-FAQ </a> sowie unserem Tutorial <a href =  \"http://www.audacityteam.org/manual/index.php?title=Tutorial_-_Your_First_Recording \"> Ihre erste Aufnahme </a> in dem <a href = \"http://www.audacityteam.org / manual / index.php? main_page title = \"> Handbuch </a>. Siehe auch unser Wiki [[wiki: Recording_Tips| Aufnahme-Tipps]] und [[wiki: Troubleshooting_Recordings | Fehlerbehebung]]. </p> <br><br>"
 
 #: HelpText.cpp:221
 msgid "<p>The input device is the actual physical sound device you are recording from. This is chosen at \"Recording Device\" in the <i>Audio I/O tab of Preferences</i>, On Windows and Linux, Preferences are at the bottom of the <i>Edit</i> Menu. On a Mac, they in the <i>Audacity</i> Menu. You can also conveniently select Recording Device in the <i>Device Toolbar</i>, which can be enabled at <i>View &gt; Toolbars...</i>. </p><p> By default, Audacity uses the device currently being used by the system, (usually your inbuilt sound device), so it is often not necessary to change the input device. On Windows, this current system device can be selected as \"Microsoft Sound Mapper\". If you are recording from an external USB or Firewire device such as a USB turntable, select it explicitly by name as recording device after connecting it. </p><p> Back to [[record|Recording Audio]] <br></p>"
-msgstr ""
+msgstr "<p>Sie nehmen mit einer Soundkarte auf, die Sie unter \"Aufnahmegerät\" auf der Registerkarte <i>Audio E/A in den Einstellungen </i>. Unter WIndows und Linux liegen die Einstellungen ganz unten im Menü <i>Bearbeiten</i>. Auf dem Mac liegen sie im Menü <i>Audacity</i>.Sie können das Aufnahmegerät ebenfalls wählen in der entsprechenden Werkzeugleiste, die aktiviert werden kann über <i>Ansicht &gt; Werkzeugleistern...</i>. </p><p>Standardmäßig verwendet Audacity die System-Soundkarte (oft die im Rechner eingebaute), deshalb muss der Soundeingang meist nicht umgestellt werden. Unter Windows kann die System-Soundkarte ausgewählt werden als \"Microsoft-Sound-Mapper\". Wenn Sie mit einer externen USB- oder Firewire-Soundkarte (z. B. von einem USB-Plattenspieler) aufnehmen wählen Sie sie - nachdem Sie sie angeschlossen haben - bitte explizit aus über ihren Geräte-Name. </p><p> Zurück auf [[record|Recording Audio]] <br></p>"
 
 #: HelpText.cpp:244
 msgid "<p>Select the input source (such as microphone or line-in) for your [[inputdevice|recording device]]:<br> - <b>On Windows (except Vista)</b> and <b>Linux</b>, in the dropdown selector on the right of the <i>Mixer Toolbar</i>.<br> - <b>On Windows Vista</b> and <b>Mac</b>, at Recording Device on the <i>Audio I/O tab of Preferences</i>, or in <i>Device Toolbar</i>. The source will be shown as part of the parent device (for example, <i>High Def Audio Card: Microphone</i>). If necessary, Mac users can choose the input source at Apple Audio MIDI Setup. <br><i><b>Note:</b> many USB or Firewire recording devices don't have a choice of inputs, so this step is not necessary. If in doubt, see the documentation for your device. </i></p><p> <b>Tip:</b> To <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&i=streaming\">record audio playing on the computer</a>, Windows and Linux users can choose the \"Stereo Mix\", \"Wave Out\", \"Sum\" or comparable input source. </p><p> Back to [[record|Recording Audio]] <br></p>"
-msgstr ""
+msgstr "<p>Wählen Sie die Eingangs-Quelle (etwa Mikrofon oder Line-in) ihrer [[inputdevice|recording device]]:<br> - <b>Unter Windows (außer Vista)</b> und <b>Linux</b> rechts des <i>Mixer-Werkzeugs</i> in der Dropdown-Liste. <br> - <b>Unter Windows Vista</b> und <b>auf dem Mac</b> unter Recording Device auf der <i>Registerkarte Audio E/A in den Einstellungen</i>, oder in der <i>Soundkarten-Registerkarte</i>. Die Quelle wird angezeigt als Teil des Aufnahmegeräts (zum Beispiel <i>Soundkarte xy: Mikrofon</i>). Falls nötig können Mac-NutzerInnen die Eingangs-Quelle auswählen unter dem Apple Audio-MIDI-Setup. <br><i><b>Hinweis:</b> Viele USB- oder Firewire-Soundkarten bieten nicht die Möglichkeit der Auswahl, dann ist dieser Schritt natürlich nicht nötig. Schauen Sie im Zweifelsfall in die Dokumentation ihrer Soundkarte. </i></p><p> <b>Tipp:</b> Um <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&i=streaming\">Audio aufzunehmen, das der Computer gerade wiedergibt</a>, können Windows- und Linux-Nutzer  \"Stereo Mix\", \"Wave Out\", \"Summe\" oder ähnliche Eingangs-Quellen auswählen.</p><p> Zurück zu [[record|Recording Audio]] <br></p>"
 
 #: HelpText.cpp:267
 msgid "<p>The input level must be set correctly. If the level is too low, there will be background noise. If the level is too high, there will be distortion in the loud parts. </p><p>To set the level, either see this [[wiki:Recording_levels|illustrated online guide]] or follow these steps: <ol><li>Turn on <b>monitoring</b>. Double-click the right-hand of the two <i>VU Meters</i> (or right-click over it) and click \"Start Monitoring\". If the meters are not visible, click <i>View &gt; Toolbars</i> and check \"Meter Toolbar\". </li><li>Adjust the input slider on the <i>Mixer Toolbar</i> (by the microphone symbol), so that the red bars in the meter come close to <b>but do not touch</b> the right edge of the scale. If you can't hear the monitored audio, go to the <i>Audio I/O tab of Preferences</i> and check \"Software Playthrough\". </li></ol></p><p> Back to [[record|Recording Audio]] <br></p>"
-msgstr ""
+msgstr "<p>Der Eingangs-Pegel muss korrekt eingestellt werden. Ist er zu niedrig gewählt werden Störgeräusche der Soundkarte hörbar. Ist er zu hoch gewählt, steigt der Klirrfaktor (\"Verzerrungen\") bei den lauten Passagen. </p><p>Um den Pegel einzustellen, schauen Sie entweder auf [[wiki:Recording_levels|illustrated online guide]] oder folgen Sie diesen Schritten: <ol><li>Aktivieren Sie die  <b>Pegelanzeige</b> durch Doppelklick auf die rechte der beiden <i>Anzeigen</i> (oder Rechtsklick darauf und \"Start Monitoring\"). Falls die Anzeigen nicht sichtbar sind, klicken Sie auf <i>Ansicht &gt; Werkzeuge</i> und aktivieren Sie \"Aussteuerungs-Anzeige\". </li><li>Stellen Sie die Eingangs-Regler der  <i>Mixer-Toolbar</i> ein (bei dem Mikrofon-Symbol), so dass die roten Balken der Anzeige nur sporadisch aufleuchten, den rechten Rand der Anzeige jedoch <b>nie berühren</b>. Wenn Sie Ihr aufgenommenes Audio nicht hören aktivieren Sie \"Software Playthrough\" in der Registerkarte <i>Einstellungen &gt; Audio E/A</i>. </li></ol></p><p> Zurück zu [[record|Recording Audio]] <br></p>"
 
 #: HelpText.cpp:292
 msgid "<p>The main commands for editing audio are under the <i>Edit</i> menu (such as cut, copy and paste) and the <i>Effect</i> menu (you can do things like boost the bass, change pitch or tempo, or remove noise). </p><p> Audacity applies edits to selected areas of the audio track. To select a particular area, click in the track and drag the shaded area with the mouse. If no audio is selected, Audacity selects all the audio in the project window.</p><p> When playing or recording, the Edit and Effect menus will appear greyed out, because a moving track can't be edited. Commands can sometimes be unavailable for other reasons too. For example, you can't run effects until you have audio on the screen, and you can't paste audio until you've cut or copied it to Audacity's clipboard. </p><br><br>"
-msgstr ""
+msgstr "<p>Die meisten Befehle für die Audiobearbeitung finden Sie im Menü <i>Bearbeiten</i> (etwa Ausschneiden, Kopieren, Einfügen) sowie <i>Effekte</i> (hier etwa Bass-Anhebung, Tonhöhe- oder Tempo-Änderung oder Rauschentfernung). </p><p>Audacity nimmt Änderungen an ausgewählten Bereichen der Audio-Spuren vor. Um einen bestimmten Bereich auszuwählen gehen Sie in die Spur und ziehen einen schattierten Bereich mit der Maus auf.</p><p>Während Wiedergabe und Aufnahme sind viele Menüs nicht gleichzeitig bedienbar und deshalb ausgegraut, das gilt auch für den Fall, dass die Pause-Taste gedrückt ist. </p><br><br>"
 
 #: HelpText.cpp:311
 msgid "<p>To return later to your unfinished work in Audacity with all tracks and edits as you left them, save an Audacity project. To play your current work in other media programs or send it to others, [[export|export]] an audio file such as WAV or MP3. </p><p> <i>File &gt; Save Project</i> saves an <b>.aup</b> project file and  a <b>_data</b> folder containing the actual audio. To re-open a saved project, click <i>File &gt; Open</i> and open the .aup file. If you save and exit more than once, an .aup.bak backup file is created, but the .aup file should always be opened if present. When your final exported file is exactly as you want, delete the project files and _data folder to save disc space. </p><p><i>File &gt; Save Project As...</i> is for saving an empty project. It also lets you save an existing Project to a <b> new</b> name. This is the only safe way to rename a project. The .aup file and _data folder should not be moved or renamed manually. </p><p>"
-msgstr ""
+msgstr "<p>Um zu einem späteren Zeitpunkt an einem unfertigen Audacity-Projekt weiterzuarbeiten speichern Sie es als Audacity-Projekt. Um Ihr Projekt hingegen in anderen Programmen abzuspielen müssen Sie es zunächst [[export|exportieren]] als Audio-Datei, z.B. als WAV oder MP3. </p><p> <i>Datei &gt; Projekt speichern</i> erzeugt eine <b>.aup</b>-Projekt-Datei und einen <b>_data</b>-Ordner, der das aktuelle Audio enthält. Um ein gespeichertes Projekt erneut zu öffnen klicken Sie auf <i>Datei &gt; Öffnen</i> und verwenden Sie die .aup-Datei. Wenn Sie mehrfach öffnen und schließen erzeugt Audacity zusätzlich eine Backup-Datei .aup.bak, dennoch sollte immer die .aup-Datei geöffnet werden - sofern sie vorhanden ist. Wenn Ihre Arbeit endgültig fertig ist können Sie .aup-Datei und _data-Verzeichnis löschen um Festplattenplatz zu sparen. </p><p><i>Datei &gt; Projekt speichern als...</i> erlaubt es, ein leeres Projekt zu speichern; außerdem kann hiermit ein vorhandenes Projekt umbenannt werden. Weder .aup-Datei noch _data-Verzeichnis sollten jedoch manuell umbenannt werden. </p><p>"
 
 #: HelpText.cpp:335
 msgid "To hear your work in other media programs, export it to an audio file such as WAV or MP3 (some formats are [[wma-proprietary|unsupported]]). [[save|Saving an Audacity project]] creates a project file (and linked _data folder) containing all your edited tracks, so you can return to your work later. However, other programs can't read Audacity projects. </p><p> To export, click <i>File &gt; Export</i> then choose the file format you want to export to in the \"Save as type\" dropdown. To [[burncd|burn a CD]] for standalone CD players, choose WAV or AIFF. To export as MP3, the [[wiki:Lame_Installation|Lame Encoder]] must be installed. </p><p> <i>File &gt; Export Selection</i> exports only a selected area of audio. <i>Use File &gt; Export Multiple</i> to export multiple files at the same time, either one for each audio track, or one for each labeled area in a single track. <i>Tracks &gt; Add Label At Selection</i> lets you [[wiki:Splitting_recordings_into_separate_tracks|split the tracks]] from an album for multiple export as separate files. </p><br><br>"
-msgstr ""
+msgstr "Um Ihre Arbeit in anderen Programmen anzuhören exportieren Sie sie in Audio-Dateien wie WAV oder MP3 (einige Formatewerden zunächst [[wma-proprietary|nicht unterstützt]]). [[save|Saving an Audacity project]] creates a project file (and linked _data folder) containing all your edited tracks, so you can return to your work later. However, other programs can't read Audacity projects. </p><p> To export, click <i>File &gt; Export</i> then choose the file format you want to export to in the \"Save as type\" dropdown. To [[burncd|burn a CD]] for standalone CD players, choose WAV or AIFF. To export as MP3, the [[wiki:Lame_Installation|Lame Encoder]] must be installed. </p><p> <i>File &gt; Export Selection</i> exports only a selected area of audio. <i>Use File &gt; Export Multiple</i> to export multiple files at the same time, either one for each audio track, or one for each labeled area in a single track. <i>Tracks &gt; Add Label At Selection</i> lets you [[wiki:Splitting_recordings_into_separate_tracks|split the tracks]] from an album for multiple export as separate files. </p><br><br>"
 
 #: HelpText.cpp:359
 msgid "<p>Audacity <b>cannot</b> [[play|play]] or [[export|export]] files in <b>WMA, RealAudio, Shorten (SHN)</b> or most other proprietary formats, due to licensing and patent restrictions.  On a Mac computer, unprotected <b>AAC</b> formats such as <b>M4A</b> can be imported. Some open formats are not yet supported, including <b>Ogg Speex</b> and <b>Musepack</b>. Files protected by any kind of Digital Rights Management (DRM), including most purchased online such as from iTunes or Napster, <b>cannot</b> be imported.</p><p> If you can't import your file into Audacity, then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> to convert it to WAV or AIFF. If it is protected, burn it to an audio CD in the program licensed to play it, then extract the CD track to WAV or AIFF using iTunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or Windows Media Player 11. You could also <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. <i>To export to an unsupported format, export to WAV or AIFF and convert it to the desired format in iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
-msgstr ""
+msgstr "<p>Audacity kann <b>leider</b> einige proprietäre Formate nicht [[play|play]] oder [[export|export]] etwa <b>WMA, RealAudio, Shorten (SHN)</b>; Grund sind Lizenz- und Patent-Restriktionen. On a Mac computer, unprotected <b>AAC</b> formats such as <b>M4A</b> can be imported. Some open formats are not yet supported, including <b>Ogg Speex</b> and <b>Musepack</b>. Files protected by any kind of Digital Rights Management (DRM), including most purchased online such as from iTunes or Napster, <b>cannot</b> be imported.</p><p> If you can't import your file into Audacity, then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> to convert it to WAV or AIFF. If it is protected, burn it to an audio CD in the program licensed to play it, then extract the CD track to WAV or AIFF using iTunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or Windows Media Player 11. You could also <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. <i>To export to an unsupported format, export to WAV or AIFF and convert it to the desired format in iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
 
 #: HelpText.cpp:383
 msgid "<p>To burn your work to an audio CD for standalone CD players, first [[export|export]] it as WAV or AIFF. The exported file should be stereo, 44100 Hz (set in the \"Project Rate\" button bottom left) and 16 bit (set in the \"Options\" button in the file export dialog). These are Audacity's default settings, so normally you will not need to change these before exporting. <p>Burn the exported file to an \"audio CD\" - not a \"data CD\" or \"MP3 CD\" - with a CD burning program like iTunes or Windows Media Player. For more help, see [[wiki:How_to_burn_CDs|How to burn CDs]] online. </p><p>"
-msgstr ""
+msgstr "<p> So brennen Sie Ihre Arbeit auf eine Audio-CD für Standalone-CD-Player: Zunächst [[export|exportieren]] Sie sie als WAV- oder AIFF-Datei. Die exportierte Datei sollte vorliegen in Stereo, Samplefrequenz 44100 Hz (einstellbar in der Liste \"Projekt-Frequenz\" ganz unten links im Audacity-Fenster) und Sampletiefe 16 Bit (im \"Optionen\"-Button im Dialog Datei exportieren). Das sind übrigens die Audacity-Standardeinstellungen.<p> Brennen Sie die exportierte Datei mit einer CD-Brennsoftware zu einer \"Audio-CD\" - nicht etwa \"Daten-CD\" oder \"MP3-CD \". Weitere Hilfe in [[wiki:How_to_burn_CDs|How to burn CDs]] online. </p><p>"
 
 #: HelpText.cpp:403
 msgid "<p>Help for Audacity Beta is currently unfinished. For now, a draft manual is available <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">online</a>. Alternatively, click <a href=\"http://www.audacityteam.org/manual/index.php?title=Temporary_HTML_Manual_Export\">here</a> to download a single-page version of the manual which can be viewed in this window."
-msgstr ""
+msgstr "<p> Die Hilfe für Audacity Beta ist leider noch unvollständig. Dennoch steht ein Handbuch-Entwurf unter <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">im Netz</ a>. Alternativ, klicken Sie <a href=\"http://www.audacityteam.org/manual/index.php?title=Temporary_HTML_Manual_Export\">hier</ a>, um eine Ein-Seiten-Version des Handbuchs herunterzuladen, die dann in diesem Fenster angezeigt werden kann. Schließlich gibt es <a href=\"http://www.mediensyndikat.de/20_20.html\">hier</ a> kurze, praxisorientierte Anleitungen in deutscher Sprache. "
 
 #: ../src/HistoryWindow.cpp:53
 msgid "Undo History"
@@ -1643,7 +1656,7 @@ msgstr "Projekt speichern &unter...\tCtrl+Shift+S"
 
 #: Menus.cpp:212
 msgid "Save Compressed Copy of Project..."
-msgstr "Projekt als komprimierte Kopie speichern..."
+msgstr "Projekt komprimiert speichern..."
 
 #: ../src/Menus.cpp:211
 msgid "Chec&k Dependencies..."
@@ -1693,7 +1706,7 @@ msgstr "MIDI exportieren..."
 
 #: Menus.cpp:290
 msgid "CleanSpeech C&hain..."
-msgstr ""
+msgstr "CleanSpeech K&ette..."
 
 #: ../src/Menus.cpp:328
 #: ../src/Menus.cpp:342
@@ -1702,7 +1715,7 @@ msgstr "Stapel&verarbeitung bearbeiten..."
 
 #: Menus.cpp:292
 msgid "Export CleanSpeech &Presets..."
-msgstr ""
+msgstr "CleanSpeech &Presets exportieren..."
 
 #: Menus.cpp:293
 msgid "I&mport CleanSpeech Presets..."
@@ -1837,7 +1850,7 @@ msgstr "Clips &verbinden\tAlt+J"
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:451
 msgid "Detac&h at Silences\tShift+Alt+J"
-msgstr ""
+msgstr "Abtrenne&n bei Stille\tShift+Alt+J"
 
 #: Menus.cpp:456
 msgid "&Select"
@@ -2018,7 +2031,7 @@ msgstr "&Kontrollwerkzeuge"
 
 #: Menus.cpp:574
 msgid "Transcri&ption Toolbar"
-msgstr "&Transkriptionswerkzeug"
+msgstr "&Transkribierwerkzeug"
 
 #: Menus.cpp:576
 msgid "&Reset Toolbars"
@@ -2026,7 +2039,7 @@ msgstr "&Werkzeugleisten zurücksetzen"
 
 #: Menus.cpp:578
 msgid "!Simplified View"
-msgstr ""
+msgstr "!Vereinfachte Ansicht"
 
 #. i18n-hint: 'Transport' is the name given to the set of controls that
 #. play, record, pause etc.
@@ -2255,11 +2268,11 @@ msgstr "Sound&karten-Info..."
 
 #: Menus.cpp:983
 msgid "Cycle backward through toolbars and Track View\tCtrl+Shift+F6"
-msgstr ""
+msgstr "Rückwärts bewegen durch die Werkzeugleisen und Spuren\tCtrl+Shift+F6"
 
 #: Menus.cpp:984
 msgid "Cycle forward through toolbars and Track View\tCtrl+F6"
-msgstr ""
+msgstr "Vorwärts bewegen durch die Werkzeugleisen und Spuren\tCtrl+F6"
 
 #: ../src/Menus.cpp:831
 msgid "Selection Tool\tF1"
@@ -2395,7 +2408,7 @@ msgstr "Zwischen ausgewählten Spuren umschalten\tNUMPAD_ENTER"
 
 #: Menus.cpp:1042
 msgid "Toggle Focused Track\tCtrl+Space"
-msgstr ""
+msgstr "Aktive Spur wechseln\tCtrl+Space"
 
 #: ../src/Menus.cpp:887
 msgid "Cursor Left\tLeft"
@@ -2627,7 +2640,7 @@ msgstr "Aus der Zwischenablage eingefügt"
 
 #: Menus.cpp:3053
 msgid "Pasting one type of track into another is not allowed."
-msgstr ""
+msgstr "Es ist nicht möglich, einen Spurtyp in einen anderen zu kopieren. "
 
 #: ../src/Menus.cpp:2583
 msgid "Copying stereo audio into a mono track is not allowed."
@@ -3049,6 +3062,12 @@ msgid ""
 "Cancel, Edit > Undo until all tracks\n"
 "are open, then File > Save Project."
 msgstr ""
+"\n"
+"Das gespeicherte Projekt wird keine Spuren haben.\n"
+"\n"
+"Um vorherige Spuren zu speichern:\n"
+"Abbrechen, Bearbeiten > Rückgängig, bis alle Spuren\n"
+"zu sehen sind, dann Datei > Projekt speichern."
 
 #: ../src/Project.cpp:1336
 msgid "Save changes?"
@@ -3184,6 +3203,13 @@ msgid ""
 "\n"
 "Save anyway?"
 msgstr ""
+"Ihr Projekt ist leer.\n"
+"Das gespeicherte Projekt wird keine Spuren haben.\n"
+"\n"
+"Um vorherige Spuren zu speichern:\n"
+"'Nein' klicken, Bearbeiten > Rückgängig, bis alle Spuren\n"
+"zu sehen sind, dann Datei > Projekt speichern.\n"
+"Dennoch speichern?"
 
 #: Project.cpp:2538
 msgid "Warning empty project"
@@ -3243,6 +3269,12 @@ msgid ""
 "When you want to save a file that can be opened by other programs, select one of the\n"
 "Export commands."
 msgstr ""
+"\"Komprimierte\" Projekte (.aup plus Verzeichnisinhalt) enthalten Ihre Arbeit als datenreduziertes Ogg-Vorbis-Audio. \n"
+"Datenreduzierte Projekt-Dateien sind ein guter weil platzsparender Weg um Projekte über Netzwerke auszutauschen. \n"
+"Das Öffnen solcher Projekte dauert dann allerdings etwas länger. \n"
+"\n"
+"Die meisten anderen Audioprogramme können Audacity-Projekte allerdings nicht öffnen: \n"
+"Sollte das gewünscht sein verwenden Sie die Export-Funktion."
 
 #: Project.cpp:2897
 msgid ""
@@ -3447,7 +3479,7 @@ msgstr "Bemerkungen"
 
 #: Tags.cpp:777
 msgid "Use arrow keys (or RETURN key after editing) to navigate fields."
-msgstr ""
+msgstr "Verwenden Sie die Pfeiltasten (oder EINGABE nach der Bearbeitung) um zu navigieren."
 
 #: Tags.cpp:769
 msgid "Tag Name"
@@ -3895,7 +3927,7 @@ msgstr "Zeitverschiebung"
 
 #: TrackPanel.cpp:2916
 msgid "To use Draw, choose 'Waveform' in the Track Drop-down Menu."
-msgstr ""
+msgstr "Um zeichnen zu können wählen Sei bitte \"Wellenform\" im Menü des Spurkopfs."
 
 #: TrackPanel.cpp:2933
 msgid "To use Draw, zoom in further until you can see the individual samples."
@@ -3989,11 +4021,11 @@ msgstr "Schnitt wiederhergestellt"
 
 #: TrackPanel.cpp:3973
 msgid "Merge"
-msgstr ""
+msgstr "Zusammenführen"
 
 #: TrackPanel.cpp:3973
 msgid "Merged Clips"
-msgstr ""
+msgstr "Zusammengeführte Clips"
 
 #: ../src/TrackPanel.cpp:3923
 msgid "Removed Cut Line"
@@ -4114,11 +4146,11 @@ msgstr "Schriftart für die Textspuren"
 
 #: TrackPanel.cpp:6227
 msgid "Face name"
-msgstr ""
+msgstr "Oberflächen-Name"
 
 #: TrackPanel.cpp:6236
 msgid "Face size"
-msgstr ""
+msgstr "Oberflächen-Größe"
 
 #: ../src/TrackPanelAx.cpp:266
 msgid "TrackView"
@@ -4274,7 +4306,7 @@ msgstr "Übersteuerung erlauben"
 #: effects/Amplify.cpp:279
 #: effects/Amplify.cpp:323
 msgid "-Infinity"
-msgstr ""
+msgstr "-unendlich"
 
 #: ../src/effects/Amplify.h:46
 msgid "Amplify..."
@@ -4449,7 +4481,7 @@ msgstr "Von:"
 
 #: effects/ChangePitch.cpp:275
 msgid "From Pitch"
-msgstr ""
+msgstr "Pitch von"
 
 #: effects/ChangePitch.cpp:286
 msgid "Up"
@@ -4461,11 +4493,11 @@ msgstr "Ab"
 
 #: effects/ChangePitch.cpp:299
 msgid "To:"
-msgstr ""
+msgstr "bis"
 
 #: effects/ChangePitch.cpp:300
 msgid "To Pitch"
-msgstr ""
+msgstr "Pitch bis"
 
 #: ../src/effects/ChangePitch.cpp:305
 msgid "Semitones (half-steps):"
@@ -4473,7 +4505,7 @@ msgstr "Halbtonschritte:"
 
 #: effects/ChangePitch.cpp:316
 msgid "Semitones in half-steps"
-msgstr ""
+msgstr "Halbtöne in Halb-Schritten"
 
 #: effects/ChangePitch.cpp:326
 #: effects/ChangeSpeed.cpp:369
@@ -4675,7 +4707,7 @@ msgstr "Abklingzeit"
 
 #: effects/Compressor.cpp:530
 msgid "Make-up gain for 0dB after compressing"
-msgstr ""
+msgstr "Anhebung auf 0dB nach komprimieren"
 
 #: effects/Compressor.cpp:563
 #, c-format
@@ -4855,7 +4887,7 @@ msgstr "WCAG2 misst Lautstärkeunterschiede, um Audios, die für Hörbehinderte gee
 
 #: effects/Contrast.cpp:448
 msgid "Help for WCAG2 Audio Contrast Analyzer"
-msgstr "HIlfe für die WCAG2 Audiokontrast-Analyse"
+msgstr "Hilfe für die WCAG2 Audiokontrast-Analyse"
 
 #: ../src/toolbars/ControlToolBar.cpp:82
 msgid "Control"
@@ -4925,7 +4957,7 @@ msgstr "Kontrast-Ergebnis exportieren als:"
 
 #: effects/Contrast.cpp:572
 msgid "WCAG 2.0 Success Criteria 1.4.7 Contrast Results"
-msgstr ""
+msgstr "WCAG 2.0 Success Criteria 1.4.7 Kontrast-Ergebnisse"
 
 #: effects/Contrast.cpp:574
 #, c-format
@@ -4940,24 +4972,24 @@ msgstr "Vordergrund"
 #: effects/Contrast.cpp:598
 #, c-format
 msgid "Time started = %2d hour(s), %2d minute(s), %.2f seconds."
-msgstr ""
+msgstr "Startzeit = %2d Stunde(n), %2d Minute(n), %.2f Sekunden."
 
 #: effects/Contrast.cpp:586
 #: effects/Contrast.cpp:603
 #, c-format
 msgid "Time ended = %2d hour(s), %2d minute(s), %.2f seconds."
-msgstr ""
+msgstr "Endzeit = %2d Stunde(n), %2d Minute(n, %.2f Sekunden"
 
 #: effects/Contrast.cpp:588
 #: effects/Contrast.cpp:605
 #, c-format
 msgid "Average rms = %.1f dB."
-msgstr ""
+msgstr "Durchschnittlicher Effektivwert = %.1f dB."
 
 #: effects/Contrast.cpp:590
 #: effects/Contrast.cpp:607
 msgid "Average rms =  dB."
-msgstr ""
+msgstr "Durchschnittlicher Effektivwert =  dB."
 
 #: effects/Contrast.cpp:593
 msgid "Background"
@@ -4970,19 +5002,19 @@ msgstr "Ergebnisse"
 #: effects/Contrast.cpp:611
 #, c-format
 msgid "Difference = %.1f Average rms dB."
-msgstr ""
+msgstr "Differenz = %.1f durchschnittlicher Effektivwert in dB."
 
 #: effects/Contrast.cpp:613
 msgid "Success Criteria 1.4.7 of WCAG 2.0: Pass"
-msgstr ""
+msgstr "Success-Kriterien 1.4.7 von WCAG 2.0: Erfolgreich"
 
 #: effects/Contrast.cpp:615
 msgid "Success Criteria 1.4.7 of WCAG 2.0: Fail"
-msgstr ""
+msgstr "Success-Kriterien 1.4.7 von WCAG 2.0: Nicht erfolgreich"
 
 #: effects/Contrast.cpp:618
 msgid "Data gathered"
-msgstr ""
+msgstr "Daten gelesen"
 
 #: effects/Contrast.h:33
 msgid "Contrast...\tCtrl+Shift+T"
@@ -4990,11 +5022,11 @@ msgstr "Audio-Kontrast...\tCtrl+Shift+T"
 
 #: effects/Contrast.h:51
 msgid "Measuring background"
-msgstr ""
+msgstr "Hintergrund messen"
 
 #: effects/Contrast.h:53
 msgid "Measuring foreground"
-msgstr ""
+msgstr "Vordergrund messen"
 
 #: ../src/effects/DtmfGen.cpp:47
 msgid "DTMF Tone Generator"
@@ -5284,7 +5316,7 @@ msgstr "Grad des Leveling"
 
 #: effects/Leveller.cpp:226
 msgid "Degree of Leveling:"
-msgstr ""
+msgstr "Leveling-Grad:"
 
 #: ../src/effects/Leveller.cpp:238
 msgid "Noise Threshold (Hiss/Hum/Ambient Noise)"
@@ -5305,11 +5337,11 @@ msgstr "Leveller anwenden..."
 
 #: effects/LoadEffects.cpp:102
 msgid "Generator"
-msgstr ""
+msgstr "Generator"
 
 #: effects/LoadEffects.cpp:104
 msgid "Instrument"
-msgstr ""
+msgstr "Instrument"
 
 #: effects/LoadEffects.cpp:106
 msgid "Oscillator"
@@ -5317,15 +5349,15 @@ msgstr "Oszillator"
 
 #: effects/LoadEffects.cpp:108
 msgid "Utility"
-msgstr ""
+msgstr "Nutzen"
 
 #: effects/LoadEffects.cpp:110
 msgid "Converter"
-msgstr ""
+msgstr "Konverter"
 
 #: effects/LoadEffects.cpp:112
 msgid "Analyser"
-msgstr ""
+msgstr "Analysewerkzeug"
 
 #: ../src/toolbars/MixerToolBar.cpp:58
 msgid "Mixer"
@@ -5333,7 +5365,7 @@ msgstr "Pegelregler"
 
 #: effects/LoadEffects.cpp:116
 msgid "Simulator"
-msgstr ""
+msgstr "Simulator"
 
 #: effects/LoadEffects.cpp:118
 msgid "Delay"
@@ -5341,7 +5373,7 @@ msgstr "Hall"
 
 #: effects/LoadEffects.cpp:120
 msgid "Modulator"
-msgstr ""
+msgstr "Modulator"
 
 #: effects/LoadEffects.cpp:122
 msgid "Reverb"
@@ -5381,7 +5413,7 @@ msgstr "Kamm"
 
 #: effects/LoadEffects.cpp:140
 msgid "Allpass"
-msgstr ""
+msgstr "All-Pass"
 
 #: effects/LoadEffects.cpp:142
 msgid "Equaliser"
@@ -5397,23 +5429,23 @@ msgstr "Mehrband"
 
 #: effects/LoadEffects.cpp:148
 msgid "Spectral Processor"
-msgstr ""
+msgstr "Spektral-Prozessor"
 
 #: effects/LoadEffects.cpp:150
 msgid "Pitch Shifter"
-msgstr ""
+msgstr "Pitch"
 
 #: effects/LoadEffects.cpp:152
 msgid "Amplifier"
-msgstr ""
+msgstr "Verstärker"
 
 #: effects/LoadEffects.cpp:154
 msgid "Distortion"
-msgstr ""
+msgstr "Verzerrung"
 
 #: effects/LoadEffects.cpp:156
 msgid "Waveshaper"
-msgstr ""
+msgstr "Wellen-Werkzeug"
 
 #: effects/LoadEffects.cpp:158
 msgid "Dynamics Processor"
@@ -5442,19 +5474,19 @@ msgstr "Rauschentfernung"
 
 #: effects/LoadEffects.cpp:201
 msgid "Pitch and Tempo"
-msgstr ""
+msgstr "Pitch und Tempo"
 
 #: effects/LoadEffects.cpp:203
 msgid "Timeline Changer"
-msgstr ""
+msgstr "Zeitleiste-Änderung"
 
 #: effects/LoadEffects.cpp:205
 msgid "Time"
-msgstr ""
+msgstr "Zeit"
 
 #: effects/LoadEffects.cpp:207
 msgid "Onsets"
-msgstr ""
+msgstr "Anfänge"
 
 #: ../src/effects/Noise.cpp:37
 msgid "White"
@@ -5547,7 +5579,7 @@ msgstr "Absenkung (dB):"
 
 #: effects/NoiseRemoval.cpp:850
 msgid "Noise reduction"
-msgstr ""
+msgstr "Rauschentfernung"
 
 #: ../src/effects/NoiseRemoval.cpp:800
 msgid "Frequency smoothing (Hz):"
@@ -5555,7 +5587,7 @@ msgstr "Frequenz-Glättung (Hz):"
 
 #: effects/NoiseRemoval.cpp:859
 msgid "Frequency smoothing"
-msgstr ""
+msgstr "Frequenz-Glättung"
 
 #: ../src/effects/NoiseRemoval.cpp:808
 msgid "Attack/decay time (secs):"
@@ -5563,7 +5595,7 @@ msgstr "Ansprech-/Abklingzeit (s): "
 
 #: effects/NoiseRemoval.cpp:868
 msgid "Attach/decay time"
-msgstr ""
+msgstr "Ankling-/Abkling-Zeit"
 
 #: ../src/effects/NoiseRemoval.h:35
 msgid "Noise Removal..."
@@ -5580,7 +5612,7 @@ msgstr "Entferne Rauschen"
 #: effects/Normalize.cpp:68
 #, c-format
 msgid "Applied effect: %s remove dc offset = %s, normalize amplitude = %s"
-msgstr ""
+msgstr "Angewendeter Effekt: %s Gleichspannung entfernt = %s, Lautstärke normalisiert = %s"
 
 #: effects/Normalize.cpp:70
 #: effects/Normalize.cpp:71
@@ -5640,15 +5672,15 @@ msgstr "Stufen:"
 
 #: effects/Phaser.cpp:229
 msgid "Stages"
-msgstr ""
+msgstr "Ebenen"
 
 #: effects/Phaser.cpp:231
 msgid "Dry/Wet:"
-msgstr ""
+msgstr "Trocken/Effekt:"
 
 #: effects/Phaser.cpp:234
 msgid "Dry Wet"
-msgstr ""
+msgstr "Trocken Effekt"
 
 #: ../src/effects/Wahwah.cpp:497
 #: ../src/effects/Phaser.cpp:526
@@ -5658,7 +5690,7 @@ msgstr "LFO Frequenz (Hz):"
 #: effects/Phaser.cpp:239
 #: effects/Wahwah.cpp:224
 msgid "LFO frequency in hertz"
-msgstr ""
+msgstr "LFO-Frequenz in Hertz"
 
 #: ../src/effects/Wahwah.cpp:513
 #: ../src/effects/Phaser.cpp:542
@@ -5668,7 +5700,7 @@ msgstr "LFO Anfangsphase (Grad):"
 #: effects/Phaser.cpp:244
 #: effects/Wahwah.cpp:229
 msgid "LFO start phase in degrees"
-msgstr ""
+msgstr "LFO-Start-Phase in Grad"
 
 #: ../src/effects/Phaser.cpp:558
 msgid "Depth:"
@@ -5677,7 +5709,7 @@ msgstr "Modulationstiefe:"
 #: effects/Phaser.cpp:249
 #: effects/Wahwah.cpp:234
 msgid "Depth in percent"
-msgstr ""
+msgstr "Tiefe in Prozent"
 
 #: ../src/effects/Phaser.cpp:574
 msgid "Feedback (%):"
@@ -5685,7 +5717,7 @@ msgstr "Rückkopplung (%):"
 
 #: effects/Phaser.cpp:254
 msgid "Feedback in percent"
-msgstr ""
+msgstr "Rückkopplung in Prozent"
 
 #: ../src/effects/Phaser.h:38
 msgid "Phaser..."
@@ -5713,6 +5745,11 @@ msgid ""
 "\n"
 "The more surrounding audio, the better it performs."
 msgstr ""
+"Die Reparatur erfolgt, indem Audiodaten außerhalb der Auswahl verwendet werden.\n"
+"\n"
+"Bitte verwenden Sie eine Auswahl, deren Audio mindestens eine Seite berührt.\n"
+"\n"
+"Je mehr Surround-Audio, umso besser die Wirkung."
 
 #: ../src/effects/Repair.h:33
 msgid "Repairing damaged audio"
@@ -5828,15 +5865,15 @@ msgstr "Stereo in Mono umwandeln"
 
 #: effects/TimeScale.cpp:140
 msgid "Time Scale"
-msgstr ""
+msgstr "Zeit-Achse"
 
 #: effects/TimeScale.cpp:176
 msgid "Sliding Time Scale/Pitch Shift"
-msgstr ""
+msgstr "Gleitende Zeit-Skala/Pitch"
 
 #: effects/TimeScale.cpp:178
 msgid "using SBSMS, by Clayton Otey"
-msgstr ""
+msgstr "nutzt SBSMS von Clayton Ote"
 
 #: effects/TimeScale.cpp:187
 msgid "Initial Tempo Change (%):"
@@ -5852,23 +5889,23 @@ msgstr "Anfängliche Tempo-Änderung (%)"
 
 #: effects/TimeScale.cpp:211
 msgid "Final Tempo Change (%)"
-msgstr ""
+msgstr "Tempo-Änderung (%)"
 
 #: effects/TimeScale.cpp:219
 msgid "Initial Pitch Shift (semitones) [-12 to 12]:"
-msgstr ""
+msgstr "Anfangs-Pitch (in Halbtönen) [-12 bis 12]:"
 
 #: effects/TimeScale.cpp:223
 msgid "Final Pitch Shift (semitones) [-12 to 12]:"
-msgstr ""
+msgstr "End-Pitch (in Halbtönen) [-12 bis 12]:"
 
 #: effects/TimeScale.h:33
 msgid "Sliding Time Scale/Pitch Shift..."
-msgstr ""
+msgstr "Gleitende Zeit-Skala/Pitch..."
 
 #: effects/TimeScale.h:47
 msgid "Changing Tempo/Pitch"
-msgstr ""
+msgstr "Änderung von Tempo/Pitch"
 
 #: ../src/effects/ToneGen.cpp:59
 #, c-format
@@ -5881,7 +5918,7 @@ msgstr "Linear"
 
 #: effects/ToneGen.cpp:70
 msgid "Logarithmic"
-msgstr ""
+msgstr "Logarithmisch"
 
 #: ../src/effects/ToneGen.cpp:66
 msgid "Chirp Generator"
@@ -5918,19 +5955,19 @@ msgstr "Wellenform:"
 
 #: effects/ToneGen.cpp:358
 msgid "Frequency Hertz Start"
-msgstr ""
+msgstr "Startfrequenz in Hertz"
 
 #: effects/ToneGen.cpp:359
 msgid "Frequency Hertz End"
-msgstr ""
+msgstr "Endfrequenz in Hertz"
 
 #: effects/ToneGen.cpp:360
 msgid "Amplitude Start"
-msgstr ""
+msgstr "Start-Amplitude"
 
 #: effects/ToneGen.cpp:361
 msgid "Amplitude End"
-msgstr ""
+msgstr "End-Amplitude"
 
 #: effects/ToneGen.cpp:365
 msgid "Interpolation:"
@@ -6019,15 +6056,16 @@ msgstr "Resonanzgte (Q):"
 
 #: effects/Wahwah.cpp:239
 msgid "Resonance"
-msgstr ""
+msgstr "Resonanz"
 
 #: ../src/effects/Wahwah.cpp:561
 msgid "Wah Frequency Offset (%):"
 msgstr "Frequenzverschiebung (%):"
 
+# WA
 #: effects/Wahwah.cpp:244
 msgid "Wah frequency offset in percent"
-msgstr ""
+msgstr "Wahwah-Frequenz-Offset in Prozent"
 
 #: ../src/effects/Wahwah.h:34
 msgid "Wahwah..."
@@ -6120,7 +6158,7 @@ msgstr "Nyquist gab zu viele Audiokanäle zurück.\n"
 #: effects/vamp/VampEffect.cpp:75
 #, c-format
 msgid "Extracting features: %s"
-msgstr ""
+msgstr "Extrakt-Features: %s"
 
 #: effects/vamp/VampEffect.cpp:106
 msgid "Sorry, Vamp Plug-ins cannot be run on stereo tracks where the individual channels of the track do not match."
@@ -6136,7 +6174,7 @@ msgstr "Sorry: Vamp-Plug-In konnte nicht initialisiert werden."
 
 #: effects/vamp/VampEffect.cpp:376
 msgid " - Vamp audio analysis plugin"
-msgstr ""
+msgstr " - Vamp-Audio-Analyse-Plugin"
 
 #: effects/vamp/VampEffect.cpp:423
 msgid "Plugin Settings"
@@ -6175,6 +6213,11 @@ msgid ""
 "\n"
 "Are you sure you want to save the file under this name?"
 msgstr ""
+"Sie wollen eine %s -Datei speichern mit dem Name \"%s\".\n"
+"\n"
+"Üblicherweise enden solche Dateien mit \".%s\" und einige Programme werden Dateien ohne diese Standard-Endung nicht öffnen können.\n"
+"\n"
+"Wollen Sie die Datei tatsächlich unter diesem Name speichern?"
 
 #: export/Export.cpp:516
 #, c-format
@@ -6208,7 +6251,7 @@ msgstr "- Rechts"
 
 #: export/Export.cpp:1072
 msgid "Mixer Panel"
-msgstr ""
+msgstr "Mixer-Panel"
 
 #: ../src/export/Export.cpp:775
 #: ../src/export/Export.cpp:829
@@ -6218,11 +6261,11 @@ msgstr "Wiedergabe-Kanäle: %2d"
 
 #: export/ExportCL.cpp:55
 msgid "Specify Command Line Encoder"
-msgstr ""
+msgstr "Befehlszeile-Encoder benennen"
 
 #: export/ExportCL.cpp:70
 msgid "Command Line Export Setup"
-msgstr ""
+msgstr "Befehlszeile-Einstellungen"
 
 #: export/ExportCL.cpp:75
 msgid "Command:"
@@ -6230,12 +6273,12 @@ msgstr "Befehl:"
 
 #: export/ExportCL.cpp:80
 msgid "Show output"
-msgstr ""
+msgstr "Ergebnis zeigen"
 
 #: export/ExportCL.cpp:87
 #, c-format
 msgid "Data will be piped to standard in. \"%f\" will be replaced with output filename selected."
-msgstr ""
+msgstr "Die Daten werden weitergeleitet zum Standard-Eingang. \"%f\" wird ersetzt durch den ausgewählten Ausgang-Dateiname."
 
 #: export/ExportCL.cpp:219
 msgid "(external program)"
@@ -6256,7 +6299,7 @@ msgstr "Gesamtes Projekt per Kommandozeilen Encoder exportieren"
 
 #: export/ExportCL.cpp:387
 msgid "Command Output"
-msgstr ""
+msgstr "Befehls-Ausgabe"
 
 #: export/ExportFFmpeg.cpp:59
 msgid ""
@@ -6278,7 +6321,7 @@ msgstr ""
 #: export/ExportFFmpeg.cpp:614
 #, c-format
 msgid "Attempted to export %d channels, but max. channels for selected output format is %d"
-msgstr ""
+msgstr "%d Kanäle sollen ausgegeben werden, doch das Ausgabeformat unterstützt höchstens %d Kanäle"
 
 #: export/ExportFFmpeg.cpp:638
 #, c-format
@@ -6288,7 +6331,7 @@ msgstr "Ausgewähltes Audio wird als %s exportiert"
 #: export/ExportFFmpeg.cpp:639
 #, c-format
 msgid "Exporting entire file as %s"
-msgstr ""
+msgstr "Ganze Datei exportiert als %s"
 
 #: export/ExportMP3.cpp:1863
 msgid "Invalid sample rate"
@@ -6457,10 +6500,13 @@ msgid ""
 "Optional\n"
 "empty - automatic"
 msgstr ""
+"ISO 639 3-letter Sprachcode\n"
+"Optional\n"
+"leer - automatisch"
 
 #: export/ExportFFmpegDialogs.cpp:934
 msgid "Tag:"
-msgstr ""
+msgstr "Tag:"
 
 #: export/ExportFFmpegDialogs.cpp:935
 msgid ""
@@ -6468,6 +6514,9 @@ msgid ""
 "Optional\n"
 "empty - automatic"
 msgstr ""
+"Codec-Tag (FOURCC)\n"
+"Optional\n"
+"leer - automatisch"
 
 #: export/ExportFFmpegDialogs.cpp:938
 msgid ""
@@ -6476,6 +6525,10 @@ msgid ""
 "0 - automatic\n"
 "Recommended - 192000"
 msgstr ""
+"Bit-Rate (Bits/Sekunde) - beeinflusst Dateigröße und Qualität\n"
+"Manche Codecs akzeptieren nur bestimmte Werte (128k, 192k, 256k etc)\n"
+"0 - automatisch\n"
+"Empfohlen - 192000"
 
 #: prefs/FileFormatPrefs.cpp:219
 msgid "Quality:"
@@ -6488,6 +6541,10 @@ msgid ""
 "0 - automatic\n"
 "-1 - off (use bitrate instead)"
 msgstr ""
+"Generelle Qualität, spezifisch verwendet von jeweiligen Codecs\n"
+"Required for Ogg-Vorbis\n"
+"0 - automatisch\n"
+"-1 - aus (Verwende stattdessen Bit-Rate)"
 
 #: export/ExportFFmpegDialogs.cpp:943
 msgid "Sample Rate:"
@@ -6498,10 +6555,12 @@ msgid ""
 "Sample rate (Hz)\n"
 "0 - don't change sample rate"
 msgstr ""
+"Sample-Frequenz (Hz)\n"
+"0 - Sample-Frequenz nicht ändern"
 
 #: export/ExportFFmpegDialogs.cpp:946
 msgid "Cutoff Bandwidth:"
-msgstr ""
+msgstr "Zu begrenzende Bandbreite:"
 
 #: export/ExportFFmpegDialogs.cpp:947
 msgid ""
@@ -6509,6 +6568,9 @@ msgid ""
 "Optional\n"
 "0 - automatic\n"
 msgstr ""
+"Zu begrenzende Bandbreite (Hz)\n"
+"Optional\n"
+"0 - automatisch\n"
 
 #: export/ExportFFmpegDialogs.cpp:949
 msgid "Profile:"
@@ -6520,14 +6582,17 @@ msgid ""
 "Low Complexity -default\n"
 "Most players won't play anything other than LC"
 msgstr ""
+"AAC-Profil\n"
+"Low Complexity (LC) -default\n"
+"Die meisten Player spielen nur LC"
 
 #: export/ExportFFmpegDialogs.cpp:940
 msgid "Use Bit Reservoir"
-msgstr ""
+msgstr "Bit-Reservoir nutzen"
 
 #: export/ExportFFmpegDialogs.cpp:943
 msgid "Use Variable Block Length"
-msgstr ""
+msgstr "Variable Block-Länge nutzen"
 
 #: export/ExportFFmpegDialogs.cpp:948
 msgid "FLAC options"
@@ -6545,10 +6610,15 @@ msgid ""
 "min - 0 (fast encoding, large output file)\n"
 "max - 10 (slow encoding, small output file)"
 msgstr ""
+"Kompressions-Level\n"
+"Benötigt für FLAC\n"
+"-1 - automatisch\n"
+"min - 0 (schnelles kodieren, größere Dateien)\n"
+"max - 10 (langsameres kodieren, kleinere Dateien)"
 
 #: export/ExportFFmpegDialogs.cpp:968
 msgid "Frame Size:"
-msgstr ""
+msgstr "Frame-Größe:"
 
 #: export/ExportFFmpegDialogs.cpp:969
 msgid ""
@@ -6558,10 +6628,15 @@ msgid ""
 "min - 16\n"
 "max - 65535"
 msgstr ""
+"Frame-Größe\n"
+"Optional\n"
+"0 - default\n"
+"min - 16\n"
+"max - 65535"
 
 #: export/ExportFFmpegDialogs.cpp:971
 msgid "LPC coefficients precision"
-msgstr ""
+msgstr "Genauigkeit des LPC-Koeffizienten"
 
 #: export/ExportFFmpegDialogs.cpp:972
 msgid ""
@@ -6571,10 +6646,15 @@ msgid ""
 "min - 1\n"
 "max - 15"
 msgstr ""
+"Genauigkeit des LPC-Koeffizienten\n"
+"Optional\n"
+"0 - default\n"
+"min - 1\n"
+"max - 15"
 
 #: export/ExportFFmpegDialogs.cpp:974
 msgid "Minimal prediction order"
-msgstr ""
+msgstr "Geringe Vorhersage"
 
 #: export/ExportFFmpegDialogs.cpp:975
 msgid ""
@@ -6584,10 +6664,15 @@ msgid ""
 "min - 0\n"
 "max - 32 (with LPC) or 4 (without LPC)"
 msgstr ""
+"Geringe Vorhersage\n"
+"Optional\n"
+"-1 - default\n"
+"min - 0\n"
+"max - 32 (mit LPC) oder 4 (ohne LPC)"
 
 #: export/ExportFFmpegDialogs.cpp:977
 msgid "Maximal prediction order"
-msgstr ""
+msgstr "Maximale Vorhersage"
 
 #: export/ExportFFmpegDialogs.cpp:978
 msgid ""
@@ -6597,10 +6682,15 @@ msgid ""
 "min - 0\n"
 "max - 32 (with LPC) or 4 (without LPC)"
 msgstr ""
+"Hohe Vorhersage\n"
+"Optional\n"
+"-1 - default\n"
+"min - 0\n"
+"max - 32 (mit LPC) or 4 (ohne LPC)"
 
 #: export/ExportFFmpegDialogs.cpp:980
 msgid "Prediction Order Method:"
-msgstr ""
+msgstr "Vorhersage-Methode:"
 
 #: export/ExportFFmpegDialogs.cpp:982
 msgid ""
@@ -6609,10 +6699,14 @@ msgid ""
 "Log search - slowest, best compression\n"
 "Full search - default"
 msgstr ""
+"Vorhersage-Methode\n"
+"Estimate - schnell, geringe Kompression\n"
+"Log search - langsam, beste Kompression\n"
+"Full search - default"
 
 #: export/ExportFFmpegDialogs.cpp:984
 msgid "Minimal partition order"
-msgstr ""
+msgstr "MInimale Aufteilung"
 
 #: export/ExportFFmpegDialogs.cpp:985
 msgid ""
@@ -6622,10 +6716,15 @@ msgid ""
 "min - 0\n"
 "max - 8"
 msgstr ""
+"Minimale Aufteilung\n"
+"Optional\n"
+"-1 - default\n"
+"min - 0\n"
+"max - 8"
 
 #: export/ExportFFmpegDialogs.cpp:987
 msgid "Maximal partition order"
-msgstr ""
+msgstr "Maximale Aufteilung"
 
 #: export/ExportFFmpegDialogs.cpp:988
 msgid ""
@@ -6635,10 +6734,15 @@ msgid ""
 "min - 0\n"
 "max - 8"
 msgstr ""
+"Maximale Aufteilung\n"
+"Optional\n"
+"-1 - default\n"
+"min - 0\n"
+"max - 8"
 
 #: export/ExportFFmpegDialogs.cpp:977
 msgid "Use LPC"
-msgstr ""
+msgstr "LPC (lineare Vorhersage) nutzen"
 
 #: export/ExportFFmpegDialogs.cpp:984
 msgid "MPEG container options"
@@ -6646,7 +6750,7 @@ msgstr "Optionen für MPEG-Container"
 
 #: export/ExportFFmpegDialogs.cpp:1001
 msgid "Mux Rate:"
-msgstr ""
+msgstr "Multiplex-Rate:"
 
 #: export/ExportFFmpegDialogs.cpp:1002
 msgid ""
@@ -6654,10 +6758,13 @@ msgid ""
 "Optional\n"
 "0 - default"
 msgstr ""
+"Maximale Bit-Rate des Multiplex-Streams\n"
+"Optional\n"
+"0 - default"
 
 #: export/ExportFFmpegDialogs.cpp:1004
 msgid "Packet Size:"
-msgstr ""
+msgstr "Paket-Größe:"
 
 #: export/ExportFFmpegDialogs.cpp:1005
 msgid ""
@@ -6665,6 +6772,9 @@ msgid ""
 "Optional\n"
 "0 - default"
 msgstr ""
+"Paket-Größe\n"
+"Optional\n"
+"0 - default"
 
 #: export/ExportFFmpegDialogs.cpp:1207
 msgid "You can't delete a preset without name"
@@ -6709,11 +6819,11 @@ msgstr "AC3-Dateien (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:55
 msgid "AMR (narrow band) Files (FFmpeg)"
-msgstr ""
+msgstr "AMR (Schmalband-)Dateien (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:56
 msgid "AMR (wide band) Files (FFmpeg)"
-msgstr ""
+msgstr "AMR (Breitband-)Dateien (FFmpeg"
 
 #: export/ExportFFmpegDialogs.h:57
 msgid "WMA (version 2) Files (FFmpeg)"
@@ -6721,43 +6831,43 @@ msgstr "WMA (Version 2)-Dateien (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:58
 msgid "Custom FFmpeg Export"
-msgstr ""
+msgstr "FFmpeg-Export"
 
 #: export/ExportFFmpegDialogs.h:373
 msgid "LTP"
-msgstr ""
+msgstr "LTP (Audiokompression)"
 
 #: export/ExportFFmpegDialogs.h:373
 msgid "Low Complexity"
-msgstr ""
+msgstr "Niedrige Komplexität"
 
 #: export/ExportFFmpegDialogs.h:373
 msgid "Main profile"
-msgstr ""
+msgstr "Hauptprofil"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "2-level"
-msgstr ""
+msgstr "2 Level"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "4-level"
-msgstr ""
+msgstr "4 Level"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "8-level"
-msgstr ""
+msgstr "8 Level"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "Estimate"
-msgstr ""
+msgstr "Abschätzen"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "Full search"
-msgstr ""
+msgstr "Vollständige Suche"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "Log search"
-msgstr ""
+msgstr "Log-Suche"
 
 #: export/ExportFLAC.cpp:68
 msgid "Specify FLAC Options"
@@ -6954,7 +7064,7 @@ msgstr "Variable Geschwindigkeit:"
 
 #: export/ExportMP3.cpp:331
 msgid "Channel Mode:"
-msgstr ""
+msgstr "Kanal-Modus:"
 
 #: prefs/FileFormatPrefs.cpp:224
 msgid "Joint Stereo"
@@ -7013,37 +7123,37 @@ msgstr "Ungltige Bibliothek od. nicht untersttzter MP3-Encoder!"
 
 #: export/ExportMP3.cpp:1699
 msgid "Unable to initialize MP3 stream"
-msgstr ""
+msgstr "MP3-Stream kann nicht initialisiert werden"
 
 #: export/ExportMP3.cpp:1744
 #, c-format
 msgid "Exporting selected audio with %s preset"
-msgstr ""
+msgstr "Ausgewähltes Audio mit %s Voreinstellung exportieren"
 
 #: export/ExportMP3.cpp:1745
 #, c-format
 msgid "Exporting entire file with %s preset"
-msgstr ""
+msgstr "Ganze Datei mit %s Voreinstellung exportieren"
 
 #: export/ExportMP3.cpp:1750
 #, c-format
 msgid "Exporting selected audio with VBR quality %s"
-msgstr ""
+msgstr "Ausgewähltes Audio exportieren mit variabler Bit-Rate (Qualität %s)"
 
 #: export/ExportMP3.cpp:1751
 #, c-format
 msgid "Exporting entire file with VBR quality %s"
-msgstr ""
+msgstr "Vollständige Datei exportieren mit variabler Bit-Rate in Qualität %s"
 
 #: export/ExportMP3.cpp:1756
 #, c-format
 msgid "Exporting selected audio at %d Kbps"
-msgstr ""
+msgstr "Ausgewähltes Audio exportieren mit %d kbit/s"
 
 #: export/ExportMP3.cpp:1757
 #, c-format
 msgid "Exporting entire file at %d Kbps"
-msgstr ""
+msgstr "Ganze Datei exportieren mit %d kbit/s"
 
 #: export/ExportMP3.cpp:1790
 #, c-format
@@ -7113,7 +7223,7 @@ msgstr "Ausw&ählen..."
 
 #: export/ExportMultiple.cpp:205
 msgid "Create"
-msgstr ""
+msgstr "Erzeugen"
 
 #: ../src/export/ExportMultiple.cpp:760
 msgid "Split files based on:"
@@ -7157,7 +7267,7 @@ msgstr "Erster Teil des Dateinamens:"
 
 #: export/ExportMultiple.cpp:327
 msgid "File name prefix"
-msgstr ""
+msgstr "Dateiname-Präfix"
 
 #: ../src/export/ExportMultiple.cpp:825
 msgid "Overwrite existing files"
@@ -7221,11 +7331,11 @@ msgstr "Ogg-Vorbis-Dateien"
 
 #: ../src/export/ExportOGG.cpp:125
 msgid "Exporting the selected audio as Ogg Vorbis"
-msgstr "Auswahl als Ogg-Datei exportieren"
+msgstr "Auswahl als Ogg-Vorbis-Datei exportieren"
 
 #: ../src/export/ExportOGG.cpp:126
 msgid "Exporting the entire project as Ogg Vorbis"
-msgstr "Gesamtes Projekt als Ogg-Datei exportieren"
+msgstr "Gesamtes Projekt als Ogg-Vorbis-Datei exportieren"
 
 #: export/ExportPCM.cpp:116
 msgid "Specify Uncompressed Options"
@@ -7237,7 +7347,7 @@ msgstr "Einstellungen"
 
 #: export/ExportPCM.cpp:181
 msgid "Header:"
-msgstr ""
+msgstr "Header:"
 
 #: export/ExportPCM.cpp:185
 msgid "Encoding:"
@@ -7277,7 +7387,7 @@ msgstr "Ausgewähltes Audio exportieren als %s"
 #: export/ExportPCM.cpp:402
 #, c-format
 msgid "Exporting the entire project as %s"
-msgstr ""
+msgstr "Ganzes Projekt exportieren als %s"
 
 #. i18n-hint: %s will be the error message from libsndfile
 #: export/ExportPCM.cpp:531
@@ -7315,7 +7425,7 @@ msgstr "MP3-Dateien"
 
 #: import/Import.cpp:175
 msgid "Select stream(s) to import"
-msgstr ""
+msgstr "Stream(s) für den Import auswählen"
 
 #: ../src/import/Import.cpp:177
 #, c-format
@@ -7653,7 +7763,7 @@ msgstr "%d Kanäle"
 
 #: import/ImportRaw.cpp:369
 msgid "Byte order:"
-msgstr ""
+msgstr "Byte-Reihenfolge:"
 
 #: import/ImportRaw.cpp:372
 msgid "Channels:"
@@ -7677,12 +7787,12 @@ msgstr "Import beendet, Wellenformdarstellung erzeugen"
 
 #: ondemand/ODDecodeTask.h:61
 msgid "Decoding Waveform"
-msgstr ""
+msgstr "Wellenform dekodieren"
 
 #: ondemand/ODWaveTrackTaskQueue.cpp:327
 #, c-format
 msgid "%s %2.0f%% complete.  Click to change task focal point."
-msgstr ""
+msgstr "%s %2.0f%% erledigt. Klicken, um Fokus zu ändern.  "
 
 #: ../src/prefs/AudioIOPrefs.cpp:41
 #: ../src/prefs/AudioIOPrefs.cpp:42
@@ -7743,7 +7853,7 @@ msgstr "&Software-Playthrough: Neue Spur während Aufnahme oder Abhören wiedergeb
 
 #: prefs/AudioIOPrefs.cpp:160
 msgid "(uncheck when recording \"stereo mix\")"
-msgstr "(nicht verwenden beim Aufnehmen der \"Soundkarten-Summe\"!)"
+msgstr "(Nicht bei Aufnahme der \"Soundkarten-Summe\"!)"
 
 #: ../src/prefs/AudioIOPrefs.cpp:194
 msgid "Effects Preview"
@@ -7813,7 +7923,7 @@ msgstr "Einstellungen"
 
 #: prefs/BatchPrefs.cpp:80
 msgid "&Don't apply effects in batch mode"
-msgstr ""
+msgstr "&Effekte nicht anwenden im Batch-Modus"
 
 #: ../src/prefs/BatchPrefs.cpp:83
 msgid "Cl&eanSpeech Mode (Customized GUI)"
@@ -8002,7 +8112,7 @@ msgstr "Automatisch Scrollen bei Wiedergabe"
 
 #: prefs/GUIPrefs.cpp:96
 msgid "Cl&osing last window quits Audacity"
-msgstr "Audacity beenden beim Schließen des letzten Fenster"
+msgstr "Audacity beenden beim Schließen des letzten Fensters"
 
 #: prefs/GUIPrefs.cpp:98
 msgid "Enable &dragging of left and right selection edges"
@@ -8018,7 +8128,7 @@ msgstr "Spuren automatisch vertikal einpassen"
 
 #: prefs/GUIPrefs.cpp:104
 msgid "\"Move track focus\" c&ycles repeatedly through tracks"
-msgstr "Durch \"ausgewählte Spuren\" kreisförmig navigieren"
+msgstr "Durch ausgewählte Spuren kreisförmig navigieren"
 
 #: ../src/prefs/GUIPrefs.cpp:90
 msgid "Editing a &clip can move other clips"
@@ -8026,11 +8136,11 @@ msgstr "Nachfolgende Clips beim Schneiden verschieben"
 
 #: prefs/GUIPrefs.cpp:88
 msgid "&Select all audio in project, if none selected"
-msgstr "Wenn keine manuelle Auswahl sind alle Audios ausgewählt"
+msgstr "Ohne manuelle Auswahl gelten alle Audios als ausgewählt"
 
 #: prefs/GUIPrefs.cpp:90
 msgid "&Beep on completion of longer activities"
-msgstr "Piepsen bei Beenden längerer Aktivitäten"
+msgstr "Systemklang bei Beenden längerer Aktivitäten"
 
 #: ../src/prefs/GUIPrefs.cpp:94
 #: ../src/prefs/BatchPrefs.cpp:87
@@ -8059,7 +8169,7 @@ msgstr "Anzeige-Modi"
 
 #: prefs/GUIPrefs.cpp:129
 msgid "Don't a&pply effects in batch mode"
-msgstr ""
+msgstr "Effekte n&icht anwenden im Batch-Modus"
 
 #: prefs/GUIPrefs.cpp:138
 msgid "Display range minimum: meters and 'Waveform (dB)'"
@@ -8067,7 +8177,7 @@ msgstr "Anzeigebereich (\"leisester Ton\") der Wellenformdarstellung"
 
 #: ../src/prefs/GUIPrefs.cpp:111
 msgid "-36 dB (shallow range for high-amplitude editing)"
-msgstr "-36 dB (Dynamik der Audiocassette)"
+msgstr "-36 dB (Dynamik der Audiokassette)"
 
 #: ../src/prefs/GUIPrefs.cpp:112
 msgid "-48 dB (PCM range of 8 bit samples)"
@@ -8112,11 +8222,11 @@ msgstr "Tastatur"
 
 #: prefs/KeyConfigPrefs.cpp:86
 msgid "Keyboard preferences currently unavailable."
-msgstr ""
+msgstr "Tastatur-Einstellungen sind derzeit nicht erreichbar."
 
 #: prefs/KeyConfigPrefs.cpp:87
 msgid "Open a new project to modify keyboard shortcuts."
-msgstr ""
+msgstr "Öffnen Sie ein neues Projekt um die Tastatur-Einstellungen zu ändern."
 
 #: ../src/prefs/KeyConfigPrefs.cpp:92
 msgid "Key Bindings"
@@ -8200,7 +8310,7 @@ msgstr "Zusätzliche Latenz-Korrektur:"
 
 #: prefs/MidiIOPrefs.cpp:183
 msgid "Seek Time"
-msgstr ""
+msgstr "Such-Zeit"
 
 #: prefs/MidiIOPrefs.cpp:196
 msgid "Play when previewing:"
@@ -8271,7 +8381,7 @@ msgstr "Doppelklick links"
 
 #: prefs/MousePrefs.cpp:101
 msgid "Select Clip or Entire Track"
-msgstr ""
+msgstr "Clip oder ganze Spur auswählen"
 
 #: prefs/MousePrefs.cpp:102
 msgid "Ctrl-Left-Click"
@@ -8279,7 +8389,7 @@ msgstr "Strg+linke Maustaste"
 
 #: prefs/MousePrefs.cpp:102
 msgid "Set Selection Point and Play"
-msgstr ""
+msgstr "Auswahl-Punkt setzen und wiedergeben"
 
 #: ../src/prefs/MousePrefs.cpp:102
 #: ../src/prefs/MousePrefs.cpp:103
@@ -8321,11 +8431,11 @@ msgstr "Dasselbe wie links ziehen"
 
 #: prefs/MousePrefs.cpp:108
 msgid "Shift-Drag"
-msgstr ""
+msgstr "Großbuchstabentaste-Ziehen"
 
 #: prefs/MousePrefs.cpp:108
 msgid "Zoom out on a Range"
-msgstr ""
+msgstr "Zu weit gezoomt"
 
 #: prefs/MousePrefs.cpp:109
 msgid "Middle-Click"
@@ -8333,7 +8443,7 @@ msgstr "mittlere Maustaste"
 
 #: prefs/MousePrefs.cpp:109
 msgid "Zoom default"
-msgstr ""
+msgstr "Zoom-Grundeinstellung"
 
 #: ../src/prefs/MousePrefs.cpp:107
 msgid "Time shift clip or move up/down between tracks"
@@ -8423,11 +8533,11 @@ msgstr "Mausrad"
 
 #: prefs/MousePrefs.cpp:128
 msgid "Scroll left or right"
-msgstr ""
+msgstr "Rechts oder links scrollen"
 
 #: prefs/MousePrefs.cpp:128
 msgid "Shift-Wheel-Rotate"
-msgstr ""
+msgstr "Großbuchstabentaste-Mausrad-Rotation"
 
 #: ../src/prefs/MousePrefs.cpp:124
 msgid "Ctrl-Wheel-Rotate"
@@ -8534,7 +8644,7 @@ msgstr "256 - Standardeinstellung"
 
 #: prefs/SpectrumPrefs.cpp:107
 msgid "32768 - most narrowband"
-msgstr ""
+msgstr "32768 - Schmalband"
 
 #: ../src/prefs/SpectrumPrefs.cpp:84
 msgid "4096 - most narrowband"
@@ -8547,7 +8657,7 @@ msgstr "Fensterfunktion:"
 
 #: prefs/SpectrumPrefs.cpp:125
 msgid "FFT Skip Points"
-msgstr ""
+msgstr "FFT-Sprung-Punkte"
 
 #: ../src/prefs/SpectrumPrefs.cpp:96
 msgid "Display"
@@ -8567,23 +8677,23 @@ msgstr "Maximalfrequenz (Hz):"
 
 #: prefs/SpectrumPrefs.cpp:158
 msgid "&Y-Grid"
-msgstr ""
+msgstr "&Y-Gitter"
 
 #: prefs/SpectrumPrefs.cpp:161
 msgid "&Find Notes"
-msgstr ""
+msgstr "&Notes finden"
 
 #: prefs/SpectrumPrefs.cpp:162
 msgid "&Quantize Notes"
-msgstr ""
+msgstr "&Notes zählen"
 
 #: prefs/SpectrumPrefs.cpp:165
 msgid "Minimum Amplitude (dB):"
-msgstr ""
+msgstr "Minimale Amplitude (dB):"
 
 #: prefs/SpectrumPrefs.cpp:170
 msgid "Max. Number of Notes (1..128):"
-msgstr ""
+msgstr "Maximale Anzahl Notes (1...128):"
 
 #: ../src/prefs/SpectrumPrefs.cpp:134
 msgid "The maximum frequency must be an integer"
@@ -8603,12 +8713,12 @@ msgstr "Die Frequenz muss mindestens 0 Hz betragen"
 
 #: prefs/SpectrumPrefs.cpp:220
 msgid "The minimum amplitude (dB) must be an integer"
-msgstr ""
+msgstr "Die Angabe der minimalen Amplitude (dB) muss eine Integer-Zahl sein"
 
 #: prefs/SpectrumPrefs.cpp:226
 #: prefs/SpectrumPrefs.cpp:230
 msgid "The Maximum Number of Notes must be an integer in the range 1..128"
-msgstr ""
+msgstr "Die Angabe der maximalen Anzahl von Notes muss eine Integer-Zahl sein (1...128) "
 
 #: ../src/prefs/ThemePrefs.cpp:61
 #: ../src/prefs/ThemePrefs.cpp:62
@@ -8738,7 +8848,7 @@ msgstr "Fehler beim Öffnen der Soundkarte."
 
 #: toolbars/ControlToolBar.cpp:696
 msgid "Recording in CleanSpeech mode is not possible when a track, or more than one project, is already open."
-msgstr ""
+msgstr "Aufnahme im CleanSpeech-Modus ist nicht möglich wenn eine Spur oder mehr als ein Projekt geöffnet ist."
 
 #: ../src/toolbars/ControlToolBar.cpp:685
 msgid "Recording not permitted"
@@ -8764,7 +8874,7 @@ msgstr "Auswahl in Stille umwandeln"
 
 #: toolbars/EditToolBar.cpp:150
 msgid "Link Tracks"
-msgstr ""
+msgstr "Spuren verbinden"
 
 #: ../src/toolbars/EditToolBar.cpp:149
 msgid "Zoom In"
@@ -8968,7 +9078,7 @@ msgstr "Multifunktionswerkzeug"
 
 #: ../src/toolbars/TranscriptionToolBar.cpp:81
 msgid "Transcription"
-msgstr "Transkriptionswerkzeug"
+msgstr "Transkribierwerkzeug"
 
 #: ../src/toolbars/TranscriptionToolBar.cpp:183
 msgid "Play at selected speed"
@@ -9140,11 +9250,11 @@ msgstr ">"
 
 #: widgets/ErrorDialog.cpp:142
 msgid "Forwards"
-msgstr ""
+msgstr "Vorwärts"
 
 #: widgets/ErrorDialog.cpp:143
 msgid "Backwards"
-msgstr ""
+msgstr "Rückwärts"
 
 #: widgets/ErrorDialog.cpp:190
 msgid "Help on the Internet"
@@ -9199,7 +9309,7 @@ msgstr "Ein&stellungen..."
 
 #: widgets/Meter.cpp:876
 msgid "Mix Volume"
-msgstr ""
+msgstr "Mix-Lautstärke "
 
 # irgendwas an diesem fenster (re-klick auf aussteuerungs-anzeige > eigenschaften) ist strange: egal wie kurz man die zeilen umbricht fehlt immer irgendwo das letzte wort ... -> wxWidgets 2.6 Bug, behoben in wxWidgets 2.8. Machs ruhig breiter (mit wxWidgets 2.8 siehst Du besser, was dabei rauskommt) (Markus)
 #: ../src/widgets/Meter.cpp:1037
@@ -9229,7 +9339,7 @@ msgstr "Bitte eine Aktion auswählen"
 
 #: widgets/MultiDialog.cpp:86
 msgid "Please select an action"
-msgstr ""
+msgstr "Bitte eine Aktion auswählen"
 
 #: widgets/ProgressDialog.cpp:97
 msgid "Elapsed Time:"
