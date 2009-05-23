@@ -29,7 +29,8 @@ int sf_num_headers();
  *
  * Uses SFC_GET_FORMAT_MAJOR in the sf_command() interface. Resulting C string
  * from libsndfile is converted to a wxString 
- * @param format The libsndfile format number for the container format required
+ * @param format_num The libsndfile format number for the container format
+ * required
  */
 wxString sf_header_index_name(int format_num);
 
@@ -61,7 +62,7 @@ wxString sf_header_name(int format);
  *
  * Do sf_header_name() then truncate the string at the first space in the name
  * to get just the first word of the format name.
- * @Param format the libsndfile format to get the name for (only the container
+ * @param format the libsndfile format to get the name for (only the container
  * part is used) */
 wxString sf_header_shortname(int format);
 /** @brief Get the most common file extension for the given format
@@ -73,10 +74,10 @@ wxString sf_header_shortname(int format);
 wxString sf_header_extension(int format);
 /** @brief Get the string name of the specified data encoding
  *
- * AND format with SF_FORMAT_SUBMASK to get only the data encoding and
+ * AND encoding_num with SF_FORMAT_SUBMASK to get only the data encoding and
  * then use SFC_GET_FORMAT_INFO to get the description 
- * @param format the libsndfile format to get the name for (only the data
- * encoding is used) */
+ * @param encoding_num the libsndfile encoding to get the name for (only the
+ * data encoding is used) */
 wxString sf_encoding_name(int encoding_num);
 
 //
