@@ -180,6 +180,11 @@ void XMLTagHandler::ReadXMLEndTag(const char *tag)
    HandleXMLEndTag(UTF8CTOWX(tag).c_str());
 }
 
+void XMLTagHandler::ReadXMLContent(const char *s, int len)
+{
+   HandleXMLContent(wxString(s, wxConvUTF8, len));
+}
+
 XMLTagHandler *XMLTagHandler::ReadXMLChild(const char *tag)
 {
    return HandleXMLChild(UTF8CTOWX(tag).c_str());

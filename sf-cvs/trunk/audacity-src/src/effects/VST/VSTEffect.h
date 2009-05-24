@@ -30,6 +30,8 @@ typedef void (*setParameterFn)(AEffect * effect, long index,
 
 typedef float (*getParameterFn)(AEffect * effect, long index);
 
+typedef AEffect *(*vstPluginMain)(audioMasterCallback audioMaster);
+
 class VSTEffect:public Effect
 {
  public:
@@ -53,6 +55,11 @@ class VSTEffect:public Effect
    
    virtual void End();
 
+   // Utility methods
+
+   wxString GetString(int opcode, int index = 0);
+   void SetString(int opcode, const wxString & str, int index = 0);
+
    // VST methods
 
    long callDispatcher(long opcode, long index, long value, void *ptr, float opt);
@@ -61,8 +68,15 @@ class VSTEffect:public Effect
    void callSetParameter(long index, float parameter);
    float callGetParameter(long index);
 
- private:
+   // VST callback
+   long int audioMaster(AEffect * effect,
+                        long int opcode,
+                        long int index,
+                        long int value,
+                        void * ptr,
+                        float opt);
 
+ private:
    bool ProcessStereo(int count,
                       WaveTrack *left,
                       WaveTrack *right,
@@ -78,12 +92,11 @@ class VSTEffect:public Effect
    wxString mName;
 
    sampleCount mBlockSize;
-   float *mBuffer;
    float **mInBuffer;
    float **mOutBuffer;
    int mInputs;
    int mOutputs;
-   int mNumParameters;
+   int mChannels;
 };
 
 #endif // USE_VST

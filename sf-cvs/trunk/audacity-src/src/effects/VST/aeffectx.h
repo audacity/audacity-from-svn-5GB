@@ -85,6 +85,7 @@ const int audioMasterGetInputSpeakerArrangement = 49; // currently unused
 
 const int effFlagsHasEditor = 1;
 const int effFlagsCanReplacing = 1 << 4; // very likely
+const int effFlagsProgramChunks = 1 << 5; // from Ardour
 const int effFlagsIsSynth = 1 << 8; // currently unused
 
 const int effOpen = 0;
@@ -106,6 +107,8 @@ const int effEditOpen = 14;
 const int effEditClose = 15;
 const int effEditIdle = 19;
 const int effEditTop = 20;
+const int effGetChunk = 23; // from Ardour
+const int effSetChunk = 24; // from Ardour
 const int effProcessEvents = 25;
 // The next one was gleaned from http://www.kvraudio.com/forum/viewtopic.php?p=1905347
 const int effGetProgramNameIndexed = 29;
