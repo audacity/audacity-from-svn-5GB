@@ -31,6 +31,8 @@ class XMLFileReader {
 
    static void endElement(void *userData, const char *name);
 
+   static void charHandler(void *userData, const char *s, int len);
+
  private:
    XML_Parser       mParser;
    int              mMaxDepth;

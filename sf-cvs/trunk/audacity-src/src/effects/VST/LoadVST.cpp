@@ -34,9 +34,23 @@
 extern "C" {
 #endif
 
-static long audioMaster(AEffect * effect, long opcode, long index,
-                        long value, void * ptr, float opt)
+typedef AEffect *(*vstPluginMain)(audioMasterCallback audioMaster);
+
+static long int audioMaster(AEffect * effect,
+                            long int opcode,
+                            long int index,
+                            long int value,
+                            void * ptr,
+                            float opt)
 {
+   // Forward to VSTEffect if it's active
+   if (effect && effect->user) {
+      VSTEffect *vst = (VSTEffect *) effect->user;
+      return vst->audioMaster(effect, opcode, index, value, ptr, opt);
+   }
+
+   // Handles operations during initialization...before VSTEffect has had a
+   // chance to set its instance pointer.
    switch (opcode)
    {
       case audioMasterVersion:
@@ -52,16 +66,14 @@ static long audioMaster(AEffect * effect, long opcode, long index,
 
       default:
 #if defined(__WXDEBUG__)
-         wxPrintf(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f\n"),
-                  effect, opcode, index, value, ptr, opt);
-         wxLogDebug(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f"),
-                    effect, opcode, index, value, ptr, opt);
+         wxPrintf(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
+                  effect, opcode, index, value, ptr, opt, effect->user);
+         wxLogDebug(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p"),
+                    effect, opcode, index, value, ptr, opt, effect->user);
 #endif
          return 0;
    }
 }
-
-typedef AEffect *(*vstPluginMain)(audioMasterCallback audioMaster);
 
 static void LoadVSTPlugin(const wxString & fname)
 {
@@ -69,14 +81,18 @@ static void LoadVSTPlugin(const wxString & fname)
    void *module = NULL;
 
 #if defined(__WXDEBUG__)
-   wxPrintf(wxT("%s\n"), fname.c_str());
-   wxLogDebug(wxT("%s"), fname.c_str());
+//   wxPrintf(wxT("%s\n"), fname.c_str());
+//   wxLogDebug(wxT("%s"), fname.c_str());
 #endif
 
 #if defined(__WXMAC__)
+
+   // Remove the 'Contents/Info.plist' portion of the name and create a
+   // CFString
    wxString name(wxPathOnly(wxPathOnly(fname)));
    wxMacCFStringHolder path(name);
 
+   // Convert the path to a URL
    CFURLRef urlRef =
       CFURLCreateWithFileSystemPath(kCFAllocatorDefault,
                                     path,
@@ -86,59 +102,84 @@ static void LoadVSTPlugin(const wxString & fname)
       return;
    }
 
+   // Create the bundle using the URL
    CFBundleRef bundleRef = CFBundleCreate(kCFAllocatorDefault, urlRef);
 
+   // Done with the URL
    CFRelease(urlRef);
 
+   // Bail if the bundle wasn't created
    if (bundleRef == NULL) {
       return;
    }
 
+   // Try to locate the new plugin entry point
    pluginMain = (vstPluginMain)
       CFBundleGetFunctionPointerForName(bundleRef,
                                         CFSTR("VSTPluginMain"));
+
+   // If not found, try finding the old entry point
    if (pluginMain == NULL) {
       pluginMain = (vstPluginMain)
          CFBundleGetFunctionPointerForName(bundleRef,
                                            CFSTR("main_macho"));
    }
 
+   // Must not be a VST plugin
    if (pluginMain == NULL) {
       CFRelease(bundleRef);
       return;
    }
 
+   // Save the bundle reference
    module = bundleRef;
+
 #else
+
+   // Try to load the library
    wxDynamicLibrary *lib = new wxDynamicLibrary(fname);
    if (!lib) {
       return;
    }
 
+   // Bail if it wasn't successful
    if (!lib->IsLoaded()) {
       delete lib;
       return;
    }
 
-   pluginMain = (vstPluginMain) lib->GetSymbol(wxT("main"));
-   if (pluginMain == NULL) {
-      delete lib;
-      return;
+   // Try to find the entry point, while suppressing error messages
+   {
+      wxLogNull logNo;
+      pluginMain = (vstPluginMain) lib->GetSymbol(wxT("main"));
+      if (pluginMain == NULL) {
+         delete lib;
+         return;
+      }
    }
 
+   // Save the library reference
    module = lib;
+
 #endif
 
+   // Initialize the plugin
    AEffect *aeffect = pluginMain(audioMaster);
 
+   // Was it successful?
    if (aeffect) {
+
+      // Ensure that it looks like a plugin and can deal with ProcessReplacing
+      // calls.  Also exclude synths for now.
       if (aeffect->magic == kEffectMagic &&
          !(aeffect->flags & effFlagsIsSynth) &&
          aeffect->flags & effFlagsCanReplacing) {
 
+         // Looks good...try to create the VSTEffect
          VSTEffect *vst = new VSTEffect(fname, module, aeffect);
          if (vst != NULL) {
 
+            // Success...register it and get out
             EffectManager::Get().RegisterEffect(vst);
             return;
          }
@@ -153,6 +194,8 @@ static void LoadVSTPlugin(const wxString & fname)
 #endif
    }
 
+   // Only way we can get here is if something went wrong...clean up
+   
 #if defined(__WXMAC__)
    CFRelease(bundleRef);
 #else
@@ -165,9 +208,14 @@ void LoadVSTPlugins()
    wxArrayString audacityPathList = wxGetApp().audacityPathList;
    wxArrayString pathList;
    wxArrayString files;
-   
-   wxString vstpath = wxGetenv(wxT("VST_PATH"));
 
+   // Check for the VST_PATH environment variable
+   wxString vstpath = wxGetenv(wxT("VST_PATH"));
+   if (!vstpath.IsEmpty()) {
+      wxGetApp().AddUniquePathToPathList(vstpath, pathList);
+   }
+
+   // Add Audacity specific paths
    for (size_t i = 0; i < audacityPathList.GetCount(); i++) {
       wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
       wxGetApp().AddUniquePathToPathList(prefix + wxT("VST"),
@@ -180,21 +228,27 @@ void LoadVSTPlugins()
 
 #if defined(__WXMAC__)
 #define VSTPATH wxT("/Library/Audio/Plug-Ins/VST")
+
+   // Look in /Library/Audio/Plug-Ins/VST and $HOME/Library/Audio/Plug-Ins/VST
    wxGetApp().AddUniquePathToPathList(VSTPATH, pathList);
    wxGetApp().AddUniquePathToPathList(wxString(wxGetenv(wxT("HOME"))) + VSTPATH,
                                       pathList);
 
+   // Recursively search all paths for Info.plist files.  This will identify all
+   // bundles.
    wxGetApp().FindFilesInPathList(wxT("Info.plist"), pathList, files, wxDIR_DEFAULT);
 #elif defined(__WXMSW__)
    TCHAR dpath[MAX_PATH];
    TCHAR tpath[MAX_PATH];
    DWORD len = sizeof(tpath);
 
+   // Setup the default VST path.
    dpath[0] = '\0';
    ExpandEnvironmentStrings(_T("%ProgramFiles%\\Steinberg\\VSTPlugins"),
                             dpath,
                             sizeof(dpath));
 
+   // Check registry for the real path
    if (SHRegGetUSValue(_T("Software\\VST"),
                           _T("VSTPluginsPath"),
                           NULL,
@@ -208,11 +262,17 @@ void LoadVSTPlugins()
       wxGetApp().AddUniquePathToPathList(LAT1CTOWX(dpath), pathList);
    }
 
+   // Recursively scan for all DLLs
    wxGetApp().FindFilesInPathList(wxT("*.dll"), pathList, files, wxDIR_DEFAULT);
+
 #else
+
+   // Recursively scan for all shared objects
    wxGetApp().FindFilesInPathList(wxT("*.so"), pathList, files);
+
 #endif
 
+   // Try loading everything found
    for (size_t i = 0; i < files.GetCount(); i++) {
       LoadVSTPlugin(files[i]);
    }

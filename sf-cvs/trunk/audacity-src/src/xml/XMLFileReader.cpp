@@ -27,7 +27,7 @@ XMLFileReader::XMLFileReader()
    mParser = XML_ParserCreate(NULL);
    XML_SetUserData(mParser, (void *)this);
    XML_SetElementHandler(mParser, startElement, endElement);
-
+   XML_SetCharacterDataHandler(mParser, charHandler); 
    mBaseHandler = NULL;
    mMaxDepth = 128;
    mHandler = new XMLTagHandler*[mMaxDepth];
@@ -126,6 +126,15 @@ void XMLFileReader::endElement(void *userData, const char *name)
       This->mHandler[This->mDepth]->ReadXMLEndTag(name);
 
    This->mDepth--;
+}
+
+// static
+void XMLFileReader::charHandler(void *userData, const char *s, int len)
+{
+   XMLFileReader *This = (XMLFileReader *)userData;
+
+   if (This->mHandler[This->mDepth])
+      This->mHandler[This->mDepth]->ReadXMLContent(s, len);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
