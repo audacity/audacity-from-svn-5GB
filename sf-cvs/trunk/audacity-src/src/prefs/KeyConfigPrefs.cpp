@@ -129,7 +129,11 @@ void KeyConfigPrefs::PopulateOrExchange(ShuttleGui & S)
                                   CurrentComboID,
                                   wxT(""),
                                   wxDefaultPosition,
+#if defined(__WXMAC__)                                  
                                   wxSize(300, -1));
+#else
+                                  wxSize(210, -1));
+#endif
             mKey->Connect(wxEVT_KEY_DOWN,
                           wxKeyEventHandler(KeyConfigPrefs::OnCaptureKeyDown));
             mKey->Connect(wxEVT_CHAR,
