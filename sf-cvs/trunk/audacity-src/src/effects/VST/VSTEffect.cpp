@@ -137,7 +137,6 @@ VSTEffectDialog::VSTEffectDialog(wxWindow *parent,
    mSliders = NULL;
    mDisplays = NULL;
    mLabels = NULL;
-   mProgramSelected = false;
 
    // Determine if the VST editor is supposed to be used or not
    mGui = (gPrefs->Read(wxT("/VST/GUI"), (long) true) != 0) &&
