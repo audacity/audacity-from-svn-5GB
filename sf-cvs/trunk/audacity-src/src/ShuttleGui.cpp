@@ -2103,11 +2103,11 @@ void ShuttleGui::SetSizeHints( wxWindow *window, const wxArrayString & items )
 #if defined(__WXMAC__)
    maxw += 50;
 #elif defined(__WXMSW__)
-   maxw += 75;
+   maxw += 50;
 #elif defined(__WXGTK__)
-   maxw += 75;
+   maxw += 50;
 #else
-   maxw += 75;
+   maxw += 50;
 #endif
 
    window->SetSizeHints( maxw, -1 );
