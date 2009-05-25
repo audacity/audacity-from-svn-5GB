@@ -10,7 +10,7 @@
 
 *******************************************************************//**
 
-\file EffectEqualization.cpp
+\file Equalization.cpp
 \brief Implements EffectEqualiztaion, EqualizationDialog,
 EqualizationPanel, EQCurve and EQPoint.
 
