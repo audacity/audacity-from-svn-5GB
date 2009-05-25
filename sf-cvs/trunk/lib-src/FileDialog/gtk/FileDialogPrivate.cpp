@@ -2,7 +2,7 @@
 // Name:        gtk/filedlg.cpp
 // Purpose:     native implementation of FileDialog
 // Author:      Robert Roebling, Zbigniew Zagorski, Mart Raudsepp
-// Id:          $Id: FileDialogPrivate.cpp,v 1.6 2008-10-16 22:22:48 dwritten Exp $
+// Id:          $Id: FileDialogPrivate.cpp,v 1.7 2009-05-25 11:10:00 llucius Exp $
 // Copyright:   (c) 1998 Robert Roebling, 2004 Zbigniew Zagorski, 2005 Mart Raudsepp
 // Licence:     wxWindows licence
 //
@@ -346,8 +346,12 @@ void FileDialog::DoSetSize(int x, int y, int width, int height, int sizeFlags )
 wxString FileDialog::GetPath() const
 {
 #if defined(__WXGTK24__) && (!defined(__WXGPE__))
-   if (!gtk_check_version(2,4,0))
-      return wxConvFileName->cMB2WX(gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(m_widget)));
+   if (!gtk_check_version(2,4,0)) {
+      char *f = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(m_widget));
+      wxString path = wxConvFileName->cMB2WX(f);
+      g_free(f);
+      return path;
+   }
    else
 #endif
       return wxGenericFileDialog::GetPath();
@@ -468,8 +472,12 @@ void FileDialog::SetFilename(const wxString& name)
 wxString FileDialog::GetFilename() const
 {
 #if defined(__WXGTK24__) && (!defined(__WXGPE__))
-   if (!gtk_check_version(2,4,0))
-      return wxFileName(wxConvFileName->cMB2WX(gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(m_widget))) ).GetFullName();
+   if (!gtk_check_version(2,4,0)) {
+      char *f = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(m_widget));
+      wxFileName name(wxConvFileName->cMB2WX(f));
+      g_free(f);
+      return name.GetFullName();
+   }
    else
 #endif
       return wxGenericFileDialog::GetFilename();
