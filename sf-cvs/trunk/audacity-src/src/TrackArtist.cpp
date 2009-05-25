@@ -1721,7 +1721,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack *track,
                   }
 
                   // Do not reference past end of freq array.
-                  if (int(bin1) >= mid.height) {
+                  if (int(bin1) >= half) {
                      bin1 -= 1.0;
                   }
 
