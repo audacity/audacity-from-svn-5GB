@@ -710,7 +710,7 @@ void AudacityProject::CreateMenusAndCommands()
 #endif // EXPERIMENTAL_SCOREALIGN
 
       c->AddSeparator();
-      c->AddItem(wxT("StickyLabels"),       _("&Link Audio and Label Tracks"), FN(OnStickyLabel), 0); 	 
+      c->AddItem(wxT("StickyLabels"),       _("&Link Audio and Label Tracks"), FN(OnStickyLabel), 0);
 
       c->AddSeparator(); 
       c->AddItem(wxT("AddLabel"),       _("Add Label At &Selection\tCtrl+B"), FN(OnAddLabel));
@@ -1447,6 +1447,17 @@ void AudacityProject::ModifyToolbarMenus()
    for (int i = 0; i < ToolBarCount; i++) {
       mToolManager->GetToolBar(i)->EnableDisableButtons();
    }
+
+   // These don't really belong here, but it's easier and especially so for
+   // the Edit toolbar and the sticky menu item.
+   bool active;
+   gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"),&active, false);
+   mCommandManager.Check(wxT("SoundActivation"), active);
+   gPrefs->Read(wxT("/AudioIO/Duplex"),&active, true);
+   mCommandManager.Check(wxT("Duplex"), active);
+   gPrefs->Read(wxT("/AudioIO/SWPlaythrough"),&active, false);
+   mCommandManager.Check(wxT("SWPlaythrough"), active);
+   mCommandManager.Check(wxT("StickyLabels"), mStickyFlag);
 }
 
 void AudacityProject::UpdateMenus()
@@ -1486,16 +1497,6 @@ void AudacityProject::UpdateMenus()
 #endif
 
    ModifyToolbarMenus();
-
-   bool active;
-   gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"),&active, false);
-   mCommandManager.Check(wxT("SoundActivation"), active);
-   gPrefs->Read(wxT("/AudioIO/Duplex"),&active, true);
-   mCommandManager.Check(wxT("Duplex"), active);
-   gPrefs->Read(wxT("/AudioIO/SWPlaythrough"),&active, false);
-   mCommandManager.Check(wxT("SWPlaythrough"), active);
-
-   mCommandManager.Check(wxT("StickyLabels"), mStickyFlag);                         
 }
 
 //
