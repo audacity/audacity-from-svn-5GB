@@ -139,7 +139,7 @@ WaveTrack::~WaveTrack()
       delete it->GetData();
    mClips.Clear();
    if (mDisplayLocations)
-      delete mDisplayLocations;
+      delete [] mDisplayLocations;
       
 }
 
