@@ -327,6 +327,10 @@ NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
 :  EffectDialog(parent, _("Normalize"), PROCESS_EFFECT),
    mEffect(effect)
 {
+   mDC = false;
+   mGain = false;
+   mLevel = 0;
+
    Init();
 }
 
@@ -348,27 +352,27 @@ void NormalizeDialog::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartVerticalLay(false);
       {
-      mDCCheckBox = S.AddCheckBox(_("Remove any DC offset (center on 0.0 vertically)"),
-                                  mDC ? wxT("true") : wxT("false"));
-
-      mGainCheckBox = S.Id(ID_NORMALIZE_AMPLITUDE).AddCheckBox(_("Normalize maximum amplitude to:"),
-                                    mGain ? wxT("true") : wxT("false"));
-
-      S.StartHorizontalLay(wxALIGN_LEFT, false);
-      {
-         wxCheckBox *c = S.AddCheckBox(wxT(""), wxT("false"));
-         S.AddSpace(c->GetSize().GetWidth() + (S.GetBorder() * 2));
-         c->Hide();
-         mLevelMinux = S.AddVariableText(_("-"), false,
-                                         wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT);
-         mLevelTextCtrl = S.AddTextBox(wxT(""),
-                                       Internat::ToString(mLevel, 1),
-                                       10);
-         mLevelTextCtrl->SetName(_("Maximum amplitude dB"));
-         mLeveldB = S.AddVariableText(_("dB"), false,
-                                      wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT);
-      }
-      S.EndHorizontalLay();
+         mDCCheckBox = S.AddCheckBox(_("Remove any DC offset (center on 0.0 vertically)"),
+                                     mDC ? wxT("true") : wxT("false"));
+   
+         mGainCheckBox = S.Id(ID_NORMALIZE_AMPLITUDE).AddCheckBox(_("Normalize maximum amplitude to:"),
+                                       mGain ? wxT("true") : wxT("false"));
+   
+         S.StartHorizontalLay(wxALIGN_LEFT, false);
+         {
+            wxCheckBox *c = S.AddCheckBox(wxT(""), wxT("false"));
+            S.AddSpace(c->GetSize().GetWidth() + (S.GetBorder() * 2));
+            c->Hide();
+            mLevelMinux = S.AddVariableText(_("-"), false,
+                                            wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT);
+            mLevelTextCtrl = S.AddTextBox(wxT(""),
+                                          Internat::ToString(mLevel, 1),
+                                          10);
+            mLevelTextCtrl->SetName(_("Maximum amplitude dB"));
+            mLeveldB = S.AddVariableText(_("dB"), false,
+                                         wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT);
+         }
+         S.EndHorizontalLay();
       }
       S.EndVerticalLay();
    }
