@@ -12,8 +12,8 @@
 \file Audacity.h
 
   This is the main include file for Audacity.  All files which need
-  any Audacity-specific #defines or need to access any of Audacity's
-  global functions should #include this file.
+  any Audacity-specific \#defines or need to access any of Audacity's
+  global functions should \#include this file.
 
 *//********************************************************************/
 
