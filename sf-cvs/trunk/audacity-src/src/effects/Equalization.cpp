@@ -2354,61 +2354,71 @@ void EqualizationDialog::OnLinFreq(wxCommandEvent &evt)
 
 void EqualizationDialog::EnvLogToLin(void)
 {
-      int numPoints = mLogEnvelope->GetNumberOfPoints();
-      double *when = new double[ numPoints ];
-      double *value = new double[ numPoints ];
+   int numPoints = mLogEnvelope->GetNumberOfPoints();
+   if( numPoints == 0 )
+   {
+      return;
+   }
 
-      mLinEnvelope->Flatten(0.);
-      mLinEnvelope->SetTrackLen(1.0);
-      mLogEnvelope->GetPoints( when, value, numPoints );
-      mLinEnvelope->Move(0., value[0]);
-      double loLog = log10(20.);
-      double hiLog = log10(mHiFreq);
-      double denom = hiLog - loLog;
+   double *when = new double[ numPoints ];
+   double *value = new double[ numPoints ];
 
-      for( int i=0; i < numPoints; i++)
-         mLinEnvelope->Insert(pow( 10., ((when[i] * denom) + loLog))/mHiFreq , value[i]);
-      mLinEnvelope->Move(1., value[numPoints-1]);
+   mLinEnvelope->Flatten(0.);
+   mLinEnvelope->SetTrackLen(1.0);
+   mLogEnvelope->GetPoints( when, value, numPoints );
+   mLinEnvelope->Move(0., value[0]);
+   double loLog = log10(20.);
+   double hiLog = log10(mHiFreq);
+   double denom = hiLog - loLog;
 
-      delete [] when;
-      delete [] value;
+   for( int i=0; i < numPoints; i++)
+      mLinEnvelope->Insert(pow( 10., ((when[i] * denom) + loLog))/mHiFreq , value[i]);
+   mLinEnvelope->Move(1., value[numPoints-1]);
+
+   delete [] when;
+   delete [] value;
 }
 
 void EqualizationDialog::EnvLinToLog(void)
 {
-      int numPoints = mLinEnvelope->GetNumberOfPoints();
-      double *when = new double[ numPoints ];
-      double *value = new double[ numPoints ];
+   int numPoints = mLinEnvelope->GetNumberOfPoints();
+   if( numPoints == 0 )
+   {
+      return;
+   }
+   
+   double *when = new double[ numPoints ];
+   double *value = new double[ numPoints ];
 
-      mLogEnvelope->Flatten(0.);
-      mLogEnvelope->SetTrackLen(1.0);
-      mLinEnvelope->GetPoints( when, value, numPoints );
-      mLogEnvelope->Move(0., value[0]);
-      double loLog = log10(20.);
-      double hiLog = log10(mHiFreq);
-      double denom = hiLog - loLog;
-      bool changed = false;
+   mLogEnvelope->Flatten(0.);
+   mLogEnvelope->SetTrackLen(1.0);
+   mLinEnvelope->GetPoints( when, value, numPoints );
+   mLogEnvelope->Move(0., value[0]);
+   double loLog = log10(20.);
+   double hiLog = log10(mHiFreq);
+   double denom = hiLog - loLog;
+   bool changed = false;
 
-      for( int i=0; i < numPoints; i++)
+   for( int i=0; i < numPoints; i++)
+   {
+      if( when[i]*mHiFreq >= 20 )
       {
-         if( when[i]*mHiFreq >= 20 )
-         {
-            mLogEnvelope->Insert((log10(when[i]*mHiFreq)-loLog)/denom , value[i]);
-         }
-         else
-         {  //get the first point as close as we can to the last point requested
-            changed = true;
-            double v = value[i];
-            mLogEnvelope->Insert(0., v);
-         }
+         mLogEnvelope->Insert((log10(when[i]*mHiFreq)-loLog)/denom , value[i]);
       }
-      mLogEnvelope->Move(1., value[numPoints-1]);
+      else
+      {  //get the first point as close as we can to the last point requested
+         changed = true;
+         double v = value[i];
+         mLogEnvelope->Insert(0., v);
+      }
+   }
+   mLogEnvelope->Move(1., value[numPoints-1]);
 
-      delete [] when;
-      delete [] value;
+   delete [] when;
+   delete [] value;
 
-      if(changed)
-         EnvelopeUpdated(mLogEnvelope, false);
+   if(changed)
+      EnvelopeUpdated(mLogEnvelope, false);
 }
 
 void EqualizationDialog::ErrMin(void)
