@@ -516,6 +516,8 @@ void EffectNoiseRemoval::FinishTrack()
    while (mOutSampleCount < mInSampleCount) {
       ProcessSamples(mWindowSize / 2, empty);
    }
+
+   delete [] empty;
 }
 
 void EffectNoiseRemoval::GetProfile()
