@@ -59,6 +59,14 @@ EffectCompressor::EffectCompressor()
 	mLevelCircle = NULL;
 }
 
+EffectCompressor::~EffectCompressor()
+{
+   if (mCircle)
+      delete[] mCircle;
+   if (mLevelCircle)
+      delete[] mLevelCircle;
+}
+
 bool EffectCompressor::TransferParameters( Shuttle & shuttle )
 {
    shuttle.TransferDouble( wxT("Threshold"), mThresholdDB, -12.0f );
@@ -492,8 +500,9 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
    }
    S.EndHorizontalLay();
 
-   S.StartMultiColumn(3, wxCENTER | wxALIGN_CENTER_VERTICAL);
+   S.StartMultiColumn(3, wxEXPAND | wxALIGN_CENTER_VERTICAL);
    {
+      S.SetStretchyCol(1);
       mThresholdLabel = S.AddVariableText(_("Threshold:"), true,
                                           wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
       S.SetStyle(wxSL_HORIZONTAL);
