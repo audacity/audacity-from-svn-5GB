@@ -398,9 +398,10 @@ wxCursor * MakeCursor( int CursorId, const char * pXpm[36],  int HotX, int HotY 
 
    pCursor = new wxCursor((const char *)bits, w, h,
                           HotX-HotAdjust, HotY-HotAdjust,
-                          (const char *)maskBits,
-                          new wxColour(0, 0, 0),
-                          new wxColour(255, 255, 255));
+                          (const char *)maskBits);
+
+   delete [] bits;
+   delete [] maskBits;
 
 #else
    Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_X, HotX-HotAdjust );
@@ -571,6 +572,8 @@ TrackPanel::~TrackPanel()
    delete mAdjustRightSelectionCursor;
 
    delete mSnapManager;
+
+   delete mAx;
 
    DeleteMenus();
 }
@@ -1945,7 +1948,9 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event, Track *clickedTrack)
          if (pTrack == eTrack) {
             break;
          }
-      } while (pTrack = iter.Next());
+
+         pTrack = iter.Next();
+      } while (pTrack);
    }
 
    ExtendSelection(x, r.x, clickedTrack);
@@ -6761,8 +6766,6 @@ wxRect TrackPanel::FindTrackRect(Track * target, bool label)
    if (!target) {
       return wxRect(0,0,0,0);
    }
-
-   bool linked = target->GetLinked();
 
    wxRect r(0,
             target->GetY() - mViewInfo->vpos,
