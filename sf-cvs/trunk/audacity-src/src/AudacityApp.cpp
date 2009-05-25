@@ -62,6 +62,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "Benchmark.h"
 #include "DirManager.h"
 #include "effects/LoadEffects.h"
+#include "effects/Contrast.h"
 #include "FFmpeg.h"
 #include "GStreamerLoader.h"
 #include "FreqWindow.h"
@@ -284,6 +285,7 @@ void QuitAudacity(bool bForce)
       gParentFrame->Destroy();
    gParentFrame = NULL;
 
+   CloseContrastDialog();
    CloseScreenshotTools();
    
    //release ODManager Threads

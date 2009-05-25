@@ -21,11 +21,8 @@ class wxString;
 class Envelope;
 class WaveTrack;
 
-class ContrastDialog;
-
-extern ContrastDialog *gContrastDialog;
-
 void InitContrastDialog(wxWindow * parent);
+void CloseContrastDialog();
 
 //----------------------------------------------------------------------------
 // ContrastDialog

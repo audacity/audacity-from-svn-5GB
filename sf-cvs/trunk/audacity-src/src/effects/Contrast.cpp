@@ -50,7 +50,7 @@
 
 #include "../PlatformCompatibility.h"
 
-ContrastDialog *gContrastDialog = NULL;
+static ContrastDialog *gContrastDialog = NULL;
 
 void InitContrastDialog(wxWindow * parent)
 {
@@ -118,6 +118,14 @@ void InitContrastDialog(wxWindow * parent)
       gContrastDialog->mEndTimeF = gContrastDialog->mForegroundEndT->GetTimeValue();
       gContrastDialog->mStartTimeB = gContrastDialog->mBackgroundStartT->GetTimeValue();
       gContrastDialog->mEndTimeB = gContrastDialog->mBackgroundEndT->GetTimeValue();
+   }
+}
+
+void CloseContrastDialog()
+{
+   if (gContrastDialog) {
+      delete gContrastDialog;
+      gContrastDialog = NULL;
    }
 }
 
@@ -244,6 +252,9 @@ ContrastDialog::ContrastDialog(wxWindow * parent, wxWindowID id,
   wxDialog(parent, id, title, pos, wxDefaultSize,
      wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX )
 {
+   foregrounddB = 1234.0;
+   backgrounddB = 1234.0;
+
    // NULL out the control members until the controls are created.
    m_pButton_GetForeground = NULL;
    m_pButton_GetBackground = NULL;
