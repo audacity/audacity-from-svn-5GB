@@ -2996,6 +2996,95 @@ void AudacityProject::OnCopy()
 
 void AudacityProject::OnPaste()
 {
+   // Handle Label tracks first
+   TrackListOfKindIterator iterlt(Track::Label, mTracks);
+
+   LabelTrack *lt = (LabelTrack *) iterlt.First();
+   if (lt) {
+
+      // Look for selected label tracks and active labels
+      bool selected = false;
+      while (lt) {
+
+         // Does this track have an active label?
+         if (lt->IsSelected()) {
+
+            // Yes, so try pasting into it
+            if (lt->PasteSelectedText(mViewInfo.sel0, mViewInfo.sel1)) {
+               PushState(_("Pasted text from the clipboard"), _("Paste"));
+
+               // Make sure caret is in view
+               int x;
+               if (lt->CalcCursorX(this, &x)) {
+                  mTrackPanel->ScrollIntoView(x);
+               }
+
+               // Redraw everyting (is that necessary???) and bail
+               RedrawProject();
+               return;
+            }
+         }
+
+         // Remember that we found a selected one
+         if (lt->GetSelected()) {
+            selected = true;
+         }
+
+         // Find the next one
+         lt = (LabelTrack *) iterlt.Next();
+      }
+
+      // Were any Label tracks without active labels selected?
+      if (selected) {
+         LabelTrack *plt = NULL;
+         bool pasted = false;
+
+         // Paste new labels into all selected label tracks
+         lt = (LabelTrack *) iterlt.First();
+         while (lt) {
+            if (lt->GetSelected()) {
+               // Ensure that the last pasted label gets unselected.  This will
+               // leave only one "active" label when we're done.
+               if (plt) {
+                  plt->Unselect();
+               }
+
+               // Add a new label
+               lt->AddLabel(mViewInfo.sel0, mViewInfo.sel1);
+
+               // Now paste the text into it
+               if (lt->PasteSelectedText(mViewInfo.sel0, mViewInfo.sel1)) {
+
+                  // Remember that we pasted something
+                  pasted = true;
+
+                  // Make sure caret is in view
+                  int x;
+                  if (lt->CalcCursorX(this, &x)) {
+                     mTrackPanel->ScrollIntoView(x);
+                  }
+               }
+
+               // Remember this track so we can unselect the new label if its
+               // not the last one pasted
+               plt = lt;
+            }
+
+            // Find the next one
+            lt = (LabelTrack *) iterlt.Next();
+         }
+
+         // We're done if we pasted into any tracks
+         if (pasted) {
+            PushState(_("Pasted from the clipboard"), _("Paste"));
+
+            // Redraw everyting (is that necessary???) and bail
+            RedrawProject();
+            return;
+         }
+      }
+   }
+
    // If nothing's selected, we just insert new tracks...so first
    // check to see if anything's selected
    
@@ -3007,21 +3096,6 @@ void AudacityProject::OnPaste()
    // Pastes text into the first label track or counts selected wave tracks
    while (countTrack) {
       if (countTrack->GetSelected()) {
-         if (countTrack->GetKind() == Track::Label) {
-            LabelTrack *lt = (LabelTrack *) countTrack;
-            if (lt->PasteSelectedText(mViewInfo.sel0, mViewInfo.sel1)) {
-               PushState(_("Pasted text from the clipboard"), _("Paste"));
-
-               // Make sure caret is in view
-               int x;
-               if (lt->CalcCursorX(this, &x)) {
-                  mTrackPanel->ScrollIntoView(x);
-               }
-
-               RedrawProject();
-               return;
-            }
-         }
          numSelected++;
       }
       countTrack = iter2.Next();
@@ -3082,7 +3156,7 @@ void AudacityProject::OnPaste()
 
       mViewInfo.sel0 = 0.0;
       mViewInfo.sel1 = msClipLen;
-      
+
       PushState(_("Pasted from the clipboard"), _("Paste"));
       
       RedrawProject();
