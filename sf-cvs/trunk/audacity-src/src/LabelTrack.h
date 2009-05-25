@@ -173,7 +173,7 @@ class LabelTrack:public Track {
    double AdjustTimeStampForSpeedChange(double t, double b, double e, double change);
 
  public:
-	 void SortLabels();
+   void SortLabels();
    //These two are used by a TrackPanel KLUDGE, which is why they are public.
    bool mbHitCenter;
    //The edge variable tells us what state the icon is in.
