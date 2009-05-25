@@ -31,6 +31,7 @@ class EffectCompressor: public EffectTwoPassSimpleMono {
 public:
    
    EffectCompressor();
+   virtual ~EffectCompressor();
    
    virtual wxString GetEffectName() {
       return wxString(_("Compressor..."));
