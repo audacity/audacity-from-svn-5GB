@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_ds.c,v 1.11 2008-12-31 15:38:35 richardash1981 Exp $
+ * $Id: pa_win_ds.c,v 1.12 2009-05-25 21:40:16 richardash1981 Exp $
  * Portable Audio I/O Library DirectSound implementation
  *
  * Authors: Phil Burk, Robert Marsanyi & Ross Bencina
@@ -1403,12 +1403,14 @@ static HRESULT InitInputBuffer( PaWinDsStream *stream, PaSampleFormat sampleForm
 
     // first try WAVEFORMATEXTENSIBLE. if this fails, fall back to WAVEFORMATEX
     PaWin_InitializeWaveFormatExtensible( &waveFormat, nChannels, 
-                sampleFormat, nFrameRate, channelMask );
+                sampleFormat, PaWin_SampleFormatToLinearWaveFormatTag( sampleFormat ),
+                nFrameRate, channelMask );
 
     if( IDirectSoundCapture_CreateCaptureBuffer( stream->pDirectSoundCapture,
                   &captureDesc, &stream->pDirectSoundInputBuffer, NULL) != DS_OK )
     {
-        PaWin_InitializeWaveFormatEx( &waveFormat, nChannels, sampleFormat, nFrameRate );
+        PaWin_InitializeWaveFormatEx( &waveFormat, nChannels, sampleFormat, 
+                PaWin_SampleFormatToLinearWaveFormatTag( sampleFormat ), nFrameRate );
 
         if ((result = IDirectSoundCapture_CreateCaptureBuffer( stream->pDirectSoundCapture,
                     &captureDesc, &stream->pDirectSoundInputBuffer, NULL)) != DS_OK) return result;
@@ -1479,11 +1481,13 @@ static HRESULT InitOutputBuffer( PaWinDsStream *stream, PaSampleFormat sampleFor
 
     // first try WAVEFORMATEXTENSIBLE. if this fails, fall back to WAVEFORMATEX
     PaWin_InitializeWaveFormatExtensible( &waveFormat, nChannels, 
-                sampleFormat, nFrameRate, channelMask );
+                sampleFormat, PaWin_SampleFormatToLinearWaveFormatTag( sampleFormat ),
+                nFrameRate, channelMask );
 
     if( IDirectSoundBuffer_SetFormat( pPrimaryBuffer, (WAVEFORMATEX*)&waveFormat) != DS_OK )
     {
-        PaWin_InitializeWaveFormatEx( &waveFormat, nChannels, sampleFormat, nFrameRate );
+        PaWin_InitializeWaveFormatEx( &waveFormat, nChannels, sampleFormat, 
+                PaWin_SampleFormatToLinearWaveFormatTag( sampleFormat ), nFrameRate );
 
         if((result = IDirectSoundBuffer_SetFormat( pPrimaryBuffer, (WAVEFORMATEX*)&waveFormat)) != DS_OK) return result;
     }
