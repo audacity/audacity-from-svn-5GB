@@ -82,6 +82,9 @@ LabelTrack *TrackFactory::NewLabelTrack()
 
 LabelTrack::LabelTrack(DirManager * projDirManager):
    Track(projDirManager),
+   mbHitCenter(false),
+   mOldEdge(-1),
+   mSelIndex(-1),
    mMouseOverLabelLeft(-1),
    mMouseOverLabelRight(-1),
    mIsAdjustingLabel(false)
@@ -89,14 +92,13 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
    SetDefaultName(_NoAcc("&Label Track"));
    SetName(GetDefaultName());
 
-   ResetFont();
-
    // Label tracks are narrow
    // Default is to allow two rows so that new users get the
    // idea that labels can 'stack' when they would overlap.
-   mHeight = 73;     
+   SetHeight(73);
+
+   ResetFont();
    CreateCustomGlyphs();
-   mSelIndex = -1;
 
    // reset flags
    ResetFlags();
@@ -104,6 +106,9 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
 
 LabelTrack::LabelTrack(const LabelTrack &orig) :
    Track(orig),
+   mbHitCenter(false),
+   mOldEdge(-1),
+   mSelIndex(-1),
    mMouseOverLabelLeft(-1),
    mMouseOverLabelRight(-1),
    mIsAdjustingLabel(false)
@@ -208,7 +213,10 @@ double LabelTrack::AdjustTimeStampForSpeedChange(double t, double b, double e, d
 void LabelTrack::ResetFlags()
 {
    mMouseXPos = -1;
+   mXPos1 = -1;
+   mXPos2 = -1;
    mDragXPos = -1;
+   mInitialCursorPos = 1;
    mCurrentCursorPos = 1;
    mResetCursorPos = false;
    mRightDragging = false;
@@ -449,10 +457,18 @@ void LabelTrack::ComputeLayout(const wxRect & r, double h, double pps)
    }
 }
 
-LabelStruct::LabelStruct() {
+LabelStruct::LabelStruct()
+{
    changeInitialMouseXPos = true;
    highlighted = false;
    updated = false;
+   t = 0.0;
+   t1 = 0.0;
+   width = 0;
+   x = 0;
+   x1 = 0;
+   xText = 0;
+   y = 0;
 }
 
 /// Draw vertical lines that go exactly through the position
@@ -1864,10 +1880,10 @@ bool LabelTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          }
          else if (!wxStrcmp(attr, wxT("height")) && 
                   XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
-            mHeight = nValue;
+            SetHeight(nValue);
          else if (!wxStrcmp(attr, wxT("minimized")) && 
                   XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue))
-            mMinimized = (nValue != 0);
+            SetMinimized(nValue != 0);
       }
 
       return true;
