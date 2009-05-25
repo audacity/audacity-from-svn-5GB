@@ -349,6 +349,10 @@ void ClickRemovalDialog::PopulateOrExchange(ShuttleGui & S)
                                                   MAX_THRESHOLD);
       mThreshS->SetName(_("Select threshold"));
       mThreshS->SetRange(MIN_THRESHOLD, MAX_THRESHOLD);
+#if defined(__WXGTK__)
+      // Force a minimum size since wxGTK allows it to go to zero
+      mThreshS->SetMinSize(wxSize(100, -1));
+#endif
 
       // Click width
       mWidthT = S.Id(ID_WIDTH_TEXT).AddTextBox(_("Max spike width (higher is more sensitive):"),
@@ -362,6 +366,10 @@ void ClickRemovalDialog::PopulateOrExchange(ShuttleGui & S)
                                                 MAX_CLICK_WIDTH);
       mWidthS->SetName(_("Max spike width"));
       mWidthS->SetRange(MIN_CLICK_WIDTH, MAX_CLICK_WIDTH);
+#if defined(__WXGTK__)
+      // Force a minimum size since wxGTK allows it to go to zero
+      mWidthS->SetMinSize(wxSize(100, -1));
+#endif
    }
    S.EndMultiColumn();
    return;
