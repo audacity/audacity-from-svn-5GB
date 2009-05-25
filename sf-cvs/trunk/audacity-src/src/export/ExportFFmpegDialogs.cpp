@@ -169,7 +169,7 @@ void ExportFFmpegAACOptions::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartTwoColumn();
       {
-      S.TieSlider(wxT("Quality:"),wxT("/FileFormats/AACQuality"),100,500,10);
+      S.TieSlider(_("Quality:"),wxT("/FileFormats/AACQuality"),100,500,10);
    }
       S.EndTwoColumn();
    }
