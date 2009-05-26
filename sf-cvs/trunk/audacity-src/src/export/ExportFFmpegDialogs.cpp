@@ -411,6 +411,7 @@ WX_DEFINE_LIST(FFmpegPresetList);
 FFmpegPresets::FFmpegPresets()
 {
    mPresets = new FFmpegPresetList();
+   mPresets->DeleteContents(true);
    XMLFileReader xmlfile;
    wxFileName xmlFileName(FileNames::DataDir(), wxT("ffmpeg_presets.xml"));
    xmlfile.Parse(this,xmlFileName.GetFullPath());
