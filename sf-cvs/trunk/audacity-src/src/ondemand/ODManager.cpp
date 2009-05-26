@@ -248,8 +248,6 @@ void ODManager::DecrementCurrentThreads()
 ///Main loop for managing threads and tasks.
 void ODManager::Start()
 {   
-
-   ODTask* task;
    ODTaskThread* thread;
    bool tasksInArray;
    
