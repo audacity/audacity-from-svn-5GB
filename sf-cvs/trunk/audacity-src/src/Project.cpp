@@ -918,7 +918,7 @@ void AudacityProject::UpdatePrefsVariables()
    gPrefs->Read(wxT("/GUI/TracksFitVerticallyZoomed"), &mTracksFitVerticallyZoomed, false);
    gPrefs->Read(wxT("/GUI/SelectAllOnNone"), &mSelectAllOnNone, true);
    gPrefs->Read(wxT("/GUI/ShowSplashScreen"), &mShowSplashScreen, true);
-   gPrefs->Read(wxT("/GUI/Help"), &mHelpPref, wxT("Standard") );
+   gPrefs->Read(wxT("/GUI/Help"), &mHelpPref, wxT("InBrowser") );
 
    gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &mCleanSpeechMode, false);
    gPrefs->Read(wxT("/AudioFiles/ShowId3Dialog"), &mShowId3Dialog, true);

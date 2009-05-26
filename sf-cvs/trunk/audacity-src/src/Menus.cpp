@@ -960,7 +960,7 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("About"),          _("&About Audacity..."),          FN(OnAbout));
 
    c->AddItem(wxT("Welcome"),          _("&Show Welcome Message..."),      FN(OnHelpWelcome));
-   c->AddItem(wxT("Help"),             _("&Index..."),                      FN(OnHelp));
+   c->AddItem(wxT("Help"),             _("&Help..."),                      FN(OnHelp));
    c->AddItem(wxT("Log"),             _("Show &Log..."),                      FN(OnLog));
 
    if( !mCleanSpeechMode )
@@ -5129,7 +5129,6 @@ void AudacityProject::OnHelp()
       this, 
       FileNames::HtmlHelpIndexFile(),
       wxT("http://audacityteam.org/manual/index.php?title=Main_Page" ));
-      //wxT("http://audacity.sourceforge.net/help/documentation"  ));
 }
 
 void AudacityProject::OnLog()

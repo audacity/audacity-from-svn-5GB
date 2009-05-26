@@ -15,6 +15,9 @@ This copyright notice applies to all documents in the
 Audacity source code archive, except as otherwise noted
 (mostly in the lib-src subdirectories).
 
+The documentation for Audacity is licenced under the Creative Commons license
+http://creativecommons.org/licenses/by/3.0/legalcode
+
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
 Version 1.3.8 Beta

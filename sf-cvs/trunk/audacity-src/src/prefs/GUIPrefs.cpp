@@ -122,7 +122,7 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
 
          S.TieChoice(_("Help:"),
                      wxT("/GUI/Help"),
-                     wxT("Standard"),
+                     wxT("InBrowser"),
                      mHtmlHelpChoices,
                      mHtmlHelpCodes);
          S.SetSizeHints(mHtmlHelpChoices);
