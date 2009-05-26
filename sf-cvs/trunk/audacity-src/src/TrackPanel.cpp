@@ -573,6 +573,10 @@ TrackPanel::~TrackPanel()
    delete mSnapManager;
 
    DeleteMenus();
+
+#if !wxUSE_ACCESSIBILITY
+   delete mAx;
+#endif
 }
 
 void TrackPanel::BuildMenus(void)
