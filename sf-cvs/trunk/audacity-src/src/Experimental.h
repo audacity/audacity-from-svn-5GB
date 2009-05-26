@@ -75,6 +75,10 @@
 // A Frequency Grid for the Spectrum Log(f) & Find Notes modes
 //#define EXPERIMENTAL_FFT_Y_GRID
 
+// Andy Coder, 03.Mar 2009:
+// Allow keyboard seeking before initial playback position
+//#define EXPERIMENTAL_SEEK_BEHIND_CURSOR
+
 #ifdef EXPERIMENTAL_FEATURES
    // The first experimental feature is a notebook that adds
    // a tabbed divider to the project.

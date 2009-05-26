@@ -439,8 +439,10 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
    }
 
    double maxofmins,minofmaxs;
+#if defined(EXPERIMENTAL_SEEK_BEHIND_CURSOR)
    double init_seek = 0.0;
-   
+#endif 
+ 
    // JS: clarified how the final play region is computed;
    if (t1 == t0) {
       // msmeyer: When playing looped, we play the whole file, if
@@ -456,10 +458,12 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
          else if (t0 > t->GetEndTime()) {
             t0 = t->GetEndTime();
          }
+#if defined(EXPERIMENTAL_SEEK_BEHIND_CURSOR)
          else {
             init_seek = t0;         //AC: init_seek is where playback will 'start'
             t0 = t->GetStartTime();
          }
+#endif
       }
       
       // always play to end
@@ -539,8 +543,10 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
          success = true;
          p->SetAudioIOToken(token);
          mBusyProject = p;
+#if defined(EXPERIMENTAL_SEEK_BEHIND_CURSOR)
          //AC: If init_seek was set, now's the time to make it happen.
          gAudioIO->SeekStream(init_seek);
+#endif
          SetVUMeters(p);
       }
       else {
