@@ -45,6 +45,7 @@
 EffectAmplify::EffectAmplify()
 {
    ratio = float(1.0);
+   peak = float(0.0);
 }
 
 wxString EffectAmplify::GetEffectDescription() { 

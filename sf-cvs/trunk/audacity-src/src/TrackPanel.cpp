@@ -2266,6 +2266,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
          }
       }
       else {
+         mCapturedClipIsSelection = false;
          TrackGroupIterator iter(mTracks);
          Track *t;
          if (GetProject()->IsSticky() && (t = iter.First(wt))) {
