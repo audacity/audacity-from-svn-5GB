@@ -218,30 +218,46 @@ void WahwahDialog::PopulateOrExchange(ShuttleGui & S)
 
    S.StartMultiColumn(3, wxCENTER);
    {
+      wxSlider *s;
       S.Id(ID_FREQTEXT).AddTextBox(_("LFO Frequency (Hz):"), wxT(""), 12);
       S.SetStyle(wxSL_HORIZONTAL);
-      S.Id(ID_FREQSLIDER).AddSlider(wxT(""), 100, FREQ_MAX, FREQ_MIN)->
-         SetName(_("LFO frequency in hertz"));
+      s = S.Id(ID_FREQSLIDER).AddSlider(wxT(""), 100, FREQ_MAX, FREQ_MIN);
+      s->SetName(_("LFO frequency in hertz"));
+#if defined(__WXGTK__)
+      s->SetMinSize(wxSize(100, -1));
+#endif
 
       S.Id(ID_PHASETEXT).AddTextBox(_("LFO Start Phase (deg.):"), wxT(""), 12);
       S.SetStyle(wxSL_HORIZONTAL);
-      S.Id(ID_PHASESLIDER).AddSlider(wxT(""), 0, PHASE_MAX, PHASE_MIN)->
-         SetName(_("LFO start phase in degrees"));
+      s = S.Id(ID_PHASESLIDER).AddSlider(wxT(""), 0, PHASE_MAX, PHASE_MIN);
+      s->SetName(_("LFO start phase in degrees"));
+#if defined(__WXGTK__)
+      s->SetMinSize(wxSize(100, -1));
+#endif
 
       S.Id(ID_DEPTHTEXT).AddTextBox(_("Depth (%):"), wxT(""), 12);
       S.SetStyle(wxSL_HORIZONTAL);
-      S.Id(ID_DEPTHSLIDER).AddSlider(wxT(""), 0, DEPTH_MAX, DEPTH_MIN)->
-         SetName(_("Depth in percent"));
+      s = S.Id(ID_DEPTHSLIDER).AddSlider(wxT(""), 0, DEPTH_MAX, DEPTH_MIN);
+      s->SetName(_("Depth in percent"));
+#if defined(__WXGTK__)
+      s->SetMinSize(wxSize(100, -1));
+#endif
 
       S.Id(ID_RESONANCETEXT).AddTextBox(_("Resonance:"), wxT(""), 12);
       S.SetStyle(wxSL_HORIZONTAL);
-      S.Id(ID_RESONANCESLIDER).AddSlider(wxT(""), 0, RES_MAX, RES_MIN)->
-         SetName(_("Resonance"));
+      s = S.Id(ID_RESONANCESLIDER).AddSlider(wxT(""), 0, RES_MAX, RES_MIN);
+      s->SetName(_("Resonance"));
+#if defined(__WXGTK__)
+      s->SetMinSize(wxSize(100, -1));
+#endif
 
       S.Id(ID_FREQOFFTEXT).AddTextBox(_("Wah Frequency Offset (%):"), wxT(""), 12);
       S.SetStyle(wxSL_HORIZONTAL);
-      S.Id(ID_FREQOFFSLIDER).AddSlider(wxT(""), 0, FREQOFF_MAX, FREQOFF_MIN)->
-         SetName(_("Wah frequency offset in percent"));
+      s  =S.Id(ID_FREQOFFSLIDER).AddSlider(wxT(""), 0, FREQOFF_MAX, FREQOFF_MIN);
+      s->SetName(_("Wah frequency offset in percent"));
+#if defined(__WXGTK__)
+      s->SetMinSize(wxSize(100, -1));
+#endif
    }
    S.EndMultiColumn();
 }

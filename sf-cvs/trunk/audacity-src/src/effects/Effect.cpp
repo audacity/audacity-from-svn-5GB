@@ -62,6 +62,8 @@ Effect::Effect()
    mTracks = NULL;
    mOutputWaveTracks = NULL;
    mLength = 0;
+   mNumTracks = 0;
+   mNumGroups = 0;
 
    // Can change effect flags later (this is the new way)
    // OR using the old way, over-ride GetEffectFlags().
