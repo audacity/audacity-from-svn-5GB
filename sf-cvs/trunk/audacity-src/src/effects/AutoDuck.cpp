@@ -75,6 +75,21 @@ EffectAutoDuck::EffectAutoDuck()
 {
    SetEffectFlags(BUILTIN_EFFECT | PROCESS_EFFECT | ADVANCED_EFFECT);
    
+   gPrefs->Read(wxT("/Effects/AutoDuck/DuckAmountDb"),
+      &mDuckAmountDb, PARAM_DEFAULT_DUCK_AMOUNT_DB);
+   gPrefs->Read(wxT("/Effects/AutoDuck/InnerFadeDownLen"),
+      &mInnerFadeDownLen, PARAM_DEFAULT_INNER_FADE_DOWN_LEN);
+   gPrefs->Read(wxT("/Effects/AutoDuck/InnerFadeUpLen"),
+      &mInnerFadeUpLen, PARAM_DEFAULT_INNER_FADE_UP_LEN);
+   gPrefs->Read(wxT("/Effects/AutoDuck/OuterFadeDownLen"),
+      &mOuterFadeDownLen, PARAM_DEFAULT_OUTER_FADE_DOWN_LEN);
+   gPrefs->Read(wxT("/Effects/AutoDuck/OuterFadeUpLen"),
+      &mOuterFadeUpLen, PARAM_DEFAULT_OUTER_FADE_UP_LEN);
+   gPrefs->Read(wxT("/Effects/AutoDuck/ThresholdDb"),
+      &mThresholdDb, PARAM_DEFAULT_THRESHOLD_DB);
+   gPrefs->Read(wxT("/Effects/AutoDuck/MaximumPause"),
+      &mMaximumPause, PARAM_DEFAULT_MAXIMUM_PAUSE);
+
    mControlTrack = NULL;
 }
 
