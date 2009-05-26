@@ -585,7 +585,7 @@ void TrackList::Replace(Track * t, Track * with, bool deletetrack)
 void TrackList::Remove(Track * t, bool deletetrack)
 {
    if (t) {
-      const TrackListNode *node = t->GetNode();
+      TrackListNode *node = (TrackListNode *) t->GetNode();
 
       t->SetOwner(NULL, NULL);
       if (deletetrack) {
