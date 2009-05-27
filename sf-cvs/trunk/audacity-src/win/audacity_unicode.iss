@@ -88,7 +88,7 @@ Source: "..\win\unicode release\languages\*"; DestDir: "{app}\Languages\"; Flags
 Source: "..\win\unicode release\modules\*"; DestDir: "{app}\Modules\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist
 Source: "..\win\unicode release\nyquist\*"; DestDir: "{app}\Nyquist\"; Flags: ignoreversion
 Source: "..\win\unicode release\plug-ins\*"; DestDir: "{app}\Plug-Ins\"; Excludes: "analyze.ny, fadein.ny, fadeout.ny, undcbias.ny"; Flags: ignoreversion
-Source: "..\help\manual\manual\*"; DestDir: "{app}\Help\"; Flags: ignoreversion recursesubdirs
+Source: "..\help\manual\*"; DestDir: "{app}\Help\"; Flags: ignoreversion recursesubdirs
 
 
 [Icons]
