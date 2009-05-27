@@ -541,8 +541,6 @@ void AudacityApp::OnMRUClear(wxCommandEvent& event)
 }
 
 void AudacityApp::OnMRUFile(wxCommandEvent& event) {
-   AudacityProject *proj = GetActiveProject();
-
    int n = event.GetId() - wxID_FILE1;
    wxString fileName = mRecentFiles->GetHistoryFile(n);
 
@@ -1022,7 +1020,7 @@ bool AudacityApp::InitCleanSpeech()
    wxString presets = wxT("");
 
    #ifdef __WXGTK__
-   if (presetsFromPrefs.GetChar(0) != wxT('/'))
+   if (presetsFromPrefs.Length() > 0 && presetsFromPrefs[0] != wxT('/'))
       presetsFromPrefs = wxT("");
    #endif //__WXGTK__
 
@@ -1074,7 +1072,7 @@ bool AudacityApp::InitTempDir()
    wxString temp = wxT("");
 
    #ifdef __WXGTK__
-   if (tempFromPrefs.GetChar(0) != wxT('/'))
+   if (tempFromPrefs.Length() > 0 && tempFromPrefs[0] != wxT('/'))
       tempFromPrefs = wxT("");
    #endif
 
