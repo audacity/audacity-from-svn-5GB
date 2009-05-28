@@ -3518,6 +3518,11 @@ void TrackPanel::OnTrackListResized(wxCommandEvent & e)
 // a resize has taken place.
 void TrackPanel::OnTrackListUpdated(wxCommandEvent & e)
 {
+   // Tracks may have been deleted, so check to see if the focused track was on of them.
+   if (!mTracks->Contains(GetFocusedTrack())) {
+      SetFocusedTrack(NULL);
+   }
+
    if (e.GetClientData()) {
       OnTrackListResized(e);
       return;
