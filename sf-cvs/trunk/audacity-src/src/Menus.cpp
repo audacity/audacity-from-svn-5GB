@@ -2400,7 +2400,7 @@ bool AudacityProject::OnEffect(int type, Effect * f)
                    &mViewInfo.sel0, &mViewInfo.sel1)) {
       wxString longDesc = f->GetEffectDescription();
       wxString shortDesc = f->GetEffectName();
-
+ 
       if (shortDesc.Length() > 3 && shortDesc.Right(3)==wxT("..."))
          shortDesc = shortDesc.Left(shortDesc.Length()-3);
 
