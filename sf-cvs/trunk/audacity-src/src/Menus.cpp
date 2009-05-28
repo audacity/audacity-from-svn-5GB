@@ -4096,7 +4096,13 @@ void AudacityProject::OnZoomSel()
    if (mViewInfo.sel1 <= mViewInfo.sel0)
       return;
 
-   Zoom(mViewInfo.zoom * mViewInfo.screen / (mViewInfo.sel1 - mViewInfo.sel0));
+   // LL:  The "-1" is just a hack to get around an issue where zooming to
+   //      selection doesn't actually get the entire selected region within the
+   //      visible area.  This causes a problem with scrolling at end of playback
+   //      where the selected region may be scrolled off the left of the screen.
+   //      I know this isn't right, but until the real rounding or 1-off issue is
+   //      found, this will have to work.
+   Zoom(((mViewInfo.zoom * mViewInfo.screen) - 1) / (mViewInfo.sel1 - mViewInfo.sel0));
    TP_ScrollWindow(mViewInfo.sel0);
 }
 
