@@ -657,9 +657,7 @@ wxString CommandManager::GetKey(wxString label)
       return key;
    }
 
-   key = KeyStringNormalize(key);
-
-   return key;
+   return KeyStringNormalize(key);
 }
 
 ///Enables or disables a menu item based on its name (not the
@@ -768,7 +766,7 @@ void CommandManager::SetKeyFromName(wxString name, wxString key)
 {
    CommandListEntry *entry = mCommandNameHash[name];
    if (entry) {
-      entry->key = key;
+      entry->key = KeyStringNormalize(key);
    }
 }
 
