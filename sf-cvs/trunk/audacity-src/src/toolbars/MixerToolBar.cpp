@@ -235,6 +235,12 @@ void MixerToolBar::UpdatePrefs()
    // Notify someone that we've changed our size
    Updated();
 #endif
+
+   // Set label to pull in language change
+   SetLabel(_("Mixer"));
+
+   // Give base class a chance
+   ToolBar::UpdatePrefs();
 }
 
 void MixerToolBar::UpdateControls()

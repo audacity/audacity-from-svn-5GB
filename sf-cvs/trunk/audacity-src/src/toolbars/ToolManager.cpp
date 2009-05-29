@@ -854,6 +854,21 @@ void ToolManager::LayoutToolBars()
 }
 
 //
+// Tell the toolbars that preferences have been updated
+//
+void ToolManager::UpdatePrefs()
+{
+   for( int ndx = 0; ndx < ToolBarCount; ndx++ ) 
+   {
+      ToolBar *bar = mBars[ ndx ];
+      if( bar )
+      {
+         bar->UpdatePrefs();
+      }
+   }
+}
+
+//
 // Handle toolbar dragging
 //
 void ToolManager::OnMouse( wxMouseEvent & event )

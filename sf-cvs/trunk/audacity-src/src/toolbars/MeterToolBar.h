@@ -36,6 +36,7 @@ class MeterToolBar:public ToolBar {
    virtual void Populate();
    virtual void Repaint(wxDC *dc) {};
    virtual void EnableDisableButtons() {};
+   virtual void UpdatePrefs();
 
    void GetMeters(Meter **playMeter, Meter **recordMeter);
    void StartMonitoring();
@@ -43,6 +44,7 @@ class MeterToolBar:public ToolBar {
    virtual void OnSize(wxSizeEvent & event);
 
  private:
+   void RegenerateTooltips();
 
    wxGridBagSizer *mSizer;
    Meter *mPlayMeter;

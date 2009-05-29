@@ -50,6 +50,7 @@ class ToolManager:public wxEvtHandler
    ~ToolManager();
 
    void LayoutToolBars();
+   void UpdatePrefs();
 
    bool IsDocked( int type );
 

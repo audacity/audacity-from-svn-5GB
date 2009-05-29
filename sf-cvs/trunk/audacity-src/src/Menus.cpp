@@ -2757,7 +2757,6 @@ void AudacityProject::OnPreferences()
 
       p->RebuildMenuBar();
       p->RebuildOtherMenus();
-      p->GetSelectionBar()->UpdateDisplay();
    }
 }
 

@@ -81,15 +81,18 @@ class ToolBar:public wxPanel
    virtual void Create(wxWindow *parent);
    virtual void EnableDisableButtons() = 0;
    virtual void ReCreateButtons();
-
-   void SetDocked(ToolDock *dock, bool pushed);
+   virtual void UpdatePrefs();
 
    int GetType();
    wxString GetTitle();
    wxString GetLabel();
    wxString GetSection();
    ToolDock *GetDock();
+
+   void SetLabel(const wxString & label);
    void SetDock( ToolDock *dock);
+
+   void SetDocked(ToolDock *dock, bool pushed);
 
    bool Expose(bool show = true);
 
@@ -167,7 +170,6 @@ class ToolBar:public wxPanel
 
    wxPoint mResizeStart;
 
-   wxString mTitle;
    wxString mLabel;
    wxString mSection;
    int mType;

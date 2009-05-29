@@ -280,6 +280,21 @@ void SelectionBar::Populate()
    SetMinSize( GetSizer()->GetMinSize() );
 }
 
+void SelectionBar::UpdatePrefs()
+{
+   mRate = (double) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate());
+
+   wxCommandEvent e;
+   e.SetInt(mLeftTime->GetFormatIndex());
+   OnUpdate(e);
+
+   // Set label to pull in language change
+   SetLabel(_("Selection"));
+
+   // Give base class a chance
+   ToolBar::UpdatePrefs();
+}
+
 void SelectionBar::SetListener(SelectionBarListener *l)
 {
    mListener = l;
@@ -349,7 +364,6 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
     * which as they have no effect on the object state, so we just use the first
     * one to hand */
    wxString formatName =  mLeftTime->GetBuiltinName(index);
-   wxString formatString = mLeftTime->GetBuiltinFormat(index);
 
    gPrefs->Write(wxT("/SelectionFormat"), formatName);
 
@@ -369,6 +383,7 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
 
    ValuesToControls();
 
+   wxString formatString = mLeftTime->GetBuiltinFormat(index);
    mLeftTime->SetFormatString(formatString);
    mRightTime->SetFormatString(formatString);
    mAudioTime->SetFormatString(formatString);
@@ -384,13 +399,6 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
    }
 
    Updated();
-}
-
-void SelectionBar::UpdateDisplay()
-{
-   wxCommandEvent e;
-   e.SetInt(mLeftTime->GetFormatIndex());
-   OnUpdate(e);
 }
 
 void SelectionBar::ValuesToControls()

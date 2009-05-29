@@ -84,10 +84,10 @@ class ControlToolBar:public ToolBar {
    AButton *MakeButton(teBmps eFore, teBmps eDisabled,
       int id,
       bool processdownevents,
-      const wxChar *label,
-      const wxChar *tip);
+      const wxChar *label);
    void MakeLoopImage();
    void ArrangeButtons();
+   void RegenerateToolsTooltips();
    void SetupCutPreviewTracks(double playStart, double cutStart,
                              double cutEnd, double playEnd);
    void ClearCutPreviewTracks();

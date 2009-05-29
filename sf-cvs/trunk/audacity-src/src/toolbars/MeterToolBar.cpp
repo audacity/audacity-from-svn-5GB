@@ -90,10 +90,7 @@ void MeterToolBar::Populate()
    mRecordMeter->SetLabel( _("Meter-Record") );
    mSizer->Add( mRecordMeter, wxGBPosition( 0, 1 ), wxDefaultSpan, wxEXPAND );
 
-#if wxUSE_TOOLTIPS
-   mPlayMeter->SetToolTip( _("Output level meter") );
-   mRecordMeter->SetToolTip( _("Input level meter - click to monitor input") );
-#endif
+   RegenerateTooltips();
 
 #if defined(THIS_PROBABY_SHOULD_NOT_BE_DONE_HERE)
    // If AudioIO changes the meters while it's currently busy, then crashes are
@@ -101,6 +98,30 @@ void MeterToolBar::Populate()
    if (gAudioIO && !gAudioIO->IsBusy()) {
       gAudioIO->SetMeters(mRecordMeter, mPlayMeter);
    }
+#endif
+}
+
+void MeterToolBar::UpdatePrefs()
+{
+   mPlayMeter->UpdatePrefs();
+   mPlayMeter->HandleLayout();
+   mRecordMeter->UpdatePrefs();
+   mRecordMeter->HandleLayout();
+
+   RegenerateTooltips();
+
+   // Set label to pull in language change
+   SetLabel(_("Meter"));
+
+   // Give base class a chance
+   ToolBar::UpdatePrefs();
+}
+
+void MeterToolBar::RegenerateTooltips()
+{
+#if wxUSE_TOOLTIPS
+   mPlayMeter->SetToolTip( _("Output level meter") );
+   mRecordMeter->SetToolTip( _("Input level meter - click to monitor input") );
 #endif
 }
 

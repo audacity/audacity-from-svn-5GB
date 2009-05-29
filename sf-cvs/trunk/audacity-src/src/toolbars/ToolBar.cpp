@@ -95,7 +95,6 @@ ToolBar::ToolBar( int type,
    mType = type;
    mLabel = label;
    mSection = section;
-   mTitle.Printf( _("Audacity %s ToolBar"), mLabel.c_str() );
    mResizable = resizable;
 
    // Initialize everything
@@ -118,7 +117,7 @@ ToolBar::~ToolBar()
 //
 wxString ToolBar::GetTitle()
 {
-   return mTitle;
+   return wxString::Format( _("Audacity %s ToolBar"), GetLabel().c_str() );
 }
 
 //
@@ -143,6 +142,14 @@ wxString ToolBar::GetSection()
 int ToolBar::GetType()
 {
    return mType;
+}
+
+//
+// Set the toolbar label
+//
+void ToolBar::SetLabel(const wxString & label)
+{
+   mLabel = label;
 }
 
 //
@@ -204,8 +211,8 @@ void ToolBar::Create( wxWindow *parent )
                     wxDefaultPosition,
                     wxDefaultSize,
                     wxNO_BORDER | wxTAB_TRAVERSAL,
-                    mTitle );
-   SetLabel( mLabel );
+                    GetTitle() );
+   wxPanel::SetLabel( GetLabel() );
 
    // Go do the rest of the creation
    ReCreateButtons();
@@ -262,10 +269,25 @@ void ToolBar::ReCreateButtons()
    Layout();
 }
 
+// The application preferences have changed, so update any elements that may
+// depend on them.
+void ToolBar::UpdatePrefs()
+{
+#if wxUSE_TOOLTIPS
+   // Change the tooltip of the grabber
+   mGrabber->SetToolTip( GetTitle() );
+#endif
+
+   return;
+}
+
+//
+// Return the pointer to the ToolBock where this bar lives
+//
 ToolDock *ToolBar::GetDock()
 {
    return mDock;
-};
+}
 
 //
 // Toggle the docked/floating state
