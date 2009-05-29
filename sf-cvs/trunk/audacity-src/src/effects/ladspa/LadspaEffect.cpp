@@ -708,9 +708,11 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
 
 LadspaEffectDialog::~LadspaEffectDialog()
 {
+   delete[]toggles;
    delete[]sliders;
    delete[]fields;
    delete[]labels;
+   delete[]ports;
 }
 
 void LadspaEffectDialog::OnCheckBox(wxCommandEvent &event)
