@@ -6,5 +6,5 @@ srcuri="http://audacityteam.org/manual"
 
 mkdir -p "${tmpdir_}"
 python mw2html.py "${srcuri}" "${tmpdir_}" -s
-mv "${tmpdir_}/audacityteam.org/manual" "${helpdir}"
+mv "${tmpdir_}/audacityteam.org" "${helpdir}"
 \rm -r "${tmpdir_}"
