@@ -84,6 +84,7 @@ class TranscriptionToolBar:public ToolBar {
    virtual void Populate();
    virtual void Repaint(wxDC *dc) {};
    virtual void EnableDisableButtons();
+   virtual void UpdatePrefs();
 
    void OnFocus(wxFocusEvent &event);
    void OnCaptureKey(wxCommandEvent &event);
@@ -97,9 +98,10 @@ class TranscriptionToolBar:public ToolBar {
    AButton *AddButton(
       teBmps eFore, teBmps eDisabled,
       int id,
-      const wxChar *label, const wxChar *tip);
+      const wxChar *label);
    void GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen);
    void SetButton(bool newstate, AButton *button);
+   void RegenerateTooltips();
    
    AButton *mButtons[TTBNumButtons];
    wxImage *upImage;

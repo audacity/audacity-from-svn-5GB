@@ -65,15 +65,18 @@ class EditToolBar:public ToolBar {
    void Populate();
    void Repaint(wxDC *dc) {};
    void EnableDisableButtons();
+   void UpdatePrefs();
 
  private:
 
    AButton *AddButton(teBmps eFore, teBmps eDisabled,
-      int id, const wxChar *label, const wxChar *tip, bool toggle=false);
+      int id, const wxChar *label, bool toggle = false);
 
    void AddSeparator();
 
    void MakeButtons();
+
+   void RegenerateTooltips();
    
    AButton *mButtons[ETBNumButtons];
 

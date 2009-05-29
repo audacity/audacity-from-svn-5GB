@@ -40,6 +40,8 @@ class DeviceToolBar:public ToolBar {
    void OnChoice(wxCommandEvent & event);
 
  private:
+   void RegenerateTooltips();
+
    wxBitmap *mPlayBitmap;
    wxBitmap *mRecordBitmap;
 

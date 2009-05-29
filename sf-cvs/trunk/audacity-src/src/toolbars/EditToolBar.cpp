@@ -73,7 +73,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 EditToolBar::EditToolBar()
-: ToolBar(EditBarID, _NoAcc("&Edit"), wxT("Edit"))
+: ToolBar(EditBarID, _("Edit"), wxT("Edit"))
 {
 }
 
@@ -100,7 +100,7 @@ AButton *EditToolBar::AddButton(
    teBmps eFore, teBmps eDisabled,
    int id,
    const wxChar *label,
-   const wxChar *tip, bool toggle)
+   bool toggle)
 {
    AButton *&r = mButtons[id];
 
@@ -116,9 +116,6 @@ AButton *EditToolBar::AddButton(
 // JKC: Unlike ControlToolBar, does not have a focus rect.  Shouldn't it?
 // r->SetFocusRect( r->GetRect().Deflate( 4, 4 ) );
 
-#if wxUSE_TOOLTIPS
-   r->SetToolTip(tip);
-#endif
    Add( r, 0, wxALIGN_CENTER );
 
    return r;
@@ -130,54 +127,79 @@ void EditToolBar::Populate()
 
    /* Buttons */
    AddButton(bmpCut, bmpCutDisabled, ETBCutID,
-      _("Cut"), _("Cut"));
+      _("Cut"));
    AddButton(bmpCopy, bmpCopyDisabled, ETBCopyID,
-      _("Copy"), _("Copy"));
+      _("Copy"));
    AddButton(bmpPaste, bmpPasteDisabled, ETBPasteID,
-      _("Paste"), _("Paste"));
+      _("Paste"));
    AddButton(bmpTrim, bmpTrimDisabled, ETBTrimID,
-      _("Trim outside selection"),_("Trim"));
+      _("Trim outside selection"));
    AddButton(bmpSilence, bmpSilenceDisabled, ETBSilenceID,
-      _("Silence selection"),_("Silence"));
+      _("Silence selection"));
+
    AddSeparator();
+
    AddButton(bmpUndo, bmpUndoDisabled, ETBUndoID,
-      _("Undo"), _("Undo"));
+      _("Undo"));
    AddButton(bmpRedo, bmpRedoDisabled, ETBRedoID,
-      _NoAcc("&Redo"), _NoAcc("&Redo"));
+      _("Redo"));
+
    AddSeparator();
 
    AddButton(bmpLinkTracks, bmpLinkTracksDisabled, ETBLinkID,
-      _("Link Tracks"), _("Link Tracks"), true);
+      _("Link Tracks"), true);
    
    AddSeparator();
    
    AddButton(bmpZoomIn, bmpZoomInDisabled, ETBZoomInID,
-      _("Zoom In"),_("Zoom In"));
+      _("Zoom In"));
    AddButton(bmpZoomOut, bmpZoomOutDisabled, ETBZoomOutID,
-      _("Zoom Out"),_("Zoom Out"));
+      _("Zoom Out"));
 
-   #if 0 // Disabled for version 1.2.0 since it doesn't work quite right...
-   AddButton(bmpZoomToggle, bmpZoomToggleDisabled, ETBZoomToggleID,
-      _("Zoom Toggle"),_("Zoom Toggle"));
-   #endif
-
-    AddButton(bmpZoomSel, bmpZoomSelDisabled, ETBZoomSelID,
-      _("Fit selection in window"),_("Fit Selection"));
+   AddButton(bmpZoomSel, bmpZoomSelDisabled, ETBZoomSelID,
+      _("Fit selection in window"));
    AddButton(bmpZoomFit, bmpZoomFitDisabled, ETBZoomFitID,
-      _("Fit project in window"),_("Fit Project"));
+      _("Fit project in window"));
 
    mButtons[ETBZoomInID]->SetEnabled(false);
    mButtons[ETBZoomOutID]->SetEnabled(false);
-
-   #if 0 // Disabled for version 1.2.0 since it doesn't work quite right...
-   mButtons[ETBZoomToggleID]->SetEnabled(false);
-   #endif
 
    mButtons[ETBZoomSelID]->SetEnabled(false);
    mButtons[ETBZoomFitID]->SetEnabled(false);
    mButtons[ETBPasteID]->SetEnabled(false);
    
    mButtons[ETBLinkID]->PushDown();
+
+   RegenerateTooltips();
+}
+
+void EditToolBar::UpdatePrefs()
+{
+   RegenerateTooltips();
+
+   // Set label to pull in language change
+   SetLabel(_("Edit"));
+
+   // Give base class a chance
+   ToolBar::UpdatePrefs();
+}
+
+void EditToolBar::RegenerateTooltips()
+{
+#if wxUSE_TOOLTIPS
+   mButtons[ETBCutID]->SetToolTip(_("Cut"));
+   mButtons[ETBCopyID]->SetToolTip(_("Copy"));
+   mButtons[ETBPasteID]->SetToolTip(_("Paste"));
+   mButtons[ETBTrimID]->SetToolTip(_("Trim"));
+   mButtons[ETBSilenceID]->SetToolTip(_("Silence"));
+   mButtons[ETBUndoID]->SetToolTip(_("Undo"));
+   mButtons[ETBRedoID]->SetToolTip(_("Redo"));
+   mButtons[ETBLinkID]->SetToolTip(_("Link Tracks"));
+   mButtons[ETBZoomInID]->SetToolTip(_("Zoom In"));
+   mButtons[ETBZoomOutID]->SetToolTip(_("Zoom Out"));
+   mButtons[ETBZoomSelID]->SetToolTip(_("Fit Selection"));
+   mButtons[ETBZoomFitID]->SetToolTip(_("Fit Project"));
+#endif
 }
 
 void EditToolBar::OnButton(wxCommandEvent &event)

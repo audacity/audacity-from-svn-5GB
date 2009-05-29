@@ -107,11 +107,8 @@ void DeviceToolBar::Populate()
                                wxDefaultSize,
                                outputs);
    mOutput->SetName(_("Output Device"));
-#if wxUSE_TOOLTIPS
-   mOutput->SetToolTip(_("Output Device"));
-#endif
-   Add(mOutput, 0, wxALIGN_CENTER);
 
+   Add(mOutput, 0, wxALIGN_CENTER);
    if (outputs.GetCount() == 0)
       mOutput->Enable(false);
 
@@ -128,9 +125,7 @@ void DeviceToolBar::Populate()
                          wxDefaultSize,
                          inputs);
    mInput->SetName(_("Input Device"));
-#if wxUSE_TOOLTIPS
-   mInput->SetToolTip(_("Input Device"));
-#endif
+
    Add(mInput, 0, wxALIGN_CENTER);
    if (inputs.GetCount() == 0)
       mInput->Enable(false);
@@ -193,8 +188,23 @@ void DeviceToolBar::OnCaptureKey(wxCommandEvent &event)
 void DeviceToolBar::UpdatePrefs()
 {
    mInput->SetStringSelection(gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT("")));
-
    mOutput->SetStringSelection(gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT("")));
+
+   RegenerateTooltips();
+
+   // Set label to pull in language change
+   SetLabel(_("Device"));
+
+   // Give base class a chance
+   ToolBar::UpdatePrefs();
+}
+
+void DeviceToolBar::RegenerateTooltips()
+{
+#if wxUSE_TOOLTIPS
+   mOutput->SetToolTip(_("Output Device"));
+   mInput->SetToolTip(_("Input Device"));
+#endif
 }
 
 void DeviceToolBar::OnChoice(wxCommandEvent &event)

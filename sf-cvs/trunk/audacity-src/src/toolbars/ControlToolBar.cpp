@@ -125,8 +125,7 @@ void ControlToolBar::Create(wxWindow * parent)
 AButton *ControlToolBar::MakeButton(teBmps eFore, teBmps eDisabled,
                                     int id,
                                     bool processdownevents,
-                                    const wxChar *label,
-                                    const wxChar *tip)
+                                    const wxChar *label)
 {
    AButton *r = ToolBar::MakeButton(
       bmpRecoloredUpLarge, bmpRecoloredDownLarge, bmpRecoloredHiliteLarge,
@@ -136,10 +135,6 @@ AButton *ControlToolBar::MakeButton(teBmps eFore, teBmps eDisabled,
       theTheme.ImageSize( bmpRecoloredUpLarge ));
    r->SetLabel(label);
    r->SetFocusRect( r->GetRect().Deflate( 12, 12 ) );
-
-#if wxUSE_TOOLTIPS
-   r->SetToolTip(tip);
-#endif
 
    return r;
 }
@@ -172,30 +167,30 @@ void ControlToolBar::Populate()
    MakeButtonBackgroundsLarge();
 
    mPause = MakeButton(bmpPause,bmpPauseDisabled,
-      ID_PAUSE_BUTTON,  true,  _("Pause"), _("Pause"));
+      ID_PAUSE_BUTTON,  true,  _("Pause"));
 
    mPlay = MakeButton( bmpPlay, bmpPlayDisabled, 
-      ID_PLAY_BUTTON, true, _("Play"), _("Play (Shift for Loop Play)"));
+      ID_PLAY_BUTTON, true, _("Play"));
 
    MakeLoopImage();
 
    mStop = MakeButton( bmpStop, bmpStopDisabled ,
-      ID_STOP_BUTTON, false, _("Stop"), _("Stop"));
+      ID_STOP_BUTTON, false, _("Stop"));
 
    mRewind = MakeButton(bmpRewind, bmpRewindDisabled,
-      ID_REW_BUTTON, false, _("Start"), _("Skip to Start"));
+      ID_REW_BUTTON, false, _("Start"));
 
    mFF = MakeButton(bmpFFwd, bmpFFwdDisabled,
-      ID_FF_BUTTON, false, _("End"), _("Skip to End"));
+      ID_FF_BUTTON, false, _("End"));
 
    mRecord = MakeButton(bmpRecord, bmpRecordDisabled,
-      ID_RECORD_BUTTON, true, _("Record"), _("Record (Shift for Append Record)"));
+      ID_RECORD_BUTTON, true, _("Record"));
 
    mBatch = MakeButton(bmpCleanSpeech,bmpCleanSpeechDisabled,
-      ID_BATCH_BUTTON, false, _("Clean Speech"), _("Clean Speech"));
+      ID_BATCH_BUTTON, false, _("Clean Speech"));
 
 #if wxUSE_TOOLTIPS
-// MB: Should make this a pref
+   RegenerateToolsTooltips();
    wxToolTip::Enable(true);     
    wxToolTip::SetDelay(1000);
 #endif
@@ -204,10 +199,25 @@ void ControlToolBar::Populate()
    ArrangeButtons();
 }
 
+void ControlToolBar::RegenerateToolsTooltips()
+{
+#if wxUSE_TOOLTIPS
+   mPause->SetToolTip(_("Pause"));
+   mPlay->SetToolTip(_("Play (Shift for Loop Play)"));
+   mStop->SetToolTip(_("Stop"));
+   mRewind->SetToolTip(_("Skip to Start"));
+   mFF->SetToolTip(_("Skip to End"));
+   mRecord->SetToolTip(_("Record (Shift for Append Record)"));
+   mBatch->SetToolTip(_("Clean Speech"));
+#endif
+}
+
 void ControlToolBar::UpdatePrefs()
 {
    bool updated = false;
    bool active;
+
+   RegenerateToolsTooltips();
 
    gPrefs->Read( wxT("/GUI/ErgonomicTransportButtons"), &active, true );
    if( mErgonomicTransportButtons != active )
@@ -228,6 +238,12 @@ void ControlToolBar::UpdatePrefs()
       ReCreateButtons();
       Updated();
    }
+
+   // Set label to pull in language change
+   SetLabel(_("Control"));
+
+   // Give base class a chance
+   ToolBar::UpdatePrefs();
 }
 
 void ControlToolBar::ArrangeButtons()
@@ -295,7 +311,7 @@ void ControlToolBar::ArrangeButtons()
 void ControlToolBar::ReCreateButtons()
 {
    // ToolBar::ReCreateButtons() will get rid of its sizer and
-   // since we've attach our sizer to it, ours will get deleted too
+   // since we've attached our sizer to it, ours will get deleted too
    // so clean ours up first.
    if( mSizer )
    {
@@ -305,6 +321,8 @@ void ControlToolBar::ReCreateButtons()
    }
 
    ToolBar::ReCreateButtons();
+
+   RegenerateToolsTooltips();
 }
 
 void ControlToolBar::Repaint( wxDC *dc )

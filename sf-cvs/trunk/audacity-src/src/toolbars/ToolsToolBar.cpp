@@ -156,6 +156,10 @@ void ToolsToolBar::RegenerateToolsTooltips()
    return;
 }
 
+void ToolsToolBar::UpdatePrefs()
+{
+   RegenerateToolsTooltips();
+}
 
 AButton * ToolsToolBar::MakeTool( teBmps eTool, 
    int id, const wxChar *label)

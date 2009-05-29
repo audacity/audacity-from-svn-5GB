@@ -139,8 +139,7 @@ void TranscriptionToolBar::Create(wxWindow * parent)
 AButton *TranscriptionToolBar::AddButton(
    teBmps eFore, teBmps eDisabled,
    int id,
-   const wxChar *label,
-   const wxChar *tip)
+   const wxChar *label)
 {
    AButton *&r = mButtons[id];
 
@@ -156,10 +155,6 @@ AButton *TranscriptionToolBar::AddButton(
 // JKC: Unlike ControlToolBar, does not have a focus rect.  Shouldn't it?
 // r->SetFocusRect( r->GetRect().Deflate( 4, 4 ) );
 
-#if wxUSE_TOOLTIPS
-   r->SetToolTip(tip);
-#endif
-
    Add( r, 0, wxALIGN_CENTER );
 
    return r;
@@ -172,8 +167,7 @@ void TranscriptionToolBar::Populate()
    MakeButtonBackgroundsSmall();
 
    AddButton(bmpPlay,     bmpPlayDisabled,   TTB_PlaySpeed,
-      _("Play at selected speed"),
-      _("Play-at-speed"));
+      _("Play at selected speed"));
    
    //Add a slider that controls the speed of playback.
    const int SliderWidth=100;
@@ -197,32 +191,23 @@ void TranscriptionToolBar::Populate()
 
 #ifdef EXPERIMENTAL_VOICE_DETECTION
    AddButton(bmpTnStartOn,     bmpTnStartOnDisabled,  TTB_StartOn,
-      _("Adjust left selection to next onset"),
-      _("Left-to-On"));
+      _("Adjust left selection to next onset"));
    AddButton(bmpTnEndOn,       bmpTnEndOnDisabled,   TTB_EndOn,
-      _("Adjust right selection to previous offset"),
-      _("Right-to-Off"));
+      _("Adjust right selection to previous offset"));
    AddButton(bmpTnStartOff,    bmpTnStartOffDisabled,  TTB_StartOff,
-      _("Adjust left selection to next offset"),
-      _("Left-to-Off"));
+      _("Adjust left selection to next offset"));
    AddButton(bmpTnEndOff,      bmpTnEndOffDisabled,    TTB_EndOff,
-      _("Adjust right selection to previous onset"),
-      _("Right-to-On"));
+      _("Adjust right selection to previous onset"));
    AddButton(bmpTnSelectSound, bmpTnSelectSoundDisabled, TTB_SelectSound,
-      _("Select region of sound around cursor"),
-      _("Select-Sound"));
+      _("Select region of sound around cursor"));
    AddButton(bmpTnSelectSilence, bmpTnSelectSilenceDisabled, TTB_SelectSilence,
-      _("Select region of silence around cursor"),
-      _("Select-Silence"));
+      _("Select region of silence around cursor"));
    AddButton(bmpTnAutomateSelection,   bmpTnAutomateSelectionDisabled,  TTB_AutomateSelection,
-      _("Automatically make labels from words"),
-      _("Make Labels"));
+      _("Automatically make labels from words"));
    AddButton(bmpTnMakeTag, bmpTnMakeTagDisabled,  TTB_MakeLabel,  
-      _("Add label at selection"),
-      _("Add Label"));
+      _("Add label at selection"));
    AddButton(bmpTnCalibrate, bmpTnCalibrateDisabled, TTB_Calibrate,
-      _("Calibrate voicekey"),
-      _("Calibrate"));
+      _("Calibrate voicekey"));
  
    mSensitivitySlider = new ASlider(this,
                                     TTB_SensitivitySlider,
@@ -255,6 +240,42 @@ void TranscriptionToolBar::Populate()
 
    // Add a little space
    Add(2, -1);
+
+   UpdatePrefs();
+}
+
+void TranscriptionToolBar::UpdatePrefs()
+{
+   RegenerateTooltips();
+
+   // Set label to pull in language change
+   SetLabel(_("Transcription"));
+
+   // Give base class a chance
+   ToolBar::UpdatePrefs();
+}
+
+void TranscriptionToolBar::RegenerateTooltips()
+{
+#if wxUSE_TOOLTIPS
+   mButtons[TTB_PlaySpeed]->SetToolTip(_("Play-at-speed"));
+   mPlaySpeedSlider->SetToolTip(_("Playback Speed"));
+
+#ifdef EXPERIMENTAL_VOICE_DETECTION
+   mButtons[TTB_StartOn]->SetToolTip(_("Left-to-On"));
+   mButtons[TTB_EndOn]->SetToolTip(   _("Right-to-Off"));
+   mButtons[TTB_StartOff]->SetToolTip(   _("Left-to-Off"));
+   mButtons[TTB_EndOff]->SetToolTip(   _("Right-to-On"));
+   mButtons[TTB_SelectSound]->SetToolTip(   _("Select-Sound"));
+   mButtons[TTB_SelectSilence]->SetToolTip(   _("Select-Silence"));
+   mButtons[TTB_AutomateSelection]->SetToolTip(   _("Make Labels"));
+   mButtons[TTB_MakeLabel]->SetToolTip(   _("Add Label"));
+   mButtons[TTB_Calibrate]->SetToolTip(   _("Calibrate"));
+ 
+   mSensitivitySlider->SetToolTip(_("Sensitivity"));
+   mKeyTypeChoice->SetToolTip(_("Key type"));
+#endif
+#endif
 }
 
 void TranscriptionToolBar::OnFocus(wxFocusEvent &event)

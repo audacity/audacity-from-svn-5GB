@@ -924,6 +924,8 @@ void AudacityProject::UpdatePrefsVariables()
    gPrefs->Read(wxT("/AudioFiles/ShowId3Dialog"), &mShowId3Dialog, true);
    gPrefs->Read(wxT("/AudioFiles/NormalizeOnLoad"),&mNormalizeOnLoad, false);
 
+   gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), &mRate, AudioIO::GetOptimalSupportedSampleRate());
+   mDefaultFormat = (sampleFormat) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
 }
 
 void AudacityProject::UpdatePrefs()
@@ -935,36 +937,10 @@ void AudacityProject::UpdatePrefs()
    if (mTrackPanel)
       mTrackPanel->UpdatePrefs();
 
-   mRate = (double) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate());
-   mDefaultFormat = (sampleFormat) gPrefs->
-           Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
-
    SetSnapTo(gPrefs->Read(wxT("/SnapTo"), 0L)!=0);
 
-// mToolManager->LayoutToolBars(); // Just to add/remove the CleanSpeech button.
-
-   if (GetSelectionBar()) {
-      GetSelectionBar()->UpdateRates();
-      GetSelectionBar()->SetRate(mRate);
-   }
-
-   if (GetDeviceToolBar())
-      GetDeviceToolBar()->UpdatePrefs();
-
-   if (GetMixerToolBar())
-      GetMixerToolBar()->UpdatePrefs();
-
-   if( GetControlToolBar() )
-      GetControlToolBar()->UpdatePrefs();
-
-   if( GetMeterToolBar() )
-   {
-      Meter *playMeter, *recordMeter;
-      GetMeterToolBar()->GetMeters(&playMeter, &recordMeter);
-      playMeter->UpdatePrefs();
-      playMeter->HandleLayout();
-      recordMeter->UpdatePrefs();
-      recordMeter->HandleLayout();
+   if (mToolManager) {
+      mToolManager->UpdatePrefs();
    }
 }
 
