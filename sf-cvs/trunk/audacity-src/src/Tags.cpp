@@ -71,6 +71,7 @@
 #include <wx/textctrl.h>
 #include <wx/textfile.h>
 #include <wx/combobox.h>
+#include <wx/display.h>
 
 #ifdef _DEBUG
     #ifdef _MSC_VER
@@ -748,7 +749,11 @@ TagsEditor::TagsEditor(wxWindow * parent,
    gPrefs->Read(wxT("/TagsEditor/y"), &r.y, r.y);
    gPrefs->Read(wxT("/TagsEditor/width"), &r.width, r.width);
    gPrefs->Read(wxT("/TagsEditor/height"), &r.height, r.height);
-   Move(r.GetPosition());
+   //On multi-monitor systems, there's a chance the last saved window position is
+   //on a monitor that has been removed or is unavailable.
+   if (IsWindowRectValid(&r))
+      Move(r.GetPosition());
+   
 //   SetSize(r.GetSize());
 
    // Resize value column width based on width of columns and the vertical scrollbar
@@ -1333,6 +1338,26 @@ void TagsEditor::PopulateGenres()
 
    mGrid->GetDefaultEditorForType(wxT("Combo"))->SetParameters(parm);
 }
+
+bool TagsEditor::IsWindowRectValid(const wxRect *windowRect) const
+{
+   wxDisplay display;
+   wxPoint topLeft(windowRect->GetTopLeft().x, windowRect->GetTopLeft().y);
+   wxPoint topRight(windowRect->GetTopRight().x, windowRect->GetTopRight().y);
+   wxPoint bottomLeft(windowRect->GetBottomLeft().x, windowRect->GetBottomLeft().y);
+   wxPoint bottomRight(windowRect->GetBottomRight().x, windowRect->GetBottomRight().y);
+   display.GetFromPoint(topLeft);
+   if (display.GetFromPoint(topLeft) == -1 &&
+       display.GetFromPoint(topRight) == -1 &&
+       display.GetFromPoint(bottomLeft) == -1 &&
+       display.GetFromPoint(bottomRight) == -1) {
+      return false;
+   }
+
+   return true;
+}
+
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
