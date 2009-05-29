@@ -153,6 +153,8 @@ class TagsEditor: public wxDialog
 
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
+   
+   bool IsWindowRectValid(const wxRect *windowRect) const;
 
  private:
    Tags *mTags;
