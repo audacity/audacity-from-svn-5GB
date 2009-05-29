@@ -118,12 +118,43 @@ void ErrorDialog::OnOk(wxCommandEvent &event)
    EndModal(true);
 }
 
-void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &HtmlText, bool bIsFile = false )
+// Helper class to make browser "simulate" a modal dialog
+class HtmlTextHelpDialog : public BrowserFrame
+{
+public:
+   HtmlTextHelpDialog() : BrowserFrame()
+   {
+      MakeModal( true );
+   }
+   virtual ~HtmlTextHelpDialog()
+   {
+      MakeModal( false );
+      // On Windows, for some odd reason, the Audacity window will be sent to
+      // the back.  So, make sure that doesn't happen.
+      GetParent()->Raise();
+   }
+};
+
+void ShowHtmlText( wxWindow * pParent, const wxString &Title, const wxString &HtmlText, bool bIsFile = false, bool bModal = false )
 {
    LinkingHtmlWindow *html;
 
-   BrowserFrame * pWnd = new BrowserFrame();
-   pWnd->Create(pParent, wxID_ANY, Title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE);// & ~wxSYSTEM_MENU);
+   BrowserFrame * pWnd;
+   if( bModal )
+      pWnd = new HtmlTextHelpDialog();
+   else
+      pWnd = new BrowserFrame();
+
+   pWnd->Create(pParent, wxID_ANY, Title, wxDefaultPosition, wxDefaultSize,
+#if defined(__WXMAC__)
+      // On OSX, the html frame can go behind the help dialog and if the help
+      // html frame is modal, you can't get back to it.  Pressing escape gets
+      // you out of this, but it's just easier to add the wxSTAY_ON_TOP flag
+      // to prevent it from falling behind the dialog.  Not the perfect solution
+      // but acceptable in this case.
+      wxSTAY_ON_TOP |
+#endif
+      wxDEFAULT_FRAME_STYLE);
 
    ShuttleGui S( pWnd, eIsCreating );
 
@@ -195,7 +226,9 @@ void ErrorDialog::OnHelp(wxCommandEvent &event)
       ShowHtmlText(
          this, 
          TitleText(dhelpURL.Mid( 10 ) ),
-         HelpText( dhelpURL.Mid( 10 )) );
+         HelpText( dhelpURL.Mid( 10 )),
+         false,
+         true );
       return;
    }
    OpenInDefaultBrowser( dhelpURL );
