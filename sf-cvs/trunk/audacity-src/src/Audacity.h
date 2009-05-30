@@ -17,6 +17,9 @@
 
 *//********************************************************************/
 
+// Set to 0 for a release version and 1 for a beta version
+#define IS_BETA 1
+
 // Increment as appropriate every time you release a new version
 #define AUDACITY_VERSION   1
 #define AUDACITY_RELEASE   3
