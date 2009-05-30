@@ -1889,6 +1889,38 @@
 			Name="src/commands"
 			>
 			<File
+				RelativePath="..\..\..\src\commands\AppCommandEvent.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\AppCommandEvent.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\BatchEvalCommand.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\Command.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\CommandBuilder.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\CommandBuilder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\CommandHandler.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\CommandHandler.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\commands\CommandManager.cpp"
 				>
 			</File>
@@ -1897,11 +1929,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\commands\DebugPrintCommand.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\commands\Keyboard.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\src\commands\Keyboard.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\ScriptCommandRelay.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\ScriptCommandRelay.h"
 				>
 			</File>
 		</Filter>
