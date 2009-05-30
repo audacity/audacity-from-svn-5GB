@@ -1173,6 +1173,10 @@
 		28B6ED8F0DE3D1B50046F0F3 /* LoadModules.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28B6ED8D0DE3D1B50046F0F3 /* LoadModules.cpp */; };
 		28B97B890FBF771A0076CF28 /* VSTEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28B97B850FBF771A0076CF28 /* VSTEffect.cpp */; };
 		28CCDD000F939FD70081F2FC /* FileHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28CCDCFF0F939FD70081F2FC /* FileHistory.cpp */; };
+		28D540050FD1912A00FA7C75 /* AppCommandEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D53FFA0FD1912A00FA7C75 /* AppCommandEvent.cpp */; };
+		28D540060FD1912A00FA7C75 /* CommandBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D53FFE0FD1912A00FA7C75 /* CommandBuilder.cpp */; };
+		28D540070FD1912A00FA7C75 /* CommandHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D540000FD1912A00FA7C75 /* CommandHandler.cpp */; };
+		28D540080FD1912A00FA7C75 /* ScriptCommandRelay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D540030FD1912A00FA7C75 /* ScriptCommandRelay.cpp */; };
 		28D587CB0E264CF4009C7DEA /* LoadLV2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D587C70E264CF3009C7DEA /* LoadLV2.cpp */; };
 		28D587CC0E264CF4009C7DEA /* LV2Effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D587C90E264CF4009C7DEA /* LV2Effect.cpp */; };
 		28D588030E265626009C7DEA /* sparql_lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D587DF0E2651C6009C7DEA /* sparql_lexer.c */; };
@@ -2862,6 +2866,17 @@
 		28B97B860FBF771A0076CF28 /* VSTEffect.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = VSTEffect.h; path = VST/VSTEffect.h; sourceTree = "<group>"; };
 		28CCDCFF0F939FD70081F2FC /* FileHistory.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FileHistory.cpp; sourceTree = "<group>"; };
 		28CCDD040F93A0B20081F2FC /* FileHistory.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FileHistory.h; sourceTree = "<group>"; };
+		28D53FFA0FD1912A00FA7C75 /* AppCommandEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = AppCommandEvent.cpp; sourceTree = "<group>"; };
+		28D53FFB0FD1912A00FA7C75 /* AppCommandEvent.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AppCommandEvent.h; sourceTree = "<group>"; };
+		28D53FFC0FD1912A00FA7C75 /* BatchEvalCommand.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = BatchEvalCommand.h; sourceTree = "<group>"; };
+		28D53FFD0FD1912A00FA7C75 /* Command.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
+		28D53FFE0FD1912A00FA7C75 /* CommandBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = CommandBuilder.cpp; sourceTree = "<group>"; };
+		28D53FFF0FD1912A00FA7C75 /* CommandBuilder.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = CommandBuilder.h; sourceTree = "<group>"; };
+		28D540000FD1912A00FA7C75 /* CommandHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = CommandHandler.cpp; sourceTree = "<group>"; };
+		28D540010FD1912A00FA7C75 /* CommandHandler.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = CommandHandler.h; sourceTree = "<group>"; };
+		28D540020FD1912A00FA7C75 /* DebugPrintCommand.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = DebugPrintCommand.h; sourceTree = "<group>"; };
+		28D540030FD1912A00FA7C75 /* ScriptCommandRelay.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ScriptCommandRelay.cpp; sourceTree = "<group>"; };
+		28D540040FD1912A00FA7C75 /* ScriptCommandRelay.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ScriptCommandRelay.h; sourceTree = "<group>"; };
 		28D587C70E264CF3009C7DEA /* LoadLV2.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = LoadLV2.cpp; path = lv2/LoadLV2.cpp; sourceTree = "<group>"; };
 		28D587C80E264CF3009C7DEA /* LoadLV2.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = LoadLV2.h; path = lv2/LoadLV2.h; sourceTree = "<group>"; };
 		28D587C90E264CF4009C7DEA /* LV2Effect.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = LV2Effect.cpp; path = lv2/LV2Effect.cpp; sourceTree = "<group>"; };
@@ -3558,10 +3573,21 @@
 		174D9025098C78AF00D5909F /* commands */ = {
 			isa = PBXGroup;
 			children = (
+				28D53FFA0FD1912A00FA7C75 /* AppCommandEvent.cpp */,
+				28D53FFB0FD1912A00FA7C75 /* AppCommandEvent.h */,
+				28D53FFC0FD1912A00FA7C75 /* BatchEvalCommand.h */,
+				28D53FFD0FD1912A00FA7C75 /* Command.h */,
+				28D53FFE0FD1912A00FA7C75 /* CommandBuilder.cpp */,
+				28D53FFF0FD1912A00FA7C75 /* CommandBuilder.h */,
+				28D540000FD1912A00FA7C75 /* CommandHandler.cpp */,
+				28D540010FD1912A00FA7C75 /* CommandHandler.h */,
 				174D9026098C78AF00D5909F /* CommandManager.cpp */,
 				174D9027098C78AF00D5909F /* CommandManager.h */,
+				28D540020FD1912A00FA7C75 /* DebugPrintCommand.h */,
 				174D902A098C78AF00D5909F /* Keyboard.cpp */,
 				174D902B098C78AF00D5909F /* Keyboard.h */,
+				28D540030FD1912A00FA7C75 /* ScriptCommandRelay.cpp */,
+				28D540040FD1912A00FA7C75 /* ScriptCommandRelay.h */,
 			);
 			path = commands;
 			sourceTree = "<group>";
@@ -7471,6 +7497,10 @@
 				284B279F0FC66864005EAC96 /* RecordingPrefs.cpp in Sources */,
 				284B27E40FC66CCD005EAC96 /* TracksPrefs.cpp in Sources */,
 				284B27E50FC66CCD005EAC96 /* WarningsPrefs.cpp in Sources */,
+				28D540050FD1912A00FA7C75 /* AppCommandEvent.cpp in Sources */,
+				28D540060FD1912A00FA7C75 /* CommandBuilder.cpp in Sources */,
+				28D540070FD1912A00FA7C75 /* CommandHandler.cpp in Sources */,
+				28D540080FD1912A00FA7C75 /* ScriptCommandRelay.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
