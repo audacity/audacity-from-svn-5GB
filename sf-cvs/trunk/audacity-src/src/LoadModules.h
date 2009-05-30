@@ -15,7 +15,11 @@
 #include <wx/dynlib.h>
 #include <wx/module.h>
 
-void LoadModules();
+class CommandHandler;
+
+void LoadModules(CommandHandler &cmdHandler);
+void LoadModule(wxString fname);
+
 wxWindow *  MakeHijackPanel();
 
 //

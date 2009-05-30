@@ -28,6 +28,8 @@
 
 class IPCServ;
 class Importer;
+class CommandHandler;
+class AppCommandEvent;
 
 void SaveWindowSize();
 
@@ -114,6 +116,8 @@ class AudacityApp:public wxApp {
    // Backend for above - returns true for success, false for failure
    bool MRUOpen(wxString fileName);
 
+   void OnReceiveCommand(AppCommandEvent &event);
+
    #ifdef __WXMAC__
     // In response to Apple Events
     virtual void MacOpenFile(const wxString &fileName) ;
@@ -157,11 +161,15 @@ class AudacityApp:public wxApp {
 
    wxLogWindow *mLogger;
  private:
+   CommandHandler *mCmdHandler;
    FileHistory *mRecentFiles;
 
    wxLocale *mLocale;
 
    wxSingleInstanceChecker *mChecker;
+
+   void InitCommandHandler();
+   void DeInitCommandHandler();
 
    bool InitTempDir();
    bool CreateSingleInstanceChecker(wxString dir);
