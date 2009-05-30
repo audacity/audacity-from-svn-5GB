@@ -90,7 +90,7 @@ void DevicePrefs::GetNamesAndLabels()
    for (int i = 0; i < nDevices; i++) {
       const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
       if (info->maxOutputChannels > 0 || info->maxInputChannels > 0) {
-         wxString name = LAT1CTOWX(Pa_GetHostApiInfo(info->hostApi)->name);
+         wxString name(Pa_GetHostApiInfo(info->hostApi)->name, wxConvLocal);
          if (mHostNames.Index(name) == wxNOT_FOUND) {
             mHostNames.Add(name);
             mHostLabels.Add(name);
@@ -119,7 +119,7 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
 
          S.AddPrompt(_("Using:"));
 
-         S.AddFixedText(LAT1CTOWX(Pa_GetVersionText()));
+         S.AddFixedText(wxString(Pa_GetVersionText(), wxConvLocal));
       }
       S.EndMultiColumn();
    }                              
@@ -171,7 +171,7 @@ void DevicePrefs::OnHost(wxCommandEvent & e)
    for (int i = 0; i < nDevices; i++) {
       const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
       if (info->hostApi == index) {
-         wxString name = LAT1CTOWX(info->name);
+         wxString name(info->name, wxConvLocal);
          wxString device = DeviceName(info);
          int index;
 
