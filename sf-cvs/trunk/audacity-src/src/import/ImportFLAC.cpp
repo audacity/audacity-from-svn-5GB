@@ -332,7 +332,7 @@ bool FLACImportFileHandle::Init()
    //
    // Responsibility for closing the file is passed to libflac.
    // (it happens when mFile->finish() is called)
-   bool result = mFile->init(mHandle.fp());
+   bool result = mFile->init(mHandle.fp())?true:false;
    mHandle.Detach();
 
    if (result != FLAC__STREAM_DECODER_INIT_STATUS_OK) {
