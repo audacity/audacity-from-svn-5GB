@@ -48,7 +48,7 @@ extern "C" {
 
    // This is an example of an exported variable
 
-typedef SCRIPT_PIPE_DLL_IMPORT int (*tpExecScriptServerFunc)( wxString * pOut, wxString * pIn);
+typedef SCRIPT_PIPE_DLL_IMPORT int (*tpExecScriptServerFunc)( wxString * pIn);
 
 
 static tpExecScriptServerFunc pScriptServerFn=NULL;
@@ -64,7 +64,9 @@ int DoSrv( char * pIn )
    wxString Str1(pIn, wxConvISO8859_1);
    Str1.Replace( wxT("\r"), wxT(""));
    Str1.Replace( wxT("\n"), wxT(""));
-   (*pScriptServerFn)( &Str2, &Str1 );
+   (*pScriptServerFn)( &Str1 );
+
+   /* Responses are disabled for now.
    size_t l = Str2.Length();
    Str2+= wxT('\n');
    aStr.Clear();
@@ -79,6 +81,7 @@ int DoSrv( char * pIn )
          iStart = i+1;
       }
    }
+   */
 //   wxLogDebug("Added %i Strings", aStr.GetCount());
    return 1;
 }
@@ -129,6 +132,11 @@ int SCRIPT_PIPE_DLL_API RegScriptServerFunc( tpExecScriptServerFunc pFn )
    return 4;
 }
 
+int SCRIPT_PIPE_DLL_API ScriptServerResponseFunc( wxString * pOut )
+{
+   //wxLogDebug(wxT(*pOut));
+   return 1;
+}
 
 // This is an example of an exported function.
 int SCRIPT_PIPE_DLL_API ExtensionModuleInit(int ix)
@@ -142,7 +150,7 @@ int SCRIPT_PIPE_DLL_API ExtensionModuleInit(int ix)
 
    // Here is proof that the DLL was dynamically loaded and this Init function
    // called.
-   wxDialog Dlg( (wxWindow*)NULL, (wxWindowID)-1, wxT("mod-script-pipe - Dialog Loaded by Plug In"), wxPoint(0,0));
+   //wxDialog Dlg( (wxWindow*)NULL, (wxWindowID)-1, wxT("mod-script-pipe - Dialog Loaded by Plug In"), wxPoint(0,0));
 
 
 #if 0
@@ -155,10 +163,12 @@ int SCRIPT_PIPE_DLL_API ExtensionModuleInit(int ix)
    S.EndStatic();
 #endif
 
+   /*
    Dlg.Fit();
    Dlg.Move( 100,100 );
    int id = Dlg.ShowModal();
-printf("id = %d\n", id);
+   */
+//printf("id = %d\n", id);
    // return -1 for cancel, anything else for OK.
 //   return (id==wxID_CANCEL)?-1:42;
    return 0;
