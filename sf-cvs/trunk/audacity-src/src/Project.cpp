@@ -2678,7 +2678,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       bool bHasTracks = (iter.First() != NULL);
       if (!bHasTracks)
       {
-         if (mUndoManager.UnsavedChanges()) {
+         if (mUndoManager.UnsavedChanges() && mEmptyCanBeDirty) {
             int result = wxMessageBox(_("Your project is now empty.\nIf saved, the project will have no tracks.\n\nTo save any previously open tracks:\nClick 'No', Edit > Undo until all tracks\nare open, then File > Save Project.\n\nSave anyway?"),
                                       _("Warning empty project"),
                                       wxYES_NO | wxICON_QUESTION, this);
