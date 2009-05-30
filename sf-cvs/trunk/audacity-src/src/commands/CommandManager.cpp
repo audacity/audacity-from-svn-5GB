@@ -1152,7 +1152,7 @@ void CommandManager::SetCommandFlags(wxUint32 flags, wxUint32 mask, ...)
 void CommandManager::CheckDups()
 {
    int cnt = mCommandList.GetCount();
-   for (size_t j = 0;  j < cnt; j++) {
+   for (size_t j = 0;  (int)j < cnt; j++) {
       if (mCommandList[j]->key.IsEmpty()) {
          continue;
       }
@@ -1161,7 +1161,7 @@ void CommandManager::CheckDups()
          continue;
       }
 
-      for (size_t i = 0; i < cnt; i++) {
+      for (size_t i = 0; (int)i < cnt; i++) {
          if (i == j) {
             continue;
          }
