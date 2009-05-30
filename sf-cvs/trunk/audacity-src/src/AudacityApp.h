@@ -50,7 +50,10 @@ DECLARE_EXPORTED_EVENT_TYPE(AUDACITY_DLL_API, EVT_CAPTURE_KEY, -1);
 
 // These flags represent the majority of the states that affect
 // whether or not items in menus are enabled or disabled.
-enum {
+enum 
+{
+   AlwaysEnabledFlag      = 0x00000000,
+
    AudioIONotBusyFlag     = 0x00000001,
    TimeSelectedFlag       = 0x00000002,
    TracksSelectedFlag     = 0x00000004,
@@ -77,7 +80,9 @@ enum {
    WaveTracksExistFlag    = 0x00400000,
    NoteTracksExistFlag    = 0x00800000,  //gsw
    NoteTracksSelectedFlag = 0x01000000,  //gsw
-   HaveRecentFiles        = 0x02000000
+   HaveRecentFiles        = 0x02000000,
+
+   NoFlagsSpecifed        = 0xffffffff
 };
 
 class AudacityApp:public wxApp {

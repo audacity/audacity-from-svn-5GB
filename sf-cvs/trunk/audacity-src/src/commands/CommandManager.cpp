@@ -439,13 +439,34 @@ void CommandManager::InsertItem(wxString name, wxString label_in,
    mbSeparatorAllowed = true;
 }
 
-///
-/// Add a menu item to the current menu.  When the user selects it, the
-/// given functor will be called
-void CommandManager::AddItem(wxString name, wxString label_in,
-                             CommandFunctor *callback, int checkmark)
+void CommandManager::AddCheck(const wxChar *name,
+                              const wxChar *label,
+                              CommandFunctor *callback,
+                              int checkmark)
 {
-   wxString label = label_in;
+   AddItem(name, label, callback, wxT(""), NoFlagsSpecifed, NoFlagsSpecifed, checkmark);
+}
+
+void CommandManager::AddItem(const wxChar *name,
+                             const wxChar *label,
+                             CommandFunctor *callback,
+                             int flags,
+                             int mask)
+{
+   AddItem(name, label, callback, wxT(""), flags, mask);
+}                  
+
+void CommandManager::AddItem(const wxChar *name,
+                             const wxChar *label_in,
+                             CommandFunctor *callback,
+                             const wxChar *accel,
+                             int flags,
+                             int mask,
+                             int checkmark)
+{
+   wxString label(label_in);
+   label += wxT("\t");
+   label += accel;
 
    if (ItemShouldBeHidden(label)) {
       delete callback;
@@ -453,6 +474,10 @@ void CommandManager::AddItem(wxString name, wxString label_in,
    }
 
    int ID = NewIdentifier(name, label, CurrentMenu(), callback, false, 0, 0);
+
+   if (flags != NoFlagsSpecifed || mask != NoFlagsSpecifed) {
+      SetCommandFlags(name, flags, mask);
+   }
 
    // Replace the accel key with the one from the preferences
    label = label.BeforeFirst(wxT('\t'));
@@ -464,20 +489,18 @@ void CommandManager::AddItem(wxString name, wxString label_in,
    // made-up name (just an ID number string) but with the accelerator
    // we want, then immediately change the label to the correct string.
    // -DMM
-   mHiddenID++;
-   wxString dummy, newLabel;
-   dummy.Printf(wxT("%s%08d"), label.c_str(), mHiddenID);
-   newLabel = label;
+   wxString newLabel;
+   newLabel.Printf(wxT("%s%08d"), label.c_str(), ++mHiddenID);
 
    if (checkmark >= 0) {
-      CurrentMenu()->AppendCheckItem(ID, dummy);
-      CurrentMenu()->Check(ID, checkmark !=0);
+      CurrentMenu()->AppendCheckItem(ID, newLabel);
+      CurrentMenu()->Check(ID, checkmark != 0);
    }
    else {
-      CurrentMenu()->Append(ID, dummy);
+      CurrentMenu()->Append(ID, newLabel);
    }
 
-   CurrentMenu()->SetLabel(ID, newLabel);
+   CurrentMenu()->SetLabel(ID, label);
    mbSeparatorAllowed = true;
 }
 
@@ -542,10 +565,31 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
 ///
 /// Add a command that doesn't appear in a menu.  When the key is pressed, the
 /// given function pointer will be called (via the CommandManagerListener)
-void CommandManager::AddCommand(wxString name, wxString label,
-                                CommandFunctor *callback)
+void CommandManager::AddCommand(const wxChar *name,
+                                const wxChar *label,
+                                CommandFunctor *callback,
+                                int flags,
+                                int mask)
 {
-   NewIdentifier(name, label, NULL, callback, false, 0, 0);
+   AddCommand(name, label, callback, wxT(""), flags, mask);
+}                  
+
+void CommandManager::AddCommand(const wxChar *name,
+                                const wxChar *label_in,
+                                CommandFunctor *callback,
+                                const wxChar *accel,
+                                int flags,
+                                int mask)
+{
+   wxString label(label_in);
+   label += wxT("\t");
+   label += accel;
+
+   NewIdentifier(name, label_in, NULL, callback, false, 0, 0);
+
+   if (flags != NoFlagsSpecifed || mask != NoFlagsSpecifed) {
+      SetCommandFlags(name, flags, mask);
+   }
 }
 
 void CommandManager::AddSeparator()

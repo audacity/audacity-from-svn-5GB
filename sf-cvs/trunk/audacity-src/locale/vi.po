@@ -12,9 +12,7 @@ msgstr "Project-Id-Version: Audacity\n"
 "X-Poedit-Country: Vietnam\n"
 "X-Poedit-Bookmarks: 207,293,1198,-1,-1,84,-1,1309,382,385\n"
 
-#: AboutDialog.cpp:142
-#: AudacityApp.cpp:749
-#: Menus.cpp:745
+#: AboutDialog.cpp:142 AudacityApp.cpp:749 Menus.cpp:745
 msgid "&About Audacity..."
 msgstr "&Thông tin về Audacity..."
 
@@ -27,11 +25,11 @@ msgid "Audacity is a free program written by a team of volunteer <a href=\"http:
 msgstr ""
 
 #: AboutDialog.cpp:179
-msgid "This is a Beta version of the program. It may contain bugs and unfinished features. We depend on your feedback: please send bug reports and feature requests to <b>feedback@audacityteam.org</b>. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
+msgid "This is a Beta version of the program. It may contain bugs and unfinished features. We depend on your feedback: please send bug reports and feature requests to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
 msgstr ""
 
 #: AboutDialog.cpp:182
-msgid "This is a stable, completed release of the program. However, if you find a bug or have a suggestion for us, please write to <b>feedback@audacityteam.org</b>. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
+msgid "This is a stable, completed release of the program. However, if you find a bug or have a suggestion for us, please write to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
 msgstr ""
 
 #. i18n-hint: The translation of "translator_credits" will appear
@@ -40,8 +38,7 @@ msgstr ""
 #.
 #. For example:  "English translation by Dominic Mazzoni."
 #.
-#: AboutDialog.cpp:192
-#: AboutDialog.cpp:194
+#: AboutDialog.cpp:192 AboutDialog.cpp:194
 msgid "translator_credits"
 msgstr "Vietnamese translation by Nguyễn Đình Trung"
 
@@ -84,7 +81,7 @@ msgid "Special thanks:"
 msgstr "Rất cám ơn:"
 
 #: AboutDialog.cpp:250
-msgid "<b>Audacity&reg;</b> software is copyright &copy; 1999-2008 Audacity Team. <br>The name <b>Audacity&reg;</b> is a registered trademark of Dominic Mazzoni."
+msgid "<b>Audacity&reg;</b> software is copyright &copy; 1999-2009 Audacity Team. <br>The name <b>Audacity&reg;</b> is a registered trademark of Dominic Mazzoni."
 msgstr ""
 
 #: AboutDialog.cpp:254
@@ -92,14 +89,11 @@ msgid "Audacity"
 msgstr "Audacity"
 
 #. i18n-hint: Information about when audacity was compiled
-#: AboutDialog.cpp:299
-#: AboutDialog.cpp:312
-#: AboutDialog.cpp:468
+#: AboutDialog.cpp:299 AboutDialog.cpp:312 AboutDialog.cpp:468
 msgid "Build Information"
 msgstr "Thông tin biên dịch"
 
-#: AboutDialog.cpp:305
-#: effects/AvcCompressor.cpp:674
+#: AboutDialog.cpp:305 effects/AvcCompressor.cpp:674
 msgid "Enabled"
 msgstr "Bật"
 
@@ -112,33 +106,27 @@ msgid "File Format Support"
 msgstr "Hỗ trợ định dạng"
 
 #. i18n-hint: This is what the library (libmad) does - imports MP3 files
-#: AboutDialog.cpp:326
-#: AboutDialog.cpp:328
+#: AboutDialog.cpp:326 AboutDialog.cpp:328
 msgid "MP3 Importing"
 msgstr "Nhập MP3"
 
-#: AboutDialog.cpp:335
-#: AboutDialog.cpp:338
+#: AboutDialog.cpp:335 AboutDialog.cpp:338
 msgid "Ogg Vorbis Import and Export"
 msgstr "Xuất và nhập Ogg Vorbis"
 
-#: AboutDialog.cpp:342
-#: AboutDialog.cpp:345
+#: AboutDialog.cpp:342 AboutDialog.cpp:345
 msgid "ID3 tag support"
 msgstr "Hỗ trợ thẻ ID3"
 
-#: AboutDialog.cpp:352
-#: AboutDialog.cpp:355
+#: AboutDialog.cpp:352 AboutDialog.cpp:355
 msgid "FLAC import and export"
 msgstr "Xuất và nhập FLAC"
 
-#: AboutDialog.cpp:360
-#: AboutDialog.cpp:363
+#: AboutDialog.cpp:360 AboutDialog.cpp:363
 msgid "MP2 export"
 msgstr "Xuất MP2"
 
-#: AboutDialog.cpp:368
-#: AboutDialog.cpp:371
+#: AboutDialog.cpp:368 AboutDialog.cpp:371
 msgid "Import via QuickTime"
 msgstr "Nhập qua QuickTime"
 
@@ -147,15 +135,12 @@ msgstr "Nhập qua QuickTime"
 msgid "Core Libraries"
 msgstr "Các thư viện lõi"
 
-#: AboutDialog.cpp:384
-#: AboutDialog.cpp:387
-#: AboutDialog.cpp:390
+#: AboutDialog.cpp:384 AboutDialog.cpp:387 AboutDialog.cpp:390
 #: AboutDialog.cpp:392
 msgid "Sample rate conversion"
 msgstr "Chuyển đổi tốc độ lấy mẫu"
 
-#: AboutDialog.cpp:397
-#: AboutDialog.cpp:400
+#: AboutDialog.cpp:397 AboutDialog.cpp:400
 msgid "Audio playback and recording"
 msgstr "Phát và ghi âm"
 
@@ -163,24 +148,17 @@ msgstr "Phát và ghi âm"
 msgid "Features"
 msgstr "Các tính năng"
 
-#: AboutDialog.cpp:417
-#: AboutDialog.cpp:420
-#: AboutDialog.cpp:425
-#: AboutDialog.cpp:428
-#: AboutDialog.cpp:433
-#: AboutDialog.cpp:436
-#: AboutDialog.cpp:441
-#: AboutDialog.cpp:444
+#: AboutDialog.cpp:417 AboutDialog.cpp:420 AboutDialog.cpp:425
+#: AboutDialog.cpp:428 AboutDialog.cpp:433 AboutDialog.cpp:436
+#: AboutDialog.cpp:441 AboutDialog.cpp:444
 msgid "Plug-in support"
 msgstr "Hỗ trợ trình bổ sung"
 
-#: AboutDialog.cpp:449
-#: AboutDialog.cpp:452
+#: AboutDialog.cpp:449 AboutDialog.cpp:452
 msgid "Sound card mixer support"
 msgstr "Hỗ trợ bộ trộn trên card âm thanh"
 
-#: AboutDialog.cpp:457
-#: AboutDialog.cpp:460
+#: AboutDialog.cpp:457 AboutDialog.cpp:460
 msgid "Pitch and Tempo Change support"
 msgstr "Hỗ trợ thay đổi nhịp độ và cao độ"
 
@@ -188,8 +166,7 @@ msgstr "Hỗ trợ thay đổi nhịp độ và cao độ"
 msgid "Program build date: "
 msgstr "Ngày biên dịch chương trình:"
 
-#: AboutDialog.cpp:475
-#: AboutDialog.cpp:477
+#: AboutDialog.cpp:475 AboutDialog.cpp:477
 #, fuzzy
 msgid "Build type:"
 msgstr "Kiểu biên dịch:"
@@ -215,16 +192,12 @@ msgstr "Thư mục thiết lập:"
 msgid "GPL License"
 msgstr "Giấy phép GPL"
 
-#: AudacityApp.cpp:468
-#: Project.cpp:1761
+#: AudacityApp.cpp:468 Project.cpp:1761
 #, c-format
 msgid "%s is already open in another window."
 msgstr "Bạn đã mở %s trên một cửa sổ khác."
 
-#: AudacityApp.cpp:470
-#: Project.cpp:1763
-#: Project.cpp:1868
-#: Project.cpp:2012
+#: AudacityApp.cpp:470 Project.cpp:1763 Project.cpp:1868 Project.cpp:2012
 #: Project.cpp:2114
 msgid "Error opening project"
 msgstr "Lỗi khi mở dự án"
@@ -250,21 +223,28 @@ msgstr "Biên độ thu đo được"
 msgid "Output Meter"
 msgstr "Biên độ phát đo được"
 
-#. i18n-hint: Mac OS X shortcut should be Ctrl+,
-#. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
-#: AudacityApp.cpp:751
-#: Menus.cpp:478
-msgid "&Preferences...\tCtrl+,"
-msgstr "&Tuỳ thích...\tCtrl+,"
+#: Menus.cpp:164
+msgid "&New"
+msgstr "&Mới"
 
-#: AudacityApp.cpp:833
-#: AudacityApp.cpp:910
+#: Menus.cpp:166
+msgid "&Open..."
+msgstr "&Mở..."
+
+#: AudacityApp.cpp:805
+msgid "Open &Recent..."
+msgstr ""
+
+#: AudacityApp.cpp:751 Menus.cpp:478
+msgid "&Preferences..."
+msgstr "&Tuỳ thích..."
+
+#: AudacityApp.cpp:833 AudacityApp.cpp:910
 #, c-format
 msgid "Using block size of %ld\n"
 msgstr "Dùng kích thước khối %ld\n"
 
-#: AudacityApp.cpp:855
-#: AudacityApp.cpp:925
+#: AudacityApp.cpp:855 AudacityApp.cpp:925
 #, c-format
 msgid "Unknown command line option: %s\n"
 msgstr "Không biết tuỳ chọn của dòng lệnh: %s\n"
@@ -379,17 +359,15 @@ msgstr "Lỗi:"
 msgid "Error Initializing Audio"
 msgstr "Lỗi khởi chạy Âm thanh"
 
+#: AudioIO.cpp:1225
+msgid "Latency Correction setting has caused the recorded audio to be hidden before zero.\n"
+"Audacity has brought it back to start at zero.\n"
+"You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
+msgstr ""
+
 #: AudioIO.cpp:1208
 msgid "Latency problem"
 msgstr "Lỗi do trễ thời gian"
-
-#: AudioIO.cpp:1208
-msgid "Latency setting has caused the recorded audio to be hidden before zero.\n"
-"Audacity has brought it back to start at zero.\n"
-"You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
-msgstr "Thiết lập độ trễ đã làm cho âm thanh ghi được bị dịch về phía trước mốc thời gian 0.\n"
-"Audacity đã đưa nó về mốc thời gian bắt đầu.\n"
-"Bạn phải dùng công cụ Di chuyển Thời gian (<---> hoặc F5) để lôi track âm thanh đến đúng vị trí mình cần."
 
 #: AutoRecovery.cpp:54
 msgid "Automatic Crash Recovery"
@@ -405,8 +383,7 @@ msgstr "Một số dự án đã không được lưu vào đĩa cứng theo cá
 msgid "Recoverable projects"
 msgstr "Các dự án có thể phục hồi:"
 
-#: AutoRecovery.cpp:78
-#: Tags.cpp:2032
+#: AutoRecovery.cpp:78 Tags.cpp:2032
 msgid "Name"
 msgstr "Tên"
 
@@ -436,38 +413,25 @@ msgstr "Có chắc là bạn không phục hồi dự án không?\n"
 msgid "Confirm?"
 msgstr "Xác nhận?"
 
-#: AutoRecovery.cpp:146
-#: AutoRecovery.cpp:183
+#: AutoRecovery.cpp:146 AutoRecovery.cpp:183
 msgid "Could not enumerate files in auto save directory"
 msgstr "Không thể liệt kê các tập tin tự động lưu lại"
 
-#: AutoRecovery.cpp:147
-#: AutoRecovery.cpp:184
-#: Menus.cpp:2575
-#: Menus.cpp:4514
-#: Project.cpp:1971
-#: Project.cpp:3343
-#: Project.cpp:3422
-#: WaveTrack.cpp:556
-#: WaveTrack.cpp:575
-#: WaveTrack.cpp:1689
-#: effects/Effect.cpp:436
-#: export/ExportMP2.cpp:230
-#: prefs/DirectoriesPrefs.cpp:189
-#: prefs/KeyConfigPrefs.cpp:245
-#: toolbars/ControlToolBar.cpp:532
+#: AutoRecovery.cpp:147 AutoRecovery.cpp:184 Menus.cpp:2575 Menus.cpp:4514
+#: Project.cpp:1971 Project.cpp:3343 Project.cpp:3422 WaveTrack.cpp:556
+#: WaveTrack.cpp:575 WaveTrack.cpp:1689 effects/Effect.cpp:436
+#: export/ExportMP2.cpp:230 prefs/DirectoriesPrefs.cpp:189
+#: prefs/KeyConfigPrefs.cpp:245 toolbars/ControlToolBar.cpp:532
 #: toolbars/ControlToolBar.cpp:846
 msgid "Error"
 msgstr "Lỗi"
 
-#: BatchCommandDialog.cpp:56
-#: BatchCommandDialog.cpp:60
+#: BatchCommandDialog.cpp:56 BatchCommandDialog.cpp:60
 #: BatchCommandDialog.cpp:61
 msgid "Select Command"
 msgstr "Chọn lệnh"
 
-#: BatchCommandDialog.cpp:80
-#: BatchProcessDialog.cpp:454
+#: BatchCommandDialog.cpp:80 BatchProcessDialog.cpp:454
 #: prefs/KeyConfigPrefs.cpp:142
 msgid "&Command"
 msgstr "&Lệnh"
@@ -476,8 +440,7 @@ msgstr "&Lệnh"
 msgid "&Edit Parameters"
 msgstr "&Sửa tham số"
 
-#: BatchCommandDialog.cpp:89
-#: BatchProcessDialog.cpp:455
+#: BatchCommandDialog.cpp:89 BatchProcessDialog.cpp:455
 msgid "&Parameters"
 msgstr "&Tham số"
 
@@ -523,8 +486,7 @@ msgstr "Áp dụng %s với (các) tham số \n"
 "\n"
 "%s"
 
-#: BatchCommands.cpp:675
-#: BatchCommands.cpp:680
+#: BatchCommands.cpp:675 BatchCommands.cpp:680
 msgid "Test Mode"
 msgstr "Chế độ kiểm tr"
 
@@ -533,8 +495,7 @@ msgstr "Chế độ kiểm tr"
 msgid "Apply %s"
 msgstr "Áp dụng %s"
 
-#: BatchProcessDialog.cpp:60
-#: BatchProcessDialog.cpp:70
+#: BatchProcessDialog.cpp:60 BatchProcessDialog.cpp:70
 #: BatchProcessDialog.cpp:71
 msgid "Apply Chain"
 msgstr "Áp dụng quy trình"
@@ -559,24 +520,15 @@ msgstr "Áp dụng vào &dự án hiện hành"
 msgid "Apply to &Files..."
 msgstr "Áp dụng cho &tập tin"
 
-#: BatchProcessDialog.cpp:108
-#: BatchProcessDialog.cpp:247
-#: Tags.cpp:2071
-#: Tags.cpp:2075
-#: Tags.cpp:2375
-#: Tags.cpp:2379
-#: UploadDialog.cpp:180
-#: effects/AvcCompressor.cpp:732
-#: effects/ChangeLength.cpp:183
-#: effects/SpikeCleaner.cpp:188
-#: effects/VST/VSTEffect.cpp:446
-#: effects/audiounits/AudioUnitEffect.cpp:882
-#: effects/vamp/VampEffect.cpp:411
+#: BatchProcessDialog.cpp:108 BatchProcessDialog.cpp:247 Tags.cpp:2071
+#: Tags.cpp:2075 Tags.cpp:2375 Tags.cpp:2379 UploadDialog.cpp:180
+#: effects/AvcCompressor.cpp:732 effects/ChangeLength.cpp:183
+#: effects/SpikeCleaner.cpp:188 effects/VST/VSTEffect.cpp:446
+#: effects/audiounits/AudioUnitEffect.cpp:882 effects/vamp/VampEffect.cpp:411
 msgid "&Cancel"
 msgstr "&Huỷ bỏ"
 
-#: BatchProcessDialog.cpp:146
-#: BatchProcessDialog.cpp:191
+#: BatchProcessDialog.cpp:146 BatchProcessDialog.cpp:191
 msgid "No chain selected"
 msgstr "Chưa có quy trình nào được chọn"
 
@@ -613,8 +565,7 @@ msgstr "Đang áp dụng..."
 msgid "File"
 msgstr "Tập tin"
 
-#: BatchProcessDialog.cpp:356
-#: BatchProcessDialog.cpp:360
+#: BatchProcessDialog.cpp:356 BatchProcessDialog.cpp:360
 #: BatchProcessDialog.cpp:361
 msgid "Edit Chains"
 msgstr "Sửa đổi quy trình"
@@ -623,19 +574,12 @@ msgstr "Sửa đổi quy trình"
 msgid "&Chains"
 msgstr "&Quy trình"
 
-#: BatchProcessDialog.cpp:435
-#: Tags.cpp:815
-#: Tags.cpp:1455
-#: Tags.cpp:2055
+#: BatchProcessDialog.cpp:435 Tags.cpp:815 Tags.cpp:1455 Tags.cpp:2055
 msgid "&Add"
 msgstr "&Thêm"
 
-#: BatchProcessDialog.cpp:436
-#: LabelDialog.cpp:126
-#: Tags.cpp:816
-#: Tags.cpp:1456
-#: Tags.cpp:2056
-#: TrackPanel.cpp:4201
+#: BatchProcessDialog.cpp:436 LabelDialog.cpp:126 Tags.cpp:816 Tags.cpp:1456
+#: Tags.cpp:2056 TrackPanel.cpp:4201
 msgid "&Remove"
 msgstr "&Xoá bỏ"
 
@@ -649,8 +593,8 @@ msgstr "C&hùm (nhắp đúp chuột hoặc nhấn phím cách để hiệu đí
 
 #. i18n-hint: This is the number of the command in the list
 #: BatchProcessDialog.cpp:453
-msgid "No"
-msgstr "Không"
+msgid "Num"
+msgstr ""
 
 #: BatchProcessDialog.cpp:459
 msgid "&Insert"
@@ -739,8 +683,7 @@ msgstr "Dung lượng trống trên đĩa"
 msgid "Copy Selected Audio Into Project"
 msgstr "Chép các tập tin âm thanh được chọn vào trong dự án"
 
-#: Dependencies.cpp:304
-#: Dependencies.cpp:410
+#: Dependencies.cpp:304 Dependencies.cpp:410
 msgid "Cancel Save"
 msgstr "Không lưu"
 
@@ -752,8 +695,7 @@ msgstr "Không chép bất cứ tập tin âm thanh nào"
 msgid "Copy All Audio into Project (Safer)"
 msgstr "Chép tất cả các tập tin âm thanh vào dự án (an toàn hơn)"
 
-#: Dependencies.cpp:317
-#: Dependencies.cpp:322
+#: Dependencies.cpp:317 Dependencies.cpp:322
 msgid "Ask me"
 msgstr "Hỏi tôi trước"
 
@@ -787,9 +729,7 @@ msgid "Warning: there is very little free disk space left on this volume.\n"
 msgstr "Cảnh báo: còn rất ít chỗ trống trên đĩa cứng.\n"
 "Hãy chọn một thư mục tạm thời khác trong phần Tuỳ chọn"
 
-#: DirManager.cpp:221
-#: DirManager.cpp:251
-#: DirManager.cpp:332
+#: DirManager.cpp:221 DirManager.cpp:251 DirManager.cpp:332
 msgid "Progress"
 msgstr "Đang tiến hành"
 
@@ -844,8 +784,7 @@ msgstr "Không thể đổi tên '%s' thành '%s'"
 msgid "Changed block %s to new alias name\n"
 msgstr ""
 
-#: DirManager.cpp:1115
-#: DirManager.cpp:1403
+#: DirManager.cpp:1115 DirManager.cpp:1403
 msgid "Inspecting project file data..."
 msgstr "Đang thẩm tra tập tin dữ liệu của dự án..."
 
@@ -896,14 +835,9 @@ msgstr "Không xoá, cứ tiếp tục: tiếp tục làm việc khi có những
 msgid "Close project immediately with no changes"
 msgstr "Không thay đổi và đóng dự án ngay bây giờ"
 
-#: DirManager.cpp:1228
-#: DirManager.cpp:1263
-#: DirManager.cpp:1309
-#: DirManager.cpp:1351
-#: export/Export.cpp:490
-#: export/Export.cpp:507
-#: export/Export.cpp:526
-#: widgets/Warning.cpp:55
+#: DirManager.cpp:1228 DirManager.cpp:1263 DirManager.cpp:1309
+#: DirManager.cpp:1351 export/Export.cpp:490 export/Export.cpp:507
+#: export/Export.cpp:526 widgets/Warning.cpp:55
 msgid "Warning"
 msgstr "Cảnh báo"
 
@@ -925,14 +859,11 @@ msgstr "Quá trình kiểm tra dự án thấy thiếu %d tập tin đầu vào 
 msgid "Replace missing data with silence [permanent upon save]"
 msgstr "Thay thế các dữ liệu đã mất bằng khoảng lặng [chính thức]"
 
-#: DirManager.cpp:1260
-#: DirManager.cpp:1348
+#: DirManager.cpp:1260 DirManager.cpp:1348
 msgid "Temporarily replace missing data with silence [this session only]"
 msgstr "Tạm thời thay thế dữ liệu đã mất bằng khoảng lặng [chỉ phiên làm việc này]"
 
-#: DirManager.cpp:1261
-#: DirManager.cpp:1307
-#: DirManager.cpp:1349
+#: DirManager.cpp:1261 DirManager.cpp:1307 DirManager.cpp:1349
 msgid "Close project immediately with no further changes"
 msgstr "Lập tức đóng dự án lại và giữ nguyên hiện trạng"
 
@@ -1001,11 +932,11 @@ msgstr "Chữ nhật"
 msgid "FFmpeg support not compiled in"
 msgstr ""
 
-#: FFmpeg.cpp:101
+#: FFmpeg.cpp:103
 msgid "FFmpeg was configured in Preferences and successfully loaded before,                       \n"
 "but this time Audacity failed to load it at startup.                       \n"
 "\n"
-"You may want to go back to Preferences > Import/Export and re-configure it."
+"You may want to go back to Preferences > Libraries and re-configure it."
 msgstr ""
 
 #: FFmpeg.cpp:104
@@ -1063,11 +994,12 @@ msgstr ""
 msgid "FFmpeg not found"
 msgstr ""
 
-#: FFmpeg.h:101
-msgid "Audacity attempted to use FFmpeg libraries to import an audio file,\n"
-"but libraries were not found.\n"
-"If you want to use the FFmpeg import feature, please go to Preferences->Import/Export\n"
-"and tell Audacity where to look for the libraries."
+#: FFmpeg.h:111
+msgid "Audacity attempted to use FFmpeg to import an audio file,\n"
+"but the libraries were not found.\n"
+"\n"
+"To use FFmpeg import, go to Preferences > Libraries\n"
+"to download or locate the FFmpeg libraries."
 msgstr ""
 
 #: FFmpeg.h:109
@@ -1090,8 +1022,7 @@ msgstr ""
 msgid "Frequency Analysis"
 msgstr "Bộ phân tích tần số"
 
-#: FreqWindow.cpp:140
-#: TrackPanel.cpp:563
+#: FreqWindow.cpp:140 TrackPanel.cpp:563
 msgid "Spectrum"
 msgstr "Phổ"
 
@@ -1119,8 +1050,7 @@ msgstr "Cepstrum"
 msgid "Algorithm"
 msgstr "Thuật toán:"
 
-#: FreqWindow.cpp:168
-#: HistoryWindow.cpp:79
+#: FreqWindow.cpp:168 HistoryWindow.cpp:79
 msgid "Size"
 msgstr "Kích thước"
 
@@ -1146,10 +1076,7 @@ msgstr "Tần số logarit"
 msgid "Axis"
 msgstr ""
 
-#: FreqWindow.cpp:206
-#: LabelDialog.cpp:128
-#: Menus.cpp:204
-#: Menus.cpp:233
+#: FreqWindow.cpp:206 LabelDialog.cpp:128 Menus.cpp:204 Menus.cpp:233
 msgid "&Export..."
 msgstr "&Xuất..."
 
@@ -1157,45 +1084,54 @@ msgstr "&Xuất..."
 msgid "Export"
 msgstr "Xuất"
 
-#: FreqWindow.cpp:209
-#: widgets/ErrorDialog.cpp:159
+#: FreqWindow.cpp:240
+msgid "&Replot"
+msgstr ""
+
+#: FreqWindow.cpp:241
+msgid "Replot"
+msgstr ""
+
+#: FreqWindow.cpp:209 widgets/ErrorDialog.cpp:159
 msgid "Close"
 msgstr "Đóng"
 
-#: FreqWindow.cpp:272
-#: FreqWindow.cpp:402
-#: effects/AutoDuck.cpp:489
-#: effects/AutoDuck.cpp:523
-#: effects/AutoDuck.cpp:791
-#: effects/Compressor.cpp:352
-#: effects/Compressor.cpp:360
-#: effects/Equalization.cpp:1109
-#: effects/Equalization.cpp:1111
-#: effects/Equalization.cpp:1119
-#: effects/Equalization.cpp:1185
-#: effects/Equalization.cpp:1394
-#: effects/Equalization.cpp:1405
-#: effects/Normalize.cpp:365
-#: widgets/Meter.cpp:380
+#: FreqWindow.cpp:247 FreqWindow.cpp:250 effects/Equalization.cpp:1303
+#: effects/Equalization.cpp:1306
+msgid "Grids"
+msgstr ""
+
+#: FreqWindow.cpp:272 FreqWindow.cpp:402 effects/AutoDuck.cpp:489
+#: effects/AutoDuck.cpp:523 effects/AutoDuck.cpp:791
+#: effects/Compressor.cpp:352 effects/Compressor.cpp:360
+#: effects/Equalization.cpp:1109 effects/Equalization.cpp:1111
+#: effects/Equalization.cpp:1119 effects/Equalization.cpp:1185
+#: effects/Equalization.cpp:1394 effects/Equalization.cpp:1405
+#: effects/Normalize.cpp:365 widgets/Meter.cpp:380
 msgid "dB"
 msgstr "dB"
 
 #. i18n-hint: This is the abbreviation for "Hertz", or
 #. cycles per second.
-#: FreqWindow.cpp:287
-#: FreqWindow.cpp:442
-#: effects/Equalization.cpp:1150
-#: effects/Equalization.cpp:1181
-#: import/ImportRaw.cpp:416
+#: FreqWindow.cpp:287 FreqWindow.cpp:442 effects/Equalization.cpp:1150
+#: effects/Equalization.cpp:1181 import/ImportRaw.cpp:416
 msgid "Hz"
 msgstr "Hz"
+
+#: Menus.cpp:3425
+msgid "To plot the spectrum, all selected tracks must be the same sample rate."
+msgstr "Để vẽ phổ, tất cả các dải được chọn phải có cùng tốc độ lấy mẫu"
+
+#: Menus.cpp:3451
+#, c-format
+msgid "Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."
+msgstr "Bạn chọn quá nhiều dữ liệu. Audacity sẽ chỉ phân tích %.1f giây đầu tiên của phần chọn."
 
 #: FreqWindow.cpp:386
 msgid "Not enough data selected."
 msgstr "Bạn chọn thiếu dữ liệu."
 
-#: FreqWindow.cpp:450
-#: effects/AutoDuck.cpp:793
+#: FreqWindow.cpp:450 effects/AutoDuck.cpp:793
 msgid "s"
 msgstr "s"
 
@@ -1217,12 +1153,8 @@ msgstr "spectrum.txt"
 msgid "Export Spectral Data As:"
 msgstr "Xuất dữ liệu phổ thành:"
 
-#: FreqWindow.cpp:1079
-#: LabelDialog.cpp:599
-#: Menus.cpp:2207
-#: Project.cpp:2441
-#: Project.cpp:3395
-#: prefs/KeyConfigPrefs.cpp:180
+#: FreqWindow.cpp:1079 LabelDialog.cpp:599 Menus.cpp:2207 Project.cpp:2441
+#: Project.cpp:3395 prefs/KeyConfigPrefs.cpp:180
 msgid "Couldn't write to file: "
 msgstr "Không thể ghi vào tập tin:"
 
@@ -1233,6 +1165,21 @@ msgstr "Tần số (Hz)\tMức (dB)"
 #: FreqWindow.cpp:1090
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
 msgstr "Trễ (seconds)\tTần số (Hz)\tMức"
+
+#: GStreamerLoader.cpp:195
+#, c-format
+msgid "GStreamer %s: %s"
+msgstr ""
+
+#: GStreamerLoader.cpp:212
+msgid "GStreamer was configured in preferences and successfully loaded before,\n"
+"                      but this time Audacity failed to load it at startup.\n"
+"                      You may want to go back to Preferences > Libraries and re-configure it."
+msgstr ""
+
+#: GStreamerLoader.cpp:215
+msgid "GStreamer startup failed"
+msgstr ""
 
 #: HelpText.cpp:85
 msgid "To [[welcome|Welcome screen]]"
@@ -1311,7 +1258,8 @@ msgid "<p><b>To record:</b> Set the recording device and input source, adjust th
 msgstr "<p><b>Để ghi âm:</b> Chọn thiết bị ghi âm và nguồn tín hiệu, điều chỉnh mức tín hiệu đầu vào, rồi nhấn nút Thu màu đỏ.</b></p><p> 1) [[inputdevice|Chọn thiết bị thu âm]] trong phần <i>Âm thanh Vào/Ra của hộp thoại Tuỳ thích</i> hoặc trên <i>Thanh công cụ Thiết bị</i>. Tuỳ chỉnh âm thanh Vào/Ra cho phép bạn chọn thu tín hiệu mono hoặc stereo.<br> 2) [[inputsource|Chọn nguồn tín hiệu]] trên thiết bị (ví dụ, microphone hoặc line-in) trong danh sách thả xuống trên thanh công cụ <i>Trộn tiếng</i>, hoặc (đối với một số máy) ở phần Thiết bị thu âm nằm trong phần <i>Âm thanh Vào/Ra của hộp thoại Tuỳ thích</i> hay trên thanh công cụ <i>Thiết bị</i>.<br> 3) [[inputlevel|Điều chỉnh mức tín hiệu vào]] bằng cách di con chạy trên thanh <i>Trộn tiếng</i>. Mức tín hiệu hợp lý sẽ loại bỏ nhiễu và méo tiếng. </p><p> Xem thêm trong: \"Thu âm\" <a href=\"http://audacity.sourceforge.net/help/faq\">FAQ</a>, và thực hành <a href=\"http://www.audacityteam.org/manual/index.php?title=Tutorial_-_Your_First_Recording\"> Thu âm lần đầu</a> ở <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">Hướng dẫn</a>, và xem trang Wiki [[wiki:Recording_Tips|Mẹo thu âm]] và [[wiki:Troubleshooting_Recordings|Sửa lỗi thu âm]]. </p><br><br>"
 
 #: HelpText.cpp:221
-msgid "<p>The input device is the actual physical sound device you are recording from. This is chosen at \"Recording Device\" in the <i>Audio I/O tab of Preferences</i>, On Windows and Linux, Preferences are at the bottom of the <i>Edit</i> Menu. On a Mac, they in the <i>Audacity</i> Menu. You can also conveniently select Recording Device in the <i>Device Toolbar</i>, which can be enabled at <i>View &gt; Toolbars...</i>. </p><p> By default, Audacity uses the device currently being used by the system, (usually your inbuilt sound device), so it is often not necessary to change the input device. On Windows, this current system device can be selected as \"Microsoft Sound Mapper\". If you are recording from an external USB or Firewire device such as a USB turntable, select it explicitly by name as recording device after conecting it. </p><p> Back to [[record|Recording Audio]] <br></p>"
+#, fuzzy
+msgid "<p>The input device is the actual physical sound device you are recording from. This is chosen at \"Recording Device\" in the <i>Audio I/O tab of Preferences</i>, On Windows and Linux, Preferences are at the bottom of the <i>Edit</i> Menu. On a Mac, they in the <i>Audacity</i> Menu. You can also conveniently select Recording Device in the <i>Device Toolbar</i>, which can be enabled at <i>View &gt; Toolbars...</i>. </p><p> By default, Audacity uses the device currently being used by the system, (usually your inbuilt sound device), so it is often not necessary to change the input device. On Windows, this current system device can be selected as \"Microsoft Sound Mapper\". If you are recording from an external USB or Firewire device such as a USB turntable, select it explicitly by name as recording device after connecting it. </p><p> Back to [[record|Recording Audio]] <br></p>"
 msgstr "<p>Thiết bị nhập là thiết bị âm thanh trên máy cho phép bạn thu tín hiệu từ microphone, dàn Hifi... Chọn thiết bị cần dùng trong hộp \"Thiết bị thu âm\" ở phần <i>Âm thanh Vào/Ra của hộp thoại Tuỳ thích</i>, Trên Windows và Linux, Tuỳ chỉnh nằm cuối trình đơn <i>Chỉnh sửa</i>. Trên Mac, nó nằm trong trình đơn <i>Audacity</i>. Bạn cũng có thể chỉnh thiết bị thu âm từ thanh công cụ <i>Thiết bị</i>, sau khi bật nó lên bằng cách chọn <i>Xem &gt; Thanh công cụ...</i>. </p><p> Theo mặc định, Audacity sử dụng thiết bị được hệ thống quy định, (thường là thiết bị tích hợp sẵn), nên thường là không cần chỉnh lại thiết lập này. Trên Windows, ta thường dùng thiết bị \"Microsoft Sound Mapper\". Nếu bạn muốn dùng thiết bị ghi âm cắm cổng USB hay thiết bị Firewire như bàn trộn USB, hãy chọn nó làm thiết bị thu âm sau khi nối nó vào máy. </p><p> Quay về [[record|Ghi âm]] <br></p>"
 
 #: HelpText.cpp:244
@@ -1335,7 +1283,8 @@ msgid "To hear your work in other media programs, export it to an audio file suc
 msgstr "Để mở dự án trong 1 chương trình phát nhạc, hãy xuất nó ra dạng WAV hay MP3 (một số định dạng [[wma-proprietary|không được hỗ trợ]]). [[save|Lưu 1 dự án Audacity]] sẽ tạo ra 1 tập tin dự án (và 1 thư mục _data gắn với tập tin đó) chứa tất cả các dải bạn đã biên tập, để bạn có thể làm việc tiếp với chúng sau này. Tuy nhiên, những chương trình khác thường không đọc được dạng lưu trữ dự án Audacity. </p><p> Để xuất dự án ra định dạng khác, chọn <i>Tập tin &gt; Xuất</i> rồi chọn định dạng muốn dùng trong ô \"Lưu ở dạng\". Để [[burncd|ghi đĩa CD]] âm thanh, hãy chọn dạng WAV hay AIFF. Để xuất MP3, bạn phải cài thư viện [[wiki:Lame_Installation|Lame Encoder]]. </p><p> <i>Tập tin &gt; Xuất vùng chọn</i> chỉ xuất 1 phần dự án được chọn ra tập tin khác. Chọn <i>Tập tin &gt; Xuất nhiều</i> để xuất nhiều tập tin cùng 1 lúc, mỗi dải hoặc mỗi nhãn được ghi ra 1 tập tin riêng biệt. <i>Dải âm &gt; Thêm nhãn ở vùng chọn</i> được dùng để[[wiki:Splitting_recordings_into_separate_tracks|chia các dải]] ghi toàn bộ 1 album ra nhiều bài hát, ghi trong từng tập tin riêng biệt. </p><br><br>"
 
 #: HelpText.cpp:359
-msgid "<p>Audacity <b>cannot</b> [[play|play]] or [[export|export]] files in <b>WMA, RealAudio, Shorten (SHN)</b> or most other proprietary formats, due to licensing and patent restrictions.  On a Mac computer, unprotected <b>AAC</b> formats such as <b>M4A</b> can be imported. Some open formats are not yet supported, including <b>Ogg Speex</b> and <b>Musepack</b>. Files protected by any kind of Digital Rights Management (DRM), including most purchased online such as from iTunes or Napster, <b>cannot</b> be imported.</p><p> If you can't import your file into Audacity, then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> to convert it to WAV or AIFF. If it is protected, burn it to an audio CD in the program licensed to play it, then extract the CD track to WAV or AIFF using ITunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or Windows Media Player 11. You could also <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. <i>To export to an unsupported format, export to WAV or AIFF and convert it to the desired format in iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
+#, fuzzy
+msgid "<p>Audacity <b>cannot</b> [[play|play]] or [[export|export]] files in <b>WMA, RealAudio, Shorten (SHN)</b> or most other proprietary formats, due to licensing and patent restrictions.  On a Mac computer, unprotected <b>AAC</b> formats such as <b>M4A</b> can be imported. Some open formats are not yet supported, including <b>Ogg Speex</b> and <b>Musepack</b>. Files protected by any kind of Digital Rights Management (DRM), including most purchased online such as from iTunes or Napster, <b>cannot</b> be imported.</p><p> If you can't import your file into Audacity, then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> to convert it to WAV or AIFF. If it is protected, burn it to an audio CD in the program licensed to play it, then extract the CD track to WAV or AIFF using iTunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or Windows Media Player 11. You could also <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. <i>To export to an unsupported format, export to WAV or AIFF and convert it to the desired format in iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
 msgstr "<p>Audacity <b>không thể</b> [[play|phát lại]] hay [[export|xuất]] các tập tin dạng <b>WMA, RealAudio, Shorten (SHN)</b> hay các định dạng thương mại khác, vì lý do bản quyền.  Trên máy Mac, Audacity nhập được các định dạng <b>AAC</b> không được bảo vệ như <b>M4A</b>. Một số định dạng mở hiện nay vẫn chưa được Audacity hỗ trợ, ví dụ như <b>Ogg Speex</b> và <b>Musepack</b>. Các tập tin được bảo vệ bằng Digital Rights Management (DRM), thường được mua trên các trang iTunes hay Napster, <b>sẽ không cho phép</b> nhập vào Audacity.</p><p> Muốn nhập chúng vào chương trình, bạn phải dùng iTunes hoặc <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> để chuyển đổi nó về định dạng WAV hoặc AIFF. Đối với các tập tin được bảo vệ, hãy ghi nó ra đĩa CD trong chương trình được phép phát chúng, rồi trích CD thành dạng WAV hay AIFF bằng ITunes hoặc (trên Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> hoặc Windows Media Player 11. Xin xem <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">thu âm</a> đĩa CD vào máy.<i>Để xuất 1 định dạng chưa hỗ trợ, hãy xuất ra WAV hoặc AIFF rồi chuyển đổi nó về định dạng mình muốn bằng iTunes hoặc <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
 
 #: HelpText.cpp:383
@@ -1370,15 +1319,9 @@ msgstr "Xoá các mức"
 msgid "&Discard"
 msgstr "&Loại bỏ"
 
-#: HistoryWindow.cpp:111
-#: Tags.cpp:2072
-#: Tags.cpp:2074
-#: Tags.cpp:2376
-#: Tags.cpp:2378
-#: effects/ChangeLength.cpp:186
-#: effects/SpikeCleaner.cpp:191
-#: effects/vamp/VampEffect.cpp:414
-#: export/ExportCL.cpp:398
+#: HistoryWindow.cpp:111 Tags.cpp:2072 Tags.cpp:2074 Tags.cpp:2376
+#: Tags.cpp:2378 effects/ChangeLength.cpp:186 effects/SpikeCleaner.cpp:191
+#: effects/vamp/VampEffect.cpp:414 export/ExportCL.cpp:398
 msgid "&OK"
 msgstr "&OK"
 
@@ -1386,8 +1329,7 @@ msgstr "&OK"
 msgid "Unable to determine"
 msgstr "Không quyết định được"
 
-#: Internat.cpp:195
-#: import/ImportRaw.cpp:392
+#: Internat.cpp:195 import/ImportRaw.cpp:392
 msgid "bytes"
 msgstr "bytes"
 
@@ -1403,13 +1345,19 @@ msgstr "MB"
 msgid "GB"
 msgstr "GB"
 
+#: Internat.cpp:181
+msgid "The specified filename could not be converted due to Unicode character use."
+msgstr ""
+
+#: Internat.cpp:183
+msgid "Specify New Filename:"
+msgstr ""
+
 #: LabelDialog.cpp:52
 msgid "Track"
 msgstr "Dải âm"
 
-#: LabelDialog.cpp:53
-#: Menus.cpp:4057
-#: Menus.cpp:4085
+#: LabelDialog.cpp:53 Menus.cpp:4057 Menus.cpp:4085
 msgid "Label"
 msgstr "Nhãn"
 
@@ -1421,8 +1369,7 @@ msgstr "Thời gian bắt đầu"
 msgid "End Time"
 msgstr "Thời gian kết thúc"
 
-#: LabelDialog.cpp:98
-#: Menus.cpp:627
+#: LabelDialog.cpp:98 Menus.cpp:627
 msgid "&Edit Labels"
 msgstr "&Sửa nhãn"
 
@@ -1438,8 +1385,7 @@ msgstr "Chèn phía s&au"
 msgid "Insert &Before"
 msgstr "Chèn lên t&rước"
 
-#: LabelDialog.cpp:127
-#: Menus.cpp:194
+#: LabelDialog.cpp:127 Menus.cpp:194
 msgid "&Import..."
 msgstr "&Nhập..."
 
@@ -1461,20 +1407,15 @@ msgstr "Bạn đã bỏ trống tên nhãn. Dải âm thanh này sẽ \n"
 msgid "Confirm"
 msgstr "Xác nhận"
 
-#: LabelDialog.cpp:514
-#: Menus.cpp:3555
+#: LabelDialog.cpp:514 Menus.cpp:3555
 msgid "Select a text file containing labels..."
 msgstr "Chọn một tập tin văn bản chứa các nhãn..."
 
-#: LabelDialog.cpp:518
-#: Menus.cpp:3559
+#: LabelDialog.cpp:518 Menus.cpp:3559
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "Tập tin văn bản (*.txt)|*.txt|Tất cả (*.*)|*.*"
 
-#: LabelDialog.cpp:532
-#: Menus.cpp:3571
-#: Project.cpp:1831
-#: Project.cpp:1839
+#: LabelDialog.cpp:532 Menus.cpp:3571 Project.cpp:1831 Project.cpp:1839
 #: import/ImportMIDI.cpp:31
 msgid "Could not open file: "
 msgstr "Không mở được tập tin:"
@@ -1483,13 +1424,11 @@ msgstr "Không mở được tập tin:"
 msgid "No labels to export."
 msgstr "Chưa có nhãn để có thể xuất ra."
 
-#: LabelDialog.cpp:564
-#: Menus.cpp:2172
+#: LabelDialog.cpp:564 Menus.cpp:2172
 msgid "Export Labels As:"
 msgstr "Xuất nhãn thành:"
 
-#: LabelDialog.cpp:566
-#: Menus.cpp:2170
+#: LabelDialog.cpp:566 Menus.cpp:2170
 msgid "labels.txt"
 msgstr "labels.txt"
 
@@ -1501,10 +1440,7 @@ msgstr "Nhãn mới cho dải âm"
 msgid "Enter track name"
 msgstr "Nhập tên dải âm"
 
-#: LabelDialog.cpp:701
-#: LabelDialog.h:52
-#: LabelTrack.cpp:89
-#: Menus.cpp:555
+#: LabelDialog.cpp:701 LabelDialog.h:52 LabelTrack.cpp:89 Menus.cpp:555
 msgid "&Label Track"
 msgstr "&Nhãn cho dải âm"
 
@@ -1531,24 +1467,15 @@ msgstr "Mở dự án của Audacity"
 msgid "&File"
 msgstr "&Tập tin"
 
-#: Menus.cpp:164
-msgid "&New\tCtrl+N"
-msgstr "&Mới\tCtrl+N"
-
-#: Menus.cpp:166
-msgid "&Open...\tCtrl+O"
-msgstr "&Mở...\tCtrl+O"
-
 #: Menus.cpp:171
-msgid "&Close\tCtrl+W"
-msgstr "&Đóng\tCtrl+W"
+msgid "&Close"
+msgstr "&Đóng"
 
 #: Menus.cpp:174
-msgid "&Save Project\tCtrl+S"
-msgstr "&Lưu Dự án\tCtrl+S"
+msgid "&Save Project"
+msgstr "&Lưu Dự án"
 
-#: Menus.cpp:178
-#: Project.cpp:2690
+#: Menus.cpp:178 Project.cpp:2690
 msgid "Save Project &As..."
 msgstr "Lưu &như dự án mới..."
 
@@ -1569,8 +1496,8 @@ msgid "&Import"
 msgstr "&Nhập"
 
 #: Menus.cpp:196
-msgid "&Audio...\tCtrl+Shift+I"
-msgstr "Âm t&hanh...\tCtrl+Shift+I"
+msgid "&Audio..."
+msgstr "Âm t&hanh..."
 
 #: Menus.cpp:197
 msgid "&Labels..."
@@ -1584,8 +1511,7 @@ msgstr "&MIDI..."
 msgid "&Raw Data..."
 msgstr "&Dữ liệu thô..."
 
-#: Menus.cpp:210
-#: Menus.cpp:239
+#: Menus.cpp:210 Menus.cpp:239
 msgid "Expo&rt Selection..."
 msgstr "Xuất phầ&n chọn..."
 
@@ -1601,12 +1527,11 @@ msgstr "Xuất ra &nhiều tập tin"
 msgid "Export MIDI..."
 msgstr ""
 
-#: Menus.cpp:247
-msgid "CleanSpeech C&hain..."
-msgstr "Quy trình CleanSpeec&h..."
+#: Menus.cpp:260
+msgid "Appl&y Chain..."
+msgstr "Áp dụng &quy trình..."
 
-#: Menus.cpp:248
-#: Menus.cpp:262
+#: Menus.cpp:248 Menus.cpp:262
 msgid "Edit C&hains..."
 msgstr "&Hiệu chỉnh quy trình..."
 
@@ -1617,10 +1542,6 @@ msgstr "Xuất thiết lập sẵn cho CleanS&peech..."
 #: Menus.cpp:250
 msgid "I&mport CleanSpeech Presets..."
 msgstr "Nhập th&iết lập sẵn của CleanSpeed"
-
-#: Menus.cpp:260
-msgid "Appl&y Chain..."
-msgstr "Áp dụng &quy trình..."
 
 #: Menus.cpp:267
 msgid "&Upload File..."
@@ -1635,75 +1556,72 @@ msgid "&Print..."
 msgstr "&In ấn..."
 
 #: Menus.cpp:287
-msgid "E&xit\tCtrl+Q"
-msgstr "Th&oát\tCtrl+Q"
+msgid "E&xit"
+msgstr "Th&oát"
 
-#: Menus.cpp:295
-#: toolbars/EditToolBar.cpp:76
+#: Menus.cpp:295 toolbars/EditToolBar.cpp:76
 msgid "&Edit"
 msgstr "Chỉnh &Sửa"
 
 #: Menus.cpp:299
-msgid "&Undo\tCtrl+Z"
-msgstr "&Hoãn lại\tCtrl+Z"
+msgid "&Undo"
+msgstr "&Hoãn lại"
 
-#: Menus.cpp:307
-#: prefs/KeyConfigPrefs.cpp:369
-#: toolbars/EditToolBar.cpp:146
+#: Menus.cpp:307 prefs/KeyConfigPrefs.cpp:369 toolbars/EditToolBar.cpp:146
 msgid "&Redo"
 msgstr "&Làm lại"
 
 #: Menus.cpp:320
-msgid "Cu&t\tCtrl+X"
-msgstr "Cắ&t\tCtrl+X"
+msgid "Cu&t"
+msgstr "Cắ&t"
 
 #: Menus.cpp:324
-msgid "Spl&it Cut\tCtrl+Alt+X"
-msgstr "Ch&ia và Cắt\tCtrl+Alt+X"
+msgid "Spl&it Cut"
+msgstr "Ch&ia và Cắt"
 
 #: Menus.cpp:325
-msgid "&Copy\tCtrl+C"
-msgstr "&Chép\tCtrl+C"
+msgid "&Copy"
+msgstr "&Chép"
 
 #: Menus.cpp:329
-msgid "&Paste\tCtrl+V"
-msgstr "&Dán\tCtrl+V"
+msgid "&Paste"
+msgstr "&Dán"
 
 #: Menus.cpp:333
-msgid "Tri&m\tCtrl+T"
-msgstr "Thu &gọn\tCtrl+T"
+msgid "Tri&m"
+msgstr "Thu &gọn"
 
 #: Menus.cpp:335
-msgid "&Delete\tCtrl+K"
-msgstr "&Xoá\tCtrl+K"
+msgid "&Delete"
+msgstr "&Xoá"
 
 #: Menus.cpp:336
-msgid "Split D&elete\tCtrl+Alt+K"
-msgstr "Chia &và Xoá\tCtrl+Alt+K"
+msgid "Split D&elete"
+msgstr "Chia &và Xoá"
 
 #: Menus.cpp:380
-msgid "Silence Audi&o\tCtrl+L"
+msgid "Silence Audi&o"
 msgstr ""
 
 #: Menus.cpp:339
-msgid "Sp&lit\tCtrl+I"
-msgstr "Phâ&n chia\tCtrl+I"
+msgid "Sp&lit"
+msgstr "Phâ&n chia"
 
 #: Menus.cpp:344
-msgid "Split Ne&w\tCtrl+Alt+I"
-msgstr "Chia và tạo &mới\tCtrl+Alt+I"
+msgid "Split Ne&w"
+msgstr "Chia và tạo &mới"
 
 #: Menus.cpp:349
-msgid "&Join\tCtrl+J"
-msgstr "&Ghép nối\tCtrl+j"
+msgid "&Join"
+msgstr "&Ghép nối"
 
 #: Menus.cpp:393
-msgid "Detac&h at Silences\tCtrl+Alt+J"
+msgid "Detac&h at Silences"
 msgstr ""
 
 #: Menus.cpp:352
-msgid "Duplic&ate\tCtrl+D"
-msgstr "N&hân đôi\tCtrl+D"
+msgid "Duplic&ate"
+msgstr "N&hân đôi"
 
 #: Menus.cpp:400 Menus.cpp:639
 msgid "Stereo Trac&k to Mono"
@@ -1715,80 +1633,65 @@ msgstr ""
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:367
-msgid "&Cut\tAlt+X"
-msgstr "&Cắt\tAlt+X"
+msgid "&Cut"
+msgstr "&Cắt"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:372
-msgid "&Split Cut\tShift+Alt+X"
-msgstr "Chi&a và cắt\tShift+Alt+X"
+msgid "&Split Cut"
+msgstr "Chi&a và cắt"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:377
-msgid "Co&py\tShift+Alt+C"
-msgstr "Ché&p\tShift+Alt+C"
-
-#. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:383
-msgid "&Delete\tAlt+K"
-msgstr "&Xoá\tAlt+K"
+msgid "Co&py"
+msgstr "Ché&p"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:388
-msgid "Sp&lit Delete\tShift+Alt+K"
-msgstr "Chia &và Xoá\tShift+Alt+K"
+msgid "Sp&lit Delete"
+msgstr "Chia &và Xoá"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:393
-msgid "Sile&nce\tAlt+L"
-msgstr "Chèn khoảng &lặng\tAlt+L"
+msgid "Sile&nce"
+msgstr "Chèn khoảng &lặng"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:399
-msgid "Spli&t\tAlt+I"
-msgstr "Phâ&n chia\tAlt+I"
-
-#. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:404
-msgid "&Join\tAlt+J"
-msgstr "&Ghép nối\tAlt+J"
-
-#. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:451
-msgid "Detac&h at Silences\tShift+Alt+J"
-msgstr ""
+msgid "Spli&t"
+msgstr "Phâ&n chia"
 
 #: Menus.cpp:456
 msgid "&Select"
 msgstr ""
 
 #: Menus.cpp:416
-msgid "&All\tCtrl+A"
-msgstr "&Tất\tCtrl+A"
+msgid "&All"
+msgstr "&Tất"
 
 #: Menus.cpp:417
-msgid "&None\tCtrl+Shift+A"
-msgstr "&Không gì hết\tCtrl+Shift+A"
+msgid "&None"
+msgstr "&Không gì hết"
 
 #: Menus.cpp:421
-msgid "&Left at Playback Position\t["
-msgstr "Bên &trái vị trí phát lại\t["
+msgid "&Left at Playback Position"
+msgstr "Bên &trái vị trí phát lại"
 
 #: Menus.cpp:422
-msgid "&Right at Playback Position\t]"
-msgstr "Bên &phải vị trí phát lại\t]"
+msgid "&Right at Playback Position"
+msgstr "Bên &phải vị trí phát lại"
 
 #: Menus.cpp:426
-msgid "Track &Start to Cursor\tShift+J"
+msgid "Track &Start to Cursor"
 msgstr "Từ đầu đến c&on trỏ"
 
 #: Menus.cpp:427
-msgid "Cursor to Track &End\tShift+K"
+msgid "Cursor to Track &End"
 msgstr "Con &trỏ đến hết"
 
 #: Menus.cpp:433
-msgid "Find &Zero Crossings\tZ"
-msgstr "Tìm điểm biên độ bằng &không\tZ"
+msgid "Find &Zero Crossings"
+msgstr "Tìm điểm biên độ bằng &không"
 
 #: Menus.cpp:476
 msgid "Mo&ve Cursor"
@@ -1803,11 +1706,11 @@ msgid "to Selection En&d"
 msgstr "đến cuố&i vùng chọn"
 
 #: Menus.cpp:442
-msgid "to Track &Start\tJ"
+msgid "to Track &Start"
 msgstr "đến đầ&u dải"
 
 #: Menus.cpp:443
-msgid "to Track &End\tK"
+msgid "to Track &End"
 msgstr "đến &cuối dải"
 
 #: Menus.cpp:450
@@ -1830,29 +1733,8 @@ msgstr "&Khoá"
 msgid "&Unlock"
 msgstr "&Mở khoá"
 
-#: Menus.cpp:470
-msgid "Turn Snap-To On"
-msgstr "Bật chế độ dính"
-
-#: Menus.cpp:471
-msgid "Turn Snap-To Off"
-msgstr "Tắt chế độ dính"
-
-#: Menus.cpp:472
-msgid "Turn Grid Snap On"
-msgstr "Bật chế độ dính vào toạ độ"
-
-#: Menus.cpp:473
-msgid "Turn Grid Snap Off"
-msgstr "Tắt chế độ dính vào toạ độ"
-
-#. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
 #: Menus.cpp:519
-msgid "Pre&ferences...\tCtrl+,"
-msgstr ""
-
-#: Menus.cpp:523
-msgid "Pre&ferences...\tCtrl+P"
+msgid "Pre&ferences..."
 msgstr ""
 
 #: Menus.cpp:492
@@ -1860,36 +1742,36 @@ msgid "&View"
 msgstr "&Xem"
 
 #: Menus.cpp:494
-msgid "Zoom &In\tCtrl+1"
-msgstr "Phóng &To\tCtrl+1"
+msgid "Zoom &In"
+msgstr "Phóng &To"
 
 #: Menus.cpp:497
-msgid "Zoom &Normal\tCtrl+2"
-msgstr "Đúng &Cỡ\tCtrl+2"
+msgid "Zoom &Normal"
+msgstr "Đúng &Cỡ"
 
 #: Menus.cpp:498
-msgid "Zoom &Out\tCtrl+3"
-msgstr "Thu &Nhỏ\tCtrl+3"
+msgid "Zoom &Out"
+msgstr "Thu &Nhỏ"
 
 #: Menus.cpp:501
-msgid "&Fit in Window\tCtrl+F"
-msgstr "&Vừa cửa sổ\tCtrl+F"
+msgid "&Fit in Window"
+msgstr "&Vừa cửa sổ"
 
 #: Menus.cpp:502
-msgid "Fit &Vertically\tCtrl+Shift+F"
-msgstr "Vừa chiều n&gang\tCtrl+Shift+F"
+msgid "Fit &Vertically"
+msgstr "Vừa chiều n&gang"
 
 #: Menus.cpp:503
-msgid "&Zoom to Selection\tCtrl+E"
-msgstr "Vừ&a vùng chọn\tCtrl+E"
+msgid "&Zoom to Selection"
+msgstr "Vừ&a vùng chọn"
 
 #: Menus.cpp:506
-msgid "&Collapse All Tracks\tCtrl+Shift+C"
-msgstr "&Gộp các dải âm lại\tCtrl+Shift+C"
+msgid "&Collapse All Tracks"
+msgstr "&Gộp các dải âm lại"
 
 #: Menus.cpp:507
-msgid "E&xpand All Tracks\tCtrl+Shift+X"
-msgstr "&Bung các dải âm ra\tCtrl+Shift+X"
+msgid "E&xpand All Tracks"
+msgstr "&Bung các dải âm ra"
 
 #: Menus.cpp:510
 msgid "&Show Clipping"
@@ -1950,40 +1832,40 @@ msgstr "Đơn giản"
 msgid "T&ransport"
 msgstr ""
 
-#: Menus.cpp:591
-msgid "Play\tSpace"
+#: toolbars/ControlToolBar.cpp:177
+msgid "Play"
+msgstr "Phát"
+
+#: Menus.cpp:593
+msgid "&Loop Play"
 msgstr ""
 
 #: Menus.cpp:593
-msgid "&Loop Play\tShift+Space"
-msgstr ""
-
-#: Menus.cpp:593
-msgid "&Pause\tP"
+msgid "&Pause"
 msgstr ""
 
 #: Menus.cpp:596
-msgid "&Stop\tSpace"
+msgid "&Stop"
 msgstr ""
 
 #: Menus.cpp:799
-msgid "Skip to Start\tHome"
-msgstr "Nhảy về đầu\tHome"
+msgid "Skip to Start"
+msgstr "Nhảy về đầu"
 
 #: Menus.cpp:800
-msgid "Skip to End\tEnd"
-msgstr "Chuyển về cuối\tEnd"
+msgid "Skip to End"
+msgstr "Chuyển về cuối"
 
 #: Menus.cpp:600
-msgid "&Record\tR"
+msgid "&Record"
 msgstr ""
 
 #: Menus.cpp:602
-msgid "&Timer Record...\tShift+T"
+msgid "&Timer Record..."
 msgstr ""
 
 #: Menus.cpp:604
-msgid "Append Record\tShift+R"
+msgid "Append Record"
 msgstr ""
 
 #: Menus.cpp:607
@@ -2011,15 +1893,14 @@ msgid "Add &New"
 msgstr ""
 
 #: Menus.cpp:553
-msgid "&Audio Track\tCtrl+Shift+N"
-msgstr "&Dải âm\tCtrl+Shift+N"
+msgid "&Audio Track"
+msgstr "&Dải âm"
 
 #: Menus.cpp:554
 msgid "&Stereo Track"
 msgstr "Dải &stereo"
 
-#: Menus.cpp:556
-#: TimeTrack.cpp:44
+#: Menus.cpp:556 TimeTrack.cpp:44
 msgid "&Time Track"
 msgstr "Dải &thời gian"
 
@@ -2028,8 +1909,8 @@ msgid "Mi&x and Render"
 msgstr "Trộn và &Diễn tả"
 
 #: Menus.cpp:572
-msgid "Mix and Render to New Track\tCtrl+Shift+M"
-msgstr "Trộn và Diễn tả sang Dải mới\tCtrl+Shift+M"
+msgid "Mix and Render to New Track"
+msgstr "Trộn và Diễn tả sang Dải mới"
 
 #: Menus.cpp:576
 msgid "&Resample..."
@@ -2040,12 +1921,12 @@ msgid "Remo&ve Tracks"
 msgstr "&Xoá Dải âm"
 
 #: Menus.cpp:592
-msgid "&Mute All Tracks\tCtrl+U"
-msgstr "&Tắt tiếng mọi dải âm\tCtrl+U"
+msgid "&Mute All Tracks"
+msgstr "&Tắt tiếng mọi dải âm"
 
 #: Menus.cpp:593
-msgid "&UnMute All Tracks\tCtrl+Shift+U"
-msgstr "&Bật tiếng mọi dải âm\tCtrl+Shift+X"
+msgid "&UnMute All Tracks"
+msgstr "&Bật tiếng mọi dải âm"
 
 #: Menus.cpp:597
 msgid "Align with &Zero"
@@ -2091,17 +1972,17 @@ msgstr ""
 msgid "Synchronize MIDI with Audio"
 msgstr ""
 
-#: Menus.cpp:706
-msgid "Link Audio and Label Tracks"
+#: Menus.cpp:686
+msgid "&Link Audio and Label Tracks"
 msgstr ""
 
-#: Menus.cpp:623
-msgid "Add &Label At Selection\tCtrl+B"
-msgstr "Thêm &Nhãn cho vùng chọn\tCtrl+B"
+#: Menus.cpp:690
+msgid "Add Label At &Selection"
+msgstr ""
 
 #: Menus.cpp:624
-msgid "Add Label At &Playback Position\tCtrl+M"
-msgstr "Thêm nhãn từ vị trí &phát lại\tCtrl+M"
+msgid "Add Label At &Playback Position"
+msgstr "Thêm nhãn từ vị trí &phát lại"
 
 #: Menus.cpp:716
 msgid "S&ort tracks"
@@ -2127,20 +2008,19 @@ msgstr ""
 msgid "Effe&ct"
 msgstr "&Hiệu ứng"
 
-#: Menus.cpp:670
-msgid "Repeat Last Effect\tCtrl+R"
-msgstr "Lặp lại hiệu ứng trước\tCtrl+R"
-
 #: Menus.cpp:702
 msgid "&Analyze"
 msgstr "&Phân tích"
+
+#: Menus.cpp:874
+msgid "Contrast..."
+msgstr ""
 
 #: Menus.cpp:704
 msgid "Plot Spectrum..."
 msgstr "Vẽ phổ tần số..."
 
-#: Menus.cpp:737
-#: Menus.cpp:740
+#: Menus.cpp:737 Menus.cpp:740
 msgid "&Help"
 msgstr "Trợ &giúp"
 
@@ -2152,9 +2032,9 @@ msgstr "Thông tin về &Audacity CleanSpeech..."
 msgid "&Show Welcome Message..."
 msgstr "&Xin chào..."
 
-#: Menus.cpp:748
-msgid "&Index..."
-msgstr "Chỉ &mục..."
+#: Menus.cpp:958
+msgid "&Help..."
+msgstr ""
 
 #: Menus.cpp:959
 msgid "Show &Log..."
@@ -2172,181 +2052,149 @@ msgstr "&Kiểm thử..."
 msgid "&Audio Device Info..."
 msgstr "&Thông tin phần cứng"
 
-#: Menus.cpp:983
-msgid "Cycle backward through toolbars and Track View\tCtrl+Shift+F6"
+#: Menus.cpp:986
+msgid "Move backward from toolbars to tracks"
 msgstr ""
 
-#: Menus.cpp:984
-msgid "Cycle forward through toolbars and Track View\tCtrl+F6"
+#: Menus.cpp:987
+msgid "Move forward from toolbars to tracks"
 msgstr ""
 
 #: Menus.cpp:774
-msgid "Selection Tool\tF1"
-msgstr "Công cụ chọn\tF1"
+msgid "Selection Tool"
+msgstr "Công cụ chọn"
 
 #: Menus.cpp:775
-msgid "Envelope Tool\tF2"
-msgstr "Công cụ biên độ\tF2"
+msgid "Envelope Tool"
+msgstr "Công cụ biên độ"
 
 #: Menus.cpp:776
-msgid "Draw Tool\tF3"
-msgstr "Công cụ vẽ\tF3"
+msgid "Draw Tool"
+msgstr "Công cụ vẽ"
 
 #: Menus.cpp:777
-msgid "Zoom Tool\tF4"
-msgstr "Công cụ thu phóng\tF4"
+msgid "Zoom Tool"
+msgstr "Công cụ thu phóng"
 
 #: Menus.cpp:778
-msgid "Time Shift Tool\tF5"
-msgstr "Công cụ di chuyển\tF5"
+msgid "Time Shift Tool"
+msgstr "Công cụ di chuyển"
 
 #: Menus.cpp:779
-msgid "Multi Tool\tF6"
-msgstr "Đa năng\tF6"
+msgid "Multi Tool"
+msgstr "Đa năng"
 
 #: Menus.cpp:781
-msgid "Next Tool\tD"
-msgstr "Công cụ kế\tD"
+msgid "Next Tool"
+msgstr "Công cụ kế"
 
 #: Menus.cpp:782
-msgid "Previous Tool\tA"
-msgstr "Công cụ trước\tA"
+msgid "Previous Tool"
+msgstr "Công cụ trước"
 
 #: Menus.cpp:997
-msgid "Play/Stop\tSpace"
+msgid "Play/Stop"
 msgstr ""
-
-#: Menus.cpp:785
-msgid "Stop\tS"
-msgstr "Dừng\tS"
-
-#: Menus.cpp:786
-msgid "Pause\tP"
-msgstr "Tạm dừng\tP"
-
-#: Menus.cpp:787
-msgid "Record\tR"
-msgstr "Thu\tR"
-
-#: Menus.cpp:788
-msgid "Record Append\tShift+R"
-msgstr "Ghi tiếp vào cuối\tShift+R"
 
 #: Menus.cpp:790
-msgid "Play/Stop and Set Cursor\tShift+A"
-msgstr "Phát/Dừng và đặt con trỏ\tShift+A"
+msgid "Play/Stop and Set Cursor"
+msgstr "Phát/Dừng và đặt con trỏ"
 
 #: Menus.cpp:793
-msgid "Play One Second\t1"
-msgstr "Phát đúng 1 giây\t1"
+msgid "Play One Second"
+msgstr "Phát đúng 1 giây"
 
 #: Menus.cpp:794
-msgid "Play To Selection\tB"
-msgstr "Phát đến vùng chọn\tB"
-
-#: Menus.cpp:795
-msgid "Play Looped\tL"
-msgstr "Phát nhiều lần\tL"
-
-#: Menus.cpp:1009
-msgid "Play Looped\tShift+Space"
-msgstr ""
+msgid "Play To Selection"
+msgstr "Phát đến vùng chọn"
 
 #: Menus.cpp:797
-msgid "Play Cut Preview\tC"
-msgstr "Phát Cắt Xem trước\tC"
+msgid "Play Cut Preview"
+msgstr "Phát Cắt Xem trước"
 
 #: Menus.cpp:802
-msgid "Selection to Start\tShift+Home"
-msgstr "Chọn về đầu\tShift+Home"
+msgid "Selection to Start"
+msgstr "Chọn về đầu"
 
 #: Menus.cpp:803
-msgid "Selection to End\tShift+End"
-msgstr "Chọn đến hết\tShift+End"
+msgid "Selection to End"
+msgstr "Chọn đến hết"
 
 #: Menus.cpp:805
-msgid "DeleteKey\tBackspace"
-msgstr "Xoá\tBackspace"
+msgid "DeleteKey"
+msgstr "Xoá"
 
 #: Menus.cpp:810
-msgid "DeleteKey2\tDelete"
-msgstr "Xoá2\tDelete"
+msgid "DeleteKey2"
+msgstr "Xoá2"
 
-#: Menus.cpp:816
-msgid "Seek left short period during playback\tLeft"
-msgstr "Quay lui từng đoạn nhỏ khi phát\tLeft"
-
-#: Menus.cpp:817
-msgid "Seek right short period during playback\tRight"
-msgstr "Chuyển tới từng đoạn khi phát\tRight"
-
-#: Menus.cpp:818
-msgid "Seek left long period during playback\tShift+Left"
-msgstr "Quay lui từng đoạn dài khi phát\tShift+Left"
-
-#: Menus.cpp:819
-msgid "Seek right long period during playback\tShift+Right"
-msgstr "Chuyển tới từng đoạn dài khi phát\tShift+Right"
-
-#: Menus.cpp:823
-msgid "Move Focus to Previous Track\tUp"
-msgstr "Chuyển lên dải trên\tUp"
-
-#: Menus.cpp:824
-msgid "Move Focus to Previous and Change Selection\tShift+Up"
-msgstr "Chuyển lên dải trên kèm theo vùng chọn\tShift+Up"
-
-#: Menus.cpp:825
-msgid "Move Focus to Next Track\tDown"
-msgstr "Chuyển xuống dải dưới\tDown"
-
-#: Menus.cpp:826
-msgid "Move Focus to Next and Change Selection\tShift+Down"
-msgstr "Chuyển xuống dải dưới kèm theo vùng chọn\tShift+Down"
-
-#: Menus.cpp:827
-msgid "Toggle Focused Track\tReturn"
-msgstr "Chọn/thôi chọn dải\tReturn"
-
-#: Menus.cpp:828
-msgid "Toggle Focused Track\tNUMPAD_ENTER"
-msgstr "Chọn/thôi chọn dải\tNUMPAD_ENTER"
-
-#: Menus.cpp:1042
-msgid "Toggle Focused Track\tCtrl+Space"
+#: Menus.cpp:1018
+msgid "Short seek left during playback"
 msgstr ""
 
+#: Menus.cpp:1019
+msgid "Short seek right during playback"
+msgstr ""
+
+#: Menus.cpp:1020
+msgid "Long seek left during playback"
+msgstr ""
+
+#: Menus.cpp:1021
+msgid "Long Seek right during playback"
+msgstr ""
+
+#: Menus.cpp:823
+msgid "Move Focus to Previous Track"
+msgstr "Chuyển lên dải trên"
+
+#: Menus.cpp:1027
+msgid "Move Focus to Previous and Select"
+msgstr ""
+
+#: Menus.cpp:825
+msgid "Move Focus to Next Track"
+msgstr "Chuyển xuống dải dưới"
+
+#: Menus.cpp:1029
+msgid "Move Focus to Next and Select"
+msgstr ""
+
+#: Menus.cpp:827
+msgid "Toggle Focused Track"
+msgstr "Chọn/thôi chọn dải"
+
 #: Menus.cpp:831
-msgid "Cursor Left\tLeft"
-msgstr "Con trỏ sang trái\tLeft"
+msgid "Cursor Left"
+msgstr "Con trỏ sang trái"
 
 #: Menus.cpp:832
-msgid "Cursor Right\tRight"
-msgstr "Con trỏ sang phải\tRight"
+msgid "Cursor Right"
+msgstr "Con trỏ sang phải"
 
 #: Menus.cpp:833
-msgid "Cursor Short Jump Left\t,"
-msgstr "Con trỏ sang trái đoạn ngắn\t,"
+msgid "Cursor Short Jump Left"
+msgstr "Con trỏ sang trái đoạn ngắn"
 
 #: Menus.cpp:834
-msgid "Cursor Short Jump Right\t."
-msgstr "Con trỏ sang phải đoạn ngắn\t."
+msgid "Cursor Short Jump Right"
+msgstr "Con trỏ sang phải đoạn ngắn"
 
 #: Menus.cpp:835
-msgid "Cursor Long Jump Left\tShift+,"
-msgstr "Con trỏ sang trái đoạn dài\tShift+,"
+msgid "Cursor Long Jump Left"
+msgstr "Con trỏ sang trái đoạn dài"
 
 #: Menus.cpp:836
-msgid "Cursor Long Jump Right\tShift+."
-msgstr "Con trỏ sang phải đoạn dài\tShift+."
+msgid "Cursor Long Jump Right"
+msgstr "Con trỏ sang phải đoạn dài"
 
 #: Menus.cpp:838
-msgid "Selection Extend Left\tShift+Left"
-msgstr "Vùng chọn nới sang trái\tShift+Left"
+msgid "Selection Extend Left"
+msgstr "Vùng chọn nới sang trái"
 
 #: Menus.cpp:839
-msgid "Selection Extend Right\tShift+Right"
-msgstr "Vùng chọn nới sang phải\tShift+Right"
+msgid "Selection Extend Right"
+msgstr "Vùng chọn nới sang phải"
 
 #: Menus.cpp:841
 msgid "Set (or Extend) Left Selection"
@@ -2357,52 +2205,52 @@ msgid "Set (or Extend) Right Selection"
 msgstr "Đặt (hoặc Nới) Vùng chọn sang phải"
 
 #: Menus.cpp:844
-msgid "Selection Contract Left\tCtrl+Shift+Right"
-msgstr "Co bên trái Vùng chọn\tCtrl+Shift+Right"
+msgid "Selection Contract Left"
+msgstr "Co bên trái Vùng chọn"
 
 #: Menus.cpp:845
-msgid "Selection Contract Right\tCtrl+Shift+Left"
-msgstr "Co bên phải vùng chọn\tCtrl+Shift+Left"
+msgid "Selection Contract Right"
+msgstr "Co bên phải vùng chọn"
 
 #: Menus.cpp:847
-msgid "Change pan on focused track\tShift+P"
-msgstr "Thay đổi cân bằng trái/phải của dải\tShift+P"
+msgid "Change pan on focused track"
+msgstr "Thay đổi cân bằng trái/phải của dải"
 
 #: Menus.cpp:848
-msgid "Pan left on focused track\tAlt+Shift+Left"
-msgstr "Dịch cân bằng sang trái\tAlt+Shift+Left"
+msgid "Pan left on focused track"
+msgstr "Dịch cân bằng sang trái"
 
 #: Menus.cpp:849
-msgid "Pan right on focused track\tAlt+Shift+Right"
-msgstr "Dịch cân bằng sang phải\tAlt+Shift+Right"
+msgid "Pan right on focused track"
+msgstr "Dịch cân bằng sang phải"
 
 #: Menus.cpp:850
-msgid "Change gain on focused track\tShift+G"
-msgstr "Thay đổi độ khuếch đại\tShift+G"
+msgid "Change gain on focused track"
+msgstr "Thay đổi độ khuếch đại"
 
 #: Menus.cpp:851
-msgid "Increase gain on focused track\tAlt+Shift+Up"
-msgstr "Tăng độ khuếch đại biên độ\tAlt+Shift+Up"
+msgid "Increase gain on focused track"
+msgstr "Tăng độ khuếch đại biên độ"
 
 #: Menus.cpp:852
-msgid "Decrease gain on focused track\tAlt+Shift+Down"
-msgstr "Giảm độ khuếch đại\tAlt+Shift+Down"
+msgid "Decrease gain on focused track"
+msgstr "Giảm độ khuếch đại"
 
 #: Menus.cpp:853
-msgid "Open menu on focused track\tShift+M"
-msgstr "Mở trình đơn trên dải hiện hành\tShift+M"
+msgid "Open menu on focused track"
+msgstr "Mở trình đơn trên dải hiện hành"
 
 #: Menus.cpp:854
-msgid "Mute/Unmute focused track\tShift+U"
-msgstr "Tắt/bật âm thanh của dải hiện hành\tShift+U"
+msgid "Mute/Unmute focused track"
+msgstr "Tắt/bật âm thanh của dải hiện hành"
 
 #: Menus.cpp:855
-msgid "Solo/Unsolo focused track\tShift+S"
-msgstr "Bật/tắt chế độ Solo của dải hiện hành\tShift+S"
+msgid "Solo/Unsolo focused track"
+msgstr "Bật/tắt chế độ Solo của dải hiện hành"
 
 #: Menus.cpp:856
-msgid "Close focused track\tShift+C"
-msgstr "Đóng dải hiện hành\tShift+C"
+msgid "Close focused track"
+msgstr "Đóng dải hiện hành"
 
 #: Menus.cpp:858
 msgid "Snap To On"
@@ -2413,7 +2261,35 @@ msgid "Snap To Off"
 msgstr "Tắt chế độ dính"
 
 #: Menus.cpp:1071
-msgid "Full screen on/off\tF11"
+msgid "Full screen on/off"
+msgstr ""
+
+#: Menus.cpp:1067
+msgid "Adjust output gain"
+msgstr ""
+
+#: Menus.cpp:1068
+msgid "Increase output gain"
+msgstr ""
+
+#: Menus.cpp:1069
+msgid "Decrease output gain"
+msgstr ""
+
+#: Menus.cpp:1070
+msgid "Adjust input gain"
+msgstr ""
+
+#: Menus.cpp:1071
+msgid "Increase input gain"
+msgstr ""
+
+#: Menus.cpp:1072
+msgid "Decrease input gain"
+msgstr ""
+
+#: Menus.cpp:1074
+msgid "Adjust input source"
 msgstr ""
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
@@ -2474,8 +2350,8 @@ msgstr "Bạn phải chọn 1 dải âm trước đã!"
 
 #: Menus.cpp:2035
 #, c-format
-msgid "Repeat %s\tCtrl+R"
-msgstr "Lặp lại %s\tCtrl+R"
+msgid "Repeat %s"
+msgstr "Lặp lại %s"
 
 #: Menus.cpp:2166
 msgid "There are no label tracks to export."
@@ -2506,9 +2382,7 @@ msgstr "Không thể huỷ bước"
 msgid "Nothing to redo"
 msgstr "Không thể làm lại"
 
-#: Menus.cpp:2366
-#: TrackPanel.cpp:605
-#: toolbars/EditToolBar.cpp:133
+#: Menus.cpp:2366 TrackPanel.cpp:605 toolbars/EditToolBar.cpp:133
 msgid "Cut"
 msgstr "Cắt"
 
@@ -2524,10 +2398,7 @@ msgstr "Chia và Cắt"
 msgid "Split-cut to the clipboard"
 msgstr "Chia rồi cắt vào bảng kẹp tạm"
 
-#: Menus.cpp:2469
-#: Menus.cpp:2540
-#: Menus.cpp:2634
-#: TrackPanel.cpp:607
+#: Menus.cpp:2469 Menus.cpp:2540 Menus.cpp:2634 TrackPanel.cpp:607
 #: toolbars/EditToolBar.cpp:137
 msgid "Paste"
 msgstr "Dán"
@@ -2536,8 +2407,7 @@ msgstr "Dán"
 msgid "Pasted text from the clipboard"
 msgstr "Đã dán văn bản từ bảng kẹp tạm"
 
-#: Menus.cpp:2540
-#: Menus.cpp:2634
+#: Menus.cpp:2540 Menus.cpp:2634
 msgid "Pasted from the clipboard"
 msgstr "Đã dán từ bảng kẹp tạm"
 
@@ -2549,8 +2419,7 @@ msgstr ""
 msgid "Copying stereo audio into a mono track is not allowed."
 msgstr "Không thể chép âm thanh stereo sang dải mono."
 
-#: Menus.cpp:2670
-#: toolbars/EditToolBar.cpp:139
+#: Menus.cpp:2670 toolbars/EditToolBar.cpp:139
 msgid "Trim"
 msgstr "Thu gọn"
 
@@ -2590,8 +2459,7 @@ msgstr "Ghép nối"
 msgid "Silenced selected tracks for %.2f seconds at %.2f"
 msgstr "Đã tạo khoảng lặng dài %.2f giây tại %.2f vào dải hiện hành"
 
-#: Menus.cpp:2771
-#: toolbars/EditToolBar.cpp:141
+#: Menus.cpp:2771 toolbars/EditToolBar.cpp:141
 msgid "Silence"
 msgstr "Im lặng"
 
@@ -2675,8 +2543,7 @@ msgstr "Bỏ ghép nối nhãn"
 msgid "Disjoined labeled regions"
 msgstr "Đã bỏ ghép nối vùng có nhãn"
 
-#: Menus.cpp:2947
-#: TrackPanel.cpp:6121
+#: Menus.cpp:2947 TrackPanel.cpp:6121
 msgid "Split"
 msgstr "Chia"
 
@@ -2691,15 +2558,6 @@ msgstr "Phần chia tạo thành dải mới"
 #: Menus.cpp:3124
 msgid "Split at labels"
 msgstr "Chia tại nhãn"
-
-#: Menus.cpp:3425
-msgid "To plot the spectrum, all selected tracks must be the same sample rate."
-msgstr "Để vẽ phổ, tất cả các dải được chọn phải có cùng tốc độ lấy mẫu"
-
-#: Menus.cpp:3451
-#, c-format
-msgid "Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."
-msgstr "Bạn chọn quá nhiều dữ liệu. Audacity sẽ chỉ phân tích %.1f giây đầu tiên của phần chọn."
 
 #: Menus.cpp:3584
 #, c-format
@@ -2739,8 +2597,7 @@ msgstr "Tất cả (*)|*"
 msgid "Edit the metadata tags"
 msgstr "Sửa các thẻ dữ liệu đặc tả"
 
-#: Menus.cpp:3669
-#: export/Export.cpp:298
+#: Menus.cpp:3669 export/Export.cpp:298
 msgid "Edit Metadata"
 msgstr "Sửa dữ liệu đặc tả"
 
@@ -2767,8 +2624,7 @@ msgstr "Đã trộn và diễn tả %d dải thành một dải stereo mới"
 msgid "Mixed and rendered %d tracks into one new mono track"
 msgstr "Đã trộn và diễn tả %d dải thành một dải mono mới"
 
-#: Menus.cpp:3736
-#: Mix.cpp:120
+#: Menus.cpp:3736 Mix.cpp:120
 msgid "&Mix and Render"
 msgstr "&Trộn và Diễn tả"
 
@@ -2820,10 +2676,7 @@ msgstr ""
 msgid "Created new audio track"
 msgstr "Tạo dải âm mới"
 
-#: Menus.cpp:3950
-#: Menus.cpp:3973
-#: Menus.cpp:3988
-#: Menus.cpp:4008
+#: Menus.cpp:3950 Menus.cpp:3973 Menus.cpp:3988 Menus.cpp:4008
 msgid "New Track"
 msgstr "Dải âm mới"
 
@@ -2859,8 +2712,7 @@ msgstr "Lưu tập tin thiết lập sẵn cho CleenSpeech:"
 msgid "CleanSpeech Presets (*.csp)|*.csp"
 msgstr "Thiết lập sẵn CleanSpeech (*.csp)|*.csp"
 
-#: Menus.cpp:4123
-#: export/Export.cpp:515
+#: Menus.cpp:4123 export/Export.cpp:515
 msgid "Sorry, pathnames longer than 256 characters not supported."
 msgstr "Không cấp nhận đường dẫn dài hơn 256 chữ."
 
@@ -2868,8 +2720,7 @@ msgstr "Không cấp nhận đường dẫn dài hơn 256 chữ."
 msgid "Problem encountered exporting presets."
 msgstr "Lỗi xảy ra khi xuất thiết lập sẵn."
 
-#: Menus.cpp:4170
-#: export/Export.cpp:408
+#: Menus.cpp:4170 export/Export.cpp:408
 msgid "Unable to export"
 msgstr "Không thể xuất ra tập tin"
 
@@ -2881,9 +2732,7 @@ msgstr "Xoá bỏ dải âm"
 msgid "Removed audio track(s)"
 msgstr "Đã xoá bỏ dải âm"
 
-#: Menus.cpp:4508
-#: Menus.cpp:4527
-#: export/ExportMP3.cpp:1926
+#: Menus.cpp:4508 Menus.cpp:4527 export/ExportMP3.cpp:1926
 msgid "Resample"
 msgstr "Đổi tốc độ lấy mẫu"
 
@@ -2908,8 +2757,7 @@ msgstr "Đổi tốc độ lấy mẫu cho dải âm"
 msgid "Resampled audio track(s)"
 msgstr "Đã thay đổi tốc độ lấy mẫu cho dải âm"
 
-#: Mix.cpp:94
-#: Mix.cpp:101
+#: Mix.cpp:94 Mix.cpp:101
 msgid "Mix"
 msgstr "Trộn"
 
@@ -2929,6 +2777,10 @@ msgstr "Có lỗi xảy ra khi in."
 msgid "Print"
 msgstr "In"
 
+#: Project.cpp:669
+msgid "Repeat Last Effect"
+msgstr ""
+
 #: Project.cpp:636
 msgid "Main Mix"
 msgstr "Bộ trộn chính"
@@ -2942,14 +2794,11 @@ msgstr "Chào bạn, bạn đang dùng Audacity phiên bản %s"
 msgid "(Recovered)"
 msgstr "(Đã phục hồi)"
 
-#: Project.cpp:1482
-#: TrackPanel.cpp:804
-#: toolbars/ControlToolBar.cpp:191
+#: Menus.cpp:787
 msgid "Record"
 msgstr "Thu"
 
-#: Project.cpp:1482
-#: TrackPanel.cpp:804
+#: Project.cpp:1482 TrackPanel.cpp:804
 msgid "Recorded Audio"
 msgstr "Đã thu âm"
 
@@ -2975,9 +2824,9 @@ msgstr "\n"
 msgid "Save changes?"
 msgstr "Lưu các thay đổi?"
 
-#: Project.cpp:1694
-msgid "All files|*.*|All supported files|"
-msgstr "Mọi tập tin|*.*|Mọi tập tin được hỗ trơ|"
+#: Project.cpp:1925
+msgid "All files|*|All supported files|"
+msgstr ""
 
 #: Project.cpp:1719
 msgid "Select one or more audio files..."
@@ -2987,8 +2836,7 @@ msgstr "Chọn một hoặc nhiều tập tin âm thanh..."
 msgid "Audacity projects|*.aup|"
 msgstr "Dự án Audacity|*.aup|"
 
-#: Project.cpp:1799
-#: Project.cpp:2186
+#: Project.cpp:1799 Project.cpp:2186
 #, c-format
 msgid "This file was saved by Audacity %s, a much\n"
 "older version.  The format has changed.\n"
@@ -3010,13 +2858,22 @@ msgstr "Audacity %s đã lưu tập tin này.\n"
 msgid "1.0 or earlier"
 msgstr "1.0 trở xuống"
 
-#: Project.cpp:1806
-#: Project.cpp:2198
+#: Project.cpp:1806 Project.cpp:2198
 msgid "Opening old project file"
 msgstr "Mở tập tin dự án cũ"
 
-#: Project.cpp:1832
-#: Project.cpp:1840
+#: Project.cpp:2073
+msgid "You are trying to open an automatically created backup file.\n"
+"Doing this may result in severe data loss.\n"
+"\n"
+"Please open the actual Audacity project file instead."
+msgstr ""
+
+#: Project.cpp:2074
+msgid "Backup file detected"
+msgstr ""
+
+#: Project.cpp:1832 Project.cpp:1840
 msgid "Error opening file"
 msgstr "Lỗi khi mở tập tin"
 
@@ -3051,8 +2908,7 @@ msgstr "Phục hồi"
 msgid "Project checker repaired file"
 msgstr "Quá trình kiểm tra dự án đã sửa lại các tập tin"
 
-#: Project.cpp:2001
-#: effects/Repair.h:29
+#: Project.cpp:2001 effects/Repair.h:29
 msgid "Repair"
 msgstr "Sửa"
 
@@ -3074,15 +2930,15 @@ msgstr "Audacity %s đã lưu tập tin này.\n"
 msgid "Can't open project file"
 msgstr "Không mở được tập tin dự án"
 
-#: Project.cpp:2193
+#: Project.cpp:2484
 #, c-format
 msgid "This file was saved by Audacity %s.\n"
-"You can open the file with this version of Audacity, but if you save it with this version you will no longer be able to open it in older versions.\n"
+"\n"
+"Audacity can open and save this file, but saving it in this version\n"
+"will then prevent any 1.2 or earlier version opening it.\n"
 "\n"
 "Open this file now?"
-msgstr "Audacity %s đã lưu tập tin này.\n"
-"Phiên bản Audacity này có thể mở nó, nhưng nếu bạn lưu lại dự án bằng phiên bản này, bạn không thể mở tập tin bằng phiên bản trước được nữa.\n"
-"Bạn có muốn mở tập tin này không?"
+msgstr ""
 
 #: Project.cpp:2537
 msgid "Your project is now empty.\n"
@@ -3099,16 +2955,21 @@ msgstr ""
 msgid "Warning empty project"
 msgstr ""
 
-#: Project.cpp:2591
+#: Project.cpp:2792
 #, c-format
 msgid "Could not save project. Perhaps %s \n"
-"is not writeable or the disk is full."
+"is not writable or the disk is full."
 msgstr ""
 
-#: Project.cpp:2428
-#: Project.cpp:2442
+#: Project.cpp:2428 Project.cpp:2442
 msgid "Error saving project"
 msgstr "Có lỗi khi lưu dự án"
+
+#: Project.cpp:2818 Project.cpp:3919 Tags.cpp:1203
+#: effects/Equalization.cpp:1098
+#, c-format
+msgid "Couldn't write to file \"%s\": %s"
+msgstr ""
 
 #: Project.cpp:2504
 #, c-format
@@ -3120,16 +2981,12 @@ msgstr "Đã lưu %s"
 msgid "Imported '%s'"
 msgstr "Đã nhập '%s'"
 
-#: Menus.cpp:3649
-#: Project.cpp:2587
-#: Project.cpp:2612
-#: import/ImportPCM.cpp:440
+#: Menus.cpp:3649 Project.cpp:2587 Project.cpp:2612 import/ImportPCM.cpp:440
 #: import/ImportPCM.cpp:484
 msgid "Import"
 msgstr "Nhập"
 
-#: Project.cpp:2639
-#: Project.cpp:2647
+#: Project.cpp:2639 Project.cpp:2647
 msgid "Error importing"
 msgstr "Có lỗi khi nhập"
 
@@ -3172,8 +3029,7 @@ msgstr "Tạo dự án mới"
 msgid "Deleted %.2f seconds at t=%.2f"
 msgstr "Đã xoá %.2f giây tại t=%.2f"
 
-#: Project.cpp:2859
-#: effects/Equalization.cpp:1262
+#: Project.cpp:2859 effects/Equalization.cpp:1262
 #: effects/Equalization.cpp:2593
 msgid "Delete"
 msgstr "Xoá"
@@ -3254,8 +3110,7 @@ msgstr "Libsamplerate viết bởi Erik de Castro Lopo"
 msgid "Libsamplerate error: %d\n"
 msgstr "Lỗi thư viện Libsamplerate: %d\n"
 
-#: Resample.cpp:240
-#: Resample.cpp:250
+#: Resample.cpp:240 Resample.cpp:250
 msgid "Resampling disabled."
 msgstr "Không lấy mẫu lại."
 
@@ -3274,6 +3129,163 @@ msgstr "24-bit PCM"
 msgid "32-bit float"
 msgstr "32-bit float"
 
+#: Screenshot.cpp:279
+msgid "Screen Capture Frame"
+msgstr ""
+
+#: Screenshot.cpp:316
+msgid "Choose location to save files"
+msgstr ""
+
+#: Screenshot.cpp:326
+msgid "Save images to:"
+msgstr ""
+
+#: export/ExportMultiple.cpp:216 prefs/DirectoriesPrefs.cpp:92
+msgid "Choose..."
+msgstr "Chọn..."
+
+#: Screenshot.cpp:334
+msgid "Capture entire window or screen"
+msgstr ""
+
+#: Screenshot.cpp:338
+msgid "Resize Small"
+msgstr ""
+
+#: Screenshot.cpp:339
+msgid "Resize Large"
+msgstr ""
+
+#: Screenshot.cpp:342
+msgid "Blue Bkgnd"
+msgstr ""
+
+#: Screenshot.cpp:346
+msgid "White Bkgnd"
+msgstr ""
+
+#: Screenshot.cpp:353
+msgid "Capture Window Only"
+msgstr ""
+
+#: Screenshot.cpp:354
+msgid "Capture Full Window"
+msgstr ""
+
+#: Screenshot.cpp:355
+msgid "Capture Window Plus"
+msgstr ""
+
+#: Screenshot.cpp:361
+msgid "Capture Full Screen"
+msgstr ""
+
+#: Screenshot.cpp:368
+msgid "Wait 5 seconds and capture frontmost window/dialog"
+msgstr ""
+
+#: effects/Normalize.cpp:74 effects/Normalize.cpp:75
+msgid "false"
+msgstr "Không chọn"
+
+#: Screenshot.cpp:375
+msgid "Capture part of a project window"
+msgstr ""
+
+#: Screenshot.cpp:379
+msgid "All Toolbars"
+msgstr ""
+
+#: Screenshot.cpp:380
+msgid "SelectionBar"
+msgstr ""
+
+#: toolbars/ToolsToolBar.cpp:90
+msgid "Tools"
+msgstr "Công cụ"
+
+#: toolbars/ControlToolBar.cpp:82
+msgid "Control"
+msgstr "Điều khiển"
+
+#: toolbars/MixerToolBar.cpp:60
+msgid "Mixer"
+msgstr "Bộ trộn"
+
+#: toolbars/MeterToolBar.cpp:50
+msgid "Meter"
+msgstr "Bộ đo"
+
+#: Screenshot.cpp:390 toolbars/EditToolBar.cpp:76 toolbars/EditToolBar.cpp:181
+msgid "Edit"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:119 prefs/AudioIOPrefs.cpp:137
+#: toolbars/DeviceToolBar.cpp:57
+msgid "Device"
+msgstr "Thiết bị"
+
+#: toolbars/TranscriptionToolBar.cpp:84
+msgid "Transcription"
+msgstr "Tốc độ phát"
+
+#: TrackPanel.cpp:464 TrackPanel.cpp:465
+msgid "Track Panel"
+msgstr "Bảng dải âm thanh"
+
+#: Screenshot.cpp:399
+msgid "Ruler"
+msgstr ""
+
+#: export/ExportMultiple.cpp:258
+msgid "Tracks"
+msgstr "Các Dải âm"
+
+#: Screenshot.cpp:401
+msgid "First Track"
+msgstr ""
+
+#: Screenshot.cpp:402
+msgid "Second Track"
+msgstr ""
+
+#: Screenshot.cpp:408
+msgid "Scale"
+msgstr ""
+
+#: Screenshot.cpp:412
+msgid "One Sec"
+msgstr ""
+
+#: Screenshot.cpp:413
+msgid "Ten Sec"
+msgstr ""
+
+#: Screenshot.cpp:414
+msgid "One Min"
+msgstr ""
+
+#: Screenshot.cpp:415
+msgid "Five Min"
+msgstr ""
+
+#: Screenshot.cpp:416
+msgid "One Hour"
+msgstr ""
+
+#: Screenshot.cpp:422
+msgid "Short Tracks"
+msgstr ""
+
+#: Screenshot.cpp:423
+msgid "Medium Tracks"
+msgstr ""
+
+#: Screenshot.cpp:424
+msgid "Tall Tracks"
+msgstr ""
+
 #: Screenshot.cpp:384
 msgid "Saved "
 msgstr "Đã lưu"
@@ -3282,14 +3294,15 @@ msgstr "Đã lưu"
 msgid "Error trying to save file: "
 msgstr "Lỗi khi cố gắng lưu tập tin:"
 
-#: Sequence.cpp:732
-#: Sequence.cpp:742
-#: Sequence.cpp:749
+#: Screenshot.cpp:673
+msgid "Choose a location to save screenshot images"
+msgstr ""
+
+#: Sequence.cpp:732 Sequence.cpp:742 Sequence.cpp:749
 msgid "Gap detected in project file\n"
 msgstr "Tìm thấy thiếu sót trên dự án\n"
 
-#: ShuttleGui.cpp:1852
-#: effects/Effect.cpp:342
+#: ShuttleGui.cpp:1852 effects/Effect.cpp:342
 #: effects/audiounits/AudioUnitEffect.cpp:872
 msgid "Pre&view"
 msgstr "Xe&m trước"
@@ -3330,8 +3343,7 @@ msgstr "Tên Album"
 msgid "Track Number"
 msgstr "Số trên album"
 
-#: Tags.cpp:633
-#: Tags.cpp:2138
+#: Tags.cpp:633 Tags.cpp:2138
 msgid "Year"
 msgstr "Năm"
 
@@ -3339,9 +3351,7 @@ msgstr "Năm"
 msgid "Genre"
 msgstr "Thể loại"
 
-#: Tags.cpp:635
-#: Tags.cpp:2148
-#: prefs/MousePrefs.cpp:96
+#: Tags.cpp:635 Tags.cpp:2148 prefs/MousePrefs.cpp:96
 msgid "Comments"
 msgstr "Ghi chú"
 
@@ -3357,9 +3367,7 @@ msgstr "Tên thẻ"
 msgid "Tag Value"
 msgstr "Giá trị thẻ"
 
-#: Tags.cpp:818
-#: Tags.cpp:1476
-#: prefs/KeyConfigPrefs.cpp:116
+#: Tags.cpp:818 Tags.cpp:1476 prefs/KeyConfigPrefs.cpp:116
 msgid "&Clear"
 msgstr "&Xoá"
 
@@ -3375,71 +3383,42 @@ msgstr ""
 msgid "Rese&t..."
 msgstr ""
 
-#: Tags.cpp:834
-#: Tags.cpp:1460
-#: Tags.cpp:1988
+#: Tags.cpp:834 Tags.cpp:1460 Tags.cpp:1988
 msgid "Template"
 msgstr "Mẫu"
 
-#: Tags.cpp:838
-#: Tags.cpp:1464
-#: Tags.cpp:1992
-#: prefs/KeyConfigPrefs.cpp:126
+#: Tags.cpp:838 Tags.cpp:1464 Tags.cpp:1992 prefs/KeyConfigPrefs.cpp:126
 msgid "&Load..."
 msgstr "&Nạp..."
 
-#: Tags.cpp:839
-#: Tags.cpp:1465
-#: Tags.cpp:1993
-#: prefs/KeyConfigPrefs.cpp:125
+#: Tags.cpp:839 Tags.cpp:1465 Tags.cpp:1993 prefs/KeyConfigPrefs.cpp:125
 msgid "&Save..."
 msgstr "&Lưu..."
 
-#: Tags.cpp:841
-#: Tags.cpp:1467
-#: Tags.cpp:1995
+#: Tags.cpp:841 Tags.cpp:1467 Tags.cpp:1995
 msgid "S&et Default"
 msgstr "Đặt làm &Mặc định"
 
-#: Tags.cpp:991
-#: Tags.cpp:1630
-#: Tags.cpp:2359
+#: Tags.cpp:991 Tags.cpp:1630 Tags.cpp:2359
 msgid "Edit Genres"
 msgstr "Chỉnh sửa thể loại"
 
-#: Tags.cpp:1024
-#: Tags.cpp:1036
-#: Tags.cpp:1052
-#: Tags.cpp:1065
-#: Tags.cpp:1668
-#: Tags.cpp:1680
-#: Tags.cpp:1696
-#: Tags.cpp:1709
-#: Tags.cpp:2402
-#: Tags.cpp:2414
-#: Tags.cpp:2430
-#: Tags.cpp:2443
+#: Tags.cpp:1024 Tags.cpp:1036 Tags.cpp:1052 Tags.cpp:1065 Tags.cpp:1668
+#: Tags.cpp:1680 Tags.cpp:1696 Tags.cpp:1709 Tags.cpp:2402 Tags.cpp:2414
+#: Tags.cpp:2430 Tags.cpp:2443
 msgid "Reset Genres"
 msgstr "Đặt lại thể loại"
 
-#: Tags.cpp:1024
-#: Tags.cpp:1065
-#: Tags.cpp:1668
-#: Tags.cpp:1709
-#: Tags.cpp:2402
+#: Tags.cpp:1024 Tags.cpp:1065 Tags.cpp:1668 Tags.cpp:1709 Tags.cpp:2402
 #: Tags.cpp:2443
 msgid "Unable to save genre file."
 msgstr "Không thể lưu tập tin thể loại"
 
-#: Tags.cpp:1035
-#: Tags.cpp:1679
-#: Tags.cpp:2413
+#: Tags.cpp:1035 Tags.cpp:1679 Tags.cpp:2413
 msgid "Are you sure you want to reset the genre list to defaults?"
 msgstr "Bạn có chắc là sẽ thiết lập lại danh sách thể loại về mặc định không?"
 
-#: Tags.cpp:1052
-#: Tags.cpp:1696
-#: Tags.cpp:2430
+#: Tags.cpp:1052 Tags.cpp:1696 Tags.cpp:2430
 msgid "Unable to open genre file."
 msgstr "Không mở được tập tin thể loại."
 
@@ -3447,20 +3426,18 @@ msgstr "Không mở được tập tin thể loại."
 msgid "Load Metadata As:"
 msgstr ""
 
-#: Tags.cpp:1112
-#: Tags.cpp:1763
-#: Tags.cpp:2486
+#: Tags.cpp:1112 Tags.cpp:1763 Tags.cpp:2486
 msgid "Error loading metadata"
 msgstr "Lỗi nạp dữ liệu đặc tả"
 
-#: Tags.cpp:1087
-#: Tags.cpp:1141
-#: Tags.cpp:1742
-#: Tags.cpp:1778
-#: Tags.cpp:2465
+#: Tags.cpp:1087 Tags.cpp:1141 Tags.cpp:1742 Tags.cpp:1778 Tags.cpp:2465
 #: Tags.cpp:2501
 msgid "Save Metadata As:"
 msgstr "Lưu Dữ liệu đặc tả thành:"
+
+#: Tags.cpp:1205
+msgid "Error saving tags file"
+msgstr ""
 
 #: Theme.cpp:638
 #, c-format
@@ -3494,8 +3471,7 @@ msgstr "Audacity không tìm thấy tập tin:\n"
 "  %s.\n"
 "Chưa nạp sắc thái giao diện."
 
-#: Theme.cpp:807
-#: Theme.cpp:896
+#: Theme.cpp:807 Theme.cpp:896
 #, c-format
 msgid "Audacity could not load file:\n"
 "  %s.\n"
@@ -3519,8 +3495,7 @@ msgstr "Không tìm thấy các tập tin cấu thành\n"
 "sắc thái giao diện trong:\n"
 "  %s."
 
-#: Theme.cpp:942
-#: effects/NoiseRemoval.cpp:173
+#: Theme.cpp:942 effects/NoiseRemoval.cpp:173
 #, c-format
 msgid "Could not create directory:\n"
 "  %s"
@@ -3543,18 +3518,22 @@ msgstr "Tất cả các tập tin cần thiết:\n"
 "  %s\n"
 "đều đang hiện hữu."
 
-#: SmartRecordDialog.cpp:226
-#: SmartRecordDialog.cpp:307
-#: TimeDialog.cpp:53
-#: effects/Noise.cpp:235
-#: effects/ToneGen.cpp:329
-#: effects/ToneGen.cpp:374
+#: SmartRecordDialog.cpp:226 SmartRecordDialog.cpp:307 TimeDialog.cpp:53
+#: effects/Noise.cpp:235 effects/ToneGen.cpp:329 effects/ToneGen.cpp:374
 msgid "Duration"
 msgstr "Độ dài"
 
 #: SmartRecordDialog.cpp:68
 msgid "Audacity Timer Record"
 msgstr "Bộ thu âm định thời của Audacity"
+
+#: TimerRecordDialog.cpp:205
+msgid "Duration is zero. Nothing will be recorded."
+msgstr ""
+
+#: TimerRecordDialog.cpp:206
+msgid "Error in Duration"
+msgstr ""
 
 #: SmartRecordDialog.cpp:223
 msgid "Recording start"
@@ -3595,40 +3574,23 @@ msgstr "Đang chờ để bắt đầu ghi âm tại %s.\n"
 msgid "Audacity Timer Record - Waiting for Start"
 msgstr ""
 
-#: TrackPanel.cpp:464
-#: TrackPanel.cpp:465
-msgid "Track Panel"
-msgstr "Bảng dải âm thanh"
-
-#: TrackPanel.cpp:548
-#: export/ExportPCM.cpp:133
-#: prefs/QualityPrefs.cpp:97
+#: TrackPanel.cpp:548 export/ExportPCM.cpp:133 prefs/QualityPrefs.cpp:97
 msgid "Other..."
 msgstr "Khác..."
 
-#: TrackPanel.cpp:556
-#: TrackPanel.cpp:580
-#: TrackPanel.cpp:589
-#: TrackPanel.cpp:597
+#: TrackPanel.cpp:556 TrackPanel.cpp:580 TrackPanel.cpp:589 TrackPanel.cpp:597
 msgid "Name..."
 msgstr "Tên..."
 
-#: TrackPanel.cpp:558
-#: TrackPanel.cpp:582
-#: TrackPanel.cpp:593
-#: TrackPanel.cpp:599
+#: TrackPanel.cpp:558 TrackPanel.cpp:582 TrackPanel.cpp:593 TrackPanel.cpp:599
 msgid "Move Track Up"
 msgstr "Đưa dải lên trên"
 
-#: TrackPanel.cpp:559
-#: TrackPanel.cpp:583
-#: TrackPanel.cpp:594
-#: TrackPanel.cpp:600
+#: TrackPanel.cpp:559 TrackPanel.cpp:583 TrackPanel.cpp:594 TrackPanel.cpp:600
 msgid "Move Track Down"
 msgstr "Chuyển dải xuống dưới"
 
-#: TrackPanel.cpp:561
-#: effects/ToneGen.cpp:325
+#: TrackPanel.cpp:561 effects/ToneGen.cpp:325
 msgid "Waveform"
 msgstr "Dạng sóng"
 
@@ -3644,18 +3606,15 @@ msgstr "Phổ logarith (f)"
 msgid "Pitch (EAC)"
 msgstr "Độ cao của âm (EAC)"
 
-#: TrackPanel.cpp:569
-#: TrackPanel.cpp:6091
+#: TrackPanel.cpp:569 TrackPanel.cpp:6091
 msgid "Mono"
 msgstr "Mono"
 
-#: TrackPanel.cpp:570
-#: TrackPanel.cpp:6090
+#: TrackPanel.cpp:570 TrackPanel.cpp:6090
 msgid "Left Channel"
 msgstr "Kênh trái"
 
-#: TrackPanel.cpp:571
-#: TrackPanel.cpp:6090
+#: TrackPanel.cpp:571 TrackPanel.cpp:6090
 msgid "Right Channel"
 msgstr "Kênh phải"
 
@@ -3667,12 +3626,15 @@ msgstr "Tạo dải âm Stereo"
 msgid "Split Stereo Track"
 msgstr "Chia dải âm Stereo"
 
+#: TrackPanel.cpp:621
+msgid "Split Stereo to Mono"
+msgstr ""
+
 #: TrackPanel.cpp:575
 msgid "Set Sample Format"
 msgstr "Đặt dạng lấy mẫu"
 
-#: TrackPanel.cpp:577
-#: TrackPanel.cpp:6320
+#: TrackPanel.cpp:577 TrackPanel.cpp:6320
 msgid "Set Rate"
 msgstr "Đặt tốc độ lấy mẫu"
 
@@ -3692,8 +3654,7 @@ msgstr "Phông chữ..."
 msgid "Set Range..."
 msgstr "Đặt giới hạn..."
 
-#: TrackPanel.cpp:606
-#: toolbars/EditToolBar.cpp:135
+#: TrackPanel.cpp:606 toolbars/EditToolBar.cpp:135
 msgid "Copy"
 msgstr "Chép"
 
@@ -3739,21 +3700,13 @@ msgstr "Nhấn và rê chuột để di chuyển giới hạn trái của vùng 
 msgid "Click and drag to move right selection boundary."
 msgstr "Nhấn và rê chuột để di chuyển giới hạn phải của vùng chọn"
 
-#: TrackPanel.cpp:1702
-#: TrackPanel.cpp:3993
-#: TrackPanel.cpp:4025
-#: TrackPanel.cpp:4280
-#: TrackPanel.cpp:6432
-#: TrackPanel.cpp:6452
+#: TrackPanel.cpp:1702 TrackPanel.cpp:3993 TrackPanel.cpp:4025
+#: TrackPanel.cpp:4280 TrackPanel.cpp:6432 TrackPanel.cpp:6452
 msgid "Modified Label"
 msgstr "Đã sửa lại nhãn"
 
-#: TrackPanel.cpp:1703
-#: TrackPanel.cpp:3994
-#: TrackPanel.cpp:4026
-#: TrackPanel.cpp:4281
-#: TrackPanel.cpp:6433
-#: TrackPanel.cpp:6453
+#: TrackPanel.cpp:1703 TrackPanel.cpp:3994 TrackPanel.cpp:4026
+#: TrackPanel.cpp:4281 TrackPanel.cpp:6433 TrackPanel.cpp:6453
 msgid "Label Edit"
 msgstr "Chỉnh sửa nhãn"
 
@@ -3761,8 +3714,7 @@ msgstr "Chỉnh sửa nhãn"
 msgid "Adjusted envelope."
 msgstr "Đã sửa lại đường bao biên độ."
 
-#: TrackPanel.cpp:1931
-#: prefs/MousePrefs.cpp:115
+#: TrackPanel.cpp:1931 prefs/MousePrefs.cpp:115
 msgid "Envelope"
 msgstr "Đường bao biên độ"
 
@@ -3784,9 +3736,7 @@ msgstr "phải"
 msgid "Time shifted tracks/clips %s %.02f seconds"
 msgstr "Đã dịch dải/đoạn sang %s %.02f giây"
 
-#: TrackPanel.cpp:2092
-#: prefs/MousePrefs.cpp:111
-#: prefs/MousePrefs.cpp:112
+#: TrackPanel.cpp:2092 prefs/MousePrefs.cpp:111 prefs/MousePrefs.cpp:112
 #: prefs/MousePrefs.cpp:113
 msgid "Time-Shift"
 msgstr "Di chuyển mốc thời gian"
@@ -3825,39 +3775,29 @@ msgid "Moved pan slider"
 msgstr "Đã di chuyển thanh trượt cân bằng trái/phải"
 
 #. i18n-hint: Title of the Gain slider, used to adjust the volume
-#: TrackPanel.cpp:3485
-#: TrackPanel.cpp:5726
-#: TrackPanel.cpp:7149
+#: TrackPanel.cpp:3485 TrackPanel.cpp:5726 TrackPanel.cpp:7149
 msgid "Gain"
 msgstr "Độ khuếch đại"
 
 #. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#: TrackPanel.cpp:3485
-#: TrackPanel.cpp:5664
-#: TrackPanel.cpp:7156
+#: TrackPanel.cpp:3485 TrackPanel.cpp:5664 TrackPanel.cpp:7156
 msgid "Pan"
 msgstr "Cân bằng trái/phải"
 
-#: TrackPanel.cpp:3610
-#: TrackPanel.cpp:6385
-#: effects/ChangePitch.cpp:284
+#: TrackPanel.cpp:3610 TrackPanel.cpp:6385 effects/ChangePitch.cpp:284
 msgid "up"
 msgstr "lên"
 
-#: TrackPanel.cpp:3614
-#: TrackPanel.cpp:6386
-#: effects/ChangePitch.cpp:284
+#: TrackPanel.cpp:3614 TrackPanel.cpp:6386 effects/ChangePitch.cpp:284
 msgid "down"
 msgstr "xuống"
 
-#: TrackPanel.cpp:3621
-#: TrackPanel.cpp:6381
+#: TrackPanel.cpp:3621 TrackPanel.cpp:6381
 #, c-format
 msgid "Moved '%s' %s"
 msgstr "Đã di chuyển '%s' %s"
 
-#: TrackPanel.cpp:3624
-#: TrackPanel.cpp:6387
+#: TrackPanel.cpp:3624 TrackPanel.cpp:6387
 msgid "Move Track"
 msgstr "Di chuyển dải âm"
 
@@ -3889,14 +3829,6 @@ msgstr "Đã điều chỉnh cân bằng trái/phải"
 msgid "Adjusted gain"
 msgstr "Đã điều chỉnh độ khuếch đại"
 
-#: TrackPanel.cpp:5799
-msgid "Group with Wave Track"
-msgstr ""
-
-#: TrackPanel.cpp:5800
-msgid "Clear any grouping"
-msgstr ""
-
 #: TrackPanel.cpp:5918
 msgid "Can't delete track with active audio"
 msgstr "Không thể xoá dải âm đang hoạt động"
@@ -3917,8 +3849,7 @@ msgstr "Trái,"
 msgid "Right, "
 msgstr "Phải,"
 
-#: TrackPanel.cpp:6100
-#: TrackPanel.cpp:6225
+#: TrackPanel.cpp:6100 TrackPanel.cpp:6225
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr "Thay '%s' thành %s"
@@ -3931,6 +3862,11 @@ msgstr "Kênh"
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr "Đã chia dải âm stereo '%s'"
+
+#: TrackPanel.cpp:6253
+#, c-format
+msgid "Split Stereo to Mono '%s'"
+msgstr ""
 
 #: TrackPanel.cpp:6139
 #, c-format
@@ -3958,8 +3894,7 @@ msgstr "Thay đổi định dạng"
 msgid "Change lower speed limit (%) to:"
 msgstr "Chuyển tốc độ giới hạn dưới (%) thành:"
 
-#: TrackPanel.cpp:6350
-#: TrackPanel.cpp:6351
+#: TrackPanel.cpp:6350 TrackPanel.cpp:6351
 msgid "Lower speed limit"
 msgstr "Tốc độ giới hạn dưới"
 
@@ -3967,8 +3902,7 @@ msgstr "Tốc độ giới hạn dưới"
 msgid "Change upper speed limit (%) to:"
 msgstr "Chuyển tốc độ giới hạn trên (%) thành:"
 
-#: TrackPanel.cpp:6357
-#: TrackPanel.cpp:6358
+#: TrackPanel.cpp:6357 TrackPanel.cpp:6358
 msgid "Upper speed limit"
 msgstr "Tốc độ giới hạn trên"
 
@@ -4010,6 +3944,10 @@ msgstr "Tên phông"
 msgid "Face size"
 msgstr "Kích thước"
 
+#: TrackPanel.cpp:6941
+msgid "Stereo, 999999Hz"
+msgstr ""
+
 #: TrackPanel.cpp:7076
 msgid "Mute"
 msgstr "Tắt tiếng"
@@ -4043,10 +3981,7 @@ msgstr "Phát Solo"
 msgid " Select On"
 msgstr " Bật chọn"
 
-#: VoiceKey.cpp:88
-#: VoiceKey.cpp:238
-#: VoiceKey.cpp:376
-#: VoiceKey.cpp:517
+#: VoiceKey.cpp:88 VoiceKey.cpp:238 VoiceKey.cpp:376 VoiceKey.cpp:517
 msgid "Selection is too small to use voice key."
 msgstr "Vùng chọn không đủ lớn để dùng giọng."
 
@@ -4073,8 +4008,7 @@ msgstr "Đổi hướng  -- trị trung bình: %1.4f  sd: (%1.4f)\n"
 msgid "Audio Track"
 msgstr "Dải âm"
 
-#: WaveTrack.cpp:555
-#: WaveTrack.cpp:574
+#: WaveTrack.cpp:555 WaveTrack.cpp:574
 msgid "There is not enough room available to paste the selection"
 msgstr "Không đủ chỗ để dán vùng chọn"
 
@@ -4092,10 +4026,10 @@ msgstr "Trình bổ sung 1 đến %i"
 msgid "Plugins %i to %i"
 msgstr "Trình bổ sung %i đến %i"
 
-#: commands/CommandManager.cpp:857
-#, fuzzy
-msgid "Disallowed for some reason.  Try selecting some audio first?"
-msgstr "Không cho phép vì một lý do nào đó. Có chọn âm thanh trước không?"
+#: commands/CommandManager.cpp:923
+msgid "There was a problem with your last action. If you think\n"
+"this is a bug, please tell us exactly where it occurred."
+msgstr ""
 
 #: commands/CommandManager.cpp:781
 msgid "You can only do this when playing and recording are\n"
@@ -4162,9 +4096,7 @@ msgstr "Đỉnh khuếch đại mới (dB):"
 msgid "Allow clipping"
 msgstr "Cho phép ghim đỉnh"
 
-#: effects/Amplify.cpp:237
-#: effects/Amplify.cpp:287
-#: effects/Amplify.cpp:353
+#: effects/Amplify.cpp:237 effects/Amplify.cpp:287 effects/Amplify.cpp:353
 #, fuzzy
 msgid "-Infinity"
 msgstr "-Vô cùng"
@@ -4181,9 +4113,7 @@ msgstr "Đang khuếch đại"
 msgid "You selected a track which does not contain audio. AutoDuck can only process audio tracks."
 msgstr "Bạn đã chọn một dải âm toàn khoảng lặng. Hiệu ứng Tự động điều biên chỉ có thể xử lý dải âm có thông tin."
 
-#: effects/AutoDuck.cpp:126
-#: effects/AutoDuck.cpp:138
-#: effects/AutoDuck.cpp:453
+#: effects/AutoDuck.cpp:126 effects/AutoDuck.cpp:138 effects/AutoDuck.cpp:453
 #: effects/AutoDuck.cpp:570
 msgid "Auto Duck"
 msgstr "Auto Duck"
@@ -4205,17 +4135,11 @@ msgid "Maximum pause:"
 msgstr "Tạm ngưng dài nhất:"
 
 #. i18n-hint: Name of time display format that shows time in seconds
-#: effects/AutoDuck.cpp:494
-#: effects/AutoDuck.cpp:499
-#: effects/AutoDuck.cpp:504
-#: effects/AutoDuck.cpp:509
-#: effects/AutoDuck.cpp:514
-#: prefs/AudioIOPrefs.cpp:166
-#: prefs/AudioIOPrefs.cpp:174
-#: prefs/AudioIOPrefs.cpp:176
-#: prefs/AudioIOPrefs.cpp:201
-#: prefs/AudioIOPrefs.cpp:203
-#: widgets/TimeTextCtrl.cpp:263
+#: effects/AutoDuck.cpp:494 effects/AutoDuck.cpp:499 effects/AutoDuck.cpp:504
+#: effects/AutoDuck.cpp:509 effects/AutoDuck.cpp:514
+#: prefs/AudioIOPrefs.cpp:166 prefs/AudioIOPrefs.cpp:174
+#: prefs/AudioIOPrefs.cpp:176 prefs/AudioIOPrefs.cpp:201
+#: prefs/AudioIOPrefs.cpp:203 widgets/TimeTextCtrl.cpp:263
 msgid "seconds"
 msgstr "giây"
 
@@ -4235,8 +4159,7 @@ msgstr "Độ dài tắt dần xuống bên trong:"
 msgid "Inner fade up length:"
 msgstr "Độ dài tắt dần lên bên trong:"
 
-#: effects/AutoDuck.cpp:521
-#: effects/Compressor.cpp:484
+#: effects/AutoDuck.cpp:521 effects/Compressor.cpp:484
 msgid "Threshold:"
 msgstr "Ngưỡng:"
 
@@ -4256,12 +4179,9 @@ msgstr "Tự động điều biên..."
 msgid "Processing Auto Duck..."
 msgstr "Đang tự uốn..."
 
-#: effects/AvcCompressor.cpp:738
-#: effects/VST/VSTEffect.cpp:448
-#: effects/audiounits/AudioUnitEffect.cpp:877
-#: effects/nyquist/Nyquist.cpp:1042
-#: widgets/ErrorDialog.cpp:79
-#: widgets/ErrorDialog.cpp:105
+#: effects/AvcCompressor.cpp:738 effects/VST/VSTEffect.cpp:448
+#: effects/audiounits/AudioUnitEffect.cpp:877 effects/nyquist/Nyquist.cpp:1042
+#: widgets/ErrorDialog.cpp:79 widgets/ErrorDialog.cpp:105
 #: widgets/Warning.cpp:67
 msgid "OK"
 msgstr "OK"
@@ -4326,14 +4246,12 @@ msgstr "Thay đổi độ cao mà không ảnh hưởng đến nhịp"
 
 #. i18n-hint: && in here is an escape character to get a single & on
 #. * screen, so keep it as is
-#: effects/ChangePitch.cpp:254
-#: effects/ChangeSpeed.cpp:313
+#: effects/ChangePitch.cpp:254 effects/ChangeSpeed.cpp:313
 #: effects/ChangeTempo.cpp:180
 msgid "by Vaughan Johnson && Dominic Mazzoni"
 msgstr "viết bởi Vaughan Johnson && Dominic Mazzoni"
 
-#: effects/ChangePitch.cpp:259
-#: effects/ChangeTempo.cpp:185
+#: effects/ChangePitch.cpp:259 effects/ChangeTempo.cpp:185
 msgid "using SoundTouch, by Olli Parviainen"
 msgstr "dùng SoundTouch, viết bởi Olli Parviainen"
 
@@ -4382,10 +4300,8 @@ msgstr ""
 msgid "From frequency in hertz"
 msgstr ""
 
-#: effects/ChangePitch.cpp:291
-#: effects/ChangePitch.cpp:337
-#: effects/ChangeSpeed.cpp:377
-#: effects/ChangeTempo.cpp:239
+#: effects/ChangePitch.cpp:291 effects/ChangePitch.cpp:337
+#: effects/ChangeSpeed.cpp:377 effects/ChangeTempo.cpp:239
 #: effects/ChangeTempo.cpp:270
 msgid "to"
 msgstr "đến"
@@ -4394,8 +4310,7 @@ msgstr "đến"
 msgid "To frequency in seconds"
 msgstr ""
 
-#: effects/ChangePitch.cpp:360
-#: effects/ChangeSpeed.cpp:331
+#: effects/ChangePitch.cpp:360 effects/ChangeSpeed.cpp:331
 #: effects/ChangeTempo.cpp:198
 msgid "Percent Change:"
 msgstr "Phần trăm thay đổi:"
@@ -4413,8 +4328,7 @@ msgstr "Thay đổi độ cao..."
 msgid "Changing Pitch"
 msgstr "Đang thay đổi độ cao của âm"
 
-#: effects/ChangeSpeed.cpp:53
-#: effects/ChangeTempo.cpp:55
+#: effects/ChangeSpeed.cpp:53 effects/ChangeTempo.cpp:55
 #, c-format
 msgid "Applied effect: %s %.1f%%"
 msgstr "Đã áp dụng hiệu ứng: %s %.1f%%"
@@ -4566,12 +4480,11 @@ msgstr "Thời gian suy hao:"
 msgid "Decay Time"
 msgstr ""
 
-#: effects/Compressor.cpp:516
-msgid "Normalize to 0dB after compressing"
-msgstr "Chuẩn hoá về 0dB sau khi nén"
+#: effects/Compressor.cpp:542
+msgid "Make-up gain for 0dB after compressing"
+msgstr ""
 
 #: effects/Compressor.cpp:563
-#, c-format
 #, fuzzy
 msgid "Threshold %d dB"
 msgstr "Ngưỡng: %d dB"
@@ -4602,7 +4515,6 @@ msgid "%.1f:1"
 msgstr ""
 
 #: effects/Compressor.cpp:575
-#, c-format
 #, fuzzy
 msgid "Attack Time %.1f secs"
 msgstr "Thời gian nén: %.1f giây"
@@ -4613,7 +4525,6 @@ msgid "%.1f secs"
 msgstr ""
 
 #: effects/Compressor.cpp:578
-#, c-format
 #, fuzzy
 msgid "Decay Time %.1f secs"
 msgstr "Thời gian suy tàn: %.1f giây"
@@ -4625,6 +4536,10 @@ msgstr "Bộ nén tiếng..."
 #: effects/Compressor.h:44
 msgid "Applying Dynamic Range Compression..."
 msgstr "Đang áp dụng bộ nén dải động"
+
+#: effects/Contrast.cpp:64
+msgid "Contrast Analysis"
+msgstr ""
 
 #: effects/Contrast.cpp:79
 msgid "Contrast Tool Foreground"
@@ -4645,19 +4560,6 @@ msgid "Times are not reasonable!\n"
 "Please enter reasonable times."
 msgstr ""
 
-#: effects/Contrast.cpp:120
-msgid "Hello.\n"
-msgstr ""
-
-#: effects/Contrast.cpp:245
-msgid "WCAG2 Audio Contrast Analyzer"
-msgstr ""
-
-#: effects/Contrast.cpp:193 effects/Contrast.cpp:204 effects/Contrast.cpp:266
-#: effects/Contrast.cpp:289
-msgid "Measured"
-msgstr ""
-
 #: effects/Contrast.cpp:231
 msgid "Contrast Analyzer"
 msgstr ""
@@ -4666,15 +4568,12 @@ msgstr ""
 msgid "Parameters"
 msgstr ""
 
-#: effects/ToneGen.cpp:361
-#: toolbars/ControlToolBar.cpp:185
+#: effects/ToneGen.cpp:361 toolbars/ControlToolBar.cpp:185
 msgid "Start"
 msgstr "Bắt đầu"
 
-#: effects/ToneGen.cpp:362
-#: toolbars/ControlToolBar.cpp:188
-#: toolbars/SelectionBar.cpp:149
-#: toolbars/SelectionBar.cpp:254
+#: effects/ToneGen.cpp:362 toolbars/ControlToolBar.cpp:188
+#: toolbars/SelectionBar.cpp:149 toolbars/SelectionBar.cpp:254
 msgid "End"
 msgstr "Kết thúc"
 
@@ -4692,6 +4591,11 @@ msgstr ""
 
 #: effects/Contrast.cpp:365
 msgid "Foreground end time"
+msgstr ""
+
+#: effects/Contrast.cpp:193 effects/Contrast.cpp:204 effects/Contrast.cpp:266
+#: effects/Contrast.cpp:289
+msgid "Measured"
 msgstr ""
 
 #: effects/Contrast.cpp:373 effects/Contrast.cpp:417
@@ -4718,8 +4622,7 @@ msgstr ""
 msgid "Contrast Result:"
 msgstr ""
 
-#: Tags.cpp:829
-#: Tags.cpp:1981
+#: Tags.cpp:829 Tags.cpp:1981
 msgid "Reset"
 msgstr "Thiết lập lại"
 
@@ -4739,16 +4642,8 @@ msgstr ""
 msgid "Help for WCAG2 Audio Contrast Analyzer"
 msgstr ""
 
-#: toolbars/ControlToolBar.cpp:82
-msgid "Control"
-msgstr "Điều khiển"
-
-#: effects/Contrast.cpp:454
-msgid "Note: The 'OK' button resets time values."
-msgstr ""
-
-#: effects/Contrast.cpp:455
-msgid "Close but keep times"
+#: effects/Contrast.cpp:412
+msgid "Close (keeping times)"
 msgstr ""
 
 #: effects/Contrast.cpp:328 effects/Contrast.cpp:336 effects/Contrast.cpp:344
@@ -4859,18 +4754,6 @@ msgstr ""
 msgid "Data gathered"
 msgstr ""
 
-#: effects/Contrast.h:33
-msgid "Contrast...\tCtrl+Shift+T"
-msgstr ""
-
-#: effects/Contrast.h:51
-msgid "Measuring background"
-msgstr ""
-
-#: effects/Contrast.h:53
-msgid "Measuring foreground"
-msgstr ""
-
 #: effects/DtmfGen.cpp:48
 msgid "DTMF Tone Generator"
 msgstr "Bộ phát tone DTMF"
@@ -4883,9 +4766,7 @@ msgstr "viết bởi Salvo Ventura (2006)"
 msgid "DTMF sequence:"
 msgstr "Trình tự DTMF:"
 
-#: effects/DtmfGen.cpp:446
-#: effects/Noise.cpp:255
-#: effects/ToneGen.cpp:328
+#: effects/DtmfGen.cpp:446 effects/Noise.cpp:255 effects/ToneGen.cpp:328
 #: effects/ToneGen.cpp:365
 msgid "Amplitude (0-1)"
 msgstr "Biên độ (0-1)"
@@ -4906,9 +4787,7 @@ msgstr "Tuần hoàn:"
 msgid "Tone duration:"
 msgstr "Độ dài tone:"
 
-#: effects/DtmfGen.cpp:482
-#: effects/DtmfGen.cpp:484
-#: effects/DtmfGen.cpp:560
+#: effects/DtmfGen.cpp:482 effects/DtmfGen.cpp:484 effects/DtmfGen.cpp:560
 #: effects/DtmfGen.cpp:561
 msgid "ms"
 msgstr "mili giây"
@@ -4990,8 +4869,7 @@ msgstr "Cosine"
 msgid "Cubic"
 msgstr "Khối"
 
-#: effects/Equalization.cpp:362
-#: effects/Equalization.cpp:412
+#: effects/Equalization.cpp:362 effects/Equalization.cpp:412
 msgid "Equalization"
 msgstr "Cân bằng tần số"
 
@@ -5002,6 +4880,10 @@ msgstr "Lỗi khi nạp đường cân bằng tần số"
 #: effects/Equalization.cpp:1019
 msgid "custom"
 msgstr "Tự chọn"
+
+#: effects/Equalization.cpp:1100
+msgid "Error saving equalization curves"
+msgstr ""
 
 #. i18n-hint: && in here is an escape character to get a single &
 #. * on screen, so keep it as is
@@ -5041,8 +4923,7 @@ msgstr "Độ dài bộ lọc:"
 msgid "Select curve:"
 msgstr "Chọn cung:"
 
-#: effects/Equalization.cpp:1259
-#: effects/Equalization.cpp:2498
+#: effects/Equalization.cpp:1259 effects/Equalization.cpp:2498
 #: export/ExportMultiple.cpp:826
 msgid "Save As..."
 msgstr "Lưu mới..."
@@ -5159,8 +5040,7 @@ msgstr "Nặng nhất"
 msgid "by Lynn Allan"
 msgstr "viết bởi Lynn Allan"
 
-#: effects/Leveller.cpp:226
-#: effects/Leveller.cpp:231
+#: effects/Leveller.cpp:226 effects/Leveller.cpp:231
 msgid "Degree of Leveling"
 msgstr "Mức độ cân bằng"
 
@@ -5208,10 +5088,6 @@ msgstr ""
 #: effects/LoadEffects.cpp:112
 msgid "Analyser"
 msgstr ""
-
-#: toolbars/MixerToolBar.cpp:60
-msgid "Mixer"
-msgstr "Bộ trộn"
 
 #: effects/LoadEffects.cpp:116
 msgid "Simulator"
@@ -5452,15 +5328,9 @@ msgstr "Đang xoá nhiễu"
 msgid "Applied effect: %s remove dc offset = %s, normalize amplitude = %s"
 msgstr "Đã áp dụng hiệu ứng: %s xoá thành phần 1 chiều = %s, chuẩn hoá biên độ = %s"
 
-#: effects/Normalize.cpp:74
-#: effects/Normalize.cpp:75
-msgid "false"
-msgstr "Không chọn"
-
 #. i18n-hint: true here means that the option was
 #. * selected. Opposite false if not selected
-#: effects/Normalize.cpp:74
-#: effects/Normalize.cpp:75
+#: effects/Normalize.cpp:74 effects/Normalize.cpp:75
 msgid "true"
 msgstr "Chọn"
 
@@ -5518,8 +5388,7 @@ msgstr ""
 msgid "Dry Wet"
 msgstr ""
 
-#: effects/Phaser.cpp:264
-#: effects/Wahwah.cpp:221
+#: effects/Phaser.cpp:264 effects/Wahwah.cpp:221
 msgid "LFO Frequency (Hz):"
 msgstr "Bộ dao động tần thấp (Hz):"
 
@@ -5527,8 +5396,7 @@ msgstr "Bộ dao động tần thấp (Hz):"
 msgid "LFO frequency in hertz"
 msgstr ""
 
-#: effects/Phaser.cpp:280
-#: effects/Wahwah.cpp:237
+#: effects/Phaser.cpp:280 effects/Wahwah.cpp:237
 msgid "LFO Start Phase (deg.):"
 msgstr "Pha ban đầu của dao động (độ):"
 
@@ -5589,8 +5457,7 @@ msgstr "Đã lặp lại %d lần"
 msgid "Tracks are too long to repeat the selection."
 msgstr "Dải âm quá dài nên không thể lặp lại vùng chọn."
 
-#: effects/Repeat.cpp:76
-#: effects/Repeat.cpp:80
+#: effects/Repeat.cpp:76 effects/Repeat.cpp:80
 msgid "Repeat"
 msgstr "Lặp lại"
 
@@ -5603,8 +5470,7 @@ msgstr "Số lần lặp lại:"
 msgid "New selection length: hh:mm:ss"
 msgstr ""
 
-#: effects/Repeat.cpp:207
-#: effects/Repeat.cpp:237
+#: effects/Repeat.cpp:207 effects/Repeat.cpp:237
 msgid "New selection length: "
 msgstr "Độ dài vùng chọn mới:"
 
@@ -5677,9 +5543,7 @@ msgstr "Xoá đỉnh nhọn..."
 msgid "Applying Spike Cleaner..."
 msgstr "Đang xoá đỉnh nhọn..."
 
-#: Menus.cpp:358
-#: Menus.cpp:564
-#: effects/StereoToMono.h:23
+#: Menus.cpp:358 Menus.cpp:564 effects/StereoToMono.h:23
 msgid "&Stereo to Mono"
 msgstr "Stereo sang &Mono"
 
@@ -5736,8 +5600,7 @@ msgstr ""
 msgid "Applied effect: Generate %s wave %s, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"
 msgstr "Đã áp dụng hiệu ứng: Tạo %s sóng %s, tần số = %.2f Hz, biên độ = %.2f, %.6lf giây"
 
-#: effects/ToneGen.cpp:75
-#: widgets/Meter.cpp:379
+#: effects/ToneGen.cpp:75 widgets/Meter.cpp:379
 msgid "Linear"
 msgstr "Tuyến tính"
 
@@ -5769,8 +5632,7 @@ msgstr "Răng cưa"
 msgid "Square, no alias"
 msgstr "Vuông, không có biệt danh"
 
-#: effects/ToneGen.cpp:327
-#: effects/ToneGen.cpp:363
+#: effects/ToneGen.cpp:327 effects/ToneGen.cpp:363
 msgid "Frequency (Hz)"
 msgstr "Tần số (Hz)"
 
@@ -5818,28 +5680,43 @@ msgstr "Đang tạo tone"
 msgid "All tracks must have the same sample rate"
 msgstr "Tất cả các dải âm phải có cùng tốc độ lấy mẫu"
 
-#: effects/TruncSilence.cpp:113
-#: effects/TruncSilence.cpp:322
+#: effects/TruncSilence.cpp:113 effects/TruncSilence.cpp:322
 msgid "Truncate Silence"
 msgstr "Cắt bỏ khoảng lặng"
+
+#: effects/TruncSilence.cpp:453
+msgid "by Lynn Allan && Philip Van Baren"
+msgstr ""
+
+#: effects/TruncSilence.cpp:467
+msgid "Min silence duration:"
+msgstr ""
+
+#: effects/TruncSilence.cpp:349 prefs/AudioIOPrefs.cpp:190
+#: prefs/AudioIOPrefs.cpp:193
+msgid "milliseconds"
+msgstr "mili giây"
 
 #: effects/TruncSilence.cpp:346
 msgid "Max silence duration:"
 msgstr "Độ dài tối đa của khoảng lặng:"
 
-#: effects/TruncSilence.cpp:349
-#: prefs/AudioIOPrefs.cpp:190
-#: prefs/AudioIOPrefs.cpp:193
-msgid "milliseconds"
-msgstr "mili giây"
+#: effects/TruncSilence.cpp:475
+msgid "Silence compression:"
+msgstr ""
+
+#: effects/TruncSilence.cpp:478
+msgid ":1"
+msgstr ""
 
 #: effects/TruncSilence.cpp:351
 msgid "Threshold for silence:"
 msgstr "Ngưỡng của khoảng lặng:"
 
-#: effects/TruncSilence.cpp:376
-msgid "   Duration must be at least 1 millisecond"
-msgstr "   Độ dài tối thiểu là 1 mili giây"
+#: effects/TruncSilence.cpp:506
+msgid "   Duration must be at least 1 millisecond\n"
+"   Compress ratio must be at least 1:1"
+msgstr ""
 
 #: effects/TruncSilence.h:28
 msgid "Truncate Silence..."
@@ -5849,17 +5726,55 @@ msgstr "Cắt bỏ khoảng lặng..."
 msgid "Truncating Silence..."
 msgstr "Đang cắt bỏ khoảng lặng..."
 
-#: effects/VST/VSTEffect.cpp:165
-msgid "Sorry, VST Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
-msgstr "Hiệu ứng Công nghệ Phòng Thu Ảo (VST) không áp dụng được trên dải âm stereo có 2 kênh không giống nhau."
+#: effects/ladspa/LadspaEffect.cpp:608
+msgid "Effect Settings"
+msgstr "Thiết lập hiệu ứng"
 
-#: effects/VST/VSTEffect.cpp:180
-msgid "Can't process replacing"
-msgstr "Không thực hiện thay thế được"
+#: effects/ladspa/LadspaEffect.cpp:573 effects/ladspa/LadspaEffect.cpp:581
+#: prefs/GUIPrefs.cpp:51 prefs/QualityPrefs.cpp:72
+msgid "None"
+msgstr "Không có gì"
 
-#: effects/VST/VSTEffect.cpp:403
-msgid "VST Plug-in parameters:"
-msgstr "Tham số của phần bổ sung VST:"
+#: effects/VST/VSTEffect.cpp:343
+msgid "Presets:"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:355
+msgid "Load"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:358
+msgid "Save"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:458
+msgid "Load VST Program:"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:476
+msgid "Error loading program"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:492
+msgid "Save VST Program As:"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:626
+#, c-format
+msgid "This parameter file was saved from %s.  Continue?"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:993
+msgid "Performing Effect: "
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:1016
+msgid "Both channels of a stereo track must be the same sample rate."
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:1021
+msgid "Both channels of a stereo track must be the same length."
+msgstr ""
 
 #: effects/Wahwah.cpp:61
 #, c-format
@@ -5908,21 +5823,9 @@ msgstr "Đang áp dụng hiệu ứng: %s"
 msgid "Sorry, Plug-in Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
 msgstr "Trình bổ sung hiệu ứng không thể áp dụng lên dải âm stereo có các kênh khác nhau."
 
-#: effects/ladspa/LadspaEffect.cpp:573
-#: effects/ladspa/LadspaEffect.cpp:581
-#: prefs/GUIPrefs.cpp:51
-#: prefs/QualityPrefs.cpp:72
-msgid "None"
-msgstr "Không có gì"
-
-#: effects/ladspa/LadspaEffect.cpp:575
-#: effects/vamp/VampEffect.cpp:384
+#: effects/ladspa/LadspaEffect.cpp:575 effects/vamp/VampEffect.cpp:384
 msgid "Author: "
 msgstr "Tác giả:"
-
-#: effects/ladspa/LadspaEffect.cpp:608
-msgid "Effect Settings"
-msgstr "Thiết lập hiệu ứng"
 
 #: effects/ladspa/LadspaEffect.cpp:699
 msgid "Length (seconds)"
@@ -5944,8 +5847,7 @@ msgstr ""
 msgid "Applying Nyquist Effect..."
 msgstr "Đang áp dụng hiệu ứng Nyquist..."
 
-#: effects/nyquist/Nyquist.cpp:259
-#: effects/nyquist/Nyquist.cpp:321
+#: effects/nyquist/Nyquist.cpp:259 effects/nyquist/Nyquist.cpp:321
 msgid "Nyquist Prompt..."
 msgstr "Dấu nhắc Nyquist..."
 
@@ -5965,8 +5867,7 @@ msgstr "Nyquist"
 msgid "Nyquist Output: "
 msgstr "Đầu ra Nyquist:"
 
-#: effects/nyquist/Nyquist.cpp:598
-#: effects/nyquist/Nyquist.cpp:609
+#: effects/nyquist/Nyquist.cpp:598 effects/nyquist/Nyquist.cpp:609
 msgid "Nyquist returned the value:"
 msgstr "Giá trị Nyquist trả về:"
 
@@ -6074,8 +5975,7 @@ msgstr " - Phải"
 msgid "Mixer Panel"
 msgstr ""
 
-#: export/Export.cpp:976
-#: export/Export.cpp:1021
+#: export/Export.cpp:976 export/Export.cpp:1021
 #, c-format
 msgid "Output Channels: %2d"
 msgstr "Kênh đầu ra: %2d"
@@ -6105,8 +6005,7 @@ msgstr "Dữ liệu sẽ được dẫn từ đầu vào chuẩn. \"%f\" sẽ đ
 msgid "(external program)"
 msgstr "(chương trình bên ngoài)"
 
-#: export/ExportCL.cpp:250
-#: export/ExportPCM.cpp:367
+#: export/ExportCL.cpp:250 export/ExportPCM.cpp:367
 #, c-format
 msgid "Cannot export audio to %s"
 msgstr "Không thể xuất âm thanh ra %s"
@@ -6123,9 +6022,21 @@ msgstr "Xuất toàn bộ dự án dùng bộ mã hoá bằng dòng lệnh"
 msgid "Command Output"
 msgstr "Đầu ra của lệnh"
 
-#: export/ExportFFmpeg.cpp:59
+#: export/ExportFFmpeg.cpp:61
 msgid "Properly configured FFmpeg is required to proceed.\n"
-"You can configure it in Preferences->Import/Export."
+"You can configure it at Preferences > Libraries."
+msgstr ""
+
+#: export/ExportFFmpeg.cpp:232
+msgid "AMR support not distributable"
+msgstr ""
+
+#: export/ExportFFmpeg.cpp:232
+msgid "Properly configured FFmpeg is required to proceed.\n"
+"You can configure it at Preferences > Libraries.\n"
+"\n"
+"Note that AMR support is not available with our FFmpeg\n"
+"installer, but requires you compile FFmpeg yourself."
 msgstr ""
 
 #: export/ExportFFmpeg.cpp:394
@@ -6192,6 +6103,10 @@ msgstr ""
 #: export/ExportFFmpegDialogs.cpp:178
 msgid "AAC Export Setup"
 msgstr ""
+
+#: export/ExportOGG.cpp:86
+msgid "Quality:"
+msgstr "Chất lượng:"
 
 #: export/ExportFFmpegDialogs.cpp:217
 msgid "Specify AMR-NB Options"
@@ -6326,12 +6241,8 @@ msgid "Bit Rate (bits/second) - influences the resulting file size and quality\n
 "Recommended - 192000"
 msgstr ""
 
-#: export/ExportOGG.cpp:86
-msgid "Quality:"
-msgstr "Chất lượng:"
-
-#: export/ExportFFmpegDialogs.cpp:941
-msgid "Overral quality, used differently by different codecs\n"
+#: export/ExportFFmpegDialogs.cpp:930
+msgid "Overall quality, used differently by different codecs\n"
 "Required for vorbis\n"
 "0 - automatic\n"
 "-1 - off (use bitrate instead)"
@@ -6350,10 +6261,10 @@ msgstr ""
 msgid "Cutoff Bandwidth:"
 msgstr ""
 
-#: export/ExportFFmpegDialogs.cpp:947
+#: export/ExportFFmpegDialogs.cpp:936
 msgid "Audio cutoff bandwidth (Hz)\n"
 "Optional\n"
-"0 - automatic\n"
+"0 - automatic"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:949
@@ -6542,12 +6453,12 @@ msgstr ""
 msgid "AC3 Files (FFmpeg)"
 msgstr ""
 
-#: export/ExportFFmpegDialogs.h:55
-msgid "AMR (narrow band) Files (FFmpeg)"
+#: export/ExportFFmpegDialogs.h:56
+msgid "AMR (narrow band) Files (FFmpeg, undistributable)"
 msgstr ""
 
-#: export/ExportFFmpegDialogs.h:56
-msgid "AMR (wide band) Files (FFmpeg)"
+#: export/ExportFFmpegDialogs.h:57
+msgid "AMR (wide band) Files (FFmpeg, undistributable)"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.h:57
@@ -6658,6 +6569,17 @@ msgstr "Độ sâu bit:"
 msgid "FLAC Files"
 msgstr "Tập tìn FLAC"
 
+#: export/ExportFLAC.cpp:288
+#, c-format
+msgid "FLAC export couldn't open %s"
+msgstr ""
+
+#: export/ExportFLAC.cpp:297
+#, c-format
+msgid "FLAC encoder failed to initialize\n"
+"Status: %d"
+msgstr ""
+
 #: export/ExportFLAC.cpp:310
 msgid "Exporting the selected audio as FLAC"
 msgstr "Xuất âm thanh đã chọn thành FLAC"
@@ -6682,9 +6604,7 @@ msgstr "Tập tin MP2"
 msgid "Cannot export MP2 with this sample rate and bit rate"
 msgstr "Không xuất được MP2 với tốc độ lấy mẫu và tốc độ bit này"
 
-#: export/ExportMP2.cpp:240
-#: export/ExportMP3.cpp:1768
-#: export/ExportOGG.cpp:183
+#: export/ExportMP2.cpp:240 export/ExportMP3.cpp:1768 export/ExportOGG.cpp:183
 msgid "Unable to open target file for writing"
 msgstr "Không thể ghi tập tin đích"
 
@@ -6698,9 +6618,7 @@ msgstr "Xuất âm thanh đã chọn với tốc độ %d kbps"
 msgid "Exporting entire file at %d kbps"
 msgstr "Xuất toàn bộ tập tin với tốc độ %d kbps"
 
-#: export/ExportMP3.cpp:221
-#: export/ExportMP3.cpp:239
-#: export/ExportMP3.cpp:253
+#: export/ExportMP3.cpp:221 export/ExportMP3.cpp:239 export/ExportMP3.cpp:253
 msgid "kbps"
 msgstr "kbps"
 
@@ -6716,9 +6634,7 @@ msgstr "(Kích thước nhỏ hơn)"
 msgid "Fast"
 msgstr "Nhanh"
 
-#: export/ExportMP3.cpp:244
-#: export/ExportMP3.cpp:250
-#: prefs/GUIPrefs.cpp:41
+#: export/ExportMP3.cpp:244 export/ExportMP3.cpp:250 prefs/GUIPrefs.cpp:41
 #: prefs/GUIPrefs.cpp:49
 msgid "Standard"
 msgstr "Chuẩn"
@@ -6763,8 +6679,7 @@ msgstr "Trung bình"
 msgid "Constant"
 msgstr "Không đổi"
 
-#: export/ExportMP3.cpp:373
-#: prefs/QualityPrefs.cpp:42
+#: export/ExportMP3.cpp:373 prefs/QualityPrefs.cpp:42
 #: prefs/QualityPrefs.cpp:43
 msgid "Quality"
 msgstr "Chất lượng"
@@ -6885,10 +6800,8 @@ msgstr "Định dạng MP3 không hỗ trợ\n"
 msgid "MP3 export library not found"
 msgstr ""
 
-#: export/ExportMultiple.cpp:95
-#: export/ExportMultiple.cpp:374
-#: export/ExportMultiple.cpp:598
-#: export/ExportMultiple.cpp:765
+#: export/ExportMultiple.cpp:95 export/ExportMultiple.cpp:374
+#: export/ExportMultiple.cpp:598 export/ExportMultiple.cpp:765
 msgid "Export Multiple"
 msgstr "Xuất ra nhiều tập tin"
 
@@ -6917,11 +6830,6 @@ msgstr "Tuỳ chọn..."
 msgid "Export location:"
 msgstr "Vị trí xuất:"
 
-#: export/ExportMultiple.cpp:216
-#: prefs/DirectoriesPrefs.cpp:92
-msgid "Choose..."
-msgstr "Chọn..."
-
 #: export/ExportMultiple.cpp:217
 msgid "Create"
 msgstr "Tạo"
@@ -6945,10 +6853,6 @@ msgstr "Tên tập tin đầu tiên:"
 #: export/ExportMultiple.cpp:280
 msgid "First file name"
 msgstr ""
-
-#: export/ExportMultiple.cpp:258
-msgid "Tracks"
-msgstr "Các Dải âm"
 
 #: export/ExportMultiple.cpp:265
 msgid "Name files:"
@@ -6983,6 +6887,35 @@ msgstr "Đã tạo xong \"%s\"."
 msgid "Choose a location to save the exported files"
 msgstr "Chọn một nơi để lưu các tập tin xuất đã xuất"
 
+#: export/ExportMultiple.cpp:524
+#, c-format
+msgid "Successfully exported the following %ld file(s)."
+msgstr ""
+
+#: export/ExportMultiple.cpp:525
+#, c-format
+msgid "Something went wrong after exporting the folliwing %ld file(s)."
+msgstr ""
+
+#: export/ExportMultiple.cpp:526
+#, c-format
+msgid "Export canceled after exporting the following %ld file(s)."
+msgstr ""
+
+#: export/ExportMultiple.cpp:527
+#, c-format
+msgid "Export stopped after exporting the following %ld file(s)."
+msgstr ""
+
+#: export/ExportMultiple.cpp:528
+#, c-format
+msgid "Something went really wrong after exporting the following %ld file(s)."
+msgstr ""
+
+#: export/ExportMultiple.cpp:535
+msgid "ExportMultiple"
+msgstr ""
+
 #: export/ExportMultiple.cpp:470
 #, c-format
 msgid "\"%s\" doesn't exist.\n"
@@ -6992,22 +6925,9 @@ msgstr "Không tồn tại \"%s\".\n"
 "\n"
 "Bạn có muốn tạo nó không?"
 
-#: export/ExportMultiple.cpp:568
-#: export/ExportMultiple.cpp:703
+#: export/ExportMultiple.cpp:568 export/ExportMultiple.cpp:703
 msgid "Edit metadata"
 msgstr "Sửa dữ liệu đặc tả"
-
-#: export/ExportMultiple.cpp:595
-#: export/ExportMultiple.cpp:762
-#, c-format
-msgid "Successfully exported %d file(s)."
-msgstr "Đã xuất thành công %d tập tin."
-
-#: export/ExportMultiple.cpp:596
-#: export/ExportMultiple.cpp:763
-#, c-format
-msgid "Something went wrong after exporting %d file(s)."
-msgstr "Gặp lỗi sau khi xuất %d tập tin."
 
 #: export/ExportMultiple.cpp:825
 #, c-format
@@ -7177,7 +7097,6 @@ msgstr "\"%s\" là một tập tin Advanced Audio Coding.\n"
 "Bạn phải tự mình chuyển nó về 1 định dạng Audacity hỗ trợ, như WAV hay AIFF."
 
 #: import/Import.cpp:271
-#, c-format
 #, fuzzy
 msgid "\"%s\" is an encrypted audio file. \n"
 "These typically are from an online music store. \n"
@@ -7281,6 +7200,10 @@ msgstr ""
 msgid "FLAC files"
 msgstr "Tập tin FLAC"
 
+#: import/ImportGStreamer.cpp:33
+msgid "GStreamer-compatible files"
+msgstr ""
+
 #: import/ImportLOF.cpp:92
 msgid "List of Files in basic text format"
 msgstr "Danh sách các tập tin ở dạng văn bản gốc"
@@ -7291,9 +7214,7 @@ msgid "Invalid window offset in LOF file."
 msgstr "Tập tin LOF chứa offset cửa sổ không hợp lệ."
 
 #. i18n-hint: You do not need to translate "LOF"
-#: import/ImportLOF.cpp:320
-#: import/ImportLOF.cpp:341
-#: import/ImportLOF.cpp:415
+#: import/ImportLOF.cpp:320 import/ImportLOF.cpp:341 import/ImportLOF.cpp:415
 #: import/ImportLOF.cpp:435
 msgid "LOF Error"
 msgstr "Lỗi LOF"
@@ -7349,8 +7270,7 @@ msgstr "Dòng bit Vorbis có Phần đầu không hợp lệ"
 msgid "Internal logic fault"
 msgstr "Lỗi Logic bên trong"
 
-#: export/ExportPCM.cpp:320
-#: import/ImportPCM.cpp:47
+#: export/ExportPCM.cpp:320 import/ImportPCM.cpp:47
 msgid "WAV, AIFF, and other uncompressed types"
 msgstr "WAV, AIFF, và các định dạng không nén khác"
 
@@ -7441,36 +7361,41 @@ msgstr ""
 msgid "%s %2.0f%% complete.  Click to change task focal point."
 msgstr ""
 
-#: prefs/AudioIOPrefs.cpp:41
-#: prefs/AudioIOPrefs.cpp:42
-msgid "Audio I/O"
-msgstr "Âm thanh Vào/Ra"
+#: prefs/BatchPrefs.cpp:55 prefs/BatchPrefs.cpp:56
+msgid "Batch"
+msgstr "Lệnh Gộp"
 
-#: prefs/AudioIOPrefs.cpp:100
-msgid "1 (Mono)"
-msgstr "1 (Mono)"
+#: prefs/BatchPrefs.cpp:77 prefs/GUIPrefs.cpp:92
+msgid "Behaviors"
+msgstr "Hành vi"
 
-#: prefs/AudioIOPrefs.cpp:101
-msgid "2 (Stereo)"
-msgstr "2 (Stereo)"
+#: prefs/BatchPrefs.cpp:80 prefs/GUIPrefs.cpp:129
+msgid "&Don't apply effects in batch mode"
+msgstr "Không áp &dụng hiệu ứng trong chế độ lệnh gộp"
 
-#: prefs/AudioIOPrefs.cpp:115
-msgid "Playback"
-msgstr "Phát lại"
+#: prefs/BatchPrefs.cpp:83 prefs/GUIPrefs.cpp:132
+msgid "Cl&eanSpeech Mode (Customized GUI)"
+msgstr "Chế độ Cl&eanSpeech (Giao diện tuỳ biến)"
 
-#: prefs/AudioIOPrefs.cpp:119
-#: prefs/AudioIOPrefs.cpp:137
-#: toolbars/DeviceToolBar.cpp:57
-msgid "Device"
-msgstr "Thiết bị"
+#: prefs/DevicePrefs.cpp:54
+msgid "Devices"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:34 prefs/GUIPrefs.cpp:35
+msgid "Interface"
+msgstr "Giao diện"
+
+#: prefs/DevicePrefs.cpp:113
+msgid "Host"
+msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:122
 msgid "Using:"
 msgstr "Dùng:"
 
-#: prefs/AudioIOPrefs.cpp:123
-msgid "Portaudio v"
-msgstr "Cổng âm thanh v"
+#: prefs/AudioIOPrefs.cpp:115
+msgid "Playback"
+msgstr "Phát lại"
 
 #: prefs/AudioIOPrefs.cpp:133
 msgid "Recording"
@@ -7480,100 +7405,15 @@ msgstr "Thu âm"
 msgid "Channels"
 msgstr "Kênh"
 
-#: prefs/AudioIOPrefs.cpp:145
-msgid "Playthrough"
-msgstr "Phát qua"
+#: prefs/AudioIOPrefs.cpp:100
+msgid "1 (Mono)"
+msgstr "1 (Mono)"
 
-#: prefs/AudioIOPrefs.cpp:149
-msgid "Overdub: &Play other tracks while recording new one"
-msgstr ""
+#: prefs/AudioIOPrefs.cpp:101
+msgid "2 (Stereo)"
+msgstr "2 (Stereo)"
 
-#: prefs/AudioIOPrefs.cpp:150
-msgid "&Hardware Playthrough: Play new track while recording it"
-msgstr "P&hát qua phần cứng: Vừa phát vừa thu dải mới"
-
-#: prefs/AudioIOPrefs.cpp:152
-msgid "&Software Playthrough: Play new track while recording it"
-msgstr "Phá&t qua phần mềm: Vừa phát vừa thu dải mới"
-
-#: prefs/AudioIOPrefs.cpp:157
-msgid "&Software Playthrough: Play new track while recording or monitoring"
-msgstr ""
-
-#: prefs/AudioIOPrefs.cpp:160
-msgid "(uncheck when recording \"stereo mix\")"
-msgstr ""
-
-#: prefs/AudioIOPrefs.cpp:162
-msgid "Effects Preview"
-msgstr "Nghe thử hiệu ứng"
-
-#: prefs/AudioIOPrefs.cpp:165
-msgid "Length of preview:"
-msgstr "Nghe thử dài:"
-
-#: prefs/AudioIOPrefs.cpp:170
-msgid "Cut Preview"
-msgstr "Nghe thử cắt"
-
-#: prefs/AudioIOPrefs.cpp:173
-msgid "Preview before cut region:"
-msgstr "Nghe thử trước khi cắt vùng:"
-
-#: prefs/AudioIOPrefs.cpp:175
-msgid "Preview after cut region:"
-msgstr "Nghe thử sau khi cắt vùng:"
-
-#: prefs/AudioIOPrefs.cpp:183
-msgid "Latency"
-msgstr "Độ trễ"
-
-#: prefs/AudioIOPrefs.cpp:189
-msgid "Audio to buffer:\n"
-"(higher = more latency)"
-msgstr "Bộ đệm âm thanh:\n"
-"(lớn = nhiều trễ)"
-
-#: prefs/AudioIOPrefs.cpp:192
-msgid "Latency correction:\n"
-"(negative = backwards)"
-msgstr "Sửa trễ:\n"
-"(nhỏ hơn không = quay lui)"
-
-#: prefs/AudioIOPrefs.cpp:197
-msgid "Seek Time when playing"
-msgstr "Tìm thời gian khi phát"
-
-#: prefs/AudioIOPrefs.cpp:200
-msgid "Short period:"
-msgstr "Chu kỳ ngắn:"
-
-#: prefs/AudioIOPrefs.cpp:202
-msgid "Long period:"
-msgstr "Chu kỳ dài:"
-
-#: prefs/BatchPrefs.cpp:55
-#: prefs/BatchPrefs.cpp:56
-msgid "Batch"
-msgstr "Lệnh Gộp"
-
-#: prefs/BatchPrefs.cpp:77
-#: prefs/GUIPrefs.cpp:92
-msgid "Behaviors"
-msgstr "Hành vi"
-
-#: prefs/BatchPrefs.cpp:80
-#: prefs/GUIPrefs.cpp:129
-msgid "&Don't apply effects in batch mode"
-msgstr "Không áp &dụng hiệu ứng trong chế độ lệnh gộp"
-
-#: prefs/BatchPrefs.cpp:83
-#: prefs/GUIPrefs.cpp:132
-msgid "Cl&eanSpeech Mode (Customized GUI)"
-msgstr "Chế độ Cl&eanSpeech (Giao diện tuỳ biến)"
-
-#: prefs/DirectoriesPrefs.cpp:55
-#: prefs/DirectoriesPrefs.cpp:56
+#: prefs/DirectoriesPrefs.cpp:55 prefs/DirectoriesPrefs.cpp:56
 #: prefs/PrefsDialog.cpp:279
 msgid "Directories"
 msgstr "Thư mục"
@@ -7590,33 +7430,30 @@ msgstr "Vị trí:"
 msgid "Free Space:"
 msgstr "Dung lượng trống:"
 
-#: prefs/DirectoriesPrefs.cpp:99
-msgid "Auto save"
-msgstr "Tự động lưu"
-
-#: prefs/DirectoriesPrefs.cpp:101
-msgid "Auto save a copy of the project in a separate folder"
-msgstr "Tự động lưu một bản sao của dự án trong một thư mục riêng"
-
-#: prefs/DirectoriesPrefs.cpp:104
-msgid "Auto save interval:"
-msgstr "Chu kỳ tự động lưu:"
-
-#: prefs/DirectoriesPrefs.cpp:105
-msgid "minutes"
-msgstr "phút"
-
 #: prefs/DirectoriesPrefs.cpp:110
 msgid "Audio cache"
 msgstr "Bộ đệm âm thanh"
 
-#: prefs/DirectoriesPrefs.cpp:112
-msgid "Play and/or record using RAM (useful for slow drives, but could crash with long files or recordings)"
+#: prefs/DirectoriesPrefs.cpp:105
+msgid "Play and/or record using RAM (useful for slow drives)"
+msgstr ""
+
+#: prefs/DirectoriesPrefs.cpp:111
+msgid "Minimum Free Memory (MB):"
+msgstr ""
+
+#: prefs/DirectoriesPrefs.cpp:118
+msgid "If the available system memory falls below this value, audio will no longer\n"
+"be cached in memory and will be written to disk."
 msgstr ""
 
 #: prefs/DirectoriesPrefs.cpp:121
 msgid "Choose a location to place the temporary directory"
 msgstr "Chọn vị trí đặt thư mục tạm thời"
+
+#: prefs/DirectoriesPrefs.cpp:158
+msgid "unavailable - above location doesn't exist"
+msgstr ""
 
 #: prefs/DirectoriesPrefs.cpp:166
 #, c-format
@@ -7636,10 +7473,218 @@ msgstr "Không thể ghi vào thư mục %s"
 msgid "Changes to temporary directory will not take effect until Audacity is restarted"
 msgstr "Việc chuyển đổi thư mục tạm thời sẽ có hiệu lực từ lần chạy sau của Audacity"
 
-#: prefs/FileFormatPrefs.cpp:48
-#: prefs/FileFormatPrefs.cpp:49
+#: prefs/GUIPrefs.cpp:42
+#, fuzzy
+msgid "In Browser"
+msgstr "Duyệt..."
+
+#: prefs/GUIPrefs.cpp:43
+msgid "From Internet"
+msgstr "Từ Internet"
+
+#: prefs/GUIPrefs.cpp:54
+msgid "36"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:55
+msgid "48"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:56
+msgid "60"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:57
+msgid "96"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:58
+msgid "120"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:59
+msgid "145"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:141
+msgid "-36 dB (shallow range for high-amplitude editing)"
+msgstr "-36 dB (bị giới hạn khi chỉnh sửa âm có biên độ lớn)"
+
+#: prefs/GUIPrefs.cpp:142
+msgid "-48 dB (PCM range of 8 bit samples)"
+msgstr "-48 dB (PCM dùng 8 bit lấy mẫu)"
+
+#: prefs/GUIPrefs.cpp:143
+msgid "-60 dB (PCM range of 10 bit samples)"
+msgstr "-60 dB (PCM dùng 10 bit lấy mẫu)"
+
+#: prefs/GUIPrefs.cpp:144
+msgid "-96 dB (PCM range of 16 bit samples)"
+msgstr "-96 dB (PCM dùng 16 bit lấy mẫu)"
+
+#: prefs/GUIPrefs.cpp:145
+msgid "-120 dB (approximate limit of human hearing)"
+msgstr "-120 dB (xấp xỉ giới hạn nghe của con người)"
+
+#: prefs/GUIPrefs.cpp:146
+msgid "-145 dB (PCM range of 24 bit samples)"
+msgstr "-145 dB (PCM dùng 24 bit lấy mẫu)"
+
+#: prefs/SpectrumPrefs.cpp:140
+msgid "Display"
+msgstr "Hiển thị"
+
+#: prefs/GUIPrefs.cpp:100
+msgid "Er&gonomic order of audio I/O buttons"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:101
+msgid "Show &welcome message at program start up"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:109
+msgid "Meter/Waveform dB range:"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:169
+msgid "Help:"
+msgstr "Trợ giúp:"
+
+#: prefs/GUIPrefs.cpp:96
+#, fuzzy
+msgid "Cl&osing last window quits Audacity"
+msgstr "Thoát khỏi Audacity khi không còn cửa sổ nào khác."
+
+#: prefs/GUIPrefs.cpp:110
+msgid "&Beep on completion of longer activities"
+msgstr "&Bíp khi hoàn thành các tác vụ kéo dài"
+
+#: prefs/GUIPrefs.cpp:126
+msgid "Modes"
+msgstr "Chế độ"
+
+#: prefs/GUIPrefs.cpp:151
+msgid "Display VST effects in GUI mode"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:129
+msgid "Don't a&pply effects in batch mode"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:48 prefs/FileFormatPrefs.cpp:49
 msgid "Import / Export"
 msgstr "Nhập / Xuất"
+
+#: prefs/FileFormatPrefs.cpp:100
+msgid "When importing audio files"
+msgstr "Khi nhập âm thanh"
+
+#: prefs/FileFormatPrefs.cpp:103
+msgid "&Make a copy of uncompressed audio files before editing (safer)"
+msgstr "Sao chép âm thanh không nén vào dự án khi xử lý (an toàn hơn)"
+
+#: prefs/FileFormatPrefs.cpp:104
+msgid "&Read uncompressed audio files directly from the original (faster)"
+msgstr "Đọc âm thanh không nén t&rực tiếp từ tập tin gốc (nhanh hơn)"
+
+#: prefs/FileFormatPrefs.cpp:106
+msgid "&Normalize all tracks in project"
+msgstr "&Chuẩn hoá mọi dải âm trong dự án"
+
+#: prefs/FileFormatPrefs.cpp:120
+msgid "When exporting tracks to an audio file"
+msgstr "Khi xuất các dải âm thành tập tin âm thanh"
+
+#: prefs/FileFormatPrefs.cpp:123
+msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
+msgstr "&Luôn trộn tất cả các dải thành kênh Stereo hoặc Mono."
+
+#: prefs/FileFormatPrefs.cpp:124
+msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
+msgstr "Tự chọn chế độ trộn (vd để x&uất ra tập tin hỗ trợ âm thanh 5.1)"
+
+#: prefs/FileFormatPrefs.cpp:126
+msgid "S&how Metadata Editor prior to export step"
+msgstr "C&hạy Bộ chỉnh sửa dữ liệu đặc tả trước khi xuất"
+
+#: prefs/ImportExportPrefs.cpp:84
+msgid "Note: Export quality options can be chosen by clicking the Options\n"
+"button in the Export dialog."
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:64 prefs/KeyConfigPrefs.cpp:65
+msgid "Keyboard"
+msgstr "Bàn phím"
+
+#: prefs/KeyConfigPrefs.cpp:86
+msgid "Keyboard preferences currently unavailable."
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:87
+msgid "Open a new project to modify keyboard shortcuts."
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:95
+msgid "Key Bindings"
+msgstr "Gán phím tắt"
+
+#: prefs/KeyConfigPrefs.cpp:115
+msgid "S&et"
+msgstr "Đặ&t"
+
+#: prefs/KeyConfigPrefs.cpp:120
+msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
+msgstr "Lưu ý: Nhấn Ctrl+Q sẽ thoát khỏi chương trình. Những phím khác đều hợp lệ."
+
+#: prefs/KeyConfigPrefs.cpp:124 prefs/ThemePrefs.cpp:105
+msgid "&Defaults"
+msgstr "Mặc đị&nh"
+
+#: prefs/KeyConfigPrefs.cpp:171
+msgid "Command"
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:143
+msgid "Key Combination"
+msgstr "Tổ hợp phím"
+
+#: prefs/KeyConfigPrefs.cpp:367 toolbars/EditToolBar.cpp:144
+msgid "Undo"
+msgstr "Huỷ bỏ"
+
+#: prefs/KeyConfigPrefs.cpp:199 toolbars/EditToolBar.cpp:145
+#: toolbars/EditToolBar.cpp:196
+msgid "Redo"
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:196
+msgid "Select an XML file containing Audacity keyboard shortcuts..."
+msgstr "Chọn một tập tin XML chứa các phím tắt cho Audacity..."
+
+#: prefs/KeyConfigPrefs.cpp:213
+msgid "Error loading keyboard shortcuts"
+msgstr "Lỗi nạp các phím tắt từ tập tin XML"
+
+#: prefs/KeyConfigPrefs.cpp:163
+msgid "Export Keyboard Shortcuts As:"
+msgstr "Xuất phím tắt ra tập tin:"
+
+#: prefs/KeyConfigPrefs.cpp:181
+msgid "Error saving keyboard shortcuts"
+msgstr "Gặp lỗi khi lưu phím tắt"
+
+#: prefs/KeyConfigPrefs.cpp:241
+#, c-format
+msgid "The keyboard shortcut '%s' is already assigned to:\n"
+"\n"
+"'%s'"
+msgstr "Phím tắt '%s' đã được gán cho:\n"
+"\n"
+"'%s'"
+
+#: prefs/LibraryPrefs.cpp:46
+msgid "Libraries"
+msgstr ""
 
 #: prefs/FileFormatPrefs.cpp:77
 msgid "MP3 Export Library"
@@ -7673,255 +7718,25 @@ msgstr ""
 msgid "FFmpeg Library Version:"
 msgstr ""
 
+#: prefs/LibraryPrefs.cpp:112
+msgid "No compatible FFmpeg library was found"
+msgstr ""
+
 #: prefs/FileFormatPrefs.cpp:118 prefs/FileFormatPrefs.cpp:122
 msgid "FFmpeg Library:"
 msgstr ""
 
-#: prefs/FileFormatPrefs.cpp:136
-#, fuzzy
-msgid "Note: Export quality options can be chosen by clicking the Options button in the Export dialog.\n"
-msgstr "Lưu ý: Chọn chất lượng xuất bằng cách nhấn Tuỳ chọn trong hộp thoại Xuất.\n"
+#: prefs/AudioIOPrefs.cpp:41 prefs/AudioIOPrefs.cpp:42
+msgid "Audio I/O"
+msgstr "Âm thanh Vào/Ra"
 
-#: prefs/FileFormatPrefs.cpp:100
-msgid "When importing audio files"
-msgstr "Khi nhập âm thanh"
+#: prefs/AudioIOPrefs.cpp:123
+msgid "Portaudio v"
+msgstr "Cổng âm thanh v"
 
-#: prefs/FileFormatPrefs.cpp:103
-msgid "&Make a copy of uncompressed audio files before editing (safer)"
-msgstr "Sao chép âm thanh không nén vào dự án khi xử lý (an toàn hơn)"
-
-#: prefs/FileFormatPrefs.cpp:104
-msgid "&Read uncompressed audio files directly from the original (faster)"
-msgstr "Đọc âm thanh không nén t&rực tiếp từ tập tin gốc (nhanh hơn)"
-
-#: prefs/FileFormatPrefs.cpp:106
-msgid "&Normalize all tracks in project"
-msgstr "&Chuẩn hoá mọi dải âm trong dự án"
-
-#: prefs/FileFormatPrefs.cpp:111
-msgid "When saving a project that depends on other audio files"
-msgstr "Khi lưu một dự án phụ thuộc vào các tập tin âm thanh khác"
-
-#: prefs/FileFormatPrefs.cpp:114
-msgid "Always &copy all audio into project (safest)"
-msgstr "Luôn &chép tất cả âm thanh vào dự án (an toàn nhất)"
-
-#: prefs/FileFormatPrefs.cpp:115
-msgid "&Do not copy any audio"
-msgstr "Không chép &dữ liệu phụ thuộc vào"
-
-#: prefs/FileFormatPrefs.cpp:116
-msgid "&Ask user"
-msgstr "Hỏ&i người dùng"
-
-#: prefs/FileFormatPrefs.cpp:120
-msgid "When exporting tracks to an audio file"
-msgstr "Khi xuất các dải âm thành tập tin âm thanh"
-
-#: prefs/FileFormatPrefs.cpp:123
-msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
-msgstr "&Luôn trộn tất cả các dải thành kênh Stereo hoặc Mono."
-
-#: prefs/FileFormatPrefs.cpp:124
-msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
-msgstr "Tự chọn chế độ trộn (vd để x&uất ra tập tin hỗ trợ âm thanh 5.1)"
-
-#: prefs/FileFormatPrefs.cpp:126
-msgid "S&how Metadata Editor prior to export step"
-msgstr "C&hạy Bộ chỉnh sửa dữ liệu đặc tả trước khi xuất"
-
-#: prefs/GUIPrefs.cpp:34
-#: prefs/GUIPrefs.cpp:35
-msgid "Interface"
-msgstr "Giao diện"
-
-#: prefs/GUIPrefs.cpp:42
-#, fuzzy
-msgid "In Browser"
-msgstr "Duyệt..."
-
-#: prefs/GUIPrefs.cpp:43
-msgid "From Internet"
-msgstr "Từ Internet"
-
-#: prefs/GUIPrefs.cpp:50
-msgid "Simple"
-msgstr "Đơn giản"
-
-#: prefs/GUIPrefs.cpp:94
-msgid "&Update display while playing"
-msgstr "Cập nhật giao diện &khi đang phát"
-
-#: prefs/GUIPrefs.cpp:96
-#, fuzzy
-msgid "Cl&osing last window quits Audacity"
-msgstr "Thoát khỏi Audacity khi không còn cửa sổ nào khác."
-
-#: prefs/GUIPrefs.cpp:98
-msgid "Enable &dragging of left and right selection edges"
-msgstr "Cho phép &rê cạnh trái và phải của vùng chọn"
-
-#: prefs/GUIPrefs.cpp:100
-msgid "Er&gonomic order of audio I/O buttons"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:102
-msgid "Automatically &fit tracks vertically zoomed"
-msgstr "Tự động thu phóng chiều cao của dải cho phù hợp"
-
-#: prefs/GUIPrefs.cpp:104
-#, fuzzy
-msgid "\"Move track focus\" c&ycles repeatedly through tracks"
-msgstr "Chọn dải âm làm việc theo kiểu \"xoay\" lặp đi lặp lại"
-
-#: prefs/GUIPrefs.cpp:106
-msgid "Editing a &clip can move other clips"
-msgstr "&Chỉnh sửa một đoạn âm có thể làm các đoạn âm khác di chuyển"
-
-#: prefs/GUIPrefs.cpp:108
-msgid "&Select all audio in project, if none selected"
-msgstr "Chọn tất cả âm thanh trong dự án nếu không chọn &gì"
-
-#: prefs/GUIPrefs.cpp:110
-msgid "&Beep on completion of longer activities"
-msgstr "&Bíp khi hoàn thành các tác vụ kéo dài"
-
-#: prefs/GUIPrefs.cpp:114
-msgid "Show / Hide"
-msgstr "Hiện / Ẩn"
-
-#: prefs/GUIPrefs.cpp:116
-msgid "Enable cut &lines"
-msgstr "&Bật các đường cắt"
-
-#: prefs/GUIPrefs.cpp:118
-msgid "Show warnings about &temp files"
-msgstr "Hiện cảnh báo cho tập tin &tạm"
-
-#: prefs/GUIPrefs.cpp:120
-msgid "Show prompt to sa&ve, even if project is empty"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:122
-#, fuzzy
-msgid "Show &Welcome Message at program start up"
-msgstr "Hiện thông điệp Xin chào khi chạy chương trình"
-
-#: prefs/GUIPrefs.cpp:126
-msgid "Modes"
-msgstr "Chế độ"
-
-#: prefs/GUIPrefs.cpp:129
-msgid "Don't a&pply effects in batch mode"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:138
-msgid "Display range minimum: meters and 'Waveform (dB)'"
-msgstr "Biểu diễn "
-
-#: prefs/GUIPrefs.cpp:141
-msgid "-36 dB (shallow range for high-amplitude editing)"
-msgstr "-36 dB (bị giới hạn khi chỉnh sửa âm có biên độ lớn)"
-
-#: prefs/GUIPrefs.cpp:142
-msgid "-48 dB (PCM range of 8 bit samples)"
-msgstr "-48 dB (PCM dùng 8 bit lấy mẫu)"
-
-#: prefs/GUIPrefs.cpp:143
-msgid "-60 dB (PCM range of 10 bit samples)"
-msgstr "-60 dB (PCM dùng 10 bit lấy mẫu)"
-
-#: prefs/GUIPrefs.cpp:144
-msgid "-96 dB (PCM range of 16 bit samples)"
-msgstr "-96 dB (PCM dùng 16 bit lấy mẫu)"
-
-#: prefs/GUIPrefs.cpp:145
-msgid "-120 dB (approximate limit of human hearing)"
-msgstr "-120 dB (xấp xỉ giới hạn nghe của con người)"
-
-#: prefs/GUIPrefs.cpp:146
-msgid "-145 dB (PCM range of 24 bit samples)"
-msgstr "-145 dB (PCM dùng 24 bit lấy mẫu)"
-
-#: prefs/GUIPrefs.cpp:151
-msgid "Default View Mode"
-msgstr "Chế độ biểu diễn mặc định"
-
-#: prefs/GUIPrefs.cpp:166
-msgid "Other interface choices"
-msgstr "Các giao diện khác"
-
-#: prefs/GUIPrefs.cpp:169
-msgid "Help:"
-msgstr "Trợ giúp:"
-
-#: prefs/GUIPrefs.cpp:170
-msgid "Solo Button:"
-msgstr "Nút Solo:"
-
-#: prefs/KeyConfigPrefs.cpp:64
-#: prefs/KeyConfigPrefs.cpp:65
-msgid "Keyboard"
-msgstr "Bàn phím"
-
-#: prefs/KeyConfigPrefs.cpp:86
-msgid "Keyboard preferences currently unavailable."
-msgstr ""
-
-#: prefs/KeyConfigPrefs.cpp:87
-msgid "Open a new project to modify keyboard shortcuts."
-msgstr ""
-
-#: prefs/KeyConfigPrefs.cpp:95
-msgid "Key Bindings"
-msgstr "Gán phím tắt"
-
-#: prefs/KeyConfigPrefs.cpp:115
-msgid "S&et"
-msgstr "Đặ&t"
-
-#: prefs/KeyConfigPrefs.cpp:120
-msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
-msgstr "Lưu ý: Nhấn Ctrl+Q sẽ thoát khỏi chương trình. Những phím khác đều hợp lệ."
-
-#: prefs/KeyConfigPrefs.cpp:124
-#: prefs/ThemePrefs.cpp:105
-msgid "&Defaults"
-msgstr "Mặc đị&nh"
-
-#: prefs/KeyConfigPrefs.cpp:143
-msgid "Key Combination"
-msgstr "Tổ hợp phím"
-
-#: prefs/KeyConfigPrefs.cpp:163
-msgid "Export Keyboard Shortcuts As:"
-msgstr "Xuất phím tắt ra tập tin:"
-
-#: prefs/KeyConfigPrefs.cpp:181
-msgid "Error saving keyboard shortcuts"
-msgstr "Gặp lỗi khi lưu phím tắt"
-
-#: prefs/KeyConfigPrefs.cpp:196
-msgid "Select an XML file containing Audacity keyboard shortcuts..."
-msgstr "Chọn một tập tin XML chứa các phím tắt cho Audacity..."
-
-#: prefs/KeyConfigPrefs.cpp:213
-msgid "Error loading keyboard shortcuts"
-msgstr "Lỗi nạp các phím tắt từ tập tin XML"
-
-#: prefs/KeyConfigPrefs.cpp:241
-#, c-format
-msgid "The keyboard shortcut '%s' is already assigned to:\n"
-"\n"
-"'%s'"
-msgstr "Phím tắt '%s' đã được gán cho:\n"
-"\n"
-"'%s'"
-
-#: prefs/KeyConfigPrefs.cpp:367
-#: toolbars/EditToolBar.cpp:144
-msgid "Undo"
-msgstr "Huỷ bỏ"
+#: prefs/AudioIOPrefs.cpp:145
+msgid "Playthrough"
+msgstr "Phát qua"
 
 #: prefs/AudioIOPrefs.cpp:147
 msgid "&Play other tracks while recording new one"
@@ -7935,6 +7750,10 @@ msgstr ""
 msgid "&Software Playthrough (Play new track while recording it)"
 msgstr ""
 
+#: prefs/AudioIOPrefs.cpp:170
+msgid "Cut Preview"
+msgstr "Nghe thử cắt"
+
 #: prefs/MidiIOPrefs.cpp:160
 msgid "Play before cut region:"
 msgstr ""
@@ -7942,6 +7761,10 @@ msgstr ""
 #: prefs/MidiIOPrefs.cpp:162
 msgid "Play after cut region:"
 msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:183
+msgid "Latency"
+msgstr "Độ trễ"
 
 #: prefs/MidiIOPrefs.cpp:173
 msgid "Audio to buffer:"
@@ -7955,12 +7778,23 @@ msgstr ""
 msgid "Seek Time"
 msgstr ""
 
+#: prefs/AudioIOPrefs.cpp:200
+msgid "Short period:"
+msgstr "Chu kỳ ngắn:"
+
+#: prefs/AudioIOPrefs.cpp:202
+msgid "Long period:"
+msgstr "Chu kỳ dài:"
+
+#: prefs/AudioIOPrefs.cpp:162
+msgid "Effects Preview"
+msgstr "Nghe thử hiệu ứng"
+
 #: prefs/MidiIOPrefs.cpp:196
 msgid "Play when previewing:"
 msgstr ""
 
-#: prefs/MousePrefs.cpp:55
-#: prefs/MousePrefs.cpp:56
+#: prefs/MousePrefs.cpp:55 prefs/MousePrefs.cpp:56
 msgid "Mouse"
 msgstr "Chuột"
 
@@ -7980,37 +7814,26 @@ msgstr "Thực thi lệnh"
 msgid "Buttons"
 msgstr "Nút"
 
-#: prefs/MousePrefs.cpp:98
-#: prefs/MousePrefs.cpp:104
-#: prefs/MousePrefs.cpp:117
+#: prefs/MousePrefs.cpp:98 prefs/MousePrefs.cpp:104 prefs/MousePrefs.cpp:117
 #: prefs/MousePrefs.cpp:122
 msgid "Left-Click"
 msgstr "Click chuột trái"
 
-#: prefs/MousePrefs.cpp:98
-#: prefs/MousePrefs.cpp:99
-#: prefs/MousePrefs.cpp:100
-#: prefs/MousePrefs.cpp:101
-#: prefs/MousePrefs.cpp:102
+#: prefs/MousePrefs.cpp:98 prefs/MousePrefs.cpp:99 prefs/MousePrefs.cpp:100
+#: prefs/MousePrefs.cpp:101 prefs/MousePrefs.cpp:102
 msgid "Select"
 msgstr "Chọn"
 
-#: prefs/MousePrefs.cpp:98
-#: prefs/MousePrefs.cpp:122
+#: prefs/MousePrefs.cpp:98 prefs/MousePrefs.cpp:122
 msgid "Set Selection Point"
 msgstr "Đặt điểm chọn"
 
-#: prefs/MousePrefs.cpp:99
-#: prefs/MousePrefs.cpp:105
-#: prefs/MousePrefs.cpp:111
-#: prefs/MousePrefs.cpp:115
-#: prefs/MousePrefs.cpp:119
-#: prefs/MousePrefs.cpp:123
+#: prefs/MousePrefs.cpp:99 prefs/MousePrefs.cpp:105 prefs/MousePrefs.cpp:111
+#: prefs/MousePrefs.cpp:115 prefs/MousePrefs.cpp:119 prefs/MousePrefs.cpp:123
 msgid "Left-Drag"
 msgstr "Rê chuột trái"
 
-#: prefs/MousePrefs.cpp:99
-#: prefs/MousePrefs.cpp:123
+#: prefs/MousePrefs.cpp:99 prefs/MousePrefs.cpp:123
 msgid "Set Selection Range"
 msgstr "Đặt giới hạn vùng chọn"
 
@@ -8038,12 +7861,8 @@ msgstr "Ctrl+chuột trái"
 msgid "Set Selection Point and Play"
 msgstr "Đặt điểm chọn và phát"
 
-#: prefs/MousePrefs.cpp:104
-#: prefs/MousePrefs.cpp:105
-#: prefs/MousePrefs.cpp:106
-#: prefs/MousePrefs.cpp:107
-#: prefs/MousePrefs.cpp:108
-#: prefs/MousePrefs.cpp:109
+#: prefs/MousePrefs.cpp:104 prefs/MousePrefs.cpp:105 prefs/MousePrefs.cpp:106
+#: prefs/MousePrefs.cpp:107 prefs/MousePrefs.cpp:108 prefs/MousePrefs.cpp:109
 msgid "Zoom"
 msgstr "Thu phóng"
 
@@ -8051,9 +7870,7 @@ msgstr "Thu phóng"
 msgid "Zoom in on Point"
 msgstr "Phóng to trên một điểm"
 
-#: prefs/MousePrefs.cpp:105
-#: prefs/MousePrefs.cpp:107
-#: prefs/MousePrefs.cpp:125
+#: prefs/MousePrefs.cpp:105 prefs/MousePrefs.cpp:107 prefs/MousePrefs.cpp:125
 msgid "Zoom in on a Range"
 msgstr "Phóng to trên một phạm vi"
 
@@ -8061,18 +7878,15 @@ msgstr "Phóng to trên một phạm vi"
 msgid "same as right-drag"
 msgstr "giống rê chuột phải"
 
-#: prefs/MousePrefs.cpp:106
-#: prefs/MousePrefs.cpp:124
+#: prefs/MousePrefs.cpp:106 prefs/MousePrefs.cpp:124
 msgid "Right-Click"
 msgstr "Nhắp chuột phải"
 
-#: prefs/MousePrefs.cpp:106
-#: prefs/MousePrefs.cpp:124
+#: prefs/MousePrefs.cpp:106 prefs/MousePrefs.cpp:124
 msgid "Zoom out one step"
 msgstr "Phóng to hơn 1 mức"
 
-#: prefs/MousePrefs.cpp:107
-#: prefs/MousePrefs.cpp:125
+#: prefs/MousePrefs.cpp:107 prefs/MousePrefs.cpp:125
 msgid "Right-Drag"
 msgstr "Kéo chuột phải"
 
@@ -8108,8 +7922,7 @@ msgstr "Shift+Rê chuột trái"
 msgid "Time shift all clips in track"
 msgstr "Di chuyển theo thời gian tất cả các đoạn trong dải"
 
-#: prefs/MousePrefs.cpp:113
-#: prefs/MousePrefs.cpp:120
+#: prefs/MousePrefs.cpp:113 prefs/MousePrefs.cpp:120
 msgid "Ctrl-Left-Drag"
 msgstr "Ctrl+Rê chuột trái"
 
@@ -8125,9 +7938,7 @@ msgstr "Thay đổi đường bao biên độ"
 msgid "Change Sample"
 msgstr "Thay đổi mẫu"
 
-#: prefs/MousePrefs.cpp:117
-#: prefs/MousePrefs.cpp:118
-#: prefs/MousePrefs.cpp:119
+#: prefs/MousePrefs.cpp:117 prefs/MousePrefs.cpp:118 prefs/MousePrefs.cpp:119
 #: prefs/MousePrefs.cpp:120
 msgid "Pencil"
 msgstr "Bút chì"
@@ -8148,26 +7959,20 @@ msgstr "Thay đổi một vài mẫu"
 msgid "Change ONE Sample only"
 msgstr "Thay đổi chỉ Một mẫu"
 
-#: prefs/MousePrefs.cpp:122
-#: prefs/MousePrefs.cpp:123
-#: prefs/MousePrefs.cpp:124
+#: prefs/MousePrefs.cpp:122 prefs/MousePrefs.cpp:123 prefs/MousePrefs.cpp:124
 #: prefs/MousePrefs.cpp:125
 msgid "Multi"
 msgstr "Nhiều"
 
-#: prefs/MousePrefs.cpp:122
-#: prefs/MousePrefs.cpp:123
+#: prefs/MousePrefs.cpp:122 prefs/MousePrefs.cpp:123
 msgid "same as select tool"
 msgstr "giống như công cụ chọn"
 
-#: prefs/MousePrefs.cpp:124
-#: prefs/MousePrefs.cpp:125
+#: prefs/MousePrefs.cpp:124 prefs/MousePrefs.cpp:125
 msgid "same as zoom tool"
 msgstr "giống như công cụ thu phóng"
 
-#: prefs/MousePrefs.cpp:127
-#: prefs/MousePrefs.cpp:128
-#: prefs/MousePrefs.cpp:129
+#: prefs/MousePrefs.cpp:127 prefs/MousePrefs.cpp:128 prefs/MousePrefs.cpp:129
 msgid "Any"
 msgstr "Bất kỳ"
 
@@ -8195,9 +8000,61 @@ msgstr "Ctrl+Lăn chuột"
 msgid "Zoom in or out"
 msgstr "Phóng to hay thu nhỏ"
 
+#: prefs/AudioIOPrefs.cpp:165
+msgid "Length of preview:"
+msgstr "Nghe thử dài:"
+
+#: prefs/AudioIOPrefs.cpp:173
+msgid "Preview before cut region:"
+msgstr "Nghe thử trước khi cắt vùng:"
+
+#: prefs/AudioIOPrefs.cpp:175
+msgid "Preview after cut region:"
+msgstr "Nghe thử sau khi cắt vùng:"
+
+#: prefs/AudioIOPrefs.cpp:197
+msgid "Seek Time when playing"
+msgstr "Tìm thời gian khi phát"
+
 #: prefs/PrefsDialog.cpp:89
 msgid "Audacity Preferences"
 msgstr "Tuỳ thích của Audacity"
+
+#: prefs/ProjectsPrefs.cpp:31
+msgid "Projects"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:111
+msgid "When saving a project that depends on other audio files"
+msgstr "Khi lưu một dự án phụ thuộc vào các tập tin âm thanh khác"
+
+#: prefs/FileFormatPrefs.cpp:114
+msgid "Always &copy all audio into project (safest)"
+msgstr "Luôn &chép tất cả âm thanh vào dự án (an toàn nhất)"
+
+#: prefs/FileFormatPrefs.cpp:115
+msgid "&Do not copy any audio"
+msgstr "Không chép &dữ liệu phụ thuộc vào"
+
+#: prefs/FileFormatPrefs.cpp:116
+msgid "&Ask user"
+msgstr "Hỏ&i người dùng"
+
+#: prefs/DirectoriesPrefs.cpp:99
+msgid "Auto save"
+msgstr "Tự động lưu"
+
+#: prefs/DirectoriesPrefs.cpp:101
+msgid "Auto save a copy of the project in a separate folder"
+msgstr "Tự động lưu một bản sao của dự án trong một thư mục riêng"
+
+#: prefs/DirectoriesPrefs.cpp:104
+msgid "Auto save interval:"
+msgstr "Chu kỳ tự động lưu:"
+
+#: prefs/DirectoriesPrefs.cpp:105
+msgid "minutes"
+msgstr "phút"
 
 #: prefs/QualityPrefs.cpp:73
 msgid "Rectangle"
@@ -8223,46 +8080,46 @@ msgstr "Tốc độ lấy mẫu mặc định:"
 msgid "Default Sample Format:"
 msgstr "Định dạng mẫu mặc định:"
 
-#: prefs/QualityPrefs.cpp:136
-msgid "Real-time sample rate converter:"
-msgstr "Bộ chuyển đổi tốc độ lấy mẫu thời gian thực:"
+#: prefs/QualityPrefs.cpp:165
+msgid "Real-time Conversion"
+msgstr ""
 
-#: prefs/QualityPrefs.cpp:139
-msgid "High-quality sample rate converter:"
-msgstr "Bộ chuyển đổi tốc độ lấy mẫu chất lượng cao:"
-
-#: prefs/QualityPrefs.cpp:142
-msgid "Real-time dither:"
-msgstr "Nhiễu sửa sai lượng tử hoá thời gian thực:"
-
-#: prefs/QualityPrefs.cpp:145
-msgid "High-quality dither:"
-msgstr "Nhiễu sửa sai lượng tử hoá chất lượng cao:"
-
-#: prefs/QualityPrefs.cpp:157
-msgid "Conversion"
-msgstr "Sự chuyển đổi"
-
-#: prefs/QualityPrefs.cpp:163
-msgid "Sample Rate Converter"
+#: prefs/QualityPrefs.cpp:171 prefs/QualityPrefs.cpp:193
+#, fuzzy
+msgid "Sample Rate Converter:"
 msgstr "Bộ chuyển đổi tốc độ lấy mẫu"
 
 #: prefs/QualityPrefs.cpp:164
 msgid "Dither"
 msgstr "Nhiễu sửa sai lượng tử hoá"
 
-#: prefs/QualityPrefs.cpp:165
-msgid "Real-time:"
-msgstr "Thời gian thực:"
+#: prefs/QualityPrefs.cpp:189
+msgid "High-quality Conversion"
+msgstr ""
 
-#: prefs/QualityPrefs.cpp:171
-msgid "High-quality:"
-msgstr "Chất lượng cao:"
+#: prefs/AudioIOPrefs.cpp:149
+msgid "Overdub: &Play other tracks while recording new one"
+msgstr ""
 
-#: prefs/SmartRecordPrefs.cpp:54
-#: prefs/SmartRecordPrefs.cpp:55
-msgid "Smart Recording"
-msgstr "Ghi âm thông minh"
+#: prefs/AudioIOPrefs.cpp:150
+msgid "&Hardware Playthrough: Play new track while recording it"
+msgstr "P&hát qua phần cứng: Vừa phát vừa thu dải mới"
+
+#: prefs/AudioIOPrefs.cpp:157
+msgid "&Software Playthrough: Play new track while recording or monitoring"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:160
+msgid "(uncheck when recording \"stereo mix\")"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:86
+msgid "milliseconds (higher = more latency)"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:92
+msgid "milliseconds (negative = backwards)"
+msgstr ""
 
 #: prefs/SmartRecordPrefs.cpp:64 prefs/SmartRecordPrefs.cpp:66
 msgid "Sound Activated Recording"
@@ -8272,22 +8129,57 @@ msgstr ""
 msgid "Sound Activation Level (dB):"
 msgstr ""
 
-#: prefs/SpectrumPrefs.cpp:41
-#: prefs/SpectrumPrefs.cpp:42
+#: prefs/SpectrumPrefs.cpp:41 prefs/SpectrumPrefs.cpp:42
 msgid "Spectrograms"
 msgstr "Ảnh phổ"
-
-#: prefs/SpectrumPrefs.cpp:91
-msgid "FFT Size"
-msgstr "Kích cỡ biến đổi nhanh Fourier (FFT)"
 
 #: prefs/SpectrumPrefs.cpp:94
 msgid "8 - most wideband"
 msgstr "8 - hầu hết băng rộng"
 
+#: prefs/SpectrumPrefs.cpp:42
+msgid "16"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:43
+msgid "32"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:44
+msgid "64"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:45
+msgid "128"
+msgstr ""
+
 #: prefs/SpectrumPrefs.cpp:99
 msgid "256 - default"
 msgstr "256 - mặc định"
+
+#: prefs/SpectrumPrefs.cpp:47
+msgid "512"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:48
+msgid "1024"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:49
+msgid "2048"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:51
+msgid "4096"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:52
+msgid "8192"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:53
+msgid "16384"
+msgstr ""
 
 #: prefs/SpectrumPrefs.cpp:107
 msgid "32768 - most narrowband"
@@ -8297,8 +8189,17 @@ msgstr "32768 - hầu hết băng hẹp"
 msgid "4096 - most narrowband"
 msgstr "4096 - hầu hết băng hẹp"
 
-#: prefs/SpectrumPrefs.cpp:116
-msgid "Window type:"
+#: prefs/SpectrumPrefs.cpp:82
+msgid "FFT Window"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:86
+msgid "Window size"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:93
+#, fuzzy
+msgid "Window type"
 msgstr "Loại cửa sổ:"
 
 #: prefs/SpectrumPrefs.cpp:125
@@ -8306,13 +8207,9 @@ msgstr "Loại cửa sổ:"
 msgid "FFT Skip Points"
 msgstr "Các điểm bỏ qua FFT"
 
-#: prefs/SpectrumPrefs.cpp:140
-msgid "Display"
-msgstr "Hiển thị"
-
-#: prefs/SpectrumPrefs.cpp:144
-msgid "&Grayscale"
-msgstr "&Thang xám"
+#: prefs/SpectrumPrefs.cpp:117
+msgid "Skip Points"
+msgstr ""
 
 #: prefs/SpectrumPrefs.cpp:147
 msgid "Minimum Frequency (Hz):"
@@ -8322,18 +8219,17 @@ msgstr "Tần số nhỏ nhất (Hz):"
 msgid "Maximum Frequency (Hz):"
 msgstr "Tần số lớn nhất (Hz):"
 
-#: prefs/SpectrumPrefs.cpp:158
-#, fuzzy
-msgid "&Y-Grid"
-msgstr "&Lưới dọc"
+#: prefs/SpectrumPrefs.cpp:147
+msgid "Show the spectrum using &grayscale colors"
+msgstr ""
 
-#: prefs/SpectrumPrefs.cpp:161
-msgid "&Find Notes"
-msgstr "&Tìm nốt nhạc"
+#: prefs/SpectrumPrefs.cpp:152
+msgid "Show a grid along the &Y-axis"
+msgstr ""
 
-#: prefs/SpectrumPrefs.cpp:162
-msgid "&Quantize Notes"
-msgstr "&Lượng tử hoá nốt"
+#: prefs/SpectrumPrefs.cpp:160
+msgid "FFT Find Notes"
+msgstr ""
 
 #: prefs/SpectrumPrefs.cpp:165
 msgid "Minimum Amplitude (dB):"
@@ -8342,6 +8238,14 @@ msgstr "Biên độ nhỏ nhất (dB):"
 #: prefs/SpectrumPrefs.cpp:170
 msgid "Max. Number of Notes (1..128):"
 msgstr "Số tối đa các nốt (1...128):"
+
+#: prefs/SpectrumPrefs.cpp:161
+msgid "&Find Notes"
+msgstr "&Tìm nốt nhạc"
+
+#: prefs/SpectrumPrefs.cpp:162
+msgid "&Quantize Notes"
+msgstr "&Lượng tử hoá nốt"
 
 #: prefs/SpectrumPrefs.cpp:197
 msgid "The maximum frequency must be an integer"
@@ -8359,19 +8263,69 @@ msgstr "Tần số nhỏ nhất phải là số nguyên"
 msgid "Minimum frequency must be at least 0 Hz"
 msgstr "Tần số nhỏ nhất phải lớn hơn 0 Hz"
 
+#: prefs/SpectrumPrefs.cpp:213
+msgid "Minimum frequency must be less than maximum frequency"
+msgstr ""
+
 #: prefs/SpectrumPrefs.cpp:220
 msgid "The minimum amplitude (dB) must be an integer"
 msgstr "Biên độ nhỏ nhất (dB) phải là số nguyên"
 
 #: prefs/SpectrumPrefs.cpp:226
-#: prefs/SpectrumPrefs.cpp:230
-msgid "The Maximum Number of Notes must be an integer in the range 1..128"
-msgstr "Số tối đa các nốt phải là số nguyên trong khoảng 1..128"
+msgid "The maximum number of notes must be an integer"
+msgstr ""
 
-#: prefs/ThemePrefs.cpp:62
-#: prefs/ThemePrefs.cpp:63
+#: prefs/SpectrumPrefs.cpp:230
+msgid "The maximum number of notes must be in the range 1..128"
+msgstr ""
+
+#: prefs/ThemePrefs.cpp:62 prefs/ThemePrefs.cpp:63
 msgid "Theme"
 msgstr "Sắc thái giao diện"
+
+#: prefs/ThemePrefs.cpp:126
+msgid "Info"
+msgstr "Thông tin"
+
+#: prefs/ThemePrefs.cpp:91
+#, fuzzy
+msgid "Themability is an experimental feature.\n"
+"\n"
+"To try it out, click \"Save Theme Cache\" then find and modify the images and colors in\n"
+"ImageCacheVxx.png using an image editor such as the Gimp.\n"
+"\n"
+"Click \"Load Theme Cache\" to load the changed images and colors back into Audacity.\n"
+"\n"
+"[Only the control toolbar and the colors on the wavetrack are currently affected, even\n"
+"though the image file shows other icons too.]"
+msgstr "Thay đổi sắc thái giao diện là một tính năng thử nghiệm.\n"
+"\n"
+"Bạn hãy nhấn \"Lưu bộ đệm sắc thái giao diện\" rồi \n"
+"tìm và sửa các ảnh và màu sắc trong \n"
+"ImageCacheVxx.png với một trình xử lý ảnh như\n"
+"GIMP.\n"
+"\n"
+"Nhấn \"Nạp bộ đệm sắc thái giao diện\" để nạp các ảnh và màu sắc\n"
+"đã sửa vào trong Audacity.\n"
+"\n"
+"[Chỉ ảnh hưởng tới thanh công cụ điều khiển\n"
+"và màu sắc của sóng âm,\n"
+"mặc dù các ảnh trong bộ đệm có cả các biểu tượng khác.]"
+
+#: prefs/ThemePrefs.cpp:96
+msgid "You have compiled Audacity with an extra button, 'Output Sourcery'.  This will save a\n"
+"C version of the image cache that can be compiled in as a default."
+msgstr ""
+
+#: prefs/ThemePrefs.cpp:101
+msgid "If 'Load Theme Cache At Startup' is checked, then the Theme Cache will be loaded\n"
+"when the program starts up."
+msgstr ""
+
+#: prefs/ThemePrefs.cpp:104
+msgid "Saving and loading individual theme files uses a separate file for each image, but is\n"
+"otherwise the same idea."
+msgstr ""
 
 #. i18n-hint: && in here is an escape character to get a single & on screen,
 #. * so keep it as is
@@ -8403,101 +8357,97 @@ msgstr "Lưu tập tin"
 msgid "Load Files"
 msgstr "Nạp tập tin"
 
-#: prefs/ThemePrefs.cpp:126
-msgid "Info"
-msgstr "Thông tin"
+#: prefs/GUIPrefs.cpp:50
+msgid "Simple"
+msgstr "Đơn giản"
 
-#: prefs/ThemePrefs.cpp:129
-msgid "Themability is an experimental feature.\n"
-"\n"
-"To try it out, click \"Save Theme Cache\" then\n"
-"find and modify the images and colors in \n"
-"ImageCacheVxx.png using an image editor such \n"
-"as the Gimp.\n"
-"\n"
-"Click \"Load Theme Cache\" to load the changed images\n"
-"and colors back into Audacity.\n"
-"\n"
-"[Only the control toolbar and the colors on the \n"
-"wavetrack are currently affected, even though the\n"
-"image file shows other icons too.]\n"
-msgstr "Thay đổi sắc thái giao diện là một tính năng thử nghiệm.\n"
-"\n"
-"Bạn hãy nhấn \"Lưu bộ đệm sắc thái giao diện\" rồi \n"
-"tìm và sửa các ảnh và màu sắc trong \n"
-"ImageCacheVxx.png với một trình xử lý ảnh như\n"
-"GIMP.\n"
-"\n"
-"Nhấn \"Nạp bộ đệm sắc thái giao diện\" để nạp các ảnh và màu sắc\n"
-"đã sửa vào trong Audacity.\n"
-"\n"
-"[Chỉ ảnh hưởng tới thanh công cụ điều khiển\n"
-"và màu sắc của sóng âm,\n"
-"mặc dù các ảnh trong bộ đệm có cả các biểu tượng khác.]\n"
+#: prefs/GUIPrefs.cpp:94
+msgid "&Update display while playing"
+msgstr "Cập nhật giao diện &khi đang phát"
 
-#: prefs/ThemePrefs.cpp:134
-msgid "You have compiled Audacity with an extra button, \n"
-"'Output Sourcery'.  This will save a C version of \n"
-"the image cache that can be compiled in as a default.\n"
-msgstr "Bạn đã biên dịch Audacity với tuỳ chọn thêm nút\n"
-"'Output Sourcery'. Nút này sẽ lưu một phiên bản C của \n"
-"bộ đệm ảnh, có thể được biên dịch làm mặc định.\n"
+#: prefs/GUIPrefs.cpp:102
+msgid "Automatically &fit tracks vertically zoomed"
+msgstr "Tự động thu phóng chiều cao của dải cho phù hợp"
 
-#: prefs/ThemePrefs.cpp:139
-msgid "If 'Load Theme Cache At Startup' is checked, then \n"
-"the Theme Cache will be loaded when the program \n"
-"starts up.\n"
-"\n"
-msgstr "Nếu nút 'Nạp bộ đệm sắc thái giao diện khi khởi động' được chọn,\n"
-"Bộ đệm Sắc thái giao diện sẽ được tự động nạp\n"
-"khi chương trình\n"
-"khởi động.\n"
-"\n"
+#: prefs/TracksPrefs.cpp:88
+#, fuzzy
+msgid "Default View Mode:"
+msgstr "Chế độ biểu diễn mặc định"
 
-#: prefs/ThemePrefs.cpp:142
-msgid "Saving and loading individual theme files uses a \n"
-"separate file for each image, but is otherwise the \n"
-"same idea.\n"
-"\n"
-msgstr "Lưu và nạp các tập tin sắc thái giao diện đơn lẻ dùng\n"
-"một tập tin đơn lẻ để lưu mỗi ảnh, nhưng có cùng\n"
-"ý tưởng.\n"
-"\n"
+#: prefs/GUIPrefs.cpp:108
+msgid "&Select all audio in project, if none selected"
+msgstr "Chọn tất cả âm thanh trong dự án nếu không chọn &gì"
 
-#: toolbars/ControlToolBar.cpp:174
-msgid "Pause"
-msgstr "Tạm ngừng"
+#: prefs/GUIPrefs.cpp:116
+msgid "Enable cut &lines"
+msgstr "&Bật các đường cắt"
 
-#: toolbars/ControlToolBar.cpp:177
-msgid "Play"
-msgstr "Phát"
+#: prefs/GUIPrefs.cpp:98
+msgid "Enable &dragging of left and right selection edges"
+msgstr "Cho phép &rê cạnh trái và phải của vùng chọn"
 
-#: toolbars/ControlToolBar.cpp:178
-msgid "Play (Shift for Loop Play)"
+#: prefs/GUIPrefs.cpp:104
+#, fuzzy
+msgid "\"Move track focus\" c&ycles repeatedly through tracks"
+msgstr "Chọn dải âm làm việc theo kiểu \"xoay\" lặp đi lặp lại"
+
+#: prefs/GUIPrefs.cpp:106
+msgid "Editing a &clip can move other clips"
+msgstr "&Chỉnh sửa một đoạn âm có thể làm các đoạn âm khác di chuyển"
+
+#: prefs/GUIPrefs.cpp:170
+msgid "Solo Button:"
+msgstr "Nút Solo:"
+
+#: prefs/WarningsPrefs.cpp:31
+msgid "Warnings"
 msgstr ""
 
-#: toolbars/ControlToolBar.cpp:182
+#: prefs/WarningsPrefs.cpp:55
+msgid "Show Warnings/Prompts"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:57
+msgid "When saving &projects"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:60
+msgid "When saving &empty project"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:63
+msgid "When &disk space is getting low"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:66
+msgid "When mixing down to &stereo during export"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:69
+msgid "When mixing down to &mono during export"
+msgstr ""
+
+#: Menus.cpp:786
+msgid "Pause"
+msgstr "Tạm dừng"
+
+#: Menus.cpp:785
 msgid "Stop"
 msgstr "Dừng"
-
-#: toolbars/ControlToolBar.cpp:185
-msgid "Skip to Start"
-msgstr "Chuyển về đầu"
-
-#: toolbars/ControlToolBar.cpp:188
-msgid "Skip to End"
-msgstr "Chuyển về cuối"
-
-#: toolbars/ControlToolBar.cpp:192
-msgid "Record (Shift for Append Record)"
-msgstr ""
 
 #: toolbars/ControlToolBar.cpp:194
 msgid "Clean Speech"
 msgstr "Clean Speech"
 
-#: toolbars/ControlToolBar.cpp:530
-#: toolbars/ControlToolBar.cpp:844
+#: toolbars/ControlToolBar.cpp:178
+msgid "Play (Shift for Loop Play)"
+msgstr ""
+
+#: toolbars/ControlToolBar.cpp:192
+msgid "Record (Shift for Append Record)"
+msgstr ""
+
+#: toolbars/ControlToolBar.cpp:530 toolbars/ControlToolBar.cpp:844
 msgid "Error while opening sound device. "
 msgstr "Lỗi khi mở thiết bị âm thanh"
 
@@ -8509,13 +8459,11 @@ msgstr "Không thể Thu âm trong chế độ CleanSpeech khi một dải, ho�
 msgid "Recording not permitted"
 msgstr "Không được phép thu âm"
 
-#: toolbars/DeviceToolBar.cpp:113
-#: toolbars/DeviceToolBar.cpp:115
+#: toolbars/DeviceToolBar.cpp:113 toolbars/DeviceToolBar.cpp:115
 msgid "Output Device"
 msgstr "Thiết bị đầu ra"
 
-#: toolbars/DeviceToolBar.cpp:134
-#: toolbars/DeviceToolBar.cpp:136
+#: toolbars/DeviceToolBar.cpp:134 toolbars/DeviceToolBar.cpp:136
 msgid "Input Device"
 msgstr "Thiết bị đầu vào"
 
@@ -8539,29 +8487,21 @@ msgstr "Phóng to"
 msgid "Zoom Out"
 msgstr "Thu nhỏ"
 
-#: toolbars/EditToolBar.cpp:156
-msgid "Zoom Toggle"
-msgstr "Bật/tắt thu phóng"
-
-#: toolbars/EditToolBar.cpp:160
-msgid "Fit Selection"
-msgstr "Vừa vùng chọn"
-
 #: toolbars/EditToolBar.cpp:160
 msgid "Fit selection in window"
 msgstr "Vừa vùng chọn vào trong cửa sổ"
 
 #: toolbars/EditToolBar.cpp:162
-msgid "Fit Project"
-msgstr "Vừa dự án"
-
-#: toolbars/EditToolBar.cpp:162
 msgid "Fit project in window"
 msgstr "Vừa dự án vào trong cửa sổ"
 
-#: toolbars/MeterToolBar.cpp:50
-msgid "Meter"
-msgstr "Bộ đo"
+#: toolbars/EditToolBar.cpp:160
+msgid "Fit Selection"
+msgstr "Vừa vùng chọn"
+
+#: toolbars/EditToolBar.cpp:162
+msgid "Fit Project"
+msgstr "Vừa dự án"
 
 #: toolbars/MeterToolBar.cpp:80
 msgid "Play Meter"
@@ -8609,22 +8549,27 @@ msgstr "Thanh trượt đầu vào"
 msgid "Input Source"
 msgstr "Nguồn âm thanh vào"
 
+#: toolbars/MixerToolBar.cpp:299
+msgid "Input source information is not available."
+msgstr ""
+
+#: toolbars/MixerToolBar.cpp:306
+msgid "Select Input Source"
+msgstr ""
+
 #: toolbars/SelectionBar.cpp:80
 msgid "Selection"
 msgstr "Vùng chọn"
 
-#: toolbars/SelectionBar.cpp:128
-#: toolbars/SelectionBar.cpp:185
+#: toolbars/SelectionBar.cpp:128 toolbars/SelectionBar.cpp:185
 msgid "Project Rate (Hz):"
 msgstr "Tần số của dự án (Hz):"
 
-#: toolbars/SelectionBar.cpp:142
-#: toolbars/SelectionBar.cpp:247
+#: toolbars/SelectionBar.cpp:142 toolbars/SelectionBar.cpp:247
 msgid "Selection Start:"
 msgstr "Bắt đầu vùng chọn:"
 
-#: toolbars/SelectionBar.cpp:155
-#: toolbars/SelectionBar.cpp:253
+#: toolbars/SelectionBar.cpp:155 toolbars/SelectionBar.cpp:253
 msgid "Length"
 msgstr "Độ dài"
 
@@ -8632,13 +8577,11 @@ msgstr "Độ dài"
 msgid "hidden"
 msgstr "ẩn"
 
-#: toolbars/SelectionBar.cpp:175
-#: toolbars/SelectionBar.cpp:264
+#: toolbars/SelectionBar.cpp:175 toolbars/SelectionBar.cpp:264
 msgid "Audio Position:"
 msgstr "Vị trí âm thanh:"
 
-#: toolbars/SelectionBar.cpp:225
-#: toolbars/SelectionBar.cpp:230
+#: toolbars/SelectionBar.cpp:225 toolbars/SelectionBar.cpp:230
 msgid "Snap To"
 msgstr "Dính tới"
 
@@ -8659,8 +8602,7 @@ msgstr "Kết thúc vùng chọn"
 msgid "Audacity %s ToolBar"
 msgstr "Thanh công cụ %s của Audacity"
 
-#: toolbars/ToolDock.cpp:74
-#: toolbars/ToolDock.cpp:75
+#: toolbars/ToolDock.cpp:74 toolbars/ToolDock.cpp:75
 msgid "ToolDock"
 msgstr "Bảng công cụ"
 
@@ -8692,34 +8634,6 @@ msgstr "Chuột Trái=Phóng to, Chuột Phải=Thu nhỏ, Chuột Giữa=Chuẩ
 msgid "Click and drag to move a track in time"
 msgstr "Nhấn và rê để di chuyển dải âm theo thời gian"
 
-#: toolbars/ToolsToolBar.cpp:90
-msgid "Tools"
-msgstr "Công cụ"
-
-#: toolbars/ToolsToolBar.cpp:147
-#: toolbars/ToolsToolBar.cpp:182
-msgid "Selection Tool"
-msgstr "Công cụ chọn"
-
-#: toolbars/ToolsToolBar.cpp:148
-msgid "Envelope Tool"
-msgstr "Công cụ biên độ"
-
-#: toolbars/ToolsToolBar.cpp:149
-#: toolbars/ToolsToolBar.cpp:183
-msgid "Time Shift Tool"
-msgstr "Công cụ di chuyển"
-
-#: toolbars/ToolsToolBar.cpp:150
-#: toolbars/ToolsToolBar.cpp:185
-msgid "Zoom Tool"
-msgstr "Công cụ thu phóng"
-
-#: toolbars/ToolsToolBar.cpp:151
-#: toolbars/ToolsToolBar.cpp:184
-msgid "Draw Tool"
-msgstr "Công cụ vẽ"
-
 #: toolbars/ToolsToolBar.cpp:152
 msgid "Multi-Tool Mode"
 msgstr "Chế độ đa năng"
@@ -8728,24 +8642,11 @@ msgstr "Chế độ đa năng"
 msgid "Slide Tool"
 msgstr "Công cụ trượt"
 
-#: toolbars/ToolsToolBar.cpp:187
-msgid "Multi Tool"
-msgstr "Công cụ đa năng"
-
-#: toolbars/TranscriptionToolBar.cpp:84
-msgid "Transcription"
-msgstr "Tốc độ phát"
-
 #: toolbars/TranscriptionToolBar.cpp:171
 msgid "Play at selected speed"
 msgstr "Phát ở tốc độ đã chọn"
 
-#: toolbars/TranscriptionToolBar.cpp:172
-msgid "Play-at-speed"
-msgstr "Tốc độ phát"
-
-#: toolbars/TranscriptionToolBar.cpp:178
-#: toolbars/TranscriptionToolBar.cpp:183
+#: toolbars/TranscriptionToolBar.cpp:178 toolbars/TranscriptionToolBar.cpp:183
 msgid "Playback Speed"
 msgstr "Tốc độ phát lại"
 
@@ -8753,73 +8654,37 @@ msgstr "Tốc độ phát lại"
 msgid "Adjust left selection to next onset"
 msgstr "Điều chỉnh vùng chọn trái đên onset tới"
 
-#: toolbars/TranscriptionToolBar.cpp:197
-msgid "Left-to-On"
-msgstr "Chuột trái để bật"
-
 #: toolbars/TranscriptionToolBar.cpp:199
 msgid "Adjust right selection to previous offset"
 msgstr "Điều chỉnh vùng chọn phải đến offset trước"
-
-#: toolbars/TranscriptionToolBar.cpp:200
-msgid "Right-to-Off"
-msgstr "Chuột phải để tắt"
 
 #: toolbars/TranscriptionToolBar.cpp:202
 msgid "Adjust left selection to next offset"
 msgstr "Điều chỉnh vùng chọn trái đến offset tới"
 
-#: toolbars/TranscriptionToolBar.cpp:203
-msgid "Left-to-Off"
-msgstr "Chuột trái để Tắt"
-
 #: toolbars/TranscriptionToolBar.cpp:205
 msgid "Adjust right selection to previous onset"
 msgstr "Điều chỉnh vùng chọn phải đến onset trước"
-
-#: toolbars/TranscriptionToolBar.cpp:206
-msgid "Right-to-On"
-msgstr "Chuột phải để Bật"
 
 #: toolbars/TranscriptionToolBar.cpp:208
 msgid "Select region of sound around cursor"
 msgstr "Chọn vùng âm thanh quanh con trỏ"
 
-#: toolbars/TranscriptionToolBar.cpp:209
-msgid "Select-Sound"
-msgstr "Chọn âm thanh"
-
 #: toolbars/TranscriptionToolBar.cpp:211
 msgid "Select region of silence around cursor"
 msgstr "Chọn khoảng lặng quanh con trỏ"
-
-#: toolbars/TranscriptionToolBar.cpp:212
-msgid "Select-Silence"
-msgstr "Chọn Khoảng lặng"
 
 #: toolbars/TranscriptionToolBar.cpp:214
 msgid "Automatically make labels from words"
 msgstr "Tự động tạo nhãn từ các đoạn"
 
-#: toolbars/TranscriptionToolBar.cpp:215
-msgid "Make Labels"
-msgstr "Tạo nhãn"
-
 #: toolbars/TranscriptionToolBar.cpp:217
 msgid "Add label at selection"
 msgstr "Thêm nhãn ở vùng chọn"
 
-#: toolbars/TranscriptionToolBar.cpp:218
-msgid "Add Label"
-msgstr "Thêm nhãn"
-
 #: toolbars/TranscriptionToolBar.cpp:220
 msgid "Calibrate voicekey"
 msgstr "Chia giọng"
-
-#: toolbars/TranscriptionToolBar.cpp:221
-msgid "Calibrate"
-msgstr "Chia độ"
 
 #: toolbars/TranscriptionToolBar.cpp:225
 msgid "Adjust Sensitivity"
@@ -8853,6 +8718,46 @@ msgstr "Đổi hướng (Ngưỡng lớn)"
 msgid "Key type"
 msgstr "Loại phím"
 
+#: toolbars/TranscriptionToolBar.cpp:172
+msgid "Play-at-speed"
+msgstr "Tốc độ phát"
+
+#: toolbars/TranscriptionToolBar.cpp:197
+msgid "Left-to-On"
+msgstr "Chuột trái để bật"
+
+#: toolbars/TranscriptionToolBar.cpp:200
+msgid "Right-to-Off"
+msgstr "Chuột phải để tắt"
+
+#: toolbars/TranscriptionToolBar.cpp:203
+msgid "Left-to-Off"
+msgstr "Chuột trái để Tắt"
+
+#: toolbars/TranscriptionToolBar.cpp:206
+msgid "Right-to-On"
+msgstr "Chuột phải để Bật"
+
+#: toolbars/TranscriptionToolBar.cpp:209
+msgid "Select-Sound"
+msgstr "Chọn âm thanh"
+
+#: toolbars/TranscriptionToolBar.cpp:212
+msgid "Select-Silence"
+msgstr "Chọn Khoảng lặng"
+
+#: toolbars/TranscriptionToolBar.cpp:215
+msgid "Make Labels"
+msgstr "Tạo nhãn"
+
+#: toolbars/TranscriptionToolBar.cpp:218
+msgid "Add Label"
+msgstr "Thêm nhãn"
+
+#: toolbars/TranscriptionToolBar.cpp:221
+msgid "Calibrate"
+msgstr "Chia độ"
+
 #: widgets/AButton.cpp:302
 msgid " (disabled)"
 msgstr " (không cho)"
@@ -8867,15 +8772,13 @@ msgstr "Nút"
 
 #. i18n-hint: One-letter abbreviation for Left, in VU Meter
 #. i18n-hint: One-letter abbreviation for Left, in the Pan slider
-#: widgets/ASlider.cpp:604
-#: widgets/Meter.cpp:212
+#: widgets/ASlider.cpp:604 widgets/Meter.cpp:212
 msgid "L"
 msgstr "L"
 
 #. i18n-hint: One-letter abbreviation for Right, in VU Meter
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
-#: widgets/ASlider.cpp:607
-#: widgets/Meter.cpp:214
+#: widgets/ASlider.cpp:607 widgets/Meter.cpp:214
 msgid "R"
 msgstr "R"
 
@@ -8891,8 +8794,7 @@ msgstr "Trái"
 msgid "Right"
 msgstr "Phải"
 
-#: widgets/ErrorDialog.cpp:78
-#: widgets/ErrorDialog.cpp:102
+#: widgets/ErrorDialog.cpp:78 widgets/ErrorDialog.cpp:102
 msgid "Help"
 msgstr "Trợ giúp"
 
@@ -8927,8 +8829,7 @@ msgstr "Tay nắm"
 msgid "%d rows, %d columns"
 msgstr "%d hàng, %d cột"
 
-#: widgets/Grid.cpp:649
-#: widgets/Grid.cpp:776
+#: widgets/Grid.cpp:649 widgets/Grid.cpp:776
 #, c-format
 msgid "Row %d"
 msgstr "Hàng %d"
@@ -9007,8 +8908,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: widgets/Ruler.cpp:1478
-#: widgets/Ruler.cpp:1479
+#: widgets/Ruler.cpp:1478 widgets/Ruler.cpp:1479
 msgid "Vertical Ruler"
 msgstr "Thước kẻ đặt dọc"
 
@@ -9251,4 +9151,16 @@ msgstr ""
 #, c-format
 msgid "Could not load file: \"%s\""
 msgstr "Không thể nạp tập tin: \"%s\""
+
+#: xml/XMLWriter.cpp:325
+msgid "Error flushing file"
+msgstr ""
+
+#: xml/XMLWriter.cpp:330
+msgid "Error closing file"
+msgstr ""
+
+#: xml/XMLWriter.cpp:340
+msgid "Error writing to file"
+msgstr ""
 

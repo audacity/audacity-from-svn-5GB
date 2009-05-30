@@ -17,6 +17,7 @@
 #include <wx/menu.h>
 #include <wx/hashmap.h>
 
+#include "../AudacityApp.h"
 #include "../xml/XMLTagHandler.h"
 
 class CommandFunctor
@@ -92,17 +93,44 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
    void InsertItem(wxString name, wxString label, CommandFunctor *callback,
                    wxString after, int checkmark = -1);
 
-   void AddItem(wxString name, wxString label, CommandFunctor *callback,
-                int checkmark = -1);
    void AddItemList(wxString name, wxArrayString labels,
                     CommandFunctor *callback, bool plugins = false);
 
+   void AddCheck(const wxChar *name,
+                 const wxChar *label,
+                 CommandFunctor *callback,
+                 int checkmark = 0);
+
+   void AddItem(const wxChar *name,
+                const wxChar *label,
+                CommandFunctor *callback,
+                int flags = NoFlagsSpecifed,
+                int mask = NoFlagsSpecifed);
+
+   void AddItem(const wxChar *name,
+                const wxChar *label_in,
+                CommandFunctor *callback,
+                const wxChar *accel,
+                int flags = NoFlagsSpecifed,
+                int mask = NoFlagsSpecifed,
+                int checkmark = -1);
 
    void AddSeparator();
 
    // A command doesn't actually appear in a menu but might have a
    // keyboard shortcut.
-   void AddCommand(wxString name, wxString label, CommandFunctor *callback);
+   void AddCommand(const wxChar *name,
+                   const wxChar *label,
+                   CommandFunctor *callback,
+                   int flags = NoFlagsSpecifed,
+                   int mask = NoFlagsSpecifed);
+
+   void AddCommand(const wxChar *name,
+                   const wxChar *label,
+                   CommandFunctor *callback,
+                   const wxChar *accel,
+                   int flags = NoFlagsSpecifed,
+                   int mask = NoFlagsSpecifed);
 
    //
    // Command masks
