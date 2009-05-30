@@ -107,8 +107,12 @@ OBJS = \
 	WaveClip.o \
 	WaveTrack.o \
 	WrappedType.o \
+	commands/AppCommandEvent.o \
+	commands/CommandBuilder.o \
+	commands/CommandHandler.o \
 	commands/CommandManager.o \
 	commands/Keyboard.o \
+	commands/ScriptCommandRelay.o \
 	effects/Effect.o \
 	effects/Generator.o \
 	effects/EffectCategory.o \
