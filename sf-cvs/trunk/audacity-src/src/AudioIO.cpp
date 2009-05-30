@@ -390,7 +390,7 @@ wxArrayString AudioIO::GetInputSourceNames()
    {
       int numSources = Px_GetNumInputSources(mPortMixer);
       for( int source = 0; source < numSources; source++ )
-         deviceNames.Add(LAT1CTOWX(Px_GetInputSourceName(mPortMixer, source)));
+         deviceNames.Add(wxString(Px_GetInputSourceName(mPortMixer, source), wxConvLocal));
    }
    else
    {
