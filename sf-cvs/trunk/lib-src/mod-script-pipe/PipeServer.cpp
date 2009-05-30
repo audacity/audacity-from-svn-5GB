@@ -1,4 +1,3 @@
-
 #if defined(WIN32)
 
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
@@ -111,7 +110,7 @@ void PipeServer()
 #include <unistd.h>
 #include <string.h>
 
-const char fifotmpl[] = "/tmp/audacity_script_pipe.%d";
+const char fifotmpl[] = "/tmp/audacity_script_pipe.%s.%d";
 
 const int nBuff = 1024;
 
@@ -120,39 +119,44 @@ extern "C" int DoSrvMore( char * pOut, int nMax );
 
 void PipeServer()
 {
-   FILE *fifo = NULL;
+   FILE *fromFifo = NULL;
+   FILE *toFifo = NULL;
    int rc;
    char buf[nBuff];
-   char fifoname[nBuff];
-   
-   sprintf(fifoname, fifotmpl, getuid());
+   char toFifoName[nBuff];
+   char fromFifoName[nBuff];
 
-   rc = mkfifo(fifoname, S_IRWXU);
+   sprintf(toFifoName, fifotmpl, "to", getuid());
+   sprintf(fromFifoName, fifotmpl, "from", getuid());
+
+   unlink(toFifoName);
+   unlink(fromFifoName);
+
+   rc = mkfifo(fromFifoName, S_IRWXU) & mkfifo(toFifoName, S_IRWXU);
    if (rc < 0)
    {
-      perror("Unable to create fifo");
+      perror("Unable to create fifos");
       printf("Ignoring...");
 //      return;
    }
 
-   fifo = fopen(fifoname, "rw");
-   if (fifo == NULL)
+   fromFifo = fopen(fromFifoName, "w");
+   if (fromFifo == NULL)
    {
-      perror("Unable to open fifo");
+      perror("Unable to open fifo from server to script");
       return;
    }
 
-   while (true)
+   toFifo = fopen(toFifoName, "r");
+   if (toFifo == NULL)
    {
-      int len;
+      perror("Unable to open fifo to server from script");
+      return;
+   }
 
-      if (fgets(buf, sizeof(buf), fifo) == NULL)
-      {
-         perror("Read failed on fifo");
-         break;
-      }
-
-      len = strlen(buf);
+   while (fgets(buf, sizeof(buf), toFifo) != NULL)
+   {
+      int len = strlen(buf);
       if (len <= 1)
       {
          continue;
@@ -160,6 +164,7 @@ void PipeServer()
 
       buf[len - 1] = '\0';
 
+      printf("Server received %s\n", buf);
       DoSrv(buf);
 
       while (true)
@@ -171,18 +176,19 @@ void PipeServer()
          }
          printf(buf);
 
-         fwrite(buf, 1, len, fifo);
+         fwrite(buf, 1, len, fromFifo);
       }
-
-      // Here until I figure out why the second read fails.
-      break;
    }
 
-   if (fifo != NULL)
-   {
-      fclose(fifo);
-   }
+   printf("Read failed on fifo, quitting\n");
 
-   unlink(fifoname);
+   if (toFifo != NULL)
+      fclose(toFifo);
+
+   if (fromFifo != NULL)
+      fclose(fromFifo);
+
+   unlink(toFifoName);
+   unlink(fromFifoName);
 }
 #endif
