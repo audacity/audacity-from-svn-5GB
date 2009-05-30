@@ -967,7 +967,7 @@ void AudacityProject::CreateMenusAndCommands()
    {
       c->AddSeparator();   
       c->AddItem(wxT("Screenshot"),     _("&Screenshot Tools..."),        FN(OnScreenshot));
-#ifdef __WXDEBUG__
+#if IS_BETA
       c->AddSeparator();   
       c->AddItem(wxT("Benchmark"),      _("&Run Benchmark..."),           FN(OnBenchmark));
 #endif
