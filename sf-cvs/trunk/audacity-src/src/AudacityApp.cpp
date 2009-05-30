@@ -61,6 +61,8 @@ It handles initialization and termination by subclassing wxApp.
 #include "AudioIO.h"
 #include "Benchmark.h"
 #include "DirManager.h"
+#include "commands/CommandHandler.h"
+#include "commands/AppCommandEvent.h"
 #include "effects/LoadEffects.h"
 #include "effects/Contrast.h"
 #include "FFmpeg.h"
@@ -478,6 +480,9 @@ BEGIN_EVENT_TABLE(AudacityApp, wxApp)
    EVT_MENU(wxID_FILE, AudacityApp::OnMRUClear)
    EVT_MENU_RANGE(wxID_FILE1, wxID_FILE9, AudacityApp::OnMRUFile)
 // EVT_MENU_RANGE(6050, 6060, AudacityApp::OnMRUProject)
+
+   // Handle AppCommandEvents (usually from a script)
+   EVT_APP_COMMAND(wxID_ANY, AudacityApp::OnReceiveCommand)
 END_EVENT_TABLE()
 
 // Backend for OnMRUFile and OnMRUProject
@@ -740,8 +745,11 @@ bool AudacityApp::OnInit()
    // Initialize the ModuleManager
    ModuleManager::Initialize();
 
+   // Initialize the CommandHandler
+   InitCommandHandler();
+
    // load audacity plug-in modules
-   LoadModules();
+   LoadModules(*mCmdHandler);
 
    // Locale
    // wxWindows 2.3 has a much nicer wxLocale API.  We can make this code much
@@ -816,6 +824,7 @@ bool AudacityApp::OnInit()
    SetExitOnFrameDelete(true);
 
    AudacityProject *project = CreateNewAudacityProject();
+   mCmdHandler->SetProject(project);
 
    wxWindow * pWnd = MakeHijackPanel() ;
    if( pWnd )
@@ -1011,6 +1020,26 @@ bool AudacityApp::OnInit()
    ModuleManager::Dispatch(AppInitialized);
 
    return TRUE;
+}
+
+void AudacityApp::InitCommandHandler()
+{
+   mCmdHandler = new CommandHandler(*this);
+   //SetNextHandler(mCmdHandler);
+}
+
+void AudacityApp::DeInitCommandHandler()
+{
+   wxASSERT(NULL != mCmdHandler);
+   delete mCmdHandler;
+   mCmdHandler = NULL;
+}
+
+// AppCommandEvent callback - just pass the event on to the CommandHandler
+void AudacityApp::OnReceiveCommand(AppCommandEvent &event)
+{
+   wxASSERT(NULL != mCmdHandler);
+   mCmdHandler->OnReceiveCommand(event);
 }
 
 bool AudacityApp::InitCleanSpeech()
@@ -1379,6 +1408,8 @@ int AudacityApp::OnExit()
          gPrefs->Write(wxT("/DeleteCmdCfgLocation"), true);
       }
    }
+
+   DeInitCommandHandler();
 
    mRecentFiles->Save(*gPrefs, wxT("RecentFiles"));
    delete mRecentFiles;
