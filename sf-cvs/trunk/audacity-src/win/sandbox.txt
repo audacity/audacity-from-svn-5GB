@@ -1,6 +1,6 @@
 sandbox.txt
 
-Instructions for comiling audacity with Visual C++ 8.0 are contained in the file: 
+Instructions for compiling audacity with Visual C++ 8.0 are contained in the file: 
 [install-dir]\win\compile.txt
 
 There are wiki pages with more information at:
