@@ -89,8 +89,10 @@ int AudioIO::mNextStreamToken = 0;
 
 const int AudioIO::StandardRates[] = {
    8000,
+   11025,
    16000,
    22050,
+   32000,
    44100,
    48000,
    96000
