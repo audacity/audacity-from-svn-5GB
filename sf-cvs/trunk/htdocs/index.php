@@ -9,7 +9,7 @@
   $sectionId = "";
   $pageTitle = _("Free Audio Editor and Recorder");
   include "include/header.inc.php";
-  include "include/ninc.php";
+  include "include/news.inc.php";
   include "latest/versions.inc.php";
   include "include/detect-os.inc.php";
 
@@ -79,17 +79,6 @@
   ?>
 
 </div>
-
-<table border="0" width="100%"><tr><td>&nbsp;</td></tr>
-<table border="0" width="100%">
-<tr><td><a href="http://sourceforge.net/community/cca09/nominate/?project_name=Audacity&project_url=http://audacity.sourceforge.net/">
-<img src="http://sourceforge.net/images/cca/cca_nominate.png" border="0" alt="SourceForge.net Community Choice Awards"></a></td> 
-<td>&nbsp;</td><td><p>Audacity is competing for the <b>"Best Project"</b> 
-and <b>"Best Project for Multimedia"</b> categories in the 2009
-<a href="http://sourceforge.net/community/cca09/">SourceForge.net Community Choice Awards</a>. Please <a href="http://sourceforge.net/community/cca09/nominate/?project_name=Audacity&project_url=http://audacity.sourceforge.net/">
-nominate us now</a> for one or both categories and spread the word to others! Nominations close on May 29, 2009 at 4:00 PDT.</p> 
-<p>The projects with the highest number of nominations in each category will be selected for the final round of voting commencing June 22, 2009.
-</p></td></tr></table>
 
 <div style="clear: both;"> </div>
 
