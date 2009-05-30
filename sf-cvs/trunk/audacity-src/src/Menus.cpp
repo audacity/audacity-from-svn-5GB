@@ -5273,6 +5273,7 @@ void AudacityProject::OnResample()
       rates.Add(wxT("11025"));
       rates.Add(wxT("16000"));
       rates.Add(wxT("22050"));
+      rates.Add(wxT("32000"));
       rates.Add(wxT("44100"));
       rates.Add(wxT("48000"));
       rates.Add(wxT("96000"));
