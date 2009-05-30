@@ -800,12 +800,11 @@ bool AudacityApp::OnInit()
 
    wxMenu *fileMenu = new wxMenu();
    wxMenu *recentMenu = new wxMenu();
-   fileMenu->Append(wxID_NEW, wxT("&New\tCtrl+N"));
-   fileMenu->Append(wxID_OPEN, wxT("&Open...\tCtrl+O"));
-   fileMenu->AppendSubMenu(recentMenu, wxT("Open &Recent..."));
+   fileMenu->Append(wxID_NEW, wxString(_("&New")) + wxT("\tCtrl+N"));
+   fileMenu->Append(wxID_OPEN, wxString(_("&Open...")) + wxT("\tCtrl+O"));
+   fileMenu->AppendSubMenu(recentMenu, _("Open &Recent..."));
    fileMenu->Append(wxID_ABOUT, _("&About Audacity..."));
-   /* i18n-hint: Mac OS X shortcut should be Ctrl+, */
-   fileMenu->Append(wxID_PREFERENCES, _("&Preferences...\tCtrl+,"));
+   fileMenu->Append(wxID_PREFERENCES, wxString(_("&Preferences...")) + wxT("\tCtrl+,"));
 
    wxMenuBar *menuBar = new wxMenuBar();
    menuBar->Append(fileMenu, wxT("&File"));

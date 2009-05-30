@@ -28,11 +28,11 @@ msgid "Audacity is a free program written by a team of volunteer <a href=\"http:
 msgstr ""
 
 #: AboutDialog.cpp:179
-msgid "This is a Beta version of the program. It may contain bugs and unfinished features. We depend on your feedback: please send bug reports and feature requests to <b>feedback@audacityteam.org</b>. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
+msgid "This is a Beta version of the program. It may contain bugs and unfinished features. We depend on your feedback: please send bug reports and feature requests to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
 msgstr ""
 
 #: AboutDialog.cpp:182
-msgid "This is a stable, completed release of the program. However, if you find a bug or have a suggestion for us, please write to <b>feedback@audacityteam.org</b>. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
+msgid "This is a stable, completed release of the program. However, if you find a bug or have a suggestion for us, please write to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
 msgstr ""
 
 #. i18n-hint: The translation of "translator_credits" will appear
@@ -84,7 +84,7 @@ msgid "Special thanks:"
 msgstr "អរគុណ​ជា​ពិសេស​ ៖"
 
 #: AboutDialog.cpp:250
-msgid "<b>Audacity&reg;</b> software is copyright &copy; 1999-2008 Audacity Team. <br>The name <b>Audacity&reg;</b> is a registered trademark of Dominic Mazzoni."
+msgid "<b>Audacity&reg;</b> software is copyright &copy; 1999-2009 Audacity Team. <br>The name <b>Audacity&reg;</b> is a registered trademark of Dominic Mazzoni."
 msgstr ""
 
 #: AboutDialog.cpp:320
@@ -225,11 +225,21 @@ msgstr "ចូល"
 msgid "Output Meter"
 msgstr "ចេញ"
 
-#. i18n-hint: Mac OS X shortcut should be Ctrl+,
-#. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
+#: Menus.cpp:164
+msgid "&New"
+msgstr "ថ្មី"
+
+#: Menus.cpp:166
+msgid "&Open..."
+msgstr "បើក..."
+
+#: AudacityApp.cpp:805
+msgid "Open &Recent..."
+msgstr ""
+
 #: AudacityApp.cpp:728 Menus.cpp:470
-msgid "&Preferences...\tCtrl+,"
-msgstr "ចំណូល​ចិត្ត...\tCtrl+,"
+msgid "&Preferences..."
+msgstr "ចំណូល​ចិត្ត..."
 
 #: AudacityApp.cpp:810 AudacityApp.cpp:887
 #, c-format
@@ -353,17 +363,15 @@ msgstr "កំហុស ៖ "
 msgid "Error Initializing Audio"
 msgstr "កំហុស​ក្នុង​កា​រចាប់ផ្ដើម​អូឌីយ៉ូ"
 
+#: AudioIO.cpp:1225
+msgid "Latency Correction setting has caused the recorded audio to be hidden before zero.\n"
+"Audacity has brought it back to start at zero.\n"
+"You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
+msgstr ""
+
 #: AudioIO.cpp:1236
 msgid "Latency problem"
 msgstr "បញ្ហា​​ជាក់ស្ដែង"
-
-#: AudioIO.cpp:1236
-msgid "Latency setting has caused the recorded audio to be hidden before zero.\n"
-"Audacity has brought it back to start at zero.\n"
-"You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
-msgstr "ការ​កំណត់ជាក់ស្ដែង​បានបណ្ដាល​ឲ្យ​អូឌីយ៉ូ​ដែល​បានថត​លាក់​មុន​សូន្យ ។\n"
-"Audacity បាន​នាំវា​ត្រឡប់ដើម្បី​ចាប់ផ្ដើម​នៅ​សូន្យ ។\n"
-"អ្នក​អាច​ត្រូវ​ប្រើឧបករណ៍​ប្ដូរ​ពេលវេលា (Time Shift Tool) (<---> ឬ F5) ដើម្បី​អូស​បទ​ទៅ​កន្លែង​ដែល​ត្រឹមត្រូវ ។"
 
 #: AutoRecovery.cpp:54
 msgid "Automatic Crash Recovery"
@@ -590,8 +598,8 @@ msgstr "ច្រវាក់ (ចុចទ្វេ​ដង ឬ​ចុច​
 
 #. i18n-hint: This is the number of the command in the list
 #: BatchProcessDialog.cpp:453
-msgid "No"
-msgstr "លេខ​រៀង"
+msgid "Num"
+msgstr ""
 
 #: BatchProcessDialog.cpp:459
 msgid "&Insert"
@@ -930,11 +938,11 @@ msgstr "ចតុកោណកែង"
 msgid "FFmpeg support not compiled in"
 msgstr ""
 
-#: FFmpeg.cpp:101
+#: FFmpeg.cpp:103
 msgid "FFmpeg was configured in Preferences and successfully loaded before,                       \n"
 "but this time Audacity failed to load it at startup.                       \n"
 "\n"
-"You may want to go back to Preferences > Import/Export and re-configure it."
+"You may want to go back to Preferences > Libraries and re-configure it."
 msgstr ""
 
 #: FFmpeg.cpp:104
@@ -992,11 +1000,12 @@ msgstr ""
 msgid "FFmpeg not found"
 msgstr ""
 
-#: FFmpeg.h:101
-msgid "Audacity attempted to use FFmpeg libraries to import an audio file,\n"
-"but libraries were not found.\n"
-"If you want to use the FFmpeg import feature, please go to Preferences->Import/Export\n"
-"and tell Audacity where to look for the libraries."
+#: FFmpeg.h:111
+msgid "Audacity attempted to use FFmpeg to import an audio file,\n"
+"but the libraries were not found.\n"
+"\n"
+"To use FFmpeg import, go to Preferences > Libraries\n"
+"to download or locate the FFmpeg libraries."
 msgstr ""
 
 #: FFmpeg.h:109
@@ -1081,10 +1090,23 @@ msgstr "នាំចេញ..."
 msgid "Export"
 msgstr "នាំចេញ"
 
+#: FreqWindow.cpp:240
+msgid "&Replot"
+msgstr ""
+
+#: FreqWindow.cpp:241
+msgid "Replot"
+msgstr ""
+
 #: AboutDialog.cpp:688 Dependencies.cpp:308 FreqWindow.cpp:209
 #: widgets/ErrorDialog.cpp:135
 msgid "Close"
 msgstr "បិទ"
+
+#: FreqWindow.cpp:247 FreqWindow.cpp:250 effects/Equalization.cpp:1303
+#: effects/Equalization.cpp:1306
+msgid "Grids"
+msgstr ""
 
 #: FreqWindow.cpp:272 FreqWindow.cpp:402 effects/AutoDuck.cpp:487
 #: effects/AutoDuck.cpp:521 effects/AutoDuck.cpp:789
@@ -1102,6 +1124,15 @@ msgstr "dB"
 #: effects/Equalization.cpp:1158 import/ImportRaw.cpp:416
 msgid "Hz"
 msgstr "Hz"
+
+#: Menus.cpp:3394
+msgid "To plot the spectrum, all selected tracks must be the same sample rate."
+msgstr "ដើម្បី​​គ្រោង​​វិសាលគម បទ​​ដែល​​ជ្រើស​​ទាំងអស់​ត្រូវ​តែ​មាន​អត្រា​​គំរូ​​ដូច​គ្នា ។"
+
+#: Menus.cpp:3420
+#, c-format
+msgid "Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."
+msgstr "មាន​​អូឌីយ៉ូ​​ច្រើន​​ពេក​​ត្រូវ​​បាន​​ជ្រើស ។ មាន​​​តែ %.1f វិនាទី ដំបូង​​នឹង​​ត្រូវ​បាន​​វិភាគ ។"
 
 #: FreqWindow.cpp:386
 msgid "Not enough data selected."
@@ -1141,6 +1172,21 @@ msgstr "ប្រេកង់ (Hz)\tកម្រិត (dB)"
 #: FreqWindow.cpp:1088
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
 msgstr "រយៈពេល​​ខុស​គ្នា (វិនាទី)\tប្រេកង់ (Hz)\tកម្រិត"
+
+#: GStreamerLoader.cpp:195
+#, c-format
+msgid "GStreamer %s: %s"
+msgstr ""
+
+#: GStreamerLoader.cpp:212
+msgid "GStreamer was configured in preferences and successfully loaded before,\n"
+"                      but this time Audacity failed to load it at startup.\n"
+"                      You may want to go back to Preferences > Libraries and re-configure it."
+msgstr ""
+
+#: GStreamerLoader.cpp:215
+msgid "GStreamer startup failed"
+msgstr ""
 
 #: HelpText.cpp:85
 msgid "To [[welcome|Welcome screen]]"
@@ -1220,7 +1266,7 @@ msgid "<p><b>To record:</b> Set the recording device and input source, adjust th
 msgstr ""
 
 #: HelpText.cpp:221
-msgid "<p>The input device is the actual physical sound device you are recording from. This is chosen at \"Recording Device\" in the <i>Audio I/O tab of Preferences</i>, On Windows and Linux, Preferences are at the bottom of the <i>Edit</i> Menu. On a Mac, they in the <i>Audacity</i> Menu. You can also conveniently select Recording Device in the <i>Device Toolbar</i>, which can be enabled at <i>View &gt; Toolbars...</i>. </p><p> By default, Audacity uses the device currently being used by the system, (usually your inbuilt sound device), so it is often not necessary to change the input device. On Windows, this current system device can be selected as \"Microsoft Sound Mapper\". If you are recording from an external USB or Firewire device such as a USB turntable, select it explicitly by name as recording device after conecting it. </p><p> Back to [[record|Recording Audio]] <br></p>"
+msgid "<p>The input device is the actual physical sound device you are recording from. This is chosen at \"Recording Device\" in the <i>Audio I/O tab of Preferences</i>, On Windows and Linux, Preferences are at the bottom of the <i>Edit</i> Menu. On a Mac, they in the <i>Audacity</i> Menu. You can also conveniently select Recording Device in the <i>Device Toolbar</i>, which can be enabled at <i>View &gt; Toolbars...</i>. </p><p> By default, Audacity uses the device currently being used by the system, (usually your inbuilt sound device), so it is often not necessary to change the input device. On Windows, this current system device can be selected as \"Microsoft Sound Mapper\". If you are recording from an external USB or Firewire device such as a USB turntable, select it explicitly by name as recording device after connecting it. </p><p> Back to [[record|Recording Audio]] <br></p>"
 msgstr ""
 
 #: HelpText.cpp:244
@@ -1244,7 +1290,7 @@ msgid "To hear your work in other media programs, export it to an audio file suc
 msgstr ""
 
 #: HelpText.cpp:359
-msgid "<p>Audacity <b>cannot</b> [[play|play]] or [[export|export]] files in <b>WMA, RealAudio, Shorten (SHN)</b> or most other proprietary formats, due to licensing and patent restrictions.  On a Mac computer, unprotected <b>AAC</b> formats such as <b>M4A</b> can be imported. Some open formats are not yet supported, including <b>Ogg Speex</b> and <b>Musepack</b>. Files protected by any kind of Digital Rights Management (DRM), including most purchased online such as from iTunes or Napster, <b>cannot</b> be imported.</p><p> If you can't import your file into Audacity, then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> to convert it to WAV or AIFF. If it is protected, burn it to an audio CD in the program licensed to play it, then extract the CD track to WAV or AIFF using ITunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or Windows Media Player 11. You could also <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. <i>To export to an unsupported format, export to WAV or AIFF and convert it to the desired format in iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
+msgid "<p>Audacity <b>cannot</b> [[play|play]] or [[export|export]] files in <b>WMA, RealAudio, Shorten (SHN)</b> or most other proprietary formats, due to licensing and patent restrictions.  On a Mac computer, unprotected <b>AAC</b> formats such as <b>M4A</b> can be imported. Some open formats are not yet supported, including <b>Ogg Speex</b> and <b>Musepack</b>. Files protected by any kind of Digital Rights Management (DRM), including most purchased online such as from iTunes or Napster, <b>cannot</b> be imported.</p><p> If you can't import your file into Audacity, then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> to convert it to WAV or AIFF. If it is protected, burn it to an audio CD in the program licensed to play it, then extract the CD track to WAV or AIFF using iTunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or Windows Media Player 11. You could also <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. <i>To export to an unsupported format, export to WAV or AIFF and convert it to the desired format in iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
 msgstr ""
 
 #: HelpText.cpp:383
@@ -1304,6 +1350,14 @@ msgstr "មេកាបៃ"
 #: Internat.cpp:188
 msgid "GB"
 msgstr "ជីកាបៃ"
+
+#: Internat.cpp:181
+msgid "The specified filename could not be converted due to Unicode character use."
+msgstr ""
+
+#: Internat.cpp:183
+msgid "Specify New Filename:"
+msgstr ""
 
 #: LabelDialog.cpp:52
 msgid "Track"
@@ -1419,21 +1473,13 @@ msgstr "បើក​​គម្រោង Audacity"
 msgid "&File"
 msgstr "ឯកសារ"
 
-#: Menus.cpp:164
-msgid "&New\tCtrl+N"
-msgstr "ថ្មី\tបញ្ជា(Ctrl)+N"
-
-#: Menus.cpp:166
-msgid "&Open...\tCtrl+O"
-msgstr "បើក...\tបញ្ជា(Ctrl)+O"
-
 #: Menus.cpp:171
-msgid "&Close\tCtrl+W"
-msgstr "បិទ\tបញ្ជា(Ctrl)+W"
+msgid "&Close"
+msgstr "បិទ"
 
 #: Menus.cpp:174
-msgid "&Save Project\tCtrl+S"
-msgstr "រក្សាទុក​គម្រោង\tបញ្ជា(Ctrl)+S"
+msgid "&Save Project"
+msgstr "រក្សាទុក​គម្រោង"
 
 #: Menus.cpp:178 Project.cpp:2628
 msgid "Save Project &As..."
@@ -1456,8 +1502,8 @@ msgid "&Import"
 msgstr "នាំចូល"
 
 #: Menus.cpp:194
-msgid "&Audio...\tCtrl+Shift+I"
-msgstr "អូឌីយ៉ូ...\tបញ្ជា(Ctrl)+ប្ដូរ(Shift)+I"
+msgid "&Audio..."
+msgstr "អូឌីយ៉ូ..."
 
 #: Menus.cpp:195
 msgid "&Labels..."
@@ -1487,9 +1533,9 @@ msgstr "នាំចេញ​ច្រើន..."
 msgid "Export MIDI..."
 msgstr ""
 
-#: Menus.cpp:291
-msgid "CleanSpeech C&hain..."
-msgstr ""
+#: Menus.cpp:258
+msgid "Appl&y Chain..."
+msgstr "អនុវត្ត​ច្រវាក់..."
 
 #: Menus.cpp:246 Menus.cpp:260
 msgid "Edit C&hains..."
@@ -1502,10 +1548,6 @@ msgstr ""
 #: Menus.cpp:294
 msgid "I&mport CleanSpeech Presets..."
 msgstr ""
-
-#: Menus.cpp:258
-msgid "Appl&y Chain..."
-msgstr "អនុវត្ត​ច្រវាក់..."
 
 #: Menus.cpp:265
 msgid "&Upload File..."
@@ -1520,72 +1562,72 @@ msgid "&Print..."
 msgstr "បោះពុម្ព..."
 
 #: Menus.cpp:285
-msgid "E&xit\tCtrl+Q"
-msgstr "ចេញ\tបញ្ជា(Ctrl)+Q"
+msgid "E&xit"
+msgstr "ចេញ"
 
 #: Menus.cpp:293 toolbars/EditToolBar.cpp:76
 msgid "&Edit"
 msgstr "កែសម្រួល"
 
 #: Menus.cpp:297
-msgid "&Undo\tCtrl+Z"
-msgstr "មិន​ធ្វើ​វិញ\tបញ្ជា(Ctrl)+Z"
+msgid "&Undo"
+msgstr "មិន​ធ្វើ​វិញ"
 
 #: Menus.cpp:305 prefs/KeyConfigPrefs.cpp:369 toolbars/EditToolBar.cpp:146
 msgid "&Redo"
 msgstr "ធ្វើ​វិញ"
 
 #: Menus.cpp:318
-msgid "Cu&t\tCtrl+X"
-msgstr "កាត់\tបញ្ជា(Ctrl)+X"
+msgid "Cu&t"
+msgstr "កាត់"
 
 #: Menus.cpp:322
-msgid "Spl&it Cut\tCtrl+Alt+X"
-msgstr "បំបែក​ការកាត់\tបញ្ជា(Ctrl)+ជំនួស(Alt)+X"
+msgid "Spl&it Cut"
+msgstr "បំបែក​ការកាត់"
 
 #: Menus.cpp:323
-msgid "&Copy\tCtrl+C"
-msgstr "ចម្លង\tបញ្ជា(Ctrl)+C"
+msgid "&Copy"
+msgstr "ចម្លង"
 
 #: Menus.cpp:327
-msgid "&Paste\tCtrl+V"
-msgstr "បិទភ្ជាប់\tបញ្ជា(Ctrl)+V"
+msgid "&Paste"
+msgstr "បិទភ្ជាប់"
 
 #: Menus.cpp:331
-msgid "Tri&m\tCtrl+T"
-msgstr "កាត់​តម្រឹម\tបញ្ជា(Ctrl)+T"
+msgid "Tri&m"
+msgstr "កាត់​តម្រឹម"
 
 #: Menus.cpp:333
-msgid "&Delete\tCtrl+K"
-msgstr "លុប\tបញ្ជា(Ctrl)+K"
+msgid "&Delete"
+msgstr "លុប"
 
 #: Menus.cpp:334
-msgid "Split D&elete\tCtrl+Alt+K"
-msgstr "បំបែក​ការ​លុប\tបញ្ជា(Ctrl)+ជំនួស(Alt)+K"
+msgid "Split D&elete"
+msgstr "បំបែក​ការ​លុប"
 
 #: Menus.cpp:381
-msgid "Silence Audi&o\tCtrl+L"
+msgid "Silence Audi&o"
 msgstr ""
 
 #: Menus.cpp:337
-msgid "Sp&lit\tCtrl+I"
-msgstr "បំបែក\tបញ្ជា(Ctrl)+I"
+msgid "Sp&lit"
+msgstr "បំបែក"
 
 #: Menus.cpp:342
-msgid "Split Ne&w\tCtrl+Alt+I"
-msgstr "បំបែក​ថ្មី\tបញ្ជា(Ctrl)+ជំនួស(Alt)+I"
+msgid "Split Ne&w"
+msgstr "បំបែក​ថ្មី"
 
 #: Menus.cpp:347
-msgid "&Join\tCtrl+J"
-msgstr "ភ្ជាប់\tបញ្ជា(Ctrl)+J"
+msgid "&Join"
+msgstr "ភ្ជាប់"
 
 #: Menus.cpp:394
-msgid "Detac&h at Silences\tCtrl+Alt+J"
+msgid "Detac&h at Silences"
 msgstr ""
 
 #: Menus.cpp:350
-msgid "Duplic&ate\tCtrl+D"
-msgstr "ស្ទួន\tបញ្ជា(Ctrl)+D"
+msgid "Duplic&ate"
+msgstr "ស្ទួន"
 
 #: Menus.cpp:401 Menus.cpp:641
 msgid "Stereo Trac&k to Mono"
@@ -1597,82 +1639,67 @@ msgstr ""
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:365
-msgid "&Cut\tAlt+X"
-msgstr "កាត់\tជំនួស(Alt)+X"
+msgid "&Cut"
+msgstr "កាត់"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:370
-msgid "&Split Cut\tShift+Alt+X"
-msgstr "បំបែក​ការ​កាត់\tប្ដូរ(Shift)+ជំនួស(Alt)+X"
+msgid "&Split Cut"
+msgstr "បំបែក​ការ​កាត់"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:375
-msgid "Co&py\tShift+Alt+C"
-msgstr "ចម្លង\tប្ដូរ(Shift)+ជំនួស(Alt)+C"
-
-#. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:381
-msgid "&Delete\tAlt+K"
-msgstr "លុប\tជំនួស(Alt)+K"
+msgid "Co&py"
+msgstr "ចម្លង"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:386
-msgid "Sp&lit Delete\tShift+Alt+K"
-msgstr "បំបែក​កា​រលុប\tប្ដូរ(Shift)+ជំនួស(Alt)+K"
+msgid "Sp&lit Delete"
+msgstr "បំបែក​កា​រលុប"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:391
-msgid "Sile&nce\tAlt+L"
-msgstr "ស្ងាត់\tជំនួស(Alt)+L"
+msgid "Sile&nce"
+msgstr "ស្ងាត់"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:397
-msgid "Spli&t\tAlt+I"
-msgstr "បំបែក\tជំនួស(Alt)+I"
-
-#. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:402
-msgid "&Join\tAlt+J"
-msgstr "ភ្ជាប់\tជំនួស(Alt)+J"
-
-#. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:452
-msgid "Detac&h at Silences\tShift+Alt+J"
-msgstr ""
+msgid "Spli&t"
+msgstr "បំបែក"
 
 #: Menus.cpp:457
 msgid "&Select"
 msgstr ""
 
 #: Menus.cpp:414
-msgid "&All\tCtrl+A"
-msgstr "ទាំងអស់\tបញ្ជា(Ctrl)+A"
+msgid "&All"
+msgstr "ទាំងអស់"
 
 #: Menus.cpp:415
-msgid "&None\tCtrl+Shift+A"
-msgstr "គ្មាន\tបញ្ជា(Ctrl)+ប្ដូរ(Shift)+A"
+msgid "&None"
+msgstr "គ្មាន"
 
 #: Menus.cpp:463
 #, fuzzy
-msgid "&Left at Playback Position\t["
-msgstr "ទុក​នៅ​ទីតាំង​ចាក់​ឡើង​វិញ\t["
+msgid "&Left at Playback Position"
+msgstr "ទុក​នៅ​ទីតាំង​ចាក់​ឡើង​វិញ"
 
 #: Menus.cpp:464
 #, fuzzy
-msgid "&Right at Playback Position\t]"
-msgstr "ខាង​ស្ដាំ​​ទីតាំង​ចាក់​ឡើង​វិញ\t]"
+msgid "&Right at Playback Position"
+msgstr "ខាង​ស្ដាំ​​ទីតាំង​ចាក់​ឡើង​វិញ"
 
 #: Menus.cpp:468
-msgid "Track &Start to Cursor\tShift+J"
+msgid "Track &Start to Cursor"
 msgstr ""
 
 #: Menus.cpp:469
-msgid "Cursor to Track &End\tShift+K"
+msgid "Cursor to Track &End"
 msgstr ""
 
 #: Menus.cpp:431
-msgid "Find &Zero Crossings\tZ"
-msgstr "រក​កា​រ​ខ្វែង​​សូន្យ\tZ"
+msgid "Find &Zero Crossings"
+msgstr "រក​កា​រ​ខ្វែង​​សូន្យ"
 
 #: Menus.cpp:478
 msgid "Mo&ve Cursor"
@@ -1689,11 +1716,11 @@ msgid "to Selection En&d"
 msgstr "ទៅ​ចុង​​ជម្រើស"
 
 #: Menus.cpp:485
-msgid "to Track &Start\tJ"
+msgid "to Track &Start"
 msgstr ""
 
 #: Menus.cpp:486
-msgid "to Track &End\tK"
+msgid "to Track &End"
 msgstr ""
 
 #: Menus.cpp:493
@@ -1716,29 +1743,8 @@ msgstr ""
 msgid "&Unlock"
 msgstr ""
 
-#: Menus.cpp:462
-msgid "Turn Snap-To On"
-msgstr "បើក​ការ​​ខ្ទាស់"
-
-#: Menus.cpp:463
-msgid "Turn Snap-To Off"
-msgstr "បិទ​កា​រ​ខ្ទាស់"
-
-#: Menus.cpp:464
-msgid "Turn Grid Snap On"
-msgstr "បើក​កា​រ​​ខ្ទាស់​​​​ក្រឡាចត្រង្គ"
-
-#: Menus.cpp:465
-msgid "Turn Grid Snap Off"
-msgstr "បិទ​ការ​ខ្ទាស់​​ក្រឡាចត្រង្គ"
-
-#. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
 #: Menus.cpp:521
-msgid "Pre&ferences...\tCtrl+,"
-msgstr ""
-
-#: Menus.cpp:525
-msgid "Pre&ferences...\tCtrl+P"
+msgid "Pre&ferences..."
 msgstr ""
 
 #: Menus.cpp:484
@@ -1746,36 +1752,36 @@ msgid "&View"
 msgstr "មើល"
 
 #: Menus.cpp:486
-msgid "Zoom &In\tCtrl+1"
-msgstr "ពង្រីក\tបញ្ជា(Ctrl)+1"
+msgid "Zoom &In"
+msgstr "ពង្រីក"
 
 #: Menus.cpp:489
-msgid "Zoom &Normal\tCtrl+2"
-msgstr "ពង្រីក​ធម្មតា\tបញ្ជា(Ctrl)+2"
+msgid "Zoom &Normal"
+msgstr "ពង្រីក​ធម្មតា"
 
 #: Menus.cpp:490
-msgid "Zoom &Out\tCtrl+3"
-msgstr "បង្រួម​\tបញ្ជា(Ctrl)+3"
+msgid "Zoom &Out"
+msgstr "បង្រួម​"
 
 #: Menus.cpp:493
-msgid "&Fit in Window\tCtrl+F"
-msgstr "សម​នឹង​បង្អួច\tបញ្ជា(Ctrl)+F"
+msgid "&Fit in Window"
+msgstr "សម​នឹង​បង្អួច"
 
 #: Menus.cpp:494
-msgid "Fit &Vertically\tCtrl+Shift+F"
-msgstr "សម​នឹង​បញ្ឈរ\tបញ្ជា(Ctrl)+ប្ដូរ(Shift)+F"
+msgid "Fit &Vertically"
+msgstr "សម​នឹង​បញ្ឈរ"
 
 #: Menus.cpp:495
-msgid "&Zoom to Selection\tCtrl+E"
-msgstr "ពង្រីក​សម​នឹង​ជម្រើស\tបញ្ជា(Ctrl)+E"
+msgid "&Zoom to Selection"
+msgstr "ពង្រីក​សម​នឹង​ជម្រើស"
 
 #: Menus.cpp:498
-msgid "&Collapse All Tracks\tCtrl+Shift+C"
-msgstr "វេញ​​បទ​ទាំងអស់\tបញ្ជា(Ctrl)+ប្ដូរ(Shift)+C"
+msgid "&Collapse All Tracks"
+msgstr "វេញ​​បទ​ទាំងអស់"
 
 #: Menus.cpp:499
-msgid "E&xpand All Tracks\tCtrl+Shift+X"
-msgstr "ពង្រីក​​បទ​​ទាំង​អស់\tបញ្ជា(Ctrl)+ប្ដូរ(Shift)+X"
+msgid "E&xpand All Tracks"
+msgstr "ពង្រីក​​បទ​​ទាំង​អស់"
 
 #: Menus.cpp:553
 #, fuzzy
@@ -1845,40 +1851,40 @@ msgstr ""
 msgid "T&ransport"
 msgstr ""
 
-#: Menus.cpp:591
-msgid "Play\tSpace"
-msgstr ""
+#: toolbars/ControlToolBar.cpp:177
+msgid "Play"
+msgstr "ចាក់"
 
 #: Menus.cpp:593
-msgid "&Loop Play\tShift+Space"
+msgid "&Loop Play"
 msgstr ""
 
 #: Menus.cpp:595
-msgid "&Pause\tP"
+msgid "&Pause"
 msgstr ""
 
 #: Menus.cpp:596
-msgid "&Stop\tSpace"
+msgid "&Stop"
 msgstr ""
 
 #: Menus.cpp:786
-msgid "Skip to Start\tHome"
+msgid "Skip to Start"
 msgstr "រំលង​ដើម្បី​ចាប់ផ្ដើម ដើម"
 
 #: Menus.cpp:787
-msgid "Skip to End\tEnd"
+msgid "Skip to End"
 msgstr "រំលង​​ដើម្បី​បញ្ចប់ ចុង"
 
 #: Menus.cpp:602
-msgid "&Record\tR"
+msgid "&Record"
 msgstr ""
 
 #: Menus.cpp:604
-msgid "&Timer Record...\tShift+T"
+msgid "&Timer Record..."
 msgstr ""
 
 #: Menus.cpp:606
-msgid "Append Record\tShift+R"
+msgid "Append Record"
 msgstr ""
 
 #: Menus.cpp:609
@@ -1906,8 +1912,8 @@ msgid "Add &New"
 msgstr ""
 
 #: Menus.cpp:545
-msgid "&Audio Track\tCtrl+Shift+N"
-msgstr "បទ​អូឌីយ៉ូ\tបញ្ជា(Ctrl)+ប្ដូរ(Shift)+N"
+msgid "&Audio Track"
+msgstr "បទ​អូឌីយ៉ូ"
 
 #: Menus.cpp:546
 msgid "&Stereo Track"
@@ -1922,8 +1928,8 @@ msgid "Mi&x and Render"
 msgstr ""
 
 #: Menus.cpp:564
-msgid "Mix and Render to New Track\tCtrl+Shift+M"
-msgstr "លាយ និង​​បង្ហាញ​​ទៅ​​បទ​ថ្មី\tបញ្ជា(Ctrl)+ប្ដូរ(Shift)+M"
+msgid "Mix and Render to New Track"
+msgstr "លាយ និង​​បង្ហាញ​​ទៅ​​បទ​ថ្មី"
 
 #: Menus.cpp:568
 msgid "&Resample..."
@@ -1934,11 +1940,11 @@ msgid "Remo&ve Tracks"
 msgstr "យក​បទ​​ចេញ"
 
 #: Menus.cpp:669
-msgid "&Mute All Tracks\tCtrl+U"
+msgid "&Mute All Tracks"
 msgstr ""
 
 #: Menus.cpp:670
-msgid "&UnMute All Tracks\tCtrl+Shift+U"
+msgid "&UnMute All Tracks"
 msgstr ""
 
 #: Menus.cpp:585
@@ -1989,17 +1995,17 @@ msgstr ""
 msgid "Synchronize MIDI with Audio"
 msgstr ""
 
-#: Menus.cpp:708
-msgid "Link Audio and Label Tracks"
+#: Menus.cpp:686
+msgid "&Link Audio and Label Tracks"
 msgstr ""
 
-#: Menus.cpp:611
-msgid "Add &Label At Selection\tCtrl+B"
-msgstr "បន្ថែម​​ស្លាក​​នៅ​​ជម្រើស\tបញ្ជា (Ctrl) + B"
+#: Menus.cpp:690
+msgid "Add Label At &Selection"
+msgstr ""
 
 #: Menus.cpp:612
-msgid "Add Label At &Playback Position\tCtrl+M"
-msgstr "បន្ថែម​​ស្លាក​​​នៅ​ទីតាំង​ចាក់​​ឡើង​វិញ\tបញ្ជា(Ctrl)+M"
+msgid "Add Label At &Playback Position"
+msgstr "បន្ថែម​​ស្លាក​​​នៅ​ទីតាំង​ចាក់​​ឡើង​វិញ"
 
 #: Menus.cpp:718
 msgid "S&ort tracks"
@@ -2025,13 +2031,13 @@ msgstr ""
 msgid "Effe&ct"
 msgstr "បែបផែន"
 
-#: Menus.cpp:658
-msgid "Repeat Last Effect\tCtrl+R"
-msgstr "ធ្វើ​​បែបផែន​​ចុង​ក្រោយ​​ម្ដង​​ទៀត\tបញ្ជា(Ctrl)+R"
-
 #: Menus.cpp:690
 msgid "&Analyze"
 msgstr "ធ្វើ​​វិភាគ"
+
+#: Menus.cpp:874
+msgid "Contrast..."
+msgstr ""
 
 #: Menus.cpp:692
 msgid "Plot Spectrum..."
@@ -2049,9 +2055,9 @@ msgstr "អំពី Audacity CleanSpeech..."
 msgid "&Show Welcome Message..."
 msgstr "បង្ហាញ​​សារ​ស្វាគមន៍..."
 
-#: Menus.cpp:736
-msgid "&Index..."
-msgstr "លិបិក្រម..."
+#: Menus.cpp:958
+msgid "&Help..."
+msgstr ""
 
 #: Menus.cpp:961
 msgid "Show &Log..."
@@ -2069,180 +2075,148 @@ msgstr "រត់ Benchmark..."
 msgid "&Audio Device Info..."
 msgstr "ព័ត៌មាន​​ឧបករណ៍​​អូឌីយ៉ូ..."
 
-#: Menus.cpp:983
-msgid "Cycle backward through toolbars and Track View\tCtrl+Shift+F6"
+#: Menus.cpp:986
+msgid "Move backward from toolbars to tracks"
 msgstr ""
 
-#: Menus.cpp:984
-msgid "Cycle forward through toolbars and Track View\tCtrl+F6"
+#: Menus.cpp:987
+msgid "Move forward from toolbars to tracks"
 msgstr ""
 
 #: Menus.cpp:762
-msgid "Selection Tool\tF1"
+msgid "Selection Tool"
 msgstr "ឧបករណ៍​​ជ្រើស F1"
 
 #: Menus.cpp:763
-msgid "Envelope Tool\tF2"
+msgid "Envelope Tool"
 msgstr "ឧបករណ៍​​ស្រោម​​សំបុត្រ F2"
 
 #: Menus.cpp:764
-msgid "Draw Tool\tF3"
+msgid "Draw Tool"
 msgstr "ឧបករណ៍​គូរ F3"
 
 #: Menus.cpp:765
-msgid "Zoom Tool\tF4"
+msgid "Zoom Tool"
 msgstr "ឧបករណ៍​ពង្រីក F4"
 
 #: Menus.cpp:766
-msgid "Time Shift Tool\tF5"
+msgid "Time Shift Tool"
 msgstr "ឧបករណ៍​ប្ដូរ​ពេល​វេលា F5"
 
 #: Menus.cpp:767
-msgid "Multi Tool\tF6"
-msgstr "ឧបករណ៍​​ច្រើន\t F6"
+msgid "Multi Tool"
+msgstr "ឧបករណ៍​​ច្រើន"
 
 #: Menus.cpp:769
-msgid "Next Tool\tD"
+msgid "Next Tool"
 msgstr "ឧបករណ៍​​​បន្ទាប់ D"
 
 #: Menus.cpp:770
-msgid "Previous Tool\tA"
+msgid "Previous Tool"
 msgstr "ឧបករណ៍​​មុន A"
 
 #: Menus.cpp:997
-msgid "Play/Stop\tSpace"
-msgstr ""
-
-#: Menus.cpp:773
-msgid "Stop\tS"
-msgstr "បញ្ឈប់ S"
-
-#: Menus.cpp:774
-msgid "Pause\tP"
-msgstr "ផ្អាក P"
-
-#: Menus.cpp:775
-msgid "Record\tR"
-msgstr "ថត R"
-
-#: Menus.cpp:1001
-msgid "Record Append\tShift+R"
+msgid "Play/Stop"
 msgstr ""
 
 #: Menus.cpp:1003
-msgid "Play/Stop and Set Cursor\tShift+A"
+msgid "Play/Stop and Set Cursor"
 msgstr ""
 
 #: Menus.cpp:780
-msgid "Play One Second\t1"
-msgstr "ចាក់​​មួយ​​វិនាទី\t១"
+msgid "Play One Second"
+msgstr "ចាក់​​មួយ​​វិនាទី"
 
 #: Menus.cpp:781
-msgid "Play To Selection\tB"
+msgid "Play To Selection"
 msgstr "ចាក់​ដល់​​កន្លែង​​ជ្រើស B"
 
-#: Menus.cpp:782
-msgid "Play Looped\tL"
-msgstr "ចាក់​រង្វិល​ជុំ L"
-
-#: Menus.cpp:1009
-msgid "Play Looped\tShift+Space"
-msgstr ""
-
 #: Menus.cpp:784
-msgid "Play Cut Preview\tC"
+msgid "Play Cut Preview"
 msgstr "លេង កាត់ មើល​ជាមុន C"
 
 #: Menus.cpp:789
-msgid "Selection to Start\tShift+Home"
+msgid "Selection to Start"
 msgstr "ជជ្រើស​ដើម្បី​ចាប់ផ្ដើម ប្ដូរ(Shift)+ដើម(Home)"
 
 #: Menus.cpp:790
-msgid "Selection to End\tShift+End"
+msgid "Selection to End"
 msgstr "ជម្រើស​ទៅ​ចុង ប្ដូរ(Shift)+ចុង(End)"
 
 #: Menus.cpp:792
-msgid "DeleteKey\tBackspace"
-msgstr "គ្រាប់​ចុច​លុប (Delete)\tលុប​ថយ​ក្រោយ (Backspace)"
+msgid "DeleteKey"
+msgstr "គ្រាប់​ចុច​លុប (Delete)"
 
 #: Menus.cpp:797
-msgid "DeleteKey2\tDelete"
+msgid "DeleteKey2"
 msgstr "គ្រាប់​ចុច​លុប ២ លុប (Delete)"
 
-#: Menus.cpp:803
-msgid "Seek left short period during playback\tLeft"
-msgstr "ស្វែងរក​រយៈ​ពេល​ខ្លី​​ទៅ​ឆ្វេង​កំឡុង​ពេល​ចាក់​ឡើង​វិញ ឆ្វេង"
-
-#: Menus.cpp:804
-msgid "Seek right short period during playback\tRight"
-msgstr "ស្វែងរក​រយៈ​ពេល​ខ្លី​ទៅ​​ស្ដាំ​កំឡុង​ពេល​ចាក់​ឡើង​វិញ ស្ដាំ"
-
-#: Menus.cpp:805
-msgid "Seek left long period during playback\tShift+Left"
-msgstr "ស្វែងរក​​រយៈ​ពេល​​វែង​ទៅ​​ឆ្វេង​កំឡុង​ពេល​ចាក់​ឡើង​វិញ ប្ដូរ(Shift)+ឆ្វេង"
-
-#: Menus.cpp:806
-msgid "Seek right long period during playback\tShift+Right"
-msgstr "ស្វែងរក​រយៈ​ពេល​វែង​ទៅ​​ស្ដាំ​កំឡុង​ពេល​ចាក់​ឡើង​វិញ ប្ដូរ(Shift)+ស្ដាំ"
-
-#: Menus.cpp:810
-msgid "Move Focus to Previous Track\tUp"
-msgstr "ផ្លាស់ទី​​ការ​​ផ្ដោត​​ទៅ​បទ​​មុន ឡើង​​លើ"
-
-#: Menus.cpp:811
-msgid "Move Focus to Previous and Change Selection\tShift+Up"
-msgstr "ផ្លាស់ទី​ការ​ផ្ដោត​ទៅ​បទ​មុខ ហើយ​ផ្លាស់ប្ដូរ​ជម្រើស ប្ដូរ(Shift)+ឡើង​លើ"
-
-#: Menus.cpp:812
-msgid "Move Focus to Next Track\tDown"
-msgstr "ផ្លាស់ទី​​ការ​​ផ្ដោត​​ទៅ​​បទ​​បន្ទាប់\tចុះ​​ក្រោម"
-
-#: Menus.cpp:813
-msgid "Move Focus to Next and Change Selection\tShift+Down"
-msgstr "ផ្លាស់ទី​​ការ​​ផ្ដោត​​ទៅ​​បទ​បន្ទាប់ និង​ផ្លាស់ប្ដូរ​ជម្រើស​ ប្ដូរ(Shift)+ចុះ​ក្រោម"
-
-#: Menus.cpp:814
-msgid "Toggle Focused Track\tReturn"
-msgstr "បិទ​​បើក​បទ​​ដែល​​ផ្ដោត\tត្រឡប់"
-
-#: Menus.cpp:815
-msgid "Toggle Focused Track\tNUMPAD_ENTER"
-msgstr "បិទ​បើក​​បទ​​ដែល​ផ្ដោត\tNUMPAD_ENTER"
-
-#: Menus.cpp:1042
-msgid "Toggle Focused Track\tCtrl+Space"
+#: Menus.cpp:1018
+msgid "Short seek left during playback"
 msgstr ""
 
+#: Menus.cpp:1019
+msgid "Short seek right during playback"
+msgstr ""
+
+#: Menus.cpp:1020
+msgid "Long seek left during playback"
+msgstr ""
+
+#: Menus.cpp:1021
+msgid "Long Seek right during playback"
+msgstr ""
+
+#: Menus.cpp:810
+msgid "Move Focus to Previous Track"
+msgstr "ផ្លាស់ទី​​ការ​​ផ្ដោត​​ទៅ​បទ​​មុន ឡើង​​លើ"
+
+#: Menus.cpp:1027
+msgid "Move Focus to Previous and Select"
+msgstr ""
+
+#: Menus.cpp:812
+msgid "Move Focus to Next Track"
+msgstr "ផ្លាស់ទី​​ការ​​ផ្ដោត​​ទៅ​​បទ​​បន្ទាប់"
+
+#: Menus.cpp:1029
+msgid "Move Focus to Next and Select"
+msgstr ""
+
+#: Menus.cpp:814
+msgid "Toggle Focused Track"
+msgstr "បិទ​​បើក​បទ​​ដែល​​ផ្ដោត"
+
 #: Menus.cpp:818
-msgid "Cursor Left\tLeft"
+msgid "Cursor Left"
 msgstr "ទស្សន៍​​ទ្រនិច​ឆ្វេង ឆ្វេង"
 
 #: Menus.cpp:819
-msgid "Cursor Right\tRight"
+msgid "Cursor Right"
 msgstr "ទស្សន៍​ទ្រនិច​​ស្ដាំ ស្ដាំ"
 
 #: Menus.cpp:820
-msgid "Cursor Short Jump Left\t,"
-msgstr "ទស្សន៍​ទ្រនិច​​ខ្លី​​លោត​​ទៅ​ឆ្វេង\t,"
+msgid "Cursor Short Jump Left"
+msgstr "ទស្សន៍​ទ្រនិច​​ខ្លី​​លោត​​ទៅ​ឆ្វេង"
 
 #: Menus.cpp:821
-msgid "Cursor Short Jump Right\t."
-msgstr "ទស្សន៍​ទ្រនិច​ខ្លីលោត​ទៅ​ស្ដាំ\t."
+msgid "Cursor Short Jump Right"
+msgstr "ទស្សន៍​ទ្រនិច​ខ្លីលោត​ទៅ​ស្ដាំ"
 
 #: Menus.cpp:822
-msgid "Cursor Long Jump Left\tShift+,"
+msgid "Cursor Long Jump Left"
 msgstr "ទស្សន៍​ទ្រនិច​វែង​​លោត​​ទៅ​ឆ្វេង ប្ដូរ​(Shift)+"
 
 #: Menus.cpp:823
-msgid "Cursor Long Jump Right\tShift+."
-msgstr "ទស្សន៍​ទ្រនិច​​វែង​​លោត​​ទៅ​ស្ដាំ\tប្ដូរ(Shift)+ ។"
+msgid "Cursor Long Jump Right"
+msgstr "ទស្សន៍​ទ្រនិច​​វែង​​លោត​​ទៅ​ស្ដាំ"
 
 #: Menus.cpp:825
-msgid "Selection Extend Left\tShift+Left"
+msgid "Selection Extend Left"
 msgstr "ពង្រីក​ជម្រើស​​ទៅ​ឆ្វេង ប្ដូរ(Shift)+ឆ្វេង"
 
 #: Menus.cpp:826
-msgid "Selection Extend Right\tShift+Right"
+msgid "Selection Extend Right"
 msgstr "ពង្រីក​​ជម្រើស​​ទៅ​ស្ដាំ ប្ដូរ(Shift)+ស្ដាំ"
 
 #: Menus.cpp:828
@@ -2254,51 +2228,51 @@ msgid "Set (or Extend) Right Selection"
 msgstr "កំណត់ (ឬ​ពង្រីក) ជម្រើស​​​ស្ដាំ"
 
 #: Menus.cpp:831
-msgid "Selection Contract Left\tCtrl+Shift+Right"
+msgid "Selection Contract Left"
 msgstr "បង្រួញ​​ជម្រើស​ទៅ​ឆ្វេង បញ្ជា(Ctrl)+ប្ដូរ(Shift)+ស្ដាំ"
 
 #: Menus.cpp:832
-msgid "Selection Contract Right\tCtrl+Shift+Left"
+msgid "Selection Contract Right"
 msgstr "បង្រួញ​ជម្រើស​ទៅ​ស្ដាំ បញ្ជា(Ctrl)+ប្ដូរ(Shift)+ឆ្វេង"
 
 #: Menus.cpp:834
-msgid "Change pan on focused track\tShift+P"
+msgid "Change pan on focused track"
 msgstr "ផ្លាស់ប្ដូរ​​បន្ទះ​​លើ​​បទ​​ដែល​​ផ្ដោត ប្ដូរ(Shift)+P"
 
 #: Menus.cpp:835
-msgid "Pan left on focused track\tAlt+Shift+Left"
+msgid "Pan left on focused track"
 msgstr "បន្ទះ​​ឆ្វេង​​លើ​​បទ​​ដែល​​ផ្ដោត ជំនួស(Alt)+ប្ដូរ(Shift)+ឆ្វេង"
 
 #: Menus.cpp:836
-msgid "Pan right on focused track\tAlt+Shift+Right"
+msgid "Pan right on focused track"
 msgstr "បន្ទះ​​ស្ដាំ​​លើ​បទ​​ដែល​​ផ្ដោត ជំនួស(Alt)+ប្ដូរ(Shift)+ស្ដាំ"
 
 #: Menus.cpp:837
-msgid "Change gain on focused track\tShift+G"
+msgid "Change gain on focused track"
 msgstr "ផ្លាស់ប្តូរ​​កំណើន​​បទ​​ដែល​​ផ្តោត​​លើ ប្តូរ(Shift)+G"
 
 #: Menus.cpp:838
-msgid "Increase gain on focused track\tAlt+Shift+Up"
+msgid "Increase gain on focused track"
 msgstr "បង្កើន​​ការ​​ទទួល​​លើ​បទ​ដែល​​ផ្ដោត ជំនួស(Alt)+ប្ដូរ(Shift)+លើ"
 
 #: Menus.cpp:839
-msgid "Decrease gain on focused track\tAlt+Shift+Down"
+msgid "Decrease gain on focused track"
 msgstr "បន្ថយ​​ការ​​ទទួល​​លើ​​បទ​​ដែល​​ផ្ដោត ជំនួស​(Alt)+ប្ដូរ(Shift)+ចុះ"
 
 #: Menus.cpp:840
-msgid "Open menu on focused track\tShift+M"
+msgid "Open menu on focused track"
 msgstr "បើក​​ម៉ឺនុយ​​លើ​​បទ​​ដែល​​ផ្ដោត ប្ដូរ(Shift)+M"
 
 #: Menus.cpp:841
-msgid "Mute/Unmute focused track\tShift+U"
+msgid "Mute/Unmute focused track"
 msgstr "ស្ងាត់/លឺ​បទ​ដែល​​ផ្ដោត ប្ដូរ(Shift)+U"
 
 #: Menus.cpp:842
-msgid "Solo/Unsolo focused track\tShift+S"
+msgid "Solo/Unsolo focused track"
 msgstr "សូឡូ/ដោះ​សូឡូ បទ​ដែល​ផ្ដោត ប្ដូរ(Shift)+S"
 
 #: Menus.cpp:843
-msgid "Close focused track\tShift+C"
+msgid "Close focused track"
 msgstr "បិទ​បទ​​ដែលបាន​​ផ្ដោត ប្ដូរ(Shift)+C"
 
 #: Menus.cpp:845
@@ -2310,7 +2284,35 @@ msgid "Snap To Off"
 msgstr "បិទ​កា​រខ្ទាស់"
 
 #: Menus.cpp:1073
-msgid "Full screen on/off\tF11"
+msgid "Full screen on/off"
+msgstr ""
+
+#: Menus.cpp:1067
+msgid "Adjust output gain"
+msgstr ""
+
+#: Menus.cpp:1068
+msgid "Increase output gain"
+msgstr ""
+
+#: Menus.cpp:1069
+msgid "Decrease output gain"
+msgstr ""
+
+#: Menus.cpp:1070
+msgid "Adjust input gain"
+msgstr ""
+
+#: Menus.cpp:1071
+msgid "Increase input gain"
+msgstr ""
+
+#: Menus.cpp:1072
+msgid "Decrease input gain"
+msgstr ""
+
+#: Menus.cpp:1074
+msgid "Adjust input source"
 msgstr ""
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
@@ -2371,7 +2373,7 @@ msgstr "អ្នក​ត្រូវ​​តែ​ជ្រើស​​បទ
 
 #: Menus.cpp:2005
 #, c-format
-msgid "Repeat %s\tCtrl+R"
+msgid "Repeat %s"
 msgstr "ធ្វើ %s ម្ដង​ទៀត បញ្ជា(Ctrl)+R"
 
 #: Menus.cpp:2136
@@ -2579,15 +2581,6 @@ msgstr "ពុះ​​ទៅ​​បទ​​ថ្មី"
 #: Menus.cpp:3094
 msgid "Split at labels"
 msgstr "ពុះ​​នៅ​ស្លាក"
-
-#: Menus.cpp:3394
-msgid "To plot the spectrum, all selected tracks must be the same sample rate."
-msgstr "ដើម្បី​​គ្រោង​​វិសាលគម បទ​​ដែល​​ជ្រើស​​ទាំងអស់​ត្រូវ​តែ​មាន​អត្រា​​គំរូ​​ដូច​គ្នា ។"
-
-#: Menus.cpp:3420
-#, c-format
-msgid "Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."
-msgstr "មាន​​អូឌីយ៉ូ​​ច្រើន​​ពេក​​ត្រូវ​​បាន​​ជ្រើស ។ មាន​​​តែ %.1f វិនាទី ដំបូង​​នឹង​​ត្រូវ​បាន​​វិភាគ ។"
 
 #: Menus.cpp:3546
 #, c-format
@@ -2807,6 +2800,10 @@ msgstr "មាន​បញ្ហា​ក្នុង​ការ​បោះព
 msgid "Print"
 msgstr "បោះពុម្ព"
 
+#: Project.cpp:669
+msgid "Repeat Last Effect"
+msgstr ""
+
 #: Project.cpp:635
 msgid "Main Mix"
 msgstr "លាយ​មេ"
@@ -2820,9 +2817,9 @@ msgstr "សូម​ស្វាគមន៍​មក​កាន់ Audacity �
 msgid "(Recovered)"
 msgstr "(ការ​សង្គ្រោះ​ឯកសារ)"
 
-#: Project.cpp:1472 TrackPanel.cpp:772 toolbars/ControlToolBar.cpp:191
+#: Menus.cpp:775
 msgid "Record"
-msgstr "ថត"
+msgstr "ថត R"
 
 #: Project.cpp:1472 TrackPanel.cpp:772
 msgid "Recorded Audio"
@@ -2845,9 +2842,9 @@ msgstr ""
 msgid "Save changes?"
 msgstr "រក្សា​ទុក​ការ​ផ្លាស់ប្ដូរ ?"
 
-#: Project.cpp:1684
-msgid "All files|*.*|All supported files|"
-msgstr "ឯកសារ​ទាំងអស់​|*.*|​ឯកសារ​ដែល​គាំទ្រ​ទាំងអស់|"
+#: Project.cpp:1925
+msgid "All files|*|All supported files|"
+msgstr ""
 
 #: Project.cpp:1709
 msgid "Select one or more audio files..."
@@ -2875,6 +2872,17 @@ msgstr ""
 #: Project.cpp:2143
 msgid "Opening old project file"
 msgstr "បើក​ឯកសារ​គម្រោង​ចាស់"
+
+#: Project.cpp:2073
+msgid "You are trying to open an automatically created backup file.\n"
+"Doing this may result in severe data loss.\n"
+"\n"
+"Please open the actual Audacity project file instead."
+msgstr ""
+
+#: Project.cpp:2074
+msgid "Backup file detected"
+msgstr ""
 
 #: Project.cpp:1801 Project.cpp:1809
 msgid "Error opening file"
@@ -2933,10 +2941,12 @@ msgstr "ឯកសារ​នេះ​ត្រូវ​បាន​រក្ស
 msgid "Can't open project file"
 msgstr "មិន​អាច​បើក​ឯកសារ​គម្រោង"
 
-#: Project.cpp:2357
+#: Project.cpp:2484
 #, c-format
 msgid "This file was saved by Audacity %s.\n"
-"You can open the file with this version of Audacity, but if you save it with this version you will no longer be able to open it in older versions.\n"
+"\n"
+"Audacity can open and save this file, but saving it in this version\n"
+"will then prevent any 1.2 or earlier version opening it.\n"
 "\n"
 "Open this file now?"
 msgstr ""
@@ -2956,15 +2966,21 @@ msgstr ""
 msgid "Warning empty project"
 msgstr ""
 
-#: Project.cpp:2647
+#: Project.cpp:2792
 #, c-format
 msgid "Could not save project. Perhaps %s \n"
-"is not writeable or the disk is full."
+"is not writable or the disk is full."
 msgstr ""
 
 #: Project.cpp:2366 Project.cpp:2380
 msgid "Error saving project"
 msgstr "កំហុស​ក្នុង​ការ​រក្សា​ទុក​គម្រោង"
+
+#: Project.cpp:2818 Project.cpp:3919 Tags.cpp:1203
+#: effects/Equalization.cpp:1098
+#, c-format
+msgid "Couldn't write to file \"%s\": %s"
+msgstr ""
 
 #: Project.cpp:2442
 #, c-format
@@ -3124,6 +3140,163 @@ msgstr "២៤ ប៊ីត PCM"
 msgid "32-bit float"
 msgstr "៣២ ប៊ីត float"
 
+#: Screenshot.cpp:279
+msgid "Screen Capture Frame"
+msgstr ""
+
+#: Screenshot.cpp:316
+msgid "Choose location to save files"
+msgstr ""
+
+#: Screenshot.cpp:326
+msgid "Save images to:"
+msgstr ""
+
+#: export/ExportMultiple.cpp:204 prefs/DirectoriesPrefs.cpp:92
+msgid "Choose..."
+msgstr "ជ្រើស..."
+
+#: Screenshot.cpp:334
+msgid "Capture entire window or screen"
+msgstr ""
+
+#: Screenshot.cpp:338
+msgid "Resize Small"
+msgstr ""
+
+#: Screenshot.cpp:339
+msgid "Resize Large"
+msgstr ""
+
+#: Screenshot.cpp:342
+msgid "Blue Bkgnd"
+msgstr ""
+
+#: Screenshot.cpp:346
+msgid "White Bkgnd"
+msgstr ""
+
+#: Screenshot.cpp:353
+msgid "Capture Window Only"
+msgstr ""
+
+#: Screenshot.cpp:354
+msgid "Capture Full Window"
+msgstr ""
+
+#: Screenshot.cpp:355
+msgid "Capture Window Plus"
+msgstr ""
+
+#: Screenshot.cpp:361
+msgid "Capture Full Screen"
+msgstr ""
+
+#: Screenshot.cpp:368
+msgid "Wait 5 seconds and capture frontmost window/dialog"
+msgstr ""
+
+#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
+msgid "false"
+msgstr "មិនពិត"
+
+#: Screenshot.cpp:375
+msgid "Capture part of a project window"
+msgstr ""
+
+#: Screenshot.cpp:379
+msgid "All Toolbars"
+msgstr ""
+
+#: Screenshot.cpp:380
+msgid "SelectionBar"
+msgstr ""
+
+#: toolbars/ToolsToolBar.cpp:90
+msgid "Tools"
+msgstr "ឧបករណ៍"
+
+#: toolbars/ControlToolBar.cpp:82
+msgid "Control"
+msgstr "ត្រួតពិនិត្យ"
+
+#: toolbars/MixerToolBar.cpp:58
+msgid "Mixer"
+msgstr "ឧបករណ៍​លាយ"
+
+#: toolbars/MeterToolBar.cpp:50
+msgid "Meter"
+msgstr "ម៉ែត្រ"
+
+#: Screenshot.cpp:390 toolbars/EditToolBar.cpp:76 toolbars/EditToolBar.cpp:181
+msgid "Edit"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:119 prefs/AudioIOPrefs.cpp:137
+#: toolbars/DeviceToolBar.cpp:54
+msgid "Device"
+msgstr "ឧបករណ៍"
+
+#: toolbars/TranscriptionToolBar.cpp:82
+msgid "Transcription"
+msgstr "ការ​ចម្លង"
+
+#: TrackPanel.cpp:448 TrackPanel.cpp:449
+msgid "Track Panel"
+msgstr "បន្ទះ​បទ"
+
+#: Screenshot.cpp:399
+msgid "Ruler"
+msgstr ""
+
+#: export/ExportMultiple.cpp:246
+msgid "Tracks"
+msgstr "បទ"
+
+#: Screenshot.cpp:401
+msgid "First Track"
+msgstr ""
+
+#: Screenshot.cpp:402
+msgid "Second Track"
+msgstr ""
+
+#: Screenshot.cpp:408
+msgid "Scale"
+msgstr ""
+
+#: Screenshot.cpp:412
+msgid "One Sec"
+msgstr ""
+
+#: Screenshot.cpp:413
+msgid "Ten Sec"
+msgstr ""
+
+#: Screenshot.cpp:414
+msgid "One Min"
+msgstr ""
+
+#: Screenshot.cpp:415
+msgid "Five Min"
+msgstr ""
+
+#: Screenshot.cpp:416
+msgid "One Hour"
+msgstr ""
+
+#: Screenshot.cpp:422
+msgid "Short Tracks"
+msgstr ""
+
+#: Screenshot.cpp:423
+msgid "Medium Tracks"
+msgstr ""
+
+#: Screenshot.cpp:424
+msgid "Tall Tracks"
+msgstr ""
+
 #: Screenshot.cpp:384
 msgid "Saved "
 msgstr "បាន​រក្សាទុក "
@@ -3131,6 +3304,10 @@ msgstr "បាន​រក្សាទុក "
 #: Screenshot.cpp:387
 msgid "Error trying to save file: "
 msgstr "កំហុស​ក្នុង​ការ​ព្យាយាម​រក្សា​ទុក​ឯកសារ ៖ "
+
+#: Screenshot.cpp:673
+msgid "Choose a location to save screenshot images"
+msgstr ""
 
 #: Sequence.cpp:732 Sequence.cpp:742 Sequence.cpp:749
 msgid "Gap detected in project file\n"
@@ -3270,6 +3447,10 @@ msgstr "កំហុស​ក្នុង​ការ​ផ្ទុក​ទិ
 msgid "Save Metadata As:"
 msgstr "រក្សាទុក​ទិន្នន័យ​មេតា​ជា ៖"
 
+#: Tags.cpp:1205
+msgid "Error saving tags file"
+msgstr ""
+
 #: Theme.cpp:638
 #, c-format
 msgid "Audacity could not write file:\n"
@@ -3357,6 +3538,14 @@ msgstr "ថិរវេលា"
 msgid "Audacity Timer Record"
 msgstr "ឧបករណ៍​កំណត់​ពេល​ថត​របស់ Audacity"
 
+#: TimerRecordDialog.cpp:205
+msgid "Duration is zero. Nothing will be recorded."
+msgstr ""
+
+#: TimerRecordDialog.cpp:206
+msgid "Error in Duration"
+msgstr ""
+
 #: TimerRecordDialog.cpp:225
 msgid "Recording start"
 msgstr ""
@@ -3395,10 +3584,6 @@ msgstr ""
 #: TimerRecordDialog.cpp:432
 msgid "Audacity Timer Record - Waiting for Start"
 msgstr ""
-
-#: TrackPanel.cpp:448 TrackPanel.cpp:449
-msgid "Track Panel"
-msgstr "បន្ទះ​បទ"
 
 #: TrackPanel.cpp:492 export/ExportPCM.cpp:133 prefs/QualityPrefs.cpp:97
 msgid "Other..."
@@ -3451,6 +3636,10 @@ msgstr "បង្កើត​បទ​ស្តេរ៉េអូ"
 #: TrackPanel.cpp:514
 msgid "Split Stereo Track"
 msgstr "ពុះ​បទ​ស្តេរ៉េអូ"
+
+#: TrackPanel.cpp:621
+msgid "Split Stereo to Mono"
+msgstr ""
 
 #: TrackPanel.cpp:516
 msgid "Set Sample Format"
@@ -3651,14 +3840,6 @@ msgstr "បន្ទះ​ដែល​បាន​លៃតម្រូវ"
 msgid "Adjusted gain"
 msgstr "កំណើន​ដែល​បាន​លៃតម្រូវ"
 
-#: TrackPanel.cpp:5796
-msgid "Group with Wave Track"
-msgstr ""
-
-#: TrackPanel.cpp:5797
-msgid "Clear any grouping"
-msgstr ""
-
 #: TrackPanel.cpp:5658
 msgid "Can't delete track with active audio"
 msgstr "មិន​អាច​លុប​បទ​ដែល​មាន​អូឌីយ៉ូ​សកម្ម"
@@ -3692,6 +3873,11 @@ msgstr "ឆានែល"
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr "ពុះ​បទ​ស្តេរ៉េអូ '%s'"
+
+#: TrackPanel.cpp:6253
+#, c-format
+msgid "Split Stereo to Mono '%s'"
+msgstr ""
 
 #: TrackPanel.cpp:5879
 #, c-format
@@ -3768,6 +3954,10 @@ msgstr "ឈ្មោះ​មុខ"
 #: TrackPanel.cpp:6236
 msgid "Face size"
 msgstr "ទំហំ​មុខ"
+
+#: TrackPanel.cpp:6941
+msgid "Stereo, 999999Hz"
+msgstr ""
 
 #: TrackPanel.cpp:6756
 msgid "Mute"
@@ -3847,10 +4037,10 @@ msgstr "កម្មវិធី​ជំនួយ​ពី 1 ដល់ %i"
 msgid "Plugins %i to %i"
 msgstr "កម្មវិធី​ជំនួយពី %i ដល់ %i"
 
-#: commands/CommandManager.cpp:857
-#, fuzzy
-msgid "Disallowed for some reason.  Try selecting some audio first?"
-msgstr "មិន​អនុញ្ញាត​ចំពោះ​ហេតុផល​មួយ​ចំនួន ។  ព្យាយាម​ជ្រើស​អូឌីយ៉ូ​ខ្លះ​ជាមុន ?"
+#: commands/CommandManager.cpp:923
+msgid "There was a problem with your last action. If you think\n"
+"this is a bug, please tell us exactly where it occurred."
+msgstr ""
 
 #: commands/CommandManager.cpp:724
 msgid "You can only do this when playing and recording are\n"
@@ -4296,12 +4486,11 @@ msgstr ""
 msgid "Decay Time"
 msgstr ""
 
-#: effects/Compressor.cpp:504
-msgid "Normalize to 0dB after compressing"
-msgstr "ធ្វើឲ្យ​ទៅ​ជា 0dB ធម្មតាម​បន្ទាប់​ពី​ក​បង្ហាប់​"
+#: effects/Compressor.cpp:542
+msgid "Make-up gain for 0dB after compressing"
+msgstr ""
 
 #: effects/Compressor.cpp:563
-#, c-format
 #, fuzzy
 msgid "Threshold %d dB"
 msgstr "កម្រិត​ពន្លឺ ៖ %d dB"
@@ -4332,7 +4521,6 @@ msgid "%.1f:1"
 msgstr ""
 
 #: effects/Compressor.cpp:575
-#, c-format
 #, fuzzy
 msgid "Attack Time %.1f secs"
 msgstr "ពេល​វេលា​វាយ ៖ %.1f វិនាទី"
@@ -4355,6 +4543,10 @@ msgstr "ឧបករណ៍​បង្ហាប់..."
 msgid "Applying Dynamic Range Compression..."
 msgstr "កំពុង​​អនុវត្ត​​ការ​​បង្ហាប់​​ជួរ​​ថាមវន្ត..."
 
+#: effects/Contrast.cpp:64
+msgid "Contrast Analysis"
+msgstr ""
+
 #: effects/Contrast.cpp:79
 msgid "Contrast Tool Foreground"
 msgstr ""
@@ -4372,19 +4564,6 @@ msgstr ""
 #: effects/Contrast.cpp:137
 msgid "Times are not reasonable!\n"
 "Please enter reasonable times."
-msgstr ""
-
-#: effects/Contrast.cpp:190
-msgid "Hello.\n"
-msgstr ""
-
-#: effects/Contrast.cpp:245
-msgid "WCAG2 Audio Contrast Analyzer"
-msgstr ""
-
-#: effects/Contrast.cpp:277 effects/Contrast.cpp:288 effects/Contrast.cpp:371
-#: effects/Contrast.cpp:415
-msgid "Measured"
 msgstr ""
 
 #: effects/Contrast.cpp:318
@@ -4418,6 +4597,11 @@ msgstr ""
 
 #: effects/Contrast.cpp:365
 msgid "Foreground end time"
+msgstr ""
+
+#: effects/Contrast.cpp:277 effects/Contrast.cpp:288 effects/Contrast.cpp:371
+#: effects/Contrast.cpp:415
+msgid "Measured"
 msgstr ""
 
 #: effects/Contrast.cpp:373 effects/Contrast.cpp:417
@@ -4464,16 +4648,8 @@ msgstr ""
 msgid "Help for WCAG2 Audio Contrast Analyzer"
 msgstr ""
 
-#: toolbars/ControlToolBar.cpp:82
-msgid "Control"
-msgstr "ត្រួតពិនិត្យ"
-
-#: effects/Contrast.cpp:454
-msgid "Note: The 'OK' button resets time values."
-msgstr ""
-
-#: effects/Contrast.cpp:455
-msgid "Close but keep times"
+#: effects/Contrast.cpp:412
+msgid "Close (keeping times)"
 msgstr ""
 
 #: effects/Contrast.cpp:466 effects/Contrast.cpp:472 effects/Contrast.cpp:478
@@ -4582,18 +4758,6 @@ msgstr ""
 
 #: effects/Contrast.cpp:618
 msgid "Data gathered"
-msgstr ""
-
-#: effects/Contrast.h:33
-msgid "Contrast...\tCtrl+Shift+T"
-msgstr ""
-
-#: effects/Contrast.h:52
-msgid "Measuring background"
-msgstr ""
-
-#: effects/Contrast.h:54
-msgid "Measuring foreground"
 msgstr ""
 
 #: effects/DtmfGen.cpp:47
@@ -4719,6 +4883,10 @@ msgstr "កំហុស​​ក្នុង​ការ​ផ្ទុក​​
 #: effects/Equalization.cpp:998
 msgid "custom"
 msgstr "ផ្ទាល់​ខ្លួន"
+
+#: effects/Equalization.cpp:1100
+msgid "Error saving equalization curves"
+msgstr ""
 
 #: effects/Equalization.cpp:1064
 msgid "Equalization, by Martyn Shaw && Mitch Golden"
@@ -4920,10 +5088,6 @@ msgstr ""
 #: effects/LoadEffects.cpp:113
 msgid "Analyser"
 msgstr ""
-
-#: toolbars/MixerToolBar.cpp:58
-msgid "Mixer"
-msgstr "ឧបករណ៍​លាយ"
 
 #: effects/LoadEffects.cpp:117
 msgid "Simulator"
@@ -5159,10 +5323,6 @@ msgstr "​យក​ការ​រំខាន​ចេញ"
 #, c-format
 msgid "Applied effect: %s remove dc offset = %s, normalize amplitude = %s"
 msgstr "បែបផែន​ដែល​បាន​អនុវត្ត ៖ %s យក​អុហ្វសិត dc = %s​ ចេញ ធ្វើ​ឲ្យ​អាំភ្លី​ធម្មតា = %s"
-
-#: effects/Normalize.cpp:70 effects/Normalize.cpp:71
-msgid "false"
-msgstr "មិនពិត"
 
 #: effects/Normalize.cpp:70 effects/Normalize.cpp:71
 msgid "true"
@@ -5519,22 +5679,39 @@ msgstr "បទ​ទាំងអស់​ត្រូវ​តែ​មាន​
 msgid "Truncate Silence"
 msgstr "កាត់​ស្ងាត់​ឲ្យ​ខ្លី"
 
-#: effects/TruncSilence.cpp:342
-msgid "Max silence duration:"
-msgstr "ថិរវេលា​ស្ងាត់​អតិ. ៖"
+#: effects/TruncSilence.cpp:453
+msgid "by Lynn Allan && Philip Van Baren"
+msgstr ""
+
+#: effects/TruncSilence.cpp:467
+msgid "Min silence duration:"
+msgstr ""
 
 #: effects/TruncSilence.cpp:345 prefs/AudioIOPrefs.cpp:190
 #: prefs/AudioIOPrefs.cpp:193
 msgid "milliseconds"
 msgstr "មីល្លីវិនាទី"
 
+#: effects/TruncSilence.cpp:342
+msgid "Max silence duration:"
+msgstr "ថិរវេលា​ស្ងាត់​អតិ. ៖"
+
+#: effects/TruncSilence.cpp:475
+msgid "Silence compression:"
+msgstr ""
+
+#: effects/TruncSilence.cpp:478
+msgid ":1"
+msgstr ""
+
 #: effects/TruncSilence.cpp:347
 msgid "Threshold for silence:"
 msgstr "កម្រិត​​ពន្លឺ​សម្រាប់​ស្ងាត់ ៖"
 
-#: effects/TruncSilence.cpp:371
-msgid "   Duration must be at least 1 millisecond"
-msgstr "   ថិរវេលា​ត្រូវ​តែ​តិច​បំផុត ១​ មីល្លីវិនាទី"
+#: effects/TruncSilence.cpp:506
+msgid "   Duration must be at least 1 millisecond\n"
+"   Compress ratio must be at least 1:1"
+msgstr ""
 
 #: effects/TruncSilence.h:28
 msgid "Truncate Silence..."
@@ -5544,17 +5721,55 @@ msgstr "កាត់​ស្ងាត់​ឲ្យ​ខ្លី..."
 msgid "Truncating Silence..."
 msgstr "កំពុង​កាត់​ស្ងាត់​ឲ្យ​ខ្លី..."
 
-#: effects/VST/VSTEffect.cpp:165
-msgid "Sorry, VST Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
-msgstr "សូម​អភយទោស បែបផែន VST មិនអាច​ត្រូវ​បាន​អនុវត្ត​នៅ​លើ​បទ​ស្តេរ៉េអូ​បានទេ ដែល​ឆានែល​នីមួយៗ​របស់​បទ​មិនផ្គូផ្គង​គ្នា​ទេ ។"
+#: effects/ladspa/LadspaEffect.cpp:607
+msgid "Effect Settings"
+msgstr "ការ​កំណត់​បែបផែន"
 
-#: effects/VST/VSTEffect.cpp:180
-msgid "Can't process replacing"
-msgstr "មិនអាច​ដំណើរការ​ជំនួស​បានទេ"
+#: effects/ladspa/LadspaEffect.cpp:572 effects/ladspa/LadspaEffect.cpp:580
+#: prefs/QualityPrefs.cpp:72
+msgid "None"
+msgstr "គ្មាន"
 
-#: effects/VST/VSTEffect.cpp:394
-msgid "VST Plug-in parameters:"
-msgstr "ប៉ារ៉ាម៉ែត្រ​កម្មវិធី​ជំនួយ VST  ៖"
+#: effects/VST/VSTEffect.cpp:343
+msgid "Presets:"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:355
+msgid "Load"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:358
+msgid "Save"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:458
+msgid "Load VST Program:"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:476
+msgid "Error loading program"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:492
+msgid "Save VST Program As:"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:626
+#, c-format
+msgid "This parameter file was saved from %s.  Continue?"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:993
+msgid "Performing Effect: "
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:1016
+msgid "Both channels of a stereo track must be the same sample rate."
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:1021
+msgid "Both channels of a stereo track must be the same length."
+msgstr ""
 
 #: effects/Wahwah.cpp:61
 #, c-format
@@ -5603,18 +5818,9 @@ msgstr "អនុវត្ត​បែបផែន ៖ %s"
 msgid "Sorry, Plug-in Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
 msgstr "សូម​អភ័យ​ទោស បែបផែន​កម្មវិធី​ជំនួយ​​មិនអាច​ត្រូវ​បាន​អនុវត្ត​នៅ​លើ​បទ​ស្តេរ៉េអូ​បានទេ ដែល​ឆានែល​នីមួយៗ​របស់​បទ​មិនផ្គូផ្គង​គ្នា ។"
 
-#: effects/ladspa/LadspaEffect.cpp:572 effects/ladspa/LadspaEffect.cpp:580
-#: prefs/QualityPrefs.cpp:72
-msgid "None"
-msgstr "គ្មាន"
-
 #: effects/ladspa/LadspaEffect.cpp:574 effects/vamp/VampEffect.cpp:384
 msgid "Author: "
 msgstr "អ្នកនិពន្ធ ៖"
-
-#: effects/ladspa/LadspaEffect.cpp:607
-msgid "Effect Settings"
-msgstr "ការ​កំណត់​បែបផែន"
 
 #: effects/ladspa/LadspaEffect.cpp:698
 msgid "Length (seconds)"
@@ -5811,9 +6017,21 @@ msgstr "កំពុង​នាំចេញ​គម្រោង​ទាំង
 msgid "Command Output"
 msgstr "លទ្ធផល​ពាក្យបញ្ជា"
 
-#: export/ExportFFmpeg.cpp:59
+#: export/ExportFFmpeg.cpp:61
 msgid "Properly configured FFmpeg is required to proceed.\n"
-"You can configure it in Preferences->Import/Export."
+"You can configure it at Preferences > Libraries."
+msgstr ""
+
+#: export/ExportFFmpeg.cpp:232
+msgid "AMR support not distributable"
+msgstr ""
+
+#: export/ExportFFmpeg.cpp:232
+msgid "Properly configured FFmpeg is required to proceed.\n"
+"You can configure it at Preferences > Libraries.\n"
+"\n"
+"Note that AMR support is not available with our FFmpeg\n"
+"installer, but requires you compile FFmpeg yourself."
 msgstr ""
 
 #: export/ExportFFmpeg.cpp:394
@@ -5880,6 +6098,10 @@ msgstr ""
 #: export/ExportFFmpegDialogs.cpp:168
 msgid "AAC Export Setup"
 msgstr ""
+
+#: export/ExportOGG.cpp:86
+msgid "Quality:"
+msgstr "គុណភាព ៖"
 
 #: export/ExportFFmpegDialogs.cpp:211
 msgid "Specify AMR-NB Options"
@@ -6014,12 +6236,8 @@ msgid "Bit Rate (bits/second) - influences the resulting file size and quality\n
 "Recommended - 192000"
 msgstr ""
 
-#: export/ExportOGG.cpp:86
-msgid "Quality:"
-msgstr "គុណភាព ៖"
-
-#: export/ExportFFmpegDialogs.cpp:928
-msgid "Overral quality, used differently by different codecs\n"
+#: export/ExportFFmpegDialogs.cpp:930
+msgid "Overall quality, used differently by different codecs\n"
 "Required for vorbis\n"
 "0 - automatic\n"
 "-1 - off (use bitrate instead)"
@@ -6038,10 +6256,10 @@ msgstr ""
 msgid "Cutoff Bandwidth:"
 msgstr ""
 
-#: export/ExportFFmpegDialogs.cpp:934
+#: export/ExportFFmpegDialogs.cpp:936
 msgid "Audio cutoff bandwidth (Hz)\n"
 "Optional\n"
-"0 - automatic\n"
+"0 - automatic"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:936
@@ -6230,12 +6448,12 @@ msgstr ""
 msgid "AC3 Files (FFmpeg)"
 msgstr ""
 
-#: export/ExportFFmpegDialogs.h:55
-msgid "AMR (narrow band) Files (FFmpeg)"
+#: export/ExportFFmpegDialogs.h:56
+msgid "AMR (narrow band) Files (FFmpeg, undistributable)"
 msgstr ""
 
-#: export/ExportFFmpegDialogs.h:56
-msgid "AMR (wide band) Files (FFmpeg)"
+#: export/ExportFFmpegDialogs.h:57
+msgid "AMR (wide band) Files (FFmpeg, undistributable)"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.h:57
@@ -6345,6 +6563,17 @@ msgstr "ជម្រៅ​ប៊ីត ៖"
 #: export/ExportFLAC.cpp:208
 msgid "FLAC Files"
 msgstr "ឯកសារ FLAC"
+
+#: export/ExportFLAC.cpp:288
+#, c-format
+msgid "FLAC export couldn't open %s"
+msgstr ""
+
+#: export/ExportFLAC.cpp:297
+#, c-format
+msgid "FLAC encoder failed to initialize\n"
+"Status: %d"
+msgstr ""
 
 #: export/ExportFLAC.cpp:310
 msgid "Exporting the selected audio as FLAC"
@@ -6600,10 +6829,6 @@ msgstr "ជម្រើស..."
 msgid "Export location:"
 msgstr "ទីតាំង​នាំចេញ ៖"
 
-#: export/ExportMultiple.cpp:204 prefs/DirectoriesPrefs.cpp:92
-msgid "Choose..."
-msgstr "ជ្រើស..."
-
 #: export/ExportMultiple.cpp:205
 msgid "Create"
 msgstr "បង្កើត"
@@ -6627,10 +6852,6 @@ msgstr "ឈ្មោះ​ឯកសារ​ដំបូង ៖"
 #: export/ExportMultiple.cpp:277
 msgid "First file name"
 msgstr ""
-
-#: export/ExportMultiple.cpp:246
-msgid "Tracks"
-msgstr "បទ"
 
 #: export/ExportMultiple.cpp:253
 msgid "Name files:"
@@ -6665,6 +6886,35 @@ msgstr "\"%s\" បាន​បង្កើត​​ដោយ​ជោគជ័�
 msgid "Choose a location to save the exported files"
 msgstr "ជ្រើស​ទីតាំង​ដើម្បី​រក្សា​ទុក​ឯកសារ​ដែល​​ដែលបាននាំចេញ"
 
+#: export/ExportMultiple.cpp:524
+#, c-format
+msgid "Successfully exported the following %ld file(s)."
+msgstr ""
+
+#: export/ExportMultiple.cpp:525
+#, c-format
+msgid "Something went wrong after exporting the folliwing %ld file(s)."
+msgstr ""
+
+#: export/ExportMultiple.cpp:526
+#, c-format
+msgid "Export canceled after exporting the following %ld file(s)."
+msgstr ""
+
+#: export/ExportMultiple.cpp:527
+#, c-format
+msgid "Export stopped after exporting the following %ld file(s)."
+msgstr ""
+
+#: export/ExportMultiple.cpp:528
+#, c-format
+msgid "Something went really wrong after exporting the following %ld file(s)."
+msgstr ""
+
+#: export/ExportMultiple.cpp:535
+msgid "ExportMultiple"
+msgstr ""
+
 #: export/ExportMultiple.cpp:480
 #, c-format
 msgid "\"%s\" doesn't exist.\n"
@@ -6677,16 +6927,6 @@ msgstr "\"%s\" មិន​ទាន់​មាន\n"
 #: export/ExportMultiple.cpp:640 export/ExportMultiple.cpp:785
 msgid "Edit metadata"
 msgstr ""
-
-#: export/ExportMultiple.cpp:606 export/ExportMultiple.cpp:714
-#, c-format
-msgid "Successfully exported %d file(s)."
-msgstr "នាំ​ចេញ​ឯកសារ​ %d ដោយ​ជោគជ័យ ។"
-
-#: export/ExportMultiple.cpp:607 export/ExportMultiple.cpp:715
-#, c-format
-msgid "Something went wrong after exporting %d file(s)."
-msgstr "បញ្ហា​ខ្លះ​បាន​កើត​ឡើង​បន្ទាប់​ពី​នាំ​ចេញ​ឯកសារ %d ។"
 
 #: export/ExportMultiple.cpp:898
 #, c-format
@@ -6766,7 +7006,6 @@ msgstr "កំពុង​នាំចេញ​គម្រោង​ទាំង
 
 #. i18n-hint: %s will be the error message from libsndfile
 #: export/ExportPCM.cpp:556
-#, c-format
 #, fuzzy
 msgid "Error (file may not have been written): %s"
 msgstr "កំហុស (ឯកសារ​អាច​មិន​ទាន់​ត្រូវ​បាន​សរសេរ) ៖ %hs"
@@ -6932,6 +7171,10 @@ msgstr ""
 msgid "FLAC files"
 msgstr "ឯកសារ FLAC"
 
+#: import/ImportGStreamer.cpp:33
+msgid "GStreamer-compatible files"
+msgstr ""
+
 #: import/ImportLOF.cpp:92
 msgid "List of Files in basic text format"
 msgstr "បញ្ជី​ឯកសារ​នៅ​ក្នុង​ទ្រង់ទ្រាយ​អត្ថបទ​មូលដ្ឋាន"
@@ -7089,113 +7332,6 @@ msgstr ""
 msgid "%s %2.0f%% complete.  Click to change task focal point."
 msgstr ""
 
-#: prefs/AudioIOPrefs.cpp:41 prefs/AudioIOPrefs.cpp:42
-msgid "Audio I/O"
-msgstr "អូឌីយ៉ូ I/O"
-
-#: prefs/AudioIOPrefs.cpp:100
-msgid "1 (Mono)"
-msgstr "១​ (ម៉ូណូ)"
-
-#: prefs/AudioIOPrefs.cpp:101
-msgid "2 (Stereo)"
-msgstr "២ (ស្តេរ៉េអូ)"
-
-#: prefs/AudioIOPrefs.cpp:115
-msgid "Playback"
-msgstr "ចាក់ឡើងវិញ"
-
-#: prefs/AudioIOPrefs.cpp:119 prefs/AudioIOPrefs.cpp:137
-#: toolbars/DeviceToolBar.cpp:54
-msgid "Device"
-msgstr "ឧបករណ៍"
-
-#: prefs/AudioIOPrefs.cpp:122
-msgid "Using:"
-msgstr "ការ​ប្រើ ៖"
-
-#: prefs/AudioIOPrefs.cpp:123
-msgid "Portaudio v"
-msgstr "ច្រក​អូឌីយ៉ូ v"
-
-#: prefs/AudioIOPrefs.cpp:133
-msgid "Recording"
-msgstr "ថត"
-
-#: prefs/AudioIOPrefs.cpp:139
-msgid "Channels"
-msgstr "ឆានែល"
-
-#: prefs/AudioIOPrefs.cpp:145
-msgid "Playthrough"
-msgstr "ចាក់តាម"
-
-#: prefs/AudioIOPrefs.cpp:150
-msgid "Overdub: &Play other tracks while recording new one"
-msgstr ""
-
-#: prefs/AudioIOPrefs.cpp:150
-msgid "&Hardware Playthrough: Play new track while recording it"
-msgstr "ចាក់តាម​ផ្នែក​រឹង​ ៖ ចាក់បទ​ថ្មី​ខណៈពេល​កំពុង​ថត​វា"
-
-#: prefs/AudioIOPrefs.cpp:152
-msgid "&Software Playthrough: Play new track while recording it"
-msgstr "ចាក់តាម​ផ្នែក​ទន់​ ៖ ចាក់បទ​ថ្មី​​ខណៈពេល​​កំពុង​ថត​វា"
-
-#: prefs/AudioIOPrefs.cpp:158
-msgid "&Software Playthrough: Play new track while recording or monitoring"
-msgstr ""
-
-#: prefs/AudioIOPrefs.cpp:161
-msgid "(uncheck when recording \"stereo mix\")"
-msgstr ""
-
-#: prefs/AudioIOPrefs.cpp:162
-msgid "Effects Preview"
-msgstr "មើល​បែបផែន​ជាមុន"
-
-#: prefs/AudioIOPrefs.cpp:165
-msgid "Length of preview:"
-msgstr "ប្រវែង​នៃ​ការ​​មើល​ជាមុន"
-
-#: prefs/AudioIOPrefs.cpp:170
-msgid "Cut Preview"
-msgstr "កាត់​មើលជាមុន"
-
-#: prefs/AudioIOPrefs.cpp:173
-msgid "Preview before cut region:"
-msgstr "មើល​ជា​មុន​ មុននឹង​​កាត់​តំបន់ ៖"
-
-#: prefs/AudioIOPrefs.cpp:175
-msgid "Preview after cut region:"
-msgstr "មើល​ជា​មុន​ បន្ទាប់​ពី​កាត់​តំបន់ ៖"
-
-#: prefs/AudioIOPrefs.cpp:183
-msgid "Latency"
-msgstr "គម្លាត​ពេល"
-
-#: prefs/AudioIOPrefs.cpp:196
-msgid "Audio to buffer:\n"
-"(higher = more latency)"
-msgstr ""
-
-#: prefs/AudioIOPrefs.cpp:199
-msgid "Latency correction:\n"
-"(negative = backwards)"
-msgstr ""
-
-#: prefs/AudioIOPrefs.cpp:197
-msgid "Seek Time when playing"
-msgstr "ស្វែងរក​ពេលវេលា​ពេល​កំពុង​ចាក់"
-
-#: prefs/AudioIOPrefs.cpp:200
-msgid "Short period:"
-msgstr "កំឡុង​ពេល​ខ្លី ៖"
-
-#: prefs/AudioIOPrefs.cpp:202
-msgid "Long period:"
-msgstr "កំឡុង​ពេល​វែង ៖"
-
 #: prefs/BatchPrefs.cpp:55 prefs/BatchPrefs.cpp:56
 msgid "Batch"
 msgstr "បាច់"
@@ -7211,6 +7347,42 @@ msgstr "កុំ​អនុវត្ត​បែបផែន​ក្នុង
 #: prefs/BatchPrefs.cpp:85
 msgid "Cl&eanSpeech Mode (Customized GUI)"
 msgstr "របៀប​ CleanSpeech (GUI ដែល​បាន​ប្តូរតាម​បំណង)"
+
+#: prefs/DevicePrefs.cpp:54
+msgid "Devices"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:33 prefs/GUIPrefs.cpp:34
+msgid "Interface"
+msgstr "ចំណុច​ប្រទាក់"
+
+#: prefs/DevicePrefs.cpp:113
+msgid "Host"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:122
+msgid "Using:"
+msgstr "ការ​ប្រើ ៖"
+
+#: prefs/AudioIOPrefs.cpp:115
+msgid "Playback"
+msgstr "ចាក់ឡើងវិញ"
+
+#: prefs/AudioIOPrefs.cpp:133
+msgid "Recording"
+msgstr "ថត"
+
+#: prefs/AudioIOPrefs.cpp:139
+msgid "Channels"
+msgstr "ឆានែល"
+
+#: prefs/AudioIOPrefs.cpp:100
+msgid "1 (Mono)"
+msgstr "១​ (ម៉ូណូ)"
+
+#: prefs/AudioIOPrefs.cpp:101
+msgid "2 (Stereo)"
+msgstr "២ (ស្តេរ៉េអូ)"
 
 #: prefs/DirectoriesPrefs.cpp:55 prefs/DirectoriesPrefs.cpp:56
 #: prefs/PrefsDialog.cpp:279
@@ -7229,33 +7401,30 @@ msgstr "ទីតាំង ៖"
 msgid "Free Space:"
 msgstr "ទំហំទំនេរ ៖"
 
-#: prefs/DirectoriesPrefs.cpp:99
-msgid "Auto save"
-msgstr "រក្សាទុក​ដោយ​ស្វ័យប្រវត្តិ"
-
-#: prefs/DirectoriesPrefs.cpp:101
-msgid "Auto save a copy of the project in a separate folder"
-msgstr "រក្សាទុក​ដោយ​​ស្វ័យប្រវត្តិ​ច្បាប់ចម្លង​នៃ​គម្រោង​ក្នុង​ថត​ដាច់​ដោយ​ឡែក"
-
-#: prefs/DirectoriesPrefs.cpp:104
-msgid "Auto save interval:"
-msgstr ""
-
-#: prefs/DirectoriesPrefs.cpp:105
-msgid "minutes"
-msgstr "នាទី"
-
 #: prefs/DirectoriesPrefs.cpp:110
 msgid "Audio cache"
 msgstr "ឃ្លាំង​សម្ងាត់​អូឌីយ៉ូ"
 
-#: prefs/DirectoriesPrefs.cpp:112
-msgid "Play and/or record using RAM (useful for slow drives, but could crash with long files or recordings)"
+#: prefs/DirectoriesPrefs.cpp:105
+msgid "Play and/or record using RAM (useful for slow drives)"
+msgstr ""
+
+#: prefs/DirectoriesPrefs.cpp:111
+msgid "Minimum Free Memory (MB):"
+msgstr ""
+
+#: prefs/DirectoriesPrefs.cpp:118
+msgid "If the available system memory falls below this value, audio will no longer\n"
+"be cached in memory and will be written to disk."
 msgstr ""
 
 #: prefs/DirectoriesPrefs.cpp:121
 msgid "Choose a location to place the temporary directory"
 msgstr "ជ្រើស​ទីតាំង​ត្រូវ​ដាក់​ថត​បណ្ដោះអាសន្ន"
+
+#: prefs/DirectoriesPrefs.cpp:158
+msgid "unavailable - above location doesn't exist"
+msgstr ""
 
 #: prefs/DirectoriesPrefs.cpp:166
 #, c-format
@@ -7275,8 +7444,215 @@ msgstr "ថត %s មិនអាច​សរសេរ​បាន"
 msgid "Changes to temporary directory will not take effect until Audacity is restarted"
 msgstr "ផ្លាស់ប្ដូរ​ទៅ​ថត​បណ្ដោះអាសន្ន នឹង​គ្មាន​ប្រសិទ្ធភាព​ទេ រហូត​ដល់ Audacity ត្រូវ​បាន​ចាប់ផ្ដើម​ឡើង​វិញ"
 
+#: prefs/GUIPrefs.cpp:42
+msgid "In Browser"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:43
+msgid "From Internet"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:54
+msgid "36"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:55
+msgid "48"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:56
+msgid "60"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:57
+msgid "96"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:58
+msgid "120"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:59
+msgid "145"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:115
+msgid "-36 dB (shallow range for high-amplitude editing)"
+msgstr "-៣៦ dB (ជួរ​រាក់​សម្រាប់​ការ​កែសម្រួល​អាំភ្លី​ខ្ពស់)"
+
+#: prefs/GUIPrefs.cpp:116
+msgid "-48 dB (PCM range of 8 bit samples)"
+msgstr "-៤៨ dB (ជួរ PCM នៃគំរូ ៨ ប៊ីត)"
+
+#: prefs/GUIPrefs.cpp:143
+msgid "-60 dB (PCM range of 10 bit samples)"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:117
+msgid "-96 dB (PCM range of 16 bit samples)"
+msgstr "-៩៦ dB (ជួរ PCM នៃ គំរូ ១៦ ប៊ីត)"
+
+#: prefs/GUIPrefs.cpp:118
+msgid "-120 dB (approximate limit of human hearing)"
+msgstr "-១២០ dB (ព្រំដែន​ប្រហែល​នៃ​ការស្តាប់​របស់​មនុស្ស)"
+
+#: prefs/GUIPrefs.cpp:119
+msgid "-145 dB (PCM range of 24 bit samples)"
+msgstr "-145 dB (ជួរ PCM នៃ គំរូ ២៤ ប៊ីត)"
+
+#: prefs/SpectrumPrefs.cpp:96
+msgid "Display"
+msgstr "បង្ហាញ"
+
+#: prefs/GUIPrefs.cpp:100
+msgid "Er&gonomic order of audio I/O buttons"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:101
+msgid "Show &welcome message at program start up"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:109
+msgid "Meter/Waveform dB range:"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:167
+msgid "Help:"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:96
+msgid "Cl&osing last window quits Audacity"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:90
+msgid "&Beep on completion of longer activities"
+msgstr "បន្លឺ​សំឡេង​ប៊ីត​នៅ​ពេល​​បញ្ចប់​សកម្មភាព​វែងៗ"
+
+#: prefs/GUIPrefs.cpp:126
+msgid "Modes"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:151
+msgid "Display VST effects in GUI mode"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:129
+msgid "Don't a&pply effects in batch mode"
+msgstr ""
+
 #: prefs/FileFormatPrefs.cpp:53 prefs/FileFormatPrefs.cpp:54
 msgid "Import / Export"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:137
+msgid "When importing audio files"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:140
+msgid "&Make a copy of uncompressed audio files before editing (safer)"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:141
+msgid "&Read uncompressed audio files directly from the original (faster)"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:143
+msgid "&Normalize all tracks in project"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:157
+msgid "When exporting tracks to an audio file"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:96
+msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
+msgstr "តែងតែ​លាយ​​បទ​ទាំងអស់​​ទៅជាឆានែល​​ស្តេរ៉េអូ ឬ​ម៉ូណូ ។"
+
+#: prefs/FileFormatPrefs.cpp:97
+msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
+msgstr "ប្រើការ​​លាយ​​ផ្លាល់ខ្លួ​ន (ឧទាហរណ៍ នាំចេញ​ឯកសារ​ពហុ​ឆានែល ៥.១)"
+
+#: prefs/FileFormatPrefs.cpp:163
+msgid "S&how Metadata Editor prior to export step"
+msgstr ""
+
+#: prefs/ImportExportPrefs.cpp:84
+msgid "Note: Export quality options can be chosen by clicking the Options\n"
+"button in the Export dialog."
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:64 prefs/KeyConfigPrefs.cpp:65
+msgid "Keyboard"
+msgstr "ក្ដារចុច"
+
+#: prefs/KeyConfigPrefs.cpp:86
+msgid "Keyboard preferences currently unavailable."
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:87
+msgid "Open a new project to modify keyboard shortcuts."
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:95
+msgid "Key Bindings"
+msgstr "ចងគ្រាប់ចុច"
+
+#: prefs/KeyConfigPrefs.cpp:115
+msgid "S&et"
+msgstr "កំណត់"
+
+#: prefs/KeyConfigPrefs.cpp:120
+msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
+msgstr "ចំណាំ ៖ ចុច Cmd+Q នឹងចេញ ។ គ្រាប់ចុច​ផ្សេង​ទៀត​ទាំងអស់​​គឺ​ត្រឹមត្រូវ ។"
+
+#: prefs/KeyConfigPrefs.cpp:124 prefs/ThemePrefs.cpp:103
+msgid "&Defaults"
+msgstr "លំនាំដើម"
+
+#: prefs/KeyConfigPrefs.cpp:171
+msgid "Command"
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:143
+msgid "Key Combination"
+msgstr "បន្សំ​គ្រាប់ចុច"
+
+#: prefs/KeyConfigPrefs.cpp:367 toolbars/EditToolBar.cpp:144
+msgid "Undo"
+msgstr "មិន​ធ្វើ​វិញ"
+
+#: prefs/KeyConfigPrefs.cpp:199 toolbars/EditToolBar.cpp:145
+#: toolbars/EditToolBar.cpp:196
+msgid "Redo"
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:196
+msgid "Select an XML file containing Audacity keyboard shortcuts..."
+msgstr "ជ្រើស​ឯកសារ XML ដែល​មាន​ផ្លូវកាត់​ក្តារចុច Audacity"
+
+#: prefs/KeyConfigPrefs.cpp:213
+msgid "Error loading keyboard shortcuts"
+msgstr "កំហុស​ក្នុង​ការផ្ទុក​ផ្លូវកាត់​ក្តារចុច"
+
+#: prefs/KeyConfigPrefs.cpp:163
+msgid "Export Keyboard Shortcuts As:"
+msgstr "នាំចេញ​ផ្លូវកាត់​ក្តារចុច​ជា ៖"
+
+#: prefs/KeyConfigPrefs.cpp:181
+msgid "Error saving keyboard shortcuts"
+msgstr "កំហុស​ក្នុងការ​រក្សាទុក​ផ្លូវកាត់​ក្តារចុច"
+
+#: prefs/KeyConfigPrefs.cpp:241
+#, c-format
+msgid "The keyboard shortcut '%s' is already assigned to:\n"
+"\n"
+"'%s'"
+msgstr "ផ្លូវកាត់​ក្ដារចុច '%s' ត្រូវ​បាន​ផ្ដល់​ទៅ ៖\n"
+"\n"
+"'%s' រួច​ហើយ"
+
+#: prefs/LibraryPrefs.cpp:46
+msgid "Libraries"
 msgstr ""
 
 #: prefs/FileFormatPrefs.cpp:84
@@ -7311,246 +7687,25 @@ msgstr ""
 msgid "FFmpeg Library Version:"
 msgstr ""
 
+#: prefs/LibraryPrefs.cpp:112
+msgid "No compatible FFmpeg library was found"
+msgstr ""
+
 #: prefs/FileFormatPrefs.cpp:118 prefs/FileFormatPrefs.cpp:122
 msgid "FFmpeg Library:"
 msgstr ""
 
-#: prefs/FileFormatPrefs.cpp:136
-msgid "Note: Export quality options can be chosen by clicking the Options button in the Export dialog.\n"
-msgstr ""
+#: prefs/AudioIOPrefs.cpp:41 prefs/AudioIOPrefs.cpp:42
+msgid "Audio I/O"
+msgstr "អូឌីយ៉ូ I/O"
 
-#: prefs/FileFormatPrefs.cpp:137
-msgid "When importing audio files"
-msgstr ""
+#: prefs/AudioIOPrefs.cpp:123
+msgid "Portaudio v"
+msgstr "ច្រក​អូឌីយ៉ូ v"
 
-#: prefs/FileFormatPrefs.cpp:140
-msgid "&Make a copy of uncompressed audio files before editing (safer)"
-msgstr ""
-
-#: prefs/FileFormatPrefs.cpp:141
-msgid "&Read uncompressed audio files directly from the original (faster)"
-msgstr ""
-
-#: prefs/FileFormatPrefs.cpp:143
-msgid "&Normalize all tracks in project"
-msgstr ""
-
-#: prefs/FileFormatPrefs.cpp:84
-msgid "When saving a project that depends on other audio files"
-msgstr "នៅ​ពេល​រក្សាទុក​គម្រោង ដែល​អាស្រ័យ​លើ​ឯកសារ​អូឌីយ៉ូ​ផ្សេងៗ​ទៀត"
-
-#: prefs/FileFormatPrefs.cpp:151
-msgid "Always &copy all audio into project (safest)"
-msgstr ""
-
-#: prefs/FileFormatPrefs.cpp:152
-msgid "&Do not copy any audio"
-msgstr ""
-
-#: prefs/FileFormatPrefs.cpp:87
-msgid "&Ask user"
-msgstr "សួរ​អ្នក​ប្រើ"
-
-#: prefs/FileFormatPrefs.cpp:157
-msgid "When exporting tracks to an audio file"
-msgstr ""
-
-#: prefs/FileFormatPrefs.cpp:96
-msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
-msgstr "តែងតែ​លាយ​​បទ​ទាំងអស់​​ទៅជាឆានែល​​ស្តេរ៉េអូ ឬ​ម៉ូណូ ។"
-
-#: prefs/FileFormatPrefs.cpp:97
-msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
-msgstr "ប្រើការ​​លាយ​​ផ្លាល់ខ្លួ​ន (ឧទាហរណ៍ នាំចេញ​ឯកសារ​ពហុ​ឆានែល ៥.១)"
-
-#: prefs/FileFormatPrefs.cpp:163
-msgid "S&how Metadata Editor prior to export step"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:33 prefs/GUIPrefs.cpp:34
-msgid "Interface"
-msgstr "ចំណុច​ប្រទាក់"
-
-#: prefs/GUIPrefs.cpp:42
-msgid "In Browser"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:43
-msgid "From Internet"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:50
-msgid "Simple"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:72
-msgid "&Update display while playing"
-msgstr "ធ្វើ​ឲ្យ​ការ​បង្ហាញ​ទាន់សម័យ​ ខណៈពេល​ចាក់"
-
-#: prefs/GUIPrefs.cpp:96
-msgid "Cl&osing last window quits Audacity"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:98
-msgid "Enable &dragging of left and right selection edges"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:100
-msgid "Er&gonomic order of audio I/O buttons"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:102
-msgid "Automatically &fit tracks vertically zoomed"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:104
-msgid "\"Move track focus\" c&ycles repeatedly through tracks"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:86
-msgid "Editing a &clip can move other clips"
-msgstr "ការ​កែសម្រួល​ឈុត​អាចផ្លាស់ទី​ឈុត​ដទៃ​ទៀត"
-
-#: prefs/GUIPrefs.cpp:108
-msgid "&Select all audio in project, if none selected"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:90
-msgid "&Beep on completion of longer activities"
-msgstr "បន្លឺ​សំឡេង​ប៊ីត​នៅ​ពេល​​បញ្ចប់​សកម្មភាព​វែងៗ"
-
-#: prefs/BatchPrefs.cpp:89 prefs/GUIPrefs.cpp:94
-msgid "Show / Hide"
-msgstr "បង្ហាញ/លាក់"
-
-#: prefs/GUIPrefs.cpp:96
-msgid "Enable cut &lines"
-msgstr "អនុញ្ញាត​ឲ្យ​កាត់​បន្ទាត់"
-
-#: prefs/GUIPrefs.cpp:98
-msgid "Show warnings about &temp files"
-msgstr "បង្ហាញ​ការព្រមាន​អំពី​ឯកសារ​បណ្តោះ​អាសន្ន"
-
-#: prefs/GUIPrefs.cpp:120
-msgid "Show prompt to sa&ve, even if project is empty"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:122
-msgid "Show &Welcome Message at program start up"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:126
-msgid "Modes"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:129
-msgid "Don't a&pply effects in batch mode"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:138
-msgid "Display range minimum: meters and 'Waveform (dB)'"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:115
-msgid "-36 dB (shallow range for high-amplitude editing)"
-msgstr "-៣៦ dB (ជួរ​រាក់​សម្រាប់​ការ​កែសម្រួល​អាំភ្លី​ខ្ពស់)"
-
-#: prefs/GUIPrefs.cpp:116
-msgid "-48 dB (PCM range of 8 bit samples)"
-msgstr "-៤៨ dB (ជួរ PCM នៃគំរូ ៨ ប៊ីត)"
-
-#: prefs/GUIPrefs.cpp:143
-msgid "-60 dB (PCM range of 10 bit samples)"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:117
-msgid "-96 dB (PCM range of 16 bit samples)"
-msgstr "-៩៦ dB (ជួរ PCM នៃ គំរូ ១៦ ប៊ីត)"
-
-#: prefs/GUIPrefs.cpp:118
-msgid "-120 dB (approximate limit of human hearing)"
-msgstr "-១២០ dB (ព្រំដែន​ប្រហែល​នៃ​ការស្តាប់​របស់​មនុស្ស)"
-
-#: prefs/GUIPrefs.cpp:119
-msgid "-145 dB (PCM range of 24 bit samples)"
-msgstr "-145 dB (ជួរ PCM នៃ គំរូ ២៤ ប៊ីត)"
-
-#: prefs/GUIPrefs.cpp:151
-msgid "Default View Mode"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:164
-msgid "Other interface choices"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:167
-msgid "Help:"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:168
-msgid "Solo Button:"
-msgstr ""
-
-#: prefs/KeyConfigPrefs.cpp:64 prefs/KeyConfigPrefs.cpp:65
-msgid "Keyboard"
-msgstr "ក្ដារចុច"
-
-#: prefs/KeyConfigPrefs.cpp:86
-msgid "Keyboard preferences currently unavailable."
-msgstr ""
-
-#: prefs/KeyConfigPrefs.cpp:87
-msgid "Open a new project to modify keyboard shortcuts."
-msgstr ""
-
-#: prefs/KeyConfigPrefs.cpp:95
-msgid "Key Bindings"
-msgstr "ចងគ្រាប់ចុច"
-
-#: prefs/KeyConfigPrefs.cpp:115
-msgid "S&et"
-msgstr "កំណត់"
-
-#: prefs/KeyConfigPrefs.cpp:120
-msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
-msgstr "ចំណាំ ៖ ចុច Cmd+Q នឹងចេញ ។ គ្រាប់ចុច​ផ្សេង​ទៀត​ទាំងអស់​​គឺ​ត្រឹមត្រូវ ។"
-
-#: prefs/KeyConfigPrefs.cpp:124 prefs/ThemePrefs.cpp:103
-msgid "&Defaults"
-msgstr "លំនាំដើម"
-
-#: prefs/KeyConfigPrefs.cpp:143
-msgid "Key Combination"
-msgstr "បន្សំ​គ្រាប់ចុច"
-
-#: prefs/KeyConfigPrefs.cpp:163
-msgid "Export Keyboard Shortcuts As:"
-msgstr "នាំចេញ​ផ្លូវកាត់​ក្តារចុច​ជា ៖"
-
-#: prefs/KeyConfigPrefs.cpp:181
-msgid "Error saving keyboard shortcuts"
-msgstr "កំហុស​ក្នុងការ​រក្សាទុក​ផ្លូវកាត់​ក្តារចុច"
-
-#: prefs/KeyConfigPrefs.cpp:196
-msgid "Select an XML file containing Audacity keyboard shortcuts..."
-msgstr "ជ្រើស​ឯកសារ XML ដែល​មាន​ផ្លូវកាត់​ក្តារចុច Audacity"
-
-#: prefs/KeyConfigPrefs.cpp:213
-msgid "Error loading keyboard shortcuts"
-msgstr "កំហុស​ក្នុង​ការផ្ទុក​ផ្លូវកាត់​ក្តារចុច"
-
-#: prefs/KeyConfigPrefs.cpp:241
-#, c-format
-msgid "The keyboard shortcut '%s' is already assigned to:\n"
-"\n"
-"'%s'"
-msgstr "ផ្លូវកាត់​ក្ដារចុច '%s' ត្រូវ​បាន​ផ្ដល់​ទៅ ៖\n"
-"\n"
-"'%s' រួច​ហើយ"
-
-#: prefs/KeyConfigPrefs.cpp:367 toolbars/EditToolBar.cpp:144
-msgid "Undo"
-msgstr "មិន​ធ្វើ​វិញ"
+#: prefs/AudioIOPrefs.cpp:145
+msgid "Playthrough"
+msgstr "ចាក់តាម"
 
 #: prefs/AudioIOPrefs.cpp:147
 msgid "&Play other tracks while recording new one"
@@ -7564,6 +7719,10 @@ msgstr ""
 msgid "&Software Playthrough (Play new track while recording it)"
 msgstr ""
 
+#: prefs/AudioIOPrefs.cpp:170
+msgid "Cut Preview"
+msgstr "កាត់​មើលជាមុន"
+
 #: prefs/MidiIOPrefs.cpp:160
 msgid "Play before cut region:"
 msgstr ""
@@ -7571,6 +7730,10 @@ msgstr ""
 #: prefs/MidiIOPrefs.cpp:162
 msgid "Play after cut region:"
 msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:183
+msgid "Latency"
+msgstr "គម្លាត​ពេល"
 
 #: prefs/AudioIOPrefs.cpp:189
 msgid "Audio to buffer:"
@@ -7583,6 +7746,18 @@ msgstr "កែតម្រូវ​គម្លាត​ពេល ៖"
 #: prefs/MidiIOPrefs.cpp:183
 msgid "Seek Time"
 msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:200
+msgid "Short period:"
+msgstr "កំឡុង​ពេល​ខ្លី ៖"
+
+#: prefs/AudioIOPrefs.cpp:202
+msgid "Long period:"
+msgstr "កំឡុង​ពេល​វែង ៖"
+
+#: prefs/AudioIOPrefs.cpp:162
+msgid "Effects Preview"
+msgstr "មើល​បែបផែន​ជាមុន"
 
 #: prefs/MidiIOPrefs.cpp:196
 msgid "Play when previewing:"
@@ -7794,9 +7969,61 @@ msgstr "បញ្ជា(Ctrl) កង់​បង្វិល"
 msgid "Zoom in or out"
 msgstr "ពង្រីក ឬ​បង្រួម"
 
+#: prefs/AudioIOPrefs.cpp:165
+msgid "Length of preview:"
+msgstr "ប្រវែង​នៃ​ការ​​មើល​ជាមុន"
+
+#: prefs/AudioIOPrefs.cpp:173
+msgid "Preview before cut region:"
+msgstr "មើល​ជា​មុន​ មុននឹង​​កាត់​តំបន់ ៖"
+
+#: prefs/AudioIOPrefs.cpp:175
+msgid "Preview after cut region:"
+msgstr "មើល​ជា​មុន​ បន្ទាប់​ពី​កាត់​តំបន់ ៖"
+
+#: prefs/AudioIOPrefs.cpp:197
+msgid "Seek Time when playing"
+msgstr "ស្វែងរក​ពេលវេលា​ពេល​កំពុង​ចាក់"
+
 #: prefs/PrefsDialog.cpp:89
 msgid "Audacity Preferences"
 msgstr "ចំណូល​ចិត្ត Audacity"
+
+#: prefs/ProjectsPrefs.cpp:31
+msgid "Projects"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:84
+msgid "When saving a project that depends on other audio files"
+msgstr "នៅ​ពេល​រក្សាទុក​គម្រោង ដែល​អាស្រ័យ​លើ​ឯកសារ​អូឌីយ៉ូ​ផ្សេងៗ​ទៀត"
+
+#: prefs/FileFormatPrefs.cpp:151
+msgid "Always &copy all audio into project (safest)"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:152
+msgid "&Do not copy any audio"
+msgstr ""
+
+#: prefs/FileFormatPrefs.cpp:87
+msgid "&Ask user"
+msgstr "សួរ​អ្នក​ប្រើ"
+
+#: prefs/DirectoriesPrefs.cpp:99
+msgid "Auto save"
+msgstr "រក្សាទុក​ដោយ​ស្វ័យប្រវត្តិ"
+
+#: prefs/DirectoriesPrefs.cpp:101
+msgid "Auto save a copy of the project in a separate folder"
+msgstr "រក្សាទុក​ដោយ​​ស្វ័យប្រវត្តិ​ច្បាប់ចម្លង​នៃ​គម្រោង​ក្នុង​ថត​ដាច់​ដោយ​ឡែក"
+
+#: prefs/DirectoriesPrefs.cpp:104
+msgid "Auto save interval:"
+msgstr ""
+
+#: prefs/DirectoriesPrefs.cpp:105
+msgid "minutes"
+msgstr "នាទី"
 
 #: prefs/QualityPrefs.cpp:73
 msgid "Rectangle"
@@ -7822,45 +8049,46 @@ msgstr "អត្រា​គំរូ​លំនាំដើម ៖"
 msgid "Default Sample Format:"
 msgstr "ទ្រង់ទ្រាយ​គំរូ​លំនាំដើម ៖"
 
-#: prefs/QualityPrefs.cpp:136
-msgid "Real-time sample rate converter:"
-msgstr "កម្មវិធី​បម្លែង​អត្រា​គំរូ​ពេលវេលាពិត ៖"
+#: prefs/QualityPrefs.cpp:165
+msgid "Real-time Conversion"
+msgstr ""
 
-#: prefs/QualityPrefs.cpp:139
-msgid "High-quality sample rate converter:"
-msgstr "កម្មវិធី​បម្លែង​អត្រាគំរូ​គុណភាព​ខ្ពស់ ៖"
-
-#: prefs/QualityPrefs.cpp:142
-msgid "Real-time dither:"
-msgstr "បំរែបំរួល​ពេលវេលា​ពិត ៖"
-
-#: prefs/QualityPrefs.cpp:145
-msgid "High-quality dither:"
-msgstr "បំរែបំរួល​គុណភាពខ្ពស់ ៖"
-
-#: prefs/QualityPrefs.cpp:157
-msgid "Conversion"
-msgstr "ការ​បម្លែង"
-
-#: prefs/QualityPrefs.cpp:163
-msgid "Sample Rate Converter"
+#: prefs/QualityPrefs.cpp:171 prefs/QualityPrefs.cpp:193
+#, fuzzy
+msgid "Sample Rate Converter:"
 msgstr "កម្មវិធី​បម្លែង​អត្រា​គំរូ"
 
 #: prefs/QualityPrefs.cpp:164
 msgid "Dither"
 msgstr "ប្រែប្រួល"
 
-#: prefs/QualityPrefs.cpp:165
-msgid "Real-time:"
-msgstr "ពេលវេលាពិត ៖"
+#: prefs/QualityPrefs.cpp:189
+msgid "High-quality Conversion"
+msgstr ""
 
-#: prefs/QualityPrefs.cpp:171
-msgid "High-quality:"
-msgstr "គុណភាព​ខ្ពស់ ៖"
+#: prefs/AudioIOPrefs.cpp:150
+msgid "Overdub: &Play other tracks while recording new one"
+msgstr ""
 
-#: prefs/SmartRecordPrefs.cpp:54 prefs/SmartRecordPrefs.cpp:55
-msgid "Smart Recording"
-msgstr "ការ​ថត​ដ៏​ឆ្លាត"
+#: prefs/AudioIOPrefs.cpp:150
+msgid "&Hardware Playthrough: Play new track while recording it"
+msgstr "ចាក់តាម​ផ្នែក​រឹង​ ៖ ចាក់បទ​ថ្មី​ខណៈពេល​កំពុង​ថត​វា"
+
+#: prefs/AudioIOPrefs.cpp:158
+msgid "&Software Playthrough: Play new track while recording or monitoring"
+msgstr ""
+
+#: prefs/AudioIOPrefs.cpp:161
+msgid "(uncheck when recording \"stereo mix\")"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:86
+msgid "milliseconds (higher = more latency)"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:92
+msgid "milliseconds (negative = backwards)"
+msgstr ""
 
 #: prefs/SmartRecordPrefs.cpp:64 prefs/SmartRecordPrefs.cpp:66
 msgid "Sound Activated Recording"
@@ -7874,17 +8102,53 @@ msgstr ""
 msgid "Spectrograms"
 msgstr "ក្រាហ្វិក​វិសាលគម"
 
-#: prefs/SpectrumPrefs.cpp:72
-msgid "FFT Size"
-msgstr "ទំហំ FFT"
-
 #: prefs/SpectrumPrefs.cpp:75
 msgid "8 - most wideband"
 msgstr "៨ - ក្រុម​ទូលាយ​បំផុត"
 
+#: prefs/SpectrumPrefs.cpp:42
+msgid "16"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:43
+msgid "32"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:44
+msgid "64"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:45
+msgid "128"
+msgstr ""
+
 #: prefs/SpectrumPrefs.cpp:80
 msgid "256 - default"
 msgstr "២៥៦ - លំនាំដើម"
+
+#: prefs/SpectrumPrefs.cpp:47
+msgid "512"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:48
+msgid "1024"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:49
+msgid "2048"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:51
+msgid "4096"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:52
+msgid "8192"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:53
+msgid "16384"
+msgstr ""
 
 #: prefs/SpectrumPrefs.cpp:107
 msgid "32768 - most narrowband"
@@ -7894,21 +8158,26 @@ msgstr ""
 msgid "4096 - most narrowband"
 msgstr "៤០៩៦ - ក្រុម​ចង្អៀត​​បំផុត"
 
-#: prefs/SpectrumPrefs.cpp:90
-msgid "Window type:"
+#: prefs/SpectrumPrefs.cpp:82
+msgid "FFT Window"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:86
+msgid "Window size"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:93
+#, fuzzy
+msgid "Window type"
 msgstr "ប្រភេទ​បង្អួច ៖"
 
 #: prefs/SpectrumPrefs.cpp:125
 msgid "FFT Skip Points"
 msgstr ""
 
-#: prefs/SpectrumPrefs.cpp:96
-msgid "Display"
-msgstr "បង្ហាញ"
-
-#: prefs/SpectrumPrefs.cpp:100
-msgid "&Grayscale"
-msgstr "មាត្រដ្ឋាន​ប្រផេះ"
+#: prefs/SpectrumPrefs.cpp:117
+msgid "Skip Points"
+msgstr ""
 
 #: prefs/SpectrumPrefs.cpp:103
 msgid "Minimum Frequency (Hz):"
@@ -7918,16 +8187,16 @@ msgstr "ប្រេកង់​អប្បបរមា (Hz) ៖"
 msgid "Maximum Frequency (Hz):"
 msgstr "ប្រេកង់​អតិបរមា (Hz) ៖"
 
-#: prefs/SpectrumPrefs.cpp:158
-msgid "&Y-Grid"
+#: prefs/SpectrumPrefs.cpp:147
+msgid "Show the spectrum using &grayscale colors"
 msgstr ""
 
-#: prefs/SpectrumPrefs.cpp:161
-msgid "&Find Notes"
+#: prefs/SpectrumPrefs.cpp:152
+msgid "Show a grid along the &Y-axis"
 msgstr ""
 
-#: prefs/SpectrumPrefs.cpp:162
-msgid "&Quantize Notes"
+#: prefs/SpectrumPrefs.cpp:160
+msgid "FFT Find Notes"
 msgstr ""
 
 #: prefs/SpectrumPrefs.cpp:165
@@ -7936,6 +8205,14 @@ msgstr ""
 
 #: prefs/SpectrumPrefs.cpp:170
 msgid "Max. Number of Notes (1..128):"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:161
+msgid "&Find Notes"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:162
+msgid "&Quantize Notes"
 msgstr ""
 
 #: prefs/SpectrumPrefs.cpp:134
@@ -7954,17 +8231,69 @@ msgstr "ប្រេកង់​អប្បបរមា​ត្រូវតែ
 msgid "Minimum frequency must be at least 0 Hz"
 msgstr "ប្រេកង់​អប្បបរមា​ត្រូវតែ​មាន​តម្លៃ​តូចបំផុត ០ Hz"
 
+#: prefs/SpectrumPrefs.cpp:213
+msgid "Minimum frequency must be less than maximum frequency"
+msgstr ""
+
 #: prefs/SpectrumPrefs.cpp:220
 msgid "The minimum amplitude (dB) must be an integer"
 msgstr ""
 
-#: prefs/SpectrumPrefs.cpp:226 prefs/SpectrumPrefs.cpp:230
-msgid "The Maximum Number of Notes must be an integer in the range 1..128"
+#: prefs/SpectrumPrefs.cpp:226
+msgid "The maximum number of notes must be an integer"
+msgstr ""
+
+#: prefs/SpectrumPrefs.cpp:230
+msgid "The maximum number of notes must be in the range 1..128"
 msgstr ""
 
 #: prefs/ThemePrefs.cpp:62 prefs/ThemePrefs.cpp:63
 msgid "Theme"
 msgstr "ស្បែក"
+
+#: prefs/ThemePrefs.cpp:124
+msgid "Info"
+msgstr "ព័ត៌មាន"
+
+#: prefs/ThemePrefs.cpp:91
+#, fuzzy
+msgid "Themability is an experimental feature.\n"
+"\n"
+"To try it out, click \"Save Theme Cache\" then find and modify the images and colors in\n"
+"ImageCacheVxx.png using an image editor such as the Gimp.\n"
+"\n"
+"Click \"Load Theme Cache\" to load the changed images and colors back into Audacity.\n"
+"\n"
+"[Only the control toolbar and the colors on the wavetrack are currently affected, even\n"
+"though the image file shows other icons too.]"
+msgstr "Themability គឺ​ជា​លក្ខណៈពិសេស​ពិសោធន៍ ។\n"
+"\n"
+"ដើម្បី​សាកល្បង​វា ចុច \"រក្សា​ទុក​​ឃ្លាំង​សម្ងាត់​ស្បែក\" បន្ទាប់​មក\n"
+"រក​ និង​កែប្រែ​រូបភាព​ និង​ពណ៌​នៅ​ក្នុង \n"
+"ImageCacheVxx.png ដោយ​ប្រើ​កម្មវិធី​កែសម្រួល​រូបភាព​ដូចជា \n"
+"Gimp.\n"
+"\n"
+"ចុច \"ផ្ទុក​ឃ្លាំង​សម្ងាត់​ស្បែក\" ដើម្បី​ផ្ទុក​រូបភាព​ដែល​បាន​ផ្លាស់ប្ដូរ\n"
+"និង​ពណ៌​ត្រឡប់​ទៅ​ក្នុង Audacity ។\n"
+"\n"
+"[មាន​តែ​របារ​ឧបករណ៍​​ត្រួតពិនិត្យ និង​ពណ៌​នៅ​លើ \n"
+"ដាន​រលក​ត្រូវ​បាន​ប៉ះពាល់​បច្ចុប្បន្ន​នេះ ទោះ​បីជា\n"
+"ឯកសារ​រូបភាព​បង្ហាញ​រូបតំណាង​ផ្សេង​ក៏​ដោយ ។]"
+
+#: prefs/ThemePrefs.cpp:96
+msgid "You have compiled Audacity with an extra button, 'Output Sourcery'.  This will save a\n"
+"C version of the image cache that can be compiled in as a default."
+msgstr ""
+
+#: prefs/ThemePrefs.cpp:101
+msgid "If 'Load Theme Cache At Startup' is checked, then the Theme Cache will be loaded\n"
+"when the program starts up."
+msgstr ""
+
+#: prefs/ThemePrefs.cpp:104
+msgid "Saving and loading individual theme files uses a separate file for each image, but is\n"
+"otherwise the same idea."
+msgstr ""
 
 #: prefs/ThemePrefs.cpp:91
 msgid "Theme Cache - Images && Color"
@@ -7994,97 +8323,93 @@ msgstr "រក្សាទុក​ឯកសារ"
 msgid "Load Files"
 msgstr "ផ្ទុក​ឯកសារ"
 
-#: prefs/ThemePrefs.cpp:124
-msgid "Info"
-msgstr "ព័ត៌មាន"
+#: prefs/GUIPrefs.cpp:50
+msgid "Simple"
+msgstr ""
 
-#: prefs/ThemePrefs.cpp:127
-msgid "Themability is an experimental feature.\n"
-"\n"
-"To try it out, click \"Save Theme Cache\" then\n"
-"find and modify the images and colors in \n"
-"ImageCacheVxx.png using an image editor such \n"
-"as the Gimp.\n"
-"\n"
-"Click \"Load Theme Cache\" to load the changed images\n"
-"and colors back into Audacity.\n"
-"\n"
-"[Only the control toolbar and the colors on the \n"
-"wavetrack are currently affected, even though the\n"
-"image file shows other icons too.]\n"
-msgstr "Themability គឺ​ជា​លក្ខណៈពិសេស​ពិសោធន៍ ។\n"
-"\n"
-"ដើម្បី​សាកល្បង​វា ចុច \"រក្សា​ទុក​​ឃ្លាំង​សម្ងាត់​ស្បែក\" បន្ទាប់​មក\n"
-"រក​ និង​កែប្រែ​រូបភាព​ និង​ពណ៌​នៅ​ក្នុង \n"
-"ImageCacheVxx.png ដោយ​ប្រើ​កម្មវិធី​កែសម្រួល​រូបភាព​ដូចជា \n"
-"Gimp.\n"
-"\n"
-"ចុច \"ផ្ទុក​ឃ្លាំង​សម្ងាត់​ស្បែក\" ដើម្បី​ផ្ទុក​រូបភាព​ដែល​បាន​ផ្លាស់ប្ដូរ\n"
-"និង​ពណ៌​ត្រឡប់​ទៅ​ក្នុង Audacity ។\n"
-"\n"
-"[មាន​តែ​របារ​ឧបករណ៍​​ត្រួតពិនិត្យ និង​ពណ៌​នៅ​លើ \n"
-"ដាន​រលក​ត្រូវ​បាន​ប៉ះពាល់​បច្ចុប្បន្ន​នេះ ទោះ​បីជា\n"
-"ឯកសារ​រូបភាព​បង្ហាញ​រូបតំណាង​ផ្សេង​ក៏​ដោយ ។]\n"
+#: prefs/GUIPrefs.cpp:72
+msgid "&Update display while playing"
+msgstr "ធ្វើ​ឲ្យ​ការ​បង្ហាញ​ទាន់សម័យ​ ខណៈពេល​ចាក់"
 
-#: prefs/ThemePrefs.cpp:132
-msgid "You have compiled Audacity with an extra button, \n"
-"'Output Sourcery'.  This will save a C version of \n"
-"the image cache that can be compiled in as a default.\n"
-msgstr "អ្នក​បាន​ចង​ក្រង​ Audacity ជាមួយប៊ូតុង​បន្ថែម​ \n"
-"'ប្រភព​លទ្ធផល' ។  នេះនឹងរក្សា​ទុក​កំណែ​ C របស់ \n"
-"ឃ្លាំងសម្ងាត់​​រូបភាព​​ដែល​​អាច​​ត្រូវ​បាន​ចងក្រង​ជា​លំនាំដើម ។\n"
+#: prefs/GUIPrefs.cpp:102
+msgid "Automatically &fit tracks vertically zoomed"
+msgstr ""
 
-#: prefs/ThemePrefs.cpp:137
-msgid "If 'Load Theme Cache At Startup' is checked, then \n"
-"the Theme Cache will be loaded when the program \n"
-"starts up.\n"
-"\n"
-msgstr "ប្រសិន​បើ​​បាន​​គូសធីក 'ផ្ទុក​ឃ្លាំងសម្ងាត់​ស្បែក​នៅពេល​ចាប់ផ្ដើម' បន្ទាប់​មក \n"
-"ឃ្លាំង​សម្ងាត់​ស្បែក​នឹង​ត្រូវ​បាន​ផ្ទុក​​ នៅ​ពេល​កម្មវិធី \n"
-"ចាប់ផ្ដើម ។\n"
-"\n"
+#: prefs/TracksPrefs.cpp:88
+msgid "Default View Mode:"
+msgstr ""
 
-#: prefs/ThemePrefs.cpp:140
-msgid "Saving and loading individual theme files uses a \n"
-"separate file for each image, but is otherwise the \n"
-"same idea.\n"
-"\n"
-msgstr "រក្សាទុក​ និង​ផ្ទុក​ឯកសារ​ស្បែក​នីមួយៗ​ ដោយ​ប្រើ \n"
-"ឯកសារ​ផ្សេង​សម្រាប់​រូបភាព​នីមួយៗ ប៉ុន្តែ​ម្យ៉ាងវិញ​ទៀត \n"
-"មាន​គំនិត​ដូចគ្នា ។\n"
-"\n"
+#: prefs/GUIPrefs.cpp:108
+msgid "&Select all audio in project, if none selected"
+msgstr ""
 
-#: toolbars/ControlToolBar.cpp:174
+#: prefs/GUIPrefs.cpp:96
+msgid "Enable cut &lines"
+msgstr "អនុញ្ញាត​ឲ្យ​កាត់​បន្ទាត់"
+
+#: prefs/GUIPrefs.cpp:98
+msgid "Enable &dragging of left and right selection edges"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:104
+msgid "\"Move track focus\" c&ycles repeatedly through tracks"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:86
+msgid "Editing a &clip can move other clips"
+msgstr "ការ​កែសម្រួល​ឈុត​អាចផ្លាស់ទី​ឈុត​ដទៃ​ទៀត"
+
+#: prefs/GUIPrefs.cpp:168
+msgid "Solo Button:"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:31
+msgid "Warnings"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:55
+msgid "Show Warnings/Prompts"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:57
+msgid "When saving &projects"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:60
+msgid "When saving &empty project"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:63
+msgid "When &disk space is getting low"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:66
+msgid "When mixing down to &stereo during export"
+msgstr ""
+
+#: prefs/WarningsPrefs.cpp:69
+msgid "When mixing down to &mono during export"
+msgstr ""
+
+#: Menus.cpp:774
 msgid "Pause"
-msgstr "ផ្អាក"
+msgstr "ផ្អាក P"
 
-#: toolbars/ControlToolBar.cpp:177
-msgid "Play"
-msgstr "ចាក់"
+#: Menus.cpp:773
+msgid "Stop"
+msgstr "បញ្ឈប់ S"
+
+#: toolbars/ControlToolBar.cpp:194
+msgid "Clean Speech"
+msgstr "Clean Speech"
 
 #: toolbars/ControlToolBar.cpp:178
 msgid "Play (Shift for Loop Play)"
 msgstr ""
 
-#: toolbars/ControlToolBar.cpp:182
-msgid "Stop"
-msgstr "បញ្ឈប់"
-
-#: toolbars/ControlToolBar.cpp:185
-msgid "Skip to Start"
-msgstr "រំលង​ទៅ​ដើម"
-
-#: toolbars/ControlToolBar.cpp:188
-msgid "Skip to End"
-msgstr "រំលង​ទៅ​ចុង"
-
 #: toolbars/ControlToolBar.cpp:192
 msgid "Record (Shift for Append Record)"
 msgstr ""
-
-#: toolbars/ControlToolBar.cpp:194
-msgid "Clean Speech"
-msgstr "Clean Speech"
 
 #: toolbars/ControlToolBar.cpp:530 toolbars/ControlToolBar.cpp:838
 msgid "Error while opening sound device. "
@@ -8126,29 +8451,21 @@ msgstr "ពង្រីក"
 msgid "Zoom Out"
 msgstr "បង្រួម"
 
-#: toolbars/EditToolBar.cpp:156
-msgid "Zoom Toggle"
-msgstr "បិទ/បើកការ​ពង្រីក"
-
-#: toolbars/EditToolBar.cpp:160
-msgid "Fit Selection"
-msgstr "ធ្វើ​ឲ្យ​សម​នឹង​ជម្រើស"
-
 #: toolbars/EditToolBar.cpp:160
 msgid "Fit selection in window"
 msgstr "ធ្វើ​ឲ្យ​ជម្រើស​សម​នឹង​បង្អួច"
 
 #: toolbars/EditToolBar.cpp:162
-msgid "Fit Project"
-msgstr "ធ្វើ​ឲ្យ​សម​នឹង​​​​គម្រោង"
-
-#: toolbars/EditToolBar.cpp:162
 msgid "Fit project in window"
 msgstr "ធ្វើ​ឲ្យ​គម្រោង​សម​​នៅ​ក្នុង​បង្អួច"
 
-#: toolbars/MeterToolBar.cpp:50
-msgid "Meter"
-msgstr "ម៉ែត្រ"
+#: toolbars/EditToolBar.cpp:160
+msgid "Fit Selection"
+msgstr "ធ្វើ​ឲ្យ​សម​នឹង​ជម្រើស"
+
+#: toolbars/EditToolBar.cpp:162
+msgid "Fit Project"
+msgstr "ធ្វើ​ឲ្យ​សម​នឹង​​​​គម្រោង"
 
 #: toolbars/MeterToolBar.cpp:80
 msgid "Play Meter"
@@ -8195,6 +8512,14 @@ msgstr "គ្រាប់​រំកិល​បញ្ចូល"
 #: toolbars/MixerToolBar.cpp:117
 msgid "Input Source"
 msgstr "ប្រភព​ចូល"
+
+#: toolbars/MixerToolBar.cpp:299
+msgid "Input source information is not available."
+msgstr ""
+
+#: toolbars/MixerToolBar.cpp:306
+msgid "Select Input Source"
+msgstr ""
 
 #: toolbars/SelectionBar.cpp:80
 msgid "Selection"
@@ -8274,30 +8599,6 @@ msgstr "ឆ្វេង=ពង្រីក ស្តាំ=បង្រួម �
 msgid "Click and drag to move a track in time"
 msgstr "ចុច និង​អូស​ដើម្បី​ផ្លាស់ទី​បទ​នៅ​ក្នុង​ពេលវេលា"
 
-#: toolbars/ToolsToolBar.cpp:90
-msgid "Tools"
-msgstr "ឧបករណ៍"
-
-#: toolbars/ToolsToolBar.cpp:147 toolbars/ToolsToolBar.cpp:182
-msgid "Selection Tool"
-msgstr "ឧបករណ៍​ជម្រើស"
-
-#: toolbars/ToolsToolBar.cpp:148
-msgid "Envelope Tool"
-msgstr "ឧបករណ៍​ស្រោមសំបុត្រ"
-
-#: toolbars/ToolsToolBar.cpp:149 toolbars/ToolsToolBar.cpp:183
-msgid "Time Shift Tool"
-msgstr "ឧបករណ៍​ប្តូរ​ពេលវេលា"
-
-#: toolbars/ToolsToolBar.cpp:150 toolbars/ToolsToolBar.cpp:185
-msgid "Zoom Tool"
-msgstr "ឧបករណ៍​ពង្រីក"
-
-#: toolbars/ToolsToolBar.cpp:151 toolbars/ToolsToolBar.cpp:184
-msgid "Draw Tool"
-msgstr "ឧបករណ៍​គូរ"
-
 #: toolbars/ToolsToolBar.cpp:152
 msgid "Multi-Tool Mode"
 msgstr "របៀប​ពហុ​ឧបករណ៍"
@@ -8306,21 +8607,9 @@ msgstr "របៀប​ពហុ​ឧបករណ៍"
 msgid "Slide Tool"
 msgstr "ឧបករណ៍​រំកិល"
 
-#: toolbars/ToolsToolBar.cpp:187
-msgid "Multi Tool"
-msgstr "ពហុ​ឧបករណ៍"
-
-#: toolbars/TranscriptionToolBar.cpp:82
-msgid "Transcription"
-msgstr "ការ​ចម្លង"
-
 #: toolbars/TranscriptionToolBar.cpp:163
 msgid "Play at selected speed"
 msgstr "ចាក់​នៅ​ល្បឿន​ដែល​បាន​ជ្រើស"
-
-#: toolbars/TranscriptionToolBar.cpp:164
-msgid "Play-at-speed"
-msgstr "ចាក់​នៅ​ល្បឿន"
 
 #: toolbars/TranscriptionToolBar.cpp:170 toolbars/TranscriptionToolBar.cpp:175
 msgid "Playback Speed"
@@ -8330,73 +8619,37 @@ msgstr "ល្បឿន​ចាក់​ឡើងវិញ"
 msgid "Adjust left selection to next onset"
 msgstr "​លៃតម្រូវ​ជម្រើស​ឆ្វេង​ទៅនឹង​អនសិត​​បន្ទាប់"
 
-#: toolbars/TranscriptionToolBar.cpp:181
-msgid "Left-to-On"
-msgstr "ឆ្វេង​ដើម្បី​បើក"
-
 #: toolbars/TranscriptionToolBar.cpp:183
 msgid "Adjust right selection to previous offset"
 msgstr "លៃតម្រូវ​ជម្រើស​ស្តាំ​ទៅនឹង​អុហ្វសិត​មុន"
-
-#: toolbars/TranscriptionToolBar.cpp:184
-msgid "Right-to-Off"
-msgstr "ស្តាំ​ដើម្បី​បិទ"
 
 #: toolbars/TranscriptionToolBar.cpp:186
 msgid "Adjust left selection to next offset"
 msgstr "លៃតម្រូវ​ជម្រើស​ឆ្វេង​ទៅនឹង​អុហ្វសិត​បន្ទាប់"
 
-#: toolbars/TranscriptionToolBar.cpp:187
-msgid "Left-to-Off"
-msgstr "ឆ្វេង​ដើម្បី​បិទ"
-
 #: toolbars/TranscriptionToolBar.cpp:189
 msgid "Adjust right selection to previous onset"
 msgstr "លៃតម្រូវ​ជម្រើស​ស្តាំ​ទៅនឹង​អនសិត​មុន"
-
-#: toolbars/TranscriptionToolBar.cpp:190
-msgid "Right-to-On"
-msgstr "ស្ដាំ​ដើម្បី​បើក"
 
 #: toolbars/TranscriptionToolBar.cpp:192
 msgid "Select region of sound around cursor"
 msgstr "ជ្រើស​តំបន់​សំឡេង​នៅ​ជុំវិញ​ទស្សន៍ទ្រនិច"
 
-#: toolbars/TranscriptionToolBar.cpp:193
-msgid "Select-Sound"
-msgstr "ជ្រើស​សំឡេង"
-
 #: toolbars/TranscriptionToolBar.cpp:195
 msgid "Select region of silence around cursor"
 msgstr "ជ្រើស​តំបន់​ស្ងាត់​នៅ​ជុំវិញ​ទស្សន៍​ទ្រនិច"
-
-#: toolbars/TranscriptionToolBar.cpp:196
-msgid "Select-Silence"
-msgstr "ជ្រើស​ស្ងាត់"
 
 #: toolbars/TranscriptionToolBar.cpp:198
 msgid "Automatically make labels from words"
 msgstr "បង្កើត​​ស្លាក​ដោយ​ស្វ័យ​ប្រវត្តិ​ពី​ពាក្យ"
 
-#: toolbars/TranscriptionToolBar.cpp:199
-msgid "Make Labels"
-msgstr "បង្កើត​ស្លាក"
-
 #: toolbars/TranscriptionToolBar.cpp:201
 msgid "Add label at selection"
 msgstr "បន្ថែម​ស្លាក​នៅ​ជម្រើស"
 
-#: toolbars/TranscriptionToolBar.cpp:202
-msgid "Add Label"
-msgstr "បន្ថែម​ស្លាក"
-
 #: toolbars/TranscriptionToolBar.cpp:204
 msgid "Calibrate voicekey"
 msgstr "ក្រិត​​កូនសោរ​សំឡេង​តាម​ខ្នាត​"
-
-#: toolbars/TranscriptionToolBar.cpp:205
-msgid "Calibrate"
-msgstr "ក្រិត​តាម​ខ្នាត"
 
 #: toolbars/TranscriptionToolBar.cpp:209
 msgid "Adjust Sensitivity"
@@ -8429,6 +8682,46 @@ msgstr "ទិសផ្លាស់ប្តូរ (កម្រិត​ពន�
 #: toolbars/TranscriptionToolBar.cpp:231
 msgid "Key type"
 msgstr "ប្រភេទ​គ្រាប់ចុច"
+
+#: toolbars/TranscriptionToolBar.cpp:164
+msgid "Play-at-speed"
+msgstr "ចាក់​នៅ​ល្បឿន"
+
+#: toolbars/TranscriptionToolBar.cpp:181
+msgid "Left-to-On"
+msgstr "ឆ្វេង​ដើម្បី​បើក"
+
+#: toolbars/TranscriptionToolBar.cpp:184
+msgid "Right-to-Off"
+msgstr "ស្តាំ​ដើម្បី​បិទ"
+
+#: toolbars/TranscriptionToolBar.cpp:187
+msgid "Left-to-Off"
+msgstr "ឆ្វេង​ដើម្បី​បិទ"
+
+#: toolbars/TranscriptionToolBar.cpp:190
+msgid "Right-to-On"
+msgstr "ស្ដាំ​ដើម្បី​បើក"
+
+#: toolbars/TranscriptionToolBar.cpp:193
+msgid "Select-Sound"
+msgstr "ជ្រើស​សំឡេង"
+
+#: toolbars/TranscriptionToolBar.cpp:196
+msgid "Select-Silence"
+msgstr "ជ្រើស​ស្ងាត់"
+
+#: toolbars/TranscriptionToolBar.cpp:199
+msgid "Make Labels"
+msgstr "បង្កើត​ស្លាក"
+
+#: toolbars/TranscriptionToolBar.cpp:202
+msgid "Add Label"
+msgstr "បន្ថែម​ស្លាក"
+
+#: toolbars/TranscriptionToolBar.cpp:205
+msgid "Calibrate"
+msgstr "ក្រិត​តាម​ខ្នាត"
 
 #: widgets/AButton.cpp:302
 msgid " (disabled)"
@@ -8738,4 +9031,16 @@ msgstr ""
 #, c-format
 msgid "Could not load file: \"%s\""
 msgstr "មិនអាច​ផ្ទុក​ឯកសារ ៖ \"%s\""
+
+#: xml/XMLWriter.cpp:325
+msgid "Error flushing file"
+msgstr ""
+
+#: xml/XMLWriter.cpp:330
+msgid "Error closing file"
+msgstr ""
+
+#: xml/XMLWriter.cpp:340
+msgid "Error writing to file"
+msgstr ""
 
