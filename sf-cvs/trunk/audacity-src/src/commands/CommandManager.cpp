@@ -585,7 +585,7 @@ void CommandManager::AddCommand(const wxChar *name,
    label += wxT("\t");
    label += accel;
 
-   NewIdentifier(name, label_in, NULL, callback, false, 0, 0);
+   NewIdentifier(name, label, NULL, callback, false, 0, 0);
 
    if (flags != NoFlagsSpecifed || mask != NoFlagsSpecifed) {
       SetCommandFlags(name, flags, mask);
