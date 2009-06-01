@@ -40,6 +40,8 @@
 
 #include "../Tags.h"
 
+#define FLAC_HEADER "fLaC"
+
 #define DESC _("FLAC files")
 
 static const wxChar *exts[] =
@@ -75,6 +77,12 @@ void GetFLACImportPlugin(ImportPluginList *importPluginList,
 #include "../Prefs.h"
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
+
+#ifdef USE_LIBID3TAG 
+extern "C" {
+#include <id3tag.h>
+}
+#endif
 
 /* FLACPP_API_VERSION_CURRENT is 6 for libFLAC++ from flac-1.1.3 (see <FLAC++/export.h>) */
 #if !defined FLACPP_API_VERSION_CURRENT || FLACPP_API_VERSION_CURRENT < 6
@@ -277,12 +285,29 @@ wxString FLACImportPlugin::GetPluginFormatDescription()
 ImportFileHandle *FLACImportPlugin::Open(wxString filename)
 {
    // First check if it really is a FLAC file
-   
-   wxFile binaryFile;
-   if (!binaryFile.Open(filename))
-      return false; // File not found
 
+   int cnt;
+   wxFile binaryFile;
+   if (!binaryFile.Open(filename)) {
+      return false; // File not found
+   }
+
+#ifdef USE_LIBID3TAG
+   // Skip any ID3 tags that might be present
+   id3_byte_t query[ID3_TAG_QUERYSIZE];
+   cnt = binaryFile.Read(query, sizeof(query));
+   cnt = id3_tag_query(query, cnt);
+   binaryFile.Seek(cnt);
+#endif   
+
+   char buf[5];
+   cnt = binaryFile.Read(buf, 4);
    binaryFile.Close();
+
+   if (cnt == wxInvalidOffset || strncmp(buf, FLAC_HEADER, 4) != 0) {
+      // File is not a FLAC file
+      return false; 
+   }
    
    // Open the file for import
    FLACImportFileHandle *handle = new FLACImportFileHandle(filename);
