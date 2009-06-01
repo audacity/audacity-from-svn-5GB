@@ -30,7 +30,7 @@ import os, os.path
 import errno
 import hashlib
 import httplib
-import pdb
+#import pdb
 from time import strftime
 
 try:
@@ -199,9 +199,6 @@ def monobook_fix_html(doc, page_url):
     # Remove print footer
     doc = re.sub(r'<div class="printfooter">[\s\S]+?</div>',r'',doc)
  
-    # Remove Audacity syntax
-    #doc = re.sub('<style type="text/css">/\*<!\[CDATA\[\*/[\s\S]+?</style>','',doc)
-
     # Remove noexport
     doc = remove_tag(doc,'<div class="noexport"','</div>', '<div')
 
@@ -729,7 +726,6 @@ def should_follow(url):
       print url, 'with multiple query fields'
     return False
 
-  #if any(x in url for x in ('MediaWiki:', 'Special:', 'Image:', 'Talk:', 'User:', 'Help:')):
   if any(x in url for x in ('Special:', 'Image:', 'Talk:', 'User:', 'Help:')):
     if config.debug:
       print url, 'is a forbidden wiki page'
