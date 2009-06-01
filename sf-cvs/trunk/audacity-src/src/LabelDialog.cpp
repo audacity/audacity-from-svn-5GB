@@ -97,7 +97,7 @@ LabelDialog::LabelDialog(wxWindow *parent,
                          double rate)
 : wxDialog(parent,
            wxID_ANY,
-           _NoAcc("&Edit Labels"),
+           _("Edit Labels"),
            wxDefaultPosition,
            wxSize(800, 600),
            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
@@ -702,7 +702,7 @@ void LabelDialog::OnChangeTrack(wxGridEvent &event, int row, RowData *rd)
       wxTextEntryDialog d(this,
                           _("New Label Track"),
                           _("Enter track name"),
-                          _NoAcc("&Label Track"));
+                          _("Label Track"));
 
       // User canceled so repopulating the grid will set the track
       // name to the orignal value

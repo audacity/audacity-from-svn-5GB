@@ -49,7 +49,7 @@ class LabelDialog:public wxDialog
    bool Validate();
    void FindAllLabels();
    void AddLabels(LabelTrack *t);
-   wxString TrackName(int & index, wxString dflt = _NoAcc("&Label Track"));
+   wxString TrackName(int & index, wxString dflt = _("Label Track"));
 
    void OnUpdate(wxCommandEvent &event);
    void OnInsert(wxCommandEvent &event);

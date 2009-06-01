@@ -41,7 +41,7 @@ TimeTrack::TimeTrack(DirManager *projDirManager):
    mEnvelope->SetInterpolateDB(false);
    mEnvelope->Flatten(0.5);
    mEnvelope->Mirror(false);
-   SetDefaultName(_NoAcc("&Time Track"));
+   SetDefaultName(_("Time Track"));
    SetName(GetDefaultName());
 
    mRuler = new Ruler();
