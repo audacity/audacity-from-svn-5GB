@@ -3158,7 +3158,7 @@ bool AudacityProject::SaveAs(bool bWantSaveCompressed /*= false*/)
          ShowWarningDialog(this, wxT("FirstProjectSave"),
                            _("You are saving an Audacity project file (.aup).\n\nSaving a project creates a file that only Audacity can open.\n\nTo save an audio file for other programs, use one of the \"File > Export\" commands.\n"));
 
-      fName = FileSelector(_("Save Project As...") + wxT(":"),
+      fName = FileSelector(_("Save Project As..."),
                     path, fName, wxT(""),
                     _("Audacity projects (*.aup)|*.aup"),
                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER, this);
