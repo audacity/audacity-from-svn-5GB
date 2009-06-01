@@ -329,7 +329,7 @@ void AudacityProject::CreateMenusAndCommands()
               AudioIONotBusyFlag | UndoAvailableFlag);
 
    // The default shortcut key for Redo is different on different platforms.
-   wxChar *key =
+   wxString key =
 #ifdef __WXMSW__
       wxT("Ctrl+Y");
 #else
@@ -726,7 +726,7 @@ void AudacityProject::CreateMenusAndCommands()
       effects = em.GetEffects(INSERT_EFFECT | BUILTIN_EFFECT);
       if (effects->GetCount()) {
          names.Clear();
-         for (int i = 0; i < effects->GetCount(); i++) {
+         for (size_t i = 0; i < effects->GetCount(); i++) {
             names.Add((*effects)[i]->GetEffectName());
          }
          c->AddItemList(wxT("Generate"), names, FN(OnGenerateEffect));
@@ -737,7 +737,7 @@ void AudacityProject::CreateMenusAndCommands()
       if (effects->GetCount()) {
          c->AddSeparator();
          names.Clear();
-         for (int i = 0; i < effects->GetCount(); i++) {
+         for (size_t i = 0; i < effects->GetCount(); i++) {
             names.Add((*effects)[i]->GetEffectName());
          }
          c->AddItemList(wxT("GeneratePlugin"), names, FN(OnGeneratePlugin), true);
@@ -806,7 +806,7 @@ void AudacityProject::CreateMenusAndCommands()
    effects = em.GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT | additionalEffects);
    if (effects->GetCount()) {
       names.Clear();
-      for (int i = 0; i < effects->GetCount(); i++) {
+      for (size_t i = 0; i < effects->GetCount(); i++) {
          names.Add((*effects)[i]->GetEffectName());
       }
       c->AddItemList(wxT("Effect"), names, FN(OnProcessEffect));
@@ -818,7 +818,7 @@ void AudacityProject::CreateMenusAndCommands()
       if (effects->GetCount()) {
          c->AddSeparator();
          names.Clear();
-         for (int i = 0; i < effects->GetCount(); i++) {
+         for (size_t i = 0; i < effects->GetCount(); i++) {
             names.Add((*effects)[i]->GetEffectName());
          }
          c->AddItemList(wxT("EffectPlugin"), names, FN(OnProcessPlugin), true);
@@ -883,7 +883,7 @@ void AudacityProject::CreateMenusAndCommands()
       effects = em.GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
       if (effects->GetCount()) {
          names.Clear();
-         for (int i = 0; i < effects->GetCount(); i++) {
+         for (size_t i = 0; i < effects->GetCount(); i++) {
             names.Add((*effects)[i]->GetEffectName());
          }
          c->AddItemList(wxT("Analyze"), names, FN(OnAnalyzeEffect));
@@ -894,7 +894,7 @@ void AudacityProject::CreateMenusAndCommands()
       if (effects->GetCount()) {
          c->AddSeparator();
          names.Clear();
-         for (int i = 0; i < effects->GetCount(); i++) {
+         for (size_t i = 0; i < effects->GetCount(); i++) {
             names.Add((*effects)[i]->GetEffectName());
          }
          c->AddItemList(wxT("AnalyzePlugin"), names, FN(OnAnalyzePlugin), true);
@@ -1339,8 +1339,18 @@ wxUint32 AudacityProject::GetUpdateFlags()
             flags |= CutCopyAvailableFlag;
          }
 
-         if (lt->IsTextClipSupported()) {
-            flags |= TextClipFlag;
+         // See AudacityProject::OnUpdateUI() for an explanation
+         if (mInIdle) {
+            if (lt->IsTextClipSupported()) {
+               flags |= TextClipFlag;
+               mTextClipFlag = TextClipFlag;
+            }
+            else {
+               mTextClipFlag = 0;
+            }
+         }
+         else {
+            flags |= mTextClipFlag;
          }
       }
       else if (t->GetKind() == Track::Wave) {

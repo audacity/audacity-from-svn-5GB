@@ -202,7 +202,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
    void OnMenuEvent(wxMenuEvent & event);
    void OnMenu(wxCommandEvent & event);
-   void OnUpdateMenus(wxUpdateUIEvent & event);
+   void OnUpdateUI(wxUpdateUIEvent & event);
 
    void OnActivate(wxActivateEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
@@ -393,6 +393,10 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    CommandManager mCommandManager;
 
    wxUint32 mLastFlags;
+
+   // see AudacityProject::OnUpdateUI() for explanation of next two
+   bool mInIdle;
+   wxUint32 mTextClipFlag;
 
    // Window elements
 
