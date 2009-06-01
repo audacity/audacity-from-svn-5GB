@@ -117,7 +117,7 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
                             rate, format);
 
    wxYield();
-   ProgressDialog *progress = new ProgressDialog(_NoAcc("&Mix and Render"),
+   ProgressDialog *progress = new ProgressDialog(_("Mix and Render"),
                                                  _("Mixing and rendering tracks"));
    
    int updateResult = eProgressSuccess;

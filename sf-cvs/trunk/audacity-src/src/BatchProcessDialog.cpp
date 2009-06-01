@@ -451,8 +451,8 @@ void EditChainsDialog::PopulateOrExchange(ShuttleGui & S)
          mList->InsertColumn(BlankColumn, wxT(""), wxLIST_FORMAT_LEFT);
          /* i18n-hint: This is the number of the command in the list */
          mList->InsertColumn(ItemNumberColumn, _("Num"), wxLIST_FORMAT_RIGHT);
-         mList->InsertColumn(ActionColumn, _NoAcc("&Command"), wxLIST_FORMAT_RIGHT);
-         mList->InsertColumn(ParamsColumn, _NoAcc("&Parameters"), wxLIST_FORMAT_LEFT);
+         mList->InsertColumn(ActionColumn, _("Command"), wxLIST_FORMAT_RIGHT);
+         mList->InsertColumn(ParamsColumn, _("Parameters"), wxLIST_FORMAT_LEFT);
 
          S.StartHorizontalLay(wxCENTER, false);
          {

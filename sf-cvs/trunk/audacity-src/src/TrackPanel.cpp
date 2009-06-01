@@ -4268,7 +4268,7 @@ bool TrackPanel::HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxM
          WaveTrack* linked = (WaveTrack*)mTracks->GetLink(track);
          if (linked)
             linked->RemoveCutLine(mCapturedTrackLocation.pos);
-         MakeParentPushState(_("Removed Cut Line"), _NoAcc("&Remove"), false );
+         MakeParentPushState(_("Removed Cut Line"), _("Remove"), false );
          handled = true;
       }
       

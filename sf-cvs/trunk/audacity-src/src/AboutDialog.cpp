@@ -140,7 +140,7 @@ END_EVENT_TABLE()
 IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
 AboutDialog::AboutDialog(wxWindow * parent)
-   :  wxDialog(parent, -1, _NoAcc("&About Audacity..."),
+   :  wxDialog(parent, -1, _("About Audacity..."),
                wxDefaultPosition, wxDefaultSize)
 {
    this->SetBackgroundColour(theTheme.Colour( clrAboutBoxBackground ));

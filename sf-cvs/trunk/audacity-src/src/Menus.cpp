@@ -4403,7 +4403,7 @@ void AudacityProject::HandleMixAndRender(bool toNewTrack)
          else
             msg.Printf(_("Mixed and rendered %d tracks into one new mono track"),
                        selectedCount);
-         PushState(msg, _NoAcc("&Mix and Render"));
+         PushState(msg, _("Mix and Render"));
       }
 
       mTrackPanel->SetFocusedTrack(newLeft);

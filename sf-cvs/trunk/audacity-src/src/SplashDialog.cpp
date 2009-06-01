@@ -57,7 +57,7 @@ END_EVENT_TABLE()
 IMPLEMENT_CLASS(SplashDialog, wxDialog)
 
 SplashDialog::SplashDialog(wxWindow * parent)
-   :  wxDialog(parent, -1, _NoAcc("&Welcome to Audacity!"),
+   :  wxDialog(parent, -1, _("Welcome to Audacity!"),
       wxPoint( -1, 60 ), // default x position, y position 60 pixels from top of screen.
       wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {

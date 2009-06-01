@@ -89,7 +89,7 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
    mMouseOverLabelRight(-1),
    mIsAdjustingLabel(false)
 {
-   SetDefaultName(_NoAcc("&Label Track"));
+   SetDefaultName(_("Label Track"));
    SetName(GetDefaultName());
 
    // Label tracks are narrow
