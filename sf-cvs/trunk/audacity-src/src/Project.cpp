@@ -623,8 +623,8 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
     EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
     EVT_TIMER(AudacityProjectTimerID, AudacityProject::OnTimer)
-    // Update menu method
-    EVT_UPDATE_UI(1, AudacityProject::OnUpdateMenus)
+    // Fires for menu with ID #1...first menu defined
+    EVT_UPDATE_UI(1, AudacityProject::OnUpdateUI)
     EVT_ICONIZE(AudacityProject::OnIconize)
     EVT_COMMAND(wxID_ANY, EVT_OPEN_AUDIO_FILE, AudacityProject::OnOpenAudioFile)
     EVT_COMMAND(wxID_ANY, EVT_TOOLBAR_UPDATED, AudacityProject::OnToolBarUpdate)
@@ -645,6 +645,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
            Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample)),
      mSnapTo(0), 
      mDirty(false),
+     mInIdle(false),
+     mTextClipFlag(0),
      mTrackPanel(NULL),
      mTrackFactory(NULL),
      mAutoScrolling(false),
@@ -1606,10 +1608,21 @@ void AudacityProject::OnMenu(wxCommandEvent & event)
       event.Skip(true);
 }
 
-//TODO: This function is still kinda hackish, clean up
-void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
+void AudacityProject::OnUpdateUI(wxUpdateUIEvent & event)
 {
+   // As of wxGTK 2.8.9, there is a problem in the wxClipboard class that
+   // allows recursive event processing.  This problem has been corrected
+   // by wxWidgets changeset #45180.  However, this han't made it into a
+   // release yet, so we have to work around it.
+   //
+   // This is done by only checking the wxClipboard contents during an idle
+   // event, thus preventing possible recursion during other event processing.
+   //
+   mInIdle = true;
+
    UpdateMenus();
+
+   mInIdle = false;
 }
 
 void AudacityProject::OnActivate(wxActivateEvent & event)
