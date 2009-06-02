@@ -262,7 +262,7 @@ bool ODTask::IsComplete()
 
 WaveTrack* ODTask::GetWaveTrack(int i)
 {
-   WaveTrack* track;
+   WaveTrack* track = NULL;
    mWaveTrackMutex.Lock();
    if(i<(int)mWaveTracks.size())
       track = mWaveTracks[i];

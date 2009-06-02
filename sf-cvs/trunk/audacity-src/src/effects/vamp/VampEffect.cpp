@@ -162,7 +162,7 @@ bool VampEffect::Process()
 
    while (left) {
 
-      sampleCount lstart, rstart;
+      sampleCount lstart, rstart = 0;
       sampleCount len;
       GetSamples(left, &lstart, &len);
       

@@ -842,7 +842,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, const wxRect &r, const double env[],
       if (bl[x] <= -1) {
          if (drawStripes) {
             // TODO:unify with buffer drawing.
-            dc.SetPen(bl[x] % 2 ? muteSamplePen : samplePen);
+            dc.SetPen((bl[x] % 2) ? muteSamplePen : samplePen);
             for (int y = 0; y < r.height / 25 + 1; y++) {
                // we are drawing over the buffer, but I think DrawLine takes care of this.
                AColor::Line(dc,

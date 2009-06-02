@@ -5140,28 +5140,28 @@ void TrackPanel::OnPrevTrack( bool shift )
       }
       tSelected = t->GetSelected();
       pSelected = p->GetSelected();
-      if( tSelected & pSelected )
+      if( tSelected && pSelected )
       {
          mTracks->Select( t, false );
          SetFocusedTrack( p );   // move focus to next track down
          EnsureVisible( p );
          return;
       }
-      if( tSelected & !pSelected )
+      if( tSelected && !pSelected )
       {
          mTracks->Select( p, true );
          SetFocusedTrack( p );   // move focus to next track down
          EnsureVisible( p );
          return;
       }
-      if( !tSelected & pSelected )
+      if( !tSelected && pSelected )
       {
          mTracks->Select( p, false );
          SetFocusedTrack( p );   // move focus to next track down
          EnsureVisible( p );
          return;
       }
-      if( !tSelected & !pSelected )
+      if( !tSelected && !pSelected )
       {
          mTracks->Select( t, true );
          SetFocusedTrack( p );   // move focus to next track down
@@ -5239,28 +5239,28 @@ void TrackPanel::OnNextTrack( bool shift )
       }
       tSelected = t->GetSelected();
       nSelected = n->GetSelected();
-      if( tSelected & nSelected )
+      if( tSelected && nSelected )
       {
          mTracks->Select( t, false );
          SetFocusedTrack( n );   // move focus to next track down
          EnsureVisible( n );
          return;
       }
-      if( tSelected & !nSelected )
+      if( tSelected && !nSelected )
       {
          mTracks->Select( n, true );
          SetFocusedTrack( n );   // move focus to next track down
          EnsureVisible( n );
          return;
       }
-      if( !tSelected & nSelected )
+      if( !tSelected && nSelected )
       {
          mTracks->Select( n, false );
          SetFocusedTrack( n );   // move focus to next track down
          EnsureVisible( n );
          return;
       }
-      if( !tSelected & !nSelected )
+      if( !tSelected && !nSelected )
       {
          mTracks->Select( t, true );
          SetFocusedTrack( n );   // move focus to next track down
