@@ -385,8 +385,6 @@ bool ExportFLAC::GetMetadata(AudacityProject *project, Tags *tags)
 
    mMetadata = ::FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
-   FLAC::Metadata::VorbisComment::Entry entry;
-
    wxString n, v;
    for (bool cont = tags->GetFirst(n, v); cont; cont = tags->GetNext(n, v)) {
       if (n == TAG_YEAR) {

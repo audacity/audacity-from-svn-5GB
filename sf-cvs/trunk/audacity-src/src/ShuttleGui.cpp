@@ -1667,7 +1667,7 @@ wxChoice * ShuttleGuiBase::TieChoice(
 {
    wxChoice * pChoice=(wxChoice*)NULL;
  
-   int TempIndex;
+   int TempIndex=0;
    int TranslatedInt = Default;
    WrappedType WrappedRef( TranslatedInt );
    // Get from prefs does 1 and 2.

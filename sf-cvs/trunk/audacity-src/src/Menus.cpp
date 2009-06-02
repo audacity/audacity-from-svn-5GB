@@ -2648,7 +2648,7 @@ void AudacityProject::OnExportMIDI(){
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
    int numNoteTracksSelected = 0;
-   NoteTrack *nt;
+   NoteTrack *nt = NULL;
 
    // Iterate through once to make sure that there is 
    // exactly one NoteTrack selected.

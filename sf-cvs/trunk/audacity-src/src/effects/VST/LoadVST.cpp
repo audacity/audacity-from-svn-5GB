@@ -240,13 +240,13 @@ void LoadVSTPlugins()
 #elif defined(__WXMSW__)
    TCHAR dpath[MAX_PATH];
    TCHAR tpath[MAX_PATH];
-   DWORD len = sizeof(tpath);
+   DWORD len = WXSIZEOF(tpath);
 
    // Setup the default VST path.
    dpath[0] = '\0';
    ExpandEnvironmentStrings(_T("%ProgramFiles%\\Steinberg\\VSTPlugins"),
                             dpath,
-                            sizeof(dpath));
+                            WXSIZEOF(dpath));
 
    // Check registry for the real path
    if (SHRegGetUSValue(_T("Software\\VST"),
@@ -258,7 +258,7 @@ void LoadVSTPlugins()
                           dpath,
                           (DWORD) _tcslen(dpath)) == ERROR_SUCCESS) {
       tpath[len] = 0;
-      ExpandEnvironmentStrings(tpath, dpath, sizeof(dpath));
+      ExpandEnvironmentStrings(tpath, dpath, WXSIZEOF(dpath));
       wxGetApp().AddUniquePathToPathList(LAT1CTOWX(dpath), pathList);
    }
 
