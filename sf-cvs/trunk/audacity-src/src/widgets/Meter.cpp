@@ -232,14 +232,7 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
     mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
 
-   mDBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
-   mMeterRefreshRate = gPrefs->Read(wxT("/Meter/MeterRefreshRate"), 30);
-   if (mIsInput) {
-      mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterInputDisabled"), (long)0);
-   }
-   else {
-      mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterOutputDisabled"), (long)0);
-   }
+   UpdatePrefs();
 
    mPeakPeakPen = wxPen(theTheme.Colour( clrMeterPeak),        1, wxSOLID);
    mDisabledPen = wxPen(theTheme.Colour( clrMeterDisabledPen), 1, wxSOLID);
@@ -324,7 +317,7 @@ Meter::~Meter()
 
 void Meter::UpdatePrefs()
 {
-   mDBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), 60);
+   mDBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    mMeterRefreshRate = gPrefs->Read(wxT("/Meter/MeterRefreshRate"), 30);
    if (mIsInput) {
       mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterInputDisabled"), (long)0);
@@ -463,7 +456,7 @@ void Meter::Reset(double sampleRate, bool resetClipping)
    while(mQueue.Get(msg)) {
    }
 
-   mTimer.Start(25); // every 25 ms -> ~40 updates per second
+   mTimer.Start(1000 / mMeterRefreshRate);
 
    mLayoutValid = false;
    Refresh(false);
