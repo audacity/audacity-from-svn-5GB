@@ -80,7 +80,6 @@ void DevicePrefs::Populate()
 
    wxCommandEvent e;
    OnHost(e);
-   OnDevice(e);
 }
 
 void DevicePrefs::GetNamesAndLabels()
@@ -162,6 +161,12 @@ void DevicePrefs::OnHost(wxCommandEvent & e)
    int index = mHost->GetCurrentSelection();
    int nDevices = Pa_GetDeviceCount();
 
+   if (nDevices == 0) {
+      mHost->Clear();
+      mHost->Append(_("No audio interfaces"), (void *) NULL);
+      mHost->SetSelection(0);
+   }
+
    mPlay->Clear();
    mRecord->Clear();
 
@@ -193,6 +198,16 @@ void DevicePrefs::OnHost(wxCommandEvent & e)
       }
    }
 
+   if (mPlay->GetCount() == 0) {
+      playnames.Add(_("No devices found"));
+      mPlay->Append(playnames[0], (void *) NULL);
+   }
+
+   if (mRecord->GetCount() == 0) {
+      recordnames.Add(_("No devices found"));
+      mRecord->Append(recordnames[0], (void *) NULL);
+   }
+
    if (mPlay->GetCount() && mPlay->GetSelection() == wxNOT_FOUND) {
       mPlay->SetSelection(0);
    }
@@ -204,14 +219,23 @@ void DevicePrefs::OnHost(wxCommandEvent & e)
    ShuttleGui S(this, eIsCreating);
    S.SetSizeHints(mPlay, playnames);
    S.SetSizeHints(mRecord, recordnames);
+   OnDevice(e);
 }
 
 void DevicePrefs::OnDevice(wxCommandEvent & e)
 {
-   const PaDeviceInfo *info =
-      (const PaDeviceInfo *) mRecord->GetClientData(mRecord->GetSelection());
-   int cnt = info->maxInputChannels;
+   int ndx = mRecord->GetCurrentSelection();
+   if (ndx == wxNOT_FOUND) {
+      ndx = 0;
+   }
+
    int sel = mChannels->GetSelection();
+   int cnt = 0;
+
+   const PaDeviceInfo *info = (const PaDeviceInfo *) mRecord->GetClientData(ndx);
+   if (info != NULL) {
+      cnt = info->maxInputChannels;
+   }
 
    if (sel != wxNOT_FOUND) {
       mRecordChannels = sel + 1;
@@ -224,7 +248,7 @@ void DevicePrefs::OnDevice(wxCommandEvent & e)
       cnt = 16;
    }
 
-   // Place and artifical limit on the number of channels to prevent an
+   // Place an artifical limit on the number of channels to prevent an
    // outrageous number.  I don't know if this is really necessary, but
    // it doesn't hurt. 
    if (cnt > 256) {
@@ -254,12 +278,13 @@ void DevicePrefs::OnDevice(wxCommandEvent & e)
       }
    }
 
-   if (mChannels->GetCount() && mChannels->GetSelection() == wxNOT_FOUND) {
+   if (mChannels->GetCount() && mChannels->GetCurrentSelection() == wxNOT_FOUND) {
       mChannels->SetSelection(0);
    }
 
    ShuttleGui S(this, eIsCreating);
    S.SetSizeHints(mChannels, channelnames);
+   Layout();
 }
 
 bool DevicePrefs::Apply()
@@ -270,15 +295,19 @@ bool DevicePrefs::Apply()
    const PaDeviceInfo *info;
 
    info = (const PaDeviceInfo *) mPlay->GetClientData(mPlay->GetSelection());
-   gPrefs->Write(wxT("/AudioIO/PlaybackDevice"),
-                 DeviceName(info));
+   if (info) {
+      gPrefs->Write(wxT("/AudioIO/PlaybackDevice"),
+                    DeviceName(info));
+   }
 
    info = (const PaDeviceInfo *) mRecord->GetClientData(mRecord->GetSelection());
-   gPrefs->Write(wxT("/AudioIO/RecordingDevice"),
-                 DeviceName(info));
+   if (info) {
+      gPrefs->Write(wxT("/AudioIO/RecordingDevice"),
+                    DeviceName(info));
 
-   gPrefs->Write(wxT("/AudioIO/RecordChannels"),
-                 mChannels->GetSelection() + 1);
+      gPrefs->Write(wxT("/AudioIO/RecordChannels"),
+                    mChannels->GetSelection() + 1);
+   }
 
    return true;
 }
