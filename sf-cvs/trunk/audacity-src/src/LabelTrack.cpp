@@ -479,13 +479,11 @@ void LabelStruct::DrawLines(wxDC & dc, const wxRect & r)
 {
    // How far out from the centre line should the vertical lines
    // start, i.e. what is the y position of the icon?
-   // We addjust this slightly so that the line encroaches on 
-   // the icon slightly (there is white space in the design).
+   // We adjust this so that the line encroaches on the icon
+   // slightly (there is white space in the design).
    const int yIconStart = y - (LabelTrack::mIconHeight /2)+1+(LabelTrack::mTextHeight+3)/2;
    const int yIconEnd   = yIconStart + LabelTrack::mIconHeight-2;
 
-   if (y<0) 
-      return;
    // If y is positive then it is the center line for the 
    // Label.
    if((x  >= r.x) && (x  <= (r.x+r.width)))
@@ -507,8 +505,6 @@ void LabelStruct::DrawLines(wxDC & dc, const wxRect & r)
 ///   @param  r  the LabelTrack rectangle.
 void LabelStruct::DrawGlyphs(wxDC & dc, const wxRect & r, int GlyphLeft, int GlyphRight)
 {
-   if (y<0) 
-      return;
    const int xHalfWidth=LabelTrack::mIconWidth/2;
    const int yStart=y-LabelTrack::mIconHeight/2+(LabelTrack::mTextHeight+3)/2;
 
@@ -528,8 +524,6 @@ void LabelStruct::DrawGlyphs(wxDC & dc, const wxRect & r, int GlyphLeft, int Gly
 ///   @param  r  the LabelTrack rectangle.
 void LabelStruct::DrawText(wxDC & dc, const wxRect & r)
 {
-   if (y<0) 
-      return;
    //If y is positive then it is the center line for the 
    //text we are about to draw.
 
@@ -550,8 +544,6 @@ void LabelStruct::DrawText(wxDC & dc, const wxRect & r)
 
 void LabelStruct::DrawTextBox(wxDC & dc, const wxRect & r) 
 {
-   if (y<0) 
-      return;
    //If y is positive then it is the center line for the 
    //text we are about to draw.
    const int yBarHeight=3;
