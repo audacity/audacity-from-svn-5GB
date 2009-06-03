@@ -1043,7 +1043,7 @@ void LWSlider::Set(float value)
    Refresh();
 }
 
-void LWSlider::Increase(int steps)
+void LWSlider::Increase(float steps)
 {
    float stepValue = mStepValue;
 
@@ -1066,7 +1066,7 @@ void LWSlider::Increase(int steps)
    Refresh();
 }
 
-void LWSlider::Decrease(int steps)
+void LWSlider::Decrease(float steps)
 {
    float stepValue = mStepValue;
 
@@ -1236,12 +1236,12 @@ void ASlider::Set(float value)
    mLWSlider->Set(value);
 }
 
-void ASlider::Increase(int steps)
+void ASlider::Increase(float steps)
 {
    mLWSlider->Increase(steps);
 }
 
-void ASlider::Decrease(int steps)
+void ASlider::Decrease(float steps)
 {
    mLWSlider->Decrease(steps);
 }
