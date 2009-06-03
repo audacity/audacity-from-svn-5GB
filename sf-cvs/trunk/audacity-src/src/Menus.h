@@ -112,6 +112,13 @@ void OnOutputGainDec();
 void OnInputGainInc();
 void OnInputGainDec();
 
+        // Transcription control
+
+void OnPlayAtSpeed();
+void OnSetPlaySpeed();
+void OnPlaySpeedInc();
+void OnPlaySpeedDec();
+
         // Selection-Editing Commands
 
 void OnCursorUp();

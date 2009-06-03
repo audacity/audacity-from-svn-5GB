@@ -90,6 +90,7 @@ simplifies construction of menu items.
 #include "toolbars/ToolsToolBar.h"
 #include "toolbars/EditToolBar.h"
 #include "toolbars/MixerToolBar.h"
+#include "toolbars/TranscriptionToolBar.h"
 
 #include "Experimental.h"
 #include "PlatformCompatibility.h"
@@ -1074,6 +1075,11 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("InputSource"), _("Adjust input source"), FN(OnInputSource),
                  AudioIONotBusyFlag,
                  AudioIONotBusyFlag);
+
+   c->AddCommand(wxT("PlayAtSpeed"), _("Play at speed"), FN(OnPlayAtSpeed));
+   c->AddCommand(wxT("SetPlaySpeed"), _("Adjust playback speed"), FN(OnSetPlaySpeed));
+   c->AddCommand(wxT("PlaySpeedInc"), _("Increase playback speed"), FN(OnPlaySpeedInc));
+   c->AddCommand(wxT("PlaySpeedDec"), _("Decrease playback speed"), FN(OnPlaySpeedDec));
 
    mLastFlags = 0;
 
@@ -2264,6 +2270,38 @@ void AudacityProject::OnInputGainDec()
    MixerToolBar *tb = GetMixerToolBar();
    if (tb) {
       tb->AdjustInputGain(-1);
+   }
+}
+
+void AudacityProject::OnPlayAtSpeed()
+{
+   TranscriptionToolBar *tb = GetTranscriptionToolBar();
+   if (tb) {
+      tb->PlayAtSpeed();
+   }
+}
+
+void AudacityProject::OnSetPlaySpeed()
+{
+   TranscriptionToolBar *tb = GetTranscriptionToolBar();
+   if (tb) {
+      tb->ShowPlaySpeedDialog();
+   }
+}
+
+void AudacityProject::OnPlaySpeedInc()
+{
+   TranscriptionToolBar *tb = GetTranscriptionToolBar();
+   if (tb) {
+      tb->AdjustPlaySpeed(0.1);
+   }
+}
+
+void AudacityProject::OnPlaySpeedDec()
+{
+   TranscriptionToolBar *tb = GetTranscriptionToolBar();
+   if (tb) {
+      tb->AdjustPlaySpeed(-0.1);
    }
 }
 

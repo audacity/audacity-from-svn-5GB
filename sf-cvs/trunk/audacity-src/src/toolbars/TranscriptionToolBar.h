@@ -92,6 +92,10 @@ class TranscriptionToolBar:public ToolBar {
    virtual double GetSensitivity();
    virtual void SetKeyType(wxCommandEvent & event);
 
+   void PlayAtSpeed();
+   void ShowPlaySpeedDialog();
+   void AdjustPlaySpeed(float adj);
+
  private:
 
    void InitializeTranscriptionToolBar();

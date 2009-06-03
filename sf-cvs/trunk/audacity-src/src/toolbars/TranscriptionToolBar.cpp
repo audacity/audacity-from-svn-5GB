@@ -867,6 +867,34 @@ void TranscriptionToolBar::SetKeyType(wxCommandEvent & event)
 
 }
 
+void TranscriptionToolBar::PlayAtSpeed()
+{
+   wxCommandEvent e;
+   OnPlaySpeed(e);
+}
+
+void TranscriptionToolBar::ShowPlaySpeedDialog()
+{
+   mPlaySpeedSlider->ShowDialog();
+   mPlaySpeedSlider->Refresh();
+   wxCommandEvent e;
+   OnSpeedSlider(e);
+}
+
+void TranscriptionToolBar::AdjustPlaySpeed(float adj)
+{
+   if (adj < 0) {
+      mPlaySpeedSlider->Decrease(-adj);
+   }
+   else {
+      mPlaySpeedSlider->Increase(adj);
+   }
+   wxCommandEvent e;
+   OnSpeedSlider(e);
+}
+
+
+
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

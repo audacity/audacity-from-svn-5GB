@@ -105,11 +105,11 @@ class LWSlider
    void SetDefaultValue(float value);
    void SetDefaultShortcut(bool value);
 
-   float Get( bool convert = true );
+   float Get(bool convert = true);
    void Set(float value);
 
-   void Increase(int steps);
-   void Decrease(int steps);
+   void Increase(float steps);
+   void Decrease(float steps);
 
    // If set to less than 1.0, moving the mouse one pixel will move
    // the slider by less than 1 unit
@@ -216,8 +216,8 @@ class ASlider :public wxPanel
    float Get( bool convert = true );
    void Set(float value);
 
-   void Increase(int steps);
-   void Decrease(int steps);
+   void Increase(float steps);
+   void Decrease(float steps);
    bool ShowDialog(wxPoint pos = wxPoint(-1, -1));
 
    void SetSpeed(float speed);
