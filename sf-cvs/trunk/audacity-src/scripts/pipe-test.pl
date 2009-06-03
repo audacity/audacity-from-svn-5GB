@@ -13,7 +13,11 @@ sub startUp{
       $UID = $<;
       $ToSrvName = '/tmp/audacity_script_pipe.to.'.$UID;
       $FromSrvName = '/tmp/audacity_script_pipe.from.'.$UID;
-   } # Mac ??
+   } elsif ($^O eq 'darwin') {
+      $UID = $<;
+      $ToSrvName = '/tmp/audacity_script_pipe.to.'.$UID;
+      $FromSrvName = '/tmp/audacity_script_pipe.from.'.$UID;      
+   }
 
    open( TO_SRV, "+<$ToSrvName" )
       or die "Could not open $ToSrvName";
