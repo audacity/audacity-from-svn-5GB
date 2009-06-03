@@ -3332,7 +3332,9 @@ void AudacityProject::ClearClipboard()
 {
    msClipLen = 0.0;
    msClipProject = NULL;
-   msClipboard->Clear(true);
+   if (msClipboard) {
+      msClipboard->Clear(true);
+   }
 }
 
 void AudacityProject::Clear()
