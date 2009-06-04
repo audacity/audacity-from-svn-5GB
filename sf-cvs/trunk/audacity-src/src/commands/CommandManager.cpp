@@ -105,6 +105,7 @@ CommandManager.  It holds the callback for one command.
 #define MAX_SUBMENU_LEN 1000
 #endif
 
+#define COMMAND _("Command")
 ///
 ///  Standard Constructor
 ///
@@ -112,6 +113,7 @@ CommandManager::CommandManager():
    mCurrentID(0),
    mHiddenID(0),
    mCurrentMenu(NULL),
+   mCurrentMenuName(COMMAND),
    mOpenMenu(NULL),
    mDefaultFlags(0),
    mDefaultMask(0)
@@ -161,6 +163,7 @@ void CommandManager::PurgeData()
    mCommandIDHash.clear();
 
    mCurrentMenu = NULL;
+   mCurrentMenuName = COMMAND;
    mCurrentID = 0;
 }
 
@@ -234,6 +237,7 @@ void CommandManager::BeginMenu(wxString tNameIn)
    wxMenu *tmpMenu = new wxMenu();
 
    mCurrentMenu = tmpMenu;
+   mCurrentMenuName = tName;
 
    CurrentMenuBar()->Append(mCurrentMenu, tName);
 }
@@ -248,8 +252,8 @@ void CommandManager::EndMenu()
       mHidingLevel--;
 
    mCurrentMenu = NULL;
+   mCurrentMenuName = COMMAND;
 }
-
 
 
 ///
@@ -654,6 +658,7 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    tmpEntry->name = name;
    tmpEntry->label = label;
    tmpEntry->labelPrefix = labelPrefix;
+   tmpEntry->labelTop = wxMenuItem::GetLabelFromText(mCurrentMenuName);
    tmpEntry->menu = menu;
    tmpEntry->callback = callback;
    tmpEntry->multi = multi;
@@ -1033,6 +1038,39 @@ bool CommandManager::HandleTextualCommand(wxString & Str, wxUint32 flags, wxUint
    return false;
 }
 
+void CommandManager::GetCategories(wxArrayString &cats)
+{
+   cats.Clear();
+
+   size_t cnt = mCommandList.GetCount();
+
+   for (size_t i = 0; i < cnt; i++) {
+      wxString cat = mCommandList[i]->labelTop;
+      if (cats.Index(cat) == wxNOT_FOUND) {
+         cats.Add(cat);
+      }
+   }
+#if 0
+   mCommandList.GetCount(); i++) {
+      if (includeMultis || !mCommandList[i]->multi)
+         names.Add(mCommandList[i]->name);
+   }
+
+   AudacityProject *p = GetActiveProject();
+   if (p == NULL) {
+      return;
+   }
+
+   wxMenuBar *bar = p->GetMenuBar();
+   size_t cnt = bar->GetMenuCount();
+   for (size_t i = 0; i < cnt; i++) {
+      cats.Add(bar->GetMenuLabelText(i));
+   }
+
+   cats.Add(COMMAND);
+#endif
+}
+
 void CommandManager::GetAllCommandNames(wxArrayString &names,
                                         bool includeMultis)
 {
@@ -1060,6 +1098,15 @@ wxString CommandManager::GetPrefixedLabelFromName(wxString name)
       return wxT("");
 
    return wxString(entry->labelPrefix + wxT(" ") + entry->label).Trim(false).Trim(true);
+}
+
+wxString CommandManager::GetCategoryFromName(wxString name)
+{
+   CommandListEntry *entry = mCommandNameHash[name];
+   if (!entry)
+      return wxT("");
+
+   return entry->labelTop;
 }
 
 wxString CommandManager::GetKeyFromName(wxString name)

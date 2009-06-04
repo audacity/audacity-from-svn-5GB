@@ -48,6 +48,7 @@ struct CommandListEntry
    wxString defaultKey;
    wxString label;
    wxString labelPrefix;
+   wxString labelTop;
    wxMenu *menu;
    CommandFunctor *callback;
    bool multi;
@@ -178,10 +179,12 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
    // Accessing
    //
 
+   void GetCategories(wxArrayString &cats);
    void GetAllCommandNames(wxArrayString &names, bool includeMultis);
 
    wxString GetLabelFromName(wxString name);
    wxString GetPrefixedLabelFromName(wxString name);
+   wxString CommandManager::GetCategoryFromName(wxString name);
    wxString GetKeyFromName(wxString name);
    wxString GetDefaultKeyFromName(wxString name);
 
@@ -232,6 +235,7 @@ private:
    bool mbSeparatorAllowed; // false at the start of a menu and immediately after a separator.
    int mHidingLevel;
 
+   wxString mCurrentMenuName;
    wxMenu * mCurrentMenu;
    wxMenu * mOpenMenu;
 
