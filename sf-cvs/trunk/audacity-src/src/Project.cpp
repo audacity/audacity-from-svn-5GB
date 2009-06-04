@@ -1637,7 +1637,23 @@ void AudacityProject::OnActivate(wxActivateEvent & event)
       // Under Windows, focus can be "lost" when returning to 
       // Audacity from a different application.  For keyboard
       // users, this is a major problem.
-      mTrackPanel->SetFocus();
+      //
+      // LL:  (Jun-2009)  I'm not really sure why I added this back in
+      //      Jul-2006, but I'm not able recreate the lost focus issue
+      //      any longer which is probably because we've made so many
+      //      improvements to focus handling since then.
+      //
+      //      In any case, it actually causes a problem where a control
+      //      in the Selection toolbar, for instance,  may have the focus
+      //      and the user needs to pop over to a different application
+      //      to do something else.  If the following SetFocus() is left
+      //      in, then upon returning to Audacity, the focus will not be
+      //      where the user left it.
+      //
+      //      So, I'm commenting it, but leaving it here in case the lost
+      //      focus issue still exists.
+      //
+      //mTrackPanel->SetFocus();
    }
    event.Skip();
 }
