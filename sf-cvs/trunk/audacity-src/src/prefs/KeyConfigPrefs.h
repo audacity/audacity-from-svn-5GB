@@ -41,17 +41,21 @@ class KeyConfigPrefs:public PrefsPanel
    void OnSave(wxCommandEvent & e);
    void OnSet(wxCommandEvent & e);
    void OnClear(wxCommandEvent & e);
+   void OnCategory(wxCommandEvent & e);
    void OnItemSelected(wxListEvent & e);
    void OnKeyDown(wxListEvent & e);
 
    void OnCaptureKeyDown(wxKeyEvent & e);
    void OnCaptureChar(wxKeyEvent & e);
 
+   wxChoice *mCat;
    wxTextCtrl *mKey;
    wxListCtrl *mList;
 
    CommandManager *mManager;
    size_t mCommandSelected;
+
+   wxArrayString mCats;
    wxArrayString mNames;
    wxArrayString mKeys;
 

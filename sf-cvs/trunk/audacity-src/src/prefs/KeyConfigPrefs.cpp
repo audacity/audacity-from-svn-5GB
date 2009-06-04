@@ -48,11 +48,11 @@ KeyConfigPrefs and MousePrefs use.
 #define CommandsListID          17005
 #define SaveButtonID            17006
 #define LoadButtonID            17007
+#define CategoryID              17008
 
 // The numbers of the columns of the mList.
 enum
 {
-   BlankColumn,
    CommandColumn,
    KeyComboColumn
 };
@@ -63,6 +63,7 @@ BEGIN_EVENT_TABLE(KeyConfigPrefs, PrefsPanel)
    EVT_BUTTON(ClearButtonID, KeyConfigPrefs::OnClear)
    EVT_BUTTON(SaveButtonID, KeyConfigPrefs::OnSave)
    EVT_BUTTON(LoadButtonID, KeyConfigPrefs::OnLoad)
+   EVT_CHOICE(CategoryID, KeyConfigPrefs::OnCategory)
    EVT_LIST_ITEM_SELECTED(CommandsListID, KeyConfigPrefs::OnItemSelected)
    EVT_LIST_KEY_DOWN(CommandsListID, KeyConfigPrefs::OnKeyDown)
 END_EVENT_TABLE()
@@ -103,6 +104,7 @@ void KeyConfigPrefs::Populate()
    }
 
    mManager = project->GetCommandManager();
+   mManager->GetCategories(mCats);
 
    PopulateOrExchange(S);
 
@@ -120,6 +122,15 @@ void KeyConfigPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Key Bindings"), 1);
    {
+      S.StartHorizontalLay(wxALIGN_CENTRE, false);
+      {
+         S.Id(CategoryID);
+         mCat = S.AddChoice(_("Category:"),
+                            mCats[0],
+                            &mCats);
+      }
+      S.EndHorizontalLay();
+                                    
       mList = S.Id(CommandsListID).AddListControlReportMode();
 
       S.StartThreeColumn();
@@ -165,53 +176,63 @@ void KeyConfigPrefs::PopulateOrExchange(ShuttleGui & S)
 /// fills the contents and sets column widths.
 void KeyConfigPrefs::CreateList()
 {
-   // An empty first column is a workaround - under Win98 the first column 
-   // can't be right aligned.
-   mList->InsertColumn(BlankColumn, wxT(""), wxLIST_FORMAT_LEFT);
    mList->InsertColumn(CommandColumn, _("Command"), wxLIST_FORMAT_LEFT);
    mList->InsertColumn(KeyComboColumn, _("Key Combination"), wxLIST_FORMAT_LEFT);
 
    RepopulateBindingsList();
 
-   mList->SetColumnWidth(BlankColumn, 0); // First column width is zero, to hide it.
    mList->SetColumnWidth(CommandColumn, wxLIST_AUTOSIZE);
    mList->SetColumnWidth(KeyComboColumn, 250);
 }
 
 void KeyConfigPrefs::RepopulateBindingsList()
 {
+   wxString cat = mCat->GetStringSelection();
+
    mList->DeleteAllItems(); // Delete contents, but not the column headers.
    mNames.Clear();
    mManager->GetAllCommandNames(mNames, false);
    bool save = (mKeys.GetCount() == 0);
 
+   size_t ndx = 0;
+   int color = 0;
    for (size_t i = 0; i < mNames.GetCount(); i++) {
-      mList->InsertItem(i, wxT(""));
-      wxString label;
-
-      // Labels for undo and redo change according to the last command
-      // which can be undone/redone, so give them a special check in order
-      // not to confuse users
-      if (mNames[i] == wxT("Undo")) {
-         label = _("Undo");
-      }
-      else if (mNames[i] == wxT("Redo")) {
-         label = _("Redo");
-      }
-      else {
-         label = mManager->GetPrefixedLabelFromName(mNames[i]);
-      }
-
-      label = wxMenuItem::GetLabelFromText(label.BeforeFirst(wxT('\t')));
-      wxString key = KeyStringDisplay(mManager->GetKeyFromName(mNames[i]));
-
-      mList->SetItem(i, CommandColumn, label);
-      mList->SetItem(i, KeyComboColumn, key);
+      wxString name = mNames[i];
+      wxString key = KeyStringDisplay(mManager->GetKeyFromName(name));
 
       // Save the original key value to support canceling
       if (save) {
          mKeys.Add(key);
       }
+
+      if (mManager->GetCategoryFromName(name) != cat) {
+         continue;
+      }
+
+      wxString label;
+
+      // Labels for undo and redo change according to the last command
+      // which can be undone/redone, so give them a special check in order
+      // not to confuse users
+      if (name == wxT("Undo")) {
+         label = _("Undo");
+      }
+      else if (name == wxT("Redo")) {
+         label = _("Redo");
+      }
+      else {
+         label = mManager->GetPrefixedLabelFromName(name);
+      }
+
+      label = wxMenuItem::GetLabelFromText(label.BeforeFirst(wxT('\t')));
+
+      mList->InsertItem(ndx, label);
+      mList->SetItem(ndx, KeyComboColumn, key);
+      mList->SetItemData(ndx, i);
+      mList->SetItemBackgroundColour(ndx, color ? wxColour(240, 240, 240) : *wxWHITE);
+      color = 1 - color;
+
+      ndx++;
    }
 }
 
@@ -288,12 +309,10 @@ void KeyConfigPrefs::OnSave(wxCommandEvent & e)
 void KeyConfigPrefs::OnDefaults(wxCommandEvent & e)
 {
    for (size_t i = 0; i < mNames.GetCount(); i++) {
-      mList->SetItem(i,
-                     KeyComboColumn,
-                     KeyStringDisplay(mManager->GetDefaultKeyFromName(mNames[i])));
       mManager->SetKeyFromName(mNames[i],
                                mManager->GetDefaultKeyFromName(mNames[i]));
    }
+   RepopulateBindingsList();
 }
 
 void KeyConfigPrefs::OnCaptureKeyDown(wxKeyEvent & e)
@@ -339,7 +358,7 @@ void KeyConfigPrefs::OnSet(wxCommandEvent & e)
    }
 
    mList->SetItem(mCommandSelected, KeyComboColumn, newKey);
-   mManager->SetKeyFromName(mNames[mCommandSelected], newKey);
+   mManager->SetKeyFromName(mNames[mList->GetItemData(mCommandSelected)], newKey);
 }
 
 void KeyConfigPrefs::OnClear(wxCommandEvent& event)
@@ -350,7 +369,7 @@ void KeyConfigPrefs::OnClear(wxCommandEvent& event)
    }
 
    mList->SetItem(mCommandSelected, KeyComboColumn, wxT(""));
-   mManager->SetKeyFromName(mNames[mCommandSelected], wxT(""));
+   mManager->SetKeyFromName(mNames[mList->GetItemData(mCommandSelected)], wxT(""));
 }
 
 void KeyConfigPrefs::OnKeyDown(wxListEvent & e)
@@ -410,6 +429,11 @@ void KeyConfigPrefs::OnKeyDown(wxListEvent & e)
    }
 }
 
+void KeyConfigPrefs::OnCategory(wxCommandEvent & e)
+{
+   RepopulateBindingsList();
+}
+
 void KeyConfigPrefs::OnItemSelected(wxListEvent & e)
 {
    mCommandSelected = e.GetIndex();
@@ -417,7 +441,7 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent & e)
       mKey->SetLabel(wxT(""));
       return;
    }
-   
+
    wxListItem item;
    item.SetColumn(KeyComboColumn);
    item.SetMask(wxLIST_MASK_TEXT);
