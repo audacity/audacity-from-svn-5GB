@@ -258,7 +258,7 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
          // wxString strNewMsg = 
          //    strMsg + _("\nDone: ") + done_TimeSpan.Format() + _("     Remaining: ") + remaining_TimeSpan.Format();
          updateResult = 
-            progress.Update(done_TimeSpan.GetSeconds(), m_TimeSpan_Duration.GetSeconds()); // , strNewMsg);
+            progress.Update(done_TimeSpan.GetMilliseconds(), m_TimeSpan_Duration.GetMilliseconds()); // , strNewMsg);
 
          bIsRecording = (wxDateTime::UNow() <= m_DateTime_End); // Call UNow() again for extra accuracy...
       }
@@ -370,7 +370,7 @@ void TimerRecordDialog::PopulateOrExchange(ShuttleGui& S)
          m_pTimeTextCtrl_Duration = new TimeTextCtrl(this, ID_TIMETEXT_DURATION, strFormat1);
          m_pTimeTextCtrl_Duration->SetName(_("Duration"));
          m_pTimeTextCtrl_Duration->SetTimeValue(
-            Internat::CompatibleToDouble(m_TimeSpan_Duration.GetSeconds().ToString())); //v milliseconds?
+            Internat::CompatibleToDouble(m_TimeSpan_Duration.GetMilliseconds().ToString())); 
          S.AddWindow(m_pTimeTextCtrl_Duration);
          m_pTimeTextCtrl_Duration->EnableMenu(false);
       }
@@ -421,7 +421,7 @@ void TimerRecordDialog::UpdateDuration()
 {
    m_TimeSpan_Duration = m_DateTime_End - m_DateTime_Start;
    m_pTimeTextCtrl_Duration->SetTimeValue(
-      Internat::CompatibleToDouble(m_TimeSpan_Duration.GetSeconds().ToString())); //v milliseconds?
+      Internat::CompatibleToDouble(m_TimeSpan_Duration.GetMilliseconds().ToString())); 
 }
 
 // Update m_DateTime_End and ctrls based on m_DateTime_Start and m_TimeSpan_Duration.
@@ -453,8 +453,8 @@ int TimerRecordDialog::WaitForStart()
       wxMilliSleep(10);
 
       done_TimeSpan = wxDateTime::UNow() - startWait_DateTime;
-      updateResult = progress.Update(done_TimeSpan.GetSeconds(),
-                                    waitDuration.GetSeconds());
+      updateResult = progress.Update(done_TimeSpan.GetMilliseconds(),
+                                    waitDuration.GetMilliseconds());
 
       bIsRecording = (m_DateTime_Start <= wxDateTime::UNow());
    }
