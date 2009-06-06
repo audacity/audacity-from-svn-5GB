@@ -736,7 +736,11 @@ def should_follow(url):
   'url' should be spidered as well.
   """
   global config
-  
+
+  # we don't have search on the local version
+  if (url.endswith('#searchInput')):
+    return False
+
   # False if different domains.
   nurl = normalize_url(url)
   if get_domain(config.rooturl) != get_domain(nurl):
