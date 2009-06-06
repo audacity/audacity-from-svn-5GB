@@ -695,8 +695,36 @@ wxAccStatus GridAx::GetName(int childId, wxString *name)
       wxString n = mGrid->GetColLabelValue(col);
       wxString v = mGrid->GetCellValue(row, col);
       if (v.IsEmpty()) {
-         v = wxT("empty");
+         v = _("Empty");
       }
+
+      // Hack to provide a more intelligible response
+      TimeEditor *d =
+         (TimeEditor *)mGrid->GetDefaultEditorForType(GRID_VALUE_TIME);
+      TimeEditor *c =
+         (TimeEditor *)mGrid->GetCellEditor(row, col);
+
+      if (c && d && c == d) {
+         double value;
+         v.ToDouble(&value);
+
+         TimeTextCtrl tt(mGrid,
+                         wxID_ANY,
+                         wxT(""),
+                         value,
+                         c->GetRate(),
+                         wxPoint(10000, 10000),  // create offscreen
+                         wxDefaultSize,
+                         true);
+         tt.SetFormatString(tt.GetBuiltinFormat(c->GetFormat()));
+         v = tt.GetTimeString();
+      }
+
+      if (c)
+         c->DecRef();
+      if (d)
+         d->DecRef();
+
       *name = n + wxT(" ") + v;
    }
 
