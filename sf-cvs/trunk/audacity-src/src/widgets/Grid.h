@@ -228,17 +228,18 @@ class GridAx
 
  public:
    
-   GridAx(Grid *grid, GridAx *parent, wxAccRole role, int row, int col);
+   GridAx(Grid *grid);
 
    void SetCurrentCell(int row, int col);
    void TableUpdated();
+   bool GetRowCol(int childId, int & row, int & col);
 
    // Retrieves the address of an IDispatch interface for the specified child.
    // All objects must support this property.
-   virtual wxAccStatus GetChild( int childId, wxAccessible** child );
+   virtual wxAccStatus GetChild(int childId, wxAccessible **child);
 
    // Gets the number of children.
-   virtual wxAccStatus GetChildCount(int* childCount);
+   virtual wxAccStatus GetChildCount(int *childCount);
 
    // Gets the default action for this object (0) or > 0 (the action for a child).
    // Return wxACC_OK even if there is no action. actionName is the action, or the empty
@@ -246,36 +247,36 @@ class GridAx
    // The retrieved string describes the action that is performed on an object,
    // not what the object does as a result. For example, a toolbar button that prints
    // a document has a default action of "Press" rather than "Prints the current document."
-   virtual wxAccStatus GetDefaultAction( int childId, wxString *actionName );
+   virtual wxAccStatus GetDefaultAction(int childId, wxString *actionName);
 
    // Returns the description for this object or a child.
-   virtual wxAccStatus GetDescription( int childId, wxString *description );
+   virtual wxAccStatus GetDescription(int childId, wxString *description);
 
    // Gets the window with the keyboard focus.
    // If childId is 0 and child is NULL, no object in
    // this subhierarchy has the focus.
    // If this object has the focus, child should be 'this'.
-   virtual wxAccStatus GetFocus( int *childId, wxAccessible **child );
+   virtual wxAccStatus GetFocus(int *childId, wxAccessible **child);
 
    // Returns help text for this object or a child, similar to tooltip text.
-   virtual wxAccStatus GetHelpText( int childId, wxString *helpText );
+   virtual wxAccStatus GetHelpText(int childId, wxString *helpText);
 
    // Returns the keyboard shortcut for this object or child.
    // Return e.g. ALT+K
-   virtual wxAccStatus GetKeyboardShortcut( int childId, wxString *shortcut );
+   virtual wxAccStatus GetKeyboardShortcut(int childId, wxString *shortcut);
 
    // Returns the rectangle for this object (id = 0) or a child element (id > 0).
    // rect is in screen coordinates.
-   virtual wxAccStatus GetLocation( wxRect& rect, int elementId );
+   virtual wxAccStatus GetLocation(wxRect & rect, int elementId);
 
    // Gets the name of the specified object.
-   virtual wxAccStatus GetName( int childId, wxString *name );
+   virtual wxAccStatus GetName(int childId, wxString *name);
 
    // Gets the parent, or NULL.
    virtual wxAccStatus GetParent(wxAccessible **parent);
 
    // Returns a role constant.
-   virtual wxAccStatus GetRole( int childId, wxAccRole *role );
+   virtual wxAccStatus GetRole(int childId, wxAccRole *role);
 
    // Gets a variant representing the selected children
    // of this object.
@@ -294,11 +295,8 @@ class GridAx
    // or child.
    virtual wxAccStatus GetValue(int childId, wxString* strValue);
 
-   GridAx *mParent;
    Grid *mGrid;
-   wxAccRole mRole;
-   int mRow;
-   int mCol;
+   int mLastId;
 
 };
 #endif

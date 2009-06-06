@@ -349,11 +349,8 @@ Grid::Grid(wxWindow *parent,
 : wxGrid(parent, id, pos, size, style | wxWANTS_CHARS, name)
 {
 #if wxUSE_ACCESSIBILITY
-   mAx = new GridAx(this, NULL, wxROLE_SYSTEM_TABLE, 0, 0);
-   SetAccessible(mAx);
-
-   mObjNdx = -1;
-   mChildren.Clear();
+   mAx = new GridAx(this);
+   GetGridWindow()->SetAccessible(mAx);
 #endif
 
    RegisterDataType(GRID_VALUE_TIME,
@@ -553,54 +550,58 @@ bool Grid::DeleteCols(int pos, int numCols, bool updateLabels)
    return res;
 }
 
-GridAx *Grid::GetNextAx(GridAx *parent, wxAccRole role, int row, int col)
-{
-   mObjNdx = (mObjNdx + 1) & 0x3f;
-
-   if (mObjNdx < (int)mChildren.GetCount()) {
-      GridAx *ax = (GridAx *) mChildren[mObjNdx];
-      delete ax;
-
-      mChildren[mObjNdx] = new GridAx(this, parent, role, row, col);
-   }
-   else {
-      mChildren.Add(new GridAx(this, parent, role, row, col));
-   }
-
-   return (GridAx *)mChildren[mObjNdx];
-}
-
-GridAx::GridAx(Grid *grid, GridAx *parent, wxAccRole role, int row, int col)
-: wxWindowAccessible(NULL)
+GridAx::GridAx(Grid *grid)
+: wxWindowAccessible(grid->GetGridWindow())
 {
    mGrid = grid;
-   mParent = parent;
-   mRole = role;
-   mRow = row;
-   mCol = col;
+   mLastId = -1;
 }
 
 void GridAx::TableUpdated()
 {
    NotifyEvent(wxACC_EVENT_OBJECT_REORDER,
-               mGrid,
+               mGrid->GetGridWindow(),
                wxOBJID_CLIENT,
                0);
 }
 
 void GridAx::SetCurrentCell(int row, int col)
 {
-   int id = -(((row * mGrid->GetNumberCols()) + col) + 1);
+   int id = (((row * mGrid->GetNumberCols()) + col) + 1);
 
-   NotifyEvent(wxACC_EVENT_OBJECT_SELECTION,
-               mGrid,
+   if (mLastId != -1) {
+      NotifyEvent(wxACC_EVENT_OBJECT_SELECTIONREMOVE,
+               mGrid->GetGridWindow(),
                wxOBJID_CLIENT,
-               id);
+               mLastId);
+   }
 
    NotifyEvent(wxACC_EVENT_OBJECT_FOCUS,
-               mGrid,
+               mGrid->GetGridWindow(),
                wxOBJID_CLIENT,
                id);
+
+   NotifyEvent(wxACC_EVENT_OBJECT_SELECTION,
+               mGrid->GetGridWindow(),
+               wxOBJID_CLIENT,
+               id);
+
+   mLastId = id;
+}
+
+bool GridAx::GetRowCol(int childId, int & row, int & col)
+{
+   if (childId == wxACC_SELF) {
+      return false;
+   }
+
+   int cols = mGrid->GetNumberCols();
+   int id = childId - 1;
+
+   row = id / cols;
+   col = id % cols;
+
+   return true;
 }
 
 // Retrieves the address of an IDispatch interface for the specified child.
@@ -609,73 +610,18 @@ wxAccStatus GridAx::GetChild(int childId, wxAccessible** child)
 {
    if (childId == wxACC_SELF) {
       *child = this;
-      return wxACC_OK;
    }
-
-   if (childId < 0) {
-      int cols = mGrid->GetNumberCols();
-      int row;
-      int col;
-
-      childId *= -1;
-      childId -= 1;
-      row = childId / cols;
-      col = childId % cols;
-
-      *child = mGrid->GetNextAx(this, wxROLE_SYSTEM_CELL, row + 1, col + 1);
-
-      return wxACC_OK;
-   }
-
-   childId -= 1;
-
-   switch (mRole)
-   {
-      case wxROLE_SYSTEM_TABLE:
-         *child = mGrid->GetNextAx(this, wxROLE_SYSTEM_ROW, childId, 0);
-      break;
-
-      case wxROLE_SYSTEM_ROW:
-         wxAccRole role;
-
-         if (childId == 0) {
-            role = wxROLE_SYSTEM_ROWHEADER;
-         }
-         else if (mRow == 0) {
-            role = wxROLE_SYSTEM_COLUMNHEADER;
-         }
-         else {
-            role = wxROLE_SYSTEM_CELL;
-         }
-
-         *child = mGrid->GetNextAx(this, role, mRow, childId);
-      break;
-
-      default:
-         *child = NULL;
-      break;
+   else {
+      *child = NULL;
    }
 
    return wxACC_OK;
 }
 
 // Gets the number of children.
-wxAccStatus GridAx::GetChildCount(int* childCount)
+wxAccStatus GridAx::GetChildCount(int *childCount)
 {
-   switch (mRole)
-   {
-      case wxROLE_SYSTEM_TABLE:
-         *childCount = mGrid->GetNumberRows() + 1;
-      break;
-
-      case wxROLE_SYSTEM_ROW:
-         *childCount = mGrid->GetNumberCols() + 1;
-      break;
-
-      default:
-         *childCount = 0;
-      break;
-   }
+   *childCount = mGrid->GetNumberRows() * mGrid->GetNumberCols();
 
    return wxACC_OK;
 }
@@ -686,7 +632,7 @@ wxAccStatus GridAx::GetChildCount(int* childCount)
 // The retrieved string describes the action that is performed on an object,
 // not what the object does as a result. For example, a toolbar button that prints
 // a document has a default action of "Press" rather than "Prints the current document."
-wxAccStatus GridAx::GetDefaultAction( int childId, wxString *actionName )
+wxAccStatus GridAx::GetDefaultAction(int childId, wxString *actionName)
 {
    actionName->Clear();
 
@@ -696,34 +642,9 @@ wxAccStatus GridAx::GetDefaultAction( int childId, wxString *actionName )
 // Returns the description for this object or a child.
 wxAccStatus GridAx::GetDescription(int childId, wxString *description)
 {
-   if (childId == wxACC_SELF) {
-      switch (mRole)
-      {
-         case wxROLE_SYSTEM_TABLE:
-            description->Printf(_("%d rows, %d columns"),
-                                mGrid->GetNumberRows(),
-                                mGrid->GetNumberCols());
-         break;
+   description->Clear();
 
-         case wxROLE_SYSTEM_ROW:
-            description->Printf(_("Row %d"),
-                                mRow);
-         break;
-
-         case wxROLE_SYSTEM_CELL:
-            description->Printf(wxT("%d"),
-                                mCol);
-         break;
-
-         default:
-            description->Printf(wxT("oh-oh...buggie"));
-         break;
-      }
-
-      return wxACC_OK;
-   }
-
-   return wxACC_NOT_IMPLEMENTED;
+   return wxACC_OK;
 }
 
 // Returns help text for this object or a child, similar to tooltip text.
@@ -745,74 +666,18 @@ wxAccStatus GridAx::GetKeyboardShortcut(int childId, wxString *shortcut)
 
 // Returns the rectangle for this object (id = 0) or a child element (id > 0).
 // rect is in screen coordinates.
-wxAccStatus GridAx::GetLocation(wxRect& rect, int elementId)
+wxAccStatus GridAx::GetLocation(wxRect & rect, int elementId)
 {
    wxRect r;
 
-   wxASSERT_MSG((elementId == wxACC_SELF),
-      wxString::Format(wxT("GridAx::GetLocation Unexpected elementId: %d"), elementId));
-
-   switch (mRole)
-   {
-      case wxROLE_SYSTEM_TABLE:
-         rect = mGrid->GetRect();
-         r = mGrid->GetGridCornerLabelWindow()->GetRect();
-         rect.x -= r.width;
-         rect.y -= r.height;
-      break;
-
-      case wxROLE_SYSTEM_ROW:
-         if (mRow == 0) {
-            rect = mGrid->CellToRect(0, 0);
-
-            r = mGrid->GetGridRowLabelWindow()->GetRect();
-            rect.x -= r.width;
-            rect.width = r.width;
-
-            r = mGrid->GetGridColLabelWindow()->GetRect();
-            rect.y -= r.height;
-            rect.width += r.width;
-         }
-         else {
-            rect = mGrid->CellToRect(mRow - 1, 0);
-
-            r = mGrid->GetGridRowLabelWindow()->GetRect();
-            rect.x -= r.width;
-            rect.width = r.width;
-
-            r = mGrid->GetGridColLabelWindow()->GetRect();
-            rect.width += r.width;
-         }
-      break;
-
-      case wxROLE_SYSTEM_ROWHEADER:
-         r = mGrid->GetGridCornerLabelWindow()->GetRect();
-         if (mRow == 0) {
-            rect = mGrid->CellToRect(0, 0);
-            rect.y -= r.height;
-         }
-         else {
-            rect = mGrid->CellToRect(mRow - 1, 0);
-         }
-         rect.x -= r.width;
-         rect.width = r.width;
-      break;
-
-      case wxROLE_SYSTEM_COLUMNHEADER:
-         rect = mGrid->CellToRect(0, mCol - 1);
-         r = mGrid->GetGridColLabelWindow()->GetRect();
-         rect.y -= r.height;
-      break;
-
-      case wxROLE_SYSTEM_CELL:
-         rect = mGrid->CellToRect(mRow - 1, mCol - 1);
-      break;
-
-      default:
-         wxASSERT_MSG(0,
-            wxString::Format(wxT("GridAx::GetLocation Unrecognized role: %d"),
-                             mRole));
-      break;
+   if (elementId == wxACC_SELF) {
+      wxRect r = mGrid->GetGridCornerLabelWindow()->GetRect();
+      rect = mGrid->GetRect();
+      rect.x -= r.width;
+      rect.y -= r.height;
+   }
+   else {
+      rect = mGrid->CellToRect(mGrid->GetGridCursorRow(), mGrid->GetGridCursorCol());
    }
 
    rect.SetPosition(mGrid->GetGridWindow()->ClientToScreen(rect.GetPosition()));
@@ -821,70 +686,18 @@ wxAccStatus GridAx::GetLocation(wxRect& rect, int elementId)
 }
 
 // Gets the name of the specified object.
-wxAccStatus GridAx::GetName(int childId, wxString* name)
+wxAccStatus GridAx::GetName(int childId, wxString *name)
 {
-   wxASSERT_MSG((childId == wxACC_SELF),
-      wxString::Format(wxT("GridAx::GetName Unexpected childId: %d"), childId));
+   int row;
+   int col;
 
-   switch (mRole)
-   {
-      case wxROLE_SYSTEM_TABLE:
-         *name = mGrid->GetName();
-      break;
-
-      case wxROLE_SYSTEM_ROW:
-         name->Printf(_("Row %d"), mRow);
-      break;
-
-      case wxROLE_SYSTEM_ROWHEADER:
-         *name = mGrid->GetRowLabelValue(mRow);
-      break;
-
-      case wxROLE_SYSTEM_COLUMNHEADER:
-         *name = mGrid->GetColLabelValue(mCol - 1);
-      break;
-
-      case wxROLE_SYSTEM_CELL:
-      {
-         *name = mGrid->GetCellValue(mRow - 1, mCol - 1);
-         if (name->IsEmpty()) {
-            *name = _("Empty");
-         }
-
-         // Hack to provide a more intelligible response
-         TimeEditor *d =
-            (TimeEditor *)mGrid->GetDefaultEditorForType(GRID_VALUE_TIME);
-         TimeEditor *c =
-            (TimeEditor *)mGrid->GetCellEditor(mRow - 1, mCol - 1);
-
-         if (c && d && c == d) {
-            double value;
-            name->ToDouble(&value);
-
-            TimeTextCtrl tt(mGrid,
-                            wxID_ANY,
-                            wxT(""),
-                            value,
-                            c->GetRate(),
-                            wxPoint(10000, 10000),  // create offscreen
-                            wxDefaultSize,
-                            true);
-            tt.SetFormatString(tt.GetBuiltinFormat(c->GetFormat()));
-            *name = tt.GetTimeString();
-         }
-
-         if (c)
-            c->DecRef();
-         if (d)
-            d->DecRef();
+   if (GetRowCol(childId, row, col)) {
+      wxString n = mGrid->GetColLabelValue(col);
+      wxString v = mGrid->GetCellValue(row, col);
+      if (v.IsEmpty()) {
+         v = wxT("empty");
       }
-      break;
-
-      default:
-         wxASSERT_MSG(0,
-            wxString::Format(wxT("GridAx::GetName Unrecognized role: %d"),
-                             mRole));
-      break;
+      *name = n + wxT(" ") + v;
    }
 
    return wxACC_OK;
@@ -892,18 +705,18 @@ wxAccStatus GridAx::GetName(int childId, wxString* name)
 
 wxAccStatus GridAx::GetParent(wxAccessible **parent)
 {
-   *parent = mParent;
-
-   return wxACC_OK;
+   return wxACC_NOT_IMPLEMENTED;
 }
 
 // Returns a role constant.
-wxAccStatus GridAx::GetRole(int childId, wxAccRole* role)
+wxAccStatus GridAx::GetRole(int childId, wxAccRole *role)
 {
-   wxASSERT_MSG((childId == wxACC_SELF),
-      wxString::Format(wxT("GridAx::GetRole Unexpected childId: %d"), childId));
-
-   *role = mRole;
+   if (childId == wxACC_SELF) {
+      *role = wxROLE_SYSTEM_TABLE;
+   }
+   else {
+      *role = wxROLE_SYSTEM_CELL;
+   }
 
    return wxACC_OK;
 }
@@ -916,98 +729,48 @@ wxAccStatus GridAx::GetRole(int childId, wxAccRole* role)
 // - an integer representing the selected child element,
 //   or 0 if this object is selected (GetType() == wxT("long"))
 // - a "void*" pointer to a wxAccessible child object
-wxAccStatus GridAx::GetSelections( wxVariant *selections )
+wxAccStatus GridAx::GetSelections(wxVariant *selections)
 {
    return wxACC_NOT_IMPLEMENTED;
 }
 
 // Returns a state constant.
-wxAccStatus GridAx::GetState( int childId, long* state )
+wxAccStatus GridAx::GetState(int childId, long *state)
 {
-   int row = mGrid->GetGridCursorRow();
-   int col = mGrid->GetGridCursorCol();
-   int cols = mGrid->GetNumberCols();
-   int flag;
+   int flag = wxACC_STATE_SYSTEM_FOCUSABLE |
+              wxACC_STATE_SYSTEM_SELECTABLE |
+              wxACC_STATE_SYSTEM_FOCUSED |
+              wxACC_STATE_SYSTEM_SELECTED;
+   int col;
+   int row;
 
-   wxASSERT_MSG((childId == wxACC_SELF),
-      wxString::Format(wxT("GridAx::GetState Unexpected childId: %d"), childId));
-
-   *state = 0;
-
-   switch (mRole)
-   {
-      case wxROLE_SYSTEM_TABLE:
-         *state = wxACC_STATE_SYSTEM_FOCUSABLE | wxACC_STATE_SYSTEM_SELECTABLE;
-      break;
-
-      case wxROLE_SYSTEM_ROW:
-         *state = wxACC_STATE_SYSTEM_FOCUSABLE | wxACC_STATE_SYSTEM_SELECTABLE;
-
-         flag = wxACC_STATE_SYSTEM_INVISIBLE;
-         for (col = 0; col < cols; col++) {
-            if (mGrid->IsVisible(mRow, col)) {
-               flag = 0;
-               break;
-            }
-         }
-         *state |= flag;
-
-      break;
-
-      case wxROLE_SYSTEM_ROWHEADER:
-      case wxROLE_SYSTEM_COLUMNHEADER:
-         *state = wxACC_STATE_SYSTEM_UNAVAILABLE;
-      break;
-
-      case wxROLE_SYSTEM_CELL:
-      {
-         int row = mGrid->GetGridCursorRow();
-         int col = mGrid->GetGridCursorCol();
-         int cols = mGrid->GetNumberCols();
-
-         *state = wxACC_STATE_SYSTEM_FOCUSABLE | wxACC_STATE_SYSTEM_SELECTABLE;
-
-         if (mRow - 1 == row) {
-            *state |= wxACC_STATE_SYSTEM_FOCUSED;
-         }
-
-         flag = wxACC_STATE_SYSTEM_SELECTED;
-         for (col = 0; col < cols; col++) {
-            if (!mGrid->IsInSelection(row, col)) {
-               flag = 0;
-               break;
-            }
-         }
-         *state |= flag;
+   if (GetRowCol(childId, row, col)) {
+      if (mGrid->IsReadOnly(row, col)) {
+         flag = wxACC_STATE_SYSTEM_UNAVAILABLE;
       }
-      break;
-
-      default:
-         wxASSERT_MSG(0,
-            wxString::Format(wxT("GridAx::GetState Unrecognized role: %d"),
-                             mRole));
-      break;
    }
+
+   *state = flag;
 
    return wxACC_OK;
 }
 
 // Returns a localized string representing the value for the object
 // or child.
-wxAccStatus GridAx::GetValue( int childId, wxString* strValue )
+wxAccStatus GridAx::GetValue(int childId, wxString *strValue)
 {
-   return wxACC_NOT_SUPPORTED;
+   strValue->Clear();
+
+   return wxACC_OK;
 }
 
 // Gets the window with the keyboard focus.
 // If childId is 0 and child is NULL, no object in
 // this subhierarchy has the focus.
 // If this object has the focus, child should be 'this'.
-wxAccStatus GridAx::GetFocus( int *childId, wxAccessible **child )
+wxAccStatus GridAx::GetFocus(int *childId, wxAccessible **child)
 {
-   if (mGrid->FindFocus() == mGrid->GetGridWindow()) {
-      *childId = mGrid->GetGridCursorRow() + 1;
-   }
+   *child = this;
 
    return wxACC_OK;
 }
