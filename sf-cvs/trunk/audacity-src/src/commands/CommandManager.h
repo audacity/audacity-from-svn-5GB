@@ -184,7 +184,7 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
 
    wxString GetLabelFromName(wxString name);
    wxString GetPrefixedLabelFromName(wxString name);
-   wxString CommandManager::GetCategoryFromName(wxString name);
+   wxString GetCategoryFromName(wxString name);
    wxString GetKeyFromName(wxString name);
    wxString GetDefaultKeyFromName(wxString name);
 
