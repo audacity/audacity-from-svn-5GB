@@ -126,30 +126,51 @@ def normalize_url(url):
   
   return nurl
 
-def find_tag_limits(doc, start_string, end_tag, start_tag):
+def find_tag_limits(doc, filter_string, end_tag, start_tag, start_point = 0):
 # find tag limits - start_string must be an unique identifier within doc
 
-  i1 = doc.find(start_string)
+  i1 = doc.find(filter_string, start_point)
 
-  if (i1 == -1):
+  if i1 == -1:
     return (-1,-1)
 
+  aux   = doc.rfind(start_tag, start_point, i1+len(filter_string))
+  
+  # we've found the filter_string but it has not the start_tag, so we return a different value
+  # telling the script to keep searching starting on the end of the filter_string found
+  if aux == -1:
+    return (-2, i1+len(filter_string))
+
+  i1 = aux
   sdiv = i1
-  ediv = i1 + len(start_string)
+  ediv = i1 + len(start_tag)
   while(sdiv < ediv and sdiv != -1):
       sdiv = doc.find(start_tag, sdiv+len(start_tag))
       ediv = doc.find(end_tag  , ediv+len(end_tag))
 
   return (i1, ediv)
 
+def clean_tag(doc, filter_string, end_tag, start_tag):
+  #clean tagged text function
+  start_point = 0
+  while True:
+    (start1, start2) = find_tag_limits(doc, filter_string, end_tag, start_tag, start_point)
+    if start1 == -1 or start2 == -1:
+      return doc
+    if start1 == -2:
+      start_point = start2
+      continue
+    end1 = doc.find('>', start1)+1;
+    end2 = start2 + len(end_tag);
+    doc = doc[:start1]+doc[end1:start2]+doc[end2:]
+  
 def remove_tag(doc, start_string, end_tag, start_tag):
   #remove tagged text function
-  ndoc = doc
   while True:
-    (i1, i2) = find_tag_limits(ndoc, start_string, end_tag, start_tag)
+    (i1, i2) = find_tag_limits(doc, start_string, end_tag, start_tag)
     if i1 == -1 or i2 == -1:
-      return ndoc
-    ndoc = ndoc[:i1]+ndoc[i2+len(end_tag):]
+      return doc
+    doc = doc[:i1]+doc[i2+len(end_tag):]
  
 def monobook_fix_html(doc, page_url):
   """
@@ -250,6 +271,9 @@ def pre_html_transform(doc, url):
   
 def pos_html_transform(doc):
   global footer_text, config
+  
+  # Remove empty links
+  doc = clean_tag(doc, 'href=""', '</a>', '<a ');
   
   if config.special_mode:
     # Remove external link rel stylesheet
@@ -785,6 +809,8 @@ def parse_html(doc, url):
       new_urls += [u]
       item.url = url_to_relative(u, url)
     else:
+      if not any( license in u for license in ('creativecommons.org', 'wxwidgets.org', 'gnu.org', 'mediawiki.org') ):
+        item.url = ''
       if config.debug:
         print 'DENIED     - ', u
 
