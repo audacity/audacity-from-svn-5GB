@@ -669,18 +669,17 @@ wxAccStatus GridAx::GetKeyboardShortcut(int childId, wxString *shortcut)
 wxAccStatus GridAx::GetLocation(wxRect & rect, int elementId)
 {
    wxRect r;
+   int row;
+   int col;
 
-   if (elementId == wxACC_SELF) {
-      wxRect r = mGrid->GetGridCornerLabelWindow()->GetRect();
-      rect = mGrid->GetRect();
-      rect.x -= r.width;
-      rect.y -= r.height;
+   if (GetRowCol(elementId, row, col)) {
+      rect = mGrid->CellToRect(row, col);
+      rect.SetPosition(mGrid->GetGridWindow()->ClientToScreen(rect.GetPosition()));
    }
    else {
-      rect = mGrid->CellToRect(mGrid->GetGridCursorRow(), mGrid->GetGridCursorCol());
+      rect = mGrid->GetRect();
+      rect.SetPosition(mGrid->GetParent()->ClientToScreen(rect.GetPosition()));
    }
-
-   rect.SetPosition(mGrid->GetGridWindow()->ClientToScreen(rect.GetPosition()));
 
    return wxACC_OK;
 }
