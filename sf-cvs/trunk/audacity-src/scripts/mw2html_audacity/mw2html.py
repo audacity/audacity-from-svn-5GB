@@ -111,20 +111,20 @@ def get_domain(u):
 def normalize_url(url):
 # url normalization - only for local comparison operations, use original url for online requests
   url = split_section(url)[0] 
-  nurl = url.lower()
+  url = url.lower()
   
-  if nurl.startswith('http://'):
-    nurl = nurl[len('http://'):]
-  if nurl.startswith('www.'):
-    nurl = nurl[len('www.'):]
+  if url.startswith('http://'):
+    url = url[len('http://'):]
+  if url.startswith('www.'):
+    url = url[len('www.'):]
   
-  nurl = nurl.strip('/')
+  url = url.strip('/')
   
-  nurl = 'http://' + nurl
+  url = 'http://' + url
   
-  urlparse.urljoin(config.rooturl, nurl)
+  urlparse.urljoin(config.rooturl, url)
   
-  return nurl
+  return url
 
 def find_tag_limits(doc, filter_string, end_tag, start_tag, start_point = 0):
 # find tag limits - start_string must be an unique identifier within doc
@@ -175,7 +175,6 @@ def remove_tag(doc, start_string, end_tag, start_tag):
 def monobook_fix_html(doc, page_url):
   """
   Sets sidebar for Mediawiki 1.4beta6 Monobook HTML output.
-  Also returns new urls eventually found.
   """
   global sidebar_content, config
  
@@ -249,7 +248,7 @@ def pre_html_transform(doc, url):
   User-customizable HTML transform.
 
   Given an HTML document (with URLs already rewritten), returns
-  modified HTML document and new urls from sidebar.
+  modified HTML document.
   """
   global config
   new_urls = []
@@ -593,7 +592,7 @@ def url_to_filename(url):
     return url_filename_cache[nurl]
 
   #ParseResult(scheme='http', netloc='www.cwi.nl:80', path='/%7Eguido/Python.html', params='', query='', fragment='')
-  L = list(urlparse.urlparse(url))
+  L = list(urlparse.urlparse(nurl))
 
   L[2] = L[2].strip('/')
   lpath = L[2].split('/')
@@ -647,10 +646,10 @@ def url_to_filename(url):
   ans = os.path.join(config.outdir, subfile)
 
   if config.flatten:
-    ans = flatten_filename(url, ans)
+    ans = flatten_filename(nurl, ans)
 
   if config.clean:
-    ans = clean_filename(url, ans)
+    ans = clean_filename(nurl, ans)
 
   if config.index != None:
     ans = move_to_index_if_needed(ans)
@@ -687,9 +686,10 @@ def url_to_relative(url, cururl):
   Translate a full url to a filename (in URL format) relative to cururl.
   Relative url from curul to url.
   """
+
   cururl = split_section(cururl)[0]
   (url, section) = split_section(url)
-
+ 
   L1 = url_to_filename(url).replace(os.sep, '/').split('/')
   if L1 == '':
     return ''
@@ -700,7 +700,11 @@ def url_to_relative(url, cururl):
     L1 = L1[1:]
     L2 = L2[1:]
 
-  return urllib.quote('../' * (len(L2) - 1) + '/'.join(L1)) + section
+  rel_url = urllib.quote('../' * (len(L2) - 1) + '/'.join(L1)) + section
+  if rel_url == '':
+    return '#'
+  else:
+    return rel_url
 
 def parse_css(doc, url):
   """
