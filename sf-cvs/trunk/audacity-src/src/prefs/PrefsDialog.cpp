@@ -69,16 +69,20 @@ BEGIN_EVENT_TABLE(PrefsDialog, wxDialog)
 END_EVENT_TABLE()
 
 PrefsDialog::PrefsDialog(wxWindow * parent)
-:  wxDialog(parent, wxID_ANY, wxString(_("Audacity Preferences")))
+:  wxDialog(parent, wxID_ANY, wxString(_("Audacity Preferences")),
+            wxDefaultPosition,
+            wxDefaultSize,
+            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
    ShuttleGui S(this, eIsCreating);
 
    S.StartVerticalLay(true);
    {
-      S.StartHorizontalLay(wxALIGN_LEFT);
+      S.StartHorizontalLay(wxALIGN_LEFT | wxEXPAND, true);
       {
          mCategories = new wxTreebook(this, wxID_ANY);
-         S.AddWindow(mCategories);
+         S.Prop(1);
+         S.AddWindow(mCategories, wxEXPAND);
 
          wxWindow *w;
          // Parameters are: AppPage( page, name, IsSelected, imageId)
@@ -121,10 +125,11 @@ PrefsDialog::PrefsDialog(wxWindow * parent)
    mCategories->GetTreeCtrl()->EnsureVisible(mCategories->GetTreeCtrl()->GetRootItem());
 #endif
 
-   mCategories->SetSizeHints(-1, -1, 790, 600);  // 790 = 800 - (border * 2)
+//   mCategories->SetSizeHints(-1, -1, 790, 600);  // 790 = 800 - (border * 2)
    Layout();
    Fit();
-   SetSizeHints(-1, -1, 800, 600);
+   wxSize sz = GetSize();
+   SetSizeHints(sz.x, sz.y, 800, 600);
 
    // Center after all that resizing, but make sure it doesn't end up
    // off-screen
