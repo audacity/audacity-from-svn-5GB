@@ -311,7 +311,7 @@ void MixerToolBar::ShowInputSourceDialog()
    {
       S.StartHorizontalLay(wxCENTER, false);
       {
-         c = S.AddChoice(_("New sample rate (Hz):"),
+         c = S.AddChoice(_("Input Source:"),
                          mInputSourceChoice->GetStringSelection(),
                          &inputSources);
       }
