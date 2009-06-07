@@ -19,6 +19,7 @@ handling.
 #include "../Audacity.h"
 
 #include <wx/defs.h>
+#include <wx/textctrl.h>
 
 #include "../Prefs.h"
 #include "../ShuttleGui.h"
@@ -51,7 +52,7 @@ void ProjectsPrefs::Populate()
 
 void ProjectsPrefs::PopulateOrExchange(ShuttleGui & S)
 {
-   wxWindow *w;
+   wxTextCtrl *w;
 
    S.SetBorder(2);
 
