@@ -179,6 +179,7 @@ void TranscriptionToolBar::Populate()
                                   SPEED_SLIDER);
    mPlaySpeedSlider->Set(1.0);
    mPlaySpeedSlider->SetLabel(_("Playback Speed"));
+   mPlaySpeedSlider->SetScroll(0.1, 0.5);
    Add( mPlaySpeedSlider, 0, wxALIGN_CENTER );
    mPlaySpeedSlider->Connect(wxEVT_SET_FOCUS,
                  wxFocusEventHandler(TranscriptionToolBar::OnFocus),

@@ -263,7 +263,9 @@ SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
                            wxPoint position,
                            wxSize size,
                            int style, 
-                           float value):
+                           float value,
+                           float line,
+                           float page):
    wxDialog(parent,id,title,position),
    mStyle(style)
 {
@@ -283,6 +285,7 @@ SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
                             size,
                             style,
                             false);
+      mSlider->SetScroll(line, page);
       S.AddWindow(mSlider, wxEXPAND);
    }
    S.EndVerticalLay();
@@ -432,6 +435,8 @@ void LWSlider::Init(wxWindow * parent,
    mDefaultValue = 0.0f;
    mDefaultShortcut = false;
    mBitmap = NULL;
+   mScrollLine = 1;
+   mScrollPage = 5;
 
    // Get the Thumb bitmap.  Generic version fo rnow...
 //#ifdef USE_AQUA
@@ -476,6 +481,18 @@ void LWSlider::SetDefaultValue(float value)
 void LWSlider::SetDefaultShortcut(bool value)
 {
    mDefaultShortcut = value; 
+}
+
+void LWSlider::GetScroll(float & line, float & page)
+{
+   line = mScrollLine;
+   page = mScrollPage;
+}
+
+void LWSlider::SetScroll(float line, float page)
+{
+   mScrollLine = line;
+   mScrollPage = page;
 }
 
 wxWindow* LWSlider::GetToolTipParent() const
@@ -728,7 +745,9 @@ bool LWSlider::DoShowDialog(wxPoint pos)
                      pos,
                      wxSize( mWidth, mHeight ),
                      mStyle,
-                     Get());
+                     Get(),
+                     mScrollLine,
+                     mScrollPage);
    if (pos == wxPoint(-1, -1)) {
       dlg.Center();
    }
@@ -868,13 +887,13 @@ void LWSlider::OnKeyEvent(wxKeyEvent & event)
    {
       case WXK_RIGHT:
       case WXK_UP:
-         Increase( 1 );
+         Increase( mScrollLine );
          SendUpdate( mCurrentValue );
       break;
 
       case WXK_LEFT:
       case WXK_DOWN:
-         Decrease( 1 );
+         Decrease( mScrollLine );
          SendUpdate( mCurrentValue );
       break;
 
@@ -882,7 +901,7 @@ void LWSlider::OnKeyEvent(wxKeyEvent & event)
 #if !wxCHECK_VERSION(2,7,0)
       case WXK_PRIOR:
 #endif
-         Increase( 5 );
+         Increase( mScrollPage );
          SendUpdate( mCurrentValue );
       break;
 
@@ -890,7 +909,7 @@ void LWSlider::OnKeyEvent(wxKeyEvent & event)
 #if !wxCHECK_VERSION(2,7,0)
       case WXK_NEXT:
 #endif
-         Decrease( 5 );
+         Decrease( mScrollPage );
          SendUpdate( mCurrentValue );
       break;
 
@@ -1224,6 +1243,16 @@ void ASlider::OnKillFocus(wxFocusEvent & event)
 void ASlider::RecreateTipWin()
 {
    mLWSlider->RecreateTipWin();
+}
+
+void ASlider::GetScroll(float & line, float & page)
+{
+   mLWSlider->GetScroll(line, page);
+}
+
+void ASlider::SetScroll(float line, float page)
+{
+   mLWSlider->SetScroll(line, page);
 }
 
 float ASlider::Get( bool convert )
