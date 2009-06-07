@@ -2,7 +2,7 @@
 
    Audacity - A Digital Audio Editor
    Copyright 1999-2009 Audacity Team
-   License: GPL v2 - see LICENSE.txt
+   File License: wxWidgets
 
    Dan Horgan
 
@@ -28,10 +28,8 @@ May possibly inherit from wxEvtHandler in the future...
 #include "ScriptCommandRelay.h"
 
 CommandHandler::CommandHandler(AudacityApp &app)
-//: wxEvtHandler(),
  : mCurrentContext(new CommandExecutionContext(&app, GetActiveProject()))
 {
-   //app.SetNextHandler(this);
 }
 
 CommandHandler::~CommandHandler()

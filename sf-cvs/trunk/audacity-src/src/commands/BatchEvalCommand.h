@@ -2,7 +2,7 @@
 
    Audacity: A Digital Audio Editor
    Audacity(R) is copyright (c) 1999-2009 Audacity Team.
-   License: GPL v2.  See License.txt.
+   File License: wxwidgets
 
    BatchEvalCommand.h
    Dan Horgan

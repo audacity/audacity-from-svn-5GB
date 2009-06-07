@@ -2,7 +2,7 @@
 
    Audacity - A Digital Audio Editor
    Copyright 1999-2009 Audacity Team
-   License: GPL v2 - see LICENSE.txt
+   File License: wxWidgets
 
    Dan Horgan
 
@@ -36,6 +36,7 @@ public:
 
    virtual bool Apply(CommandExecutionContext context)
    {
+      wxMessageOutputDebug().Printf(wxT("In DebugPrintCommand::Apply"));
       wxMessageOutputDebug().Printf(mMessage);
       return true;
    }
