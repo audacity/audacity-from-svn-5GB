@@ -105,6 +105,7 @@ void KeyConfigPrefs::Populate()
 
    mManager = project->GetCommandManager();
    mManager->GetCategories(mCats);
+   mCats.Insert(_("All"), 0);
 
    PopulateOrExchange(S);
 
@@ -185,6 +186,21 @@ void KeyConfigPrefs::CreateList()
    mList->SetColumnWidth(KeyComboColumn, 250);
 }
 
+int wxCALLBACK SortCallback(long item1, long item2, long sortData)
+{
+   wxArrayString *names = (wxArrayString *) sortData;
+
+   if (names->Item(item1) < names->Item(item2)) {
+      return -1;
+   }
+
+   if (names->Item(item1) > names->Item(item2)) {
+      return 1;
+   }
+
+   return 0;
+}
+
 void KeyConfigPrefs::RepopulateBindingsList()
 {
    wxString cat = mCat->GetStringSelection();
@@ -205,7 +221,7 @@ void KeyConfigPrefs::RepopulateBindingsList()
          mKeys.Add(key);
       }
 
-      if (mManager->GetCategoryFromName(name) != cat) {
+      if (cat != _("All") && mManager->GetCategoryFromName(name) != cat) {
          continue;
       }
 
@@ -234,6 +250,8 @@ void KeyConfigPrefs::RepopulateBindingsList()
 
       ndx++;
    }
+
+//   mList->SortItems(SortCallback, (long) &mNames);
 }
 
 void KeyConfigPrefs::OnLoad(wxCommandEvent & e)
