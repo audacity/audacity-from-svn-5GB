@@ -5952,6 +5952,7 @@ void TrackPanel::OnTrackMute(bool shiftDown, Track *t)
       }
    }
 
+   mAx->Updated();
    Refresh(false);
 }
 
@@ -6015,6 +6016,8 @@ void TrackPanel::OnTrackSolo(bool shiftDown, Track *t)
          i = iter.Next();
       }
    }
+
+   mAx->Updated();
    Refresh(false);
 }
 
