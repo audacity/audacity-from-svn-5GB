@@ -2,7 +2,7 @@
 
    Audacity - A Digital Audio Editor
    Copyright 1999-2009 Audacity Team
-   License: GPL v2 - see LICENSE.txt
+   File License: wxWidgets
 
    Dan Horgan
 
@@ -58,11 +58,6 @@ void CommandBuilder::BuildCommand(const wxString &cmdName, const wxString &cmdPa
 {
 
    /*
-   wxMessageOutputDebug().Printf(cmdName);
-   // Temp
-   mValid = true;
-
-
    // Split up parameters and add them to the map
 
    // The checking below should be replaced by a lookup + polymorphism
@@ -78,9 +73,9 @@ void CommandBuilder::BuildCommand(const wxString &cmdName, const wxString &cmdPa
    //   // TODO store command somewhere else...
    //   mCommand = new EffectCommand(f);
    //}
-   */
-
+   //
    // See if the name refers to a menu command
+   */
 
    mCommand = new BatchEvalCommand(cmdName, cmdParams);
    mValid   = true;
@@ -89,19 +84,18 @@ void CommandBuilder::BuildCommand(const wxString &cmdName, const wxString &cmdPa
 void CommandBuilder::BuildCommand(const wxString &cmdString)
 {
 
-   // Find the command name terminator... ignore line if not found
+   // Find the command name terminator...  If there is more than one word and
+   // no terminator, the command is badly formed
    int splitAt = cmdString.Find(wxT(':'));
-   if (splitAt < 0) {
+   if (splitAt < 0 && cmdString.Strip(wxString::both).Find(wxT(' ')) >= 0) {
       mError = wxT("BAD - Missing ':'?");
-      // TODO
+      mValid = false;
+      return;
    }
 
    wxString cmdName = cmdString.Left(splitAt).Strip(wxString::both);
    wxString cmdParams = cmdString.Mid(splitAt+1).Strip(wxString::both);
    BuildCommand(cmdName, cmdParams);
-
-   // Temp
-   //mCommand = new DebugPrintCommand(cmdString);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

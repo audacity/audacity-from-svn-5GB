@@ -2,7 +2,7 @@
 
    Audacity - A Digital Audio Editor
    Copyright 1999-2009 Audacity Team
-   License: GPL v2 - see LICENSE.txt
+   File License: wxWidgets
 
    Dan Horgan
 
@@ -26,20 +26,18 @@ code out of LoadModules.
 #include "CommandBuilder.h"
 #include "AppCommandEvent.h"
 #include "CommandHandler.h"
+#include "ResponseQueue.h"
 #include <wx/wx.h>
 
-
 #include "../Project.h"
+
 // Declare static class members
 CommandHandler *ScriptCommandRelay::sCmdHandler;
 tpRegScriptServerFunc ScriptCommandRelay::sScriptFn;
-tpScriptServerResponseFunc ScriptCommandRelay::sScriptOutFn;
+ResponseQueue ScriptCommandRelay::sResponseQueue;
 
 void ScriptCommandRelay::SetRegScriptServerFunc(tpRegScriptServerFunc scriptFn)
 { sScriptFn = scriptFn; }
-
-void ScriptCommandRelay::SetScriptServerResponseFunc(tpScriptServerResponseFunc scriptOutFn)
-{ sScriptOutFn = scriptOutFn; }
 
 void ScriptCommandRelay::SetCommandHandler(CommandHandler &ch)
 { sCmdHandler = &ch; }
@@ -48,14 +46,14 @@ void ScriptCommandRelay::Run()
 {
    wxASSERT( sScriptFn != NULL );
    while( true )
-      sScriptFn(&ScriptCommandRelay::ExecCommand);
+      sScriptFn(&ExecCommand);
 }
 
 /// This is the function which actually obeys one command.  Rather than applying
 /// the command directly, an event containing a reference to the command is sent
 /// to the main (GUI) thread. This is because having more than one thread access
 /// the GUI at a time causes problems with wxwidgets.
-int ScriptCommandRelay::ExecCommand(wxString *pIn)
+int ExecCommand(wxString *pIn, wxString *pOut)
 {
    CommandBuilder builder(*pIn);
    if (builder.WasValid())
@@ -64,18 +62,25 @@ int ScriptCommandRelay::ExecCommand(wxString *pIn)
       AppCommandEvent ev;
       ev.SetCommand(cmd);
       GetActiveProject()->AddPendingEvent(ev);
+      Response r = ScriptCommandRelay::ReceiveResponse();
+      *pOut      = r.GetMessage();
    } else
    {
-      wxMessageOutputDebug().Printf(wxT("Syntax error!\n"));
-      // TODO: Send message back to script
+      *pOut = wxT("Syntax error!\n");
+      *pOut += builder.GetErrorMessage();
    }
 
    return 0;
 }
 
-void ScriptCommandRelay::SendResponse(wxString &pOut)
+void ScriptCommandRelay::SendResponse(const wxString &response)
 {
-   sScriptOutFn(&pOut);
+   sResponseQueue.AddResponse(response);
+}
+
+Response ScriptCommandRelay::ReceiveResponse()
+{
+   return ScriptCommandRelay::sResponseQueue.WaitAndGetResponse();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

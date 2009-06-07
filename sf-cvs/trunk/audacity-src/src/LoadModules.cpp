@@ -34,7 +34,6 @@ i.e. an alternative to the usual interface, for Audacity.
 
 #define initFnName      "ExtensionModuleInit"
 #define scriptFnName    "RegScriptServerFunc"
-#define scriptOutFnName "ScriptServerResponseFunc"
 #define mainPanelFnName "MainPanelFunc"
 
 typedef wxWindow * pwxWindow;
@@ -69,10 +68,6 @@ wxWindow * MakeHijackPanel()
 // starts a thread and reads script commands.
 tpRegScriptServerFunc scriptFn;
 
-// This variable will hold the address of a subroutine in a DLL that
-// recieves responses from the main program.
-tpScriptServerResponseFunc scriptOutFn;
-
 void LoadModule(wxString fname)
 {
    wxLogDebug(wxT("About to load %s"), fname.c_str() );
@@ -98,8 +93,6 @@ void LoadModule(wxString fname)
 
       if(( scriptFn == NULL ) &&(result>=0 ))
          scriptFn = (tpRegScriptServerFunc)(pDLL->GetSymbol(wxT(scriptFnName)));
-      if(( scriptOutFn == NULL ) &&(result>=0 ))
-         scriptOutFn = (tpScriptServerResponseFunc)(pDLL->GetSymbol(wxT(scriptOutFnName)));
 
       if((pPanelHijack==NULL ) && (result>=0))
          pPanelHijack = (tPanelFn)(pDLL->GetSymbol(wxT(mainPanelFnName)));
@@ -144,11 +137,10 @@ void LoadModules(CommandHandler &cmdHandler)
    for(i=0; i<files.GetCount(); i++)
       LoadModule(files[i]);
    // After loading all the modules, we may have a registered scripting function.
-   if(scriptFn && scriptOutFn)
+   if(scriptFn)
    {
       ScriptCommandRelay::SetCommandHandler(cmdHandler);
       ScriptCommandRelay::SetRegScriptServerFunc(scriptFn);
-      ScriptCommandRelay::SetScriptServerResponseFunc(scriptOutFn);
       NonGuiThread::StartChild(&ScriptCommandRelay::Run);
    }
 }
