@@ -1184,6 +1184,7 @@
 		28D65C720B97E54B000E001A /* AutoDuck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C700B97E54B000E001A /* AutoDuck.cpp */; };
 		28D65C760B97E573000E001A /* DtmfGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C740B97E573000E001A /* DtmfGen.cpp */; };
 		28DA07390E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DA07380E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp */; };
+		28DB34790FDC2C5D0011F589 /* ResponseQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DB34780FDC2C5D0011F589 /* ResponseQueue.cpp */; };
 		28E2370D0E515D9200281398 /* audiomixerreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1000E50AD5700CC4BD3 /* audiomixerreader.cpp */; };
 		28E2370E0E515D9300281398 /* audiomixerreader.h in Headers */ = {isa = PBXBuildFile; fileRef = ED05D1010E50AD5700CC4BD3 /* audiomixerreader.h */; };
 		28E2370F0E515D9400281398 /* audioreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1020E50AD5700CC4BD3 /* audioreader.cpp */; };
@@ -1432,7 +1433,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 1790ABE309883346008A330A /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 2880527D0DEA694100671EA4 /* mod-script-pipe */;
+			remoteGlobalIDString = 2880527D0DEA694100671EA4;
 			remoteInfo = "mod-script-pipe";
 		};
 		28E237260E515E1300281398 /* PBXContainerItemProxy */ = {
@@ -2896,6 +2897,8 @@
 		28D65C750B97E573000E001A /* DtmfGen.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = DtmfGen.h; sourceTree = "<group>"; };
 		28DA07370E4F5CEC003933C5 /* ExportFFmpegDialogs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ExportFFmpegDialogs.h; sourceTree = "<group>"; };
 		28DA07380E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFFmpegDialogs.cpp; sourceTree = "<group>"; };
+		28DB34770FDC2C5D0011F589 /* ResponseQueue.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ResponseQueue.h; sourceTree = "<group>"; };
+		28DB34780FDC2C5D0011F589 /* ResponseQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ResponseQueue.cpp; sourceTree = "<group>"; };
 		28E237080E515D1D00281398 /* libscorealign.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libscorealign.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportFLAC.h; sourceTree = "<group>"; };
 		28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFLAC.cpp; sourceTree = "<group>"; };
@@ -3593,6 +3596,8 @@
 				28D540020FD1912A00FA7C75 /* DebugPrintCommand.h */,
 				174D902A098C78AF00D5909F /* Keyboard.cpp */,
 				174D902B098C78AF00D5909F /* Keyboard.h */,
+				28DB34770FDC2C5D0011F589 /* ResponseQueue.h */,
+				28DB34780FDC2C5D0011F589 /* ResponseQueue.cpp */,
 				28D540030FD1912A00FA7C75 /* ScriptCommandRelay.cpp */,
 				28D540040FD1912A00FA7C75 /* ScriptCommandRelay.h */,
 			);
@@ -7509,6 +7514,7 @@
 				28D540060FD1912A00FA7C75 /* CommandBuilder.cpp in Sources */,
 				28D540070FD1912A00FA7C75 /* CommandHandler.cpp in Sources */,
 				28D540080FD1912A00FA7C75 /* ScriptCommandRelay.cpp in Sources */,
+				28DB34790FDC2C5D0011F589 /* ResponseQueue.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
