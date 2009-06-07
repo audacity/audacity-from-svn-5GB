@@ -41,6 +41,9 @@ public:
    // Returns TRUE if passed track has the focus
    bool IsFocused( Track *track );
 
+   // Called to signal changes to a track
+   void Updated();
+
 #if wxUSE_ACCESSIBILITY
    // Retrieves the address of an IDispatch interface for the specified child.
    // All objects must support this property.
