@@ -1941,6 +1941,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\commands\ResponseQueue.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\ResponseQueue.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\commands\ScriptCommandRelay.cpp"
 				>
 			</File>
