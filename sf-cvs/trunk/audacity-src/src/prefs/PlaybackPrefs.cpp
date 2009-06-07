@@ -49,17 +49,20 @@ void PlaybackPrefs::Populate()
 
 void PlaybackPrefs::PopulateOrExchange(ShuttleGui & S)
 {
+   wxWindow *w;
+
    S.SetBorder(2);
 
    S.StartStatic(_("Effects Preview"));
    {
       S.StartThreeColumn();
       {
-         S.TieTextBox(_("Length of preview:"),
-                      wxT("/AudioIO/EffectsPreviewLen"),
-                      3.0,
-                      9);
+         w = S.TieTextBox(_("Length of preview:"),
+                          wxT("/AudioIO/EffectsPreviewLen"),
+                          3.0,
+                          9);
          S.AddUnits(_("seconds"));
+         w->SetName(w->GetName() + wxT(" ") + _("seconds"));
       }
       S.EndThreeColumn();
    }
@@ -69,17 +72,19 @@ void PlaybackPrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartThreeColumn();
       {
-         S.TieTextBox(_("Preview before cut region:"),
-                      wxT("/AudioIO/CutPreviewBeforeLen"),
-                      1.0,
-                      9);
+         w = S.TieTextBox(_("Preview before cut region:"),
+                          wxT("/AudioIO/CutPreviewBeforeLen"),
+                          1.0,
+                          9);
          S.AddUnits(_("seconds"));
+         w->SetName(w->GetName() + wxT(" ") + _("seconds"));
 
-         S.TieTextBox(_("Preview after cut region:"),
-                      wxT("/AudioIO/CutPreviewAfterLen"),
-                      1.0,
-                      9);
+         w = S.TieTextBox(_("Preview after cut region:"),
+                          wxT("/AudioIO/CutPreviewAfterLen"),
+                          1.0,
+                          9);
          S.AddUnits(_("seconds"));
+         w->SetName(w->GetName() + wxT(" ") + _("seconds"));
       }
       S.EndThreeColumn();
    }
@@ -89,17 +94,19 @@ void PlaybackPrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartThreeColumn();
       {
-         S.TieTextBox(_("Short period:"),
-                      wxT("/AudioIO/SeekShortPeriod"),
-                      1.0,
-                      9);
+         w = S.TieTextBox(_("Short period:"),
+                          wxT("/AudioIO/SeekShortPeriod"),
+                          1.0,
+                          9);
          S.AddUnits(_("seconds"));
+         w->SetName(w->GetName() + wxT(" ") + _("seconds"));
 
-         S.TieTextBox(_("Long period:"),
-                      wxT("/AudioIO/SeekLongPeriod"),
-                      15.0,
-                      9);
+         w = S.TieTextBox(_("Long period:"),
+                          wxT("/AudioIO/SeekLongPeriod"),
+                          15.0,
+                          9);
          S.AddUnits(_("seconds"));
+         w->SetName(w->GetName() + wxT(" ") + _("seconds"));
       }
       S.EndThreeColumn();
    }

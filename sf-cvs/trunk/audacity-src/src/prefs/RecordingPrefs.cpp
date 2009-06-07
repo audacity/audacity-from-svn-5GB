@@ -52,6 +52,8 @@ void RecordingPrefs::Populate()
 
 void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
 {
+   wxWindow *w;
+
    S.SetBorder(2);
 
    S.StartStatic(_("Playthrough"));
@@ -79,17 +81,19 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
       {
          // only show the following controls if we use Portaudio v19, because
          // for Portaudio v18 we always use default buffer sizes
-         S.TieTextBox(_("Audio to buffer:"),
-                      wxT("/AudioIO/LatencyDuration"),
-                      DEFAULT_LATENCY_DURATION,
-                      9);
+         w = S.TieTextBox(_("Audio to buffer:"),
+                          wxT("/AudioIO/LatencyDuration"),
+                          DEFAULT_LATENCY_DURATION,
+                          9);
          S.AddUnits(_("milliseconds (higher = more latency)"));
+         w->SetName(w->GetName() + wxT(" ") + _("milliseconds (higher = more latency)"));
 
-         S.TieTextBox(_("Latency correction:"),
-                      wxT("/AudioIO/LatencyCorrection"),
-                      DEFAULT_LATENCY_CORRECTION,
-                      9);
+         w = S.TieTextBox(_("Latency correction:"),
+                          wxT("/AudioIO/LatencyCorrection"),
+                          DEFAULT_LATENCY_CORRECTION,
+                          9);
          S.AddUnits(_("milliseconds (negative = backwards)"));
+         w->SetName(w->GetName() + wxT(" ") + _("milliseconds (negative = backwards)"));
       }
       S.EndThreeColumn();
    }
