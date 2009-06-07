@@ -132,6 +132,8 @@ void PipeServer()
    unlink(toFifoName);
    unlink(fromFifoName);
 
+   // TODO avoid symlink security issues?
+
    rc = mkfifo(fromFifoName, S_IRWXU) & mkfifo(toFifoName, S_IRWXU);
    if (rc < 0)
    {
@@ -174,10 +176,10 @@ void PipeServer()
          {
             break;
          }
-         printf(buf);
-
+         printf("Server sending %s",buf);
          fwrite(buf, 1, len, fromFifo);
       }
+      fflush(fromFifo);
    }
 
    printf("Read failed on fifo, quitting\n");
