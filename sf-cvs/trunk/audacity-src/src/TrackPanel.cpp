@@ -4859,7 +4859,7 @@ void TrackPanel::DrawEverythingElse(wxDC * dc,
 //             rbox.x, rbox.y, rbox.width, rbox.height);
 #endif
 
-      if (region.Contains(0, 0, GetLeftOffset(), trackRect.height)) {
+      if (region.Contains(0, trackRect.y, GetLeftOffset(), trackRect.height)) {
          wxRect r = trackRect;
          r.x += GetVRulerOffset();
          r.y += kTopInset;
