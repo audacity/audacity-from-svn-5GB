@@ -105,6 +105,9 @@ class LWSlider
    void SetDefaultValue(float value);
    void SetDefaultShortcut(bool value);
 
+   void GetScroll(float & line, float & page);
+   void SetScroll(float line, float page);
+
    float Get(bool convert = true);
    void Set(float value);
 
@@ -174,7 +177,10 @@ class LWSlider
    float mMaxValue;
    float mStepValue;
    float mSpeed;
- 
+
+   float mScrollLine;
+   float mScrollPage;
+
    float mCurrentValue;
 
    bool mDefaultShortcut;
@@ -212,6 +218,9 @@ class ASlider :public wxPanel
             bool canUseShift = true,
             float stepValue = STEP_CONTINUOUS );
    virtual ~ASlider();
+
+   void GetScroll(float & line, float & page);
+   void SetScroll(float line, float page);
 
    float Get( bool convert = true );
    void Set(float value);
@@ -260,7 +269,9 @@ class SliderDialog: public wxDialog
                 wxPoint position,
                 wxSize size, 
                 int style,
-                float value);
+                float value,
+                float line,
+                float page);
    ~SliderDialog();
    
    float Get();
