@@ -21,6 +21,7 @@
 #include "../Audacity.h"
 
 #include <wx/defs.h>
+#include <wx/textctrl.h>
 
 #include "../AudioIO.h"
 #include "../Envelope.h"
@@ -52,7 +53,7 @@ void RecordingPrefs::Populate()
 
 void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
 {
-   wxWindow *w;
+   wxTextCtrl *w;
 
    S.SetBorder(2);
 

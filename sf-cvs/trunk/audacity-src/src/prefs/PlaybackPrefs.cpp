@@ -21,6 +21,7 @@
 #include "../Audacity.h"
 
 #include <wx/defs.h>
+#include <wx/textctrl.h>
 
 #include "../ShuttleGui.h"
 
@@ -49,7 +50,7 @@ void PlaybackPrefs::Populate()
 
 void PlaybackPrefs::PopulateOrExchange(ShuttleGui & S)
 {
-   wxWindow *w;
+   wxTextCtrl *w;
 
    S.SetBorder(2);
 
