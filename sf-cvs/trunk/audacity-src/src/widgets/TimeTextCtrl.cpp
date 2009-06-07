@@ -209,6 +209,7 @@ public:
    int digits;
    int pos;   // Index of this field in the ValueString
    int fieldX; // x-position of the field on-screen
+   int fieldW; // width of the field on-screen
    int labelX; // x-position of the label on-screen
    bool zeropad;
    wxString label;
@@ -257,7 +258,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    mDigitFont(NULL),
    mLabelFont(NULL),
    mFocusedDigit(0),
-   mLastField(-1),
+   mLastField(1),
    mAutoPos(autoPos)
 {
    /* i18n-hint: Name of time display format that shows time in seconds */
@@ -794,6 +795,7 @@ bool TimeTextCtrl::Layout()
       memDC.GetTextExtent(mFields[i].label, &strW, &strH);
       pos += mFields[i].label.Length();
       x += strW;
+      mFields[i].fieldW = x;
    }
 
    mWidth = x + mBorderRight;
@@ -1036,6 +1038,7 @@ void TimeTextCtrl::OnCaptureKey(wxCommandEvent &event)
 
 void TimeTextCtrl::OnKeyDown(wxKeyEvent &event)
 {
+   event.Skip(false);
    int keyCode = event.GetKeyCode();
    int digit = mFocusedDigit;
 
@@ -1134,25 +1137,24 @@ void TimeTextCtrl::OnKeyDown(wxKeyEvent &event)
 void TimeTextCtrl::SetFieldFocus(int digit)
 {
 #if wxUSE_ACCESSIBILITY
-   if (mLastField != -1) {
-      GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_SELECTIONREMOVE,
-                   this,
-                   wxOBJID_CLIENT,
-                   mLastField);
-   }
-
    mFocusedDigit = digit;
    mLastField = mDigits[mFocusedDigit].field + 1;
 
+   // This looks strange (and it is), but it was the only way I could come
+   // up with that allowed Jaws, Window-Eyes, and NVDA to read the control
+   // somewhat the same.  See TimeTextCtrlAx below for even more odd looking
+   // hackery.
+   //
+   // If you change SetFieldFocus(), Updated(), or TimeTextCtrlAx, make sure
+   // you test with Jaws, Window-Eyes, and NVDA.
    GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_FOCUS,
-                this,
-                wxOBJID_CLIENT,
-                mLastField);
-
-   GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_SELECTION,
-                this,
-                wxOBJID_CLIENT,
-                mLastField);
+                                this,
+                                wxOBJID_CLIENT,
+                                0);
+   GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_FOCUS,
+                                this,
+                                wxOBJID_CLIENT,
+                                mLastField);
 #endif
 }
 
@@ -1161,11 +1163,13 @@ void TimeTextCtrl::Updated()
    wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, GetId());
    event.SetEventObject(this);
    GetEventHandler()->ProcessEvent(event);
+
 #if wxUSE_ACCESSIBILITY
-   GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_VALUECHANGE,
+   GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_NAMECHANGE,
                                 this,
                                 wxOBJID_CLIENT,
-                                mDigits[ mFocusedDigit ].field + 1);
+                                mLastField);
+   SetFieldFocus(mFocusedDigit);
 #endif
 }
 
@@ -1359,10 +1363,10 @@ void TimeTextCtrl::ControlsToValue()
 
 #if wxUSE_ACCESSIBILITY
 
-TimeTextCtrlAx::TimeTextCtrlAx( wxWindow *window ):
-   wxWindowAccessible( window )
+TimeTextCtrlAx::TimeTextCtrlAx(TimeTextCtrl *ctrl)
+:  wxWindowAccessible(ctrl)
 {
-   mCtrl = wxDynamicCast( window, TimeTextCtrl );
+   mCtrl = ctrl;
 }
 
 TimeTextCtrlAx::~TimeTextCtrlAx()
@@ -1380,14 +1384,12 @@ wxAccStatus TimeTextCtrlAx::DoDefaultAction(int childId)
 
 // Retrieves the address of an IDispatch interface for the specified child.
 // All objects must support this property.
-wxAccStatus TimeTextCtrlAx::GetChild( int childId, wxAccessible** child )
+wxAccStatus TimeTextCtrlAx::GetChild(int childId, wxAccessible **child)
 {
-   if( childId == wxACC_SELF )
-   {
+   if (childId == wxACC_SELF) {
       *child = this;
    }
-   else
-   {
+   else {
       *child = NULL;
    }
 
@@ -1395,7 +1397,7 @@ wxAccStatus TimeTextCtrlAx::GetChild( int childId, wxAccessible** child )
 }
 
 // Gets the number of children.
-wxAccStatus TimeTextCtrlAx::GetChildCount(int* childCount)
+wxAccStatus TimeTextCtrlAx::GetChildCount(int *childCount)
 {
    *childCount = mCtrl->mFields.GetCount();
 
@@ -1409,15 +1411,15 @@ wxAccStatus TimeTextCtrlAx::GetChildCount(int* childCount)
 // object, not what the object does as a result. For example, a
 // toolbar button that prints a document has a default action of
 // "Press" rather than "Prints the current document."
-wxAccStatus TimeTextCtrlAx::GetDefaultAction(int childId, wxString* actionName)
+wxAccStatus TimeTextCtrlAx::GetDefaultAction(int childId, wxString *actionName)
 {
-   *actionName = wxT("");
+   actionName->Clear();
 
    return wxACC_OK;
 }
 
 // Returns the description for this object or a child.
-wxAccStatus TimeTextCtrlAx::GetDescription( int childId, wxString *description )
+wxAccStatus TimeTextCtrlAx::GetDescription(int childId, wxString *description)
 {
    description->Clear();
 
@@ -1428,21 +1430,20 @@ wxAccStatus TimeTextCtrlAx::GetDescription( int childId, wxString *description )
 // If childId is 0 and child is NULL, no object in
 // this subhierarchy has the focus.
 // If this object has the focus, child should be 'this'.
-wxAccStatus TimeTextCtrlAx::GetFocus(int* childId, wxAccessible** child)
+wxAccStatus TimeTextCtrlAx::GetFocus(int *childId, wxAccessible **child)
 {
-   *childId = mCtrl->mDigits[mCtrl->mFocusedDigit].field + 1;
+   *childId = mCtrl->GetFocusedField();
    *child = this;
 
    return wxACC_OK;
 }
 
 // Returns help text for this object or a child, similar to tooltip text.
-wxAccStatus TimeTextCtrlAx::GetHelpText( int childId, wxString *helpText )
+wxAccStatus TimeTextCtrlAx::GetHelpText(int childId, wxString *helpText)
 {
-#if wxUSE_TOOLTIPS // Not available in wxX11
+#if wxUSE_TOOLTIPS
    wxToolTip *pTip = mCtrl->GetToolTip();
-   if( pTip )
-   {
+   if (pTip) {
       *helpText = pTip->GetTip();
    }
 
@@ -1456,7 +1457,7 @@ wxAccStatus TimeTextCtrlAx::GetHelpText( int childId, wxString *helpText )
 
 // Returns the keyboard shortcut for this object or child.
 // Return e.g. ALT+K
-wxAccStatus TimeTextCtrlAx::GetKeyboardShortcut( int childId, wxString *shortcut )
+wxAccStatus TimeTextCtrlAx::GetKeyboardShortcut(int childId, wxString *shortcut)
 {
    shortcut->Clear();
 
@@ -1465,57 +1466,49 @@ wxAccStatus TimeTextCtrlAx::GetKeyboardShortcut( int childId, wxString *shortcut
 
 // Returns the rectangle for this object (id = 0) or a child element (id > 0).
 // rect is in screen coordinates.
-wxAccStatus TimeTextCtrlAx::GetLocation( wxRect& rect, int elementId )
+wxAccStatus TimeTextCtrlAx::GetLocation(wxRect & rect, int elementId)
 {
-   if( elementId == wxACC_SELF )
-   {
-      rect = mCtrl->GetRect();
-      rect.SetPosition( mCtrl->GetParent()->ClientToScreen( rect.GetPosition() ) );
+   rect = mCtrl->GetRect();
+
+   if (elementId != wxACC_SELF) {
+      rect.x += mCtrl->mFields[elementId - 1].fieldX;
+      rect.width =  mCtrl->mFields[elementId - 1].fieldW;
    }
-   else
-   {
-      rect = mCtrl->mDigits[elementId - 1].digitBox;
-      rect.SetPosition( mCtrl->ClientToScreen( rect.GetPosition() ) );
-   }
+
+   rect.SetPosition(mCtrl->GetParent()->ClientToScreen(rect.GetPosition()));
 
    return wxACC_OK;
 }
 
 // Gets the name of the specified object.
-wxAccStatus TimeTextCtrlAx::GetName(int childId, wxString* name)
+wxAccStatus TimeTextCtrlAx::GetName(int childId, wxString *name)
 {
-   if( childId == wxACC_SELF )
-   {
+   if (childId == wxACC_SELF) {
       *name = mCtrl->GetName();
-      if( name->IsEmpty() )
-      {
+      if (name->IsEmpty()) {
          *name = mCtrl->GetLabel();
       }
-   }
-   else
-   {
-      *name = mCtrl->mFields[childId - 1].label;
-   }
 
-   if( name->IsEmpty() )
-   {
-      *name = _("Time Control");
+      for (size_t i = 0; i < mCtrl->mFields.GetCount(); i++) {
+         *name += wxT(" ") +
+                  mCtrl->mFields[i].str +
+                  wxT(" ") +
+                  mCtrl->mFields[i].label;
+      }
+   }
+   else {
+      *name = mCtrl->mFields[mCtrl->GetFocusedField() - 1].str +
+              wxT(" ") +
+              mCtrl->mFields[mCtrl->GetFocusedField() - 1].label;
    }
 
    return wxACC_OK;
 }
 
 // Returns a role constant.
-wxAccStatus TimeTextCtrlAx::GetRole(int childId, wxAccRole* role)
+wxAccStatus TimeTextCtrlAx::GetRole(int childId, wxAccRole *role)
 {
-   if( childId == wxACC_SELF )
-   {
-      *role = wxROLE_SYSTEM_STATICTEXT;
-   }
-   else
-   {
-      *role = wxROLE_SYSTEM_SPINBUTTON;
-   }
+   *role = wxROLE_SYSTEM_STATICTEXT;
 
    return wxACC_OK;
 }
@@ -1528,35 +1521,25 @@ wxAccStatus TimeTextCtrlAx::GetRole(int childId, wxAccRole* role)
 // - an integer representing the selected child element,
 //   or 0 if this object is selected (GetType() == wxT("long"))
 // - a "void*" pointer to a wxAccessible child object
-wxAccStatus TimeTextCtrlAx::GetSelections( wxVariant *selections )
+wxAccStatus TimeTextCtrlAx::GetSelections(wxVariant *selections)
 {
    return wxACC_NOT_IMPLEMENTED;
 }
 
 // Returns a state constant.
-wxAccStatus TimeTextCtrlAx::GetState(int childId, long* state)
+wxAccStatus TimeTextCtrlAx::GetState(int childId, long *state)
 {
    *state = wxACC_STATE_SYSTEM_FOCUSABLE;
-   *state |= ( mCtrl == wxWindow::FindFocus() ? wxACC_STATE_SYSTEM_FOCUSED : 0 );
+   *state |= (mCtrl == wxWindow::FindFocus() ? wxACC_STATE_SYSTEM_FOCUSED : 0);
 
    return wxACC_OK;
 }
 
 // Returns a localized string representing the value for the object
 // or child.
-wxAccStatus TimeTextCtrlAx::GetValue(int childId, wxString* strValue)
+wxAccStatus TimeTextCtrlAx::GetValue(int childId, wxString *strValue)
 {
-   if( childId == wxACC_SELF )
-   {
-      *strValue = mCtrl->GetTimeString();
-   }
-   else
-   {
-      mCtrl->ControlsToValue();
-      *strValue = mCtrl->mFields[childId - 1].str;
-   }
-
-   return wxACC_OK;
+   return wxACC_NOT_IMPLEMENTED;
 }
 
 #endif
