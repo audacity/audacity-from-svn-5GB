@@ -48,7 +48,7 @@ extern "C" {
 
    // This is an example of an exported variable
 
-typedef SCRIPT_PIPE_DLL_IMPORT int (*tpExecScriptServerFunc)( wxString * pIn);
+typedef SCRIPT_PIPE_DLL_IMPORT int (*tpExecScriptServerFunc)( wxString * pIn, wxString * pOut);
 
 
 static tpExecScriptServerFunc pScriptServerFn=NULL;
@@ -64,9 +64,8 @@ int DoSrv( char * pIn )
    wxString Str1(pIn, wxConvISO8859_1);
    Str1.Replace( wxT("\r"), wxT(""));
    Str1.Replace( wxT("\n"), wxT(""));
-   (*pScriptServerFn)( &Str1 );
+   (*pScriptServerFn)( &Str1 , &Str2);
 
-   /* Responses are disabled for now.
    size_t l = Str2.Length();
    Str2+= wxT('\n');
    aStr.Clear();
@@ -81,13 +80,12 @@ int DoSrv( char * pIn )
          iStart = i+1;
       }
    }
-   */
 //   wxLogDebug("Added %i Strings", aStr.GetCount());
    return 1;
 }
 
 // DoSrvMore yields one script line at a time.
-int DoSrvMore( char * pOut, int nMax )
+int DoSrvMore( char * pOut, unsigned int nMax )
 {
 
    wxString Temp;
@@ -95,7 +93,9 @@ int DoSrvMore( char * pOut, int nMax )
    if( aStr.GetCount() == 1 )
    {
       if( iSent != -1 )
+      {
          return -1;
+      }
       iSent++;
       Temp = aStr[0];
    }
@@ -130,12 +130,6 @@ int SCRIPT_PIPE_DLL_API RegScriptServerFunc( tpExecScriptServerFunc pFn )
       PipeServer();
    }
    return 4;
-}
-
-int SCRIPT_PIPE_DLL_API ScriptServerResponseFunc( wxString * pOut )
-{
-   //wxLogDebug(wxT(*pOut));
-   return 1;
 }
 
 // This is an example of an exported function.
