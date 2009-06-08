@@ -3,8 +3,15 @@
   Audacity: A Digital Audio Editor
 
   ProgressDialog.cpp
+
+  Copyright
+     Leland Lucius
+     Vaughan Johnson
   
-  Leland Lucius
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
 
 *******************************************************************//**
 
@@ -1374,6 +1381,56 @@ ProgressDialog::Beep()
       }
    }
 }
+
+TimerProgressDialog::TimerProgressDialog(const wxLongLong_t duration, 
+                                          const wxString & title, 
+                                          const wxString & message /*= wxEmptyString*/, 
+                                          ProgressDialogFlags flags /*= pdlgEmptyFlags*/)
+: ProgressDialog(title, message, flags)
+{
+   mDuration = duration;
+}
+
+int TimerProgressDialog::Update(const wxString & message /*= wxEmptyString*/)
+{
+   if (mCancel)
+   {
+      // for compatibility with old Update, that returned false on cancel
+      return eProgressCancelled; 
+   }
+   else if (mStop)
+   {
+      return eProgressStopped;
+   }
+
+   SetMessage(message);
+
+   wxLongLong_t now = wxGetLocalTimeMillis().GetValue();
+   wxLongLong_t elapsed = now - mStartTime;
+   wxLongLong_t remains = mStartTime + mDuration - now;
+
+   if (!IsShown() && elapsed > 500)
+   {
+      Show(true);
+   }
+
+   // Only update if a full second has passed.
+   if (now - mLastUpdate > 1000)
+   {
+      wxTimeSpan tsElapsed(0, 0, 0, elapsed);
+      wxTimeSpan tsRemains(0, 0, 0, remains);
+
+      mElapsed->SetLabel(tsElapsed.Format(wxT("%H:%M:%S")));
+      mRemaining->SetLabel(tsRemains.Format(wxT("%H:%M:%S")));
+
+      mLastUpdate = now;
+   }
+
+   wxYieldIfNeeded();
+
+   return eProgressSuccess;
+}
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
