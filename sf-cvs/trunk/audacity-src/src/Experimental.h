@@ -44,9 +44,6 @@
 //#define RIGHT_ALIGNED_TEXTBOXES
 //#define EXPERIMENTAL_VOICE_DETECTION
 
-//if this line is enabled then we do not truncate float representations to 1.0 (see Dither::Apply)
-#define EXPERIMENTAL_NOCLIP_FLOAT
-
 //FFmpeg integration. Some FFmpeg-related changes are NOT ifdef'ed,
 //as they are harmless (like - a few mockup methods in Import* classes)
 // To enable ffmpeg support #define USE_FFMPEG in config*.h, as for any other
