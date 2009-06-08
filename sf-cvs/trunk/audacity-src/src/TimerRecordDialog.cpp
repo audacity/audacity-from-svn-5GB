@@ -4,7 +4,7 @@
 
   TimerRecordDialog.cpp
 
-  Copyright 2006 by Vaughan Johnson
+  Copyright 2006-2009 by Vaughan Johnson
   
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -224,42 +224,29 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
       // Record for specified time.
    	AudacityProject* pProject = GetActiveProject();
       pProject->OnRecord();
-
       bool bIsRecording = true;
 
-      // Although inaccurate, use the wxProgressDialog wxPD_ELAPSED_TIME | wxPD_REMAINING_TIME 
-      // instead of calculating and presenting it, as in the commented out strNewMsg stuff below.
       wxString strMsg = 
          _("Recording start") + (wxString)wxT(":\t\t")
          + GetDisplayDate(m_DateTime_Start) + wxT("\n") + _("Recording end")
          + wxT(":\t\t") + GetDisplayDate(m_DateTime_End) + wxT("\n")
          + _("Duration") + wxT(":\t\t") + m_TimeSpan_Duration.Format(); 
 
-      ProgressDialog progress(
-               _("Audacity Timer Record Progress"), // const wxString& title,
-               strMsg); // const wxString& message
+      TimerProgressDialog 
+         progress(m_TimeSpan_Duration.GetMilliseconds().GetValue(), 
+                  _("Audacity Timer Record Progress"), 
+                  strMsg); 
 
       // Make sure that start and end time are updated, so we always get the full 
       // duration, even if there's some delay getting here.
       wxTimerEvent dummyTimerEvent;
       this->OnTimer(dummyTimerEvent);
 
-      wxDateTime dateTime_UNow;
-      wxTimeSpan done_TimeSpan;
-
       // Loop for progress display during recording.
-      while (bIsRecording && updateResult == eProgressSuccess) {
+      while (bIsRecording && updateResult == eProgressSuccess) 
+      {
          wxMilliSleep(kTimerInterval);
-         
-         dateTime_UNow = wxDateTime::UNow();	// current time
-         done_TimeSpan = dateTime_UNow - m_DateTime_Start;
-
-         // wxTimeSpan remaining_TimeSpan = m_DateTime_End - dateTime_UNow;
-         // wxString strNewMsg = 
-         //    strMsg + _("\nDone: ") + done_TimeSpan.Format() + _("     Remaining: ") + remaining_TimeSpan.Format();
-         updateResult = 
-            progress.Update(done_TimeSpan.GetSeconds(), m_TimeSpan_Duration.GetSeconds()); // , strNewMsg);
-
+         updateResult = progress.Update();
          bIsRecording = (wxDateTime::UNow() <= m_DateTime_End); // Call UNow() again for extra accuracy...
       }
       pProject->OnStop();
@@ -440,22 +427,22 @@ int TimerRecordDialog::WaitForStart()
    wxString strMsg;
    /* i18n-hint: A time specification like "Sunday 28th October 2007 15:16:17 GMT"
 	* but hopefully translated by wxwidgets will be inserted into this */
-   strMsg.Printf(_("Waiting to start recording at %s.\n"), GetDisplayDate(m_DateTime_Start).c_str()); 
-   ProgressDialog progress(_("Audacity Timer Record - Waiting for Start"),
-                           strMsg, pdlgHideStopButton);
+   strMsg.Printf(_("Waiting to start recording at %s.\n"), 
+                  GetDisplayDate(m_DateTime_Start).c_str()); 
    wxDateTime startWait_DateTime = wxDateTime::UNow();
    wxTimeSpan waitDuration = m_DateTime_Start - startWait_DateTime;
+   TimerProgressDialog 
+      progress(waitDuration.GetMilliseconds().GetValue(), 
+               _("Audacity Timer Record - Waiting for Start"),
+               strMsg, 
+               pdlgHideStopButton);
 
    int updateResult = eProgressSuccess;
    bool bIsRecording = false;
-   wxTimeSpan done_TimeSpan;
-   while (updateResult == eProgressSuccess && !bIsRecording) {
+   while (updateResult == eProgressSuccess && !bIsRecording) 
+   {
       wxMilliSleep(10);
-
-      done_TimeSpan = wxDateTime::UNow() - startWait_DateTime;
-      updateResult = progress.Update(done_TimeSpan.GetSeconds(),
-                                    waitDuration.GetSeconds());
-
+      updateResult = progress.Update();
       bIsRecording = (m_DateTime_Start <= wxDateTime::UNow());
    }
    return updateResult;

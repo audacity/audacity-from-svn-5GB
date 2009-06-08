@@ -3,8 +3,15 @@
   Audacity: A Digital Audio Editor
 
   ProgressDialog.h
+
+  Copyright
+     Leland Lucius
+     Vaughan Johnson
   
-  Leland Lucius
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
 
 *************************************************************************/
 
@@ -62,23 +69,39 @@ class AUDACITY_DLL_API ProgressDialog:public wxDialog
    void OnStop(wxCommandEvent & e);
    void Beep();
 
+ protected:
+   wxStaticText *mElapsed;
+   wxStaticText *mRemaining;
+
+   wxLongLong_t mStartTime;
+   wxLongLong_t mLastUpdate;
+
+   bool mCancel;
+   bool mStop;
+
  private:
    wxWindow *mHadFocus;
    wxGauge *mGauge;
    wxStaticText *mMessage;
-   wxStaticText *mElapsed;
-   wxStaticText *mRemaining;
    wxWindowDisabler *mDisable;
 
-   wxLongLong_t mStartTime;
-   wxLongLong_t mLastTime;
-   wxLongLong_t mLastUpdate;
    int mLastValue;
 
-   bool mCancel;
-   bool mStop;
    
    DECLARE_EVENT_TABLE();
+};
+
+class AUDACITY_DLL_API TimerProgressDialog : public ProgressDialog
+{
+ public:
+   TimerProgressDialog(const wxLongLong_t duration, 
+                        const wxString & title, 
+                        const wxString & message = wxEmptyString, 
+                        ProgressDialogFlags flags = pdlgEmptyFlags);
+   int Update(const wxString & message = wxEmptyString);
+
+ protected:
+   wxLongLong_t mDuration;
 };
 
 #endif
