@@ -108,10 +108,12 @@ def get_domain(u):
   
   return L[1]
 
-def normalize_url(url):
+def normalize_url(url, lower=True):
 # url normalization - only for local comparison operations, use original url for online requests
   url = split_section(url)[0] 
-  url = url.lower()
+  
+  if lower:
+    url = url.lower()
   
   if url.startswith('http://'):
     url = url[len('http://'):]
@@ -268,8 +270,9 @@ def pre_html_transform(doc, url):
   
   return doc
   
-def pos_html_transform(doc):
+def pos_html_transform(doc, url):
   global footer_text, config
+  url = normalize_url(url, False)
   
   # Remove empty links
   doc = clean_tag(doc, 'href=""', '</a>', '<a ');
@@ -298,6 +301,9 @@ def pos_html_transform(doc):
   
   # add static dump time
   footer_html = footer_text.replace('%DATE%', strftime("%Y-%m-%d %H:%M:%S"))
+  
+  # add online url
+  footer_html = footer_html.replace('%ONLINEURL%', url)
 
   if config.special_mode:
     # keep MediaWiki credits
@@ -826,7 +832,7 @@ def parse_html(doc, url):
   newdoc = newdoc.replace(BEGIN_COMMENT_REPLACE, '<!--')
   newdoc = newdoc.replace(END_COMMENT_REPLACE, '-->')
 
-  newdoc = pos_html_transform(newdoc)
+  newdoc = pos_html_transform(newdoc, url)
   
   return (newdoc, new_urls)
   
@@ -898,9 +904,9 @@ def run(out=sys.stdout):
     new_urls = []
 
     if filename.endswith('.html'):
-      (doc, new_urls) = parse_html(doc, nurl)
+      (doc, new_urls) = parse_html(doc, url)
     elif filename.endswith('.css'):
-      (doc, new_urls) = parse_css(doc, nurl)
+      (doc, new_urls) = parse_css(doc, url)
 
     # Enqueue URLs that we haven't yet spidered.
     for u in new_urls:
