@@ -33,7 +33,9 @@
 // Comment out the next two lines if you want to disable 'experimental theming'
 // Work in progress, June-2008.
 //#define EXPERIMENTAL_THEMING
+#if IS_BETA
 #define EXPERIMENTAL_THEME_PREFS
+#endif
 
 //Next line enables Mic monitoring at times when it was previously off.
 //More work is needed as after recording or playing it results in an 
