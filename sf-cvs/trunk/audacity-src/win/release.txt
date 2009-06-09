@@ -25,11 +25,14 @@ either one, but example values are for Unicode_Release.
 		We cannot publicly post a build that supports ASIO, for 
 		licensing reasons (more detail in compile.txt). 
 
-	c. It's a good idea to not only do a Build > Clean Solution
+	c. If building the 'Release' build (rather than a Beta), set IS_BETA to 0
+		in Audacity.h.
+
+	d. It's a good idea to not only do a Build > Clean Solution
 		beforehand, but to also delete the directory 
 		(e.g., audacity\win\unicode_release).
 	
-	d. Make sure to build the "locale" project, either 
+	e. Make sure to build the "locale" project, either 
 		separately or as part of Build > Batch Build. You will need
 		msgfmt.zip in your PATH for that. Get it from
 		http://audacity.sourceforge.net/files/msgfmt.zip
