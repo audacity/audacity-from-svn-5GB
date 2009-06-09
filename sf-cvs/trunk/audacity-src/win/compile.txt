@@ -1,5 +1,5 @@
 Compiling Audacity(R) for Microsoft Windows(TM)
-copyright (c) 1999-2008 Audacity Team
+copyright (c) 1999-2009 Audacity Team
 
 Authors:
   Asger Ottar Alstrup
@@ -13,7 +13,7 @@ Authors:
   Lynn Allan
 
 ========================================================================
-This version is currently accurate for Audacity version 1.3.6.
+This version is currently accurate for Audacity version 1.3.8.
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 See also 
@@ -48,7 +48,7 @@ attempting to compile Audacity, or nothing will work!
 
 wxWidgets is available at "http://www.wxwidgets.org/".
 
-Audacity 1.3.6 requires wxWidgets 2.8.9.
+Audacity 1.3.8 requires wxWidgets 2.8.9.
 
 To build on Windows only, download the wxMSW package
 (installer or zip).
