@@ -476,6 +476,11 @@ void Grid::OnKeyDown(wxKeyEvent &event)
          }
          else {
             wxGrid::OnKeyDown(event);
+
+            // This looks strange, but what it does is selects the cell when
+            // enter is pressed after editing.  Without it, Jaws and Window-Eyes
+            // do not speak the new cell contents (the one below the edited one).
+            SetGridCursor(GetGridCursorRow(), GetGridCursorCol());
          }
          break;
       }
