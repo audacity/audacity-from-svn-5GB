@@ -809,8 +809,8 @@ void TagsEditor::PopulateOrExchange(ShuttleGui & S)
          mGrid->CreateGrid(0, 2); 
          mGrid->SetRowLabelSize(0);
          mGrid->SetDefaultCellAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
-         mGrid->SetColLabelValue(0, _("Tag Name"));
-         mGrid->SetColLabelValue(1, _("Tag Value"));
+         mGrid->SetColLabelValue(0, _("Tag"));
+         mGrid->SetColLabelValue(1, _("Value"));
 
          // Resize the name column and set default row height.
          wxComboBox tc(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, cs);
