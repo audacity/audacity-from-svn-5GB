@@ -194,6 +194,7 @@ class AUDACITY_DLL_API TrackListIterator
 {
  public:
    TrackListIterator(TrackList * val = NULL);
+   virtual ~TrackListIterator() {};
 
    // Iterate functions
    virtual Track *First(TrackList * val = NULL);
