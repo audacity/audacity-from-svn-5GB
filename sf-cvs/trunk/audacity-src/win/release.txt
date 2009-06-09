@@ -37,11 +37,7 @@ either one, but example values are for Unicode_Release.
 
 2. Copy other necessities to release build folder.
 
-	a. Copy the audacity\nyquist and audacity\plug-ins folders to 
-		the build folder, e.g., audacity\win\unicode_release.
-		Don't copy the hidden CVS subfolders.
-	
-	b. We are still keeping some of the LADSPA plug-ins in the 
+	a. We are still keeping some of the LADSPA plug-ins in the 
 		Audacity installer, even though we are now offering a 
 		separate installer that includes all the LADSPA plug-ins 
 		built from version 0.4.15. These are the ones we include
@@ -59,7 +55,7 @@ either one, but example values are for Unicode_Release.
 		Once you have these DLL files, put them in the plug-ins 
 		folder, e.g., audacity\win\unicode_release\plug-ins.
 
-   c. Copy the audacity\LICENSE.txt and audacity\README.txt files
+   b. Copy the audacity\LICENSE.txt and audacity\README.txt files
       to the build folder.
 
 3. Get the manual
