@@ -157,9 +157,7 @@ is time to refresh some aspect of the screen.
 
 #include <math.h>
 
-#if DEBUG_DRAW_TIMING
-#include <sys/time.h>
-#endif
+//#define DEBUG_DRAW_TIMING 1
 
 #include <wx/combobox.h>
 #include <wx/dcclient.h>
@@ -872,15 +870,7 @@ void TrackPanel::OnTimer()
             // Must tell OnPaint() to recreate the backing bitmap
             // since we've not done a full refresh.
             mRefreshBacking = true;
-
-            // Refresh only the waveform area, not the labels
-            // (This actually speeds up redrawing!)
-            wxRect trackRect;
-            GetSize(&trackRect.width, &trackRect.height);
-            trackRect.x = GetLeftOffset(); 
-            trackRect.y = 0;
-            trackRect.width -= GetLeftOffset();
-            Refresh(false, &trackRect);
+            Refresh( false );
          }
       }
    }
