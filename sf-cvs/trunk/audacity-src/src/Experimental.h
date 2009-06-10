@@ -46,11 +46,6 @@
 //#define RIGHT_ALIGNED_TEXTBOXES
 //#define EXPERIMENTAL_VOICE_DETECTION
 
-//FFmpeg integration. Some FFmpeg-related changes are NOT ifdef'ed,
-//as they are harmless (like - a few mockup methods in Import* classes)
-// To enable ffmpeg support #define USE_FFMPEG in config*.h, as for any other
-// optional importer library (windows users: edit win/configwin.h)
-
 // Effect categorisation. Adds support for arranging effects in categories
 // and displaying those categories as submenus in the Effect menu.
 // This was a 2008 GSoC project that was making good progress at the half-way point
