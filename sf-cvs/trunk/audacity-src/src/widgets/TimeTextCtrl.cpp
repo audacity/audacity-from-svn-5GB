@@ -1212,6 +1212,8 @@ void TimeTextCtrl::Increase(int steps)
       }
       steps--;
    }
+
+   ControlsToValue();
 }
 
 void TimeTextCtrl::Decrease(int steps)
@@ -1489,12 +1491,7 @@ wxAccStatus TimeTextCtrlAx::GetName(int childId, wxString *name)
          *name = mCtrl->GetLabel();
       }
 
-      for (size_t i = 0; i < mCtrl->mFields.GetCount(); i++) {
-         *name += wxT(" ") +
-                  mCtrl->mFields[i].str +
-                  wxT(" ") +
-                  mCtrl->mFields[i].label;
-      }
+      *name += wxT(" ") + mCtrl->GetTimeString();
    }
    else {
       *name = mCtrl->mFields[mCtrl->GetFocusedField() - 1].str +
