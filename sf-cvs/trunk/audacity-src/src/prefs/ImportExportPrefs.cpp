@@ -52,7 +52,7 @@ void ImportExportPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("When importing audio files"));
    {
-      S.StartRadioButtonGroup(wxT("/ImportExports/CopyOrEditUncompressedData"), wxT("edit"));
+      S.StartRadioButtonGroup(wxT("/FileFormats/CopyOrEditUncompressedData"), wxT("edit"));
       {
          S.TieRadioButton(_("&Make a copy of uncompressed audio files before editing (safer)"),
                           wxT("copy"));
@@ -69,7 +69,7 @@ void ImportExportPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("When exporting tracks to an audio file"));
    {
-      S.StartRadioButtonGroup(wxT("/ImportExports/ExportDownMix"), true);
+      S.StartRadioButtonGroup(wxT("/FileFormats/ExportDownMix"), true);
       {
          S.TieRadioButton(_("A&lways mix all tracks down to Stereo or Mono channel(s)."),
                           true);
