@@ -336,6 +336,7 @@ wxString ChoiceEditor::GetValue() const
 ///
 
 BEGIN_EVENT_TABLE(Grid, wxGrid)
+   EVT_SET_FOCUS(Grid::OnSetFocus)
    EVT_KEY_DOWN(Grid::OnKeyDown)
    EVT_GRID_SELECT_CELL(Grid::OnSelectCell)
 END_EVENT_TABLE()
@@ -371,6 +372,15 @@ Grid::~Grid()
       GridAx *ax = (GridAx *) mChildren[--cnt];
       delete ax;
    }
+#endif
+}
+
+void Grid::OnSetFocus(wxFocusEvent &event)
+{
+   event.Skip();
+
+#if wxUSE_ACCESSIBILITY
+   mAx->SetCurrentCell(GetGridCursorRow(), GetGridCursorCol());
 #endif
 }
 
@@ -417,6 +427,11 @@ void Grid::OnKeyDown(wxKeyEvent &event)
                SetGridCursor(crow, ccol + 1);
             }
          }
+
+#if wxUSE_ACCESSIBILITY
+         // Make sure the new cell is made available to the screen reader
+         mAx->SetCurrentCell(GetGridCursorRow(), GetGridCursorCol());
+#endif
       }
       break;
 
@@ -433,6 +448,7 @@ void Grid::OnKeyDown(wxKeyEvent &event)
                           wxNavigationKeyEvent::IsBackward :
                           wxNavigationKeyEvent::IsForward );
             Navigate(flags);
+            return;
          }
          else if (event.ShiftDown()) {
             if (crow == 0 && ccol == 0) {
@@ -459,6 +475,11 @@ void Grid::OnKeyDown(wxKeyEvent &event)
             }
          }
          MakeCellVisible(GetGridCursorRow(), GetGridCursorCol());
+
+#if wxUSE_ACCESSIBILITY
+         // Make sure the new cell is made available to the screen reader
+         mAx->SetCurrentCell(GetGridCursorRow(), GetGridCursorCol());
+#endif
       }
       break;
 
