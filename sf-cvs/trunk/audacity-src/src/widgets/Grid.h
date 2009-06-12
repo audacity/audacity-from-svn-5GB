@@ -199,6 +199,7 @@ class Grid
 
  protected:
 
+   void OnSetFocus(wxFocusEvent &event);
    void OnSelectCell(wxGridEvent &event);
    void OnKeyDown(wxKeyEvent &event);
 
