@@ -13,9 +13,6 @@
 #define __AUDACITY_BUTTON__
 
 #if wxUSE_ACCESSIBILITY
-#if defined(__WXMSW__)
-#include <oleacc.h>
-#endif
 #include <wx/access.h>
 #endif
 
