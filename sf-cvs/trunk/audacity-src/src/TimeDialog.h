@@ -25,12 +25,8 @@ class TimeDialog:public wxDialog
  public:
 
    TimeDialog(wxWindow *parent,
-                  wxWindowID id,
-                  const wxString &title,
-                  const wxPoint &pos = wxDefaultPosition,
-                  const wxSize &size = wxDefaultSize,
-                  long style = wxDEFAULT_DIALOG_STYLE,
-                  const wxString &name = wxDialogNameStr);
+              const wxString &title,
+              const wxString &prompt = _("Duration"));
 
    void SetFormatString(wxString formatString);
    void SetSampleRate(double sampleRate);
@@ -47,6 +43,7 @@ class TimeDialog:public wxDialog
 
  private:
 
+   wxString mPrompt;
    wxString mFormat;
    double mRate;
    double mTime;
