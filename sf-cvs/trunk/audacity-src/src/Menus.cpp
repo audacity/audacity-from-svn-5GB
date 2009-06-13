@@ -2048,7 +2048,7 @@ void AudacityProject::OnSetLeftSelection()
       {
          wxString fmt = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
 
-         TimeDialog D(this, wxID_ANY, _("Set Left Selection Bound"));
+         TimeDialog D(this, _("Set Left Selection Boundary"), _("Position"));
          D.SetSampleRate(mRate);
          D.SetFormatString(fmt);
          D.SetTimeValue(mViewInfo.sel0);
@@ -2084,7 +2084,7 @@ void AudacityProject::OnSetRightSelection()
       {
          wxString fmt = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
 
-         TimeDialog D(this, wxID_ANY, _("Set Right Selection Bound"));
+         TimeDialog D(this, _("Set Right Selection Boundary"), _("Position"));
          D.SetSampleRate(mRate);
          D.SetFormatString(fmt);
          D.SetTimeValue(mViewInfo.sel1);

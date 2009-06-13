@@ -29,17 +29,14 @@ BEGIN_EVENT_TABLE(TimeDialog, wxDialog)
 END_EVENT_TABLE()
 
 TimeDialog::TimeDialog(wxWindow *parent,
-                               wxWindowID id,
-                               const wxString &title,
-                               const wxPoint &pos,
-                               const wxSize &size,
-                               long style,
-                               const wxString &name)
-: wxDialog(parent, id, title, pos, size, style, name),
-  mFormat(wxT("seconds")),
-  mRate(44100),
-  mTime(0.0),
-  mTimeCtrl(NULL)
+                       const wxString &title,
+                       const wxString &prompt)
+:  wxDialog(parent, wxID_ANY, title),
+   mPrompt(prompt),
+   mFormat(wxT("seconds")),
+   mRate(44100),
+   mTime(0.0),
+   mTimeCtrl(NULL)
 {
    ShuttleGui S(this, eIsCreating);
    PopulateOrExchange(S);
@@ -50,7 +47,7 @@ void TimeDialog::PopulateOrExchange(ShuttleGui &S)
    S.SetBorder(5);
    S.StartVerticalLay(true);
    {
-      S.StartStatic(_("Duration"), true);
+      S.StartStatic(mPrompt, true);
       {
          mTimeCtrl = new
             TimeTextCtrl(this,
@@ -61,7 +58,7 @@ void TimeDialog::PopulateOrExchange(ShuttleGui &S)
                          wxDefaultPosition,
                          wxDefaultSize,
                          true);
-         mTimeCtrl->SetName(_("Duration"));
+         mTimeCtrl->SetName(mPrompt);
          mTimeCtrl->SetFormatString(mTimeCtrl->GetBuiltinFormat(mFormat));
          S.AddWindow(mTimeCtrl);
          mTimeCtrl->EnableMenu();

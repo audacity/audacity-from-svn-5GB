@@ -29,7 +29,7 @@
 
 bool EffectSilence::PromptUser()
 {
-   TimeDialog dlog(mParent, wxID_ANY, _("Silence Generator"));
+   TimeDialog dlog(mParent, _("Silence Generator"));
 
    dlog.SetSampleRate(mProjectRate);
 
