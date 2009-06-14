@@ -5084,6 +5084,7 @@ void TrackPanel::UpdateVRulerSize()
          mRuler->Refresh();
       }
    }
+   Refresh(false);
 }
 
 /// The following function moves to the previous track
