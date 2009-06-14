@@ -129,6 +129,17 @@ PrefsDialog::PrefsDialog(wxWindow * parent)
    Layout();
    Fit();
    wxSize sz = GetSize();
+
+   wxASSERT_MSG(sz.x > 800 || sz.y > 600, wxT("Preferences dialog exceeds max size"));
+
+   if (sz.x > 800) {
+      sz.x = 800;
+   }
+
+   if (sz.y > 600) {
+      sz.y = 600;
+   }
+
    SetSizeHints(sz.x, sz.y, 800, 600);
 
    // Center after all that resizing, but make sure it doesn't end up
