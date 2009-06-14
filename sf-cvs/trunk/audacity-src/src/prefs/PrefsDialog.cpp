@@ -130,7 +130,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent)
    Fit();
    wxSize sz = GetSize();
 
-   wxASSERT_MSG(sz.x > 800 || sz.y > 600, wxT("Preferences dialog exceeds max size"));
+   wxASSERT_MSG(sz.x <= 800 && sz.y <= 600, wxT("Preferences dialog exceeds max size"));
 
    if (sz.x > 800) {
       sz.x = 800;
