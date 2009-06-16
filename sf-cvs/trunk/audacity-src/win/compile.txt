@@ -353,21 +353,6 @@ Note that if you have configured all libraries correctly,
 none of the above should actually be necessary.
 
 
------------------------
-MSVC++ (OPTIONAL) STEP 6:  Add VST support
------------------------
-
-Audacity does not support VST plug-ins by default, but 
-here is how to enable it.
-
-1. Download and install the current "VST Enabler" from the 
-   Audacity website, at http://audacityteam.org/vst/. 
-
-2. Put the "vst-bridge.dll" file in the Audacity Plug-ins folder.
-
-3. Run Audacity and the plug-ins should appear in the 
-    Generate, Effect, and/or Analyze menus.
-
 ========================================================================
 
 -------------------------------
