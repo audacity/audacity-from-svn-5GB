@@ -22,7 +22,7 @@
 #include <wx/intl.h>
 #include <wx/slider.h>
 
-class EffectChangePitch:public EffectSoundTouch {
+class EffectChangePitch : public EffectSoundTouch {
 
  public:
    EffectChangePitch();
@@ -58,6 +58,8 @@ class EffectChangePitch:public EffectSoundTouch {
 
    virtual bool PromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
+
+   virtual bool CheckWhetherSkipEffect() { return (m_PercentChange == 0.0); }
    virtual bool Process();
    
  private:
