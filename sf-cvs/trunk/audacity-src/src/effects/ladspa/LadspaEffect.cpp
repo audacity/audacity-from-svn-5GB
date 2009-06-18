@@ -228,10 +228,10 @@ bool LadspaEffect::PromptUser()
 
 bool LadspaEffect::Process()
 {
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
+   this->CopyInputTracks(); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputWaveTracks);
+   TrackListIterator iter(mOutputTracks);
    int count = 0;
    Track *left = iter.First();
    Track *right;
@@ -264,7 +264,7 @@ bool LadspaEffect::Process()
       count++;
    }
 
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   this->ReplaceProcessedTracks(bGoodResult); 
    return bGoodResult;
 }
 

@@ -150,7 +150,8 @@ class AUDACITY_DLL_API WaveTrack: public Track {
 
    virtual bool Trim (double t0, double t1);
 
-   bool HandleGroupClear(double t0, double t1, bool addCutLines, bool split);
+   bool Clear(double t0, double t1, TrackList* tracks);
+   bool HandleGroupClear(double t0, double t1, bool addCutLines, bool split, TrackList* tracks = NULL);
    bool HandleClear(double t0, double t1,
                     bool addCutLines, bool split);
                     

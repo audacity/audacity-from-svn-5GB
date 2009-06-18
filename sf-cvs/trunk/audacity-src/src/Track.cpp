@@ -19,6 +19,7 @@ and TimeTrack.
 #include <wx/file.h>
 #include <wx/textfile.h>
 #include <wx/log.h>
+#include <wx/hashmap.h>
 
 #include "Track.h"
 #include "WaveTrack.h"
@@ -112,6 +113,7 @@ Track::~Track()
 {
    mDirManager->Deref();
 }
+
 
 const TrackListNode *Track::GetNode()
 {
@@ -341,7 +343,7 @@ Track *TrackListOfKindIterator::First(TrackList * val)
 {
    Track *t = TrackListIterator::First(val);
 
-   while (t && t->GetKind() != kind) {
+   while (t && (kind != Track::All && t->GetKind() != kind)) {
       t = TrackListIterator::Next();
    }
 
@@ -351,7 +353,7 @@ Track *TrackListOfKindIterator::First(TrackList * val)
 Track *TrackListOfKindIterator::Next(bool skiplinked)
 {
    while (Track *t = TrackListIterator::Next(skiplinked)) {
-      if (t->GetKind() == kind) {
+      if (t->GetKind() == kind || kind == Track::All) {
          return t;
       }
    }

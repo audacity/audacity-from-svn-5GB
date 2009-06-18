@@ -38,6 +38,8 @@ greater use in future.
 #include "../WaveTrack.h"
 #include "../widgets/ProgressDialog.h"
 #include "../ondemand/ODManager.h"
+
+WX_DECLARE_HASH_MAP( int, int, wxIntegerHash, wxIntegerEqual, t2bHash );
 //
 // public static methods
 //
@@ -60,7 +62,8 @@ wxString Effect::StripAmpersand(const wxString& str)
 Effect::Effect()
 {
    mTracks = NULL;
-   mOutputWaveTracks = NULL;
+   mOutputTracks = NULL;
+   mOutputTracksType = Track::None;
    mLength = 0;
    mNumTracks = 0;
    mNumGroups = 0;
@@ -78,9 +81,9 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
 {
    wxASSERT(*t0 <= *t1);
 
-   if (mOutputWaveTracks) {
-      delete mOutputWaveTracks;
-      mOutputWaveTracks = NULL;
+   if (mOutputTracks) {
+      delete mOutputTracks;
+      mOutputTracks = NULL;
    }
 
    mFactory = factory;
@@ -114,9 +117,9 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
 
    End();
 
-   if (mOutputWaveTracks) {
-      delete mOutputWaveTracks;
-      mOutputWaveTracks = NULL;
+   if (mOutputTracks) {
+      delete mOutputTracks;
+      mOutputTracks = NULL;
    }
 
    if (returnVal) {
@@ -180,45 +183,64 @@ void Effect::GetSamples(WaveTrack *track, sampleCount *start, sampleCount *len)
 //
 // private methods
 //
-// Use these two methods to copy the input tracks to mOutputWaveTracks, if 
+// Use these two methods to copy the input tracks to mOutputTracks, if 
 // doing the processing on them, and replacing the originals only on success (and not cancel).
-void Effect::CopyInputWaveTracks()
+// Copy the group tracks that have tracks selected
+void Effect::CopyInputTracks(int trackType)
 {
-   if (GetNumWaveTracks() <= 0) {
-      return;
-   }
-
    // Reset map
    mIMap.Clear();
    mOMap.Clear();
 
-   // Copy the wavetracks, to process the copies.
-   TrackListOfKindIterator iter(Track::Wave, mTracks);
-   mOutputWaveTracks = new TrackList();
-   for (Track *t = iter.First(); t; t = iter.Next()) {
-      if (!t->GetSelected()) {
+   mOutputTracks = new TrackList();
+   mOutputTracksType = trackType;
+
+   //iterate over tracks of type trackType (All types if Track::All)
+   TrackListOfKindIterator aIt(trackType, mTracks);
+   t2bHash added;
+
+   //for each track that is selected
+   for (Track *aTrack = aIt.First(); aTrack; aTrack = aIt.Next()) {
+      if (!aTrack->GetSelected()) {
          continue;
       }
 
-      Track *o = mFactory->DuplicateWaveTrack(*(WaveTrack*)t);
-      mOutputWaveTracks->Add(o);
+      TrackGroupIterator gIt(mTracks);
+      Track *gTrack = gIt.First(aTrack);
 
-      mIMap.Add(t);
-      mOMap.Add(o);
+      //if the track is part of a group
+      if (trackType == Track::All && gTrack != NULL) {
+         //go to the project tracks and add all the tracks in the same group
+         for( ; gTrack; gTrack = gIt.Next() ) {
+            // only add if the track was not added before
+            if (added.find((int)gTrack) == added.end()) {
+               added[(int)gTrack]=true;
+               Track *o = gTrack->Duplicate();
+               mOutputTracks->Add(o);
+               mIMap.Add(gTrack);
+               mOMap.Add(o);
+            }
+         }
+      }
+      //otherwise just add the track
+      else {
+         Track *o = aTrack->Duplicate();
+         mOutputTracks->Add(o);
+         mIMap.Add(aTrack);
+         mOMap.Add(o);
+      }
    }
 }
 
-
-// If bGoodResult, replace mWaveTracks tracks in mTracks with successfully processed 
-// mOutputWaveTracks copies, get rid of old mWaveTracks, and set mWaveTracks to mOutputWaveTracks. 
-// Else clear and delete mOutputWaveTracks copies.
-void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
+// If bGoodResult, replace mTracks tracks with successfully processed mOutputTracks copies.
+// Else clear and delete mOutputTracks copies.
+void Effect::ReplaceProcessedTracks(const bool bGoodResult)
 {
-   wxASSERT(mOutputWaveTracks != NULL); // Make sure we at least did the CopyInputWaveTracks().
+   wxASSERT(mOutputTracks != NULL); // Make sure we at least did the CopyInputTracks().
 
    if (!bGoodResult) {
       // Processing failed or was cancelled so throw away the processed tracks.
-      mOutputWaveTracks->Clear(true); // true => delete the tracks
+      mOutputTracks->Clear(true); // true => delete the tracks
       
       // Reset map
       mIMap.Clear();
@@ -228,14 +250,14 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
       return;
    }
 
-   TrackListIterator iterOut(mOutputWaveTracks);
+   TrackListIterator iterOut(mOutputTracks);
 
+   Track *x;
    size_t cnt = mOMap.GetCount();
    size_t i = 0;
-   Track *x;
 
    for (Track *o = iterOut.First(); o; o = x, i++) {
-      // If tracks were removed from mOutputWaveTracks, then there will be
+      // If tracks were removed from mOutputTracks, then there will be
       // tracks in the map that must be removed from mTracks.
       while (i < cnt && mOMap[i] != o) {
          mTracks->Remove((Track *)mIMap[i], true);
@@ -262,7 +284,7 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
       delete t;
    }
 
-   // If tracks were removed from mOutputWaveTracks, then there may be tracks
+   // If tracks were removed from mOutputTracks, then there may be tracks
    // left at the end of the map that must be removed from mTracks.
    while (i < cnt) {
       mTracks->Remove((Track *)mIMap[i], true);
@@ -277,8 +299,9 @@ void Effect::ReplaceProcessedWaveTracks(const bool bGoodResult)
    wxASSERT(iterOut.First() == NULL);
    
    // The output list is no longer needed
-   delete mOutputWaveTracks;
-   mOutputWaveTracks = NULL;
+   delete mOutputTracks;
+   mOutputTracks = NULL;
+   mOutputTracksType = Track::None;
 }
 
 void Effect::CountWaveTracks()
@@ -571,8 +594,8 @@ void Effect::Preview()
       FocusDialog->SetFocus();
    }
 
-   delete mOutputWaveTracks;
-   mOutputWaveTracks = NULL;
+   delete mOutputTracks;
+   mOutputTracks = NULL;
 
    mTracks->Clear(true); // true => delete the tracks
    delete mTracks;

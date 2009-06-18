@@ -440,11 +440,16 @@ bool WaveTrack::Paste(double t0, Track *src)
 
 bool WaveTrack::Clear(double t0, double t1)
 {
+   return Clear(t0, t1, NULL);
+}
+
+bool WaveTrack::Clear(double t0, double t1, TrackList* tracks)
+{
    bool addCutLines = false;
    bool split = false;
    AudacityProject *p = GetActiveProject();
    if( p && p->IsSticky())
-      return HandleGroupClear(t0, t1, addCutLines, split);
+      return HandleGroupClear(t0, t1, addCutLines, split, tracks);
    else
       return HandleClear(t0, t1, addCutLines, split);
 }
@@ -630,44 +635,28 @@ bool WaveTrack::SplitDelete(double t0, double t1)
    return HandleClear(t0, t1, addCutLines, split);
 }
 
-bool WaveTrack::HandleGroupClear(double t0, double t1, bool addCutLines, bool split)
+bool WaveTrack::HandleGroupClear(double t0, double t1, bool addCutLines, bool split, TrackList* tracks)
 {
+   // get tracks
    AudacityProject *p = GetActiveProject();
-   if(p){
-      TrackListIterator iter(p->GetTracks());
-      
-      int editGroup = 0;
-      Track *t=iter.First();
-      Track *n=t;
-      
-      while (t && t!= this){//find edit group number
-         if (t->GetSelected()) return true;//multiple tracks have been selected, we only want to handle one
-         n=iter.Next(true);//to skip handling the second channel of stereo
-         if (n && n->GetKind()==Track::Wave && t->GetKind()==Track::Label) 
-            editGroup++;
-         t=n;
+
+   if (p) {
+      if (!tracks) tracks = p->GetTracks();
+   }
+   else return false;
+
+   TrackGroupIterator it(tracks);
+   for( Track *t = it.First(this); t; t = it.Next() ) {
+      if (t->GetKind() == Track::Wave) {
+         if ( !( ( (WaveTrack *) t)->HandleClear(t0, t1, addCutLines, split) ) )
+            return false;
       }
-      if (!t) return true;//we didnt find the track because it's stereo
-      
-      t=iter.First();
-      for (int i=0; i<editGroup; i++){//go to first in edit group
-         while (t && t->GetKind()==Track::Wave) t=iter.Next();
-         while (t && t->GetKind()==Track::Label) t=iter.Next();
+      else if (t->GetKind() == Track::Label) {
+         if (!split)
+            ( (LabelTrack *)t )->ShiftLabelsOnClear(t0, t1);
       }
-      
-      while (t && t->GetKind()==Track::Wave){
-         //printf ("t(w): %x\n", t);
-         if ( !( ((WaveTrack *)t)->HandleClear(t0, t1, addCutLines, split)) ) return false;
-         t=iter.Next();
-      }
-      
-      while (t && t->GetKind()==Track::Label && !split){
-         //printf ("t(l): %x\n", t);
-         ((LabelTrack *)t)->ShiftLabelsOnClear(t0, t1);
-         t=iter.Next();
-      }
-   }else return false;
-   
+   }
+
    return true;
 }
 

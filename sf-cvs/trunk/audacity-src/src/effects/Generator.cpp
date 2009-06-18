@@ -23,13 +23,13 @@ bool Generator::Process()
 
    BeforeGenerate();
 
-   // Set up mOutputWaveTracks
-   this->CopyInputWaveTracks();
+   // Set up mOutputTracks
+   this->CopyInputTracks();
 
    // Iterate over the tracks
    bool bGoodResult = true;
    int ntrack = 0;
-   TrackListIterator iter(mOutputWaveTracks);
+   TrackListIterator iter(mOutputTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
       if (mDuration > 0.0)
@@ -67,7 +67,7 @@ bool Generator::Process()
 
    Success();
 
-   this->ReplaceProcessedWaveTracks(bGoodResult);
+   this->ReplaceProcessedTracks(bGoodResult);
    HandleLinkedTracksOnGenerate(mDuration, mT0);
 
    mT1 = mT0 + mDuration; // Update selection.

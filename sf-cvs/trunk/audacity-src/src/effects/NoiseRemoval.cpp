@@ -282,10 +282,10 @@ bool EffectNoiseRemoval::Process()
 
    // This same code will both remove noise and profile it,
    // depending on 'mDoProfile'
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
+   this->CopyInputTracks(); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputWaveTracks);
+   TrackListIterator iter(mOutputTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
@@ -317,7 +317,7 @@ bool EffectNoiseRemoval::Process()
 
    if (bGoodResult)
       Cleanup();
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   this->ReplaceProcessedTracks(bGoodResult); 
    return bGoodResult;
 }
 
