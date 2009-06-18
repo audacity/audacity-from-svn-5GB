@@ -52,6 +52,8 @@ class EffectChangeSpeed : public Effect {
  protected:
    virtual bool PromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
+
+   virtual bool CheckWhetherSkipEffect() { return (m_PercentChange == 0.0); }
    virtual bool Process();
 
  private:
