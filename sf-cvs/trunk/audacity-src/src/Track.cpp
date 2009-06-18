@@ -19,7 +19,6 @@ and TimeTrack.
 #include <wx/file.h>
 #include <wx/textfile.h>
 #include <wx/log.h>
-#include <wx/hashmap.h>
 
 #include "Track.h"
 #include "WaveTrack.h"
