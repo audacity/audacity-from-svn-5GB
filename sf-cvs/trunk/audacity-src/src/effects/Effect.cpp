@@ -29,6 +29,7 @@ greater use in future.
 #include <wx/progdlg.h>
 #include <wx/sizer.h>
 #include <wx/timer.h>
+#include <wx/hashmap.h>
 
 #include "Effect.h"
 #include "../AudioIO.h"
