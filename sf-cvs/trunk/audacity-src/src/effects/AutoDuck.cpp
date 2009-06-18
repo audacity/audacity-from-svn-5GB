@@ -338,8 +338,8 @@ bool EffectAutoDuck::Process()
 
    if (!cancel)
    {
-      this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
-      TrackListIterator iter(mOutputWaveTracks);
+      this->CopyInputTracks(); // Set up mOutputTracks.
+      TrackListIterator iter(mOutputTracks);
       Track *iterTrack = iter.First();
       
       int trackNumber = 0;
@@ -368,7 +368,7 @@ bool EffectAutoDuck::Process()
       }
    }
    
-   this->ReplaceProcessedWaveTracks(!cancel); 
+   this->ReplaceProcessedTracks(!cancel); 
    return !cancel;
 }
 

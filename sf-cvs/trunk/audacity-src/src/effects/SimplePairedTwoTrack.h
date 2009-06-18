@@ -126,10 +126,10 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Init()
 template<class _DataType,sampleFormat _xxxSample>
 bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Process()
 {
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
+   this->CopyInputTracks(); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputWaveTracks);
+   TrackListIterator iter(mOutputTracks);
    int count = 0;
    WaveTrack *left = (WaveTrack*)(iter.First());
    WaveTrack *right;
@@ -157,7 +157,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Process()
       count++;
    }
    
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   this->ReplaceProcessedTracks(bGoodResult); 
    return bGoodResult;
 }
 

@@ -100,7 +100,7 @@ bool EffectStereoToMono::ProcessOne(int count)
    mLeftTrack->SetLinked(false);
    mRightTrack->SetLinked(false);
    mLeftTrack->SetChannel(Track::MonoChannel);
-   mOutputWaveTracks->Remove(mRightTrack);
+   mOutputTracks->Remove(mRightTrack);
    delete mRightTrack;
 
    delete [] leftBuffer;
@@ -113,10 +113,10 @@ bool EffectStereoToMono::Process()
 {
    // Do not use mWaveTracks here.  We will possibly delete tracks,
    // so we must use the "real" tracklist.
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
+   this->CopyInputTracks(); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputWaveTracks);
+   TrackListIterator iter(mOutputTracks);
    mLeftTrack = (WaveTrack *)iter.First();
    bool refreshIter = false;
 
@@ -167,6 +167,6 @@ bool EffectStereoToMono::Process()
 
    if(mOutTrack)
       delete mOutTrack;
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   this->ReplaceProcessedTracks(bGoodResult); 
    return bGoodResult;
 }

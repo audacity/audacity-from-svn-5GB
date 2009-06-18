@@ -158,8 +158,8 @@ bool EffectSBSMS::Process()
    bool bGoodResult = true;
    
    //Iterate over each track
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
-   TrackListIterator iter(mOutputWaveTracks);
+   this->CopyInputTracks(); // Set up mOutputTracks.
+   TrackListIterator iter(mOutputTracks);
    WaveTrack* leftTrack = (WaveTrack*)(iter.First());
    WaveTrack* saveLeft = leftTrack;
    mCurTrackNum = 0;
@@ -360,13 +360,13 @@ bool EffectSBSMS::Process()
       double timeAdded = newLen-len;
       double sel = mCurT1-mCurT0;
       double percent = (sel/(timeAdded+sel))*100 - 100;
-      ReplaceProcessedWaveTracks(bGoodResult); 
+      ReplaceProcessedTracks(bGoodResult); 
       if (!(HandleGroupChangeSpeed(percent, mCurT0, mCurT1))) {
          bGoodResult = false;
       }
    }
    else {
-      ReplaceProcessedWaveTracks(bGoodResult); 
+      ReplaceProcessedTracks(bGoodResult); 
    }
 
    // Update selection

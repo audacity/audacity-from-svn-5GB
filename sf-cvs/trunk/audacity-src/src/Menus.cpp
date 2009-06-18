@@ -2293,7 +2293,7 @@ void AudacityProject::OnPlaySpeedInc()
 {
    TranscriptionToolBar *tb = GetTranscriptionToolBar();
    if (tb) {
-      tb->AdjustPlaySpeed(0.1);
+      tb->AdjustPlaySpeed(0.1f);
    }
 }
 
@@ -2301,7 +2301,7 @@ void AudacityProject::OnPlaySpeedDec()
 {
    TranscriptionToolBar *tb = GetTranscriptionToolBar();
    if (tb) {
-      tb->AdjustPlaySpeed(-0.1);
+      tb->AdjustPlaySpeed(-0.1f);
    }
 }
 

@@ -488,8 +488,8 @@ bool EffectNyquist::Process()
       mProgress->Hide();
    }
 
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
-   TrackListIterator iter(mOutputWaveTracks);
+   this->CopyInputTracks(); // Set up mOutputTracks.
+   TrackListIterator iter(mOutputTracks);
    mCurTrack[0] = (WaveTrack *) iter.First();
    mOutputTime = mT1 - mT0;
    mCount = 0;
@@ -561,7 +561,7 @@ bool EffectNyquist::Process()
       dlog.ShowModal();
    }
 
-   this->ReplaceProcessedWaveTracks(success);
+   this->ReplaceProcessedTracks(success);
 
    mDebug = false;
 

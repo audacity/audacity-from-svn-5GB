@@ -124,10 +124,10 @@ bool EffectClickRemoval::TransferParameters( Shuttle & shuttle )
 
 bool EffectClickRemoval::Process()
 {
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
+   this->CopyInputTracks(); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputWaveTracks);
+   TrackListIterator iter(mOutputTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
@@ -151,7 +151,7 @@ bool EffectClickRemoval::Process()
       track = (WaveTrack *) iter.Next();
       count++;
    }
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   this->ReplaceProcessedTracks(bGoodResult); 
    return bGoodResult;
 }
 

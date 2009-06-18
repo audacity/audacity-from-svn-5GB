@@ -56,10 +56,10 @@ bool EffectRepair::Process()
 {
    //v This may be too much copying for EffectRepair. To support Cancel, may be able to copy much less.
    //  But for now, Cancel isn't supported without this.
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks. //v This may be too much copying for EffectRepair.
+   this->CopyInputTracks(); // Set up mOutputTracks. //v This may be too much copying for EffectRepair.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputWaveTracks);
+   TrackListIterator iter(mOutputTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
@@ -118,7 +118,7 @@ bool EffectRepair::Process()
       count++;
    }
 
-   this->ReplaceProcessedWaveTracks(bGoodResult); 
+   this->ReplaceProcessedTracks(bGoodResult); 
    return bGoodResult;
 }
 

@@ -82,7 +82,6 @@ class AUDACITY_DLL_API Track: public XMLTagHandler
 
    Track *GetLink() const;
 
-   TrackList *GetList();
    const TrackListNode *GetNode();
    void SetOwner(TrackList *list, TrackListNode *node);
 
@@ -113,7 +112,8 @@ class AUDACITY_DLL_API Track: public XMLTagHandler
       Note,
 #endif
       Label,
-      Time
+      Time,
+      All
    } TrackKindEnum;
 
    Track(DirManager * projDirManager);

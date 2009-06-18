@@ -89,10 +89,10 @@ bool EffectChangeSpeed::Process()
 	// Similar to EffectSoundTouch::Process()
 
    //Iterate over each track
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
+   this->CopyInputTracks(); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputWaveTracks);
+   TrackListIterator iter(mOutputTracks);
    WaveTrack* pOutWaveTrack = (WaveTrack*)(iter.First());
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
@@ -145,13 +145,13 @@ bool EffectChangeSpeed::Process()
       double timeAdded = newLen - len;
       double sel = mCurT1-mCurT0;
       double percent = (sel / (timeAdded + sel)) * 100 - 100;
-      ReplaceProcessedWaveTracks(bGoodResult);
+      ReplaceProcessedTracks(bGoodResult);
       if (!(HandleGroupChangeSpeed(percent, mCurT0, mCurT1))) {
          bGoodResult = false;
       }
    }
    else {
-      ReplaceProcessedWaveTracks(bGoodResult);
+      ReplaceProcessedTracks(bGoodResult);
    }
 
    mT1 = mT0 + m_maxNewLength; // Update selection.

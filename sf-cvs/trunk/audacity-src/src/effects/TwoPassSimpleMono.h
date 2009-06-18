@@ -30,7 +30,7 @@ class EffectTwoPassSimpleMono:public Effect {
 
    // Override these methods if you need to initialize something
    // before each pass. Return None if processing should stop.
-   // These should not depend on mOutputWaveTracks having been set up via CopyInputWaveTracks().
+   // These should not depend on mOutputTracks having been set up via CopyInputTracks().
    virtual bool InitPass1();
    virtual bool InitPass2();
    

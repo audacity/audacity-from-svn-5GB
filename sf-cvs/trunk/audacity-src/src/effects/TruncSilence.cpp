@@ -206,8 +206,9 @@ bool EffectTruncSilence::Process()
    }
 
    // Start processing
-   this->CopyInputWaveTracks(); // Set up mOutputWaveTracks.
-   TrackListIterator iterOut(mOutputWaveTracks);
+   //Track::All is needed because this effect has clear functionality
+   this->CopyInputTracks(Track::All); // Set up mOutputTracks.
+   TrackListOfKindIterator iterOut(Track::Wave, mOutputTracks);
 
    sampleCount index = start;
    sampleCount outTrackOffset = start;
@@ -388,7 +389,7 @@ bool EffectTruncSilence::Process()
    if (!cancelled && (outTrackOffset < end)) {
       t = (WaveTrack *) iterOut.First();
       while (t) {
-         t->Clear(outTrackOffset / rate, t1);
+         t->Clear(outTrackOffset / rate, t1, mOutputTracks);
          t = (WaveTrack *) iterOut.Next();
       }
       t1 = outTrackOffset / rate;
@@ -403,7 +404,7 @@ bool EffectTruncSilence::Process()
    mT0 = t0;
    mT1 = t1;
 
-   this->ReplaceProcessedWaveTracks(!cancelled); 
+   this->ReplaceProcessedTracks(!cancelled); 
    return !cancelled;
 }
 

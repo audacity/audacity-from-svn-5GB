@@ -997,7 +997,7 @@ bool VSTEffect::Init()
 {
    mBlockSize = 0;
 
-   TrackListIterator iter(mOutputWaveTracks);
+   TrackListIterator iter(mOutputTracks);
    WaveTrack *left = (WaveTrack *) iter.First();
    while (left) {
       sampleCount lstart;
@@ -1040,13 +1040,13 @@ bool VSTEffect::PromptUser()
 
 bool VSTEffect::Process()
 {
-   CopyInputWaveTracks();
+   CopyInputTracks();
    bool bGoodResult = true;
 
    mInBuffer = NULL;
    mOutBuffer = NULL;
 
-   TrackListIterator iter(mOutputWaveTracks);
+   TrackListIterator iter(mOutputTracks);
    int count = 0;
    bool clear = false;
    WaveTrack *left = (WaveTrack *) iter.First();
@@ -1125,7 +1125,7 @@ bool VSTEffect::Process()
       mInBuffer = NULL;
    }
 
-   ReplaceProcessedWaveTracks(bGoodResult); 
+   ReplaceProcessedTracks(bGoodResult); 
    return bGoodResult;
 }
 
