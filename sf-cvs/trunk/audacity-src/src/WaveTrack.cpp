@@ -497,7 +497,7 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
 
    // If duration is 0, then it's just a plain paste
    if (dur == 0.0) {
-      return Paste(t0, src);
+      return Paste(t0, src, tracks);
    }
 
    // Align to a sample
