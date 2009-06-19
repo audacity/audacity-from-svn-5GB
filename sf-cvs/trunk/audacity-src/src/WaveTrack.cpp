@@ -431,9 +431,14 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
 }
 bool WaveTrack::Paste(double t0, Track *src)
 {
+   return Paste(t0, src, NULL);
+}
+
+bool WaveTrack::Paste(double t0, Track *src, TrackList* tracks)
+{
    AudacityProject *p = GetActiveProject();
-   if( p && p->IsSticky())
-      return HandleGroupPaste(t0, src);
+   if( p && p->IsSticky() && GetNode() )
+      return HandleGroupPaste(t0, src, tracks);
    else
       return HandlePaste(t0, src);
 }
@@ -448,7 +453,7 @@ bool WaveTrack::Clear(double t0, double t1, TrackList* tracks)
    bool addCutLines = false;
    bool split = false;
    AudacityProject *p = GetActiveProject();
-   if( p && p->IsSticky())
+   if( p && p->IsSticky() && GetNode() )
       return HandleGroupClear(t0, t1, addCutLines, split, tracks);
    else
       return HandleClear(t0, t1, addCutLines, split);
@@ -481,7 +486,7 @@ bool WaveTrack::ClearAndAddCutLine(double t0, double t1)
 //
 bool WaveTrack::ClearAndPaste(double t0, double t1,
                               Track *src,
-                              bool preserve, bool merge)
+                              bool preserve, bool merge, TrackList* tracks)
 {
    WaveClipList::compatibility_iterator ic;
    WaveClipList::compatibility_iterator it;
@@ -492,7 +497,7 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
 
    // If duration is 0, then it's just a plain paste
    if (dur == 0.0) {
-      return HandlePaste(t0, src);
+      return Paste(t0, src, tracks);
    }
 
    // Align to a sample
@@ -538,10 +543,10 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
    }
 
    // Now, clear the selection
-   if (HandleClear(t0, t1, false, false)) {
+   if (Clear(t0, t1, tracks)) {
 
       // And paste in the new data
-      if (HandlePaste(t0, src)) {
+      if (Paste(t0, src, tracks)) {
          unsigned int i;
 
          // First, merge the new clip(s) in with the existing clips
@@ -787,38 +792,23 @@ bool WaveTrack::HandleClear(double t0, double t1,
    return true;
 }
 
-bool WaveTrack::HandleGroupPaste(double t0, Track *src)
+bool WaveTrack::HandleGroupPaste(double t0, Track *src, TrackList* tracks)
 {
+   // get tracks
    AudacityProject *p = GetActiveProject();
-   if(p){
-      double length = src->GetEndTime();
-      
-      TrackListIterator iter(p->GetTracks());
-      
-      int editGroup = 0;
-      Track *t=iter.First();
-      Track *n=t;
-      
-      while (t && t!= this){//find edit group number
-         n=iter.Next();
-         //we only add silence when we're on the first selected track
-         //to avoid adding it multiple times, though we paste in still
-         if (t->GetSelected()) return HandlePaste(t0, src);
-         if (n && n->GetKind()==Track::Wave && t->GetKind()==Track::Label) 
-            editGroup++;
-         t=n;
-      }
-      
-      t=iter.First();
-      for (int i=0; i<editGroup; i++){//go to first in edit group
-         while (t && t->GetKind()==Track::Wave) t=iter.Next();
-         while (t && t->GetKind()==Track::Label) t=iter.Next();
-      }
-      
-      while (t && t->GetKind()==Track::Wave){
+
+   if (p) {
+      if (!tracks) tracks = p->GetTracks();
+   }
+   else return false;
+   
+   double length = src->GetEndTime();
+   TrackGroupIterator it(tracks);
+   for( Track *t = it.First(this); t; t = it.Next() ) {
+      if (t->GetKind() == Track::Wave) {
          if (t==this){//paste in the track
             if ( !( ((WaveTrack *)t)->HandlePaste(t0, src)) ) return false;
-            if (t->GetLinked()) t=iter.Next();
+            if (t->GetLinked()) t=it.Next();
          }else{//insert silence
             if (! (t->GetSelected()) ){
                TrackFactory *factory = p->GetTrackFactory();
@@ -828,16 +818,12 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src)
                if ( !( ((WaveTrack *)t)->HandlePaste(t0, tmp)) ) return false;
             }
          }
-         t=iter.Next();
       }
-      
-      while (t && t->GetKind()==Track::Label){
-         //printf ("t(l)(p): %x\n", t);
+      else if (t->GetKind() == Track::Label) {
          ((LabelTrack *)t)->ShiftLabelsOnInsert(length, t0);
-         t=iter.Next();
       }
-   }else return false;
-      
+   }
+
    return true;
 }
 
