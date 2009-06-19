@@ -108,13 +108,14 @@ bool EffectRepeat::TransferParameters( Shuttle & shuttle )
 
 bool EffectRepeat::Process()
 {
-   this->CopyInputTracks(); // Set up mOutputTracks.
+   // Set up mOutputTracks. This effect needs Track::All because it uses Paste that needs to have label tracks.
+   this->CopyInputTracks(Track::All);
 
    int nTrack = 0;
    bool bGoodResult = true;
 	double maxDestLen = 0.0; // used to change selection to generated bit
 
-   TrackListIterator iter(mOutputTracks);
+   TrackListOfKindIterator iter(Track::Wave, mOutputTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    for (; track && bGoodResult; track = (WaveTrack *)iter.Next(), nTrack++) {
       double trackStart = track->GetStartTime();
@@ -138,7 +139,7 @@ bool EffectRepeat::Process()
       track->Copy(t0, t1, &dest);
       for(int j=0; j<repeatCount; j++)
       {
-         if (!track->Paste(tc, dest) || 
+         if (!track->Paste(tc, dest, mOutputTracks) || 
                TrackProgress(nTrack, j / repeatCount)) // TrackProgress returns true on Cancel.
          {
             bGoodResult = false;

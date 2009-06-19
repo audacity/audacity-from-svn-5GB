@@ -23,13 +23,14 @@ bool Generator::Process()
 
    BeforeGenerate();
 
-   // Set up mOutputTracks
-   this->CopyInputTracks();
+   // Set up mOutputTracks. This effect needs Track::All because it uses ClearAndPaste
+   // that need to have label tracks.
+   this->CopyInputTracks(Track::All);
 
    // Iterate over the tracks
    bool bGoodResult = true;
    int ntrack = 0;
-   TrackListIterator iter(mOutputTracks);
+   TrackListOfKindIterator iter(Track::Wave, mOutputTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
       if (mDuration > 0.0)
@@ -45,7 +46,7 @@ bool Generator::Process()
 
          // Transfer the data from the temporary track to the actual one
          tmp->Flush();
-         track->ClearAndPaste(mT0, mT1, tmp);
+         track->ClearAndPaste(mT0, mT1, tmp, true, true, mOutputTracks);
          delete tmp;
 
          if (!bGoodResult) {
@@ -68,7 +69,6 @@ bool Generator::Process()
    Success();
 
    this->ReplaceProcessedTracks(bGoodResult);
-   HandleLinkedTracksOnGenerate(mDuration, mT0);
 
    mT1 = mT0 + mDuration; // Update selection.
 
