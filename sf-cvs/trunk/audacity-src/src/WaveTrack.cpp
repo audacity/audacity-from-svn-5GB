@@ -497,7 +497,7 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
 
    // If duration is 0, then it's just a plain paste
    if (dur == 0.0) {
-      return Paste(t0, src, tracks);
+      return Paste(t0, src);
    }
 
    // Align to a sample
@@ -544,7 +544,6 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
 
    // Now, clear the selection
    if (Clear(t0, t1, tracks)) {
-
       // And paste in the new data
       if (Paste(t0, src, tracks)) {
          unsigned int i;
