@@ -650,7 +650,9 @@ wxString Ruler::LabelString(double d, bool major)
             s += t;
          }
          else {
-            int secs = (int)(d);
+            // The casting to float is working around an issue where 59 seconds
+            // would show up as 60 when using g++ (Ubuntu 4.3.3-5ubuntu4) 4.3.3.
+            int secs = (int)(float)(d);
             wxString t1, t2, format;
 
             if (secs >= 3600)
@@ -662,7 +664,9 @@ wxString Ruler::LabelString(double d, bool major)
                format.Printf(wxT("%%0%d.%dlf"), mDigits+3, mDigits);
             else
                format.Printf(wxT("%%%d.%dlf"), mDigits+3, mDigits);
-            t2.Printf(format.c_str(), fmod(d, 60.0));
+            // The casting to float is working around an issue where 59 seconds
+            // would show up as 60 when using g++ (Ubuntu 4.3.3-5ubuntu4) 4.3.3.
+            t2.Printf(format.c_str(), fmod((float)d, 60.0));
 
             s += t1 + t2;
          }
