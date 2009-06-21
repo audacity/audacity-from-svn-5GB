@@ -178,8 +178,6 @@ void BatchProcessDialog::OnApplyToProject(wxCommandEvent &event)
    if (!mBatchCommands.ApplyChain()) {
       return;
    }
-
-   EndModal(true);
 }
 
 void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
@@ -295,8 +293,6 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
       }
    }
    project->OnRemoveTracks();
-
-   EndModal(true);
 }
 
 void BatchProcessDialog::OnCancel(wxCommandEvent &event)
