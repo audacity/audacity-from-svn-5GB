@@ -666,7 +666,7 @@ wxString Ruler::LabelString(double d, bool major)
                format.Printf(wxT("%%%d.%dlf"), mDigits+3, mDigits);
             // The casting to float is working around an issue where 59 seconds
             // would show up as 60 when using g++ (Ubuntu 4.3.3-5ubuntu4) 4.3.3.
-            t2.Printf(format.c_str(), fmod((float)d, 60.0));
+            t2.Printf(format.c_str(), fmod((float)d, (float)60.0));
 
             s += t1 + t2;
          }
