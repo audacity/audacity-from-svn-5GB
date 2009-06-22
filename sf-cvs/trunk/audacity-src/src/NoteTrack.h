@@ -24,11 +24,12 @@ class wxRect;
 class DirManager;
 class Alg_seq;   // from "allegro.h"
 
-class NoteTrack:public Track {
+class AUDACITY_DLL_API NoteTrack:public Track {
  public:
    friend class TrackArtist;
 
    NoteTrack(DirManager * projDirManager);
+   virtual ~NoteTrack();
 
    virtual Track *Duplicate();
    

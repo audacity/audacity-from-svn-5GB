@@ -56,6 +56,17 @@ Track(projDirManager)
    mLastMidiPosition = 0;
 }
 
+NoteTrack::~NoteTrack()
+{
+   if (mSerializationBuffer) {
+      delete [] mSerializationBuffer;
+   }
+
+   if (mSeq) {
+      delete mSeq;
+   }
+}
+
 Track *NoteTrack::Duplicate()
 {
    NoteTrack *duplicate = new NoteTrack(mDirManager);
