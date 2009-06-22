@@ -1459,18 +1459,20 @@ Alg_track *Alg_track::unserialize(void *buffer, long len)
 }
 
 
+#pragma warning(disable: 4800) // long to bool performance warning
+
 void Alg_seq::unserialize_seq()
 {
     ser_buf.check_input_buffer(28);
     long len = ser_buf.get_int32();
     assert(ser_buf.get_len() >= len);
     channel_offset_per_track = ser_buf.get_int32();
-    units_are_seconds = (bool) ser_buf.get_int32();
+    units_are_seconds = ser_buf.get_int32() != 0;
     beat_dur = ser_buf.get_double();
     real_dur = ser_buf.get_double();
-    time_map = new Alg_time_map();
+    // no need to allocate an Alg_time_map since its done during instantiation
     time_map->last_tempo = ser_buf.get_double();
-    time_map->last_tempo_flag = (bool) ser_buf.get_int32();
+    time_map->last_tempo_flag = ser_buf.get_int32() != 0;
     long beats = ser_buf.get_int32();
     ser_buf.check_input_buffer(beats * 16 + 4);
     int i;
@@ -1493,6 +1495,15 @@ void Alg_seq::unserialize_seq()
     ser_buf.get_pad();
     add_track(tracks_num - 1); // create tracks_num tracks
     for (i = 0; i < tracks_num; i++) {
+        bool algt = ser_buf.get_char() == 'A' &&
+                    ser_buf.get_char() == 'L' &&
+                    ser_buf.get_char() == 'G' &&
+                    ser_buf.get_char() == 'T';
+        if (!algt) {
+            assert(algt);
+            // bug or bad data
+            break;
+        }
         track(i)->unserialize_track();
     }
     // assume seq started at beginning of buffer. len measures
@@ -1504,15 +1515,11 @@ void Alg_seq::unserialize_seq()
 
 void Alg_track::unserialize_track()
 {
-    ser_buf.check_input_buffer(32);
-    assert(ser_buf.get_char() == 'A');
-    assert(ser_buf.get_char() == 'L');
-    assert(ser_buf.get_char() == 'G');
-    assert(ser_buf.get_char() == 'T');
+    ser_buf.check_input_buffer(24);
     long offset = ser_buf.get_posn(); // stored length does not include 'ALGT'
     long bytes = ser_buf.get_int32();
     assert(bytes <= ser_buf.get_len() - offset);
-    units_are_seconds = (bool) ser_buf.get_int32();
+    units_are_seconds = ser_buf.get_int32() != 0;
     beat_dur = ser_buf.get_double();
     real_dur = ser_buf.get_double();
     int event_count = ser_buf.get_int32();
@@ -1530,7 +1537,7 @@ void Alg_track::unserialize_track()
             double dur = ser_buf.get_double();
             Alg_note *note = 
                     create_note(time, channel, key, pitch, loud, dur);
-            note->set_selected(selected);
+            note->set_selected(selected != 0);
             long param_num = ser_buf.get_int32();
             int j;
             // this builds a list of parameters in the correct order
@@ -1545,7 +1552,7 @@ void Alg_track::unserialize_track()
         } else {
             assert(type == 'u');
             Alg_update *update = create_update(time, channel, key);
-            update->set_selected(selected);
+            update->set_selected(selected != 0);
             unserialize_parameter(&(update->parameter));
             append(update);
         }
@@ -1573,7 +1580,7 @@ void Alg_track::unserialize_parameter(Alg_parameter_ptr parm_ptr)
         break;
     case 'l':
         ser_buf.check_input_buffer(4);
-        parm_ptr->l = (bool) ser_buf.get_int32();
+        parm_ptr->l = ser_buf.get_int32() != 0;
         break;
     case 'a':
         parm_ptr->a = symbol_table.insert_attribute(ser_buf.get_string());
@@ -1581,6 +1588,7 @@ void Alg_track::unserialize_parameter(Alg_parameter_ptr parm_ptr)
     }
 }
 
+#pragma warning(default: 4800)
 
 void Alg_track::set_time_map(Alg_time_map *map)
 {
@@ -2131,10 +2139,7 @@ void Alg_time_sigs::insert_beats(double beat, double len)
 
 Alg_tracks::~Alg_tracks()
 {
-    // Alg_events objects (track data) are not deleted, only the array
-    if (tracks) {
-        delete[] tracks;
-    }
+    reset();
 }
 
 
@@ -2292,6 +2297,7 @@ Alg_track_ptr Alg_seq::track(int i)
     return &(track_list[i]);
 }
 
+#pragma warning(disable: 4715) // ok not to return a value here
 
 Alg_event_ptr &Alg_seq::operator[](int i) 
 {
@@ -2308,6 +2314,7 @@ Alg_event_ptr &Alg_seq::operator[](int i)
     }
     assert(false); // out of bounds
 }
+#pragma warning(default: 4715)
 
 
 void Alg_seq::convert_to_beats()
