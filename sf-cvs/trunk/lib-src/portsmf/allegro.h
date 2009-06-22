@@ -79,6 +79,14 @@ public:
         maxlen = len = 0;
         atoms = NULL;
     }
+    virtual ~Alg_atoms() {
+        for (int i = 0; i < len; i++) {
+            if (atoms[i]) {
+                delete atoms[i];
+            }
+        }
+        if (atoms) delete[] atoms;
+    }
     // insert/lookup an atttribute
     Alg_attribute insert_attribute(Alg_attribute attr);
     // insert/lookup attribute by name (without prefixed type)
@@ -499,6 +507,9 @@ public:
         ptr = NULL;
         len = 0;
     }
+    ~Serial_buffer() {
+        if (buffer) delete [] buffer;
+    }
     void init_for_write() { ptr = buffer; }
     long get_posn() { return (long) (ptr - buffer); }
     long get_len() { return len; }
@@ -515,13 +526,22 @@ public:
         // two lots of brackets surpress a g++ warning, because this is an
         // assignment operator inside a test.
         while ((*ptr++ = *s++)) assert(ptr < fence);
+// 4311 is type cast pointer to long warning
+// 4312 is type cast loing to pointer warning
+#pragma warning(disable: 4311 4312)
         assert((char *)(((long) (ptr + 7)) & ~7) <= fence);
+#pragma warning(default: 4311 4312)
         pad(); }
     void set_int32(long v) { *((long *) ptr) = v; ptr += 4; }
     void set_double(double v) { *((double *) ptr) = v; ptr += 8; }
     void set_float(float v) { *((float *) ptr) = v; ptr += 4; }
     void set_char(char v) { *ptr++ = v; }
+#pragma warning(disable: 546) // cast to int is OK, we only want low 7 bits
+#pragma warning(disable: 4311) // type cast pointer to long warning
     void pad() { while (((long) ptr) & 7) set_char(0); }
+    void get_pad() { while (((long) ptr) & 7) ptr++; }
+#pragma warning(default: 4311)
+#pragma warning(default: 546)
     void *to_heap(long *len) {
         *len = get_posn();
         char *newbuf = new char[*len];
@@ -529,8 +549,12 @@ public:
         return newbuf;
     }
     void init_for_read(void *buf, long n) {
-        buffer = (char *) buf;
-        ptr = (char *) buf;
+        if (buffer) {
+            delete [] buffer;
+        }
+        buffer = new char[n];
+        memcpy(buffer, buf, n);
+        ptr = buffer;
         len = n;
     }
     char get_char() { return *ptr++; }
@@ -543,7 +567,6 @@ public:
                          while (*ptr++) assert(ptr < fence);
                          get_pad();
                          return s; }
-    void get_pad() { while (((long) ptr) & 7) ptr++; }
     void check_input_buffer(long needed) {
         assert(get_posn() + needed <= len); }
 } *Serial_buffer_ptr;
@@ -581,7 +604,7 @@ public:
     // copy constructor: event_list is copied, map is installed and referenced
     Alg_track(Alg_event_list_ref event_list, Alg_time_map_ptr map, 
               bool units_are_seconds);
-    virtual ~Alg_track() { set_time_map(NULL); }
+    virtual ~Alg_track() { if (time_map) time_map->dereference(); time_map = NULL; }
 
     // Returns a buffer containing a serialization of the
     // file.  It will be an ASCII representation unless text is true.
@@ -856,7 +879,7 @@ public:
     void seq_from_track(Alg_track_ref tr);
     Alg_seq(std::istream &file, bool smf); // create from file
     Alg_seq(const char *filename, bool smf); // create from filename
-    ~Alg_seq();
+    virtual ~Alg_seq();
     int get_read_error() { return error; }
     void serialize(void **buffer, long *bytes);
     void copy_time_sigs_to(Alg_seq *dest); // a utility function
@@ -871,7 +894,7 @@ public:
     void write(std::ostream &file, bool in_secs);
     // returns true on success
     bool write(const char *filename);
-    void smf_write(std::ofstream &file);
+    void smf_write(std::ostream &file);
     bool smf_write(const char *filename);
 
     // Returns the number of tracks
