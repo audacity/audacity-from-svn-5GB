@@ -24,6 +24,8 @@ class wxString;
 class Envelope;
 class WaveTrack;
 
+#include "../RealFFTf.h"
+
 class EffectNoiseRemoval: public Effect {
    
 public:
@@ -103,13 +105,17 @@ private:
    sampleCount       mOutSampleCount;
    int                   mInputPos;
 
+   HFFT     hFFT;
+   float    *mFFTBuffer;         // mWindowSize
+   float    *mWindow;            // mWindowSize
+
    int       mFreqSmoothingBins;
    int       mAttackDecayBlocks;
    float     mOneBlockAttackDecay;
+   float     mNoiseAttenFactor;
    int       mMinSignalBlocks;
    int       mHistoryLen;
    float    *mInWaveBuffer;     // mWindowSize
-   float    *mOutWaveBuffer;    // mWindowSize
    float    *mOutImagBuffer;    // mWindowSize
    float    *mOutOverlapBuffer; // mWindowSize
    float   **mSpectrums;        // mHistoryLen x mSpectrumSize
