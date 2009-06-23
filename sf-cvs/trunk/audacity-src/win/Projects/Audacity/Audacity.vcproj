@@ -761,6 +761,22 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\RealFFTf.cpp"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						EnableIntrinsicFunctions="true"
+						FavorSizeOrSpeed="1"
+						BufferSecurityCheck="false"
+						EnableEnhancedInstructionSet="2"
+						FloatingPointModel="2"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\..\src\Resample.cpp"
 				>
 			</File>

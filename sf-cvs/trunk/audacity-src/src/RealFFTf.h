@@ -15,8 +15,8 @@ HFFT GetFFT(int);
 void ReleaseFFT(HFFT);
 void RealFFTf(fft_type *,HFFT);
 void InverseRealFFTf(fft_type *,HFFT);
-void UntwiddleToTime(HFFT hFFT, fft_type *buffer, fft_type *TimeOut);
-void UntwiddleToFreq(HFFT hFFT, fft_type *buffer, fft_type *RealOut, fft_type *ImagOut);
+void ReorderToTime(HFFT hFFT, fft_type *buffer, fft_type *TimeOut);
+void ReorderToFreq(HFFT hFFT, fft_type *buffer, fft_type *RealOut, fft_type *ImagOut);
 
 #endif
 
