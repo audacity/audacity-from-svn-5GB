@@ -307,6 +307,8 @@ static wxString interpChoiceStrings[NUM_INTERP_CHOICES];
 
 EffectEqualization::EffectEqualization()
 {
+   hFFT = InitializeFFT(windowSize);
+   mFFTBuffer = new float[windowSize];
    mFilterFuncR = new float[windowSize];
    mFilterFuncI = new float[windowSize];
    gPrefs->Read(wxT("/CsPresets/EQFilterLength"),
@@ -341,6 +343,12 @@ EffectEqualization::EffectEqualization()
 
 EffectEqualization::~EffectEqualization()
 {
+   if(hFFT) 
+      EndFFT(hFFT);
+   hFFT = NULL;
+   if(mFFTBuffer)
+      delete[] mFFTBuffer;
+   mFFTBuffer = NULL;
    if(mFilterFuncR)
       delete[] mFilterFuncR;
    if(mFilterFuncI)
@@ -579,39 +587,28 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
 void EffectEqualization::Filter(sampleCount len,
          float *buffer)
 {
-   float *inr = new float[len];
-   float *ini = new float[len];
-   float *outr = new float[len];
-   float *outi = new float[len];
-
    int i;
-   float temp;
-
-   for(i=0; i<len; i++)
-      inr[i] = buffer[i];
-
+   float re,im;
    // Apply FFT
-   FFT(len, false, inr, NULL, outr, outi);
+   RealFFTf(buffer, hFFT);
+   //FFT(len, false, inr, NULL, outr, outi);
 
    // Apply filter
-   for(i=0; i<len; i++)
+   // DC component is purely real
+   mFFTBuffer[0] = buffer[0] * mFilterFuncR[0];
+   for(i=1; i<(len/2); i++)
    {
-      temp = outr[i]*mFilterFuncR[i] - outi[i]*mFilterFuncI[i];
-      outi[i] = outr[i]*mFilterFuncI[i] + outi[i]*mFilterFuncR[i];
-      outr[i] = temp;
+      re=buffer[hFFT->BitReversed[i]  ];
+      im=buffer[hFFT->BitReversed[i]+1];
+      mFFTBuffer[2*i  ] = re*mFilterFuncR[i] - im*mFilterFuncI[i];
+      mFFTBuffer[2*i+1] = re*mFilterFuncI[i] + im*mFilterFuncR[i];
    }
-
+   // Fs/2 component is purely real
+   mFFTBuffer[1] = buffer[1] * mFilterFuncR[len/2];
 
    // Inverse FFT and normalization
-   FFT(len, true, outr, outi, inr, ini);
-
-   for(i=0; i<len; i++)
-      buffer[i] = float(inr[i]);
-
-   delete[] inr;
-   delete[] ini;
-   delete[] outr;
-   delete[] outi;
+   InverseRealFFTf(mFFTBuffer, hFFT);
+   ReorderToTime(hFFT, mFFTBuffer, buffer);
 }
 
 

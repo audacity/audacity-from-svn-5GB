@@ -37,6 +37,7 @@
 #include "../WaveTrack.h"
 #include "../xml/XMLTagHandler.h"
 #include "../widgets/Ruler.h"
+#include "../RealFFTf.h"
 
 class EqualizationDialog;
 
@@ -116,6 +117,8 @@ private:
    void Filter(sampleCount len,
                float *buffer);
 
+   HFFT hFFT;
+   float *mFFTBuffer;
    float *mFilterFuncR;
    float *mFilterFuncI;
    int mM;
