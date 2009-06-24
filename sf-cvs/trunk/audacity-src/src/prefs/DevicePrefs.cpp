@@ -117,7 +117,6 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
          S.SetSizeHints(mHostNames);
 
          S.AddPrompt(_("Using:"));
-
          S.AddFixedText(wxString(Pa_GetVersionText(), wxConvLocal));
       }
       S.EndMultiColumn();

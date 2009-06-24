@@ -2272,12 +2272,13 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
    // We want to draw in seconds, so we need to convert to seconds
    seq->convert_to_seconds();
 
-   seq->iteration_begin();
+   Alg_iterator iterator(seq, false);
+   iterator.begin();
    //for every event
    Alg_event_ptr evt;
    printf ("go time\n");
-   while ((evt = seq->iteration_next())) {
-
+   while (evt = iterator.next()) {
+   
       //printf ("one note");
 
       //if the event is a note
@@ -2503,7 +2504,7 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
          }
       }
    }
-   seq->iteration_end();
+   iterator.end();
    dc.DestroyClippingRegion();
 }
 #endif // USE_MIDI

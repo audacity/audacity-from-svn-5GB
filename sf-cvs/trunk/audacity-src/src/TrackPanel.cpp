@@ -153,6 +153,7 @@ is time to refresh some aspect of the screen.
 
 
 #include "Audacity.h"
+#include "Experimental.h"
 #include "TrackPanel.h"
 
 #include <math.h>
@@ -812,9 +813,12 @@ void TrackPanel::OnTimer()
    // Each time the loop, check to see if we were playing or
    // recording audio, but the stream has stopped.
    if (p->GetAudioIOToken()>0 &&
-       !gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
+       !gAudioIO->IsStreamActive(p->GetAudioIOToken())
+#ifdef EXPERIMENTAL_MIDI_OUT
+       && !gAudioIO->IsMidiActive()
+#endif
+	  ) {
       p->GetControlToolBar()->OnStop(dummyEvent);
-      // printf( "HCK OnTimer\n" );
    }
 
    // Next, check to see if we were playing or recording
@@ -823,7 +827,11 @@ void TrackPanel::OnTimer()
    // and flush the tracks once we've completely finished
    // recording new state.
    if (p->GetAudioIOToken()>0 &&
-       !gAudioIO->IsAudioTokenActive(p->GetAudioIOToken())) {
+       !gAudioIO->IsAudioTokenActive(p->GetAudioIOToken())
+#ifdef EXPERIMENTAL_MIDI_OUT
+       && !gAudioIO->IsMidiActive()
+#endif       
+       ) {
 
       if (gAudioIO->GetNumCaptureChannels() > 0) {
          // Tracks are buffered during recording.  This flushes

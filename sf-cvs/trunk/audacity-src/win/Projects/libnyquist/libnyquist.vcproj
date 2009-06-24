@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="libnyquist"
 	ProjectGUID="{7AA41BED-41B0-427A-9148-DEA40549D158}"
 	RootNamespace="libnyquist"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

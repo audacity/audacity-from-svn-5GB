@@ -15,10 +15,13 @@
 
 #include "portaudio.h"
 #include "Audacity.h"
+#include "Experimental.h"
 
 #ifdef USE_MIDI
-//#include "portmidi.h"
-//#include "porttime.h"
+#ifdef EXPERIMENTAL_MIDI_OUT
+#include "portmidi.h"
+#include "porttime.h"
+#endif // EXPERIMENTAL_MIDI_OUT
 #include "allegro.h"
 #endif // USE_MIDI
 
@@ -89,8 +92,9 @@ class AUDACITY_DLL_API AudioIO {
     * instance.  For use with IsStreamActive() below */
 
    int StartStream(WaveTrackArray playbackTracks, WaveTrackArray captureTracks,
-/* REQUIRES PORTMIDI */
-                   //NoteTrackArray midiTracks,
+#ifdef EXPERIMENTAL_MIDI_OUT
+                   NoteTrackArray *midiTracks,
+#endif
                    TimeTrack *timeTrack, double sampleRate,
                    double t0, double t1,
                    AudioIOListener* listener,
@@ -122,6 +126,12 @@ class AUDACITY_DLL_API AudioIO {
     * new stream, use IsBusy() */
    bool IsStreamActive();
    bool IsStreamActive(int token);
+
+#ifdef EXPERIMENTAL_MIDI_OUT
+   /** \brief Are any Note tracks playing MIDI?
+    */
+   bool IsMidiActive(); // 
+#endif
 
    /** \brief Returns true if the stream is active, or even if audio I/O is
     * busy cleaning up its data or writing to disk.
@@ -284,14 +294,14 @@ private:
                              unsigned int numPlaybackChannels,
                              unsigned int numCaptureChannels,
                              sampleFormat captureFormat);
-
-/* REQUIRES PORTMIDI */
-//   bool StartPortMidiStream();
-
    void FillBuffers();
 
-/* REQUIRES PORTMIDI */
-//   void  FillMidiBuffers();
+#ifdef EXPERIMENTAL_MIDI_OUT
+   bool StartPortMidiStream();
+   void OutputEvent();
+   void FillMidiBuffers();
+   void GetNextEvent();
+#endif
 
    /** \brief Get the number of audio samples free in all of the playback
     * buffers.
@@ -336,31 +346,38 @@ private:
 
    double NormalizeStreamTime(double absoluteTime) const;
 
-//   MIDI_PLAYBACK:
-//   PmStream           *mMidiStream;
-//   PmEvent             mMidiBuffer[MAX_MIDI_BUFFER_SIZE];
-//   PmEvent             mMidiQueue[MAX_MIDI_BUFFER_SIZE];
-//   PmError             mLastPmError;
-//   long                mCurrentMidiTime;
-//   long                mLastMidiTime;
-//   Alg_seq             *mSeq;
-//   int                 mVC;   // Visible Channel
-//   int                 mCnt;
-//   long                mMidiWait;
-//   bool                mMidiStreamActive;
-//   bool                mUpdateMidiTracks;
+#ifdef EXPERIMENTAL_MIDI_OUT
+   //   MIDI_PLAYBACK:
+   PmStream           *mMidiStream;
+   //   PmEvent             mMidiBuffer[MAX_MIDI_BUFFER_SIZE];
+   //   PmEvent             mMidiQueue[MAX_MIDI_BUFFER_SIZE];
+   PmError             mLastPmError;
+   long                mCurrentMidiTime;
+   long                mMidiLatency; // latency value for PortMidi
+   long                mLastMidiTime; // timestamp of last midi message
+   Alg_seq_ptr         mSeq;
+   Alg_iterator_ptr    mIterator;
+   Alg_event_ptr       mNextEvent; // the next event to play (or null)
+   double              mNextEventTime; // the time of the next event
+                       // (note that this could be a note's time+duration)
+   bool                mNextIsNoteOn; // is the next event a note-off?
+   int                 mVC;   // Visible Channel mask
+   //   int                 mCnt;
+   long                mMidiWait;
+   bool                mMidiStreamActive;
+   // when true, mSendMidiState means send only updates, not note-on's,
+   // used to send state changes that precede the selected notes
+   bool                mSendMidiState;
+   NoteTrackArray      *mMidiPlaybackTracks;
+   //   NoteTrackArray      mMidiCaptureTracks;
 
+#endif
    AudioThread        *mThread;
    Resample          **mResample;
    RingBuffer        **mCaptureBuffers;
    WaveTrackArray      mCaptureTracks;
    RingBuffer        **mPlaybackBuffers;
    WaveTrackArray      mPlaybackTracks;
-
-/* REQUIRES PORTMIDI */
-//   NoteTrackArray      mMidiPlaybackTracks;
-//   RingBuffer        **mMidiPlaybackBuffers;
-//   NoteTrackArray      mMidiCaptureTracks;
 
    Mixer             **mPlaybackMixers;
    int                 mStreamToken;
@@ -369,9 +386,9 @@ private:
    double              mFactor;
    double              mRate;
    double              mT;
-   double              mT0;
-   double              mT1;
-   double              mTime;
+   double              mT0; // playback starts at offset of mT0
+   double              mT1; // and ends at offset of mT1
+   double              mTime; // current time position during playback
    double              mWarpedT1;
    double              mSeek;
    double              mPlaybackRingBufferSecs;

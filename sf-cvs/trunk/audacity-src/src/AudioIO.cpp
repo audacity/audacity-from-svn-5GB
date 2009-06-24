@@ -45,8 +45,6 @@ writing audio.
 
 #include <math.h>
 #include <stdlib.h>
-//   MIDI_PLAYBACK:
-//#include <string.h>
 
 #ifdef __WXMSW__
 #include <malloc.h>
@@ -68,8 +66,15 @@ writing audio.
 #include "AudacityApp.h"
 #include "AudioIO.h"
 #include "WaveTrack.h"
-//   MIDI_PLAYBACK:
-//#include "NoteTrack.h"
+
+#ifdef EXPERIMENTAL_MIDI_OUT
+#define MIDI_BUFFER_AHEAD 1.0 /* secondds */
+#define ROUND(x) (int) ((x)+0.5)
+//#include <string.h>
+#include "portmidi.h"
+#include "NoteTrack.h"
+#endif
+
 #include "Mix.h"
 #include "Resample.h"
 #include "RingBuffer.h"
@@ -123,8 +128,9 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
                           const PaStreamCallbackTimeInfo *timeInfo,
                           PaStreamCallbackFlags statusFlags, void *userData );
 
-//   MIDI_PLAYBACK:
-//int compareTime( const void* a, const void* b );
+#ifdef EXPERIMENTAL_MIDI_OUT
+int compareTime( const void* a, const void* b );
+#endif
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -228,10 +234,12 @@ AudioIO::AudioIO()
    mAudioThreadFillBuffersLoopActive = false;
    mPortStreamV19 = NULL;
 
-//   MIDI_PLAYBACK:
-//   mMidiStream = NULL;
-//   mMidiStreamActive = false;
-//   mUpdateMidiTracks = false;
+#ifdef EXPERIMENTAL_MIDI_OUT
+   mMidiStream = NULL;
+   mMidiStreamActive = false;
+   mSendMidiState = false;
+#endif
+
    mStreamToken = 0;
    mStopStreamCount = 0;
    mTempFloats = new float[65536]; // TODO: out channels * PortAudio buffer size
@@ -265,21 +273,23 @@ AudioIO::AudioIO()
       // but any attempt to play or record will simply fail.
    }
 
-/* REQUIRES PORTMIDI */
-//   PmError pmErr = Pm_Initialize();
+#ifdef EXPERIMENTAL_MIDI_OUT
+   PmError pmErr = Pm_Initialize();
 
-//   if (pmErr != pmNoError) {
-//      wxString errStr = _("There was an error initializing the midi i/o layer.\n");
-//      errStr += _("You will not be able to play midi.\n\n");
-//      wxString pmErrStr = LAT1CTOWX(Pm_GetErrorText(pmErr));
-//      if (pmErrStr)
-//         errStr += _("Error: ")+pmErrStr;
+   if (pmErr != pmNoError) {
+      wxString errStr = 
+              _("There was an error initializing the midi i/o layer.\n");
+      errStr += _("You will not be able to play midi.\n\n");
+      wxString pmErrStr = LAT1CTOWX(Pm_GetErrorText(pmErr));
+      if (pmErrStr)
+         errStr += _("Error: ") + pmErrStr;
       // XXX: we are in libaudacity, popping up dialogs not allowed!  A
       // long-term solution will probably involve exceptions
-//      wxMessageBox(errStr, _("Error Initializing Midi"), wxICON_ERROR|wxOK);
+	  wxMessageBox(errStr, _("Error Initializing Midi"), wxICON_ERROR|wxOK);
 
       // Same logic for PortMidi as described above for PortAudio
-//   }
+   }
+#endif
 
    // Start thread
    mThread = new AudioThread();
@@ -312,8 +322,9 @@ AudioIO::~AudioIO()
 #endif
    Pa_Terminate();
 
-/* REQUIRES PORTMIDI */
-//   Pm_Terminate();
+#ifdef EXPERIMENTAL_MIDI_OUT
+   Pm_Terminate();
+#endif
 
    /* Delete is a "graceful" way to stop the thread.
       (Kill is the not-graceful way.) */
@@ -708,8 +719,9 @@ void AudioIO::StartMonitoring(double sampleRate)
 
 int AudioIO::StartStream(WaveTrackArray playbackTracks,
                          WaveTrackArray captureTracks,
-/* REQUIRES PORTMIDI */
-                         //NoteTrackArray midiPlaybackTracks,
+#ifdef EXPERIMENTAL_MIDI_OUT
+                         NoteTrackArray *midiPlaybackTracks,
+#endif
                          TimeTrack *timeTrack, double sampleRate,
                          double t0, double t1,
                          AudioIOListener* listener,
@@ -767,8 +779,9 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mLastRecordingOffset = 0;
    mPlaybackTracks = playbackTracks;
    mCaptureTracks  = captureTracks;
-/* REQUIRES PORTMIDI */
-//   mMidiPlaybackTracks = midiPlaybackTracks;
+#ifdef EXPERIMENTAL_MIDI_OUT
+   mMidiPlaybackTracks = midiPlaybackTracks;
+#endif
    mPlayLooped = playLooped;
    mCutPreviewGapStart = cutPreviewGapStart;
    mCutPreviewGapLen = cutPreviewGapLen;
@@ -825,21 +838,31 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       if (mListener)
          mListener->OnAudioIOStartRecording();
    }
-   
+
    bool successAudio;
 
-/* REQUIRES PORTMIDI */
-//   bool successMidi;
-
-//   if( !mMidiPlaybackTracks.IsEmpty() ){
-//      successMidi = StartPortMidiStream();
-//   }
-
-//   if( !mPlaybackTracks.IsEmpty() ){
-      successAudio = StartPortAudioStream(sampleRate, playbackChannels,
+   successAudio = StartPortAudioStream(sampleRate, playbackChannels,
                                        captureChannels, captureFormat);
 
-   if (!successAudio) {
+#ifdef EXPERIMENTAL_MIDI_OUT
+   // TODO: it may be that midi out will not work unless audio in or out is
+   // active -- this would be a bug and may require a change in the 
+   // logic here.
+
+   bool successMidi;
+
+   if(mMidiPlaybackTracks && !mMidiPlaybackTracks->IsEmpty()){
+      successMidi = StartPortMidiStream();
+   }
+
+   // On the other hand, if MIDI cannot be opened, we will not complain
+#endif
+
+   if (!successAudio
+#ifdef EXPERIMENTAL_MIDI_OUT
+      && !successMidi
+#endif
+      ) {
       if (mListener && captureChannels > 0)
          mListener->OnAudioIOStopRecording();
       mStreamToken = 0;
@@ -847,12 +870,11 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    }
 
    //
-   // The stream has successfully been opened.  We now proceed in allocating
-   // the memory structures the stream will need.
+   // The (audio) stream has been opened successfully.  We now proceed to 
+   // allocate the memory structures the stream will need.
    //
 
-   if( mNumPlaybackChannels > 0 )
-   {
+   if( mNumPlaybackChannels > 0 ) {
       // Allocate output buffers.  For every output track we allocate
       // a ring buffer of five seconds
       sampleCount playbackBufferSize =
@@ -901,20 +923,33 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    while( mAudioThreadShouldCallFillBuffersOnce == true )
       wxMilliSleep( 50 );
 
-   // Now start the PortAudio stream!
-   PaError err;
-   err = Pa_StartStream( mPortStreamV19 );
+#ifdef EXPERIMENTAL_MIDI_OUT
+   // output MIDI control information up to the current cursor location
+   // MOTODO: output midi control changes and program changes up to cursor
+   //   QUESTION: can we do that from this thread?
+#endif
 
-   if( err != paNoError )
-   {
-      // TODO
-      // we'll need a more complete way to indicate error.
-      // AND we need to delete the ring buffers and mixers, etc.
-      if (mListener && mNumCaptureChannels > 0)
-         mListener->OnAudioIOStopRecording();
-      wxPrintf(wxT("%hs\n"), Pa_GetErrorText(err));
-      mStreamToken = 0;
-      return 0;
+   if(mNumPlaybackChannels > 0 || mNumCaptureChannels > 0
+#ifdef EXPERIMENTAL_MIDI_OUT
+      || !mMidiPlaybackTracks->IsEmpty()
+#endif
+      ) {
+
+      // Now start the PortAudio stream!
+      PaError err;
+      err = Pa_StartStream( mPortStreamV19 );
+
+      if( err != paNoError )
+      {
+         // TODO
+         // we'll need a more complete way to indicate error.
+         // AND we need to delete the ring buffers and mixers, etc.
+         if (mListener && mNumCaptureChannels > 0)
+            mListener->OnAudioIOStopRecording();
+         wxPrintf(wxT("%hs\n"), Pa_GetErrorText(err));
+         mStreamToken = 0;
+         return 0;
+      }
    }
 
    mAudioThreadFillBuffersLoopRunning = true;
@@ -924,27 +959,33 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    // clients accessing the AudioIO API, so they can query if
    // are the ones who have reserved AudioIO or not.
    //
-//   MIDI_PLAYBACK:
-//   }
-
    mStreamToken = (++mNextStreamToken);
 
    return mStreamToken;
 }
 
-/* HCK MIDI PATCH START */
-/* REQUIRES PORTMIDI */
-//bool AudioIO::StartPortMidiStream() 
-//{
-//   #define TIME_PROC ((long (*)(void *)) Pt_Time)
-//   int i, latency; 
+#ifdef EXPERIMENTAL_MIDI_OUT
+
+#define TIME_PROC ((long (*)(void *)) Pt_Time)
+
+bool AudioIO::IsMidiActive()
+{
+   if (!mMidiStream) return false;
+   // find out if we have passed the last midi event
+   return mLastMidiTime + mMidiLatency <= TIME_PROC(NULL);
+}
+
+
+bool AudioIO::StartPortMidiStream() 
+{
+   int i, latency; 
    
    // Only start MIDI stream if there is an open track
-//   if (mMidiPlaybackTracks.GetCount() == 0)
-//      return false;
+   if (mMidiPlaybackTracks->GetCount() == 0)
+      return false;
 
    /* get latency from PortAudio */
-//   int framesPerBuffer = 1102; // constant passed to Pa_OpenStream call 
+   int framesPerBuffer = 1102; // constant passed to Pa_OpenStream call 
                                // but not defined beforehand
 /* HCK MIDI FIX ORG
    int numBuffers = Pa_GetMinNumBuffers( framesPerBuffer, mRate );
@@ -955,67 +996,72 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       latency = 500;
 HCK MIDI PATCH ORG */
 
-//   latency = 500;
-
-//   Pt_Start(1, 0, 0); /* timer started w/millisecond accuracy */
+   mMidiLatency = 100;
+   printf("StartPortMidiStream: mT0 %g mTime %g\n", 
+          gAudioIO->mT0, gAudioIO->mTime);
+   if (Pt_Started()) Pt_Stop(); // start from zero
+   Pt_Start(1, 0, 0); /* timer started w/millisecond accuracy */
 
    /* get midi playback device */
-//   PmDeviceID playbackDevice = pmNoDevice;
+   PmDeviceID playbackDevice = Pm_GetDefaultOutputDeviceID();
+   wxString playbackDeviceName = gPrefs->Read(wxT("/MidiIO/PlaybackDevice"), 
+                                              wxT(""));
 
-//   playbackDevice =  Pm_GetDefaultOutputDeviceID();
-//   gPrefs->Write(wxT("/MidiIO/PlaybackDevice"), "ALSA, Midi Through Port-0" );
-//   wxString playbackDeviceName = gPrefs->Read(wxT("/MidiIO/PlaybackDevice"), wxT(""));
+   if (wxStrcmp(playbackDeviceName, wxT("")) != 0) {
+      for (i = 0; i < Pm_CountDevices(); i++) {
+         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
+         if (!info) continue;
+         if (wxStrcmp(LAT1CTOWX(info->name), playbackDeviceName) == 0)
+            playbackDevice = i;
+      }
+   } // (else playback device has Pm_GetDefaultOuputDeviceID())
 
-//   if( playbackDeviceName != wxT("") )
-//   {
-//      for (i = 0; i < Pm_CountDevices(); i++) {
-//         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-
-//         if (!info)
-//            continue;
- 
-//         if (LAT1CTOWX(info->name) == playbackDeviceName)
-//            playbackDevice = i;
-//      }
-//   }
-//   else
-//   {
-//      playbackDevice = 0;
-//   }
-
-   // JUST FOR TEST : SET DEFAULT DEVICE
-//   playbackDevice = 2;
    /* open output device */
-//   mLastPmError = Pm_OpenOutput(&mMidiStream, 
-//                                playbackDevice, 
-//                                NULL,
-//                                0, 
-//                                TIME_PROC,
-//                                NULL, 
-//                                latency);
+   mLastPmError = Pm_OpenOutput(&mMidiStream, 
+                                playbackDevice, 
+                                NULL,
+                                0, 
+                                TIME_PROC,
+                                NULL, 
+                                mMidiLatency);
+   // DEBUGGING
+      const PmDeviceInfo *info = Pm_GetDeviceInfo(playbackDevice);
+      printf("Pm_OpenOutput on %s, return code %d\n", 
+             info->name, mLastPmError);
 
-//   mCurrentMidiTime = TIME_PROC(NULL);
-   //mLastMidiTime = mCurrentMidiTime;
-//   mMidiWait = 0;
+   mCurrentMidiTime = TIME_PROC(NULL);
+   mLastMidiTime = 0x7FFF0000; // a big number, adjusted when we play last
+                               // midi event
+   mMidiWait = 0;
 
-//   fprintf(stderr, "mT0: %f\n", mT0);
-//   fprintf(stderr, "%li %li : STARTING\n", mCurrentMidiTime, mLastMidiTime );
+   fprintf(stderr, "mT0: %f\n", mT0);
+   fprintf(stderr, "%li %li : STARTING\n", mCurrentMidiTime, mLastMidiTime );
 
-//   mMidiStreamActive = true;
+   mMidiStreamActive = true;
+   //   mCnt = 0;
+
+   // for now, play only one track
+   mSeq = (*mMidiPlaybackTracks)[0]->GetSequence();
+   mVC = (*mMidiPlaybackTracks)[0]->GetVisibleChannels();
+ 
+   mIterator = new Alg_iterator(mSeq, true);
+   mIterator->begin();
+   GetNextEvent(); // prime the pump for FillMidiBuffers
+
 
    // Start MIDI from current cursor position
-//   mUpdateMidiTracks = true;
-//   memset( mMidiQueue, 0x00, sizeof( mMidiQueue ) );
-//   mCnt = 0;
+   mSendMidiState = true;
+   while (mNextEvent && 
+          mNextEvent->time < mT0) {
+      OutputEvent();
+      GetNextEvent();
+   }
+   // MOTODO -- fix this to send updates immediately until t0 is reached
+   mSendMidiState = false;
 
-//   mSeq = mMidiPlaybackTracks[0]->GetSequence();
-//   mVC = mMidiPlaybackTracks[0]->GetVisibleChannels();
-//   mSeq->iteration_begin();
-
-//   return (mLastPmError == pmNoError);      
-//}
-/* REQUIRES PORTMIDI END */
-/* HCK MIDI PATCH END */
+   return (mLastPmError == pmNoError);      
+}
+#endif
 
 void AudioIO::SetMeters(Meter *inputMeter, Meter *outputMeter)
 {
@@ -1032,23 +1078,24 @@ void AudioIO::SetMeters(Meter *inputMeter, Meter *outputMeter)
 
 void AudioIO::StopStream()
 {
-//   MIDI_PLAYBACK:
-//   printf( "HCK StopStream\n" );
    if( mPortStreamV19 == NULL 
-/* REQUIRES PORTMIDI */
-//	   && mMidiStream == NULL 
-	   )
+#ifdef EXPERIMENTAL_MIDI_OUT
+       && mMidiStream == NULL 
+#endif
+     )
       return;
 
    if( Pa_IsStreamStopped( mPortStreamV19 ) 
-/* REQUIRES PORTMIDI */
-//	   && !mMidiStreamActive 
-	   )
+#ifdef EXPERIMENTAL_MIDI_OUT
+       && !mMidiStreamActive 
+#endif
+     )
       return;
 
    // Avoid race condition by making sure this function only
    // gets called once at a time
-   mStopStreamCount++;
+   mStopStreamCount++; // <- note that this is not atomic, therefore has
+                       // a race condition -RBD
    if (mStopStreamCount != 1)
       return;
 
@@ -1109,27 +1156,32 @@ void AudioIO::StopStream()
       mPortStreamV19 = NULL;
    }
 
-/* REQUIRES PORTMIDI */
+
+#ifdef EXPERIMENTAL_MIDI_OUT
    /* Stop Midi playback */
-//   if ( mMidiStream )
-//   {
-//      mMidiStreamActive = false;
-//
-//      if (mInCallbackFinishedState)
-//      {
-//         Pm_Close(mMidiStream);
-//      }
-//      else
-//      {
-//         Pm_Abort(mMidiStream);
-//         Pm_Close(mMidiStream);
-//      }
+   // problem here -- if explicitly stopped, we'll hang here
+   //   while (mLastMidiTime + mMidiLatency + 10 < TIME_PROC(NULL)) {
+   //      wxMilliSleep( 50 );
+   //   }
+      
+   if ( mMidiStream ) {
+      mMidiStreamActive = false;
+      // MOTODO: if output in progress, send all off, etc.
+      for (int i = 0; i < 16; i++) {
+         Pm_WriteShort(mMidiStream, 0, Pm_Message(0xB0 + i, 0x7B, 0));
+      }
+      wxMilliSleep(40); // deliver the all-off messages before closing
+      Pm_Abort(mMidiStream); // MOTODO: only abort if output in progress
+      Pm_Close(mMidiStream);
+      printf("Pm_Close() called\n");
+      mMidiStream = NULL;
 
       // Reset MIDI track positions this way for now
-      //mMidiPlaybackTracks[0]->SetLastMidiPosition(0);
-//      mLastMidiTime = 0;
-//      mSeq->iteration_end();
-//   }
+      // mMidiPlaybackTracks[0]->SetLastMidiPosition(0);
+      // mLastMidiTime = 0;
+      mIterator->end();
+   }
+#endif
 
    // If there's no token, we were just monitoring, so we can
    // skip this next part...
@@ -1222,7 +1274,10 @@ void AudioIO::StopStream()
                      track->SetOffset(track->GetStartTime() + recordingOffset);
                      if(track->GetEndTime() < 0.)
                      {
-                        wxMessageDialog m(NULL, _("Latency Correction setting has caused the recorded audio to be hidden before zero.\nAudacity has brought it back to start at zero.\nYou may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."), _("Latency problem"), wxOK);
+                        wxMessageDialog m(NULL, _("Latency Correction setting has caused the recorded audio to be hidden before zero.\n"
+                           "Audacity has brought it back to start at zero.\n"
+                           "You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."),
+                           _("Latency problem"), wxOK);
                         m.ShowModal();
                         track->SetOffset(0.);
                      }
@@ -1578,11 +1633,13 @@ AudioThread::ExitCode AudioThread::Entry()
          gAudioIO->FillBuffers();
       }
 
-/* REQUIRES PORTMIDI */
-//     if( gAudioIO->mMidiStreamActive )
-//      {
-//         gAudioIO->FillMidiBuffers();
-//      }
+#ifdef EXPERIMENTAL_MIDI_OUT
+     if( gAudioIO->mMidiStreamActive && 
+         gAudioIO->mAudioThreadFillBuffersLoopRunning)
+      {
+         gAudioIO->FillMidiBuffers();
+      }
+#endif
       Sleep(10);
    }
 
@@ -2073,317 +2130,366 @@ void AudioIO::SetListener(AudioIOListener* listener)
    mListener = listener;
 }
 
-/* HCK MIDI PATCH START */
-/* REQUIRES PORTMIDI */
-//void AudioIO::FillMidiBuffers()
-//{
-//   long now = TIME_PROC(NULL);
+#ifdef EXPERIMENTAL_MIDI_OUT
 
-   // Buffering too quickly may cause a MIDI host buffer overflow
-   // so after every 5 seconds of data is buffered, we wait until
-   // just before that 5 seconds has been processed before buffering
-   // again.  
-   //
-   // A better way to do this would be to use PortMidi to query the
-   // host's state and only buffer as many events as the host can handle.
-//   if( mPlaybackTracks.IsEmpty() && !mUpdateMidiTracks )
-//   {
+void AudioIO::OutputEvent()
+{
+   int channel = (mNextEvent->chan) & 0xF; // must be in [0..15]
+   int command = -1;
+   int data1 = -1;
+   int data2 = -1;
+
+   //   printf("OutputEvent: now %d\n", TIME_PROC(NULL));
+         
+   if (mVC & (1 << channel)) { // if mNextEvent's channel is visible, play it
+      // Note event
+      if (mNextEvent->is_note() && !mSendMidiState) {
+         // Pitch and velocity
+         data1 = mNextEvent->get_pitch();
+         if (mNextIsNoteOn) data2 = mNextEvent->get_loud(); // get velocity
+         else data2 = 0; // 0 velocity means "note off"
+         command = 0x90; // MIDI NOTE ON (or OFF when velocity == 0)
+      // Update event
+      } else if (mNextEvent->is_update()) {
+         // this code is based on allegrosmfwr.cpp -- it could be improved
+         // by comparing attribute pointers instead of string compares
+         Alg_update_ptr update = (Alg_update_ptr) mNextEvent;
+         const char *name = update->get_attribute();
+               
+         if (!strcmp(name, "programi")) {
+            // Instrument change
+            data1 = update->parameter.i;
+            data2 = 0;
+            command = 0xC0; // MIDI PROGRAM CHANGE
+         } else if (!strncmp(name, "control", 7)) {
+            // Controller change
+
+            // The number of the controller being changed is embedded
+            // in the parameter name.
+            data1 = atoi(name + 7);
+            // Allegro normalizes controller values
+            data2 = ROUND(update->parameter.r * 127);
+            command = 0xB0;
+         } else if (!strcmp(name, "bendr")) {
+            // Bend change
+
+            // Reverse Allegro's post-processing of bend values
+            int temp = ROUND(0x2000 * (update->parameter.r + 1));
+            if (temp > 0x3fff) temp = 0x3fff; // 14 bits maximum
+            if (temp < 0) temp = 0;
+            data1 = temp & 0x7f; // low 7 bits
+            data2 = temp >> 7;   // high 7 bits
+            command = 0xE0; // MIDI PITCH BEND
+         } else if (!strcmp(name, "pressurer")) {
+            // Pressure change
+            data1 = (int) (update->parameter.r * 127);
+            if (update->get_identifier() < 0) {
+               // Channel pressure
+               data2 = 0;
+               command = 0xD0; // MIDI CHANNEL PRESSURE
+            } else {
+               // Key pressure
+               data2 = data1;
+               data1 = update->get_identifier();
+               command = 0xA0; // MIDI POLY PRESSURE
+            }
+         }
+      }
+      if (command != -1) {
+         // MIDI time is relative to the start of playback, but note times
+         // are relative to the start of the track. mT0 is the correction
+         // factor, because it's the time offset where playback started.
+         double time = mNextEventTime - mT0;
+         if (time < 0) time = 0;
+         PmTimestamp timestamp = (PmTimestamp) (time * 1000); /* s to ms */
+         Pm_WriteShort(mMidiStream, timestamp, 
+                       Pm_Message((int) (command + channel), 
+                                  (long) data1, (long) data2));
+         // printf("midi out: time %d msg %2x %3d %3d\n",
+         //       (PmTimestamp) (mNextEventTime * 1000), 
+         //       (command + channel), (long) data1, (long) data2);
+      }
+   }
+}
+
+void AudioIO::GetNextEvent()
+{
+   mNextEvent = mIterator->next(&mNextIsNoteOn);
+   if (mNextEvent) {
+      if (mNextIsNoteOn) {
+         mNextEventTime = mNextEvent->time;
+      } else {
+         mNextEventTime = mNextEvent->get_end_time();
+      }
+   } else {
+      mLastMidiTime = (int) (mNextEventTime * 1000);
+   }
+   // printf("after GetNextEvent: time %g, event %p, mLastMidiTime %d\n", 
+   //       mNextEventTime, mNextEvent, mLastMidiTime);
+}
+
+void AudioIO::FillMidiBuffers()
+{
+//   if (mPlaybackTracks.IsEmpty() && !mSendMidiState) {
 //      gAudioIO->mTime = (now - mCurrentMidiTime)/1000 + mT0;
 //   }
 
-//   if (now < mMidiWait)
-//   {
-//      return;
-//   }
+   // assume gAudioIO->mTime is the current time
+   // assume output MIDI data 1s in advance of real time (mTime)
+   // assume (for now) that midi time and sequence time are based at zero
+   // then we need to iterate and output Midi until next time > mTime + 1s
 
-//   Alg_seq *testSeq;
+   while (mNextEvent && 
+          mNextEvent->time < gAudioIO->mTime + MIDI_BUFFER_AHEAD) {
+      OutputEvent();
+      GetNextEvent();
+   }
+#ifdef OLD_CODE
+   if (now < mMidiWait) {
+      return;
+   }
+   int i, j, k, track, visibleChannels;
+   long channel, key, time;
+   float command, data1, data2;
+   double r;
+   char updateParameter[13];
+   bool forcedBreak = false;
 
-//   int i, j, k, track, visibleChannels;
-//   long channel, key, time;
-//   float command, data1, data2;
-//   double r;
-//   char updateParameter[13];
-//   bool forcedBreak = false;
+   visibleChannels = mVC;
 
-//   visibleChannels = mVC;
-//   testSeq = mSeq;
+   if (mSeq) {
+      i = 0; // index of buffer
+      //testSeq->iteration_begin();
 
-   /*
-   for (track = 0; track < mMidiPlaybackTracks.GetCount(); track++) 
-   {
-      testSeq = mMidiPlaybackTracks[track]->GetSequence();
-      visibleChannels = mMidiPlaybackTracks[track]->GetVisibleChannels();
-   */
+      Alg_event_ptr currEvent;
 
-//      if (testSeq) 
-//      {
-//         i = 0; // index of buffer
-         //testSeq->iteration_begin();
+      while ( currEvent = mSeq->iteration_next() ) {
+         // TODO HCK : this loop has Russian painter problem
+         /*
+         // In Update mode, events should be delivered immediately
+         if (mSendMidiState) time = 0;
+         // Normal playback mode takes the given event times
+         else
+            //time = (currEvent->time - mT0) * 1000;
+            time = mCurrentMidiTime + ( currEvent->time - mT0 ) * 1000;
+         */
 
-//         Alg_event_ptr currEvent;
+         if (gAudioIO->mTime >= gAudioIO->mT1 && !gAudioIO->mPlayLooped) {
+            mMidiStreamActive = false;
+            // gAudioIO->mInCallbackFinishedState = true;
+            mStreamToken = 0;
+         }
+         
+         if (currEvent->time < mLastMidiTime / 1000) {
+            continue;
+         }
 
-//         while ( currEvent = testSeq->iteration_next() )
-//         {
-            // TODO HCK : this loop has Russian painter problem
-            /*
-            // In Update mode, events should be delivered immediately
-            if (mUpdateMidiTracks)
-               time = 0;
-            // Normal playback mode takes the given event times
-            else
-               //time = (currEvent->time - mT0) * 1000;
-               time = mCurrentMidiTime + ( currEvent->time - mT0 ) * 1000;
-            */
+         if (currEvent->time >= mT0) {
+            time = ( currEvent->time - mT0 ) * 1000 + mCurrentMidiTime;
+            if (mSendMidiState) {
+               mSendMidiState = false;
+               mCurrentMidiTime = TIME_PROC(NULL);
+            }
+         } else {
+            time = 0;
+         }
 
-//            if( gAudioIO->mTime >= gAudioIO->mT1 && !gAudioIO->mPlayLooped )
-//            {
-//               mMidiStreamActive = false;
-//               gAudioIO->mInCallbackFinishedState = true;
-//               mStreamToken = 0;
-//            }
+         if (mCnt > 0) {
+            j = 0;
+            printf( "HCK : sorting...\n" );
+            qsort( mMidiQueue, mCnt, sizeof( PmEvent ), compareTime );
+            printf( "HCK : sorting...\n" );
+            for (int azaa = 0; azaa < mCnt; azaa++) {
+               printf( "HCK : SORT : %f %f\n", (float)mMidiQueue[azaa].timestamp, (float)time );
+            }
+            while (mMidiQueue[j].timestamp <= time) {
+               mMidiBuffer[i].timestamp = mMidiQueue[j].timestamp;
+               memcpy(&mMidiBuffer[i].message, &mMidiQueue[j].message,
+                      sizeof(PmMessage));
+               printf( "HCK : QUEUE!!!! : mCnt       : %d\n", mCnt );
+               printf( "HCK : QUEUE!!!! : j          : %d\n", j );
+               printf( "HCK : QUEUE!!!! : timestampQ : %f\n", (float)mMidiQueue[j].timestamp );
+               printf( "HCK : QUEUE!!!! : timestampB : %f\n", (float)mMidiBuffer[i].timestamp );
+               printf( "HCK : QUEUE!!!! : data Q     : %f\n", (float)mMidiQueue[j].message );
+               printf( "HCK : QUEUE!!!! : data B     : %f\n", (float)mMidiBuffer[i].message );
+               
+               i++;
+               j++;
+               mCnt--;
 
-//            if( currEvent->time < mLastMidiTime / 1000 )
-//            {
-//               continue;
-//            }
-
-//            if( currEvent->time >= mT0 )
-//            {
-//               time = ( currEvent->time - mT0 ) * 1000 + mCurrentMidiTime;
-//               if( mUpdateMidiTracks )
-//               {
-//                  mUpdateMidiTracks = false;
-//                  mCurrentMidiTime = TIME_PROC(NULL);
-//               }
-//            }
-//            else
-//            {
-//               time = 0;
-//            }
-
-//            if( mCnt > 0 )
-//            {
-//               j = 0;
-//               printf( "HCK : sorting...\n" );
-//               qsort( mMidiQueue, mCnt, sizeof( PmEvent ), compareTime );
-//               printf( "HCK : sorting...\n" );
-//               for( int azaa = 0; azaa < mCnt; azaa++ )
-//               {
-//                  printf( "HCK : SORT : %f %f\n", (float)mMidiQueue[azaa].timestamp, (float)time );
-//               }
-//               while( mMidiQueue[j].timestamp <= time )
-//               {
-//                  mMidiBuffer[i].timestamp = mMidiQueue[j].timestamp;
-//                  memcpy( &mMidiBuffer[i].message, &mMidiQueue[j].message,
-//                     sizeof( PmMessage ) );
-
-//                  printf( "HCK : QUEUE!!!! : mCnt       : %d\n", mCnt );
-//                  printf( "HCK : QUEUE!!!! : j          : %d\n", j );
-//                  printf( "HCK : QUEUE!!!! : timestampQ : %f\n", (float)mMidiQueue[j].timestamp );
-//                  printf( "HCK : QUEUE!!!! : timestampB : %f\n", (float)mMidiBuffer[i].timestamp );
-//                  printf( "HCK : QUEUE!!!! : data Q     : %f\n", (float)mMidiQueue[j].message );
-//                  printf( "HCK : QUEUE!!!! : data B     : %f\n", (float)mMidiBuffer[i].message );
-
-//                  i++;
-//                  j++;
-//                  mCnt--;
-
-//                  if( mCnt == 0 )
-//                  {
-//                     break;
-//                  }
-//               }
-
-//               if( j > 0 && mCnt > 0 )
-//               {
-//                  memmove( &mMidiQueue[0], &mMidiQueue[j],
-//                     sizeof( PmEvent ) * mCnt );
-//               }
-//            }
-
-//            channel = currEvent->chan;
-//            command = data1 = data2 = -1;
-
-//            if (visibleChannels & (1 << channel))
-//            {
-//               // Note event
-//               if ( currEvent->get_type() == wxT('n') && mUpdateMidiTracks == false )
-//               {
-                  // Pitch and velocity
-//                  data1 = currEvent->get_pitch();
-//                  data2 = currEvent->get_loud();
-//                  command = 0x90;
-//               }
-               // Update event
-//               else if (currEvent->get_type() == wxT('u')) 
-//               {
-                  // Allegro update events are stored as name/value parameters
-                  // where names can also contain important MIDI values and the
-                  // value data type.  To make this as easy as possible, we
-                  // only look at the first four characters of each name to 
-                  // determine the command.
-//                  strcpy(updateParameter, 
-//                         ((Alg_update_ptr)currEvent)->parameter.attr_name());
-//                  updateParameter[4] = 0;
-
-//                  if (strcmp(updateParameter, "prog") == 0)
-//                  {
-                     // Instrument change
-
-//                     data1 = ((Alg_update_ptr)currEvent)->parameter.i;
-//                     data2 = 0;
-//                     command = 0xC0;
-//                  }
-//                  else if(strcmp(updateParameter, "cont") == 0 && mUpdateMidiTracks == false)
-//                  {
-                     // Controller change
-
-                     // The number of the controller being changed is embedded
-                     // in the parameter name so we grab the whole name, set the
-                     // index value to the position just after "control"
-//                     strcpy(updateParameter, 
-//                            ((Alg_update_ptr)currEvent)->parameter.attr_name());
-
-//                     k = 7;
-//                     data1 = 0;
-
-//                     while(updateParameter[k] != wxT('r'))
-//                     {
-//                        data1 = data1 * 10 + atoi(&updateParameter[k]);
-//                        k++;
-//                     }
-
-                     // Allegro normalizes controller values
-//                     data2 = ((Alg_update_ptr)currEvent)->parameter.r * 127;
-//                     command = 0xB0;
-//                  }
-//                  else if(strcmp(updateParameter, "bend") == 0 && mUpdateMidiTracks == false)
-//                  {
-                     // Bend change
-
-                     // Reverse Allegro's post-processing of bend values
-//                     r = (((Alg_update_ptr)currEvent)->parameter.r + 1) * 8192;
-                    
-//                     data1 = ((long)r) >> 7;
-//                     data2 = (((long)r) << 7) >> 7;
-//                     command = 0xE0;
-//                  }
-//                  else if(strcmp(updateParameter, "pres") == 0 && mUpdateMidiTracks == false)
-//                  {
-                     // Pressure change
-
-                     // Allegro normalizes pressures
-//                     r = ((Alg_update_ptr)currEvent)->parameter.r * 127;
-//                     key = currEvent->get_identifier();
-
-                     // Channel pressure
-//                     if (key == -1)
-//                     {
-//                        data1 = r;
-//                        data2 = 0;
-//                        command = 0xD0;
-//                     }
-                     // Key pressure
-//                     else 
-//                     {
-//                        data1 = key;
-//                        data2 = r;
-//                        command = 0xA0;
-//                     }
-//                  }
-//               }
-//            }
-
-//            if (command != -1)
-//            {
-//               mMidiBuffer[i].timestamp = time;
-//               mMidiBuffer[i].message = Pm_Message((int)(command + channel), (long)data1, (long)data2);
-//               printf( "HCK[%d]\n", i );
-//               printf( "Command     : %d\n", (int)command );
-//               printf( "mTime       : %f\n", (float)gAudioIO->mTime );
-//               printf( "TimeStamp   : %f\n", (float)mMidiBuffer[i].timestamp );
-//               printf( "CurMidiTime : %f\n", (float)mCurrentMidiTime );
-//               printf( "LastMidiTime: %f\n", (float)mLastMidiTime );
-//               printf( "MidiWait    : %f\n", (float)mMidiWait );
-//               printf( "Time        : %f\n", (float)TIME_PROC(NULL) );
-//               i++;
-//               if( command == 0x90 )
-//               {
-//                  mMidiQueue[mCnt].timestamp = time + (long)currEvent->get_duration() * 1000;
-//                  mMidiQueue[mCnt].message = Pm_Message((int)(0x90 + channel), (long)data1, 0 );
-//                  printf( "HCK QUEUE[%d]\n", mCnt );
-//                  printf( "Command     : OFF\n" );
-//                  printf( "mTime       : %f\n", (float)gAudioIO->mTime );
-//                  printf( "TimeStamp   : %f\n", (float)mMidiQueue[mCnt].timestamp );
-//                  printf( "CurMidiTime : %f\n", (float)mCurrentMidiTime );
-//                  printf( "LastMidiTime: %f\n", (float)mLastMidiTime );
-//                  printf( "MidiWait    : %f\n", (float)mMidiWait );
-//                  printf( "Time        : %f\n", (float)TIME_PROC(NULL) );
-//                  mCnt++;
-//               }
-//               else
-//                  fprintf(stderr, "command: %s\n", updateParameter);
-//            }
-
-            // Turn off updates when we reach the selection beginning
-            /*
-            if (mUpdateMidiTracks)
-            {
-               if (i == 0 && i > testSeq->seek_time(mT0, track))
-               {
-                  // The first 1/10 of the file has been processed
-                  // so just to 5 seconds before cursor to avoid lag
-                  notesOn = true;
-                  i = testSeq->seek_time(mT0, track);
-                  fprintf(stderr, "%li: Stop processing updates\n", TIME_PROC(NULL));
+               if (mCnt == 0) {
+                  break;
                }
             }
-            */
-            // Stop when:
-            // 1. enough events are buffered
-            // 2. there are no more events to buffer
-            //if (i >= endIndex || i == testSeq->length())
-//            if( i >= MAX_MIDI_BUFFER_SIZE - 1 )
-//            {
-//               if( !mUpdateMidiTracks )
-//               {
-//                  printf( "HCK : Pm_Write : 111111111\n" );
-                  //qsort( mMidiBuffer, i, sizeof( PmEvent ), compareTime );
-//                  Pm_Write(mMidiStream, mMidiBuffer, i);
-//                  mMidiWait = time - 1000;
-//               }
-//               i = 0;
-//               mLastMidiTime = currEvent->time * 1000;
-//               forcedBreak = true;
-//               break;
-//            }  
-//            else if( currEvent->time * 1000 >= mLastMidiTime + 2000 )
-//            {
-//               if( !mUpdateMidiTracks )
-//               {
-//                  printf( "HCK : Pm_Write : 222222222\n" );
-                  //qsort( mMidiBuffer, i, sizeof( PmEvent ), compareTime );
-//                  Pm_Write( mMidiStream, mMidiBuffer, i );
-//                  mMidiWait = time - 1000;
-//               }
-//               i = 0;
-//               mLastMidiTime = currEvent->time * 1000;
-//               forcedBreak = true;
-//               break;
-//            }
-//         }  // End of While
+
+            if (j > 0 && mCnt > 0) {
+               memmove(&mMidiQueue[0], &mMidiQueue[j],
+                       sizeof( PmEvent ) * mCnt );
+            }
+         }
+
+         channel = currEvent->chan;
+         command = data1 = data2 = -1;
+         
+         if (visibleChannels & (1 << channel)) {
+            // Note event
+            if (currEvent->is_note() && mSendMidiState == false) {
+               // Pitch and velocity
+               data1 = currEvent->get_pitch();
+               data2 = currEvent->get_loud();
+               command = 0x90;
+            }
+            // Update event
+            else if (currEvent->is_update()) {
+               // Allegro update events are stored as name/value parameters
+               // where names can also contain important MIDI values and the
+               // value data type.  To make this as easy as possible, we
+               // only look at the first four characters of each name to 
+               // determine the command.
+               strcpy(updateParameter, 
+                      ((Alg_update_ptr)currEvent)->parameter.attr_name());
+               updateParameter[4] = 0;
+               
+               if (strcmp(updateParameter, "prog") == 0) {
+                  // Instrument change
+                  
+                  data1 = ((Alg_update_ptr)currEvent)->parameter.i;
+                  data2 = 0;
+                  command = 0xC0;
+               } else if (strcmp(updateParameter, "cont") == 0 &&
+                          mSendMidiState == false) {
+                  // Controller change
+
+                  // The number of the controller being changed is embedded
+                  // in the parameter name so we grab the whole name, set the
+                  // index value to the position just after "control"
+                  strcpy(updateParameter, 
+                         ((Alg_update_ptr)currEvent)->parameter.attr_name());
+
+                  k = 7;
+                  data1 = 0;
+
+                  while (updateParameter[k] != wxT('r')) {
+                     data1 = data1 * 10 + atoi(&updateParameter[k]);
+                     k++;
+                  }
+
+                  // Allegro normalizes controller values
+                  data2 = ((Alg_update_ptr)currEvent)->parameter.r * 127;
+                  command = 0xB0;
+               } else if (strcmp(updateParameter, "bend") == 0 &&
+                          mSendMidiState == false) {
+                  // Bend change
+
+                  // Reverse Allegro's post-processing of bend values
+                  r = (((Alg_update_ptr)currEvent)->parameter.r + 1) * 8192;
+
+                  data1 = ((long)r) >> 7;
+                  data2 = (((long)r) << 7) >> 7;
+                  command = 0xE0;
+               } else if (strcmp(updateParameter, "pres") == 0 && 
+                          mSendMidiState == false) {
+                  // Pressure change
+
+                  // Allegro normalizes pressures
+                  r = ((Alg_update_ptr)currEvent)->parameter.r * 127;
+                  key = currEvent->get_identifier();
+
+                  // Channel pressure
+                  if (key == -1) {
+                     data1 = r;
+                     data2 = 0;
+                     command = 0xD0;
+                  } else {
+                     // Key pressure
+                     data1 = key;
+                     data2 = r;
+                     command = 0xA0;
+                  }
+               }
+            }
+         }
+
+         if (command != -1) {
+            mMidiBuffer[i].timestamp = time;
+            mMidiBuffer[i].message = Pm_Message((int)(command + channel), 
+                                                (long)data1, (long)data2);
+            printf( "HCK[%d]\n", i );
+            printf( "Command     : %d\n", (int)command );
+            printf( "mTime       : %f\n", (float)gAudioIO->mTime );
+            printf( "TimeStamp   : %f\n", (float)mMidiBuffer[i].timestamp );
+            printf( "CurMidiTime : %f\n", (float)mCurrentMidiTime );
+            printf( "LastMidiTime: %f\n", (float)mLastMidiTime );
+            printf( "MidiWait    : %f\n", (float)mMidiWait );
+            printf( "Time        : %f\n", (float)TIME_PROC(NULL) );
+            i++;
+            if (command == 0x90) {
+               mMidiQueue[mCnt].timestamp =
+                  time + (long)currEvent->get_duration() * 1000;
+               mMidiQueue[mCnt].message = Pm_Message((int)(0x90 + channel),
+                                                     (long)data1, 0 );
+               printf( "HCK QUEUE[%d]\n", mCnt );
+               printf( "Command     : OFF\n" );
+               printf( "mTime       : %f\n", (float)gAudioIO->mTime );
+               printf( "TimeStamp   : %f\n", (float)mMidiQueue[mCnt].timestamp );
+               printf( "CurMidiTime : %f\n", (float)mCurrentMidiTime );
+               printf( "LastMidiTime: %f\n", (float)mLastMidiTime );
+               printf( "MidiWait    : %f\n", (float)mMidiWait );
+               printf( "Time        : %f\n", (float)TIME_PROC(NULL) );
+               mCnt++;
+            } else
+               fprintf(stderr, "command: %s\n", updateParameter);
+         }
+         
+         // Turn off updates when we reach the selection beginning
+         /*
+           if (mSendMidiState) {
+              if (i == 0 && i > testSeq->seek_time(mT0, track)) {
+                 // The first 1/10 of the file has been processed
+                 // so just to 5 seconds before cursor to avoid lag
+                 notesOn = true;
+                 i = testSeq->seek_time(mT0, track);
+                 fprintf(stderr, "%li: Stop processing updates\n", TIME_PROC(NULL));
+              }
+           }
+         */
+         // Stop when:
+         // 1. enough events are buffered
+         // 2. there are no more events to buffer
+         //if (i >= endIndex || i == testSeq->length())
+         if (i >= MAX_MIDI_BUFFER_SIZE - 1) {
+            if (!mSendMidiState) {
+               printf( "HCK : Pm_Write : 111111111\n" );
+               qsort( mMidiBuffer, i, sizeof( PmEvent ), compareTime );
+               Pm_Write(mMidiStream, mMidiBuffer, i);
+               mMidiWait = time - 1000;
+            }
+            i = 0;
+            mLastMidiTime = currEvent->time * 1000;
+            forcedBreak = true;
+            break;
+         } else if (currEvent->time * 1000 >= mLastMidiTime + 2000) {
+            if (!mSendMidiState) {
+               printf( "HCK : Pm_Write : 222222222\n" );
+               qsort( mMidiBuffer, i, sizeof( PmEvent ), compareTime );
+               Pm_Write( mMidiStream, mMidiBuffer, i );
+               mMidiWait = time - 1000;
+            }
+            i = 0;
+            mLastMidiTime = currEvent->time * 1000;
+            forcedBreak = true;
+            break;
+         }
+      }  // End of While
          //testSeq->iteration_end();
-//         if( !forcedBreak ) // this means there are no more event in testSeq.
-//         {
-//            mMidiStreamActive = false;
-//            gAudioIO->mInCallbackFinishedState = true;
-//         }
-//      } // End of if( testSeq )
-   /*
-   }
-   */
-//}
-/* HCK MIDI PATCH END */
+      if (!forcedBreak ) { // this means there are no more event in testSeq.
+         mMidiStreamActive = false;
+         // gAudioIO->mInCallbackFinishedState = true;
+      }
+   } // End of if( mSeq )
+#endif // OLD_CODE
+}
+#endif
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -2820,11 +2926,12 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
    return callbackReturn;
 }
 
-/* REQUIRES PORTMIDI */
-//int compareTime( const void* a, const void* b )
-//{
-//   return( (int)((*(PmEvent*)a).timestamp - (*(PmEvent*)b).timestamp ) );
-//}
+#ifdef EXPERIMENTAL_MIDI_OUT
+int compareTime( const void* a, const void* b )
+{
+   return( (int)((*(PmEvent*)a).timestamp - (*(PmEvent*)b).timestamp ) );
+}
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
@@ -2836,4 +2943,3 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
 //
 // vim: et sts=3 sw=3
 // arch-tag: 7ee3c9aa-b58b-4069-8a07-8866f2303963
-

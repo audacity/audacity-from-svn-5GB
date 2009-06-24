@@ -562,9 +562,11 @@ void Effect::Preview()
          playbackTracks.Add(mixRight);
 
       // Start audio playing
-
       int token =
          gAudioIO->StartStream(playbackTracks, recordingTracks, NULL,
+#ifdef EXPERIMENTAL_MIDI_OUT
+                               NULL,
+#endif
                                rate, t0, t1, NULL);
 
       if (token) {

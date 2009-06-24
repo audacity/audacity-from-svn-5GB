@@ -59,9 +59,9 @@
 #include "TracksPrefs.h"
 #include "WarningsPrefs.h"
 
-/* REQUIRES PORTMIDI */
-//#include "MidiIOPrefs.h"
-
+#ifdef EXPERIMENTAL_MIDI_OUT
+#include "MidiIOPrefs.h"
+#endif
 
 BEGIN_EVENT_TABLE(PrefsDialog, wxDialog)
    EVT_BUTTON(wxID_OK, PrefsDialog::OnOK)
@@ -89,8 +89,9 @@ PrefsDialog::PrefsDialog(wxWindow * parent)
          w = new DevicePrefs(mCategories);      mCategories->AddPage(w, w->GetName(), false, 0);
          w = new PlaybackPrefs(mCategories);    mCategories->AddPage(w, w->GetName(), false, 0);
          w = new RecordingPrefs(mCategories);   mCategories->AddPage(w, w->GetName(), false, 0);
-//       REQUIRES PORTMIDI
-//       w = new MidiIOPrefs(mCategories);      mCategories->AddPage(w, w->GetName(), false, 0);
+#ifdef EXPERIMENTAL_MIDI_OUT
+         w = new MidiIOPrefs(mCategories);      mCategories->AddPage(w, w->GetName(), false, 0);
+#endif
          w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName(), false, 0);
          w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName(), false, 0);
          w = new TracksPrefs(mCategories);      mCategories->AddPage(w, w->GetName(), false, 0);

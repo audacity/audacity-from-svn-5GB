@@ -1,6 +1,3 @@
-#include "../Experimental.h"
-
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /**********************************************************************
 
   Audacity: A Digital Audio Editor
@@ -12,43 +9,53 @@
 
 **********************************************************************/
 
+#include "../Experimental.h"
+#ifdef EXPERIMENTAL_MIDI_OUT
+
 #ifndef __AUDACITY_MIDI_IO_PREFS__
 #define __AUDACITY_MIDI_IO_PREFS__
 
-#include <wx/string.h>
-
-#include "PrefsPanel.h"
-
-class wxWindow;
-class wxCheckBox;
-class wxChoice;
 #include <wx/defs.h>
+
+#include <wx/choice.h>
 #include <wx/string.h>
+#include <wx/window.h>
+
+#include "../ShuttleGui.h"
 
 #include "PrefsPanel.h"
 
-class wxWindow;
-class ShuttleGui;
-
-class MidiIOPrefs:public PrefsPanel 
+class MidiIOPrefs:public PrefsPanel
 {
-public:
+ public:
    MidiIOPrefs(wxWindow * parent);
-   ~MidiIOPrefs();
+   virtual ~MidiIOPrefs();
    virtual bool Apply();
 
-private:
+ private:
    void Populate();
-   void PopulateOrExchange( ShuttleGui & S );
+   void PopulateOrExchange(ShuttleGui & S);
    void GetNamesAndLabels();
 
-   wxArrayString mmPlayNames;
-   wxArrayString mmPlayLabels;
-   wxArrayString mmRecordNames;
-   wxArrayString mmRecordLabels;
-   wxArrayString mmChannelNames;
-   wxArrayInt    mmChannelLabels;
+   void OnHost(wxCommandEvent & e);
+//   void OnDevice(wxCommandEvent & e);
+
+   wxArrayString mHostNames;
+   wxArrayString mHostLabels;
+
+   wxString mPlayDevice;
+   wxString mRecordDevice;
+//   long mRecordChannels;
+
+   wxChoice *mHost;
+   wxChoice *mPlay;
+   wxChoice *mRecord;
+//   wxChoice *mChannels;
+
+   DECLARE_EVENT_TABLE();
 };
+
+#endif
 
 #endif
 
@@ -62,5 +69,3 @@ private:
 //
 // vim: et sts=3 sw=3
 // arch-tag: df22b108-e989-4ec4-a8b6-dddbcc7be6a7
-
-#endif

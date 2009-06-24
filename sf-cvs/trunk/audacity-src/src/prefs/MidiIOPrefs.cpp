@@ -1,6 +1,3 @@
-#include "../Experimental.h"
-
-#ifdef EXPERIMENTAL_NOTE_TRACK
 /**********************************************************************
 
   Audacity: A Digital Audio Editor
@@ -18,7 +15,7 @@
 other settings.
 
   Presents interface for user to select the recording device and
-  playback device, from the list of choices that PortAudio
+  playback device, from the list of choices that PortMidi
   makes available.
 
   Also lets user decide whether or not to record in stereo, and
@@ -27,29 +24,56 @@ other settings.
 *//********************************************************************/
 
 #include "../Audacity.h"
+#include "../Experimental.h"
+#ifdef EXPERIMENTAL_MIDI_OUT
+
 #include <wx/defs.h>
+
+#include <wx/choice.h>
 #include <wx/intl.h>
 
-#include "../Prefs.h"
-#include "../AudioIO.h"
-#include "../Project.h"
-#include "../Internat.h"
-#include "../ShuttleGui.h"
 #include "portmidi.h"
+
+#include "../AudioIO.h"
+#include "../Internat.h"
+#include "../Prefs.h"
+#include "../Project.h"
+#include "../ShuttleGui.h"
+
 #include "MidiIOPrefs.h"
 
-MidiIOPrefs::MidiIOPrefs(wxWindow * parent):
-   PrefsPanel(parent)
+enum {
+   HostID = 10000,
+   PlayID,
+   RecordID,
+   ChannelsID
+};
+
+BEGIN_EVENT_TABLE(MidiIOPrefs, PrefsPanel)
+   EVT_CHOICE(HostID, MidiIOPrefs::OnHost)
+//   EVT_CHOICE(RecordID, MidiIOPrefs::OnDevice)
+END_EVENT_TABLE()
+
+MidiIOPrefs::MidiIOPrefs(wxWindow * parent)
+:  PrefsPanel(parent, _("MIDI Devices"))
 {
-   SetLabel(_("Audio I/O"));         // Provide visual label
-   SetName(_("Audio I/O"));          // Provide audible label
    Populate();
 }
 
-void MidiIOPrefs::Populate( )
+MidiIOPrefs::~MidiIOPrefs()
+{
+}
+
+void MidiIOPrefs::Populate()
 {
    // First any pre-processing for constructing the GUI.
    GetNamesAndLabels();
+
+   // Get current setting for devices
+   mPlayDevice = gPrefs->Read(wxT("/MidiIO/PlaybackDevice"), wxT(""));
+   mRecordDevice = gPrefs->Read(wxT("/MidiIO/RecordingDevice"), wxT(""));
+//   mRecordChannels = gPrefs->Read(wxT("/MidiIO/RecordChannels"), 2L);
+
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
    // Use 'eIsCreatingFromPrefs' so that the GUI is 
@@ -57,86 +81,90 @@ void MidiIOPrefs::Populate( )
    ShuttleGui S(this, eIsCreatingFromPrefs);
    PopulateOrExchange(S);
    // ----------------------- End of main section --------------
-   // GUI is built, now do any post processing of it.
 
-   // Fit(); // JKC: Doesn't seem to make any difference...
+   wxCommandEvent e;
+   OnHost(e);
 }
 
 /// Gets the lists of names and lists of labels which are
 /// used in the choice controls.
 /// The names are what the user sees in the wxChoice.
 /// The corresponding labels are what gets stored.
-void MidiIOPrefs::GetNamesAndLabels()
-{
-   // Get lists of devices both for play and record.
-   int j;
-   wxString Name;
-   wxString Label;
-
+void MidiIOPrefs::GetNamesAndLabels() {
+   // Gather list of hosts.  Only added hosts that have devices attached.
    int nDevices = Pm_CountDevices();
-
-   for(j=0; j<nDevices; j++) {
-      const PmDeviceInfo* info = Pm_GetDeviceInfo(j);
-      Name = wxString( info->name, wxConvLocal );
-      Label = Name;
-      if (info->input > 0) {
-         mmPlayNames.Add( Name );
-         mmPlayLabels.Add( Label );
-      }
-      if (info->output > 0) {
-         mmRecordNames.Add( Name );
-         mmRecordLabels.Add( Label );
+   for (int i = 0; i < nDevices; i++) {
+      const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
+      if (info->output || info->input) { //should always happen
+         wxString name(info->interf, wxConvLocal);
+         if (mHostNames.Index(name) == wxNOT_FOUND) {
+            mHostNames.Add(name);
+            mHostLabels.Add(name);
+         }
       }
    }
-
-   // Channel counts, mono, stereo etc...
-   const int numChannels = 16;
-   for(int c=0; c<numChannels; c++)
-   {
-      mmChannelNames.Add(  wxString::Format(wxT("%d"), c+1));
-      mmChannelLabels.Add( c+1 );
-   }
-   mmChannelNames[0] = wxString::Format(_("1 (Mono)"));
-   mmChannelNames[1] = wxString::Format(_("2 (Stereo)"));
 }
 
-void MidiIOPrefs::PopulateOrExchange( ShuttleGui & S )
-{
-   /// \todo
-   /// JKC: I think setting paths in gPrefs is bad practice.
-   /// Suppose we are using gPrefs from elsewhere at the same time?
-   /// Change these all to full paths?
-   gPrefs->SetPath(wxT("/MidiIO"));
+void MidiIOPrefs::PopulateOrExchange( ShuttleGui & S ) {
+   wxArrayString empty;
 
-   S.SetBorder( 2 );
+   S.SetBorder(2);
 
-   S.StartHorizontalLay(wxEXPAND, 0 );
-   S.StartStatic( _("Playback"),1 );
+   S.StartStatic(_("Interface"));
    {
-      S.StartMultiColumn(2, wxEXPAND);
-      S.SetStretchyCol(1);
-      S.TieChoice( _("Device") + wxString(wxT(":")), wxT("PlaybackDevice"), 
-         wxT(""), mmPlayNames, mmPlayLabels );
+      S.StartMultiColumn(2);
+      {
+         S.Id(HostID);
+         mHost = S.TieChoice(_("Host") + wxString(wxT(":")),
+                             wxT("/MidiIO/Host"), 
+                             wxT(""),
+                             mHostNames,
+                             mHostLabels);
+         S.SetSizeHints(mHostNames);
 
-      S.AddPrompt( _("Using:") );
-      wxString ver = _("Portaudio v");
-      ver += wxT("19");
-      S.AddFixedText( ver );
+         S.AddPrompt(_("Using:"));
+         S.AddFixedText(wxString(Pa_GetVersionText(), wxConvLocal));
+      }
       S.EndMultiColumn();
    }                              
    S.EndStatic();
-   S.StartStatic( _("Recording"), 1 );
+
+   S.StartStatic(_("Playback"));
    {
-      S.StartMultiColumn(2, wxEXPAND);
-      S.SetStretchyCol(1);
-      S.TieChoice( _("Device") + wxString(wxT(":")), wxT("RecordingDevice"), 
-         wxT(""), mmRecordNames, mmRecordLabels );
-      S.TieChoice( _("Channels") + wxString(wxT(":")), wxT("RecordChannels"), 
-         2, mmChannelNames, mmChannelLabels );
+      S.StartMultiColumn(2);
+      {
+         S.Id(PlayID);
+         mPlay = S.AddChoice(_("Device") + wxString(wxT(":")),
+                             wxEmptyString,
+                             &empty);
+      }
       S.EndMultiColumn();
    }
    S.EndStatic();
-   S.EndHorizontalLay();
+
+   S.StartStatic(_("Recording"));
+   {
+      S.StartMultiColumn(2);
+      {
+         S.Id(RecordID);
+         mRecord = S.AddChoice(_("Device") + wxString(wxT(":")),
+                               wxEmptyString,
+                               &empty);
+
+         S.Id(ChannelsID);
+         /*
+         mChannels = S.AddChoice(_("Channels") + wxString(wxT(":")),
+                                 wxEmptyString,
+                                 &empty);
+         */
+      }
+      S.EndMultiColumn();
+   }
+   S.EndStatic();
+}
+
+// Not sure that these settings are needed right now.
+#if 0
    S.StartStatic( _("Playthrough") );
    {
       S.TieCheckBox( _("&Play other tracks while recording new one"),
@@ -193,8 +221,7 @@ void MidiIOPrefs::PopulateOrExchange( ShuttleGui & S )
    }
 
    gPrefs->SetPath(wxT("/"));
-}
-
+#endif
 
 // JKC: This is some old code that was sizing control labels all the same, 
 // even if in different static controls.  It made for a nicer layout.
@@ -218,24 +245,170 @@ void MidiIOPrefs::PopulateOrExchange( ShuttleGui & S )
    }
 #endif
 
-
-MidiIOPrefs::~MidiIOPrefs()
+void MidiIOPrefs::OnHost(wxCommandEvent & e)
 {
+   int index = mHost->GetCurrentSelection();
+   wxString itemAtIndex = mHostNames.Item(index);
+   int nDevices = Pm_CountDevices();
+
+   if (nDevices == 0) {
+      mHost->Clear();
+      mHost->Append(_("No MIDI interfaces"), (void *) NULL);
+      mHost->SetSelection(0);
+   }
+
+   mPlay->Clear();
+   mRecord->Clear();
+
+   wxArrayString playnames;
+   wxArrayString recordnames;
+
+   for (int i = 0; i < nDevices; i++) {
+      const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
+      if (itemAtIndex.IsSameAs(info->interf)) {
+         wxString name(info->name, wxConvLocal);
+         wxString device = wxString::Format(wxT("%s: %s"),
+                                            info->interf,
+                                            info->name);
+         int index;
+
+         if (info->output) {
+            playnames.Add(name);
+            index = mPlay->Append(name, (void *) info);
+            if (device == mPlayDevice) {
+               mPlay->SetSelection(index);
+            }
+         }
+
+         if (info->input) {
+            recordnames.Add(name);
+            index = mRecord->Append(name, (void *) info);
+            if (device == mRecordDevice) {
+               mRecord->SetSelection(index);
+            }
+         }
+      }
+   }
+
+   if (mPlay->GetCount() == 0) {
+      playnames.Add(_("No devices found"));
+      mPlay->Append(playnames[0], (void *) NULL);
+   }
+
+   if (mRecord->GetCount() == 0) {
+      recordnames.Add(_("No devices found"));
+      mRecord->Append(recordnames[0], (void *) NULL);
+   }
+
+   if (mPlay->GetCount() && mPlay->GetSelection() == wxNOT_FOUND) {
+      mPlay->SetSelection(0);
+   }
+
+   if (mRecord->GetCount() && mRecord->GetSelection() == wxNOT_FOUND) {
+      mRecord->SetSelection(0);
+   }
+
+   ShuttleGui S(this, eIsCreating);
+   S.SetSizeHints(mPlay, playnames);
+   S.SetSizeHints(mRecord, recordnames);
+//   OnDevice(e);
 }
+
+/*
+void MidiIOPrefs::OnDevice(wxCommandEvent & e)
+{
+   int ndx = mRecord->GetCurrentSelection();
+   if (ndx == wxNOT_FOUND) {
+      ndx = 0;
+   }
+
+   int sel = mChannels->GetSelection();
+   int cnt = 0;
+
+   const PmDeviceInfo *info = (const PmDeviceInfo *) mRecord->GetClientData(ndx);
+   if (info != NULL) {
+      cnt = info->input;
+   }
+
+   if (sel != wxNOT_FOUND) {
+      mRecordChannels = sel + 1;
+   }
+
+   mChannels->Clear();
+
+   // Limit cnt
+   cnt = cnt <= 0  ? 16  : cnt;
+   cnt = cnt > 256 ? 256 : cnt;
+      
+   wxArrayString channelnames;
+
+   // Channel counts, mono, stereo etc...
+   for (int i = 0; i < cnt; i++) {
+      wxString name;
+
+      if (i == 0) {
+         name = _("1 (Mono)");
+      }
+      else if (i == 1) {
+         name = _("2 (Stereo)");
+      }
+      else {
+         name = wxString::Format(wxT("%d"), i + 1);
+      }
+
+      channelnames.Add(name);
+      int index = mChannels->Append(name);
+      if (i == mRecordChannels - 1) {
+         mChannels->SetSelection(index);
+      }
+   }
+
+   if (mChannels->GetCount() && mChannels->GetCurrentSelection() == wxNOT_FOUND) {
+      mChannels->SetSelection(0);
+   }
+
+   ShuttleGui S(this, eIsCreating);
+   S.SetSizeHints(mChannels, channelnames);
+   Layout();
+}
+*/
 
 bool MidiIOPrefs::Apply()
 {
-   ShuttleGui S( this, eIsSavingToPrefs );
-   PopulateOrExchange( S );
+   ShuttleGui S(this, eIsSavingToPrefs);
+   PopulateOrExchange(S);
 
-#if USE_PORTMIXER
+   const PmDeviceInfo *info;
+
+   info = (const PmDeviceInfo *) mPlay->GetClientData(mPlay->GetSelection());
+   if (info) {
+      gPrefs->Write(wxT("/MidiIO/PlaybackDevice"),
+                    wxString::Format(wxT("%s: %s"),
+                                     info->interf,
+                                     info->name));
+   }
+
+   info = (const PmDeviceInfo *) mRecord->GetClientData(mRecord->GetSelection());
+   if (info) {
+      gPrefs->Write(wxT("/MidiIO/RecordingDevice"),
+                    wxString::Format(wxT("%s: %s"),
+                                     info->interf,
+                                     info->name));
+   }
+
+/*
+   gPrefs->Write(wxT("/MidiIO/RecordChannels"),
+                 wxString::Format(wxT("%d"),
+                                  mChannels->GetSelection() + 1));
+*/
+
+   #if USE_PORTMIXER
    if (gAudioIO)
       gAudioIO->HandleDeviceChange();
-#endif // USE_PORTMIXER
+   #endif // USE_PORTMIXER
 
    return true;
 }
-
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

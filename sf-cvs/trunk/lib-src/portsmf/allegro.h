@@ -79,13 +79,18 @@ public:
         maxlen = len = 0;
         atoms = NULL;
     }
+    // Note: the code is possibly more correct and faster without the 
+    // following destructor, which will only run after the program takes 
+    // a normal exit. Cleaning up after the program exit slows down the exit,
+    // and will cause problems if any other destructor tries to reference an
+    // Alg_atom (which will now be freed). The advantage of this code is
+    // that Alg_atoms will not be reported as memory leaks by automation
+    // that doesn't know better. -RBD
     virtual ~Alg_atoms() {
         for (int i = 0; i < len; i++) {
-            if (atoms[i]) {
-                delete atoms[i];
-            }
+            delete atoms[i];
         }
-        if (atoms) delete[] atoms;
+        if (atoms) delete [] atoms;
     }
     // insert/lookup an atttribute
     Alg_attribute insert_attribute(Alg_attribute attr);
@@ -496,23 +501,72 @@ public:
 } *Alg_time_map_ptr;
 
 
-typedef class Serial_buffer {
-private:
+// Serial_buffer is an abstract class with common elements of
+//     Serial_read_buffer and Serial_write_buffer
+class Serial_buffer {
+  protected:
     char *buffer;
     char *ptr;
     long len;
-public:
+  public:
     Serial_buffer() {
         buffer = NULL;
         ptr = NULL;
         len = 0;
     }
-    ~Serial_buffer() {
+    virtual ~Serial_buffer() { }
+
+    long get_posn() { return (long) (ptr - buffer); }
+    long get_len() { return len; }
+};
+
+
+typedef class Serial_read_buffer : public Serial_buffer {
+public:
+    // note that a Serial_read_buffer is initialized for reading by
+    // setting buffer, but it is not the Serial_read_buffer's responsibility
+    // to delete the buffer (owner might want to reuse it), so the destructor
+    // does nothing.
+    virtual ~Serial_read_buffer() {  }
+#pragma warning(disable: 546) // cast to int is OK, we only want low 7 bits
+#pragma warning(disable: 4311) // type cast pointer to long warning
+    void get_pad() { while (((long) ptr) & 7) ptr++; }
+#pragma warning(default: 4311 546)
+    // Prepare to read n bytes from buf. The caller must manage buf: it is
+    // valid until reading is finished, and it is caller's responsibility
+    // to free buf when it is no longer needed.
+    void init_for_read(void *buf, long n) {
+        buffer = (char *) buf;
+        ptr = (char *) buf;
+        len = n;
+    }
+    char get_char() { return *ptr++; }
+    void unget_chars(int n) { ptr -= n; } // undo n get_char() calls
+    long get_int32() { long i = *((long *) ptr); ptr += 4; return i; }
+    float get_float() { float f = *((float *) ptr); ptr += 4; return f; }
+    double get_double() { double d = *((double *) ptr); ptr += sizeof(double); 
+                          return d; }
+    char *get_string() { char *s = ptr; char *fence = buffer + len;
+                         assert(ptr < fence);
+                         while (*ptr++) assert(ptr < fence);
+                         get_pad();
+                         return s; }
+    void check_input_buffer(long needed) {
+        assert(get_posn() + needed <= len); }
+} *Serial_read_buffer_ptr;
+
+
+typedef class Serial_write_buffer: public Serial_buffer {
+  public:
+    // Note: allegro.cpp declares one static instance of Serial_buffer to 
+    // reduce large memory (re)allocations when serializing tracks for UNDO.
+    // This destructor will only run when the program exits, which will only
+    // add overhead to the exit process, but it will eliminate an incorrect
+    // report of memory leakage from automation that doesn't know better. -RBD
+    virtual ~Serial_write_buffer() {
         if (buffer) delete [] buffer;
     }
     void init_for_write() { ptr = buffer; }
-    long get_posn() { return (long) (ptr - buffer); }
-    long get_len() { return len; }
     // store_long writes a long at a given offset
     void store_long(long offset, long value) {
         assert(offset <= get_posn() - 4);
@@ -526,8 +580,8 @@ public:
         // two lots of brackets surpress a g++ warning, because this is an
         // assignment operator inside a test.
         while ((*ptr++ = *s++)) assert(ptr < fence);
-// 4311 is type cast pointer to long warning
-// 4312 is type cast loing to pointer warning
+        // 4311 is type cast pointer to long warning
+        // 4312 is type cast long to pointer warning
 #pragma warning(disable: 4311 4312)
         assert((char *)(((long) (ptr + 7)) & ~7) <= fence);
 #pragma warning(default: 4311 4312)
@@ -539,37 +593,14 @@ public:
 #pragma warning(disable: 546) // cast to int is OK, we only want low 7 bits
 #pragma warning(disable: 4311) // type cast pointer to long warning
     void pad() { while (((long) ptr) & 7) set_char(0); }
-    void get_pad() { while (((long) ptr) & 7) ptr++; }
-#pragma warning(default: 4311)
-#pragma warning(default: 546)
+#pragma warning(default: 4311 546)
     void *to_heap(long *len) {
         *len = get_posn();
         char *newbuf = new char[*len];
         memcpy(newbuf, buffer, *len);
         return newbuf;
     }
-    void init_for_read(void *buf, long n) {
-        if (buffer) {
-            delete [] buffer;
-        }
-        buffer = new char[n];
-        memcpy(buffer, buf, n);
-        ptr = buffer;
-        len = n;
-    }
-    char get_char() { return *ptr++; }
-    long get_int32() { long i = *((long *) ptr); ptr += 4; return i; }
-    float get_float() { float f = *((float *) ptr); ptr += 4; return f; }
-    double get_double() { double d = *((double *) ptr); ptr += sizeof(double); 
-                          return d; }
-    char *get_string() { char *s = ptr; char *fence = buffer + len;
-                         assert(ptr < fence);
-                         while (*ptr++) assert(ptr < fence);
-                         get_pad();
-                         return s; }
-    void check_input_buffer(long needed) {
-        assert(get_posn() + needed <= len); }
-} *Serial_buffer_ptr;
+} *Serial_write_buffer_ptr;
 
 typedef class Alg_seq *Alg_seq_ptr;
 
@@ -581,7 +612,8 @@ protected:
     long get_int32(char **p, long *b);
     double get_double(char **p, long *b);
     float get_float(char **p, long *b);
-    static Serial_buffer ser_buf;
+    static Serial_read_buffer ser_read_buf;
+    static Serial_write_buffer ser_write_buf;
     void serialize_parameter(Alg_parameter *parm);
     // *buffer_ptr points to binary data, bytes_ptr points to how many
     // bytes have been used so far, len is length of binary data
@@ -604,7 +636,8 @@ public:
     // copy constructor: event_list is copied, map is installed and referenced
     Alg_track(Alg_event_list_ref event_list, Alg_time_map_ptr map, 
               bool units_are_seconds);
-    virtual ~Alg_track() { if (time_map) time_map->dereference(); time_map = NULL; }
+    virtual ~Alg_track() { // note: do not call set_time_map(NULL)!
+        if (time_map) time_map->dereference(); time_map = NULL; }
 
     // Returns a buffer containing a serialization of the
     // file.  It will be an ASCII representation unless text is true.
@@ -839,12 +872,57 @@ public:
 typedef enum {
     alg_no_error = 0,      // no error reading Allegro or MIDI file
     alg_error_open = -800, // could not open Allegro or MIDI file
-    alg_error_syntax       // something found in the file that could not be parsed;
-    // generally you should ignore syntax errors or look at the printed error messages
-    // because there are some things in standard midi files that we do not handle;
-    // (maybe we should only set alg_error_syntax when there is a real problem with
-    // the file as opposed to when there is some warning message for the user)
+    alg_error_syntax   // something found in the file that could not be parsed;
+    // generally you should ignore syntax errors or look at the printed error 
+    // messages because there are some things in standard midi files that we do
+    // not handle; (maybe we should only set alg_error_syntax when there is a
+    // real problem with the file as opposed to when there is some warning
+    // message for the user)
 } Alg_error;
+
+
+typedef struct Alg_pending_event {
+    Alg_events *events; // the array of events
+    long index; // offset of this event
+    bool note_on; // is this a note-on or a note-off (if applicable)?
+} *Alg_pending_event_ptr;
+
+typedef class Alg_iterator {
+private:
+    long maxlen;
+    void expand();
+    void expand_to(int new_max);
+    long len;
+    Alg_seq_ptr seq;
+    Alg_pending_event *pending_events;
+
+    void show();
+    bool earlier(int i, int j);
+    void insert(Alg_events_ptr events, long index, bool note_on);
+    bool remove_next(Alg_events_ptr &events, long &index, bool &note_on);
+public:
+    bool note_off_flag; // remembers if we are iterating over note-off
+                        // events as well as note-on and update events
+    long length() { return len; }
+    Alg_iterator(Alg_seq_ptr s, bool note_off) {
+        seq = s;
+        note_off_flag = note_off;
+        maxlen = len = 0;
+        pending_events = NULL;
+    }
+    ~Alg_iterator();
+    // Prepare to enumerate events in order. If note_off_flag is true, then
+    // iteration_next will merge note-off events into the sequence.
+    void begin(bool note_off_flag = false); 
+    // return next event (or NULL). If iteration_begin was called with
+    // note_off_flag = true, and if note_on is not NULL, then *note_on
+    // is set to true when the result value represents a note-on or update.
+    // (With note_off_flag, each Alg_note event is returned twice, once
+    // at the note-on time, with *note_on == true, and once at the note-off
+    // time, with *note_on == false
+    Alg_event_ptr next(bool *note_on = NULL); 
+    void end();   // clean up after enumerating events
+} *Alg_iterator_ptr;
 
 
 // An Alg_seq is an array of Alg_events, each a sequence of Alg_event, 
@@ -852,7 +930,7 @@ typedef enum {
 //
 typedef class Alg_seq : public Alg_track {
 protected:
-    long *current; // array of indexes used by iteration methods
+    Alg_iterator_ptr pending; // iterator used internally by Alg_seq methods
     void serialize_seq();
     Alg_error error; // error code set by file readers
     // an internal function used for writing Allegro track names
@@ -948,9 +1026,6 @@ public:
                          double *num, double *den);
     // void set_events(Alg_event_ptr *events, long len, long max);
     void merge_tracks();    // move all track data into one track
-    void iteration_begin(); // prepare to enumerate events in order
-    Alg_event_ptr iteration_next(); // return next event (or NULL)
-    void iteration_end();   // clean up after enumerating events
 } *Alg_seq_ptr, &Alg_seq_ref;
 
 

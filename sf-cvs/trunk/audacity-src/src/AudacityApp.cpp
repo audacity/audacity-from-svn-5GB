@@ -154,6 +154,14 @@ It handles initialization and termination by subclassing wxApp.
 
 #  if defined(USE_MIDI)
 #     pragma comment(lib, "portsmf")
+#     endif
+
+#  if defined(EXPERIMENTAL_MIDI_OUT)
+#     pragma comment(lib, "portmidi")
+#  endif
+
+#  if defined(EXPERIMENTAL_SCOREALIGN)
+#     pragma comment(lib, "libscorealign")
 #  endif
 
 #  if defined(USE_NYQUIST)
@@ -162,10 +170,6 @@ It handles initialization and termination by subclassing wxApp.
 
 #  if defined(USE_PORTMIXER)
 #     pragma comment(lib, "portmixer")
-#  endif
-
-#  if defined(EXPERIMENTAL_SCOREALIGN)
-#     pragma comment(lib, "libscorealign")
 #  endif
 
 #  if defined(USE_SLV2)
