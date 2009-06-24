@@ -800,7 +800,7 @@ int FFmpegImportFileHandle::WriteData(streamContext *sc)
       mProgressPos = sc->m_pkt.pos;
       mProgressLen = mFormatContext->file_size;
    }
-   updateResult = mProgress->Update(mProgressPos, mProgressLen);
+   updateResult = mProgress->Update(mProgressPos, mProgressLen != 0 ? mProgressLen : 1);
 
    return updateResult;
 }
