@@ -445,7 +445,11 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
    bool hasaudio = false;
    TrackListIterator iter(t);
    for (Track *trk = iter.First(); trk; trk = iter.Next()) {
-      if (trk->GetKind() == Track::Wave) {
+      if (trk->GetKind() == Track::Wave
+#ifdef EXPERIMENTAL_MIDI_OUT
+         || trk->GetKind() == Track::Note
+#endif
+         ) {
          hasaudio = true;
          break;
       }
@@ -533,10 +537,11 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
          {
             token = gAudioIO->StartStream(
                mCutPreviewTracks->GetWaveTrackArray(false),
-               WaveTrackArray(), 
-/* REQUIRES PORTMIDI */
-//               NoteTrackArray(),
-			   NULL, p->GetRate(), tcp0, tcp1, p, false,
+               WaveTrackArray(),
+#ifdef EXPERIMENTAL_MIDI_OUT
+               &NoteTrackArray(),
+#endif
+               NULL, p->GetRate(), tcp0, tcp1, p, false,
                t0, t1-t0);
          } else
          {
@@ -551,11 +556,12 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
             timetrack = t->GetTimeTrack();
          }
          token = gAudioIO->StartStream(t->GetWaveTrackArray(false),
-                               WaveTrackArray(),
-/* REQUIRES PORTMIDI */
-//							   t->GetNoteTrackArray(false),
-							   timetrack,
-                               p->GetRate(), t0, t1, p, looped);
+                                       WaveTrackArray(),
+#ifdef EXPERIMENTAL_MIDI_OUT
+                                       &(t->GetNoteTrackArray(false)),
+#endif
+                                       timetrack,
+                                       p->GetRate(), t0, t1, p, looped);
       }
       if (token != 0) {
          success = true;
@@ -770,21 +776,23 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       /* TODO: set up stereo tracks if that is how the user has set up
        * their preferences, and choose sample format based on prefs */
       WaveTrackArray newRecordingTracks, playbackTracks;
-/* REQUIRES PORTMIDI */
-//      NoteTrackArray midiTracks;
-
+#ifdef EXPERIMENTAL_MIDI_OUT
+      NoteTrackArray midiTracks;
+#endif
       bool duplex;
       gPrefs->Read(wxT("/AudioIO/Duplex"), &duplex, true);
             
       if(duplex){
          playbackTracks = t->GetWaveTrackArray(false);
-/* REQUIRES PORTMIDI */
-//		 midiTracks = t->GetNoteTrackArray(false);
+#ifdef EXPERIMENTAL_MIDI_OUT
+         midiTracks = t->GetNoteTrackArray(false);
+#endif
      }
       else {
          playbackTracks = WaveTrackArray();
-/* REQUIRES PORTMIDI */
-//		 midiTracks = NoteTrackArray();
+#ifdef EXPERIMENTAL_MIDI_OUT
+         midiTracks = NoteTrackArray();
+#endif
      }
       
       // If SHIFT key was down, the user wants append to tracks
@@ -880,8 +888,9 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 
       int token = gAudioIO->StartStream(playbackTracks,
                                         newRecordingTracks,
-/* REQUIRES PORTMIDI */
-//                                        midiTracks,
+#ifdef EXPERIMENTAL_MIDI_OUT                                        
+                                        &midiTracks,
+#endif
                                         t->GetTimeTrack(),
                                         p->GetRate(), t0, t1, p);
 

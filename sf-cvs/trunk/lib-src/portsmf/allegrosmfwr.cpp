@@ -517,7 +517,7 @@ void Alg_smf_write::write_time_signature(int i)
     write_varinum(divs - previous_divs);
     out_file->put('\xFF');
     out_file->put('\x58');  // time signature
-    out_file->put('\x04');  // length of message
+    out_file->put('\x04');     // length of message
     out_file->put(ROUND(ts[i].num));
     int den = ROUND(ts[i].den);
     int den_byte = 0;

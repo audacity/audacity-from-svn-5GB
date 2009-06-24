@@ -73,6 +73,18 @@
 // Allow keyboard seeking before initial playback position
 //#define EXPERIMENTAL_SEEK_BEHIND_CURSOR
 
+// RBD, 1 Sep 2008
+// Enables MIDI Output of NoteTrack (MIDI) data during playback
+// USE_MIDI must be defined in order for EXPERIMENTAL_MIDI_OUT to work
+#ifdef USE_MIDI
+//#define EXPERIMENTAL_MIDI_OUT
+#endif
+
+// USE_MIDI must be defined in order for EXPERIMENTAL_SCOREALIGN to work
+#ifdef USE_MIDI
+//#define EXPERIMENTAL_SCOREALIGN
+#endif
+
 #ifdef EXPERIMENTAL_FEATURES
    // The first experimental feature is a notebook that adds
    // a tabbed divider to the project.

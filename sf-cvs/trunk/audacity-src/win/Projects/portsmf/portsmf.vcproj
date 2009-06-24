@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="portsmf"
 	ProjectGUID="{8A1C2514-85DD-4AE2-9CF3-3183B66C537D}"
 	RootNamespace="portsmf"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

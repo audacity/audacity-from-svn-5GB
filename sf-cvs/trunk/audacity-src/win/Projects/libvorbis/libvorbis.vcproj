@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="libvorbis"
 	ProjectGUID="{727D6675-67EE-4D0B-9DC1-177A0AF741F0}"
 	RootNamespace="libvorbis"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
