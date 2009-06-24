@@ -82,6 +82,7 @@ OBJS = \
 	Printing.o \
 	Profiler.o \
 	Project.o \
+	RealFFTf.o \
 	Resample.o \
 	RingBuffer.o \
 	Screenshot.o \

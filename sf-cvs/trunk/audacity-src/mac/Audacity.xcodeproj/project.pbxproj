@@ -1184,6 +1184,7 @@
 		28D65C720B97E54B000E001A /* AutoDuck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C700B97E54B000E001A /* AutoDuck.cpp */; };
 		28D65C760B97E573000E001A /* DtmfGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D65C740B97E573000E001A /* DtmfGen.cpp */; };
 		28DA07390E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DA07380E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp */; };
+		28DABFBE0FF19DB100AC7848 /* RealFFTf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DABFBC0FF19DB100AC7848 /* RealFFTf.cpp */; };
 		28DB34790FDC2C5D0011F589 /* ResponseQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DB34780FDC2C5D0011F589 /* ResponseQueue.cpp */; };
 		28E2370D0E515D9200281398 /* audiomixerreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1000E50AD5700CC4BD3 /* audiomixerreader.cpp */; };
 		28E2370E0E515D9300281398 /* audiomixerreader.h in Headers */ = {isa = PBXBuildFile; fileRef = ED05D1010E50AD5700CC4BD3 /* audiomixerreader.h */; };
@@ -1895,7 +1896,7 @@
 		174F73CD098D516D009CD6E0 /* AudacityOGG.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityOGG.icns; sourceTree = "<group>"; };
 		174F73CE098D516D009CD6E0 /* AudacityProject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityProject.icns; sourceTree = "<group>"; };
 		174F73CF098D516D009CD6E0 /* AudacityWAV.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityWAV.icns; sourceTree = "<group>"; };
-		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
+		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
 		176A1A5B098B7B8D00DC73B4 /* libnyquist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libnyquist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		176EE9DB09A2EC1000188F3B /* caf.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = caf.c; sourceTree = "<group>"; };
 		176EE9DC09A2EC1000188F3B /* flac.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = flac.c; sourceTree = "<group>"; };
@@ -3070,6 +3071,8 @@
 		28D65C750B97E573000E001A /* DtmfGen.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = DtmfGen.h; sourceTree = "<group>"; };
 		28DA07370E4F5CEC003933C5 /* ExportFFmpegDialogs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ExportFFmpegDialogs.h; sourceTree = "<group>"; };
 		28DA07380E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFFmpegDialogs.cpp; sourceTree = "<group>"; };
+		28DABFBC0FF19DB100AC7848 /* RealFFTf.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = RealFFTf.cpp; sourceTree = "<group>"; };
+		28DABFBD0FF19DB100AC7848 /* RealFFTf.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = RealFFTf.h; sourceTree = "<group>"; };
 		28DB34770FDC2C5D0011F589 /* ResponseQueue.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ResponseQueue.h; sourceTree = "<group>"; };
 		28DB34780FDC2C5D0011F589 /* ResponseQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ResponseQueue.cpp; sourceTree = "<group>"; };
 		28E237080E515D1D00281398 /* libscorealign.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libscorealign.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4218,6 +4221,8 @@
 				186CCEA20E523C8D00659159 /* Profiler.h */,
 				1790B0D009883BFD008A330A /* Project.cpp */,
 				1790B0D109883BFD008A330A /* Project.h */,
+				28DABFBC0FF19DB100AC7848 /* RealFFTf.cpp */,
+				28DABFBD0FF19DB100AC7848 /* RealFFTf.h */,
 				1790B0D209883BFD008A330A /* Resample.cpp */,
 				1790B0D309883BFD008A330A /* Resample.h */,
 				1790B0D409883BFD008A330A /* RingBuffer.cpp */,
@@ -8217,6 +8222,7 @@
 				28D540070FD1912A00FA7C75 /* CommandHandler.cpp in Sources */,
 				28D540080FD1912A00FA7C75 /* ScriptCommandRelay.cpp in Sources */,
 				28DB34790FDC2C5D0011F589 /* ResponseQueue.cpp in Sources */,
+				28DABFBE0FF19DB100AC7848 /* RealFFTf.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
