@@ -71,7 +71,6 @@ bool Generator::Process()
    Success();
 
    this->ReplaceProcessedTracks(bGoodResult);
-   //HandleLinkedTracksOnGenerate(mDuration, mT0);
 
    mT1 = mT0 + mDuration; // Update selection.
 

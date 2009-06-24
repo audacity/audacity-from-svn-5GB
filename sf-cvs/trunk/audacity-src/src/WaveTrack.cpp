@@ -543,7 +543,7 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
    }
 
    // Now, clear the selection
-   if (Clear(t0, t1, tracks)) {
+   if (HandleClear(t0, t1, false, false)) {
       // And paste in the new data
       if (Paste(t0, src, tracks)) {
          unsigned int i;
@@ -650,7 +650,12 @@ bool WaveTrack::HandleGroupClear(double t0, double t1, bool addCutLines, bool sp
    else return false;
 
    TrackGroupIterator it(tracks);
-   for( Track *t = it.First(this); t; t = it.Next() ) {
+   Track *t = it.First(this);
+   if (t == NULL)
+      // the present track is in a project with groups but doesn't belong to any of them
+      return HandleClear(t0, t1, addCutLines, split);
+
+   for( ; t; t = it.Next() ) {
       if (t->GetKind() == Track::Wave) {
          if ( !( ( (WaveTrack *) t)->HandleClear(t0, t1, addCutLines, split) ) )
             return false;
@@ -802,24 +807,40 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src, TrackList* tracks)
    else return false;
    
    double length = src->GetEndTime();
+   ViewInfo *info = &p->mViewInfo;
+   double sel_len = info->sel1 - info->sel0;
+   
    TrackGroupIterator it(tracks);
-   for( Track *t = it.First(this); t; t = it.Next() ) {
+   Track *t = it.First(this);
+   if (t == NULL)
+      // the present track is in a project with groups but doesn't belong to any of them
+      return HandlePaste(t0, src);
+
+   for( ; t; t = it.Next() ) {
       if (t->GetKind() == Track::Wave) {
-         if (t==this){//paste in the track
+         if (t==this) {
+            //paste in the track
             if ( !( ((WaveTrack *)t)->HandlePaste(t0, src)) ) return false;
             if (t->GetLinked()) t=it.Next();
-         }else{//insert silence
-            if (! (t->GetSelected()) ){
-               TrackFactory *factory = p->GetTrackFactory();
-               WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
-               tmp->InsertSilence(0.0, length);
-               tmp->Flush();
-               if ( !( ((WaveTrack *)t)->HandlePaste(t0, tmp)) ) return false;
+         }
+         else {
+            if (! (t->GetSelected()) ) {
+               if ( sel_len > length )
+                  // if selection is bigger than the content to add then we need to clear the extra length in the group tracks
+                  ((WaveTrack*)t)->HandleClear(t0+length, t0+sel_len, false, false);
+               else if (sel_len < length) {               
+                  // if selection is smaller than the content to add then we need to add extra silence in the group tracks
+                  TrackFactory *factory = p->GetTrackFactory();
+                  WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
+                  tmp->InsertSilence(0.0, length-sel_len);
+                  tmp->Flush();
+                  if ( !( ((WaveTrack *)t)->HandlePaste(t0+sel_len, tmp)) ) return false;
+               }
             }
          }
       }
       else if (t->GetKind() == Track::Label) {
-         ((LabelTrack *)t)->ShiftLabelsOnInsert(length, t0);
+         ((LabelTrack *)t)->ShiftLabelsOnInsert(length-sel_len, t0);
       }
    }
 

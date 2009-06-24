@@ -3300,7 +3300,7 @@ void AudacityProject::OnPaste()
          if (n->GetKind() == Track::Wave) {
             //printf("Checking to see if we need to pre-clear the track\n");
             if (!((WaveTrack *) n)->IsEmpty(t0, t1)) {
-               ((WaveTrack *) n)->Clear(t0, t1);
+               ((WaveTrack *) n)->HandleClear(t0, t1, false, false);
             }
          }
          else {
