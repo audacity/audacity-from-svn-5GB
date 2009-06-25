@@ -265,7 +265,8 @@ void MidiIOPrefs::OnHost(wxCommandEvent & e)
 
    for (int i = 0; i < nDevices; i++) {
       const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-      if (itemAtIndex.IsSameAs(info->interf)) {
+      wxString name(info->interf, wxConvLocal);
+      if (itemAtIndex.IsSameAs(name)) {
          wxString name(info->name, wxConvLocal);
          wxString device = wxString::Format(wxT("%s: %s"),
                                             info->interf,
