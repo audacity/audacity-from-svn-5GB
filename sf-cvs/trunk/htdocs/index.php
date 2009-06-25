@@ -82,17 +82,23 @@
 
 <table border="0" width="100%"><tr><td>&nbsp;</td></tr>
 <table border="0" width="100%">
-<tr><td><a href="https://sourceforge.net/community/cca09/vote/">
-<img src="https://sourceforge.net/community/communityhub/uploads/2009/03/cca_logo.png" border="0" alt="SourceForge.net Community Choice Awards 2009" width="92" height="145"></a></td> 
-<td>&nbsp;</td><td valign="top">
- <p>Voting is under way for the final round of 
-    the 2009 <a href="http://sourceforge.net/community/cca09/">SourceForge.net Community Choice Awards</a>.
-    Please <a href="https://sourceforge.net/community/cca09/vote/">vote for Audacity now</a> 
-    to win the <b>"Best Project"</b> and <b>"Best Project for Multimedia"</b> categories.
-    Spread the word to others, too! Voting ends on July 20, 2009 at 4:00 pm PDT. </p> 
- <p>Winners will be announced on July 23rd at the <a href="http://en.oreilly.com/oscon2009">
-    OSCON 2009</a> Open Source Convention.</p>
-</td></tr></table>
+<tr>
+  <td><a href="http://sf.net/community/cca09/vote/?f=461">
+        <img border="0" 
+          src="http://sf.net/awards/cca/badge_img.php?f=461" 
+          alt="SourceForge.net Community Choice Awards 2009"></a></td> 
+  <td>&nbsp;</td>
+  <td valign="top">
+    <p>Voting is under way for the final round of 
+      the 2009 <a href="http://sourceforge.net/community/cca09/">SourceForge.net Community Choice Awards</a>.
+      Please <a href="https://sourceforge.net/community/cca09/vote/?f=461">vote for Audacity now</a> 
+      to win the <b>"Best Project"</b> and <b>"Best Project for Multimedia"</b> categories.
+      Spread the word to others, too! Voting ends on July 20, 2009 at 4:00 pm PDT. </p> 
+    <p>Winners will be announced on July 23rd at the 
+      <a href="http://en.oreilly.com/oscon2009">OSCON 2009</a> 
+      Open Source Convention.</p></td>
+</tr>
+</table>
 
 <div style="clear: both;"> </div>
 
