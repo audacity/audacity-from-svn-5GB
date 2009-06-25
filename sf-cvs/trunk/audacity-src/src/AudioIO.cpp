@@ -1274,9 +1274,7 @@ void AudioIO::StopStream()
                      track->SetOffset(track->GetStartTime() + recordingOffset);
                      if(track->GetEndTime() < 0.)
                      {
-                        wxMessageDialog m(NULL, _("Latency Correction setting has caused the recorded audio to be hidden before zero.\n"
-                           "Audacity has brought it back to start at zero.\n"
-                           "You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."),
+                        wxMessageDialog m(NULL, _("Latency Correction setting has caused the recorded audio to be hidden before zero.\nAudacity has brought it back to start at zero.\nYou may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."),
                            _("Latency problem"), wxOK);
                         m.ShowModal();
                         track->SetOffset(0.);
