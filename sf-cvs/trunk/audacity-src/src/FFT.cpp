@@ -149,7 +149,7 @@ void FFT(int NumSamples,
    if (!gFFTBitTable)
       InitFFT();
 
-   if (InverseTransform)
+   if (!InverseTransform)
       angle_numerator = -angle_numerator;
 
    NumBits = NumberOfBitsNeeded(NumSamples);
