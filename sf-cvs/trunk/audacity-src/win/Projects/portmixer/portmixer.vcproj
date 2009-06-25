@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="8.00"
 	Name="portmixer"
 	ProjectGUID="{3A76129B-55AB-4D54-BAA7-08F63ED52569}"
 	RootNamespace="portmixer"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

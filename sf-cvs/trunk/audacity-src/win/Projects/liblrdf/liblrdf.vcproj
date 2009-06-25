@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="8.00"
 	Name="liblrdf"
 	ProjectGUID="{7BAFA434-3257-408A-AAC0-A8D352B2CE54}"
 	RootNamespace="liblrdf"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="8.00"
 	Name="libsamplerate"
 	ProjectGUID="{3DDDCAA9-276D-4FC3-A15C-485F7B9B24CC}"
 	RootNamespace="libsamplerate"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
