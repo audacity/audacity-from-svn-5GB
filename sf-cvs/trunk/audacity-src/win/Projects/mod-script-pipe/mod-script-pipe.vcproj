@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="8.00"
 	Name="mod-script-pipe"
 	ProjectGUID="{85774A29-EA2F-4A40-994F-6BE593D847A5}"
 	RootNamespace="mod-script-pipe"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -63,8 +62,6 @@
 				AdditionalDependencies="wxmsw28u_core.lib wxbase28u.lib odbc32.lib odbccp32.lib oldnames.lib comctl32.lib rpcrt4.lib wsock32.lib netapi32.lib"
 				OutputFile="$(OutDir)\modules\$(ProjectName).dll"
 				AdditionalLibraryDirectories="&quot;$(WXWIN)\lib\vc_dll&quot;"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -83,6 +80,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -140,8 +140,6 @@
 				OutputFile="$(OutDir)\modules\$(ProjectName).dll"
 				AdditionalLibraryDirectories="&quot;$(WXWIN)\lib\vc_dll&quot;"
 				GenerateDebugInformation="true"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -160,6 +158,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -217,8 +218,6 @@
 				OutputFile="$(OutDir)\modules\$(ProjectName).dll"
 				AdditionalLibraryDirectories="&quot;$(WXWIN)\lib\vc_dll&quot;"
 				GenerateDebugInformation="true"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -237,6 +236,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -290,8 +292,6 @@
 				AdditionalDependencies="wxmsw28_core.lib wxbase28.lib odbc32.lib odbccp32.lib oldnames.lib comctl32.lib rpcrt4.lib wsock32.lib netapi32.lib"
 				OutputFile="$(OutDir)\modules\$(ProjectName).dll"
 				AdditionalLibraryDirectories="&quot;$(WXWIN)\lib\vc_dll&quot;"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -310,6 +310,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"

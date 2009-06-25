@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="8.00"
 	Name="libsndfile"
 	ProjectGUID="{F4B4A272-4ED3-4951-A6EE-B7BAAC1C4952}"
 	RootNamespace="libsndfile"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

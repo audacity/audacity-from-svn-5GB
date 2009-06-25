@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="8.00"
 	Name="slv2"
 	ProjectGUID="{0FEC8848-E24E-4FA5-9ACD-E4582DC4CBBE}"
 	RootNamespace="slv2"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

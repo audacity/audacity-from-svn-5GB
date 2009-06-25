@@ -2,10 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="filedialog"
-	ProjectGUID="{5284D863-3813-479F-BBF0-AC234E216BC6}"
-	RootNamespace="filedialog"
-	Keyword="Win32Proj"
+	Name="portmidi"
+	ProjectGUID="{D5AB2D87-51DC-4277-A9AB-2A6018D0E947}"
+	RootNamespace="portmidi"
 	>
 	<Platforms>
 		<Platform
@@ -20,7 +19,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -40,15 +39,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_dll\mswu&quot;;&quot;$(WXWIN)\include&quot;"
-				PreprocessorDefinitions="WXUSINGDLL;WIN32;NDEBUG;_LIB"
+				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\portmidi\pm_common&quot;;&quot;..\..\..\lib-src\portmidi\pm_win&quot;;&quot;..\..\..\lib-src\portmidi\porttime&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -83,7 +82,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="0"
 			>
 			<Tool
@@ -104,17 +103,17 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_dll\mswud&quot;;&quot;$(WXWIN)\include&quot;"
-				PreprocessorDefinitions="WXUSINGDLL;WIN32;_DEBUG;_LIB"
+				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\portmidi\pm_common&quot;;&quot;..\..\..\lib-src\portmidi\pm_win&quot;;&quot;..\..\..\lib-src\portmidi\porttime&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				StringPooling="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
 				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -170,17 +169,17 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_dll\mswd&quot;;&quot;$(WXWIN)\include&quot;"
-				PreprocessorDefinitions="WXUSINGDLL;WIN32;_DEBUG;_LIB"
+				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\portmidi\pm_common&quot;;&quot;..\..\..\lib-src\portmidi\pm_win&quot;;&quot;..\..\..\lib-src\portmidi\porttime&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				StringPooling="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
 				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -235,15 +234,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_dll\msw&quot;;&quot;$(WXWIN)\include&quot;"
-				PreprocessorDefinitions="WXUSINGDLL;WIN32;NDEBUG;_LIB"
+				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\portmidi\pm_common&quot;;&quot;..\..\..\lib-src\portmidi\pm_win&quot;;&quot;..\..\..\lib-src\portmidi\porttime&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				CompileAs="0"
+				DisableSpecificWarnings="4996"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -281,33 +280,45 @@
 			Name="Source Files"
 			>
 			<File
-				RelativePath="..\..\..\lib-src\FileDialog\FileDialog.cpp"
+				RelativePath="..\..\..\lib-src\portmidi\pm_common\pmutil.c"
 				>
 			</File>
-			<Filter
-				Name="win"
+			<File
+				RelativePath="..\..\..\lib-src\portmidi\pm_win\pmwin.c"
 				>
-				<File
-					RelativePath="..\..\..\lib-src\FileDialog\win\FileDialogPrivate.cpp"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\portmidi\pm_win\pmwinmm.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\portmidi\porttime\porttime.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\portmidi\porttime\ptwinmm.c"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			>
 			<File
-				RelativePath="..\..\..\lib-src\FileDialog\FileDialog.h"
+				RelativePath="..\..\..\lib-src\portmidi\pm_common\pminternal.h"
 				>
 			</File>
-			<Filter
-				Name="win"
+			<File
+				RelativePath="..\..\..\lib-src\portmidi\pm_common\pmutil.h"
 				>
-				<File
-					RelativePath="..\..\..\lib-src\FileDialog\win\FileDialogPrivate.h"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\portmidi\pm_win\pmwinmm.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\portmidi\porttime\porttime.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
