@@ -448,6 +448,22 @@
 		186CCEA40E523C8E00659159 /* Profiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCEA30E523C8E00659159 /* Profiler.cpp */; };
 		18A2840F0F79BCAB0013A1BE /* Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18A2840E0F79BCAB0013A1BE /* Generator.cpp */; };
 		18D8314E0ED0F56300FD870D /* Contrast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18D8314C0ED0F56200FD870D /* Contrast.cpp */; };
+		2800FE0D0FF32308005CA9E5 /* pminternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 2800FDF40FF3225B005CA9E5 /* pminternal.h */; };
+		2800FE0E0FF32308005CA9E5 /* pmutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 2800FDF50FF3225B005CA9E5 /* pmutil.c */; };
+		2800FE0F0FF32308005CA9E5 /* pmutil.h in Headers */ = {isa = PBXBuildFile; fileRef = 2800FDF60FF3225B005CA9E5 /* pmutil.h */; };
+		2800FE100FF32308005CA9E5 /* portmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2800FDF70FF3225B005CA9E5 /* portmidi.c */; };
+		2800FE110FF32308005CA9E5 /* portmidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 2800FDF80FF3225B005CA9E5 /* portmidi.h */; };
+		2800FE120FF32308005CA9E5 /* finddefault.c in Sources */ = {isa = PBXBuildFile; fileRef = 2800FDF90FF3227F005CA9E5 /* finddefault.c */; };
+		2800FE130FF32308005CA9E5 /* pmmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 2800FDFA0FF3227F005CA9E5 /* pmmac.c */; };
+		2800FE140FF32308005CA9E5 /* pmmac.h in Headers */ = {isa = PBXBuildFile; fileRef = 2800FDFB0FF3227F005CA9E5 /* pmmac.h */; };
+		2800FE150FF32308005CA9E5 /* pmmacosxcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 2800FDFC0FF3227F005CA9E5 /* pmmacosxcm.c */; };
+		2800FE160FF32308005CA9E5 /* pmmacosxcm.h in Headers */ = {isa = PBXBuildFile; fileRef = 2800FDFD0FF3227F005CA9E5 /* pmmacosxcm.h */; };
+		2800FE170FF32308005CA9E5 /* readbinaryplist.c in Sources */ = {isa = PBXBuildFile; fileRef = 2800FDFE0FF3227F005CA9E5 /* readbinaryplist.c */; };
+		2800FE180FF32308005CA9E5 /* readbinaryplist.h in Headers */ = {isa = PBXBuildFile; fileRef = 2800FDFF0FF3227F005CA9E5 /* readbinaryplist.h */; };
+		2800FE190FF32308005CA9E5 /* porttime.h in Headers */ = {isa = PBXBuildFile; fileRef = 2800FE000FF322A1005CA9E5 /* porttime.h */; };
+		2800FE1A0FF32308005CA9E5 /* ptmacosx_mach.c in Sources */ = {isa = PBXBuildFile; fileRef = 2800FE010FF322A1005CA9E5 /* ptmacosx_mach.c */; };
+		2800FE230FF32381005CA9E5 /* libportmidi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2800FE070FF322D4005CA9E5 /* libportmidi.a */; };
+		2800FE370FF32566005CA9E5 /* MidiIOPrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2800FE350FF32566005CA9E5 /* MidiIOPrefs.cpp */; };
 		2801A6460BF9268700648258 /* ImportQT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6430BF9268700648258 /* ImportQT.cpp */; };
 		2801A6470BF9268700648258 /* ImportQTWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2801A6450BF9268700648258 /* ImportQTWrapper.cpp */; };
 		280828550A75E0D0000002EF /* LabelDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828530A75E0D0000002EF /* LabelDialog.cpp */; };
@@ -1582,6 +1598,13 @@
 			remoteGlobalIDString = 17073EE70988DBDD008541CC;
 			remoteInfo = allegro;
 		};
+		2800FE270FF323C0005CA9E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1790ABE309883346008A330A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2800FE060FF322D4005CA9E5;
+			remoteInfo = portmidi;
+		};
 		283754970F42895700364787 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1790ABE309883346008A330A /* Project object */;
@@ -2214,6 +2237,23 @@
 		18A2840E0F79BCAB0013A1BE /* Generator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Generator.cpp; sourceTree = "<group>"; };
 		18D8314C0ED0F56200FD870D /* Contrast.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Contrast.cpp; sourceTree = "<group>"; };
 		18D8314D0ED0F56200FD870D /* Contrast.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Contrast.h; sourceTree = "<group>"; };
+		2800FDF40FF3225B005CA9E5 /* pminternal.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = pminternal.h; path = portmidi/pm_common/pminternal.h; sourceTree = "<group>"; };
+		2800FDF50FF3225B005CA9E5 /* pmutil.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = pmutil.c; path = portmidi/pm_common/pmutil.c; sourceTree = "<group>"; };
+		2800FDF60FF3225B005CA9E5 /* pmutil.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = pmutil.h; path = portmidi/pm_common/pmutil.h; sourceTree = "<group>"; };
+		2800FDF70FF3225B005CA9E5 /* portmidi.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = portmidi.c; path = portmidi/pm_common/portmidi.c; sourceTree = "<group>"; };
+		2800FDF80FF3225B005CA9E5 /* portmidi.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = portmidi.h; path = portmidi/pm_common/portmidi.h; sourceTree = "<group>"; };
+		2800FDF90FF3227F005CA9E5 /* finddefault.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = finddefault.c; path = portmidi/pm_mac/finddefault.c; sourceTree = "<group>"; };
+		2800FDFA0FF3227F005CA9E5 /* pmmac.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = pmmac.c; path = portmidi/pm_mac/pmmac.c; sourceTree = "<group>"; };
+		2800FDFB0FF3227F005CA9E5 /* pmmac.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = pmmac.h; path = portmidi/pm_mac/pmmac.h; sourceTree = "<group>"; };
+		2800FDFC0FF3227F005CA9E5 /* pmmacosxcm.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = pmmacosxcm.c; path = portmidi/pm_mac/pmmacosxcm.c; sourceTree = "<group>"; };
+		2800FDFD0FF3227F005CA9E5 /* pmmacosxcm.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = pmmacosxcm.h; path = portmidi/pm_mac/pmmacosxcm.h; sourceTree = "<group>"; };
+		2800FDFE0FF3227F005CA9E5 /* readbinaryplist.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = readbinaryplist.c; path = portmidi/pm_mac/readbinaryplist.c; sourceTree = "<group>"; };
+		2800FDFF0FF3227F005CA9E5 /* readbinaryplist.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = readbinaryplist.h; path = portmidi/pm_mac/readbinaryplist.h; sourceTree = "<group>"; };
+		2800FE000FF322A1005CA9E5 /* porttime.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = porttime.h; path = portmidi/porttime/porttime.h; sourceTree = "<group>"; };
+		2800FE010FF322A1005CA9E5 /* ptmacosx_mach.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = ptmacosx_mach.c; path = portmidi/porttime/ptmacosx_mach.c; sourceTree = "<group>"; };
+		2800FE070FF322D4005CA9E5 /* libportmidi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libportmidi.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2800FE350FF32566005CA9E5 /* MidiIOPrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = MidiIOPrefs.cpp; sourceTree = "<group>"; };
+		2800FE360FF32566005CA9E5 /* MidiIOPrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = MidiIOPrefs.h; sourceTree = "<group>"; };
 		2801A6430BF9268700648258 /* ImportQT.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImportQT.cpp; sourceTree = "<group>"; };
 		2801A6440BF9268700648258 /* ImportQT.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImportQT.h; sourceTree = "<group>"; };
 		2801A6450BF9268700648258 /* ImportQTWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImportQTWrapper.cpp; sourceTree = "<group>"; };
@@ -3415,6 +3455,14 @@
 				28E2373A0E5163A200281398 /* libscorealign.a in Frameworks */,
 				ED2707460EF9C550007D4FFD /* liblibsbsms.a in Frameworks */,
 				2837549C0F42898E00364787 /* libtaglib.a in Frameworks */,
+				2800FE230FF32381005CA9E5 /* libportmidi.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2800FE050FF322D4005CA9E5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3454,6 +3502,7 @@
 				1707357C0988D6AD008541CC /* libvorbis */,
 				2844B48E0DEA66900087C656 /* mod-script-pipe */,
 				28E821F50A39FC1300DCE280 /* portaudio-v19 */,
+				2800FDF00FF321DA005CA9E5 /* portmidi */,
 				170737B00988D6AF008541CC /* portmixer */,
 				28F3A3EF0E28280A00729866 /* portsmf */,
 				287BD6C70E25D65B00CB4467 /* redland */,
@@ -4095,6 +4144,7 @@
 				176A1A5B098B7B8D00DC73B4 /* libnyquist.a */,
 				17073FFE0988EA60008541CC /* libogg.a */,
 				28E67F5F0A3A160D0021D89F /* libportaudio.a */,
+				2800FE070FF322D4005CA9E5 /* libportmidi.a */,
 				170740960988F2F7008541CC /* libportmixer.a */,
 				1707400D0988EB90008541CC /* libresample.a */,
 				1707401E0988EEAA008541CC /* libsndfile.a */,
@@ -4518,6 +4568,8 @@
 				1790B0C209883BFD008A330A /* KeyConfigPrefs.h */,
 				284B27920FC66863005EAC96 /* LibraryPrefs.cpp */,
 				284B27930FC66863005EAC96 /* LibraryPrefs.h */,
+				2800FE350FF32566005CA9E5 /* MidiIOPrefs.cpp */,
+				2800FE360FF32566005CA9E5 /* MidiIOPrefs.h */,
 				1790B0C309883BFD008A330A /* MousePrefs.cpp */,
 				1790B0C409883BFD008A330A /* MousePrefs.h */,
 				1790B0C509883BFD008A330A /* PrefsDialog.cpp */,
@@ -4627,6 +4679,51 @@
 				1841B5090E00AD6E00F386E9 /* ODWaveTrackTaskQueue.h */,
 			);
 			name = ondemand;
+			sourceTree = "<group>";
+		};
+		2800FDF00FF321DA005CA9E5 /* portmidi */ = {
+			isa = PBXGroup;
+			children = (
+				2800FDF20FF321F2005CA9E5 /* pm_common */,
+				2800FDF10FF321EC005CA9E5 /* pm_mac */,
+				2800FDF30FF32204005CA9E5 /* porttime */,
+			);
+			name = portmidi;
+			sourceTree = "<group>";
+		};
+		2800FDF10FF321EC005CA9E5 /* pm_mac */ = {
+			isa = PBXGroup;
+			children = (
+				2800FDF90FF3227F005CA9E5 /* finddefault.c */,
+				2800FDFA0FF3227F005CA9E5 /* pmmac.c */,
+				2800FDFB0FF3227F005CA9E5 /* pmmac.h */,
+				2800FDFC0FF3227F005CA9E5 /* pmmacosxcm.c */,
+				2800FDFD0FF3227F005CA9E5 /* pmmacosxcm.h */,
+				2800FDFE0FF3227F005CA9E5 /* readbinaryplist.c */,
+				2800FDFF0FF3227F005CA9E5 /* readbinaryplist.h */,
+			);
+			name = pm_mac;
+			sourceTree = "<group>";
+		};
+		2800FDF20FF321F2005CA9E5 /* pm_common */ = {
+			isa = PBXGroup;
+			children = (
+				2800FDF40FF3225B005CA9E5 /* pminternal.h */,
+				2800FDF50FF3225B005CA9E5 /* pmutil.c */,
+				2800FDF60FF3225B005CA9E5 /* pmutil.h */,
+				2800FDF70FF3225B005CA9E5 /* portmidi.c */,
+				2800FDF80FF3225B005CA9E5 /* portmidi.h */,
+			);
+			name = pm_common;
+			sourceTree = "<group>";
+		};
+		2800FDF30FF32204005CA9E5 /* porttime */ = {
+			isa = PBXGroup;
+			children = (
+				2800FE000FF322A1005CA9E5 /* porttime.h */,
+				2800FE010FF322A1005CA9E5 /* ptmacosx_mach.c */,
+			);
+			name = porttime;
 			sourceTree = "<group>";
 		};
 		2808026A0F32C11F0021001D /* rawwaves */ = {
@@ -6601,6 +6698,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2800FE030FF322D4005CA9E5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2800FE0D0FF32308005CA9E5 /* pminternal.h in Headers */,
+				2800FE0F0FF32308005CA9E5 /* pmutil.h in Headers */,
+				2800FE110FF32308005CA9E5 /* portmidi.h in Headers */,
+				2800FE140FF32308005CA9E5 /* pmmac.h in Headers */,
+				2800FE160FF32308005CA9E5 /* pmmacosxcm.h in Headers */,
+				2800FE180FF32308005CA9E5 /* readbinaryplist.h in Headers */,
+				2800FE190FF32308005CA9E5 /* porttime.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		283753E00F42875100364787 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -7143,6 +7254,7 @@
 				17C99D51098970800041B1BC /* PBXTargetDependency */,
 				176EEC7109A2F54D00188F3B /* PBXTargetDependency */,
 				176EEC7309A2F55100188F3B /* PBXTargetDependency */,
+				2800FE280FF323C0005CA9E5 /* PBXTargetDependency */,
 				17C99D4F098970800041B1BC /* PBXTargetDependency */,
 				17C99D4D098970800041B1BC /* PBXTargetDependency */,
 				176A1B6E098B7C7200DC73B4 /* PBXTargetDependency */,
@@ -7165,6 +7277,23 @@
 			productName = Audacity;
 			productReference = 1790AFB009883B6D008A330A /* Audacity.app */;
 			productType = "com.apple.product-type.application";
+		};
+		2800FE060FF322D4005CA9E5 /* portmidi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2800FE1D0FF32326005CA9E5 /* Build configuration list for PBXNativeTarget "portmidi" */;
+			buildPhases = (
+				2800FE030FF322D4005CA9E5 /* Headers */,
+				2800FE040FF322D4005CA9E5 /* Sources */,
+				2800FE050FF322D4005CA9E5 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = portmidi;
+			productName = portmidi;
+			productReference = 2800FE070FF322D4005CA9E5 /* libportmidi.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		283753E30F42875100364787 /* taglib */ = {
 			isa = PBXNativeTarget;
@@ -7388,6 +7517,7 @@
 				28501EAF0CEED1F00029ABAA /* libvamp */,
 				2880527D0DEA694100671EA4 /* mod-script-pipe */,
 				28E67F510A3A160D0021D89F /* portaudio-v19 */,
+				2800FE060FF322D4005CA9E5 /* portmidi */,
 				170740950988F2F7008541CC /* portmixer */,
 				17073EE70988DBDD008541CC /* portsmf */,
 				170740790988F1BB008541CC /* soundtouch */,
@@ -8223,6 +8353,21 @@
 				28D540080FD1912A00FA7C75 /* ScriptCommandRelay.cpp in Sources */,
 				28DB34790FDC2C5D0011F589 /* ResponseQueue.cpp in Sources */,
 				28DABFBE0FF19DB100AC7848 /* RealFFTf.cpp in Sources */,
+				2800FE370FF32566005CA9E5 /* MidiIOPrefs.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2800FE040FF322D4005CA9E5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2800FE0E0FF32308005CA9E5 /* pmutil.c in Sources */,
+				2800FE100FF32308005CA9E5 /* portmidi.c in Sources */,
+				2800FE120FF32308005CA9E5 /* finddefault.c in Sources */,
+				2800FE130FF32308005CA9E5 /* pmmac.c in Sources */,
+				2800FE150FF32308005CA9E5 /* pmmacosxcm.c in Sources */,
+				2800FE170FF32308005CA9E5 /* readbinaryplist.c in Sources */,
+				2800FE1A0FF32308005CA9E5 /* ptmacosx_mach.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8633,6 +8778,11 @@
 			target = 17073EE70988DBDD008541CC /* portsmf */;
 			targetProxy = 17C99D52098970800041B1BC /* PBXContainerItemProxy */;
 		};
+		2800FE280FF323C0005CA9E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2800FE060FF322D4005CA9E5 /* portmidi */;
+			targetProxy = 2800FE270FF323C0005CA9E5 /* PBXContainerItemProxy */;
+		};
 		283754980F42895700364787 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 283753E30F42875100364787 /* taglib */;
@@ -8860,6 +9010,8 @@
 					"-framework",
 					CoreAudio,
 					"-framework",
+					CoreMidi,
+					"-framework",
 					AudioUnit,
 					"-framework",
 					AudioToolbox,
@@ -8902,6 +9054,34 @@
 				ZERO_LINK = NO;
 			};
 			name = "Debug Static";
+		};
+		2800FE080FF322D5005CA9E5 /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = portmidi;
+			};
+			name = "Debug Static";
+		};
+		2800FE090FF322D5005CA9E5 /* Debug Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = portmidi;
+			};
+			name = "Debug Shared";
+		};
+		2800FE0A0FF322D5005CA9E5 /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = portmidi;
+			};
+			name = "Release Static";
+		};
+		2800FE0B0FF322D5005CA9E5 /* Release Shared */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = portmidi;
+			};
+			name = "Release Shared";
 		};
 		283753E50F42875100364787 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
@@ -9405,6 +9585,8 @@
 					"-framework",
 					CoreAudio,
 					"-framework",
+					CoreMidi,
+					"-framework",
 					AudioUnit,
 					"-framework",
 					AudioToolbox,
@@ -9736,6 +9918,8 @@
 					WebKit,
 					"-framework",
 					CoreAudio,
+					"-framework",
+					CoreMidi,
 					"-framework",
 					AudioUnit,
 					"-framework",
@@ -10242,6 +10426,8 @@
 					"-framework",
 					CoreAudio,
 					"-framework",
+					CoreMidi,
+					"-framework",
 					AudioUnit,
 					"-framework",
 					AudioToolbox,
@@ -10555,6 +10741,17 @@
 				288052CB0DEA74F100671EA4 /* Debug Shared */,
 				28E5DA390AC4CBA200E7F64C /* Release Static */,
 				288052E00DEA74FD00671EA4 /* Release Shared */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug Static";
+		};
+		2800FE1D0FF32326005CA9E5 /* Build configuration list for PBXNativeTarget "portmidi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2800FE080FF322D5005CA9E5 /* Debug Static */,
+				2800FE090FF322D5005CA9E5 /* Debug Shared */,
+				2800FE0A0FF322D5005CA9E5 /* Release Static */,
+				2800FE0B0FF322D5005CA9E5 /* Release Shared */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
