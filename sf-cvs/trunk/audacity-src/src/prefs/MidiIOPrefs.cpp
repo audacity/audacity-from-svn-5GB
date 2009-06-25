@@ -265,12 +265,12 @@ void MidiIOPrefs::OnHost(wxCommandEvent & e)
 
    for (int i = 0; i < nDevices; i++) {
       const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-      wxString name(info->interf, wxConvLocal);
-      if (itemAtIndex.IsSameAs(name)) {
+      wxString interf(info->interf, wxConvLocal);
+      if (itemAtIndex.IsSameAs(interf)) {
          wxString name(info->name, wxConvLocal);
          wxString device = wxString::Format(wxT("%s: %s"),
-                                            info->interf,
-                                            info->name);
+                                            interf.c_str(),
+                                            name.c_str());
          int index;
 
          if (info->output) {
@@ -385,16 +385,16 @@ bool MidiIOPrefs::Apply()
    if (info) {
       gPrefs->Write(wxT("/MidiIO/PlaybackDevice"),
                     wxString::Format(wxT("%s: %s"),
-                                     info->interf,
-                                     info->name));
+                                     wxString(info->interf, wxConvLocal).c_str(),
+                                     wxString(info->name, wxConvLocal).c_str()));
    }
 
    info = (const PmDeviceInfo *) mRecord->GetClientData(mRecord->GetSelection());
    if (info) {
       gPrefs->Write(wxT("/MidiIO/RecordingDevice"),
                     wxString::Format(wxT("%s: %s"),
-                                     info->interf,
-                                     info->name));
+                                     wxString(info->interf, wxConvLocal).c_str(),
+                                     wxString(info->name, wxConvLocal).c_str()));
    }
 
 /*

@@ -1011,8 +1011,14 @@ HCK MIDI PATCH ORG */
       for (i = 0; i < Pm_CountDevices(); i++) {
          const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
          if (!info) continue;
-         if (wxStrcmp(LAT1CTOWX(info->name), playbackDeviceName) == 0)
+         wxString interf(info->interf, wxConvLocal);
+         wxString name(info->name, wxConvLocal);
+         wxString device = wxString::Format(wxT("%s: %s"),
+                                            interf.c_str(),
+                                            name.c_str());
+        if (wxStrcmp(device, playbackDeviceName) == 0) {
             playbackDevice = i;
+         }
       }
    } // (else playback device has Pm_GetDefaultOuputDeviceID())
 
