@@ -159,7 +159,7 @@ bool EffectSBSMS::Process()
    
    //Iterate over each track
    this->CopyInputTracks(); // Set up mOutputTracks.
-   TrackListIterator iter(mOutputTracks);
+   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
    WaveTrack* leftTrack = (WaveTrack*)(iter.First());
    WaveTrack* saveLeft = leftTrack;
    mCurTrackNum = 0;

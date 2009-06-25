@@ -129,7 +129,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Process()
    this->CopyInputTracks(); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputTracks);
+   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
    int count = 0;
    WaveTrack *left = (WaveTrack*)(iter.First());
    WaveTrack *right;

@@ -339,7 +339,7 @@ bool EffectAutoDuck::Process()
    if (!cancel)
    {
       this->CopyInputTracks(); // Set up mOutputTracks.
-      TrackListIterator iter(mOutputTracks);
+      SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
       Track *iterTrack = iter.First();
       
       int trackNumber = 0;

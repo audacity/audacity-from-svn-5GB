@@ -32,6 +32,7 @@ Track classes.
 #include <wx/debug.h>
 
 #include <math.h>
+#include <algorithm>
 
 #include "float_cast.h"
 
@@ -49,6 +50,8 @@ Track classes.
 #include "Prefs.h"
 
 #include "ondemand/ODManager.h"
+
+using std::max;
 
 WaveTrack* TrackFactory::DuplicateWaveTrack(WaveTrack &orig)
 {
@@ -808,7 +811,7 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src, TrackList* tracks)
    
    double length = src->GetEndTime();
    ViewInfo *info = &p->mViewInfo;
-   double sel_len = info->sel1 - info->sel0;
+   double sel_len = max(info->sel1 - max(info->sel0, t0), 0.0);
    
    TrackGroupIterator it(tracks);
    Track *t = it.First(this);

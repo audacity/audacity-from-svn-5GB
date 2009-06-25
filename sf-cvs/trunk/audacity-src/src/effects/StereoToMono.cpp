@@ -116,7 +116,7 @@ bool EffectStereoToMono::Process()
    this->CopyInputTracks(); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputTracks);
+   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
    mLeftTrack = (WaveTrack *)iter.First();
    bool refreshIter = false;
 

@@ -30,37 +30,35 @@ bool Generator::Process()
    // Iterate over the tracks
    bool bGoodResult = true;
    int ntrack = 0;
-   TrackListOfKindIterator iter(Track::Wave, mOutputTracks);
+   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
-      if (track->GetSelected()) {
-         if (mDuration > 0.0)
-         {
-            // Create a temporary track
-            WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(),
-                                                    track->GetRate());
-            BeforeTrack(*track);
+      if (mDuration > 0.0)
+      {
+         // Create a temporary track
+         WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(),
+                                                 track->GetRate());
+         BeforeTrack(*track);
 
-            // Fill it with data
-            if (!GenerateTrack(tmp, *track, ntrack))
-               bGoodResult = false;
+         // Fill it with data
+         if (!GenerateTrack(tmp, *track, ntrack))
+            bGoodResult = false;
 
-            // Transfer the data from the temporary track to the actual one
-            tmp->Flush();
-            track->ClearAndPaste(mT0, mT1, tmp, true, true, mOutputTracks);
-            delete tmp;
+         // Transfer the data from the temporary track to the actual one
+         tmp->Flush();
+         track->ClearAndPaste(mT0, mT1, tmp, true, true, mOutputTracks);
+         delete tmp;
 
-            if (!bGoodResult) {
-               Failure();
-               return false;
-            }
+         if (!bGoodResult) {
+            Failure();
+            return false;
          }
-         else
-         {
-            // If the duration is zero, there's no need to actually
-            // generate anything
-            track->Clear(mT0, mT1);
-         }
+      }
+      else
+      {
+         // If the duration is zero, there's no need to actually
+         // generate anything
+         track->Clear(mT0, mT1);
       }
 
       // Move on to the next track

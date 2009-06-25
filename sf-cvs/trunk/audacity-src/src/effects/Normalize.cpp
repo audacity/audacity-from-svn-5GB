@@ -142,8 +142,8 @@ bool EffectNormalize::Process()
    this->CopyInputTracks(); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputTracks);
-    WaveTrack *track = (WaveTrack *) iter.First();
+   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
+   WaveTrack *track = (WaveTrack *) iter.First();
    mCurTrackNum = 0;
    while (track) {
       //Get start and end times from track

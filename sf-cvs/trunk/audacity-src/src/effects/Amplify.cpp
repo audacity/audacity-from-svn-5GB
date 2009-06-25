@@ -58,13 +58,9 @@ bool EffectAmplify::Init()
 {
    peak = float(0.0);
 
-   TrackListOfKindIterator iter(Track::Wave, mTracks);
+   SelectedTrackListOfKindIterator iter(Track::Wave, mTracks);
 
    for (Track *t = iter.First(); t; t = iter.Next()) {
-      if (!t->GetSelected()) {
-         continue;
-      }
-
       float min, max;
       ((WaveTrack *)t)->GetMinMax(&min, &max, mT0, mT1);
       float newpeak = (fabs(min) > fabs(max) ? fabs(min) : fabs(max));

@@ -360,6 +360,29 @@ Track *TrackListOfKindIterator::Next(bool skiplinked)
    return NULL;
 }
 
+//SelectedTrackListOfKindIterator
+Track *SelectedTrackListOfKindIterator::First(TrackList * val)
+{
+   Track *t = TrackListOfKindIterator::First(val);
+
+   while (t && !t->GetSelected()) {
+      t = TrackListOfKindIterator::Next();
+   }
+
+   return t;
+}
+
+Track *SelectedTrackListOfKindIterator::Next(bool skiplinked)
+{
+   while (Track *t = TrackListOfKindIterator::Next(skiplinked)) {
+      if (t->GetSelected()) {
+         return t;
+      }
+   }
+
+   return NULL;
+}
+
 // VisibleTrackIterator
 //
 // Based on TrackListIterator returns only the currently visible tracks.

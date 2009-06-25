@@ -45,7 +45,7 @@ bool EffectTwoPassSimpleMono::Process()
 bool EffectTwoPassSimpleMono::ProcessPass()
 {
    //Iterate over each track
-   TrackListIterator iter(mOutputTracks);
+   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    mCurTrackNum = 0;
    while (track) {
