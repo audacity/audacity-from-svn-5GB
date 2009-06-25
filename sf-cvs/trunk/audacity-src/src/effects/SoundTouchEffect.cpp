@@ -32,7 +32,7 @@ bool EffectSoundTouch::Process()
    this->CopyInputTracks(); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputTracks);
+   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
    WaveTrack* leftTrack = (WaveTrack*)(iter.First());
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;

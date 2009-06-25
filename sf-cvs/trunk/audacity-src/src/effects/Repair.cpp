@@ -59,7 +59,7 @@ bool EffectRepair::Process()
    this->CopyInputTracks(); // Set up mOutputTracks. //v This may be too much copying for EffectRepair.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputTracks);
+   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {

@@ -115,9 +115,10 @@ bool EffectRepeat::Process()
    bool bGoodResult = true;
 	double maxDestLen = 0.0; // used to change selection to generated bit
 
-   TrackListOfKindIterator iter(Track::Wave, mOutputTracks);
-   WaveTrack *track = (WaveTrack *)iter.First();
-   for (; track && bGoodResult; track = (WaveTrack *)iter.Next(), nTrack++) {
+   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
+   for (WaveTrack *track = (WaveTrack *)iter.First(); track && bGoodResult;
+      track = (WaveTrack *)iter.Next(), nTrack++) {
+
       double trackStart = track->GetStartTime();
       double trackEnd = track->GetEndTime();
       double t0 = mT0 < trackStart? trackStart: mT0;

@@ -211,7 +211,7 @@ class AUDACITY_DLL_API TrackListIterator
 };
 
 //
-// VisibleTrackIterator
+// TrackListOfKindIterator
 //
 // Based on TrackListIterator and returns only tracks of the specified type.
 //
@@ -219,6 +219,24 @@ class AUDACITY_DLL_API TrackListOfKindIterator: public TrackListIterator
 {
  public:
    TrackListOfKindIterator(int kind, TrackList * val = NULL);
+
+   // Iterate functions
+   Track *First(TrackList * val = NULL);
+   Track *Next(bool skiplinked = false);
+
+ private:
+   int kind;
+};
+
+//
+// SelectedTrackListOfKindIterator
+//
+// Based on TrackListOfKindIterator and returns only tracks selected.
+//
+class AUDACITY_DLL_API SelectedTrackListOfKindIterator: public TrackListOfKindIterator
+{
+ public:
+    SelectedTrackListOfKindIterator(int kind, TrackList * val = NULL) : TrackListOfKindIterator(kind, val) {};
 
    // Iterate functions
    Track *First(TrackList * val = NULL);

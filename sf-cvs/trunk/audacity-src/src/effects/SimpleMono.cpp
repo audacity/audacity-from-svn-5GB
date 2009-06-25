@@ -32,7 +32,7 @@ bool EffectSimpleMono::Process()
    this->CopyInputTracks(); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   TrackListIterator iter(mOutputTracks);
+   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
    WaveTrack* pOutWaveTrack = (WaveTrack*)(iter.First());
    mCurTrackNum = 0;
    while (pOutWaveTrack != NULL)

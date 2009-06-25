@@ -208,7 +208,7 @@ bool EffectTruncSilence::Process()
    // Start processing
    //Track::All is needed because this effect has clear functionality
    this->CopyInputTracks(Track::All); // Set up mOutputTracks.
-   TrackListOfKindIterator iterOut(Track::Wave, mOutputTracks);
+   SelectedTrackListOfKindIterator iterOut(Track::Wave, mOutputTracks);
 
    sampleCount index = start;
    sampleCount outTrackOffset = start;
