@@ -52,7 +52,7 @@ INDEX_HTML         = 'index.html'
 url_filename_cache = {}
 redir_cache        = {}
 wrote_file_set     = set()
-sidebar_content    = ''
+sidebar_html       = ''
 footer_text        = ''
 counter            = 0
 errors             = 0
@@ -178,37 +178,15 @@ def monobook_fix_html(doc, page_url):
   """
   Sets sidebar for Mediawiki 1.4beta6 Monobook HTML output.
   """
-  global sidebar_content, config
+  global config
  
   if config.made_by:
     doc = doc.replace('<html xmlns=', MADE_BY_COMMENT + '\n<html xmlns=')
 
-  SIDEBAR_ID = 'SIDEBAR' + hashlib.md5(str(random.random())).hexdigest()
-
-  # Remove sidebar HTML
-  doc = re.sub(
-    r'(<!-- end content -->)[\s\S]+?' +
-    r'(<!-- end of the left \(by default at least\) column -->)',
-    r'\1<div class="visualClear"></div></div></div></div>' + SIDEBAR_ID + r'\2', doc)
-
-  pre_sidebar = """
-    <div id="column-one">
-  """
-
-  post_sidebar = """
-    </div>
-    <!-- end left column -->
-  """
+  doc = remove_tag(doc, '<div class="portlet" id="p-personal">', '</div>', '<div')
+  doc = remove_tag(doc, '<div id="p-search" class="portlet">', '</div>','<div')
+  doc = remove_tag(doc, '<div class="portlet" id="p-editors">', '</div>', '<div')
   
-  if config.sidebar != None and sidebar_content == '':
-    f = open(config.sidebar, 'rU')
-    sidebar_content = f.read()
-    f.close()
-
-  sidebar_html = pre_sidebar + sidebar_content + post_sidebar
-  
-  doc = doc.replace(SIDEBAR_ID, sidebar_html)
-
   #andre special mode
   if config.special_mode:
     # Remove ul list
@@ -271,8 +249,16 @@ def pre_html_transform(doc, url):
   return doc
   
 def pos_html_transform(doc, url):
-  global footer_text, config
+  global footer_text, config, sidebar_html
   url = normalize_url(url, False)
+  
+  # Add sidebar.html
+  if config.sidebar != None and sidebar_html == '':
+    f = open(config.sidebar, 'rU')
+    sidebar_html = f.read()
+    f.close()
+
+  doc = re.sub( r'(<!-- end of the left \(by default at least\) column -->)', sidebar_html + r'\1', doc)
   
   # Remove empty links
   doc = clean_tag(doc, 'href=""', '</a>', '<a ');
