@@ -292,6 +292,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\lib-src\portmidi\pm_common\portmidi.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\lib-src\portmidi\porttime\porttime.c"
 				>
 			</File>
@@ -313,6 +317,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\lib-src\portmidi\pm_win\pmwinmm.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\portmidi\pm_common\portmidi.h"
 				>
 			</File>
 			<File
