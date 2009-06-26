@@ -34,6 +34,7 @@ $available_locales = array(
   "pl" => array("pl_PL", "Polski"),
   "pt" => array("pt_BR", "Português"),
   "ro" => array("ro_RO", "Română"),
+  "sk" => array("sk_SK", "Slovak"),
   "sl" => array("sl_SI", "Slovenščina"),
   "fi" => array("fi_FI", "Suomi"),
   "sv" => array("sv_SE", "Svenska"),
