@@ -260,7 +260,7 @@ void RealFFT(int NumSamples, float *RealIn, float *RealOut, float *ImagOut)
    float wtemp = float (sin(0.5 * theta));
 
    float wpr = -2.0 * wtemp * wtemp;
-   float wpi = float (sin(theta));
+   float wpi = -1.0 * float (sin(theta));
    float wr = 1.0 + wpr;
    float wi = wpi;
 
@@ -327,7 +327,7 @@ void PowerSpectrum(int NumSamples, float *In, float *Out)
    float wtemp = float (sin(0.5 * theta));
 
    float wpr = -2.0 * wtemp * wtemp;
-   float wpi = float (sin(theta));
+   float wpi = -1.0 * float (sin(theta));
    float wr = 1.0 + wpr;
    float wi = wpi;
 
