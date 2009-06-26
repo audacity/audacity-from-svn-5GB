@@ -1,9 +1,9 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2007, 2008  Vaughan Johnson, Gale Andrews
+ * Copyright 2007, 2009  Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "bundlers";
@@ -279,9 +279,18 @@
   </tr>
   <tr>
    <td class="col1">
-   <a href="http://www.ion-audio.com">Ion Audio</a>
+   <a href="http://www.goldsound.com.hk/index.php">Goldsound</a>
    </td>
    <td class="col2">
+   <a href="http://www.goldsound.com.hk/product318672.html">TT-990PC</a>
+   </td>
+   <td class="col3"><?=_("USB turntable")?></td>
+  </tr>
+  <tr>
+   <td>
+   <a href="http://www.ion-audio.com">Ion Audio</a>
+   </td>
+   <td>
    <a href="http://www.ion-audio.com/ittusb.php">iTTUSB</a><br>
    <a href="http://www.ion-audio.com/ionttusb05">iTTUSB05</a><br>
    <a href="http://www.ion-audio.com/ionttusb10">iTTUSB10</a><br>
@@ -289,7 +298,7 @@
    <br><br>
    <a href="http://www.ion-audio.com/iptusb">iPTUSB battery operated</a>
    </td>
-   <td class="col3"><?=_('USB turntables. NOTE: In January 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what was stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and simultaneously export multiple files for each track. Ion have corrected their documentation, and are currently still bundling Audacity with the listed products. Please see our Wiki page on <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB turntables</a> for more information.')?>
+   <td><?=_('USB turntables. NOTE: In January 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what was stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and simultaneously export multiple files for each track. Ion have corrected their documentation, and are currently still bundling Audacity with the listed products. Please see our Wiki page on <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB turntables</a> for more information.')?>
    </td>
   </tr>
   <tr>
