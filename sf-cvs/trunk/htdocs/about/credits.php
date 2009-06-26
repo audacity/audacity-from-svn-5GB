@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2003 Dominic Mazzoni
- * Copyright 2004 Matt Brubeck
+ * Copyright 2004-9 Matt Brubeck, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -100,7 +100,7 @@
   <li>Jozsef Herczeg (hu)</li>
   <li>Aldo Boccacci (it)</li>
   <li>Ohkubo Kohei (ja)</li>
-  <li>Šar?nas Gliebus (lt)</li>
+  <li>Šar&#8161;nas Gliebus (lt)</li>
   <li>Ilija Iliev (mk)</li>
   <li><a href="http://folk.uio.no/kevinu">Kevin Brubeck Unhammer</a> (nb)</li>
   <li>Tino Meinen (nl)</li>
@@ -108,6 +108,7 @@
   <li>Marek Mularczyk (pl)</li>
   <li>Sebastian Pacholski (pl)</li>
   <li>Cleber Tavano (pt_BR)</li>
+  <li>Victor Westmann (pt_BR)</li>   
   <li>Manuel Ciosici (ro)</li>
   <li>Yuri Ilyin (ru)</li>
   <li>Alexandre Prokoudine (ru)</li>
