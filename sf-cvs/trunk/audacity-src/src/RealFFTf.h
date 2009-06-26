@@ -13,6 +13,7 @@ HFFT InitializeFFT(int);
 void EndFFT(HFFT);
 HFFT GetFFT(int);
 void ReleaseFFT(HFFT);
+void CleanupFFT();
 void RealFFTf(fft_type *,HFFT);
 void InverseRealFFTf(fft_type *,HFFT);
 void ReorderToTime(HFFT hFFT, fft_type *buffer, fft_type *TimeOut);
