@@ -18,7 +18,7 @@
 	// i18n-hint: Please add a note that these lists are in English.  If there are
 	// Audacity mailing lists or forums in your language, please link to them here.
 	echo "<p>"._('These lists are for discussion about the Audacity audio editor.  </p>
-<p><b>Note:</b> In line with our <a href="../contact/privacy">Privacy Policy</a>, these are public lists - messages are seen by all list subscribers, and posted on several web sites where the messages are archived.</p>');?>
+<p><b>Note:</b> In line with our <a href="../contact/privacy#lists">Privacy Policy</a>, these are public lists - messages are seen by all list subscribers, and posted on several web sites where the messages are archived.</p>');?>
 
 <dl>
   <dt id="users">audacity-users</dt>
