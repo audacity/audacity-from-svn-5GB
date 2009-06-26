@@ -266,7 +266,7 @@ void LoadEffects()
    em.RegisterEffect(new EffectWahwah());
 
    // Analyze menu
-   em.RegisterEffect(new EffectFindClipping(), ANALYZE_EFFECT);
+   em.RegisterEffect(new EffectFindClipping());
 
 #ifdef USE_NYQUIST
    LoadNyquistPlugins();
