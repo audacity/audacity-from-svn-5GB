@@ -205,8 +205,7 @@
 	</script>
 	
 	<center>
-		<br>
-		<a href="http://audacity.sourceforge.net/community/donate"><font size="-2">Why is Audacity showing ads?</font></a>  
+		<a href="http://audacity.sourceforge.net/contact/privacy#advertising"><font size="-2">Advertisements Policy</font></a>  
 	</center>
   </div>
 
