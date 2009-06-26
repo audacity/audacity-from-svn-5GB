@@ -15,7 +15,7 @@
 <h2><?=$pageTitle?></h2>
 
 <p>
-  <?=_('Audacity raises money via <a href="#donate">donations</a>, <a href="http://audacityteam.org/sponsor.php">sponsorships<a/>, product sales through <a href="http://audacitystore.com/">Audacity Store</a> and <a href="../contact/privacy#advertising">advertisements</a> on our web pages.')?>
+  <?=_('Audacity raises money via <a href="#donate">donations</a>, <a href="http://audacityteam.org/sponsor.php">sponsorships</a>, product sales through <a href="http://audacitystore.com/">Audacity Store</a> and <a href="../contact/privacy#advertising">advertisements</a> on our web pages.')?>
 </p>
 
 <p>
