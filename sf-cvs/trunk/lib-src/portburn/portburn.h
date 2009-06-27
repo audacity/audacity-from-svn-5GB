@@ -1,7 +1,7 @@
 /*
  * PortBurn
  *
- * Dominic Mazzoni
+ * Dominic Mazzoni, Leland Lucius
  * License: LGPL
  *
  * A library for cross-platform audio CD burning
@@ -17,6 +17,67 @@
 #ifndef __PORTBURN__
 #define __PORTBURN__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef enum {
+   pbOptTest,
+   pbOptVerify,
+   pbOptUnderrun,
+   pbOptEject,
+   pbOptGapless,
+   pbOptSpeed
+} PortBurn_Options;
+
+typedef enum {
+   pbTestOff = 0,
+   pbTestOn = 1,
+   pbTestDefault = pbTestOff
+} PortBurn_Test;
+
+typedef enum {
+   pbVerifyOff = 0,
+   pbVerifyOn = 1,
+   pbVerifyDefault = pbVerifyOff
+} PortBurn_Verify;
+
+typedef enum {
+   pbUnderrunOff = 0,
+   pbUnderrunOn = 1,
+   pbUnderrunDefault = pbUnderrunOff
+} PortBurn_Underrun;
+
+typedef enum {
+   pbEjectOff = 0,
+   pbEjectOn = 1,
+   pbEjectDefault = pbEjectOff
+} PortBurn_Eject;
+
+typedef enum {
+   pbGaplessOff = 0,
+   pbGapelessOn = 1,
+   pbGaplessDefault = pbGaplessOff
+} PortBurn_Gap;
+
+typedef enum {
+   pbSpeedDefault = -1,
+   pbSpeedMax = -1
+} PortBurn_Speed;
+
+#define pbMediaNotWritable    0x00
+#define pbMediaNone           0xff
+
+#define pbMediaAppendable     0x01
+#define pbMediaBlank          0x02
+#define pbMediaErasable       0x04
+#define pbMediaOverwritable   0x08
+
+typedef enum {
+   pbEraseQuick,
+   pbEraseFull
+} PortBurn_EraseTypes;
+
 typedef enum {
    pbSuccess = 0,
 
@@ -24,21 +85,28 @@ typedef enum {
    pbErrCannotEject = -1,
    pbErrCannotAccessDevice = -2,
    pbErrNoMediaInDrive = -3,
-   pbErrMediaIsNotBlankAndWritable = -4,
-   pbErrCannotReserveDevice = -5,
-   pbErrCannotPrepareToBurn = -6,
-   pbErrCannotStartBurning = -7,
-   pbErrCannotGetBurnStatus = -8,
-   pbErrBurnFailed = -9,
-   pbErrCannotCloseDevice = -10,
+   pbErrMediaIsNotWritable = -4,
+   pbErrMediaIsNotBlank = -5,
+   pbErrCannotReserveDevice = -6,
+   pbErrCannotPrepareToBurn = -7,
+   pbErrCannotStartBurning = -8,
+   pbErrCannotGetBurnStatus = -9,
+   pbErrBurnFailed = -10,
+   pbErrCannotCloseDevice = -11,
+
+   /* Erase errors */
+   pbErrCannotPrepareToErase = -201,
+   pbErrCannotStartErasing = -202,
+   pbErrCannotGetEraseStatus = -203,
+   pbErrEraseFailed = -204,
 
    /* Filesystem errors */
-   pbErrCannotCreateStagingDirectory = -101,
-   pbErrCannotCreateStagingFile = -102,
-   pbErrCannotWriteToStagingFile = -103,
-   pbErrCannotStageTrack = -104,
-   pbErrCannotAccessStagedFile = -105,
-   pbErrCannotUseStagedFileForBurning = -106,
+   pbErrCannotCreateStagingDirectory = -401,
+   pbErrCannotCreateStagingFile = -402,
+   pbErrCannotWriteToStagingFile = -403,
+   pbErrCannotStageTrack = -404,
+   pbErrCannotAccessStagedFile = -405,
+   pbErrCannotUseStagedFileForBurning = -406,
 
    /* API errors: if these happen, you are not using PortBurn correctly */
    pbErrNoHandle = -501,
@@ -47,8 +115,13 @@ typedef enum {
    pbErrAlreadyStagingOrBurning = -504,
    pbErrMustCallStartStaging = -505,
    pbErrMustCallStartTrack = -506,
-   pbErrNotCurrentlyBurning = -507
-   
+   pbErrNotCurrentlyBurning = -507,
+   pbErrNotCurrentlyErasing = -508,
+   pbErrInvalidOption = -509,
+   pbErrInvalidOptValue = -510,
+   pbErrDeviceAlreadyOpen = -511,
+   pbErrInvalidDeviceIndex = -512
+
 } PortBurn_Result;
 
 /* Returns a handle if burning capability is available on this system,
@@ -61,7 +134,7 @@ void PortBurn_Close(void *handle);
 /* Return a human-readable error string for the last operating system
    specific error (NOT human readable strings for the PortBurn error
    codes).  Caller should dispose of the returned string using free(). */
-const char *PortBurn_LastError(void *handle);
+char *PortBurn_LastError(void *handle);
 
 /* Get the number of devices capable of burning audio CDs.
    If the result is N, then calls to GetDeviceName and OpenDevice
@@ -86,7 +159,15 @@ int PortBurn_CloseDevice(void *handle);
 int PortBurn_EjectDevice(void *handle);
 
 /* Erase the media in the currently opened device */
-int PortBurn_EraseDevice(void *handle);
+int PortBurn_StartErasing(void *handle, int type);
+
+/* During erase, returns the fraction complete in the given
+   float pointer, from 0.0 to 1.0.  If this function returns
+   nonzero, the disc burning has failed and should be aborted.
+   If *out_fraction_complete is equal to 1.0, the burning is done;
+   you can call PortBurn_CloseDevice.
+*/
+int PortBurn_GetEraseStatus(void *handle, float *out_fraction_complete);
 
 /* This indicates you're ready to start staging audio data for the
    currently opened device.  At this point you are committing to
@@ -98,9 +179,8 @@ int PortBurn_EraseDevice(void *handle);
    not all implementations will make use of this directory. */
 int PortBurn_StartStaging(void *handle, const char *tmpdir);
 
-/* Start a new audio track.  Pass the name of the track, and the
-   length in CD Audio frames (each frame is 1/75.0 of a second, exactly). */
-int PortBurn_StartTrack(void *handle, const char *name, int frames);
+/* Start a new audio track.  Pass the name of the track */
+int PortBurn_StartTrack(void *handle, const char *name);
 
 /* Add one frame of audio to the current track.  The buffer must be exactly
    1176 elements long, containing interleaved left and right audio samples.
@@ -126,5 +206,21 @@ int PortBurn_CancelBurning(void *handle);
    you can call PortBurn_CloseDevice.
 */
 int PortBurn_GetStatus(void *handle, float *out_fraction_complete);
+
+/* Retrieve the current value of the specified option. */
+int PortBurn_GetOption(void *handle, int option, int *value);
+
+/* Changes the value of the specifed option. */
+int PortBurn_SetOption(void *handle, int option, int value);
+
+/* */
+int PortBurn_GetSupportedSpeeds(void *handle, int *cnt, int *option[]);
+
+/* */
+int PortBurn_GetMediaState(void *handle, int *state);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __PORTBURN__ */

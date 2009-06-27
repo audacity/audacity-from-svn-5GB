@@ -8,8 +8,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//#include <unistd.h>
+
+#if defined(_WIN32)
 #include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
 #include "portburn.h"
 
@@ -20,12 +24,11 @@ const int frame_size = 588;
 #define swap_uint16(x) \
        ((((x) >> 8) & 0xff) | (((x) & 0xff) << 8))
 
-void FailErr(int result) {
-   if (result != 0) {
-      printf("Failed: %d\n", result);
-      exit(-1);
+#define FailErr(result) \
+   if (result != 0) { \
+      printf("Failed: %d\n", result); \
+      goto end; \
    }
-}
 
 int main(int argc, char **argv) {
    FILE *fp;
@@ -48,7 +51,7 @@ int main(int argc, char **argv) {
 
    if (count == 0) {
       printf("No devices found!\n");
-      return -1;
+      goto end;
    }
 
    for(i = 0; i < count; i++) {
@@ -60,19 +63,44 @@ int main(int argc, char **argv) {
    printf("Using the first device\n");
 
    FailErr(PortBurn_OpenDevice(handle, 0));
-//   FailErr(PortBurn_EjectDevice(handle));
-//   FailErr(PortBurn_EraseDevice(handle));
 
    printf("Press enter when the device is ready\n");
    getchar();
 
+   int state;
+   FailErr(PortBurn_GetMediaState(handle, &state));
+   if (!(state & pbMediaBlank)) {
+      printf("Media is not blank...erase? (y=erase, anything else aborts)\n");
+      if (getchar() != 'y') {
+         printf("aborting...\n");
+         goto end;
+      }
+
+      FailErr(PortBurn_StartErasing(handle, pbEraseQuick));
+      float complete;
+      while (PortBurn_GetEraseStatus(handle, &complete) == pbSuccess) {
+         if (complete == 1.0f) {
+            break;
+         }
+#if defined(_WIN32)
+//         Sleep(1000);
+#else
+         sleep(1);
+#endif
+      }
+   }
+
    printf("Staging audio\n");
+#if defined(_WIN32)
    FailErr(PortBurn_StartStaging(handle, "c:\temp"));
+#else
+   FailErr(PortBurn_StartStaging(handle, "/tmp"));
+#endif
 
    fp = fopen(filename, "r");
    if (!fp) {
       printf("Couldn't open file: %s\n", filename);
-      return -1;
+      goto end;
    }
    fseek(fp, 44, SEEK_SET);
    fread(buffer, 2, file_frames * frame_size * 2, fp);
@@ -85,7 +113,7 @@ int main(int argc, char **argv) {
       }
    }
 
-   FailErr(PortBurn_StartTrack(handle, "80 loops", 80 * file_frames));
+   FailErr(PortBurn_StartTrack(handle, "80 loops"));
    for(j = 0; j < 80; j++) {
       for(i = 0; i < file_frames; i++) {
          FailErr(PortBurn_AddFrame(handle, &buffer[i * 2 * frame_size]));
@@ -93,7 +121,7 @@ int main(int argc, char **argv) {
    }
    FailErr(PortBurn_EndTrack(handle));
 
-   FailErr(PortBurn_StartTrack(handle, "100 loops", 100 * file_frames));
+   FailErr(PortBurn_StartTrack(handle, "100 loops"));
    for(j = 0; j < 100; j++) {
       for(i = 0; i < file_frames; i++) {
          FailErr(PortBurn_AddFrame(handle, &buffer[i * 2 * frame_size]));
@@ -114,18 +142,28 @@ int main(int argc, char **argv) {
 
       printf("Status: %.3f\n", frac);
 
-      if (frac == 1.0) {
+      if (frac == 1.0f) {
          printf("Completed!!!\n");
          break;
       }
+#if defined(_WIN32)
+      Sleep(1000);
+#else
+      sleep(1);
+#endif
    }
 
+end:
    printf("Cleaning up\n");
    PortBurn_CloseDevice(handle);
-   PortBurn_Close(handle);
+
+   if (handle) {
+      PortBurn_Close(handle);
+   }
 
    printf("Press enter to end\n");
    getchar();
+
 
    return 0;
 }
