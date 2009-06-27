@@ -17,7 +17,7 @@
 
 void *PortBurn_TempDirStaging(const char *temporary_directory);
 
-int PortBurn_StartStagingTrack(void *handle, const char *name, int frames);
+int PortBurn_StartStagingTrack(void *handle, const char *name, int raw);
 int PortBurn_AddStagingFrame(void *handle, short *buffer);
 int PortBurn_EndStagingTrack(void *handle);
 
