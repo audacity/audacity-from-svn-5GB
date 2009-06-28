@@ -177,7 +177,9 @@ void PipeServer()
             break;
          }
          printf("Server sending %s",buf);
-         fwrite(buf, 1, len, fromFifo);
+
+         // len - 1 because we do not send the null character
+         fwrite(buf, 1, len - 1, fromFifo);
       }
       fflush(fromFifo);
    }

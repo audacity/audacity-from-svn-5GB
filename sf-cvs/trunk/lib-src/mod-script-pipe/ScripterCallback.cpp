@@ -55,72 +55,82 @@ static tpExecScriptServerFunc pScriptServerFn=NULL;
 
 wxString Str2;
 wxArrayString aStr;
-int iSent;
+unsigned int currentLine;
+size_t currentPosition;
 
-// Do serv sends the command back to the script server function,
-// and creates a list of response lines to be sent.
-int DoSrv( char * pIn )
+// Send the received command to Audacity and build an array of response lines.
+// The response lines can be retrieved by calling DoSrvMore repeatedly.
+int DoSrv(char *pIn)
 {
    wxString Str1(pIn, wxConvISO8859_1);
    Str1.Replace( wxT("\r"), wxT(""));
    Str1.Replace( wxT("\n"), wxT(""));
    (*pScriptServerFn)( &Str1 , &Str2);
 
-   size_t l = Str2.Length();
-   Str2+= wxT('\n');
+   Str2 += wxT('\n');
+   size_t outputLength = Str2.Length();
    aStr.Clear();
-   iSent = -1;
    size_t iStart = 0;
    size_t i;
-   for(i=0;i<=l;i++)
+   for(i = 0; i < outputLength; ++i)
    {
       if( Str2[i] == wxT('\n') )
       {
-         aStr.Add( Str2.Mid( iStart, i-iStart) );
+         aStr.Add( Str2.Mid( iStart, i-iStart) + wxT('\n') );
          iStart = i+1;
       }
    }
-//   wxLogDebug("Added %i Strings", aStr.GetCount());
+
+   // The end of the responses is signalled by an empty line.
+   aStr.Add(wxT('\n'));
+
+   currentLine     = 0;
+   currentPosition = 0;
+
    return 1;
 }
 
-// DoSrvMore yields one script line at a time.
-int DoSrvMore( char * pOut, unsigned int nMax )
+size_t smin(size_t a, size_t b) { return a < b ? a : b; }
+
+// Write up to nMax characters of the prepared (by DoSrv) response lines.
+// Returns the number of characters sent, including null.
+// Zero returned if and only if there's nothing else to send.
+int DoSrvMore(char *pOut, size_t nMax)
 {
+   wxASSERT(currentLine >= 0);
+   wxASSERT(currentPosition >= 0);
 
-   wxString Temp;
-
-   if( aStr.GetCount() == 1 )
+   size_t totalLines = aStr.GetCount();
+   while (currentLine < totalLines)
    {
-      if( iSent != -1 )
+      wxString lineString    = aStr[currentLine];
+      size_t lineLength      = lineString.Length();
+      size_t charsLeftInLine = lineLength - currentPosition;
+
+      wxASSERT(charsLeftInLine >= 0);
+
+      if (charsLeftInLine == 0)
       {
-         return -1;
+         // Move to next line
+         ++currentLine;
+         currentPosition = 0;
       }
-      iSent++;
-      Temp = aStr[0];
+      else
+      {
+         // Write as much of the rest of the line as will fit in the buffer
+         size_t charsToWrite = smin(charsLeftInLine, nMax - 1);
+         memcpy(pOut, lineString.Right(charsToWrite).mb_str(), charsToWrite);
+         pOut[charsToWrite] = '\0';
+         currentPosition    += charsToWrite;
+         // Need to cast to prevent compiler warnings
+         int charsWritten = static_cast<int>(charsToWrite + 1);
+         // (Check cast was safe)
+         wxASSERT(static_cast<size_t>(charsWritten) == charsToWrite + 1);
+         return charsWritten;
+      }
    }
-   else if( iSent == -1 )
-   {
-      Temp = wxString::Format(wxT("Lines:%i"), aStr.GetCount());
-      iSent++;
-   }
-   else
-   {
-      if( iSent >= (int)aStr.GetCount() )
-         return -2;
-      Temp = aStr[iSent];
-      iSent++;
-   }
-   size_t l;
-   l = Temp.Length();
-   if( l>= (nMax-3) )
-      l=(nMax-4);
-   memcpy( pOut, Temp.mb_str(), l );
-   pOut[l] = '\n';
-   pOut[l+1] = '\0';
-   return l+2;
+   return 0;
 }
-
 
 int SCRIPT_PIPE_DLL_API RegScriptServerFunc( tpExecScriptServerFunc pFn )
 {
