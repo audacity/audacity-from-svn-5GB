@@ -32,7 +32,8 @@ sub startUp{
 sub finish{
    close TO_SRV;
    close FROM_SRV;
-   print "Done\n";
+   print "Done: press return to end.";
+   <>
 }
 
 sub doCommand{
@@ -45,35 +46,12 @@ sub doCommand{
    }
    print "Sent: $command\n";
 
-#   while(my $ttt = <FROM_SRV>) {
-#      $ttt = chomp($ttt)
-#      print "Recd:$ttt\n";
-#      last if ($ttt =~ /^$/);
-#   }
+   while(my $ttt = <FROM_SRV>) {
+      chomp($ttt);
+      last if ($ttt eq '');
+      print "Recd:'$ttt'\n";
+   }
 
-   my $ttt = <FROM_SRV>;
-   chomp($ttt);
-#   if( $ttt =~ /^Lines:(\d+)$/ )
-   if( $ttt =~ /Lines:(\d+)/ )
-   {
-#      This block of code deals with multi-line responses.
-#      When there is more than one line of repsonse,
-#      Audacity starts out by stating how many lines there
-#      will be.
-      $nLines = $1;
-      print "Number of lines is $nLines\n";
-      print "Recd: $ttt\n";
-      for($i=0;$i<$nLines;$i++)
-      {
-         $ttt = <FROM_SRV>;
-         chomp($ttt);
-         print "Recd: $i:$ttt\n";
-      }
-   }
-   else
-   {
-      print "Recd: $ttt\n";
-   }
    return $ttt;
 }
 
@@ -81,16 +59,16 @@ sub doCommand{
 # supported by the Batch system, and with the same syntax.
 # (Delay between sends so it's clearer what's going on)
 startUp();
-sleep(1);
+sleep(1.0);
 doCommand( 'Amplify: Ratio=0.1' );
-sleep(0.2);
+sleep(1.0);
 doCommand( 'Echo: Delay=1.0 Decay=0.5' );
-sleep(0.2);
+sleep(1.0);
 doCommand( 'Amplify: Ratio=2.0' );
-sleep(0.2);
+sleep(1.0);
 doCommand( 'Echo: Delay=1.0 Decay=0.5' );
-sleep(0.2);
+sleep(1.0);
 doCommand( 'ExportMp3' );
-sleep(0.2);
+sleep(1.0);
 doCommand( '<Not a valid command>');
 finish();
