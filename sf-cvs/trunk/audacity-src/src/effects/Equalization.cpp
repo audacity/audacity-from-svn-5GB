@@ -2158,7 +2158,7 @@ void EqualizationDialog::GraphicEQ(Envelope *env)
 void EqualizationDialog::spline(double x[], double y[], int n, double y2[])
 {
    int i;
-   double p, sig, u[NUMBER_OF_BANDS];
+   double p, sig, *u = new double[n];
 
    y2[0] = 0.;  //
    u[0] = 0.;   //'natural' boundary conditions
@@ -2173,6 +2173,8 @@ void EqualizationDialog::spline(double x[], double y[], int n, double y2[])
    y2[n-1] = 0.;
    for(i=n-2;i>=0;i--)
       y2[i] = y2[i]*y2[i+1] + u[i];
+
+   delete [] u;
 }
 
 double EqualizationDialog::splint(double x[], double y[], int n, double y2[], double xr)
