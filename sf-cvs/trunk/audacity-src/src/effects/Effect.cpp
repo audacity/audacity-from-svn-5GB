@@ -40,7 +40,8 @@ greater use in future.
 #include "../widgets/ProgressDialog.h"
 #include "../ondemand/ODManager.h"
 
-WX_DECLARE_HASH_MAP( int, int, wxIntegerHash, wxIntegerEqual, t2bHash );
+WX_DECLARE_VOIDPTR_HASH_MAP( bool, t2bHash );
+
 //
 // public static methods
 //
@@ -214,8 +215,8 @@ void Effect::CopyInputTracks(int trackType)
          //go to the project tracks and add all the tracks in the same group
          for( ; gTrack; gTrack = gIt.Next() ) {
             // only add if the track was not added before
-            if (added.find((int)gTrack) == added.end()) {
-               added[(int)gTrack]=true;
+            if (added.find(gTrack) == added.end()) {
+               added[gTrack]=true;
                Track *o = gTrack->Duplicate();
                mOutputTracks->Add(o);
                mIMap.Add(gTrack);
