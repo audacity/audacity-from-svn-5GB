@@ -318,6 +318,170 @@ void QuitAudacity()
    QuitAudacity(false);
 }
 
+#if defined(__WXGTK__) && defined(HAVE_GTK)
+
+///////////////////////////////////////////////////////////////////////////////
+// Provide the ability to receive notification from the session manager
+// when the user is logging out or shutting down.
+//
+// Most of this was taken from nsNativeAppSupportUnix.cpp from Mozilla.
+///////////////////////////////////////////////////////////////////////////////
+
+#include <dlfcn.h>
+#include <gtk/gtk.h>
+
+typedef struct _GnomeProgram GnomeProgram;
+typedef struct _GnomeModuleInfo GnomeModuleInfo;
+typedef struct _GnomeClient GnomeClient;
+
+typedef enum
+{
+  GNOME_SAVE_GLOBAL,
+  GNOME_SAVE_LOCAL,
+  GNOME_SAVE_BOTH
+} GnomeSaveStyle;
+
+typedef enum
+{
+  GNOME_INTERACT_NONE,
+  GNOME_INTERACT_ERRORS,
+  GNOME_INTERACT_ANY
+} GnomeInteractStyle;
+
+typedef enum
+{
+  GNOME_DIALOG_ERROR,
+  GNOME_DIALOG_NORMAL
+} GnomeDialogType;
+
+typedef GnomeProgram * (*_gnome_program_init_fn)(const char *,
+                                                 const char *,
+                                                 const GnomeModuleInfo *,
+                                                 int,
+                                                 char **,
+                                                 const char *,
+                                                 ...);
+typedef const GnomeModuleInfo * (*_libgnomeui_module_info_get_fn)();
+typedef GnomeClient * (*_gnome_master_client_fn)(void);
+typedef void (*GnomeInteractFunction)(GnomeClient *,
+                                      gint,
+                                      GnomeDialogType,
+                                      gpointer);
+typedef void (*_gnome_client_request_interaction_fn)(GnomeClient *,
+                                                     GnomeDialogType,
+                                                     GnomeInteractFunction,
+                                                     gpointer);
+typedef void (*_gnome_interaction_key_return_fn)(gint, gboolean);
+
+static _gnome_client_request_interaction_fn gnome_client_request_interaction;
+static _gnome_interaction_key_return_fn gnome_interaction_key_return;
+
+void interact_cb(GnomeClient *client,
+                 gint key,
+                 GnomeDialogType type,
+                 gpointer data)
+{
+   wxCloseEvent e(wxEVT_QUERY_END_SESSION, wxID_ANY);
+   e.SetEventObject(&wxGetApp());
+   e.SetCanVeto(true);
+
+   wxGetApp().ProcessEvent(e);
+
+   gnome_interaction_key_return(key, e.GetVeto());
+}
+
+gboolean save_yourself_cb(GnomeClient *client,
+                          gint phase,
+                          GnomeSaveStyle style,
+                          gboolean shutdown,
+                          GnomeInteractStyle interact,
+                          gboolean fast,
+                          gpointer user_data)
+{
+   if (!shutdown || interact != GNOME_INTERACT_ANY) {
+      return TRUE;
+   }
+
+   if (gAudacityProjects.IsEmpty()) {
+      return TRUE;
+   }
+
+   gnome_client_request_interaction(client,
+                                    GNOME_DIALOG_NORMAL,
+                                    interact_cb,
+                                    NULL);
+
+   return TRUE;
+}
+
+class GnomeShutdown
+{
+ public:
+   GnomeShutdown()
+   {
+      mArgv[0] = strdup("Audacity");
+
+      mGnomeui = dlopen("libgnomeui-2.so.0", RTLD_NOW);
+      if (!mGnomeui) {
+         return;
+      }
+
+      mGnome = dlopen("libgnome-2.so.0", RTLD_NOW);
+      if (!mGnome) {
+         return;
+      }
+
+      _gnome_program_init_fn gnome_program_init = (_gnome_program_init_fn)
+         dlsym(mGnome, "gnome_program_init");
+      _libgnomeui_module_info_get_fn libgnomeui_module_info_get = (_libgnomeui_module_info_get_fn)
+         dlsym(mGnomeui, "libgnomeui_module_info_get");
+      _gnome_master_client_fn gnome_master_client = (_gnome_master_client_fn)
+         dlsym(mGnomeui, "gnome_master_client");
+
+      gnome_client_request_interaction = (_gnome_client_request_interaction_fn)
+         dlsym(mGnomeui, "gnome_client_request_interaction");
+      gnome_interaction_key_return = (_gnome_interaction_key_return_fn)
+         dlsym(mGnomeui, "gnome_interaction_key_return");
+
+
+      if (!gnome_program_init || !libgnomeui_module_info_get) {
+         return;
+      }
+
+      gnome_program_init(mArgv[0],
+                         "1.0",
+                         libgnomeui_module_info_get(),
+                         1,
+                         mArgv,
+                         NULL);
+
+      mClient = gnome_master_client();
+      if (mClient == NULL) {
+         return;
+      }
+
+      g_signal_connect(mClient, "save-yourself", G_CALLBACK(save_yourself_cb), NULL);
+   }
+
+   virtual ~GnomeShutdown()
+   {
+      // Do not dlclose() the libraries here lest you want segfaults...
+
+      free(mArgv[0]);
+   }
+
+ private:
+
+   char *mArgv[1];
+   void *mGnomeui;
+   void *mGnome;
+   GnomeClient *mClient;
+};
+
+GnomeShutdown GnomeShutdownInstance;
+
+#endif
+
 #if defined(__WXMSW__)
 
 //
@@ -468,6 +632,8 @@ void AudacityApp::OnMacOpenFile(wxCommandEvent & event)
 typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
+   EVT_QUERY_END_SESSION(AudacityApp::OnEndSession)
+
    EVT_KEY_DOWN(AudacityApp::OnKeyDown)
    EVT_CHAR(AudacityApp::OnChar)
    EVT_KEY_UP(AudacityApp::OnKeyUp)
@@ -1315,6 +1481,26 @@ void AudacityApp::FindFilesInPathList(const wxString & pattern,
    for(size_t i = 0; i < pathList.GetCount(); i++) {
       f = pathList[i] + wxFILE_SEP_PATH + pattern;
       wxDir::GetAllFiles(f.GetPath(), &results, f.GetFullName(), flags);
+   }
+}
+
+void AudacityApp::OnEndSession(wxCloseEvent & event)
+{
+   bool force = !event.CanVeto();
+
+   // Try to close each open window.  If the user hits Cancel
+   // in a Save Changes dialog, don't continue.
+   if (!gAudacityProjects.IsEmpty()) {
+      while (gAudacityProjects.Count()) {
+         if (force) {
+            gAudacityProjects[0]->Close(true);
+         }
+         else if (!gAudacityProjects[0]->Close()) {
+            gIsQuitting = false;
+            event.Veto();
+            break;
+         }
+      }
    }
 }
 

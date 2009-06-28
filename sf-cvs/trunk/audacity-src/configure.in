@@ -539,6 +539,15 @@ case "${host_os}" in
       AFTERBUILD=""
       EXTRAINSTALLTARGETS="$EXTRAINSTALLTARGETS install-extra-data"
       EXTRAUNINSTALLTARGETS="$EXTRAUNINSTALLTARGETS uninstall-extra-data"
+
+      AC_SUBST(HAVE_GTK)
+      PKG_CHECK_MODULES(GTK, gtk+-2.0, have_gtk=yes, have_gtk=no)
+      if [[ "$have_gtk" = "yes" ]]
+      then
+         AC_DEFINE(HAVE_GTK, 1, [Define if GTK is available])
+         CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
+      fi
+   ;;
 esac
 
 dnl PortAudio configuration
