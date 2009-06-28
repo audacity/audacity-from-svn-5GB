@@ -107,6 +107,8 @@ class AudacityApp:public wxApp {
    void OnMenuPreferences(wxCommandEvent & event);
    void OnMenuExit(wxCommandEvent & event);
 
+   void OnEndSession(wxCloseEvent & event);
+
    void OnKeyDown(wxKeyEvent & event);
    void OnChar(wxKeyEvent & event);
    void OnKeyUp(wxKeyEvent & event);
