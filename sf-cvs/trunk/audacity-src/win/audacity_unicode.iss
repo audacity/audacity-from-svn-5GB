@@ -3,7 +3,7 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=audacity-1.3.8-win-unicode
+OutputBaseFilename=audacity-1.3.8a-win-unicode
 SetupIconFile=audacity.ico
 
 WizardImageFile=audacity_InnoWizardImage.bmp
@@ -12,14 +12,14 @@ WizardSmallImageFile=audacity_InnoWizardSmallImage.bmp
 SolidCompression=yes
 
 ; installer-related directives
-AppName=Audacity 1.3 Beta (Unicode) (Help Test)
-AppVerName=Audacity 1.3.8 (Unicode) (Help Test)
+AppName=Audacity 1.3 Alpha (Unicode)
+AppVerName=Audacity 1.3.8 (Unicode)
 AppPublisher=Audacity Team
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
 ChangesAssociations=yes
-DefaultDirName={pf}\Audacity 1.3 Beta (Unicode) (Help Test)
+DefaultDirName={pf}\Audacity 1.3 Alpha (Unicode)
 ; Always warn if dir exists, because we'll overwrite previous Audacity.
 DirExistsWarning=yes
 DisableProgramGroupPage=yes
@@ -88,12 +88,12 @@ Source: "..\win\unicode release\languages\*"; DestDir: "{app}\Languages\"; Flags
 Source: "..\win\unicode release\modules\*"; DestDir: "{app}\Modules\"; Flags: ignoreversion recursesubdirs skipifsourcedoesntexist
 Source: "..\win\unicode release\nyquist\*"; DestDir: "{app}\Nyquist\"; Flags: ignoreversion
 Source: "..\win\unicode release\plug-ins\*"; DestDir: "{app}\Plug-Ins\"; Excludes: "analyze.ny, fadein.ny, fadeout.ny, undcbias.ny"; Flags: ignoreversion
-Source: "..\help\manual\*"; DestDir: "{app}\Help\"; Flags: ignoreversion recursesubdirs
+; not yet in cvs:   Source: "..\help\manual\*"; DestDir: "{app}\Help\"; Flags: ignoreversion recursesubdirs
 
 
 [Icons]
-Name: "{commonprograms}\Audacity 1.3 Beta (Unicode)"; Filename: "{app}\audacity.exe"
-Name: "{userdesktop}\Audacity 1.3 Beta (Unicode)"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+Name: "{commonprograms}\Audacity 1.3 Alpha (Unicode)"; Filename: "{app}\audacity.exe"
+Name: "{userdesktop}\Audacity 1.3 Alpha (Unicode)"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
 
 [InstallDelete]
 ; Get rid of Audacity 1.0.0 stuff that's no longer used.
