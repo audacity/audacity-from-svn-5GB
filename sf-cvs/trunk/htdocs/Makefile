@@ -73,6 +73,7 @@ MSGFMT_ARGS=-fv
 .PHONY: revert-po
 revert-po:
 	-rm -f locale/*.po
+	-rm -f locale/.#*.po.*
 	cvs up locale/
 
 # Host / Project configuration
