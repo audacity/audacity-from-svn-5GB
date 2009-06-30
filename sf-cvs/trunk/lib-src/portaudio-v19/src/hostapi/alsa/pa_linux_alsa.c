@@ -1,5 +1,5 @@
 /*
- * $Id: pa_linux_alsa.c,v 1.11 2009-05-25 21:40:16 richardash1981 Exp $
+ * $Id: pa_linux_alsa.c,v 1.12 2009-06-30 04:52:59 llucius Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * ALSA implementation by Joshua Haberman and Arve Knudsen
@@ -134,6 +134,7 @@ typedef struct
     StreamDirection streamDir;
 
     snd_pcm_channel_area_t *channelAreas;  /* Needed for channel adaption */
+    int card;
 } PaAlsaStreamComponent;
 
 /* Implementation specific stream structure */
@@ -1161,6 +1162,7 @@ static PaError PaAlsaStreamComponent_Initialize( PaAlsaStreamComponent *self, Pa
 {
     PaError result = paNoError;
     PaSampleFormat userSampleFormat = params->sampleFormat, hostSampleFormat;
+    snd_pcm_info_t* pcmInfo;
     assert( params->channelCount > 0 );
 
     /* Make sure things have an initial value */
@@ -1181,6 +1183,9 @@ static PaError PaAlsaStreamComponent_Initialize( PaAlsaStreamComponent *self, Pa
     self->device = params->device;
 
     PA_ENSURE( AlsaOpen( &alsaApi->baseHostApiRep, params, streamDir, &self->pcm ) );
+
+    snd_pcm_info_alloca( &pcmInfo );
+    self->card = snd_pcm_info_get_card( pcmInfo );
     self->nfds = snd_pcm_poll_descriptors_count( self->pcm );
     hostSampleFormat = PaUtil_SelectClosestAvailableFormat( GetAvailableFormats( self->pcm ), userSampleFormat );
 
@@ -3646,9 +3651,7 @@ PaError PaAlsa_GetStreamInputCard(PaStream* s, int* card) {
     /* XXX: More descriptive error? */
     PA_UNLESS( stream->capture.pcm, paDeviceUnavailable );
 
-    snd_pcm_info_alloca( &pcmInfo );
-    PA_ENSURE( snd_pcm_info( stream->capture.pcm, pcmInfo ) );
-    *card = snd_pcm_info_get_card( pcmInfo );
+    *card = stream->capture.card;
 
 error:
     return result;
@@ -3664,9 +3667,7 @@ PaError PaAlsa_GetStreamOutputCard(PaStream* s, int* card) {
     /* XXX: More descriptive error? */
     PA_UNLESS( stream->playback.pcm, paDeviceUnavailable );
 
-    snd_pcm_info_alloca( &pcmInfo );
-    PA_ENSURE( snd_pcm_info( stream->playback.pcm, pcmInfo ) );
-    *card = snd_pcm_info_get_card( pcmInfo );
+    *card = stream->playback.card;
 
 error:
     return result;
