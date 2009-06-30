@@ -6,7 +6,7 @@ diff -ur -N --exclude CVS --exclude .svn --exclude Makefile.in --exclude Makefil
 +#define PA_UNIX_OSS_H
 +
 +/*
-+ * $Id: portaudio.patch,v 1.9 2008-12-31 15:44:56 richardash1981 Exp $
++ * $Id: portaudio.patch,v 1.10 2009-06-30 04:52:59 llucius Exp $
 + * PortAudio Portable Real-Time Audio Library
 + * OSS-specific extensions
 + *
@@ -58,7 +58,7 @@ diff -ur -N --exclude CVS --exclude .svn --exclude Makefile.in --exclude Makefil
 +#define PA_UNIX_OSS_H
 +
 +/*
-+ * $Id: portaudio.patch,v 1.9 2008-12-31 15:44:56 richardash1981 Exp $
++ * $Id: portaudio.patch,v 1.10 2009-06-30 04:52:59 llucius Exp $
 + * PortAudio Portable Real-Time Audio Library
 + * OSS-specific extensions
 + *
@@ -341,3 +341,61 @@ diff -ur -N --exclude CVS --exclude .svn --exclude Makefile.in --exclude Makefil
 +
 +   return NULL;
 +}
+diff -ur -N --exclude CVS --exclude .svn --exclude Makefile.in --exclude Makefile --exclude aclocal.m4 --exclude configure --exclude 'config.*' --exclude '*.patch' --exclude ltmain.sh --exclude autom4te.cache ../../../portaudio/src/hostapi/oss/pa_unix_oss.c portaudio-v19/src/hostapi/oss/pa_unix_oss.c
+--- ../../../portaudio/src/hostapi/alsa/pa_linux_alsa.c	2008-03-18 11:27:43.000000000 +0000
++++ portaudio-v19/src/hostapi/alsa/pa_linux_alsa.c	2008-03-18 11:39:39.000000000 +0000
+@@ -1,5 +1,5 @@
+ /*
+- * $Id: portaudio.patch,v 1.10 2009-06-30 04:52:59 llucius Exp $
++ * $Id: portaudio.patch,v 1.10 2009-06-30 04:52:59 llucius Exp $
+  * PortAudio Portable Real-Time Audio Library
+  * Latest Version at: http://www.portaudio.com
+  * ALSA implementation by Joshua Haberman and Arve Knudsen
+@@ -134,6 +134,7 @@
+     StreamDirection streamDir;
+ 
+     snd_pcm_channel_area_t *channelAreas;  /* Needed for channel adaption */
++    int card;
+ } PaAlsaStreamComponent;
+ 
+ /* Implementation specific stream structure */
+@@ -1161,6 +1162,7 @@
+ {
+     PaError result = paNoError;
+     PaSampleFormat userSampleFormat = params->sampleFormat, hostSampleFormat;
++    snd_pcm_info_t* pcmInfo;
+     assert( params->channelCount > 0 );
+ 
+     /* Make sure things have an initial value */
+@@ -1181,6 +1183,9 @@
+     self->device = params->device;
+ 
+     PA_ENSURE( AlsaOpen( &alsaApi->baseHostApiRep, params, streamDir, &self->pcm ) );
++
++    snd_pcm_info_alloca( &pcmInfo );
++    self->card = snd_pcm_info_get_card( pcmInfo );
+     self->nfds = snd_pcm_poll_descriptors_count( self->pcm );
+     hostSampleFormat = PaUtil_SelectClosestAvailableFormat( GetAvailableFormats( self->pcm ), userSampleFormat );
+ 
+@@ -3646,9 +3651,7 @@
+     /* XXX: More descriptive error? */
+     PA_UNLESS( stream->capture.pcm, paDeviceUnavailable );
+ 
+-    snd_pcm_info_alloca( &pcmInfo );
+-    PA_ENSURE( snd_pcm_info( stream->capture.pcm, pcmInfo ) );
+-    *card = snd_pcm_info_get_card( pcmInfo );
++    *card = stream->capture.card;
+ 
+ error:
+     return result;
+@@ -3664,9 +3667,7 @@
+     /* XXX: More descriptive error? */
+     PA_UNLESS( stream->playback.pcm, paDeviceUnavailable );
+ 
+-    snd_pcm_info_alloca( &pcmInfo );
+-    PA_ENSURE( snd_pcm_info( stream->playback.pcm, pcmInfo ) );
+-    *card = snd_pcm_info_get_card( pcmInfo );
++    *card = stream->playback.card;
+ 
+ error:
+     return result;
