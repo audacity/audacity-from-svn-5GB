@@ -522,7 +522,7 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
       wxString msg;
       msg.Printf(
          ok == eProgressSuccess ? _("Successfully exported the following %ld file(s).")
-           : (ok == eProgressFailed ? _("Something went wrong after exporting the folliwing %ld file(s).")
+           : (ok == eProgressFailed ? _("Something went wrong after exporting the following %ld file(s).")
              : (ok == eProgressCancelled ? _("Export canceled after exporting the following %ld file(s).") 
                : (ok == eProgressStopped ? _("Export stopped after exporting the following %ld file(s).")
                  : _("Something went really wrong after exporting the following %ld file(s).")
