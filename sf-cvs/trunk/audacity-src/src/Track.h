@@ -284,6 +284,20 @@ class AUDACITY_DLL_API TrackGroupIterator: public TrackListIterator
    bool mEndOfGroup;
 };
 
+//
+// TrackAndGroupIterator
+//
+// Based on TrackListIterator has methods to retrieve both tracks and groups
+//
+class AUDACITY_DLL_API TrackAndGroupIterator: public TrackListIterator
+{
+ public:
+   TrackAndGroupIterator(TrackList * val);
+
+   // Iterate functions
+   Track *NextGroup(bool skiplinked = false);
+};
+
 /** \brief TrackList is a flat linked list of tracks supporting Add,  Remove,
  * Clear, and Contains, plus serialization of the list of tracks.
  */

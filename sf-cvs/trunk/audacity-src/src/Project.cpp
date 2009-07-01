@@ -3355,14 +3355,16 @@ void AudacityProject::ClearClipboard()
 
 void AudacityProject::Clear()
 {
-   TrackListIterator iter(mTracks);
+   TrackAndGroupIterator iter(mTracks);
 
    Track *n = iter.First();
 
    while (n) {
-      if (n->GetSelected())
+      if (n->GetSelected()) {
          n->Clear(mViewInfo.sel0, mViewInfo.sel1);
-      n = iter.Next();
+         n = iter.NextGroup();
+      }
+      else n = iter.Next();
    }
 
    double seconds = mViewInfo.sel1 - mViewInfo.sel0;
