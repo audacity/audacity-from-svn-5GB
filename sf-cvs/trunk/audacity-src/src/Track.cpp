@@ -477,6 +477,33 @@ Track *TrackGroupIterator::Next(bool skiplinked)
    return t;
 }
 
+// TrackAndGroupIterator
+//
+// Based on TrackListIterator has methods to retrieve both tracks and groups
+//
+TrackAndGroupIterator::TrackAndGroupIterator(TrackList * val)
+:  TrackListIterator(val)
+{
+}
+
+Track *TrackAndGroupIterator::NextGroup(bool skiplinked)
+{
+   if (!cur)
+      return NULL;
+
+   Track* t = cur->t;
+
+   //skip the remaining tracks of the current group
+   for (; t != NULL && t->GetKind() != Track::Label; t = TrackListIterator::Next(skiplinked) );
+
+   if (t) {
+      //Reached final Label track, let's go to the next group
+      t = TrackListIterator::Next(skiplinked);
+   }
+
+   return t;
+}
+
 // TrackList
 //
 // The TrackList sends itself events whenever an update occurs to the list it
