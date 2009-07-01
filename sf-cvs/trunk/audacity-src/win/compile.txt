@@ -20,15 +20,12 @@ See also
 "http://audacityteam.org/wiki/index.php?title=Developing_On_Windows".
 ========================================================================
 
-Audacity releases are now built with Microsoft Visual C++ 8 
-(a.k.a Visual C++ 2005), generically known as "VC8".
+Audacity releases are now built with Microsoft Visual C++ 9 
+(a.k.a Visual C++ 2008) generically known as "VC9".
 
 For instructions on compiling Audacity under the Cygwin 
 UNIX Emulation Layer, see the "Compiling Audacity under 
 Cygwin" section below. This is not maintained.
-
-Previous Audacity releases have been built with Visual C++ 6.0, 
-with Service Pack 5. This is no longer actively supported. 
 
 Note that Audacity uses VC++'s multithreaded DLL runtime libraries. 
 If you have MSVC installed, these are in your PATH, but users to 
@@ -48,7 +45,7 @@ attempting to compile Audacity, or nothing will work!
 
 wxWidgets is available at "http://www.wxwidgets.org/".
 
-Audacity 1.3.8 requires wxWidgets 2.8.9.
+Audacity 1.3.8 requires wxWidgets 2.8.10.
 
 To build on Windows only, download the wxMSW package
 (installer or zip).
@@ -60,31 +57,23 @@ MSVC++ STEP 2:  Build wxWidgets
 When you have downloaded and installed wxWidgets, you must
 build it. 
 
-Audacity previously required different build settings than 
-are shipped with the wxWidgets projects, to use the 
-multithreaded statically-linked runtime libraries instead 
-of the multithreaded DLL runtime libraries. 
-We NO LONGER build that way, so this process is 
-now much simpler. To build previous versions, refer 
-to the corresponding previous version of this file. 
-
 For wxWidgets' instructions on compilation 
 (and details about static versus dll linkage), see 
-"C:\wxWidgets-2.8.9\docs\msw\install.txt". 
+"C:\wxWidgets-2.8.10\docs\msw\install.txt". 
 Note therein that wx_dll.dsw adds the dependencies to
 force the correct build order for DLLs, which wx.dsw
 does not. Because of this, wx_dll.dsw doesn't work for
 static libraries.
 
 
-1. Open "C:\wxWidgets-2.8.9\build\msw\wx_dll.dsw" with 
-   Visual Studio 2005 (for VC8). 
+1. Open "C:\wxWidgets-2.8.10\build\msw\wx_dll.dsw" with 
+   Visual Studio 2008 (for VC9). 
    Make sure to use wx_dll.dsw, not wx.dsw, because wx.dsw
    does not have the correct dependencies for the DLL builds.
    When you open wx_dll.dsw, Visual Studio will prompt whether
    to convert. Click "Yes To All". Next time you open a Visual
    Studio session, you can avoid this prompt by opening 
-   "C\wxWidgets-2.8.9\build\msw\wx_dll.sln" instead of wx_dll.dsw.
+   "C\wxWidgets-2.8.10\build\msw\wx_dll.sln" instead of wx_dll.dsw.
 
 
 2. If you want to use the accessibility features, we have modified a
@@ -95,9 +84,9 @@ static libraries.
    You may want to make backups of the wxWidgets originals of these, 
    in case you also build without these accessibility features. 
 
-   * Copy access.cpp to "C:\wxWidgets-2.8.9\src\msw\ole\". 
+   * Copy access.cpp to "C:\wxWidgets-2.8.10\src\msw\ole\". 
 
-   * Copy setup.h to "C:\wxWidgets-2.8.9\include\wx\msw\".
+   * Copy setup.h to "C:\wxWidgets-2.8.10\include\wx\msw\".
 
    Audacity releases are built with these accessibility features.
 
@@ -134,7 +123,7 @@ static libraries.
    wxbase28*_odbc*.* dbgrid.
  
 
-4. Note the directory "C\wxWidgets-2.8.9\lib\vc_dll". For each
+4. Note the directory "C\wxWidgets-2.8.10\lib\vc_dll". For each
    build of WxWidgets you made, you will need from here five DLLs
    appropriate to that build to go in the corresponding Audacity
    build directory. The DLLs required are noted at "Provide access
@@ -157,9 +146,9 @@ MSVC++ STEP 4:  Set wxWidgets location for Audacity
 Before you can start the build process, you must update the
 project settings to tell Visual C++ where to find wxWidgets.
 There are three settings that need changing:
-    1.  Include Directory (e.g., "C:\wxWidgets-2.8.9\include")
-    2.  Resource Directory (e.g., "C:\wxWidgets-2.8.9\include")
-    3.  Library Directory (e.g., "C:\wxWidgets-2.8.9\lib")
+    1.  Include Directory (e.g., "C:\wxWidgets-2.8.10\include")
+    2.  Resource Directory (e.g., "C:\wxWidgets-2.8.10\include")
+    3.  Library Directory (e.g., "C:\wxWidgets-2.8.10\lib")
 
 Fortunately, this is parameterized, using a Windows system 
 environment variable. There are various ways to set these, so 
@@ -168,7 +157,7 @@ environment variable WXWIN, set to the top-level directory
 where you installed wxWidgets. For example, 
 in your "autoexec.bat" file, you might have a line:
 
-   set WXWIN=C:\wxWidgets-2.8.9
+   set WXWIN=C:\wxWidgets-2.8.10
 
 Note that you don't want a trailing backslash on that.
 
@@ -181,7 +170,7 @@ In the Audacity project file, there are declarations like
 
    $(WXWIN)\include
 
-that get interpreted as, e.g., "C:\wxWidgets-2.8.9\include".
+that get interpreted as, e.g., "C:\wxWidgets-2.8.10\include".
 
 Once you have set the WXWIN environment variable correctly, 
 the Audacity project file's declarations will do the rest.
@@ -270,7 +259,7 @@ Each Audacity executable needs access to five specific wxWidgets
 DLLs from those you built in "MSVC++ STEP 2:  Build wxWidgets" 
 above. You can copy them to your Windows PATH, or more simply,
 to the same directory as the executable. The ones required are at 
-"C:\wxWidgets-2.8.9\lib\vc_dll":
+"C:\wxWidgets-2.8.10\lib\vc_dll":
 
 	wxbase28*_net_vc_custom.dll
 	wxbase28*_vc_custom.dll
@@ -319,7 +308,7 @@ process you get a bunch of error messages like this:
 
 This is usually caused by conflicting runtime library settings. 
 Audacity is now linked with DLL linkage. 
-In VC8, select the Audacity project. Then 
+In VC9, select the Audacity project. Then 
    Project > Properties > C/C++ > Code Generation > Runtime Library 
 should be 
    "Multi-threaded Debug DLL (/MDd)" for Debug or Unicode Debug builds, 
@@ -417,7 +406,7 @@ Cygwin STEP 1:  Installing Cygwin
 Cygwin STEP 2:  Download and install wxWidgets
 ---------------------------------------
 
-1.  Go to http://www.wxwidgets.org/ and download wxWidgets v2.8.9 or greater.  Make
+1.  Go to http://www.wxwidgets.org/ and download wxWidgets v2.8.10 or greater.  Make
 sure you download the "wxAll" package that contains source code for all ports.  The
 Win32 port will not work for compiling audacity, since it was compiled and installed
 to work with MS Visual C++.
