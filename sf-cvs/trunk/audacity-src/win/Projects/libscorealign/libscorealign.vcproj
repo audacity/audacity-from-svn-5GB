@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="libscorealign"
 	ProjectGUID="{C0FE933B-4AF7-4ACD-95E8-ACD3A73F1400}"
 	RootNamespace="libscorealign"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
