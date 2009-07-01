@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="libmad"
 	ProjectGUID="{A52BBEA5-8B02-4147-8734-5D9BBF4D1177}"
 	RootNamespace="libmad"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="expat"
 	ProjectGUID="{38C2C6B1-FBF8-4C5C-BB90-63F996083F56}"
 	RootNamespace="expat"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
