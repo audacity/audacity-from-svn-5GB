@@ -159,7 +159,7 @@ portaudio-v19
 -------------
 http://portaudio.com/
 cross-platform audio I/O library version 19, used for 1.3.2 onwards releases
-Version in audacity cvs: 31st December 2008 SVN snapshot (r1396)
+Version in audacity cvs: 1st July 2009 SVN snapshot (r1416)
 Patches:
 ../portmixer/portaudio.patch	add features needed to make portmixer work.
 		Integration by upstream in progress. Will need updating as upstream
