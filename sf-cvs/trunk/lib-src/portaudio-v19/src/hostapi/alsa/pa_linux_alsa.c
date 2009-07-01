@@ -1,5 +1,5 @@
 /*
- * $Id: pa_linux_alsa.c,v 1.12 2009-06-30 04:52:59 llucius Exp $
+ * $Id: pa_linux_alsa.c,v 1.13 2009-07-01 19:27:59 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * ALSA implementation by Joshua Haberman and Arve Knudsen
@@ -2008,11 +2008,11 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
 
     /* Ok, buffer processor is initialized, now we can deduce it's latency */
     if( numInputChannels > 0 )
-        stream->streamRepresentation.streamInfo.inputLatency = inputLatency + PaUtil_GetBufferProcessorInputLatency(
-                &stream->bufferProcessor );
+        stream->streamRepresentation.streamInfo.inputLatency = inputLatency + (PaTime)(
+                PaUtil_GetBufferProcessorInputLatency( &stream->bufferProcessor ) / sampleRate);
     if( numOutputChannels > 0 )
-        stream->streamRepresentation.streamInfo.outputLatency = outputLatency + PaUtil_GetBufferProcessorOutputLatency(
-                &stream->bufferProcessor );
+        stream->streamRepresentation.streamInfo.outputLatency = outputLatency + (PaTime)(
+                PaUtil_GetBufferProcessorOutputLatency( &stream->bufferProcessor ) / sampleRate);
 
     *s = (PaStream*)stream;
 

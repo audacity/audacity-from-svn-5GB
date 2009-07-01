@@ -1,5 +1,5 @@
 /*
- * $Id: pa_asio.cpp,v 1.9 2009-05-25 21:40:16 richardash1981 Exp $
+ * $Id: pa_asio.cpp,v 1.10 2009-07-01 19:28:02 richardash1981 Exp $
  * Portable Audio I/O Library for ASIO Drivers
  *
  * Author: Stephane Letz
@@ -1182,7 +1182,6 @@ PaError PaAsio_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex
                 || strcmp (names[i],"ASIO Multimedia Driver")          == 0
                 || strncmp(names[i],"Premiere",8)                      == 0   //"Premiere Elements Windows Sound 1.0"
                 || strncmp(names[i],"Adobe",5)                         == 0   //"Adobe Default Windows Sound 1.5"
-                || strncmp(names[i],"ReaRoute ASIO",13)                == 0   //Reaper www.reaper.fm <- fix your stuff man.
                )
             {
                 PA_DEBUG(("BLACKLISTED!!!\n"));
