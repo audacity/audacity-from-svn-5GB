@@ -492,6 +492,12 @@ Track *TrackAndGroupIterator::NextGroup(bool skiplinked)
       return NULL;
 
    Track* t = cur->t;
+   
+   TrackGroupIterator git(l);
+   if (git.First(t) == NULL) {
+      //not part of a group
+      return TrackListIterator::Next(skiplinked);
+   }
 
    //skip the remaining tracks of the current group
    for (; t != NULL && t->GetKind() != Track::Label; t = TrackListIterator::Next(skiplinked) );
