@@ -6,6 +6,10 @@ directory may be released under a different license
 README.txt file, and for specific details, see the license
 information inside each subdirectory of lib-src.
 
+Documentation is distributed under the Creative Commoms license.
+Please see here for that:
+http://creativecommons.org/licenses/by/3.0/legalcode
+
 The full text of the GNU GPL follows:
 
 		    GNU GENERAL PUBLIC LICENSE
