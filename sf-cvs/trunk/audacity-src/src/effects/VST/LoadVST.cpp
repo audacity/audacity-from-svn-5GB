@@ -244,13 +244,13 @@ void LoadVSTPlugins()
 
    // Setup the default VST path.
    dpath[0] = '\0';
-   ExpandEnvironmentStrings(_T("%ProgramFiles%\\Steinberg\\VSTPlugins"),
+   ExpandEnvironmentStrings(wxT("%ProgramFiles%\\Steinberg\\VSTPlugins"),
                             dpath,
                             WXSIZEOF(dpath));
 
    // Check registry for the real path
-   if (SHRegGetUSValue(_T("Software\\VST"),
-                          _T("VSTPluginsPath"),
+   if (SHRegGetUSValue(wxT("Software\\VST"),
+                          wxT("VSTPluginsPath"),
                           NULL,
                           tpath,
                           &len,
