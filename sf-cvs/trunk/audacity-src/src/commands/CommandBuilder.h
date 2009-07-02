@@ -13,9 +13,17 @@
 
 *//*******************************************************************/
 
+#ifndef __COMMANDBUILDER__
+#define __COMMANDBUILDER__
+
 #include <wx/string.h>
+#include <wx/variant.h>
+#include <utility>
+#include <map>
+#include "CommandMisc.h"
 
 class Command;
+class Validator;
 
 // CommandBuilder has the task of validating and interpreting a command string.
 // If the string represents a valid command, it builds the command object.
@@ -36,7 +44,11 @@ class CommandBuilder
       bool WasValid();
       Command *GetCommand();
       const wxString &GetErrorMessage();
+
+      static bool LookUpCommand(wxString name, std::pair<Command*,ParamMap> &result);
+      static ParamMap GetSignature(wxString name);
 };
+#endif /* End of include guard: __COMMANDBUILDER__ */
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

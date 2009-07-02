@@ -114,6 +114,7 @@ OBJS = \
 	commands/CommandManager.o \
 	commands/Keyboard.o \
 	commands/ResponseQueue.o \
+	commands/ScreenshotCommand.o \
 	commands/ScriptCommandRelay.o \
 	effects/Effect.o \
 	effects/Generator.o \

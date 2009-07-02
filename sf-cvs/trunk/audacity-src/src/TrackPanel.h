@@ -577,7 +577,7 @@ private:
  private:
 
    // The screenshot class needs to access internals
-   friend class ScreenFrame;
+   friend class ScreenshotCommand;
 
  public:
    wxSize vrulerSize;

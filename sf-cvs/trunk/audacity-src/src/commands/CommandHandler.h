@@ -17,15 +17,11 @@
 #ifndef __COMMANDHANDLER__
 #define __COMMANDHANDLER__
 
-//#include <wx/event.h>
-
 #include "../AudacityApp.h"
 class AudacityProject;
 class AppCommandEvent;
-class Command;
 class CommandExecutionContext;
 
-//class CommandHandler : public wxEvtHandler
 class CommandHandler
 {
    private:
@@ -41,10 +37,6 @@ class CommandHandler
       // Whenever a command is recieved, process it.
       void OnReceiveCommand(AppCommandEvent &event);
 
-/*
-   protected:
-      DECLARE_EVENT_TABLE()
-*/
 };
 
 #endif /* End of include guard: __COMMANDHANDLER__ */
