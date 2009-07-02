@@ -326,6 +326,9 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
          // Thinklabs has lower default for Spectrum MaxFreq & bigger FFTSize than standard Audacity
          defaultMaxFreq = 1000;
          defaultFFTSize = 4096;
+      #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+         defaultMaxFreq = 3000;
+         defaultFFTSize = 4096;
       #endif
       int maxFreq = gPrefs->Read("/Spectrum/MaxFreq", defaultMaxFreq);
       int windowSize = gPrefs->Read("/Spectrum/FFTSize", defaultFFTSize);

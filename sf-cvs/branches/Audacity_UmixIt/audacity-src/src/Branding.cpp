@@ -218,10 +218,6 @@ static void Bevel2OnWhite(wxDC & dc, bool up, wxRect & r) {
                         &buttonImageUp, &buttonImageUp, 
                         &buttonImageUp, &buttonImageUp, //v other images?
                         false); // momentary button
-         #if (AUDACITY_BRANDING == BRAND_THINKLABS)
-            if (mMinLeftSectionWidth < buttonImageUp.GetWidth() + kDoubleInset)
-               mMinLeftSectionWidth = buttonImageUp.GetWidth() + kDoubleInset;
-         #endif
          if (mMinHeight < buttonImageUp.GetHeight() + kInset) // height plus bevel
             mMinHeight = buttonImageUp.GetHeight() + kInset;
          mProjectLogo_origWidth = buttonImageUp.GetWidth();
