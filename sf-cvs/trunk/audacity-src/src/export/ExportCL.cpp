@@ -120,7 +120,7 @@ static void Drain(wxInputStream *s, wxString *o)
       char buffer[4096];
 
       s->Read(buffer, WXSIZEOF(buffer) - 1);
-      buffer[s->LastRead()] = _T('\0');
+      buffer[s->LastRead()] = wxT('\0');
       *o += LAT1CTOWX(buffer);
    }
 }

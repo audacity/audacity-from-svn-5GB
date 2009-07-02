@@ -4,7 +4,7 @@
 // Author:      Robert Roebling
 // Modified by: Leland Lucius
 // Created:     12/12/98
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.2 2008-05-24 02:57:39 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.3 2009-07-02 22:11:18 vjohnson Exp $
 // Copyright:   (c) Robert Roebling
 // Licence:     wxWindows licence
 //
@@ -255,25 +255,25 @@ void FileData::ReadData()
    // __WXWINCE__
    
 #if defined(__UNIX__)
-   m_permissions.Printf(_T("%c%c%c%c%c%c%c%c%c"),
-                        buff.st_mode & wxS_IRUSR ? _T('r') : _T('-'),
-                        buff.st_mode & wxS_IWUSR ? _T('w') : _T('-'),
-                        buff.st_mode & wxS_IXUSR ? _T('x') : _T('-'),
-                        buff.st_mode & wxS_IRGRP ? _T('r') : _T('-'),
-                        buff.st_mode & wxS_IWGRP ? _T('w') : _T('-'),
-                        buff.st_mode & wxS_IXGRP ? _T('x') : _T('-'),
-                        buff.st_mode & wxS_IROTH ? _T('r') : _T('-'),
-                        buff.st_mode & wxS_IWOTH ? _T('w') : _T('-'),
-                        buff.st_mode & wxS_IXOTH ? _T('x') : _T('-'));
+   m_permissions.Printf(wxT("%c%c%c%c%c%c%c%c%c"),
+                        buff.st_mode & wxS_IRUSR ? wxT('r') : wxT('-'),
+                        buff.st_mode & wxS_IWUSR ? wxT('w') : wxT('-'),
+                        buff.st_mode & wxS_IXUSR ? wxT('x') : wxT('-'),
+                        buff.st_mode & wxS_IRGRP ? wxT('r') : wxT('-'),
+                        buff.st_mode & wxS_IWGRP ? wxT('w') : wxT('-'),
+                        buff.st_mode & wxS_IXGRP ? wxT('x') : wxT('-'),
+                        buff.st_mode & wxS_IROTH ? wxT('r') : wxT('-'),
+                        buff.st_mode & wxS_IWOTH ? wxT('w') : wxT('-'),
+                        buff.st_mode & wxS_IXOTH ? wxT('x') : wxT('-'));
 #elif defined(__WIN32__)
    DWORD attribs = GetFileAttributes(m_filePath.fn_str());
    if (attribs != (DWORD)-1)
    {
-      m_permissions.Printf(_T("%c%c%c%c"),
-                           attribs & FILE_ATTRIBUTE_ARCHIVE  ? _T('A') : _T(' '),
-                           attribs & FILE_ATTRIBUTE_READONLY ? _T('R') : _T(' '),
-                           attribs & FILE_ATTRIBUTE_HIDDEN   ? _T('H') : _T(' '),
-                           attribs & FILE_ATTRIBUTE_SYSTEM   ? _T('S') : _T(' '));
+      m_permissions.Printf(wxT("%c%c%c%c"),
+                           attribs & FILE_ATTRIBUTE_ARCHIVE  ? wxT('A') : wxT(' '),
+                           attribs & FILE_ATTRIBUTE_READONLY ? wxT('R') : wxT(' '),
+                           attribs & FILE_ATTRIBUTE_HIDDEN   ? wxT('H') : wxT(' '),
+                           attribs & FILE_ATTRIBUTE_SYSTEM   ? wxT('S') : wxT(' '));
    }
 #endif
    
@@ -347,7 +347,7 @@ wxString FileData::GetEntry( fileListFieldType num ) const
          
       case FileList_Size:
          if (!IsDir() && !IsLink() && !IsDrive())
-            s.Printf(_T("%ld"), m_size);
+            s.Printf(wxT("%ld"), m_size);
          break;
          
          case FileList_Type:
@@ -366,7 +366,7 @@ wxString FileData::GetEntry( fileListFieldType num ) const
 #endif // defined(__UNIX__) || defined(__WIN32__)
          
          default:
-         wxFAIL_MSG( _T("unexpected field in FileData::GetEntry()") );
+         wxFAIL_MSG( wxT("unexpected field in FileData::GetEntry()") );
    }
    
    return s;
@@ -391,7 +391,7 @@ void FileData::MakeItem( wxListItem &item )
    
    if (IsLink())
    {
-      wxColour dg = wxTheColourDatabase->Find( _T("MEDIUM GREY") );
+      wxColour dg = wxTheColourDatabase->Find( wxT("MEDIUM GREY") );
       if ( dg.Ok() )
          item.SetTextColour(dg);
    }
@@ -1215,7 +1215,7 @@ void FileDialog::DoSetFilterIndex(int filterindex)
    if ( str->Left(2) == wxT("*.") )
    {
       m_filterExtension = str->Mid(1);
-      if (m_filterExtension == _T(".*"))
+      if (m_filterExtension == wxT(".*"))
          m_filterExtension.clear();
    }
    else

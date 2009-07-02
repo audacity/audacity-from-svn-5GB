@@ -244,7 +244,7 @@ void UploadDialog::OnConnect(wxCommandEvent & WXUNUSED(event))
         system = ftp->GetLastResult();
         system = system.Lower();
 
-        //wxMessageBox(system, _T("FTP Status"), wxOK | wxICON_INFORMATION, this);
+        //wxMessageBox(system, wxT("FTP Status"), wxOK | wxICON_INFORMATION, this);
 
         if (system.Find(wxT("unix"))==-1 && system.Find(wxT("windows"))==-1)
         {
@@ -901,7 +901,7 @@ void UploadDialog::DownloadFile (wxString src, wxString dest)
                     int updateResult = mProgress->Update(count, iterations, src);
                     if (updateResult != eProgressSuccess)
                     {
-                        //wxMessageBox("ABORT", _T("FTP Status"), wxOK | wxICON_INFORMATION, NULL);
+                        //wxMessageBox("ABORT", wxT("FTP Status"), wxOK | wxICON_INFORMATION, NULL);
 
                         abort = true;
                         break;
@@ -1309,7 +1309,7 @@ void UploadDialog::OnDeleteSite (wxCommandEvent &event)
     wxString debug;
 
 //  debug.Printf("%d", index);
-//  wxMessageBox(debug, _T("FTP Status"), wxOK | wxICON_INFORMATION, this);
+//  wxMessageBox(debug, wxT("FTP Status"), wxOK | wxICON_INFORMATION, this);
     
     wxFileName fn( FileNames::DataDir(), wxT("connections.ini") );
 
@@ -1353,7 +1353,7 @@ void UploadDialog::OnSelectSite (wxListEvent &event)
 
     //wxString debug;
     //debug.Printf("ftpIndex %d", ftpIndex);
-    //wxMessageBox(debug, _T("FTP Status"), wxOK | wxICON_INFORMATION, NULL);
+    //wxMessageBox(debug, wxT("FTP Status"), wxOK | wxICON_INFORMATION, NULL);
 
 
 }
@@ -1462,7 +1462,7 @@ void UploadDialog::UpdateSiteList (void)
 
     while (count < ftpList->GetCount())
     {
-        //wxMessageBox(ftpList->Item(count), _T("Error"), wxOK, NULL);
+        //wxMessageBox(ftpList->Item(count), wxT("Error"), wxOK, NULL);
 
         tmp = siteList->InsertItem(insert_count, ftpList->Item(count), 0);
         siteList->SetItemData(tmp, insert_count);
