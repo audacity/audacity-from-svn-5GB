@@ -55,6 +55,9 @@ PrefsPanel(parent)
       // Thinklabs has lower default for Spectrum MaxFreq & bigger FFTSize than standard Audacity
       defaultFFTSize = 4096L;
       defaultMaxFreq = 1000L;
+   #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      defaultMaxFreq = 3000L;
+      defaultFFTSize = 4096L;
    #endif
 
    int fftSize = gPrefs->Read("/Spectrum/FFTSize", defaultFFTSize);

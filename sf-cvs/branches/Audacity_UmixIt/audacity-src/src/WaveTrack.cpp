@@ -144,11 +144,7 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
 WaveTrack::WaveTrack(WaveTrack &orig):
    Track(orig)
 {
-   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      this->SetDisplay(WaveformAndSpectrumDisplay); // Move to GUIWaveTrack
-   #else
-      this->SetDisplay(WaveformDisplay); // Move to GUIWaveTrack
-   #endif
+   this->SetDisplay(WaveformDisplay); // Move to GUIWaveTrack
 
    Init(orig);
 
@@ -662,6 +658,9 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
       // Thinklabs has lower default for Spectrum MaxFreq & bigger FFTSize than standard Audacity
       defaultMaxFreq = 1000;
+      defaultFFTSize = 4096;
+   #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+      defaultMaxFreq = 3000;
       defaultFFTSize = 4096;
    #endif
    int windowSize = gPrefs->Read("/Spectrum/FFTSize", defaultFFTSize);
