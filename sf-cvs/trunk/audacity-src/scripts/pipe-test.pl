@@ -55,20 +55,40 @@ sub doCommand{
    return $ttt;
 }
 
-# Send some test commands - commands currently allowed are precisely those
-# supported by the Batch system, and with the same syntax.
+# Send some test commands
 # (Delay between sends so it's clearer what's going on)
+$delay = 1.0;
+
+# Fill in the path where you want the screenshots to appear
+$filePath = "/home/dan/Temp";
+
 startUp();
-sleep(1.0);
-doCommand( 'Amplify: Ratio=0.1' );
-sleep(1.0);
-doCommand( 'Echo: Delay=1.0 Decay=0.5' );
-sleep(1.0);
-doCommand( 'Amplify: Ratio=2.0' );
-sleep(1.0);
-doCommand( 'Echo: Delay=1.0 Decay=0.5' );
-sleep(1.0);
-doCommand( 'ExportMp3' );
-sleep(1.0);
-doCommand( '<Not a valid command>');
+sleep($delay);
+doCommand( "screenshot: FilePath=$filePath CaptureMode=window Background=None" );
+sleep($delay);
+doCommand( "screenshot: FilePath=$filePath CaptureMode=fullwindow Background=Blue" );
+sleep($delay);
+doCommand( "screenshot: FilePath=$filePath CaptureMode=windowplus Background=White" );
+sleep($delay);
+doCommand( "screenshot: FilePath=$filePath CaptureMode=fullscreen Background=None" );
+sleep($delay);
+doCommand( "screenshot: FilePath=$filePath CaptureMode=mixer Background=None" );
+sleep($delay);
+doCommand( "screenshot: FilePath=$filePath CaptureMode=device Background=None" );
+sleep($delay);
+doCommand( "screenshot: FilePath=$filePath CaptureMode=ruler Background=None" );
+sleep($delay);
+doCommand( "screenshot: FilePath=$filePath CaptureMode=firsttrack Background=None" );
+#sleep($delay);
+#doCommand( "Amplify: Ratio=0.1" );
+#sleep($delay);
+#doCommand( "Echo: Delay=1.0 Decay=0.5" );
+#sleep($delay);
+#doCommand( "Amplify: Ratio=2.0" );
+#sleep($delay);
+#doCommand( "Echo: Delay=1.0 Decay=0.5" );
+#sleep($delay);
+#doCommand( "ExportMp3" );
+#sleep($delay);
+#doCommand( "<Not a valid command>");
 finish();

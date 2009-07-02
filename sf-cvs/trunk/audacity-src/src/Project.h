@@ -473,7 +473,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
  private:
 
    // The screenshot class needs to access internals
-   friend class ScreenFrame;
+   friend class ScreenshotCommand;
 
  public:
     DECLARE_EVENT_TABLE()

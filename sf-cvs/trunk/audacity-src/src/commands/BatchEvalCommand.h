@@ -28,20 +28,30 @@ to that system.
 
 class BatchEvalCommand : public Command
 {
-private:
-   wxString mCmdName;
-   wxString mCmdParams;
-
 public:
-   BatchEvalCommand(const wxString &cmdName, const wxString &cmdParams) : Command(wxT("BatchEvalCommand")), mCmdName(cmdName), mCmdParams(cmdParams) {}
-   ~BatchEvalCommand() {}
+   BatchEvalCommand()
+      : Command(wxT("BatchEvalCommand"))
+   { }
+   ~BatchEvalCommand() { }
 
    virtual bool Apply(CommandExecutionContext context)
    {
+      wxString cmdName = GetString(wxT("CommandName"));
+      wxString cmdParams = GetString(wxT("ParamString"));
+
       // Create a Batch that will have just one command in it...
       BatchCommands Batch;
 
-      return Batch.ApplyCommand(mCmdName, mCmdParams);
+      return Batch.ApplyCommand(cmdName, cmdParams);
+   }
+
+   static ParamMap GetSignature()
+   {
+      ParamMap signature;
+      Validator paramValidator;
+      signature[wxT("ParamString")] =
+         std::pair<wxVariant, Validator>(wxT(""), paramValidator);
+      return signature;
    }
 };
 

@@ -23,7 +23,9 @@
 #ifndef __DEBUGPRINTCOMMAND__
 #define __DEBUGPRINTCOMMAND__
 
+#include <wx/msgout.h>
 #include "Command.h"
+
 
 class DebugPrintCommand : public Command
 {
@@ -31,7 +33,9 @@ private:
    wxString mMessage;
 
 public:
-   DebugPrintCommand(const wxString &message) : Command(wxT("DebugPrintCommand")), mMessage(message) {}
+   DebugPrintCommand(const wxString &message)
+      : Command(wxT("DebugPrintCommand")),
+      mMessage(message) { }
    ~DebugPrintCommand() {}
 
    virtual bool Apply(CommandExecutionContext context)
@@ -39,6 +43,15 @@ public:
       wxMessageOutputDebug().Printf(wxT("In DebugPrintCommand::Apply"));
       wxMessageOutputDebug().Printf(mMessage);
       return true;
+   }
+
+   static ParamMap GetSignature()
+   {
+      ParamMap signature;
+      Validator stringValidator;
+      signature[wxT("DebugString")] =
+         std::pair<wxVariant, Validator>(wxT(""), stringValidator);
+      return signature;
    }
 };
 

@@ -28,6 +28,8 @@ system by constructing BatchCommandEval objects.
 #include <wx/wx.h>
 #include "DebugPrintCommand.h"
 #include "BatchEvalCommand.h"
+#include "ScreenshotCommand.h"
+#include "Shuttle.h"
 
 CommandBuilder::CommandBuilder(const wxString &cmdString)
 : mValid(false), mCommand(NULL)
@@ -54,36 +56,79 @@ Command *CommandBuilder::GetCommand()
    return mCommand;
 }
 
+// Short-term solution!
+bool CommandBuilder::LookUpCommand(wxString name, std::pair<Command*,ParamMap> &result)
+{
+   if (name.IsSameAs(wxT("screenshot")))
+   {
+      CommandOutputTarget *output
+         = new CommandOutputTarget(new NullProgressTarget(),
+                                   new MessageBoxTarget(),
+                                   new MessageBoxTarget());
+      result = std::pair<Command*,ParamMap>(new ScreenshotCommand(output),
+                                            ScreenshotCommand::GetSignature());
+      return true;
+   } // Other cases...
+   return false;
+}
+
+// Short-term solution!
+ParamMap CommandBuilder::GetSignature(wxString name)
+{
+   if(name.IsSameAs(wxT("screenshot")))
+   {
+      return ScreenshotCommand::GetSignature();
+   }
+   return Command::GetSignature();
+}
+
 void CommandBuilder::BuildCommand(const wxString &cmdName, const wxString &cmdParams)
 {
+   // Stage 1: work out what command to create
 
-   /*
-   // Split up parameters and add them to the map
+   ParamMap signature;
 
-   // The checking below should be replaced by a lookup + polymorphism
-   // eventually
+   std::pair<Command*,ParamMap> commandEntry;
+   if (LookUpCommand(cmdName, commandEntry))
+   {
+      mCommand = commandEntry.first;
+      signature = commandEntry.second;
+   }
+   else
+   {
+      // Fall back to hoping the Batch Command system can handle it
+      mCommand = new BatchEvalCommand();
+      mCommand->SetParameter(wxT("CommandName"), cmdName);
+      mCommand->SetParameter(wxT("ParamString"), cmdParams);
+      mValid = true;
+      return;
+   }
 
-   // See if the name refers to a 'special command'
+   // Stage 2: set the parameters
 
-   // See if the name refers to an effect
-   //Effect *f = EffectManager::Get().GetEffectByIdentifier( cmdName );
-   //if( f!=NULL )
-   //{
-   //   ApplyEffectCommand( f, command, params );
-   //   // TODO store command somewhere else...
-   //   mCommand = new EffectCommand(f);
-   //}
-   //
-   // See if the name refers to a menu command
-   */
+   ShuttleCli shuttle;
+   shuttle.mParams = cmdParams;
+   shuttle.mbStoreInClient = true;
 
-   mCommand = new BatchEvalCommand(cmdName, cmdParams);
-   mValid   = true;
+   ParamMap::const_iterator iter;
+   for (iter = signature.begin(); iter != signature.end(); ++iter)
+   {
+      wxString paramString;
+      if (shuttle.TransferString(iter->first, paramString, wxT(""))
+         && (!mCommand->SetParameter(iter->first, paramString)))
+      {
+         mError = wxT("Invalid value for parameter '") + iter->first;
+         mValid = false;
+         return;
+      }
+   }
+   // TODO check for unrecognised parameters
+
+   mValid = true;
 }
 
 void CommandBuilder::BuildCommand(const wxString &cmdString)
 {
-
    // Find the command name terminator...  If there is more than one word and
    // no terminator, the command is badly formed
    int splitAt = cmdString.Find(wxT(':'));
