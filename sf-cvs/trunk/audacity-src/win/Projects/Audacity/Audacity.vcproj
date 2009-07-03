@@ -1934,6 +1934,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\commands\CommandMisc.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\commands\DebugPrintCommand.h"
 				>
 			</File>
@@ -1951,6 +1955,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\commands\ResponseQueue.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\ScreenshotCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\ScreenshotCommand.h"
 				>
 			</File>
 			<File

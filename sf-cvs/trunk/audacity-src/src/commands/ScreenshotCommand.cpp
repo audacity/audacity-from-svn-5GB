@@ -16,7 +16,7 @@ project window.
 *//*******************************************************************/
 
 #include "ScreenshotCommand.h"
-#include "AudacityApp.h"
+#include "../AudacityApp.h"
 #include "../Project.h"
 #include <wx/toplevel.h>
 #include <wx/dcscreen.h>
@@ -24,18 +24,18 @@ project window.
 #include <wx/settings.h>
 #include <wx/bitmap.h>
 
-#include "TrackPanel.h"
-#include "toolbars/ToolManager.h"
-#include "toolbars/ToolBar.h"
-#include "toolbars/ControlToolBar.h"
-#include "toolbars/DeviceToolBar.h"
-#include "toolbars/EditToolBar.h"
-#include "toolbars/MeterToolBar.h"
-#include "toolbars/MixerToolBar.h"
-#include "toolbars/SelectionBar.h"
-#include "toolbars/ToolsToolBar.h"
-#include "toolbars/TranscriptionToolBar.h"
-#include "widgets/Ruler.h"
+#include "../TrackPanel.h"
+#include "../toolbars/ToolManager.h"
+#include "../toolbars/ToolBar.h"
+#include "../toolbars/ControlToolBar.h"
+#include "../toolbars/DeviceToolBar.h"
+#include "../toolbars/EditToolBar.h"
+#include "../toolbars/MeterToolBar.h"
+#include "../toolbars/MixerToolBar.h"
+#include "../toolbars/SelectionBar.h"
+#include "../toolbars/ToolsToolBar.h"
+#include "../toolbars/TranscriptionToolBar.h"
+#include "../widgets/Ruler.h"
 
 wxTopLevelWindow *ScreenshotCommand::GetFrontWindow(AudacityProject *project)
 {
