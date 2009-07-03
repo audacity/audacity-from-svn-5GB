@@ -436,6 +436,7 @@
 		17FDBD01098BFF4E00BCEF32 /* os_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 170732F90988D6AB008541CC /* os_types.h */; };
 		17FDBD02098BFF4E00BCEF32 /* bitwise.c in Sources */ = {isa = PBXBuildFile; fileRef = 170733980988D6AC008541CC /* bitwise.c */; };
 		17FDBD03098BFF4E00BCEF32 /* framing.c in Sources */ = {isa = PBXBuildFile; fileRef = 1707339A0988D6AC008541CC /* framing.c */; };
+		1818559A0FFE916C0026D190 /* ScreenshotCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 181855950FFE916C0026D190 /* ScreenshotCommand.cpp */; };
 		1841B50A0E00AD6E00F386E9 /* ODComputeSummaryTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5000E00AD6E00F386E9 /* ODComputeSummaryTask.cpp */; };
 		1841B50B0E00AD6E00F386E9 /* ODManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5020E00AD6E00F386E9 /* ODManager.cpp */; };
 		1841B50C0E00AD6E00F386E9 /* ODTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5040E00AD6E00F386E9 /* ODTask.cpp */; };
@@ -1919,7 +1920,7 @@
 		174F73CD098D516D009CD6E0 /* AudacityOGG.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityOGG.icns; sourceTree = "<group>"; };
 		174F73CE098D516D009CD6E0 /* AudacityProject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityProject.icns; sourceTree = "<group>"; };
 		174F73CF098D516D009CD6E0 /* AudacityWAV.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityWAV.icns; sourceTree = "<group>"; };
-		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
+		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
 		176A1A5B098B7B8D00DC73B4 /* libnyquist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libnyquist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		176EE9DB09A2EC1000188F3B /* caf.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = caf.c; sourceTree = "<group>"; };
 		176EE9DC09A2EC1000188F3B /* flac.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = flac.c; sourceTree = "<group>"; };
@@ -2213,6 +2214,10 @@
 		1790B11209883BFD008A330A /* XMLTagHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = XMLTagHandler.cpp; sourceTree = "<group>"; };
 		1790B11309883BFD008A330A /* XMLTagHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = XMLTagHandler.h; sourceTree = "<group>"; };
 		17FC86F30994637C0061DC94 /* compile.txt */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; name = compile.txt; path = mac/compile.txt; sourceTree = "<group>"; };
+		1818558F0FFE916C0026D190 /* CommandMisc.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CommandMisc.h; sourceTree = "<group>"; };
+		181855900FFE916C0026D190 /* CommandTargets.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CommandTargets.h; sourceTree = "<group>"; };
+		181855950FFE916C0026D190 /* ScreenshotCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ScreenshotCommand.cpp; sourceTree = "<group>"; };
+		181855960FFE916C0026D190 /* ScreenshotCommand.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ScreenshotCommand.h; sourceTree = "<group>"; };
 		1841B5000E00AD6E00F386E9 /* ODComputeSummaryTask.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ODComputeSummaryTask.cpp; path = ondemand/ODComputeSummaryTask.cpp; sourceTree = "<group>"; };
 		1841B5010E00AD6E00F386E9 /* ODComputeSummaryTask.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ODComputeSummaryTask.h; path = ondemand/ODComputeSummaryTask.h; sourceTree = "<group>"; };
 		1841B5020E00AD6E00F386E9 /* ODManager.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ODManager.cpp; path = ondemand/ODManager.cpp; sourceTree = "<group>"; };
@@ -3982,6 +3987,10 @@
 		174D9025098C78AF00D5909F /* commands */ = {
 			isa = PBXGroup;
 			children = (
+				1818558F0FFE916C0026D190 /* CommandMisc.h */,
+				181855900FFE916C0026D190 /* CommandTargets.h */,
+				181855950FFE916C0026D190 /* ScreenshotCommand.cpp */,
+				181855960FFE916C0026D190 /* ScreenshotCommand.h */,
 				28D53FFA0FD1912A00FA7C75 /* AppCommandEvent.cpp */,
 				28D53FFB0FD1912A00FA7C75 /* AppCommandEvent.h */,
 				28D53FFC0FD1912A00FA7C75 /* BatchEvalCommand.h */,
@@ -8354,6 +8363,7 @@
 				28DB34790FDC2C5D0011F589 /* ResponseQueue.cpp in Sources */,
 				28DABFBE0FF19DB100AC7848 /* RealFFTf.cpp in Sources */,
 				2800FE370FF32566005CA9E5 /* MidiIOPrefs.cpp in Sources */,
+				1818559A0FFE916C0026D190 /* ScreenshotCommand.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9435,7 +9445,7 @@
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				INSTALL_PATH = /usr/local/lib;
 				KEEP_PRIVATE_EXTERNS = NO;
-				MACH_O_TYPE = mh_bundle;
+				MACH_O_TYPE = mh_dylib;
 				OTHER_CFLAGS = "$(WX_CFLAGS)";
 				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
 				OTHER_LDFLAGS = (
