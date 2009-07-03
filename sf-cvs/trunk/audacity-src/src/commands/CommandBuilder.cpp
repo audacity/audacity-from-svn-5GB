@@ -29,7 +29,7 @@ system by constructing BatchCommandEval objects.
 #include "DebugPrintCommand.h"
 #include "BatchEvalCommand.h"
 #include "ScreenshotCommand.h"
-#include "Shuttle.h"
+#include "../Shuttle.h"
 
 CommandBuilder::CommandBuilder(const wxString &cmdString)
 : mValid(false), mCommand(NULL)

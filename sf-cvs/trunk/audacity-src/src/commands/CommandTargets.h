@@ -22,7 +22,7 @@ objects needn't be concerned with what happens to the information.
 #include <wx/string.h>
 #include <wx/msgdlg.h>
 #include <wx/statusbr.h>
-#include "widgets/ProgressDialog.h"
+#include "../widgets/ProgressDialog.h"
 
 /// Interface for objects that can receive command progress information
 class CommandProgressTarget
