@@ -40,6 +40,7 @@
 #include "effects/Effect.h"
 #include "../images/Arrow.xpm"
 #include "BatchCommands.h"
+#include "UndoManager.h"
 
 #include "Theme.h"
 #include "AllThemeResources.h"
@@ -291,6 +292,8 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
       if (!d.IsShown() || mAbort) {
          break;
       }
+      UndoManager *um = project->GetUndoManager();
+      um->ClearStates();
    }
    project->OnRemoveTracks();
 }
