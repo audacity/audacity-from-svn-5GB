@@ -3528,16 +3528,10 @@ void AudacityProject::OnJoin()
 
 void AudacityProject::OnSilence()
 {
-   TrackListIterator iter(mTracks);
+   SelectedTrackListOfKindIterator iter(Track::Wave, mTracks);
 
-   Track *n = iter.First();
-
-   while (n) {
-      if (n->GetSelected())
-         n->Silence(mViewInfo.sel0, mViewInfo.sel1);
-
-      n = iter.Next();
-   }
+   for (Track *n = iter.First(); n; n = iter.Next())
+      n->Silence(mViewInfo.sel0, mViewInfo.sel1);
 
    PushState(wxString::
              Format(_("Silenced selected tracks for %.2f seconds at %.2f"),
