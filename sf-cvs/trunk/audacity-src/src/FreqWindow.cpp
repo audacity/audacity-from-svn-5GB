@@ -1026,8 +1026,11 @@ void FreqWindow::Recalc()
       case 3:   // Autocorrelation, Cuberoot AC or Enhanced AC
 
          // Take FFT
+#ifdef EXPERIMENTAL_USE_REALFFTF
+         RealFFT(mWindowSize, in, out, out2);
+#else
          FFT(mWindowSize, false, in, NULL, out, out2);
-
+#endif
          // Compute power
          for (i = 0; i < mWindowSize; i++)
             in[i] = (out[i] * out[i]) + (out2[i] * out2[i]);
@@ -1044,7 +1047,11 @@ void FreqWindow::Recalc()
                in[i] = pow(in[i], 1.0f / 3.0f);
          }
          // Take FFT
+#ifdef EXPERIMENTAL_USE_REALFFTF
+         RealFFT(mWindowSize, in, out, out2);
+#else
          FFT(mWindowSize, false, in, NULL, out, out2);
+#endif
 
          // Take real part of result
          for (i = 0; i < half; i++)
@@ -1052,7 +1059,11 @@ void FreqWindow::Recalc()
          break;
 
       case 4:                  // Cepstrum
+#ifdef EXPERIMENTAL_USE_REALFFTF
+         RealFFT(mWindowSize, in, out, out2);
+#else
          FFT(mWindowSize, false, in, NULL, out, out2);
+#endif
 
          // Compute log power
          float power;
@@ -1062,10 +1073,14 @@ void FreqWindow::Recalc()
             if(power <= 0.)
                in[i] = -100000.;
             else
-               in[i] = log((out[i] * out[i]) + (out2[i] * out2[i]));
+               in[i] = log(power);
          }
          // Take IFFT
+#ifdef EXPERIMENTAL_USE_REALFFTF
+         InverseRealFFT(mWindowSize, in, NULL, out);
+#else
          FFT(mWindowSize, true, in, NULL, out, out2);
+#endif
 
          // Take real part of result
          for (i = 0; i < half; i++)

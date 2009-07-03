@@ -108,6 +108,10 @@ void InitFFT()
    }
 }
 
+#ifdef EXPERIMENTAL_USE_REALFFTF
+#include "realfftf.h"
+#endif
+
 void DeinitFFT()
 {
    if (gFFTBitTable) {
@@ -116,6 +120,10 @@ void DeinitFFT()
       }
       delete[] gFFTBitTable;
    }
+#ifdef EXPERIMENTAL_USE_REALFFTF
+   // Deallocate any unused RealFFTf tables
+   CleanupFFT();
+#endif
 }
 
 inline int FastReverseBits(int i, int NumBits)
@@ -242,6 +250,37 @@ void FFT(int NumSamples,
 
 void RealFFT(int NumSamples, float *RealIn, float *RealOut, float *ImagOut)
 {
+#ifdef EXPERIMENTAL_USE_REALFFTF
+   // Remap to RealFFTf() function
+   int i;
+   HFFT hFFT = GetFFT(NumSamples);
+   float *pFFT = new float[NumSamples];
+   // Copy the data into the processing buffer
+   for(i=0; i<NumSamples; i++)
+      pFFT[i] = RealIn[i];
+
+   // Perform the FFT
+   RealFFTf(pFFT, hFFT);
+
+   // Copy the data into the real and imaginary outputs
+   for(i=1;i<(NumSamples/2);i++) {
+      RealOut[i]=pFFT[hFFT->BitReversed[i]  ];
+      ImagOut[i]=pFFT[hFFT->BitReversed[i]+1];
+   }
+   // Handle the (real-only) DC and Fs/2 bins
+   RealOut[0] = pFFT[0];
+   RealOut[i] = pFFT[1];
+   ImagOut[0] = ImagOut[i] = 0;
+   // Fill in the upper half using symmetry properties
+   for(i++ ; i<NumSamples; i++) {
+      RealOut[i] =  RealOut[NumSamples-i];
+      ImagOut[i] = -ImagOut[NumSamples-i];
+   }
+   delete [] pFFT;
+   ReleaseFFT(hFFT);
+
+#else
+
    int Half = NumSamples / 2;
    int i;
 
@@ -291,7 +330,48 @@ void RealFFT(int NumSamples, float *RealIn, float *RealOut, float *ImagOut)
 
    delete[]tmpReal;
    delete[]tmpImag;
+#endif EXPERIMENTAL_USE_REALFFTF
 }
+
+#ifdef EXPERIMENTAL_USE_REALFFTF
+/*
+ * InverseRealFFT
+ *
+ * This function computes the inverse of RealFFT, above.
+ * The RealIn and ImagIn is assumed to be conjugate-symmetric
+ * and as a result the output is purely real.
+ * Only the first half of RealIn and ImagIn are used due to this
+ * symmetry assumption.
+ */
+void InverseRealFFT(int NumSamples, float *RealIn, float *ImagIn, float *RealOut)
+{
+   // Remap to RealFFTf() function
+   int i;
+   HFFT hFFT = GetFFT(NumSamples);
+   float *pFFT = new float[NumSamples];
+   // Copy the data into the processing buffer
+   for(i=0; i<(NumSamples/2); i++)
+      pFFT[2*i  ] = RealIn[i];
+   if(ImagIn == NULL) {
+      for(i=0; i<(NumSamples/2); i++)
+         pFFT[2*i+1] = 0;
+   } else {
+      for(i=0; i<(NumSamples/2); i++)
+         pFFT[2*i+1] = ImagIn[i];
+   }
+   // Put the fs/2 component in the imaginary part of the DC bin
+   pFFT[1] = RealIn[i];
+
+   // Perform the FFT
+   InverseRealFFTf(pFFT, hFFT);
+
+   // Copy the data to the (purely real) output buffer
+   ReorderToTime(hFFT, pFFT, RealOut);
+
+   delete [] pFFT;
+   ReleaseFFT(hFFT);
+}
+#endif // EXPERIMENTAL_USE_REALFFTF
 
 /*
  * PowerSpectrum
@@ -307,6 +387,31 @@ void RealFFT(int NumSamples, float *RealIn, float *RealOut, float *ImagOut)
 
 void PowerSpectrum(int NumSamples, float *In, float *Out)
 {
+#ifdef EXPERIMENTAL_USE_REALFFTF
+   // Remap to RealFFTf() function
+   int i;
+   HFFT hFFT = GetFFT(NumSamples);
+   float *pFFT = new float[NumSamples];
+   // Copy the data into the processing buffer
+   for(i=0; i<NumSamples; i++)
+      pFFT[i] = In[i];
+
+   // Perform the FFT
+   RealFFTf(pFFT, hFFT);
+
+   // Copy the data into the real and imaginary outputs
+   for(i=1;i<NumSamples/2;i++) {
+      Out[i]= (pFFT[hFFT->BitReversed[i]  ]*pFFT[hFFT->BitReversed[i]  ])
+         + (pFFT[hFFT->BitReversed[i]+1]*pFFT[hFFT->BitReversed[i]+1]);
+   }
+   // Handle the (real-only) DC and Fs/2 bins
+   Out[0] = pFFT[0]*pFFT[0];
+   Out[i] = pFFT[1]*pFFT[1];
+   delete [] pFFT;
+   ReleaseFFT(hFFT);
+
+#else // EXPERIMENTAL_USE_REALFFTF
+
    int Half = NumSamples / 2;
    int i;
 
@@ -370,6 +475,7 @@ void PowerSpectrum(int NumSamples, float *In, float *Out)
    delete[]tmpImag;
    delete[]RealOut;
    delete[]ImagOut;
+#endif // EXPERIMENTAL_USE_REALFFTF
 }
 
 /*
