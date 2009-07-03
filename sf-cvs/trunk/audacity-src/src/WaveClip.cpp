@@ -769,14 +769,15 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
             }
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
             if (start + len*fftSkipPoints1 > mSequence->GetNumSamples()) {
-               len = (mSequence->GetNumSamples() - start)/fftSkipPoints1;
-               for (i = len*fftSkipPoints1; i < (sampleCount)windowSize; i++)
+               int newlen = (mSequence->GetNumSamples() - start)/fftSkipPoints1;
+               for (i = newlen*fftSkipPoints1; i < (sampleCount)len*fftSkipPoints1; i++)
 #else //!EXPERIMENTAL_FFT_SKIP_POINTS
             if (start + len > mSequence->GetNumSamples()) {
-               len = mSequence->GetNumSamples() - start;
-               for (i = len; i < (sampleCount)windowSize; i++)
+               int newlen = mSequence->GetNumSamples() - start;
+               for (i = newlen; i < (sampleCount)len; i++)
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
                   adj[i] = 0;
+               len = newlen;
             }
 
             if (len > 0)
