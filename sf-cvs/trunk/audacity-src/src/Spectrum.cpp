@@ -65,8 +65,11 @@ bool ComputeSpectrum(float * data, int width,
 
       if (autocorrelation) {
          // Take FFT
+#ifdef EXPERIMENTAL_USE_REALFFTF
+         RealFFT(windowSize, in, out, out2);
+#else
          FFT(windowSize, false, in, NULL, out, out2);
-
+#endif
          // Compute power
          for (i = 0; i < windowSize; i++)
             in[i] = (out[i] * out[i]) + (out2[i] * out2[i]);
@@ -78,7 +81,11 @@ bool ComputeSpectrum(float * data, int width,
             in[i] = pow(in[i], 1.0f / 3.0f);
 
          // Take FFT
+#ifdef EXPERIMENTAL_USE_REALFFTF
+         RealFFT(windowSize, in, out, out2);
+#else
          FFT(windowSize, false, in, NULL, out, out2);
+#endif
 
       }
       else

@@ -57,13 +57,25 @@ void PowerSpectrum(int NumSamples, float *In, float *Out);
 
 /*
  * Computes an FFT when the input data is real but you still
- * want complex data as output.  The output arrays are half
- * the length of the input, and NumSamples must be a power of
- * two.
+ * want complex data as output.  The output arrays are the
+ * same length as the input, but will be conjugate-symmetric
+ * NumSamples must be a power of two.
  */
 
 void RealFFT(int NumSamples,
              float *RealIn, float *RealOut, float *ImagOut);
+
+/*
+ * Computes an Inverse FFT when the input data is conjugate symmetric
+ * so the output is purely real.  NumSamples must be a power of
+ * two.
+ * Requires: EXPERIMENTAL_USE_REALFFTF
+ */
+#include "Experimental.h"
+#ifdef EXPERIMENTAL_USE_REALFFTF
+void InverseRealFFT(int NumSamples,
+             float *RealIn, float *ImagIn, float *RealOut);
+#endif
 
 /*
  * Computes a FFT of complex input and returns complex output.
@@ -111,9 +123,3 @@ void DeinitFFT();
 //
 // Local Variables:
 // c-basic-offset: 3
-// indent-tabs-mode: nil
-// End:
-//
-// vim: et sts=3 sw=3
-// arch-tag: 91e23340-889b-4c2d-89b0-0173315a0b32
-
