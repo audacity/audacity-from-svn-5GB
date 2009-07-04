@@ -466,7 +466,7 @@ void ScreenFrame::OnCloseWindow(wxCloseEvent & e)
 
 void ScreenFrame::OnUIUpdate(wxUpdateUIEvent & e)
 {
-   /* dhorgan: This causes extreme slowness for me; is it essential?
+#ifdef __WXMAC__
    wxTopLevelWindow *top = mCommand->GetFrontWindow(mContext.proj);
    bool needupdate = false;
    bool enable = false;
@@ -488,7 +488,7 @@ void ScreenFrame::OnUIUpdate(wxUpdateUIEvent & e)
          }
       }
    }
-   */
+#endif
 }
 
 void ScreenFrame::OnDirChoose(wxCommandEvent & e)
