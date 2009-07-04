@@ -31,31 +31,69 @@ EffectReverse::EffectReverse()
 
 bool EffectReverse::Process()
 {
-   this->CopyInputTracks(); // Set up mOutputTracks.
+   //Track::All is needed because Reverse should move the labels too
+   this->CopyInputTracks(Track::All); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
-   WaveTrack *track = (WaveTrack *) iter.First();
+   TrackListIterator iter(mOutputTracks);
+   Track *t = iter.First();
    int count = 0;
-   while (track) {
-      double trackStart = track->GetStartTime();
-      double trackEnd = track->GetEndTime();
-      double t0 = mT0 < trackStart? trackStart: mT0;
-      double t1 = mT1 > trackEnd? trackEnd: mT1;
+   double lt0 = -2.0; // -2.0 = not initialized yet; -1.0 = is not possible to reverse labels
+   double lt1 = -2.0;
+   while (t) {
+      if (t->GetKind() == Track::Wave) {
+         WaveTrack *track = (WaveTrack*)t;
+         double trackStart = track->GetStartTime();
+         double trackEnd = track->GetEndTime();
+         double t0 = mT0 < trackStart? trackStart: mT0;
+         double t1 = mT1 > trackEnd? trackEnd: mT1;
 
-      if (t1 > t0) {
-         sampleCount start = track->TimeToLongSamples(t0);
-         sampleCount end = track->TimeToLongSamples(t1);
-         sampleCount len = (sampleCount)(end - start);
+         if (track->GetSelected()) {
+            if (t1 > t0) {
+               sampleCount start = track->TimeToLongSamples(t0);
+               sampleCount end = track->TimeToLongSamples(t1);
+               sampleCount len = (sampleCount)(end - start);
 
-         if (!ProcessOne(count, track, start, len))
-         {
-            bGoodResult = false;
-            break;
+               if (!ProcessOne(count, track, start, len))
+               {
+                  bGoodResult = false;
+                  break;
+               }
+
+               //if this is the first selected track in the group we can define the label
+               //region to be reversed without any more verifications
+               if (lt0 == -2.0) {
+                  lt0 = t0;
+                  lt1 = t1;
+               }
+               //track has not the same selection result (after checking start and end of the track as the first track)
+               //it's not possible to know how to reverse the label in this situation.
+               else if ((lt0 != t0) || (lt1 != t1)) {
+                  lt0 = -1.0;
+                  lt1 = -1.0;
+               }
+            } 
+         }
+         //if the track is not selected but has no content inside the selected region, there is no problem.
+         //otherwise we should not change the labels.
+         else if (t1 > t0) {
+            lt0 = -1.0;
+            lt1 = -1.0;
          }
       }
-
-      track = (WaveTrack *) iter.Next();
+      else if (t->GetKind() == Track::Label) {
+         //if we can reverse the label
+         if (lt0 != -1.0) {
+            LabelTrack *track = (LabelTrack*)t;
+            track->ChangeLabelsOnReverse(lt0, lt1);
+         }
+         //otherwise we set the region to the not initialized state -2.0 to begin the process in the next group
+         else {
+            lt0 = -2.0;
+            lt1 = -2.0;
+         }
+      }
+      t = iter.Next();
       count++;
    }
 
