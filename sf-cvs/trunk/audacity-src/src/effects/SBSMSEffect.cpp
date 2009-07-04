@@ -354,20 +354,19 @@ bool EffectSBSMS::Process()
       mCurTrackNum++;
    }
    
-   AudacityProject *p = (AudacityProject*)mParent;
-   if (p && p->IsSticky()) {
-      double newLen = saveLeft->GetEndTime() - saveLeft->GetStartTime();
-      double timeAdded = newLen-len;
-      double sel = mCurT1-mCurT0;
-      double percent = (sel/(timeAdded+sel))*100 - 100;
+   //AudacityProject *p = (AudacityProject*)mParent;
+   //if (p && p->IsSticky()) {
+   //   double newLen = saveLeft->GetEndTime() - saveLeft->GetStartTime();
+   //   double timeAdded = newLen-len;
+   //   double sel = mCurT1-mCurT0;
+   //   double percent = (sel/(timeAdded+sel))*100 - 100;
+   //   ReplaceProcessedTracks(bGoodResult); 
+   //   if (!(HandleGroupChangeSpeed(percent, mCurT0, mCurT1))) {
+   //      bGoodResult = false;
+   //   }
+   //}
+   if (bGoodResult)
       ReplaceProcessedTracks(bGoodResult); 
-      if (!(HandleGroupChangeSpeed(percent, mCurT0, mCurT1))) {
-         bGoodResult = false;
-      }
-   }
-   else {
-      ReplaceProcessedTracks(bGoodResult); 
-   }
 
    // Update selection
    mT0 = mCurT0;

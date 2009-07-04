@@ -3300,17 +3300,10 @@ void AudacityProject::OnPaste()
          if (msClipProject != this && c->GetKind() == Track::Wave)
             ((WaveTrack *) c)->Lock();
 
-         if (n->GetKind() == Track::Wave) {
-            //printf("Checking to see if we need to pre-clear the track\n");
-            if (!((WaveTrack *) n)->IsEmpty(t0, t1)) {
-               ((WaveTrack *) n)->HandleClear(t0, t1, false, false);
-            }
-         }
-         else {
-            ((WaveTrack *) n)->Clear(t0, t1);
-         }
-
-         n->Paste(t0, c);
+         if (c->GetKind() == Track::Wave && n && n->GetKind() == Track::Wave)
+            ((WaveTrack*)n)->ClearAndPaste(t0, t1, (WaveTrack*)c);
+         else
+            n->Paste(t0, c);
          
          pastedSomething = true;
          
@@ -3388,6 +3381,7 @@ void AudacityProject::OnPaste()
       while (n){
          if (n->GetSelected() && n->GetKind()==Track::Wave){
             if (c && c->GetKind() == Track::Wave){
+               ((WaveTrack *)n)->HandleClear(t0, t1, false, false);
                ((WaveTrack *)n)->HandlePaste(t0, (WaveTrack *)c);
             }else{
                tmp = mTrackFactory->NewWaveTrack( ((WaveTrack*)n)->GetSampleFormat(), ((WaveTrack*)n)->GetRate());

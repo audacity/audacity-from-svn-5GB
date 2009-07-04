@@ -57,8 +57,7 @@ class EffectChangeSpeed : public Effect {
    virtual bool Process();
 
  private:
-   bool ProcessOne(WaveTrack * t,
-                   sampleCount start, sampleCount end);
+   bool ProcessOne(WaveTrack * t, sampleCount start, sampleCount end, bool first);
 
  private:
 	// track related

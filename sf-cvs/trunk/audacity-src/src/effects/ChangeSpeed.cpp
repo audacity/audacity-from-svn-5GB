@@ -89,11 +89,17 @@ bool EffectChangeSpeed::Process()
 	// Similar to EffectSoundTouch::Process()
 
    //Iterate over each track
-   this->CopyInputTracks(); // Set up mOutputTracks.
+   //Track::All is needed because this effect needs to introduce silence in the group tracks to keep sync
+   this->CopyInputTracks(Track::All); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
-   WaveTrack* pOutWaveTrack = (WaveTrack*)(iter.First());
+   TrackListIterator iter(mOutputTracks);
+   // go to first wavetrack
+   Track* t;
+   for (t = iter.First(); t->GetKind() != Track::Wave; t = iter.Next());
+   if (!t)
+      return false;
+   WaveTrack* pOutWaveTrack = (WaveTrack*)t;
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
 	
@@ -107,52 +113,46 @@ bool EffectChangeSpeed::Process()
    mCurT1 = wxMin(mT1, mCurT1);
 
    double len = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();
-   
-   while (pOutWaveTrack != NULL)
+
+   bool first = true;
+   while (t != NULL)
    {
-      //Get start and end times from track
-      mCurT0 = pOutWaveTrack->GetStartTime();
-      mCurT1 = pOutWaveTrack->GetEndTime();
+      if (t->GetKind() == Track::Label)
+         first = true;
+      else if (t->GetKind() == Track::Wave && t->GetSelected()) {
+         pOutWaveTrack = (WaveTrack*)t;
+         //Get start and end times from track
+         mCurT0 = pOutWaveTrack->GetStartTime();
+         mCurT1 = pOutWaveTrack->GetEndTime();
 
-      //Set the current bounds to whichever left marker is
-      //greater and whichever right marker is less:
-      mCurT0 = wxMax(mT0, mCurT0);
-      mCurT1 = wxMin(mT1, mCurT1);
+         //Set the current bounds to whichever left marker is
+         //greater and whichever right marker is less:
+         mCurT0 = wxMax(mT0, mCurT0);
+         mCurT1 = wxMin(mT1, mCurT1);
 
-      // Process only if the right marker is to the right of the left marker
-      if (mCurT1 > mCurT0) {       
-         //Transform the marker timepoints to samples
-         sampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
-         sampleCount end = pOutWaveTrack->TimeToLongSamples(mCurT1);
+         // Process only if the right marker is to the right of the left marker
+         if (mCurT1 > mCurT0) {       
+            //Transform the marker timepoints to samples
+            sampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
+            sampleCount end = pOutWaveTrack->TimeToLongSamples(mCurT1);
 
-         //ProcessOne() (implemented below) processes a single track
-         if (!ProcessOne(pOutWaveTrack, start, end))
-         {
-            bGoodResult = false;
-            break;
+            //ProcessOne() (implemented below) processes a single track
+            if (!ProcessOne(pOutWaveTrack, start, end, first))
+            {
+               bGoodResult = false;
+               break;
+            }
+            first = false;
          }
+         mCurTrackNum++;
       }
       
       //Iterate to the next track
-      pOutWaveTrack = (WaveTrack*)(iter.Next());
-      mCurTrackNum++;
+      t=iter.Next();
    }
 
-   AudacityProject *p = (AudacityProject*)mParent;
-   if (p && p->IsSticky()) {
-      pOutWaveTrack = (WaveTrack*)(iter.First());
-      double newLen = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();
-      double timeAdded = newLen - len;
-      double sel = mCurT1-mCurT0;
-      double percent = (sel / (timeAdded + sel)) * 100 - 100;
+   if (bGoodResult)
       ReplaceProcessedTracks(bGoodResult);
-      if (!(HandleGroupChangeSpeed(percent, mCurT0, mCurT1))) {
-         bGoodResult = false;
-      }
-   }
-   else {
-      ReplaceProcessedTracks(bGoodResult);
-   }
 
    mT1 = mT0 + m_maxNewLength; // Update selection.
 
@@ -162,7 +162,7 @@ bool EffectChangeSpeed::Process()
 // ProcessOne() takes a track, transforms it to bunch of buffer-blocks,
 // and calls libsamplerate code on these blocks.
 bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
-									sampleCount start, sampleCount end)
+									sampleCount start, sampleCount end, bool first)
 {
 	if (track == NULL)
 		return false;
@@ -245,7 +245,12 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
    // Take the output track and insert it in place of the original
    // sample data
 	if (bLoopSuccess) {
-		track->ClearAndPaste(mCurT0, mCurT1, outputTrack);
+      if (first)
+		   track->ClearAndPaste(mCurT0, mCurT1, outputTrack, true, true, mOutputTracks);
+      else {
+         track->HandleClear(mCurT0, mCurT1, false, false);
+         track->HandlePaste(mCurT0, outputTrack);
+      }
 	}
 
 	double newLength = outputTrack->GetEndTime(); 
