@@ -20,6 +20,7 @@
 
 #include "Reverse.h"
 #include "../WaveTrack.h"
+#include "../LabelTrack.h"
 
 //
 // EffectReverse
