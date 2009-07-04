@@ -172,11 +172,14 @@ void LabelTrack::ShiftLabelsOnClear(double b, double e)
 void LabelTrack::ShiftLabelsOnInsert(double length, double pt)
 {
    for (unsigned int i=0;i<mLabels.GetCount();i++){
-      if (mLabels[i]->t > pt && mLabels[i]->t1 > pt) {
+      // label is after the insert point
+      if (mLabels[i]->t > pt) {
          mLabels[i]->t = mLabels[i]->t + length;
          mLabels[i]->t1 = mLabels[i]->t1 + length;
+      // label is before the insert point
       }else if (mLabels[i]->t1 < pt) {
          //nothing
+      // insert point is inside the label
       }else if (mLabels[i]->t < pt && mLabels[i]->t1 > pt){
          mLabels[i]->t1 = mLabels[i]->t1 + length;
       }

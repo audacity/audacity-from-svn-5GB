@@ -843,7 +843,10 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src, TrackList* tracks)
          }
       }
       else if (t->GetKind() == Track::Label) {
-         ((LabelTrack *)t)->ShiftLabelsOnInsert(length-sel_len, t0);
+         if ((length - sel_len) > 0.0)
+            ((LabelTrack *)t)->ShiftLabelsOnInsert(length-sel_len, t0);
+         else if ((length - sel_len) < 0.0)
+            ((LabelTrack *)t)->ShiftLabelsOnClear(info->sel0+length, info->sel1);
       }
    }
 
