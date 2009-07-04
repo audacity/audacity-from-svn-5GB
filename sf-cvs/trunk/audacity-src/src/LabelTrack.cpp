@@ -191,6 +191,17 @@ void LabelTrack::ShiftLabelsOnChangeSpeed(double b, double e, double change)
    }
 }
 
+void LabelTrack::ChangeLabelsOnReverse(double b, double e)
+{
+   for (size_t i=0; i<mLabels.GetCount(); i++) {
+      if (mLabels[i]->t >= b && mLabels[i]->t1 <= e) {//deletion region encloses label
+         double aux     = b + (e - mLabels[i]->t1);
+         mLabels[i]->t1 = e - (mLabels[i]->t - b);
+         mLabels[i]->t  = aux;
+      }
+   }
+}
+
 double LabelTrack::AdjustTimeStampForSpeedChange(double t, double b, double e, double change)
 {
 //t is the time stamp we'll be changing

@@ -170,6 +170,7 @@ class LabelTrack:public Track {
    void ShiftLabelsOnClear(double b, double e);
    void ShiftLabelsOnInsert(double length, double pt);
    void ShiftLabelsOnChangeSpeed(double b, double e, double change);
+   void ChangeLabelsOnReverse(double b, double e);
    double AdjustTimeStampForSpeedChange(double t, double b, double e, double change);
 
  public:
