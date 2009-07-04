@@ -950,7 +950,7 @@ void ExportMixerPanel::OnPaint(wxPaintEvent & evt)
    for( int i = 0; i < mMixerSpec->GetNumTracks(); i++ )
       for( int j = 0; j < mMixerSpec->GetNumChannels(); j++ )
          if( mMixerSpec->mMap[ i ][ j ] )
-            AColor::Line(dc, mTrackRects[ i ].x + mBoxWidth, 
+            AColor::Line(memDC, mTrackRects[ i ].x + mBoxWidth, 
                   mTrackRects[ i ].y + mTrackHeight / 2, mChannelRects[ j ].x,
                   mChannelRects[ j ].y + mChannelHeight / 2 );
    
