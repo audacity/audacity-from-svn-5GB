@@ -2416,7 +2416,10 @@ void AudacityProject::OnEffect(int type, int index)
 ///   + Prompt
 ///   + Use previous values
 ///   + Parse from a string that is passed in
-bool AudacityProject::OnEffect(int type, Effect * f)
+///
+/// DanH: I've added the third option as a temporary measure. I think this
+///       should eventually be done by having effects as Command objects.
+bool AudacityProject::OnEffect(int type, Effect * f, wxString params)
 {
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
@@ -2447,7 +2450,7 @@ bool AudacityProject::OnEffect(int type, Effect * f)
    }
    
    if (f->DoEffect(this, type, mRate, mTracks, mTrackFactory,
-                   &mViewInfo.sel0, &mViewInfo.sel1)) {
+                   &mViewInfo.sel0, &mViewInfo.sel1, params)) {
       wxString longDesc = f->GetEffectDescription();
       wxString shortDesc = f->GetEffectName();
  
