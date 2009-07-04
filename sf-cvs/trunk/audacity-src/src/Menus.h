@@ -309,7 +309,7 @@ void OnEditLabels();
 
         // Effect Menu
 
-bool OnEffect(int type, Effect * f);
+bool OnEffect(int type, Effect * f, wxString params = wxEmptyString);
 void OnEffect(int type, int index);
 void OnGenerateEffect(int index);
 void OnGeneratePlugin(int index);

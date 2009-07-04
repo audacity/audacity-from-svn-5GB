@@ -513,8 +513,6 @@ bool BatchCommands::SetCurrentParametersFor( Effect * f, const wxString command,
 
 bool BatchCommands::ApplyEffectCommand(   Effect * f, const wxString command, const wxString params)
 {
-   if( !SetCurrentParametersFor( f, command, params ))
-      return false;
    //Possibly end processing here, if in batch-debug
    if( ReportAndSkip(command, params))
       return true;
@@ -528,7 +526,7 @@ bool BatchCommands::ApplyEffectCommand(   Effect * f, const wxString command, co
    project->SelectAllIfNone();
 
    // NOW actually apply the effect.
-   return project->OnEffect(ALL_EFFECTS | CONFIGURED_EFFECT , f);
+   return project->OnEffect(ALL_EFFECTS | CONFIGURED_EFFECT , f, params);
 }
 
 bool BatchCommands::ApplyMenuCommand(const wxString command, const wxString params)

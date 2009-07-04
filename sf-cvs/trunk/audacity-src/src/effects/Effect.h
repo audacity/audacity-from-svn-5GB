@@ -129,7 +129,7 @@ class AUDACITY_DLL_API Effect {
    // have the "selected" flag set to true, which is consistent with
    // Audacity's standard UI.
    bool DoEffect(wxWindow *parent, int flags, double projectRate, TrackList *list,
-                 TrackFactory *factory, double *t0, double *t1);
+                 TrackFactory *factory, double *t0, double *t1, wxString params);
 
    wxString GetPreviewName();
 

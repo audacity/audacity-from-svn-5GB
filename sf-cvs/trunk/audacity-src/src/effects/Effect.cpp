@@ -79,7 +79,7 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
                       double projectRate,
                       TrackList *list,
                       TrackFactory *factory,
-                      double *t0, double *t1)
+                      double *t0, double *t1, wxString params)
 {
    wxASSERT(*t0 <= *t1);
 
@@ -96,8 +96,29 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
    mT1 = *t1;
    CountWaveTracks();
 
+   // Note: Init may read parameters from preferences
    if (!Init())
       return false;
+
+   // If a parameter string was provided, it overrides any remembered settings
+   // (but if the user is to be prompted, that takes priority)
+   if (!params.IsEmpty())
+   {
+      ShuttleCli shuttle;
+      shuttle.mParams = params;
+      shuttle.mbStoreInClient=true;
+      if( !TransferParameters( shuttle ))
+      {
+         wxMessageBox(
+            wxString::Format(
+               _("Could not set parameters of effect %s\n to %s."),
+               GetEffectName().c_str(),
+               params.c_str()
+            )
+         );
+         return false;
+      }
+   }
 
    // Don't prompt user if we are dealing with a 
    // effect that is already configured, e.g. repeating
