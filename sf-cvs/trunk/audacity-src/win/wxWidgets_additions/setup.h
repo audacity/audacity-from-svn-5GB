@@ -1,10 +1,10 @@
 /////////////////////////////////////////////////////////////////////////////
-// Name:        wx/msw/setup.h
+// Name:        include/wx/msw/setup.h
 // Purpose:     Configuration for the library
 // Author:      Julian Smart
 // Modified by:
 // Created:     01/02/97
-// RCS-ID:      $Id: setup.h,v 1.2 2008-06-09 07:12:18 vjohnson Exp $
+// RCS-ID:      $Id: setup.h,v 1.3 2009-07-06 02:42:42 windinthew Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
