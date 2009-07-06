@@ -332,6 +332,8 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    static void AllProjectsDeleteLock();
    static void AllProjectsDeleteUnlock();
    
+   void PushState(wxString desc, wxString shortDesc,
+                  bool consolidate = false);
  private:
 
 
@@ -339,8 +341,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
    void ClearClipboard();
    void InitialState();
-   void PushState(wxString desc, wxString shortDesc,
-                  bool consolidate = false);
    void ModifyState();
    void PopState(TrackList * l);
    void GetRegionsByLabel( Regions &regions );

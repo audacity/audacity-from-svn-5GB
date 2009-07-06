@@ -517,7 +517,6 @@ bool BatchCommands::ApplyEffectCommand(   Effect * f, const wxString command, co
    if( ReportAndSkip(command, params))
       return true;
 
-   //Parmeters are set, nearly ready to apply the effect...
    AudacityProject *project = GetActiveProject();
 
    //FIX-ME: for later versions may want to not select-all in batch mode.
@@ -526,7 +525,7 @@ bool BatchCommands::ApplyEffectCommand(   Effect * f, const wxString command, co
    project->SelectAllIfNone();
 
    // NOW actually apply the effect.
-   return project->OnEffect(ALL_EFFECTS | CONFIGURED_EFFECT , f, params);
+   return project->OnEffect(ALL_EFFECTS | CONFIGURED_EFFECT , f, params, false);
 }
 
 bool BatchCommands::ApplyMenuCommand(const wxString command, const wxString params)
@@ -594,6 +593,23 @@ bool BatchCommands::ApplyChain(const wxString & filename)
 
    mFileName.Empty();
 
+   wxString longDesc, shortDesc;
+   wxString name = gPrefs->Read(wxT("/Batch/ActiveChain"), wxEmptyString);
+   if (name.IsEmpty())
+   {
+      longDesc = wxT("Apply batch chain");
+      shortDesc = wxT("Apply chain");
+   }
+   else
+   {
+      longDesc = wxString::Format(wxT("Apply batch chain '%s'"), name.c_str());
+      shortDesc = wxString::Format(wxT("Apply '%s'"), name.c_str());
+   }
+
+   AudacityProject *proj = GetActiveProject();
+   if (!proj)
+      return false;
+   proj->PushState(longDesc, shortDesc);
    return res;
 }
 
