@@ -255,6 +255,35 @@ public:
    float       *freq;
 };
 
+#ifdef EXPERIMENTAL_USE_REALFFTF
+#include "FFT.h"
+void ComputeSpectrumUsingRealFFTf(float *buffer, HFFT hFFT, float *window, int len, float *out)
+{
+   int i;
+   if(len > hFFT->Points*2)
+      len = hFFT->Points*2;
+   for(i=0; i<len; i++)
+      buffer[i] *= window[i];
+   for( ; i<(hFFT->Points*2); i++)
+      buffer[i]=0; // zero pad as needed
+   RealFFTf(buffer, hFFT);
+   // Handle the (real-only) DC
+   float power = buffer[0]*buffer[0];
+   if(power <= 0)
+      out[0] = -160.0;
+   else
+      out[0] = 10.0*log10(power);
+   for(i=1;i<hFFT->Points;i++) {
+      power = (buffer[hFFT->BitReversed[i]  ]*buffer[hFFT->BitReversed[i]  ])
+            + (buffer[hFFT->BitReversed[i]+1]*buffer[hFFT->BitReversed[i]+1]);
+      if(power <= 0)
+         out[i] = -160.0;
+      else
+         out[i] = 10.0*log10(power);
+   }
+}
+#endif // EXPERIMENTAL_USE_REALFFTF
+
 WaveClip::WaveClip(DirManager *projDirManager, sampleFormat format, int rate)
 {
    mOffset = 0;
@@ -262,6 +291,12 @@ WaveClip::WaveClip(DirManager *projDirManager, sampleFormat format, int rate)
    mSequence = new Sequence(projDirManager, format);
    mEnvelope = new Envelope();
    mWaveCache = new WaveCache(1);
+#ifdef EXPERIMENTAL_USE_REALFFTF
+   mWindowType = -1;
+   mWindowSize = -1;
+   hFFT = NULL;
+   mWindow = NULL;
+#endif
    mSpecCache = new SpecCache(1, 1, false);
    mSpecPxCache = new SpecPxCache(1);
    mAppendBuffer = NULL;
@@ -283,6 +318,12 @@ WaveClip::WaveClip(WaveClip& orig, DirManager *projDirManager)
    mEnvelope->SetOffset(orig.GetOffset());
    mEnvelope->SetTrackLen(((double)orig.mSequence->GetNumSamples()) / orig.mRate);
    mWaveCache = new WaveCache(1);
+#ifdef EXPERIMENTAL_USE_REALFFTF
+   mWindowType = -1;
+   mWindowSize = -1;
+   hFFT = NULL;
+   mWindow = NULL;
+#endif
    mSpecCache = new SpecCache(1, 1, false);
    mSpecPxCache = new SpecPxCache(1);
 
@@ -301,6 +342,12 @@ WaveClip::~WaveClip()
    delete mWaveCache;
    delete mSpecCache;
    delete mSpecPxCache;
+#ifdef EXPERIMENTAL_USE_REALFFTF
+   if(hFFT != NULL)
+      EndFFT(hFFT);
+   if(mWindow != NULL)
+      delete[] mWindow;
+#endif
 
    if (mAppendBuffer)
       DeleteSamples(mAppendBuffer);
@@ -660,6 +707,34 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
    int half = windowSize/2;
    gPrefs->Read(wxT("/Spectrum/WindowType"), &windowType, 3);
 
+#ifdef EXPERIMENTAL_USE_REALFFTF
+   // Update the FFT and window if necessary
+   if((mWindowType != windowType) || (mWindowSize != windowSize)
+      || (hFFT == NULL) || (mWindow == NULL) || (mWindowSize != hFFT->Points*2) ) {
+      mWindowType = windowType;
+      mWindowSize = windowSize;
+      if(hFFT != NULL)
+         EndFFT(hFFT);
+      hFFT = InitializeFFT(mWindowSize);
+      if(mWindow != NULL) delete[] mWindow;
+      // Create the requested window function
+      mWindow = new float[mWindowSize];
+      int i;
+      for(i=0; i<windowSize; i++)
+         mWindow[i]=1.0;
+      WindowFunc(mWindowType, mWindowSize, mWindow);
+      // Scale the window function to give 0dB spectrum for 0dB sine tone
+      double ws=0;
+      for(i=0; i<windowSize; i++)
+         ws += mWindow[i];
+      if(ws > 0) {
+         ws = 2.0/ws;
+         for(i=0; i<windowSize; i++)
+            mWindow[i] *= ws;
+      }
+   }
+#endif // EXPERIMENTAL_USE_REALFFTF
+
    if (mSpecCache &&
        mSpecCache->minFreqOld == minFreq &&
        mSpecCache->maxFreqOld == maxFreq &&
@@ -795,9 +870,19 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
                mSequence->Get((samplePtr)adj, floatSample, start, len);
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
 
-            ComputeSpectrum(buffer, windowSize, windowSize,
-                            mRate, &mSpecCache->freq[half * x],
-                            autocorrelation, windowType);
+#ifdef EXPERIMENTAL_USE_REALFFTF
+            if(autocorrelation) {
+               ComputeSpectrum(buffer, windowSize, windowSize,
+                               mRate, &mSpecCache->freq[half * x],
+                               autocorrelation, windowType);
+            } else {
+               ComputeSpectrumUsingRealFFTf(buffer, hFFT, mWindow, mWindowSize, &mSpecCache->freq[half * x]);
+            }
+#else  // EXPERIMENTAL_USE_REALFFTF
+           ComputeSpectrum(buffer, windowSize, windowSize,
+                           mRate, &mSpecCache->freq[half * x],
+                           autocorrelation, windowType);
+#endif // EXPERIMENTAL_USE_REALFFTF
          }
       }
 
@@ -1438,6 +1523,10 @@ bool WaveClip::Resample(int rate, ProgressDialog *progress)
          mWaveCache = NULL;
       }
       mWaveCache = new WaveCache(1);
+      // Invalidate the spectrum display cache
+      if (mSpecCache)
+         delete mSpecCache;
+      mSpecCache = new SpecCache(1, 1, false);
    }
 
    return !error;
