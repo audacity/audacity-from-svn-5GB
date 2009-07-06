@@ -158,213 +158,226 @@ bool EffectSBSMS::Process()
    bool bGoodResult = true;
    
    //Iterate over each track
-   this->CopyInputTracks(); // Set up mOutputTracks.
-   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
-   WaveTrack* leftTrack = (WaveTrack*)(iter.First());
+   //Track::All is needed because this effect needs to introduce silence in the group tracks to keep sync
+   this->CopyInputTracks(Track::All); // Set up mOutputTracks.
+   TrackListIterator iter(mOutputTracks);
+   // go to first wavetrack
+   Track* t;
+   for (t = iter.First(); t->GetKind() != Track::Wave; t = iter.Next());
+   if (!t)
+      return false;
+   WaveTrack* leftTrack = (WaveTrack*)t;
    WaveTrack* saveLeft = leftTrack;
    mCurTrackNum = 0;
 
    double len = leftTrack->GetEndTime() - leftTrack->GetStartTime();   
    double maxDuration = 0.0;
    
-   while (leftTrack != NULL) {
-      //Get start and end times from track
-      mCurT0 = leftTrack->GetStartTime();
-      mCurT1 = leftTrack->GetEndTime();
-      
-      //Set the current bounds to whichever left marker is
-      //greater and whichever right marker is less
-      mCurT0 = wxMax(mT0, mCurT0);
-      mCurT1 = wxMin(mT1, mCurT1);
-      
-      // Process only if the right marker is to the right of the left marker
-      if (mCurT1 > mCurT0) {
-         sampleCount start;
-         sampleCount end;
-         start = leftTrack->TimeToLongSamples(mCurT0);
-         end = leftTrack->TimeToLongSamples(mCurT1);
+   // we only do a "group change" in the first selected track of the group. 
+   // ClearAndPaste has a call to Paste that does changes to the group tracks
+   bool first = true;
+
+   while (t != NULL) {
+      if (t->GetKind() == Track::Label)
+         first = true;
+      else if (t->GetKind() == Track::Wave && t->GetSelected()) {
+         WaveTrack* leftTrack = (WaveTrack*)t;
+
+         //Get start and end times from track
+         mCurT0 = leftTrack->GetStartTime();
+         mCurT1 = leftTrack->GetEndTime();
          
-         WaveTrack* rightTrack = NULL;
-         if (leftTrack->GetLinked()) {
-            double t;
-            rightTrack = (WaveTrack*)(iter.Next());
-            
-            //Adjust bounds by the right tracks markers
-            t = rightTrack->GetStartTime();
-            t = wxMax(mT0, t);
-            mCurT0 = wxMin(mCurT0, t);
-            t = rightTrack->GetEndTime();
-            t = wxMin(mT1, t);
-            mCurT1 = wxMax(mCurT1, t);
-            
-            //Transform the marker timepoints to samples
+         //Set the current bounds to whichever left marker is
+         //greater and whichever right marker is less
+         mCurT0 = wxMax(mT0, mCurT0);
+         mCurT1 = wxMin(mT1, mCurT1);
+         
+         // Process only if the right marker is to the right of the left marker
+         if (mCurT1 > mCurT0) {
+            sampleCount start;
+            sampleCount end;
             start = leftTrack->TimeToLongSamples(mCurT0);
             end = leftTrack->TimeToLongSamples(mCurT1);
             
-            mCurTrackNum++; // Increment for rightTrack, too.	
-         }
-         
-         sampleCount trackEnd = leftTrack->TimeToLongSamples(leftTrack->GetEndTime());
+            WaveTrack* rightTrack = NULL;
+            if (leftTrack->GetLinked()) {
+               double t;
+               rightTrack = (WaveTrack*)(iter.Next());
+               
+               //Adjust bounds by the right tracks markers
+               t = rightTrack->GetStartTime();
+               t = wxMax(mT0, t);
+               mCurT0 = wxMin(mCurT0, t);
+               t = rightTrack->GetEndTime();
+               t = wxMin(mT1, t);
+               mCurT1 = wxMax(mCurT1, t);
+               
+               //Transform the marker timepoints to samples
+               start = leftTrack->TimeToLongSamples(mCurT0);
+               end = leftTrack->TimeToLongSamples(mCurT1);
+               
+               mCurTrackNum++; // Increment for rightTrack, too.	
+            }
+            
+            sampleCount trackEnd = leftTrack->TimeToLongSamples(leftTrack->GetEndTime());
 
-         // SBSMS has a fixed sample rate - we just convert to its sample rate and then convert back
-         float srIn = leftTrack->GetRate();
-         float srSBSMS = 44100.0;
-         
-         // the resampler needs a callback to supply its samples
-         resampleBuf rb;
-         sampleCount maxBlockSize = leftTrack->GetMaxBlockSize();
-         rb.block = maxBlockSize;
-         rb.buf = (audio*)calloc(rb.block,sizeof(audio));
-         rb.leftTrack = leftTrack;
-         rb.rightTrack = rightTrack?rightTrack:leftTrack;
-         rb.leftBuffer = (float*)calloc(maxBlockSize,sizeof(float));
-         rb.rightBuffer = (float*)calloc(maxBlockSize,sizeof(float));
-         rb.offset = start;
-         rb.end = trackEnd;
-         rb.ratio = srSBSMS/srIn;
-         rb.resampler = new Resampler(resampleCB, &rb);
-         
-         // Samples in selection
-         sampleCount samplesIn = end-start;
-         
-         // Samples for SBSMS to process after resampling
-         sampleCount samplesToProcess = (sampleCount) ((real)samplesIn*(srSBSMS/srIn));
-         
-         // Samples in output after resampling back
-         real stretch2;
-         if(rateStart == rateEnd)
-            stretch2 = 1.0/rateStart;
-         else
-            stretch2 = 1.0/(rateEnd-rateStart)*log(rateEnd/rateStart);
-         sampleCount samplesToGenerate = (sampleCount) ((real)samplesToProcess * stretch2);
-         sampleCount samplesOut = (sampleCount) ((real)samplesIn * stretch2);
-         double duration =  (mCurT1-mCurT0) * stretch2;
-         if(duration > maxDuration)
-            maxDuration = duration;
-         
-         sbsmsInfo si;
-         si.rs = rb.resampler;
-         si.samplesToProcess = samplesToProcess;
-         si.samplesToGenerate = samplesToGenerate;
-         si.stretch0 = rateStart;
-         si.stretch1 = rateEnd;
-         si.ratio0 = pitchStart;
-         si.ratio1 = pitchEnd;
-         
-         rb.sbsmser = sbsms_create(&samplesCB,&stretchCB,&ratioCB,rightTrack?2:1,quality,bPreAnalyze,true);
-         rb.pitch = pitch_create(rb.sbsmser,&si,srIn/srSBSMS);
-         
-         rb.outputLeftTrack = mFactory->NewWaveTrack(leftTrack->GetSampleFormat(),
-                                                     leftTrack->GetRate());
-         if(rightTrack)
-            rb.outputRightTrack = mFactory->NewWaveTrack(rightTrack->GetSampleFormat(),
-                                                         rightTrack->GetRate());
-         
-         
-         sampleCount blockSize = SBSMS_FRAME_SIZE[quality];
-         rb.outBuf = (audio*)calloc(blockSize,sizeof(audio));
-         rb.outputLeftBuffer = (float*)calloc(blockSize*2,sizeof(float));
-         if(rightTrack)
-            rb.outputRightBuffer = (float*)calloc(blockSize*2,sizeof(float));
-         
-         long pos = 0;
-         long outputCount = -1;
-         
-         // pre analysis
-         real fracPre = 0.0f;
-         if(bPreAnalyze) {
-            fracPre = 0.05f;
-            resampleBuf rbPre;
-            rbPre.block = maxBlockSize;
-            rbPre.buf = (audio*)calloc(rb.block,sizeof(audio));
-            rbPre.leftTrack = leftTrack;
-            rbPre.rightTrack = rightTrack?rightTrack:leftTrack;
-            rbPre.leftBuffer = (float*)calloc(maxBlockSize,sizeof(float));
-            rbPre.rightBuffer = (float*)calloc(maxBlockSize,sizeof(float));
-            rbPre.offset = start;
-            rbPre.end = end;
-            rbPre.ratio = srSBSMS/srIn;
-            rbPre.resampler = new Resampler(resampleCB, &rbPre);
-            si.rs = rbPre.resampler;
+            // SBSMS has a fixed sample rate - we just convert to its sample rate and then convert back
+            float srIn = leftTrack->GetRate();
+            float srSBSMS = 44100.0;
+            
+            // the resampler needs a callback to supply its samples
+            resampleBuf rb;
+            sampleCount maxBlockSize = leftTrack->GetMaxBlockSize();
+            rb.block = maxBlockSize;
+            rb.buf = (audio*)calloc(rb.block,sizeof(audio));
+            rb.leftTrack = leftTrack;
+            rb.rightTrack = rightTrack?rightTrack:leftTrack;
+            rb.leftBuffer = (float*)calloc(maxBlockSize,sizeof(float));
+            rb.rightBuffer = (float*)calloc(maxBlockSize,sizeof(float));
+            rb.offset = start;
+            rb.end = trackEnd;
+            rb.ratio = srSBSMS/srIn;
+            rb.resampler = new Resampler(resampleCB, &rb);
+            
+            // Samples in selection
+            sampleCount samplesIn = end-start;
+            
+            // Samples for SBSMS to process after resampling
+            sampleCount samplesToProcess = (sampleCount) ((real)samplesIn*(srSBSMS/srIn));
+            
+            // Samples in output after resampling back
+            real stretch2;
+            if(rateStart == rateEnd)
+               stretch2 = 1.0/rateStart;
+            else
+               stretch2 = 1.0/(rateEnd-rateStart)*log(rateEnd/rateStart);
+            sampleCount samplesToGenerate = (sampleCount) ((real)samplesToProcess * stretch2);
+            sampleCount samplesOut = (sampleCount) ((real)samplesIn * stretch2);
+            double duration =  (mCurT1-mCurT0) * stretch2;
+            if(duration > maxDuration)
+               maxDuration = duration;
+            
+            sbsmsInfo si;
+            si.rs = rb.resampler;
+            si.samplesToProcess = samplesToProcess;
+            si.samplesToGenerate = samplesToGenerate;
+            si.stretch0 = rateStart;
+            si.stretch1 = rateEnd;
+            si.ratio0 = pitchStart;
+            si.ratio1 = pitchEnd;
+            
+            rb.sbsmser = sbsms_create(&samplesCB,&stretchCB,&ratioCB,rightTrack?2:1,quality,bPreAnalyze,true);
+            rb.pitch = pitch_create(rb.sbsmser,&si,srIn/srSBSMS);
+            
+            rb.outputLeftTrack = mFactory->NewWaveTrack(leftTrack->GetSampleFormat(),
+                                                        leftTrack->GetRate());
+            if(rightTrack)
+               rb.outputRightTrack = mFactory->NewWaveTrack(rightTrack->GetSampleFormat(),
+                                                            rightTrack->GetRate());
+            
+            
+            sampleCount blockSize = SBSMS_FRAME_SIZE[quality];
+            rb.outBuf = (audio*)calloc(blockSize,sizeof(audio));
+            rb.outputLeftBuffer = (float*)calloc(blockSize*2,sizeof(float));
+            if(rightTrack)
+               rb.outputRightBuffer = (float*)calloc(blockSize*2,sizeof(float));
             
             long pos = 0;
-            long lastPos = 0;
-            long ret = 0;
-            bool stopped = false;
-            while(lastPos<samplesToProcess) {
-               ret = sbsms_pre_analyze(&samplesCB,&si,rb.sbsmser);
-               lastPos = pos;
-               pos += ret;
-               real completion = (real)lastPos/(real)samplesToProcess;
-               if (TrackProgress(0,fracPre*completion))
+            long outputCount = -1;
+            
+            // pre analysis
+            real fracPre = 0.0f;
+            if(bPreAnalyze) {
+               fracPre = 0.05f;
+               resampleBuf rbPre;
+               rbPre.block = maxBlockSize;
+               rbPre.buf = (audio*)calloc(rb.block,sizeof(audio));
+               rbPre.leftTrack = leftTrack;
+               rbPre.rightTrack = rightTrack?rightTrack:leftTrack;
+               rbPre.leftBuffer = (float*)calloc(maxBlockSize,sizeof(float));
+               rbPre.rightBuffer = (float*)calloc(maxBlockSize,sizeof(float));
+               rbPre.offset = start;
+               rbPre.end = end;
+               rbPre.ratio = srSBSMS/srIn;
+               rbPre.resampler = new Resampler(resampleCB, &rbPre);
+               si.rs = rbPre.resampler;
+               
+               long pos = 0;
+               long lastPos = 0;
+               long ret = 0;
+               bool stopped = false;
+               while(lastPos<samplesToProcess) {
+                  ret = sbsms_pre_analyze(&samplesCB,&si,rb.sbsmser);
+                  lastPos = pos;
+                  pos += ret;
+                  real completion = (real)lastPos/(real)samplesToProcess;
+                  if (TrackProgress(0,fracPre*completion))
+                     return false;
+               }
+               sbsms_pre_analyze_complete(rb.sbsmser);
+               sbsms_reset(rb.sbsmser);
+               si.rs = rb.resampler;
+            }
+            
+            // process
+            while(pos<samplesOut && outputCount) {
+               long frames;
+               if(pos+blockSize>samplesOut) {
+                  frames = samplesOut - pos;
+               } else {
+                  frames = blockSize;
+               }
+               
+               outputCount = pitch_process(rb.outBuf, frames, rb.pitch);
+               for(int i = 0; i < outputCount; i++) {
+                  rb.outputLeftBuffer[i] = rb.outBuf[i][0];
+                  if(rightTrack)
+                     rb.outputRightBuffer[i] = rb.outBuf[i][1];
+               }
+               pos += outputCount;
+               rb.outputLeftTrack->Append((samplePtr)rb.outputLeftBuffer, floatSample, outputCount);
+               if(rightTrack)
+                  rb.outputRightTrack->Append((samplePtr)rb.outputRightBuffer, floatSample, outputCount);
+               
+               double frac = (double)pos/(double)samplesOut;
+               int nWhichTrack = mCurTrackNum;
+               if(rightTrack) {
+                  nWhichTrack = 2*(mCurTrackNum/2);
+                  if (frac < 0.5)
+                     frac *= 2.0; // Show twice as far for each track, because we're doing 2 at once. 
+                  else {
+                     nWhichTrack++;
+                     frac -= 0.5;
+                     frac *= 2.0; // Show twice as far for each track, because we're doing 2 at once. 
+                  }
+               }
+               if (TrackProgress(nWhichTrack, fracPre + (1.0-fracPre)*frac))
                   return false;
             }
-            sbsms_pre_analyze_complete(rb.sbsmser);
-            sbsms_reset(rb.sbsmser);
-            si.rs = rb.resampler;
-         }
-         
-         // process
-         while(pos<samplesOut && outputCount) {
-            long frames;
-            if(pos+blockSize>samplesOut) {
-               frames = samplesOut - pos;
-            } else {
-               frames = blockSize;
-            }
-            
-            outputCount = pitch_process(rb.outBuf, frames, rb.pitch);
-            for(int i = 0; i < outputCount; i++) {
-               rb.outputLeftBuffer[i] = rb.outBuf[i][0];
-               if(rightTrack)
-                  rb.outputRightBuffer[i] = rb.outBuf[i][1];
-            }
-            pos += outputCount;
-            rb.outputLeftTrack->Append((samplePtr)rb.outputLeftBuffer, floatSample, outputCount);
+            rb.outputLeftTrack->Flush();
             if(rightTrack)
-               rb.outputRightTrack->Append((samplePtr)rb.outputRightBuffer, floatSample, outputCount);
+               rb.outputRightTrack->Flush();
             
-            double frac = (double)pos/(double)samplesOut;
-            int nWhichTrack = mCurTrackNum;
-            if(rightTrack) {
-               nWhichTrack = 2*(mCurTrackNum/2);
-               if (frac < 0.5)
-                  frac *= 2.0; // Show twice as far for each track, because we're doing 2 at once. 
-               else {
-                  nWhichTrack++;
-                  frac -= 0.5;
-                  frac *= 2.0; // Show twice as far for each track, because we're doing 2 at once. 
-               }
+            if (first)
+               leftTrack->ClearAndPaste(mCurT0, mCurT1, rb.outputLeftTrack);
+            else {
+               leftTrack->HandleClear(mCurT0, mCurT1, false, false);
+               leftTrack->HandlePaste(mCurT0, rb.outputLeftTrack);
             }
-            if (TrackProgress(nWhichTrack, fracPre + (1.0-fracPre)*frac))
-               return false;
-         }
-         rb.outputLeftTrack->Flush();
-         if(rightTrack)
-            rb.outputRightTrack->Flush();
-         
-         leftTrack->ClearAndPaste(mCurT0, mCurT1, rb.outputLeftTrack);
-         if(rightTrack)
-            rightTrack->ClearAndPaste(mCurT0, mCurT1, rb.outputRightTrack);
 
+            if(rightTrack) {
+               rightTrack->HandleClear(mCurT0, mCurT1, false, false);
+               rightTrack->HandlePaste(mCurT0, rb.outputRightTrack);
+            }
+
+            first = false;
+         }
+         mCurTrackNum++;
       }
-      
       //Iterate to the next track
-      leftTrack = (WaveTrack*)(iter.Next());
-      mCurTrackNum++;
+      t = iter.Next();
    }
    
-   //AudacityProject *p = (AudacityProject*)mParent;
-   //if (p && p->IsSticky()) {
-   //   double newLen = saveLeft->GetEndTime() - saveLeft->GetStartTime();
-   //   double timeAdded = newLen-len;
-   //   double sel = mCurT1-mCurT0;
-   //   double percent = (sel/(timeAdded+sel))*100 - 100;
-   //   ReplaceProcessedTracks(bGoodResult); 
-   //   if (!(HandleGroupChangeSpeed(percent, mCurT0, mCurT1))) {
-   //      bGoodResult = false;
-   //   }
-   //}
    if (bGoodResult)
       ReplaceProcessedTracks(bGoodResult); 
 

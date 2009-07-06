@@ -29,90 +29,93 @@ bool EffectSoundTouch::Process()
    // by the subclass for subclass-specific parameters.
    
    //Iterate over each track
-   this->CopyInputTracks(); // Set up mOutputTracks.
+   //Track::All is needed because this effect needs to introduce silence in the group tracks to keep sync
+   this->CopyInputTracks(Track::All); // Set up mOutputTracks.
    bool bGoodResult = true;
 
-   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
-   WaveTrack* leftTrack = (WaveTrack*)(iter.First());
+   TrackListIterator iter(mOutputTracks);
+   // go to first wavetrack
+   Track* t;
+   for (t = iter.First(); t->GetKind() != Track::Wave; t = iter.Next());
+   if (!t)
+      return false;
+   WaveTrack* leftTrack = (WaveTrack*)t;
    mCurTrackNum = 0;
 	m_maxNewLength = 0.0;
 	
    double len = leftTrack->GetEndTime() - leftTrack->GetStartTime();
-   
-   while (leftTrack != NULL) {
-      //Get start and end times from track
-      mCurT0 = leftTrack->GetStartTime();
-      mCurT1 = leftTrack->GetEndTime();
-      
-      //Set the current bounds to whichever left marker is
-      //greater and whichever right marker is less
-      mCurT0 = wxMax(mT0, mCurT0);
-      mCurT1 = wxMin(mT1, mCurT1);
-      
-      // Process only if the right marker is to the right of the left marker
-      if (mCurT1 > mCurT0) {
-         sampleCount start, end;
+
+   // we only do a "group change" in the first selected track of the group. 
+   // ClearAndPaste has a call to Paste that does changes to the group tracks
+   bool first = true;
+
+   while (t != NULL) {
+      if (t->GetKind() == Track::Label)
+         first = true;
+      else if (t->GetKind() == Track::Wave && t->GetSelected()) {
+         WaveTrack* leftTrack = (WaveTrack*)t;
+         //Get start and end times from track
+         mCurT0 = leftTrack->GetStartTime();
+         mCurT1 = leftTrack->GetEndTime();
          
-         if (leftTrack->GetLinked()) {
-            double t;
-            WaveTrack* rightTrack = (WaveTrack*)(iter.Next());
+         //Set the current bounds to whichever left marker is
+         //greater and whichever right marker is less
+         mCurT0 = wxMax(mT0, mCurT0);
+         mCurT1 = wxMin(mT1, mCurT1);
+         
+         // Process only if the right marker is to the right of the left marker
+         if (mCurT1 > mCurT0) {
+            sampleCount start, end;
+            
+            if (leftTrack->GetLinked()) {
+               double t;
+               WaveTrack* rightTrack = (WaveTrack*)(iter.Next());
 
-            //Adjust bounds by the right tracks markers
-            t = rightTrack->GetStartTime();
-            t = wxMax(mT0, t);
-            mCurT0 = wxMin(mCurT0, t);
-            t = rightTrack->GetEndTime();
-            t = wxMin(mT1, t);
-            mCurT1 = wxMax(mCurT1, t);
+               //Adjust bounds by the right tracks markers
+               t = rightTrack->GetStartTime();
+               t = wxMax(mT0, t);
+               mCurT0 = wxMin(mCurT0, t);
+               t = rightTrack->GetEndTime();
+               t = wxMin(mT1, t);
+               mCurT1 = wxMax(mCurT1, t);
 
-            //Transform the marker timepoints to samples
-            start = leftTrack->TimeToLongSamples(mCurT0);
-            end = leftTrack->TimeToLongSamples(mCurT1);
+               //Transform the marker timepoints to samples
+               start = leftTrack->TimeToLongSamples(mCurT0);
+               end = leftTrack->TimeToLongSamples(mCurT1);
 
-            //Inform soundtouch there's 2 channels
-            mSoundTouch->setChannels(2);
+               //Inform soundtouch there's 2 channels
+               mSoundTouch->setChannels(2);
 
-            //ProcessStereo() (implemented below) processes a stereo track
-            if (!ProcessStereo(leftTrack, rightTrack, start, end))
-            {
-               bGoodResult = false;
-               break;
+               //ProcessStereo() (implemented below) processes a stereo track
+               if (!ProcessStereo(leftTrack, rightTrack, start, end, first))
+               {
+                  bGoodResult = false;
+                  break;
+               }
+               mCurTrackNum++; // Increment for rightTrack, too.
+            } else {
+               //Transform the marker timepoints to samples
+               start = leftTrack->TimeToLongSamples(mCurT0);
+               end = leftTrack->TimeToLongSamples(mCurT1);
+
+               //Inform soundtouch there's a single channel
+               mSoundTouch->setChannels(1);
+
+               //ProcessOne() (implemented below) processes a single track
+               if (!ProcessOne(leftTrack, start, end, first))
+               {
+                  bGoodResult = false;
+                  break;
+               }
             }
-            mCurTrackNum++; // Increment for rightTrack, too.
-         } else {
-            //Transform the marker timepoints to samples
-            start = leftTrack->TimeToLongSamples(mCurT0);
-            end = leftTrack->TimeToLongSamples(mCurT1);
-
-            //Inform soundtouch there's a single channel
-            mSoundTouch->setChannels(1);
-
-            //ProcessOne() (implemented below) processes a single track
-            if (!ProcessOne(leftTrack, start, end))
-            {
-               bGoodResult = false;
-               break;
-            }
+            first = false;
          }
+         mCurTrackNum++;
       }
-      
       //Iterate to the next track
-      leftTrack = (WaveTrack*)(iter.Next());
-      mCurTrackNum++;
+      t = iter.Next();
    }
 
-   //AudacityProject *p = (AudacityProject*)mParent;
-   //if (p && p->IsSticky()) {
-   //   leftTrack = (WaveTrack*)(iter.First());
-   //   double newLen = leftTrack->GetEndTime() - leftTrack->GetStartTime();
-   //   double timeAdded = newLen-len;
-   //   double sel = mCurT1 - mCurT0;
-   //   double percent = (sel / (timeAdded + sel)) * 100 - 100;
-   //   ReplaceProcessedTracks(bGoodResult); 
-   //   if (!(HandleGroupChangeSpeed(percent, mCurT0, mCurT1))) {
-   //      bGoodResult = false;
-   //   }
-   //}
    if (bGoodResult)
       ReplaceProcessedTracks(bGoodResult); 
 
@@ -128,7 +131,7 @@ bool EffectSoundTouch::Process()
 //ProcessOne() takes a track, transforms it to bunch of buffer-blocks,
 //and executes ProcessSoundTouch on these blocks
 bool EffectSoundTouch::ProcessOne(WaveTrack *track,
-                                  sampleCount start, sampleCount end)
+                                  sampleCount start, sampleCount end, bool first)
 {
    WaveTrack *outputTrack;
    sampleCount s;
@@ -199,8 +202,12 @@ bool EffectSoundTouch::ProcessOne(WaveTrack *track,
    
    // Take the output track and insert it in place of the original
    // sample data
-   
-   track->ClearAndPaste(mCurT0, mCurT1, outputTrack);
+   if (first)
+      track->ClearAndPaste(mCurT0, mCurT1, outputTrack);
+   else {
+      track->HandleClear(mCurT0, mCurT1, false, false);
+      track->HandlePaste(mCurT0, outputTrack);
+   }
    
    double newLength = outputTrack->GetEndTime(); 
    m_maxNewLength = wxMax(m_maxNewLength, newLength);
@@ -213,7 +220,7 @@ bool EffectSoundTouch::ProcessOne(WaveTrack *track,
 }
 
 bool EffectSoundTouch::ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack, 
-                                     sampleCount start, sampleCount end)
+                                     sampleCount start, sampleCount end, bool first)
 {
    mSoundTouch->setSampleRate((unsigned int)(leftTrack->GetRate()+0.5));
    
@@ -304,8 +311,14 @@ bool EffectSoundTouch::ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack
    
    // Take the output tracks and insert in place of the original
    // sample data.
-   leftTrack->ClearAndPaste(mCurT0, mCurT1, outputLeftTrack);
-   rightTrack->ClearAndPaste(mCurT0, mCurT1, outputRightTrack);
+   if (first)
+      leftTrack->ClearAndPaste(mCurT0, mCurT1, outputLeftTrack);
+   else {
+      leftTrack->HandleClear(mCurT0, mCurT1, false, false);
+      leftTrack->HandlePaste(mCurT0, outputLeftTrack);
+   }
+   rightTrack->HandleClear(mCurT0, mCurT1, false, false);
+   rightTrack->HandlePaste(mCurT0, outputRightTrack);
 
    // Track the longest result length
    double newLength = outputLeftTrack->GetEndTime();
