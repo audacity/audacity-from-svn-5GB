@@ -74,8 +74,8 @@
 //#define EXPERIMENTAL_SEEK_BEHIND_CURSOR
 
 // Philip Van Baren 01 July 2009
-// Replace RealFFT() and PowerSpectrum function to used (faster) RealFFTf function
-//#define EXPERIMENTAL_USE_REALFFTF
+// Replace RealFFT() and PowerSpectrum function to use (faster) RealFFTf function
+#define EXPERIMENTAL_USE_REALFFTF
 
 // RBD, 1 Sep 2008
 // Enables MIDI Output of NoteTrack (MIDI) data during playback
