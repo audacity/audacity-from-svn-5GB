@@ -138,7 +138,6 @@ class AUDACITY_DLL_API Effect {
    // important for sorting.
    static wxString StripAmpersand(const wxString& str);
 
-   //bool HandleGroupChangeSpeed(double m_PercentChange, double mCurT0, double mCurT1);
  //
  // protected virtual methods
  //

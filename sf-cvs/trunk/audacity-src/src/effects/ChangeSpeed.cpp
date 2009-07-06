@@ -114,7 +114,10 @@ bool EffectChangeSpeed::Process()
 
    double len = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();
 
+   // we only do a "group change" in the first selected track of the group. 
+   // ClearAndPaste has a call to Paste that does changes to the group tracks
    bool first = true;
+
    while (t != NULL)
    {
       if (t->GetKind() == Track::Label)

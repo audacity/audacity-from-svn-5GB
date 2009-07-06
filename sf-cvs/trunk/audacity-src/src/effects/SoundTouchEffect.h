@@ -42,9 +42,9 @@ class EffectSoundTouch:public Effect {
 
  private:
    bool ProcessOne(WaveTrack * t,
-                   sampleCount start, sampleCount end);
+                   sampleCount start, sampleCount end, bool first);
    bool ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack, 
-                        sampleCount start, sampleCount end);
+                        sampleCount start, sampleCount end, bool first);
    bool ProcessStereoResults(const unsigned int outputCount, 
                               WaveTrack* outputLeftTrack, 
                               WaveTrack* outputRightTrack);
