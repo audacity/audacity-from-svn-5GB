@@ -2419,7 +2419,10 @@ void AudacityProject::OnEffect(int type, int index)
 ///
 /// DanH: I've added the third option as a temporary measure. I think this
 ///       should eventually be done by having effects as Command objects.
-bool AudacityProject::OnEffect(int type, Effect * f, wxString params)
+bool AudacityProject::OnEffect(int type,
+                               Effect * f,
+                               wxString params,
+                               bool saveState)
 {
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
@@ -2451,14 +2454,25 @@ bool AudacityProject::OnEffect(int type, Effect * f, wxString params)
    
    if (f->DoEffect(this, type, mRate, mTracks, mTrackFactory,
                    &mViewInfo.sel0, &mViewInfo.sel1, params)) {
-      wxString longDesc = f->GetEffectDescription();
-      wxString shortDesc = f->GetEffectName();
- 
-      if (shortDesc.Length() > 3 && shortDesc.Right(3)==wxT("..."))
-         shortDesc = shortDesc.Left(shortDesc.Length()-3);
+      if (saveState)
+      {
+         wxString longDesc = f->GetEffectDescription();
+         wxString shortDesc = f->GetEffectName();
 
-      PushState(longDesc, shortDesc);
-      
+         if (shortDesc.Length() > 3 && shortDesc.Right(3)==wxT("..."))
+            shortDesc = shortDesc.Left(shortDesc.Length()-3);
+
+         PushState(longDesc, shortDesc);
+
+         // Only remember a successful effect, don't rmemeber insert,
+         // or analyze effects.
+         if ((f->GetEffectFlags() & (INSERT_EFFECT | ANALYZE_EFFECT))==0) {
+            mLastEffect = f;
+            mLastEffectType = type;
+            mLastEffectDesc.Printf(_("Repeat %s"), shortDesc.c_str());
+            mCommandManager.Modify(wxT("RepeatLastEffect"), mLastEffectDesc);
+         }
+      }
       //STM:
       //The following automatically re-zooms after sound was generated.
       // IMO, it was disorienting, removing to try out without re-fitting
@@ -2473,15 +2487,6 @@ bool AudacityProject::OnEffect(int type, Effect * f, wxString params)
          focus->SetFocus();
       }
       mTrackPanel->EnsureVisible(mTrackPanel->GetFirstSelectedTrack());
-
-      // Only remember a successful effect, don't rmemeber insert,
-      // or analyze effects.
-      if ((f->GetEffectFlags() & (INSERT_EFFECT | ANALYZE_EFFECT))==0) {
-         mLastEffect = f;
-         mLastEffectType = type;
-         mLastEffectDesc.Printf(_("Repeat %s"), shortDesc.c_str());
-         mCommandManager.Modify(wxT("RepeatLastEffect"), mLastEffectDesc);
-      }
       
       mTrackPanel->Refresh(false);
    } else {
