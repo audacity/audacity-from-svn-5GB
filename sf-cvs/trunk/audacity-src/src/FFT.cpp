@@ -109,7 +109,7 @@ void InitFFT()
 }
 
 #ifdef EXPERIMENTAL_USE_REALFFTF
-#include "realfftf.h"
+#include "RealFFTf.h"
 #endif
 
 void DeinitFFT()
