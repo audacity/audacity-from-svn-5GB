@@ -1130,7 +1130,7 @@ void Meter::OnPreferences(wxCommandEvent &evt)
 {
    wxNumberEntryDialog
       d(this,
-        _("This determines how often the meter is refreshed.\nIf you have a slower PC you may want to select a\nlower refresh rate (30 per second or lower), so that\naudio qualtiy is not affected by the meter display."),
+        _("Higher refresh rates make the meter show more frequent\nchanges. A rate of 30 per second or less should prevent\nthe meter affecting audio quality on slower machines."),
         _("Meter refresh rate per second [1-100]: "),
         _("Meter Preferences"),
         mMeterRefreshRate,
