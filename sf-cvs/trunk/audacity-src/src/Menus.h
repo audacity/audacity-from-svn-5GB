@@ -332,7 +332,8 @@ wxString BuildCleanFileName(wxString fileName);
         // Help Menu
 
 void OnAbout();
-void OnHelp();
+void OnQuickHelp();
+void OnManual();
 void OnLog();
 void OnHelpWelcome();
 void OnBenchmark();

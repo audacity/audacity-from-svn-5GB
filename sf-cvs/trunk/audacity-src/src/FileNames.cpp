@@ -120,12 +120,16 @@ wxString FileNames::HtmlHelpDir()
 {
    // Use the Audacity.exe directory as a base (on Windows, others elsewhere)
    wxString exeDir = wxStandardPaths::Get().GetDataDir();
-   return FileNames::MkDir( wxFileName( exeDir, wxT("Help") ).GetFullPath() );
+   return FileNames::MkDir( wxFileName( exeDir+wxT("/help/manual"), wxEmptyString ).GetFullPath() );
 }
 
-wxString FileNames::HtmlHelpIndexFile()
+wxString FileNames::HtmlHelpIndexFile(bool quick)
 {
-   wxString htmlHelpIndex = wxFileName( HtmlHelpDir(), wxT("index.html") ).GetFullPath();
+   wxString htmlHelpIndex;
+   if(quick)
+      htmlHelpIndex = wxFileName( HtmlHelpDir(), wxT("quick_help.html") ).GetFullPath();
+   else
+      htmlHelpIndex = wxFileName( HtmlHelpDir(), wxT("index.html") ).GetFullPath();
    return htmlHelpIndex;
 }
 
