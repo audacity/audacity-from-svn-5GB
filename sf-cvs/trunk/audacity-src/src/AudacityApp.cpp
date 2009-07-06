@@ -1006,7 +1006,7 @@ bool AudacityApp::OnInit()
    delete temporarywindow;
    
    if( project->mShowSplashScreen )
-      project->OnHelpWelcome();//ShowSplashScreen( project );
+      project->OnHelpWelcome();
 
    // JKC 10-Sep-2007: Enable monitoring from the start.
    // (recommended by lprod.org).

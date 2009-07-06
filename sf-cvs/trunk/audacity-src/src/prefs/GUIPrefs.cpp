@@ -43,12 +43,10 @@ void GUIPrefs::Populate()
    // First any pre-processing for constructing the GUI.
    GetLanguages(mLangCodes, mLangNames);
 
-   mHtmlHelpCodes.Add(wxT("Standard"));
-   mHtmlHelpCodes.Add(wxT("InBrowser"));
+   mHtmlHelpCodes.Add(wxT("Local"));
    mHtmlHelpCodes.Add(wxT("FromInternet"));
 
-   mHtmlHelpChoices.Add(_("Standard"));
-   mHtmlHelpChoices.Add(_("In Browser"));
+   mHtmlHelpChoices.Add(_("Local"));
    mHtmlHelpChoices.Add(_("From Internet"));
 
    mRangeCodes.Add(_("36"));
@@ -98,7 +96,7 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
       S.TieCheckBox(_("Er&gonomic order of audio I/O buttons"),
                     wxT("/GUI/ErgonomicTransportButtons"),
                     true);
-      S.TieCheckBox(_("Show &welcome message at program start up"),
+      S.TieCheckBox(_("Show &support message at program start up"),
                     wxT("/GUI/ShowSplashScreen"),
                     true);
 
@@ -120,9 +118,9 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
                      mLangCodes);
          S.SetSizeHints(mLangNames);
 
-         S.TieChoice(_("Help:"),
+         S.TieChoice(_("Location of Manual:"),
                      wxT("/GUI/Help"),
-                     wxT("InBrowser"),
+                     wxT("Local"),
                      mHtmlHelpChoices,
                      mHtmlHelpCodes);
          S.SetSizeHints(mHtmlHelpChoices);

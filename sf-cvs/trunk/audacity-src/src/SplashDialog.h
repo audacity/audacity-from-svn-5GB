@@ -42,8 +42,6 @@ private:
    static SplashDialog * pSelf;
 };
 
-//void ShowSplashScreen( AudacityProject * pProj );
-
 #endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

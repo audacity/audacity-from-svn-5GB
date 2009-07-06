@@ -33,6 +33,7 @@ Gives an Error message with an option for help.
 #include "../HelpText.h"
 #include "../Internat.h"
 #include "../Project.h"
+#include "../Prefs.h"
 
 class ErrorDialog : public wxDialog
 {
@@ -251,14 +252,24 @@ void ShowHelpDialog(wxWindow *parent,
                      const wxString &remoteURL)
 {
    AudacityProject * pProj = GetActiveProject();
-   wxString HelpMode = wxT("Standard");
+   wxString HelpMode = wxT("Local");
 
    if( pProj )
    {
       HelpMode = pProj->mHelpPref;
+      // these next lines are for legacy cfg files (pre 2.0) where we had different modes
+      if( (HelpMode == wxT("Standard")) || (HelpMode == wxT("InBrowser")) )
+      {
+         HelpMode = wxT("Local");
+         pProj->mHelpPref = HelpMode;
+         gPrefs->Write(wxT("/GUI/Help"), HelpMode);
+      }
    }
 
-   if( (HelpMode == wxT("FromInternet")) && !remoteURL.IsEmpty() )
+   if( localFileName.Contains(wxT("Quick_Help")) )
+      // 'Quick_Help' is installed locally
+      OpenInDefaultBrowser( localFileName );
+   else if( (HelpMode == wxT("FromInternet")) && !remoteURL.IsEmpty() )
    {
       // Always go to remote URL.  Use External browser.
       OpenInDefaultBrowser( remoteURL );
@@ -270,11 +281,12 @@ void ShowHelpDialog(wxWindow *parent,
       wxASSERT( !remoteURL.IsEmpty() );
       // I can't find it'.
       // Use Built-in browser to suggest you use the remote url.
+//use the remote link
       wxString Text = HelpText( wxT("remotehelp") );
       Text.Replace( wxT("*URL*"), remoteURL );
       ShowHtmlText( parent, _("Help on the Internet"), Text );
    }
-   else if( HelpMode == wxT("InBrowser") ) 
+   else if( HelpMode == wxT("Local") ) 
    {
       // Local file, External browser 
       OpenInDefaultBrowser( wxString(wxT("file:"))+localFileName );

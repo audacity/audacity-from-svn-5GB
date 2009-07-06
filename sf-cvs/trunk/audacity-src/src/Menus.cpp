@@ -955,8 +955,8 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("About"), _("&About Audacity..."), FN(OnAbout));
    }
 
-   c->AddItem(wxT("Welcome"), _("&Show Welcome Message..."), FN(OnHelpWelcome));
-   c->AddItem(wxT("Help"), _("&Help..."), FN(OnHelp));
+   c->AddItem(wxT("QuickHelp"), _("&Quick Help (in web browser)"), FN(OnQuickHelp));
+   c->AddItem(wxT("Manual"), _("&Manual (in web browser)"), FN(OnManual));
    c->AddItem(wxT("Log"), _("Show &Log..."), FN(OnLog));
 
    if (!mCleanSpeechMode) {
@@ -5164,15 +5164,21 @@ void AudacityProject::OnAbout()
 void AudacityProject::OnHelpWelcome()
 {
    SplashDialog::Show2( this );
-//   SplashDialog dlog(this);
-//   dlog.ShowModal();
 }
 
-void AudacityProject::OnHelp()
+void AudacityProject::OnQuickHelp()
 {
    ShowHelpDialog( 
       this, 
-      FileNames::HtmlHelpIndexFile(),
+      FileNames::HtmlHelpIndexFile(true),
+      wxT("http://audacityteam.org/manual/index.php?title=Quick_Help" ));
+}
+
+void AudacityProject::OnManual()
+{
+   ShowHelpDialog( 
+      this, 
+      FileNames::HtmlHelpIndexFile(false),
       wxT("http://audacityteam.org/manual/index.php?title=Main_Page" ));
 }
 
