@@ -74,6 +74,8 @@ OBJS = \
 	LangChoice.o \
 	Legacy.o \
 	LoadModules.o \
+	Lyrics.o \
+	LyricsWindow.o \
 	Matrix.o \
 	Menus.o \
 	Mix.o \
