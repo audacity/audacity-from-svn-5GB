@@ -221,6 +221,7 @@ public:
       maxFreqOld = -1;
       windowTypeOld = -1;
       windowSizeOld = -1;
+      frequencyGainOld = false;
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
       fftSkipPointsOld = -1;
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
@@ -243,6 +244,7 @@ public:
    int          maxFreqOld;
    int          windowTypeOld;
    int          windowSizeOld;
+   bool         frequencyGainOld;
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
    int          fftSkipPointsOld;
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
@@ -697,7 +699,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
                                bool autocorrelation)
 {
    int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
-   int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000L);;
+   int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000L);
+   bool bIsFrequencyGain = (gPrefs->Read(wxT("/Spectrum/FrequencyGain"), 0L) != 0L);
    int windowType;
    int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
@@ -740,6 +743,7 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
        mSpecCache->maxFreqOld == maxFreq &&
        mSpecCache->windowTypeOld == windowType &&
        mSpecCache->windowSizeOld == windowSize &&
+       mSpecCache->frequencyGainOld == bIsFrequencyGain &&
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
        mSpecCache->fftSkipPointsOld == fftSkipPoints &&
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
@@ -779,6 +783,7 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
        oldCache->maxFreqOld == maxFreq &&
        oldCache->windowTypeOld == windowType &&
        oldCache->windowSizeOld == windowSize &&
+       oldCache->frequencyGainOld == bIsFrequencyGain &&
 #ifdef EXPERIMENTAL_FFT_SKIP_POINTS
        oldCache->fftSkipPointsOld == fftSkipPoints &&
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
@@ -817,6 +822,7 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
    mSpecCache->maxFreqOld = maxFreq;
    mSpecCache->windowTypeOld = windowType;
    mSpecCache->windowSizeOld = windowSize;
+   mSpecCache->frequencyGainOld = bIsFrequencyGain;
 
    for (x = 0; x < mSpecCache->len; x++)
       if (recalc[x]) {
@@ -883,6 +889,15 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
                            mRate, &mSpecCache->freq[half * x],
                            autocorrelation, windowType);
 #endif // EXPERIMENTAL_USE_REALFFTF
+           if(bIsFrequencyGain) {
+              // Apply a frequency-dependant gain factor
+              // scaled such that 1000 Hz gets a gain of 0dB
+              // a factor of 1.5*frequency gives the most appealing display for typical music
+              double freqgain = 0.001*(double)mRate/(double)windowSize;
+              mSpecCache->freq[half * x] += 15.0*log10(freqgain);
+              for(i=1; i<half; i++)
+                 mSpecCache->freq[half * x + i] += 15.0*log10(freqgain * i);
+           }
          }
       }
 
