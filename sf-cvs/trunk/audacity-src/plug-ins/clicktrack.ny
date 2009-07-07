@@ -4,16 +4,16 @@
 ;categories "http://lv2plug.in/ns/lv2core#GeneratorPlugin"
 ;name "Click Track..."
 ;action "Generating Click Track..."
-;info "by Dominic Mazzoni, modified by David R. Sky www.shellworld.net/~davidsky/ \nReleased under terms of the GNU General Public License version 2\nGenerates a click track at the selected tempo, beats per measure, and either\nnumber of measures or track duration, using selected click sound type.\nFor help, select 'view help screen' in 'Action choice' below (which exits plug-in)."
+;info "by Dominic Mazzoni, modified by David R. Sky\nReleased under terms of the GNU General Public License version 2\nFor help, select one of two help screens in 'Action choice' below."
 
-;control action "Action choice" choice "generate click track, view help screen" 0
+;control action "Action choice" choice "Generate track, help screen 1, help screen 2" 0
 ;control tempo "Tempo [beats per minute]" int "30 - 300 beats/minute" 120 30 300
 ;control sig "Beats per measure [bar]" int "1 - 20 beats/measure" 4 1 20
 ;control measures "Number of measures [bars]" int "1 - 1000 bars" 16 1 1000
 ;control click-track-dur "Optional click track duration [minutes seconds]" string "" ""  
 ;control ticklen "Individual click duration [milliseconds]" int "1 - 100 ms" 10 1 100
 ;control offset "Start time offset [seconds]" real "0 - 30 seconds" 0 0 30
-;control click-type "Click sound type" choice "ping,noise,tick" 0
+;control click-type "Click sound" choice "ping,noise,tick" 0
 ;control q "Noise click resonance - discernable pitch [q]" int "1 - 20" 1 1 20
 ;control high "MIDI pitch of strong click" int "18 - 116" 92 18 116
 ;control low "MIDI pitch of weak click" int "18 - 116" 80 18 116
@@ -41,29 +41,43 @@
 ; and suggestions!
 
 
-; view help or perform clicktrack.ny
+; view 1 of 2 help screens, or generate click track
 (cond ; 'master' cond
-((= action 1) ; display help screen
+((= action 1) ; display help screen 1
 (format nil
-"Click Track Generator help for more complex options
+"Click Track Generator help - screen 1 of 2
 
-'Optional click track duration': if you enter a value into this field\n[minutes seconds (separated by a space)] or [seconds], the\ngenerated click track will be at or near this duration, based on\nthis rule: only when time gives an exact number of measures will\nthis number of measures be generated, otherwise one additional\nmeasure will be generated.
+Generates a click track at the selected tempo, beats per\nmeasure, and either number of measures or track duration,\nusing selected click sound.
+
+'Tempo': number of beats (clicks) per minute.
+
+'Beats per measure (bar)': For example, 3/4 time means one\nstrong click then two others to form one bar, repeated\ndepending on 'number of measures' or 'click track duration'.
+
+'Optional click track duration': if you enter a value into this\nfield [minutes seconds (separated by a space)] or [seconds],\nthe generated click track will be at or near this duration,\nbased on this rule: only when time gives an exact number\nof measures will this number of measures be generated,\notherwise one additional measure will be generated.
 
 If you enter a value into this field, the 'number of measures'\nvalue will be ignored.
 
-'Individual click duration': sets the duration of each individual click,\nfrom a minimum of 1 millisecond (ms) to a maximum of 100 ms.
+      To generate click track or view help screen 2,\n      restart Click Track and select from 'Action choice'.") ; end format
+) ; end display help screen 1
 
-'Start time offset': makes the click track start at a later time than\nat the very beginning. Maximum 30 seconds.
+((= action 2) ; display help screen 2
+(format nil
+"Click Track Generator help - screen 2 of 2
 
-'Click sound type': choose between ping, noise, tick sound for clicks.
+'Individual click duration': the duration of each individual\nclick, minimum of 1 millisecond (ms) to maximum of 100 ms.
 
-'Noise click resonance': the higher this value, the more clearly\nnoise clicks have a tone.
+'Start time offset': makes the click track start at a later\ntime than the very beginning (zero seconds), maximum\nof 30 seconds.
 
-'MIDI pitch of strong/weak click': MIDI values indicate what pitch to\nuse. C-notes are:
+'Click sound': choose between ping, noise or tick sound\nfor clicks.
 
-24, 36, 48, 60 [middle C], 72, 84, 96, 108.\nC# [C-sharp] above middle C is 61.
-") ; end format
-) ; end display help screen
+'Noise click resonance': the higher this value, the more\nclearly noise clicks have a tone.
+
+'MIDI pitch of strong/weak click': MIDI values indicate\nwhat pitch to use. C-notes are:
+
+24, 36, 48, 60 (middle C), 72, 84, 96, 108.\nC# (C-sharp) above middle C is 61.
+
+      To generate click track or view help screen 1,\n      restart Click Track and select from 'Action choice'.") ; end format
+) ; end display help screen 2
 
 (t ; perform clicktrack.ny
 (setf click-type (+ click-type 1))
