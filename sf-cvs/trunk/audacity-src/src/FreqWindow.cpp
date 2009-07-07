@@ -1002,10 +1002,15 @@ void FreqWindow::Recalc()
    for(int i=0; i<mWindowSize; i++)
       win[i] = 1.0;
    WindowFunc(windowFunc, mWindowSize, win);
-   double wss = 0.;
+   // Scale window such that an amplitude of 1.0 in the time domain
+   // shows an amplitude of 0dB in the frequency domain
+   double wss = 0;
    for(int i=0; i<mWindowSize; i++)
-      wss += win[i]*win[i];
-   wss *= mWindowSize;
+      wss += win[i];
+   if(wss > 0)
+      wss = 4.0 / (wss*wss);
+   else
+      wss = 1.0;
 
    int start = 0;
    int windows = 0;
@@ -1066,12 +1071,14 @@ void FreqWindow::Recalc()
 #endif
 
          // Compute log power
+         // Set a sane lower limit assuming maximum time amplitude of 1.0
          float power;
+         float minpower = 1e-20*mWindowSize*mWindowSize;
          for (i = 0; i < mWindowSize; i++)
          {
             power = (out[i] * out[i]) + (out2[i] * out2[i]);
-            if(power <= 0.)
-               in[i] = -100000.;
+            if(power < minpower)
+               in[i] = log(minpower);
             else
                in[i] = log(power);
          }
@@ -1099,10 +1106,10 @@ void FreqWindow::Recalc()
       // Convert to decibels
       mYMin = 1000000.;
       mYMax = -1000000.;
-      scale = (double)windows * wss;
+      scale = wss / (double)windows;
       for (i = 0; i < half; i++)
       {
-         mProcessed[i] = 10 * log10(mProcessed[i] / scale);
+         mProcessed[i] = 10 * log10(mProcessed[i] * scale);
          if(mProcessed[i] > mYMax)
             mYMax = mProcessed[i];
          else if(mProcessed[i] < mYMin)
