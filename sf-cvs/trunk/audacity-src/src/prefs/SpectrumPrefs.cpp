@@ -141,11 +141,27 @@ void SpectrumPrefs::PopulateOrExchange(ShuttleGui & S)
                          wxT("/Spectrum/MaxFreq"),
                          8000,
                          12);
+
+         mGain =
+            S.TieTextBox(_("Gain (dB):"),
+                         wxT("/Spectrum/Gain"),
+                         20,
+                         8);
+
+         mRange =
+            S.TieTextBox(_("Range (dB):"),
+                         wxT("/Spectrum/Range"),
+                         80,
+                         8);
       }
       S.EndTwoColumn();
 
       S.TieCheckBox(_("Show the spectrum using &grayscale colors"),
                     wxT("/Spectrum/Grayscale"),
+                    false);
+
+      S.TieCheckBox(_("Use a frequency-proportional scale factor"),
+                    wxT("/Spectrum/FrequencyGain"),
                     false);
 
 #ifdef EXPERIMENTAL_FFT_Y_GRID
@@ -211,6 +227,21 @@ bool SpectrumPrefs::Validate()
 
    if (maxFreq < minFreq) {
       wxMessageBox(_("Minimum frequency must be less than maximum frequency"));
+      return false;
+   }
+
+   long gain;
+   if (!mGain->GetValue().ToLong(&gain)) {
+      wxMessageBox(_("The gain must be an integer"));
+      return false;
+   }
+   long range;
+   if (!mRange->GetValue().ToLong(&range)) {
+      wxMessageBox(_("The range must be a positive integer"));
+      return false;
+   }
+   if (range <= 0) {
+      wxMessageBox(_("The range must be at least 1 dB"));
       return false;
    }
 
