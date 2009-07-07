@@ -662,6 +662,22 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\Lyrics.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\Lyrics.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\LyricsWindow.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\LyricsWindow.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\MacroMagic.h"
 				>
 			</File>

@@ -6,7 +6,7 @@
 
   Dominic Mazzoni
   Brian Gunlogson
-  et. al.
+  et al.
 
 *******************************************************************//**
 
@@ -63,6 +63,9 @@ simplifies construction of menu items.
 #include "widgets/TimeTextCtrl.h"
 #include "ShuttleGui.h"
 #include "HistoryWindow.h"
+#ifdef EXPERIMENTAL_LYRICS_WINDOW
+   #include "LyricsWindow.h"
+#endif
 #include "Internat.h"
 #include "FileFormats.h"
 #include "FreqWindow.h"
@@ -519,9 +522,13 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
 
-   c->AddItem(wxT("UndoHistory"),_("&History..."), FN(OnHistory),
+   c->AddItem(wxT("UndoHistory"), _("&History..."), FN(OnHistory),
               AudioIONotBusyFlag | UndoAvailableFlag,
               AudioIONotBusyFlag | UndoAvailableFlag);
+
+   #ifdef EXPERIMENTAL_LYRICS_WINDOW
+      c->AddItem(wxT("Lyrics"), _("&Lyrics..."), FN(OnLyrics), LabelTracksExistFlag, LabelTracksExistFlag); 
+   #endif
 
    c->AddSeparator();
 
@@ -2874,15 +2881,6 @@ void AudacityProject::OnRedo()
    ModifyUndoMenus();
 }
 
-void AudacityProject::OnHistory()
-{
-   if (!mHistoryWindow)
-      mHistoryWindow = new HistoryWindow(this, &mUndoManager);
-
-   mHistoryWindow->Show(true);
-   mHistoryWindow->UpdateDisplay();
-}
-
 void AudacityProject::OnCut()
 {
    TrackListIterator iter(mTracks);
@@ -4159,6 +4157,25 @@ void AudacityProject::OnShowClipping()
    mTrackPanel->UpdatePrefs();
    mTrackPanel->Refresh(false);
 }
+
+void AudacityProject::OnHistory()
+{
+   if (!mHistoryWindow)
+      mHistoryWindow = new HistoryWindow(this, &mUndoManager);
+
+   mHistoryWindow->Show(true);
+   mHistoryWindow->UpdateDisplay();
+}
+
+#ifdef EXPERIMENTAL_LYRICS_WINDOW
+   void AudacityProject::OnLyrics()
+   {
+      if (!mLyricsWindow)
+         mLyricsWindow = new LyricsWindow(this);
+      wxASSERT(mLyricsWindow);
+      mLyricsWindow->Show();
+   }
+#endif
 
 void AudacityProject::OnPlotSpectrum()
 {

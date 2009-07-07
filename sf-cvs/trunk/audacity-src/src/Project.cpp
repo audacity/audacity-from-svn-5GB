@@ -97,6 +97,10 @@ scroll information.  It also has some status flags.
 #include "Dependencies.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
+#ifdef EXPERIMENTAL_LYRICS_WINDOW
+   #include "Lyrics.h"
+   #include "LyricsWindow.h"
+#endif
 #include "Internat.h"
 #include "import/Import.h"
 #include "LabelTrack.h"
@@ -652,6 +656,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mAutoScrolling(false),
      mActive(true),
      mHistoryWindow(NULL),
+     #ifdef EXPERIMENTAL_LYRICS_WINDOW
+        mLyricsWindow(NULL),
+     #endif
      mToolManager(NULL),
      mAudioIOToken(-1),
      mIsDeleting(false),
@@ -3235,6 +3242,10 @@ void AudacityProject::InitialState()
    ModifyUndoMenus();
 
    UpdateMenus();
+
+   #ifdef EXPERIMENTAL_LYRICS_WINDOW
+      UpdateLyrics();
+   #endif
 }
 
 void AudacityProject::PushState(wxString desc,
@@ -3253,6 +3264,18 @@ void AudacityProject::PushState(wxString desc,
 
    UpdateMenus();
    
+   #ifdef EXPERIMENTAL_LYRICS_WINDOW
+      // Some state pushes, like changing a track gain control (& probably others), 
+      // should not repopulate Lyrics Window and MixerBoard. 
+      // Others, such as deleting a label or adding a wave track, obviously do. 
+      // Could categorize these state changes, but for now...
+      // It's crucial to not do that repopulating during playback. 
+      if (!gAudioIO->IsStreamActive(GetAudioIOToken())) 
+      {
+         UpdateLyrics();
+      }
+   #endif
+
    if (GetTracksFitVerticallyZoomed())
       this->DoZoomFitV();
 
@@ -3306,6 +3329,9 @@ void AudacityProject::PopState(TrackList * l)
    HandleResize();
 
    UpdateMenus();
+   #ifdef EXPERIMENTAL_LYRICS_WINDOW
+      UpdateLyrics();
+   #endif
 }
 
 void AudacityProject::SetStateTo(unsigned int n)
@@ -3318,7 +3344,34 @@ void AudacityProject::SetStateTo(unsigned int n)
    mTrackPanel->SetFocusedTrack(NULL);
    mTrackPanel->Refresh(false);
    ModifyUndoMenus();
+   #ifdef EXPERIMENTAL_LYRICS_WINDOW
+      UpdateLyrics();
+   #endif
 }
+
+#ifdef EXPERIMENTAL_LYRICS_WINDOW
+   void AudacityProject::UpdateLyrics()
+   {
+      TrackListOfKindIterator iter(Track::Label, mTracks);
+      LabelTrack* pLabelTrack = (LabelTrack*)(iter.First()); // Lyrics come from only the first label track.
+      if (!pLabelTrack)
+         return;
+
+      if (!mLyricsWindow) 
+      {
+         mLyricsWindow = new LyricsWindow(this); 
+         mLyricsWindow->Show(false); // Don't show it. Need to update content regardless.
+      }
+
+      Lyrics* pLyricsPanel = mLyricsWindow->GetLyricsPanel();
+      pLyricsPanel->Clear();
+      for (int i = 0; i < pLabelTrack->GetNumLabels(); i++) 
+         pLyricsPanel->Add(pLabelTrack->GetLabel(i)->t,
+                           pLabelTrack->GetLabel(i)->title);
+      pLyricsPanel->Finish(pLabelTrack->GetEndTime());
+      pLyricsPanel->Update(0.0);
+   }
+#endif
 
 //
 // Clipboard methods
