@@ -129,6 +129,8 @@ extern void AddPages(   AudacityProject * pProj, GuiFactory & Factory,  wxNotebo
 #ifdef EXPERIMENTAL_AUDACITY_TESTER
 #endif
 
+#define EXPERIMENTAL_LYRICS_WINDOW //vvvvv Vaughan, 2009-07-06
+
 #endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

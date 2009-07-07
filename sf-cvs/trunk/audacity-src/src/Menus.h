@@ -192,7 +192,6 @@ void OnExit();
 
 void OnUndo();
 void OnRedo();
-void OnHistory();
 
 void OnCut();
 void OnSplitCut();
@@ -245,6 +244,12 @@ void OnMuteAllTracks();
 void OnUnMuteAllTracks();
 
 void OnShowClipping();
+
+void OnHistory();
+
+#ifdef EXPERIMENTAL_LYRICS_WINDOW
+   void OnLyrics();
+#endif
 
 void OnPlotSpectrum();
 void OnContrast();

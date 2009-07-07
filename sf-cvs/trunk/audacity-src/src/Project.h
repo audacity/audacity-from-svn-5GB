@@ -62,6 +62,9 @@ class TranscriptionToolBar;
 class TrackList;
 class Tags;
 class HistoryWindow;
+#ifdef EXPERIMENTAL_LYRICS_WINDOW
+   class LyricsWindow;
+#endif
 class Importer;
 class AdornedRulerPanel;
 
@@ -293,6 +296,10 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    ToolsToolBar *GetToolsToolBar();
    TranscriptionToolBar *GetTranscriptionToolBar();
 
+   #ifdef EXPERIMENTAL_LYRICS_WINDOW
+      LyricsWindow* GetLyricsWindow() { return mLyricsWindow; };
+   #endif
+
  public:
 
    // SelectionBar callback methods
@@ -336,13 +343,15 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
                   bool consolidate = false);
  private:
 
-
-   // Private Methods
-
    void ClearClipboard();
    void InitialState();
    void ModifyState();
    void PopState(TrackList * l);
+   
+   #ifdef EXPERIMENTAL_LYRICS_WINDOW
+      void UpdateLyrics();
+   #endif
+   
    void GetRegionsByLabel( Regions &regions );
    
    void AutoSaveIfNeeded();
@@ -353,9 +362,9 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    static bool GetCacheBlockFiles();
 
    // The project's name and file info
-
    wxString mFileName;
    DirManager *mDirManager; // MM: DirManager now created dynamically
+
    double mRate;
    sampleFormat mDefaultFormat;
 
@@ -363,28 +372,24 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    wxMenu *mRecentFilesMenu;
 
    // Tags (artist name, song properties, MP3 ID3 info, etc.)
-
    Tags *mTags;
 
    // List of tracks and display info
-
    TrackList *mTracks;
-//   ViewInfo mViewInfo;
 
    bool mSnapTo;
 
    TrackList *mLastSavedTracks;
 
    // Clipboard (static because it is shared by all projects)
-
    static TrackList *msClipboard;
    static AudacityProject *msClipProject;
    static double msClipLen;
 
    //shared by all projects
    static ODLock *msAllProjectDeleteMutex;
-   // History/Undo manager
 
+   // History/Undo manager
    UndoManager mUndoManager;
    bool mDirty;
 
@@ -414,7 +419,12 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    bool mAutoScrolling;
    bool mActive;
    bool mIconized;
+
    HistoryWindow *mHistoryWindow;
+   #ifdef EXPERIMENTAL_LYRICS_WINDOW
+      LyricsWindow* mLyricsWindow;
+   #endif
+
 
  public:
    ToolManager *mToolManager;

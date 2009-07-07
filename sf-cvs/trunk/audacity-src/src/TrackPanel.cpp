@@ -187,6 +187,10 @@ is time to refresh some aspect of the screen.
 #include "float_cast.h"
 #include "Internat.h"
 #include "LabelTrack.h"
+#ifdef EXPERIMENTAL_LYRICS_WINDOW
+   #include "Lyrics.h"
+   #include "LyricsWindow.h"
+#endif
 #include "NoteTrack.h"
 #include "Prefs.h"
 #include "Project.h"
@@ -809,6 +813,19 @@ void TrackPanel::OnTimer()
 
    wxCommandEvent dummyEvent;
    AudacityProject *p = GetProject();
+
+   #ifdef EXPERIMENTAL_LYRICS_WINDOW
+      if (p->GetAudioIOToken() > 0) 
+      {
+         // Update lyrics display. 
+         LyricsWindow* pLyricsWindow = p->GetLyricsWindow();
+         if (pLyricsWindow) 
+         {
+            Lyrics* pLyricsPanel = pLyricsWindow->GetLyricsPanel();
+            pLyricsPanel->Update(gAudioIO->GetStreamTime());
+         }
+      }
+   #endif
 
    // Each time the loop, check to see if we were playing or
    // recording audio, but the stream has stopped.
