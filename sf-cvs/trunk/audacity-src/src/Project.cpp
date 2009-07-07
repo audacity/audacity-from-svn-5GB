@@ -655,6 +655,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mTrackFactory(NULL),
      mAutoScrolling(false),
      mActive(true),
+     mLastFocusedWindow(NULL),
      mHistoryWindow(NULL),
      #ifdef EXPERIMENTAL_LYRICS_WINDOW
         mLyricsWindow(NULL),
@@ -1636,31 +1637,28 @@ void AudacityProject::OnActivate(wxActivateEvent & event)
 {
    mActive = event.GetActive();
 
-   // LLL:  Activate events can fire while closing project, so
-   //       protect against it.
-   if (mActive && !mIsDeleting) {
+   // Under Windows, focus can be "lost" when returning to 
+   // Audacity from a different application.
+   //
+   // This was observed by minimizing all windows using WINDOWS+M and
+   // then ALT+TAB to return to Audacity.  Focus will be given to the
+   // project window frame which is not at all useful.
+   //
+   // So, when the project window receives a deactivate event, we
+   // remember which child had the focus.  Then, when we receive the
+   // activate event, we restore that focus to the child or the track
+   // panel if no child had the focus (which probably should never happen).
+   if (!mActive) {
+      mLastFocusedWindow = FindFocus();
+   }
+   else if (mActive && !mIsDeleting) { // Can fire during close...protect against it
       SetActiveProject(this);
-
-      // Under Windows, focus can be "lost" when returning to 
-      // Audacity from a different application.  For keyboard
-      // users, this is a major problem.
-      //
-      // LL:  (Jun-2009)  I'm not really sure why I added this back in
-      //      Jul-2006, but I'm not able recreate the lost focus issue
-      //      any longer which is probably because we've made so many
-      //      improvements to focus handling since then.
-      //
-      //      In any case, it actually causes a problem where a control
-      //      in the Selection toolbar, for instance,  may have the focus
-      //      and the user needs to pop over to a different application
-      //      to do something else.  If the following SetFocus() is left
-      //      in, then upon returning to Audacity, the focus will not be
-      //      where the user left it.
-      //
-      //      So, I'm commenting it, but leaving it here in case the lost
-      //      focus issue still exists.
-      //
-      //mTrackPanel->SetFocus();
+      if (mLastFocusedWindow) {
+         mLastFocusedWindow->SetFocus();
+      }
+      else {
+         mTrackPanel->SetFocus();
+      }
    }
    event.Skip();
 }

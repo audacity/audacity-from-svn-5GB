@@ -446,6 +446,9 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
    bool mLockPlayRegion;
 
+   // See AudacityProject::OnActivate() for an explanation of this.
+   wxWindow *mLastFocusedWindow;
+
    wxWindow *mKeyboardCaptured;
 
    ImportXMLTagHandler* mImportXMLTagHandler;
