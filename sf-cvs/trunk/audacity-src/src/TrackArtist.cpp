@@ -1481,6 +1481,9 @@ void TrackArtist::DrawClipSpectrum(WaveTrack *track,
    double rate = clip->GetRate();
    double sps = 1./rate;
 
+   int range = gPrefs->Read(wxT("/Spectrum/Range"), 80L);
+   int gain = gPrefs->Read(wxT("/Spectrum/Gain"), 20L);
+
    if (!track->GetSelected())
       sel0 = sel1 = 0.0;
 
@@ -1732,7 +1735,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack *track,
 
                if (!autocorrelation) {
                   // Last step converts dB to a 0.0-1.0 range
-                  value = (value + 80.0) / 80.0;
+                  value = (value + range + gain) / (double)range;
                }
 
                if (value > 1.0)
@@ -1768,7 +1771,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack *track,
             // Build a table of (most) values, put the index in it.
             for (int i = int(i0); i < int(i1); i++) {
                float freqi=freq[x0+int(i)];
-               int value=int((freqi+80.0f)/80.0f*(maxTableSize-1));
+               int value=int((freqi+gain+range)/range*(maxTableSize-1));
                if (value < 0)
                   value=0;
                if (value >= maxTableSize)
@@ -1853,7 +1856,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack *track,
                            if (value < mFindNotesMinA)
                               value = minColor;
                            else
-                              value = (value + 80.0) / 80.0;
+                              value = (value + gain + range) / (double)range;
                         } else {
                            it++;
                            inMaximum = false;
@@ -1870,7 +1873,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack *track,
                   value=sumFreqValues(freq, x0, bin0, bin1);
                   if (!autocorrelation) {
                      // Last step converts dB to a 0.0-1.0 range
-                     value = (value + 80.0) / 80.0;
+                     value = (value + gain + range) / (double)range;
                   }
                }
                if (value > 1.0)

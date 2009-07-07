@@ -219,6 +219,8 @@ public:
    {
       minFreqOld = -1;
       maxFreqOld = -1;
+      gainOld = -1;
+      rangeOld = -1;
       windowTypeOld = -1;
       windowSizeOld = -1;
       frequencyGainOld = false;
@@ -242,6 +244,8 @@ public:
 
    int          minFreqOld;
    int          maxFreqOld;
+   int          gainOld;
+   int          rangeOld;
    int          windowTypeOld;
    int          windowSizeOld;
    bool         frequencyGainOld;
@@ -700,6 +704,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
 {
    int minFreq = gPrefs->Read(wxT("/Spectrum/MinFreq"), 0L);
    int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000L);
+   int range = gPrefs->Read(wxT("/Spectrum/Range"), 80L);
+   int gain = gPrefs->Read(wxT("/Spectrum/Gain"), 20L);
    bool bIsFrequencyGain = (gPrefs->Read(wxT("/Spectrum/FrequencyGain"), 0L) != 0L);
    int windowType;
    int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
@@ -741,6 +747,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
    if (mSpecCache &&
        mSpecCache->minFreqOld == minFreq &&
        mSpecCache->maxFreqOld == maxFreq &&
+       mSpecCache->rangeOld == range &&
+       mSpecCache->gainOld == gain &&
        mSpecCache->windowTypeOld == windowType &&
        mSpecCache->windowSizeOld == windowSize &&
        mSpecCache->frequencyGainOld == bIsFrequencyGain &&
@@ -781,6 +789,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
    if (oldCache->dirty == mDirty &&
        oldCache->minFreqOld == minFreq &&
        oldCache->maxFreqOld == maxFreq &&
+       oldCache->rangeOld == range &&
+       oldCache->gainOld == gain &&
        oldCache->windowTypeOld == windowType &&
        oldCache->windowSizeOld == windowSize &&
        oldCache->frequencyGainOld == bIsFrequencyGain &&
@@ -820,6 +830,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
 #endif //EXPERIMENTAL_FFT_SKIP_POINTS
    mSpecCache->minFreqOld = minFreq;
    mSpecCache->maxFreqOld = maxFreq;
+   mSpecCache->gainOld = gain;
+   mSpecCache->rangeOld = range;
    mSpecCache->windowTypeOld = windowType;
    mSpecCache->windowSizeOld = windowSize;
    mSpecCache->frequencyGainOld = bIsFrequencyGain;
