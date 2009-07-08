@@ -400,6 +400,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    Layout();
    Fit();
    ValueToControls();
+   ControlsToValue();
 
 #if wxUSE_ACCESSIBILITY
    SetLabel(wxT(""));
@@ -446,6 +447,7 @@ void TimeTextCtrl::SetFormatString(wxString formatString)
    Layout();
    Fit();
    ValueToControls();
+   ControlsToValue();
    UpdateAutoFocus();
 }
 
@@ -456,12 +458,14 @@ void TimeTextCtrl::SetSampleRate(double sampleRate)
    Layout();
    Fit();
    ValueToControls();
+   ControlsToValue();
 }
 
 void TimeTextCtrl::SetTimeValue(double newTime)
 {
    mTimeValue = newTime;
    ValueToControls();
+   ControlsToValue();
 }
 
 void TimeTextCtrl::EnableMenu(bool enable)
@@ -1255,6 +1259,8 @@ void TimeTextCtrl::Decrease(int steps)
       }
       steps--;
    }
+
+   ControlsToValue();
 }
 
 void TimeTextCtrl::ValueToControls()
