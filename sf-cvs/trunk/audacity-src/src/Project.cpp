@@ -952,6 +952,10 @@ void AudacityProject::UpdatePrefs()
    if (mToolManager) {
       mToolManager->UpdatePrefs();
    }
+
+   // The toolbars will be recreated, so make sure we don't leave
+   // a stale pointer hanging around.
+   mLastFocusedWindow = wxWindow::FindFocus();
 }
 
 void AudacityProject::RedrawProject(const bool bForceWaveTracks /*= false*/)
