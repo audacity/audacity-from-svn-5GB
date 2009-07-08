@@ -83,8 +83,9 @@ bool EffectReverse::Process()
          }
       }
       else if (t->GetKind() == Track::Label) {
+         AudacityProject *p = GetActiveProject();
          //if we can reverse the label
-         if (lt0 != -1.0) {
+         if (lt0 != -1.0 && p && p->IsSticky()) {
             LabelTrack *track = (LabelTrack*)t;
             track->ChangeLabelsOnReverse(lt0, lt1);
          }
