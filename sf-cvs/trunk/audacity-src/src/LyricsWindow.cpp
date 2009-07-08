@@ -15,6 +15,7 @@
 
 #include <wx/radiobut.h>
 #include <wx/toolbar.h>
+#include <wx/settings.h>
 
 #ifdef __WXMSW__
    #include "../images/AudacityLogo.xpm"
@@ -89,7 +90,7 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
    pRadioButton_Highlight->Enable(false); //vvvvv not working right in ported version, so disabled.
 
 #if defined(__WXMAC__)
-   wxColour face = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+   wxColour face = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
    pRadioButton_BouncingBall->SetBackgroundColour(face);
    pRadioButton_Highlight->SetBackgroundColour(face);
 #endif
