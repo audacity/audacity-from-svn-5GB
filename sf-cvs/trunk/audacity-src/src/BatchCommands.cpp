@@ -592,25 +592,34 @@ bool BatchCommands::ApplyChain(const wxString & filename)
    }
 
    mFileName.Empty();
+   AudacityProject *proj = GetActiveProject();
 
+   if (!res)
+   {
+      // Chain failed or was cancelled; revert to the previous state
+      UndoManager *um = proj->GetUndoManager();
+      proj->SetStateTo(um->GetCurrentState());
+      return false;
+   }
+
+   // Chain was successfully applied; save the new project state
    wxString longDesc, shortDesc;
    wxString name = gPrefs->Read(wxT("/Batch/ActiveChain"), wxEmptyString);
    if (name.IsEmpty())
    {
-      longDesc = wxT("Apply batch chain");
+      longDesc = wxT("Applied batch chain");
       shortDesc = wxT("Apply chain");
    }
    else
    {
-      longDesc = wxString::Format(wxT("Apply batch chain '%s'"), name.c_str());
+      longDesc = wxString::Format(wxT("Applied batch chain '%s'"), name.c_str());
       shortDesc = wxString::Format(wxT("Apply '%s'"), name.c_str());
    }
 
-   AudacityProject *proj = GetActiveProject();
    if (!proj)
       return false;
    proj->PushState(longDesc, shortDesc);
-   return res;
+   return true;
 }
 
 // AbortBatch() allows a premature terminatation of a batch.
