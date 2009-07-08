@@ -432,16 +432,16 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
 
    return true;
 }
-bool WaveTrack::Paste(double t0, Track *src)
+bool WaveTrack::Paste(double t0, Track *src, bool relativeLabels)
 {
-   return Paste(t0, src, NULL);
+   return Paste(t0, src, NULL, relativeLabels);
 }
 
-bool WaveTrack::Paste(double t0, Track *src, TrackList* tracks)
+bool WaveTrack::Paste(double t0, Track *src, TrackList* tracks, bool relativeLabels)
 {
    AudacityProject *p = GetActiveProject();
    if( p && p->IsSticky() && GetNode() )
-      return HandleGroupPaste(t0, src, tracks);
+      return HandleGroupPaste(t0, src, tracks, relativeLabels);
    else
       return HandlePaste(t0, src);
 }
@@ -487,9 +487,8 @@ bool WaveTrack::ClearAndAddCutLine(double t0, double t1)
 // be pasted with visible split lines.  Normally, effects do not
 // want these extra lines, so they may be merged out.
 //
-bool WaveTrack::ClearAndPaste(double t0, double t1,
-                              Track *src,
-                              bool preserve, bool merge, TrackList* tracks)
+bool WaveTrack::ClearAndPaste(double t0, double t1, Track *src, bool preserve,
+                              bool merge, TrackList* tracks, bool relativeLabels)
 {
    WaveClipList::compatibility_iterator ic;
    WaveClipList::compatibility_iterator it;
@@ -500,7 +499,7 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
 
    // If duration is 0, then it's just a plain paste
    if (dur == 0.0) {
-      return Paste(t0, src, tracks);
+      return Paste(t0, src, tracks, relativeLabels);
    }
 
    // Align to a sample
@@ -548,7 +547,7 @@ bool WaveTrack::ClearAndPaste(double t0, double t1,
    // Now, clear the selection
    if (HandleClear(t0, t1, false, false)) {
       // And paste in the new data
-      if (Paste(t0, src, tracks)) {
+      if (Paste(t0, src, tracks, relativeLabels)) {
          unsigned int i;
 
          // First, merge the new clip(s) in with the existing clips
@@ -799,7 +798,7 @@ bool WaveTrack::HandleClear(double t0, double t1,
    return true;
 }
 
-bool WaveTrack::HandleGroupPaste(double t0, Track *src, TrackList* tracks)
+bool WaveTrack::HandleGroupPaste(double t0, Track *src, TrackList* tracks, bool relativeLabels)
 {
    // get tracks
    AudacityProject *p = GetActiveProject();
@@ -843,10 +842,15 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src, TrackList* tracks)
          }
       }
       else if (t->GetKind() == Track::Label) {
-         if ((length - sel_len) > 0.0)
-            ((LabelTrack *)t)->ShiftLabelsOnInsert(length-sel_len, t0);
-         else if ((length - sel_len) < 0.0)
-            ((LabelTrack *)t)->ShiftLabelsOnClear(info->sel0+length, info->sel1);
+         LabelTrack *lt = (LabelTrack *)t;
+         if (relativeLabels && (sel_len != 0.0))
+            lt->ScaleLabels(info->sel0, info->sel1, length/sel_len);
+         else {
+            if ((length - sel_len) > 0.0)
+               lt->ShiftLabelsOnInsert(length-sel_len, t0);
+            else if ((length - sel_len) < 0.0)
+               lt->ShiftLabelsOnClear(info->sel0+length, info->sel1);
+         }
       }
    }
 

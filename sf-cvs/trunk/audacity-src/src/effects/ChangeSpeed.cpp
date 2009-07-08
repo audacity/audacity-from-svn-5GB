@@ -249,7 +249,7 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
    // sample data
 	if (bLoopSuccess) {
       if (first)
-		   track->ClearAndPaste(mCurT0, mCurT1, outputTrack, true, true, mOutputTracks);
+		   track->ClearAndPaste(mCurT0, mCurT1, outputTrack, true, true, mOutputTracks, true);
       else {
          track->HandleClear(mCurT0, mCurT1, false, false);
          track->HandlePaste(mCurT0, outputTrack);
