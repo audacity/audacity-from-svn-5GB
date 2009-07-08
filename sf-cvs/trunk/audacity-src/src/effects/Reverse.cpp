@@ -19,6 +19,7 @@
 #include <math.h>
 
 #include "Reverse.h"
+#include "../Project.h"
 #include "../WaveTrack.h"
 #include "../LabelTrack.h"
 
