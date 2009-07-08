@@ -359,7 +359,7 @@ bool EffectSBSMS::Process()
                rb.outputRightTrack->Flush();
             
             if (first)
-               leftTrack->ClearAndPaste(mCurT0, mCurT1, rb.outputLeftTrack);
+               leftTrack->ClearAndPaste(mCurT0, mCurT1, rb.outputLeftTrack, true, true, NULL, true);
             else {
                leftTrack->HandleClear(mCurT0, mCurT1, false, false);
                leftTrack->HandlePaste(mCurT0, rb.outputLeftTrack);

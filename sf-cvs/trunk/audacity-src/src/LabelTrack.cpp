@@ -149,6 +149,8 @@ void LabelTrack::SetOffset(double dOffset)
 void LabelTrack::ShiftLabelsOnClear(double b, double e)
 {
    for (size_t i=0;i<mLabels.GetCount();i++){
+      double x = mLabels[i]->t;
+      double y = mLabels[i]->t1;
       if (mLabels[i]->t >= e){//label is after deletion region
          mLabels[i]->t  = mLabels[i]->t  - (e-b);
          mLabels[i]->t1 = mLabels[i]->t1 - (e-b);
@@ -186,14 +188,6 @@ void LabelTrack::ShiftLabelsOnInsert(double length, double pt)
    }
 }
 
-void LabelTrack::ShiftLabelsOnChangeSpeed(double b, double e, double change)
-{
-   for (unsigned int i=0;i<mLabels.GetCount();i++){
-      mLabels[i]->t = AdjustTimeStampForSpeedChange(mLabels[i]->t, b, e, change);
-      mLabels[i]->t1 = AdjustTimeStampForSpeedChange(mLabels[i]->t1, b, e, change);
-   }
-}
-
 void LabelTrack::ChangeLabelsOnReverse(double b, double e)
 {
    for (size_t i=0; i<mLabels.GetCount(); i++) {
@@ -205,22 +199,27 @@ void LabelTrack::ChangeLabelsOnReverse(double b, double e)
    }
 }
 
-double LabelTrack::AdjustTimeStampForSpeedChange(double t, double b, double e, double change)
+void LabelTrack::ScaleLabels(double b, double e, double change)
+{
+   for (unsigned int i=0;i<mLabels.GetCount();i++){
+      mLabels[i]->t = AdjustTimeStampOnScale(mLabels[i]->t, b, e, change);
+      mLabels[i]->t1 = AdjustTimeStampOnScale(mLabels[i]->t1, b, e, change);
+   }
+}
+
+double LabelTrack::AdjustTimeStampOnScale(double t, double b, double e, double change)
 {
 //t is the time stamp we'll be changing
 //b and e are the selection start and end
-
-   double percentChange = (100 + change)/100;
-   //printf("t: %f\nb: %f\ne: %f\nchange: %f\n", t, b, e, change);
-   
+  
    if (t < b){
       return t;
    }else if (t > e){
-      double shift = (e-b) - ((e-b)/percentChange);  
-      return (t - shift);
+      double shift = (e-b)*change - (e-b);  
+      return t + shift;
    }else{
-      double shift = (t-b) - ((t-b)/percentChange);
-      return (t - shift);
+      double shift = (t-b)*change - (t-b);
+      return t + shift;
    }
 }
 
