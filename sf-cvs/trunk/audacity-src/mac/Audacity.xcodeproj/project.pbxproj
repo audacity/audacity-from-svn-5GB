@@ -443,6 +443,8 @@
 		1841B50D0E00AD6E00F386E9 /* ODTaskThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5060E00AD6E00F386E9 /* ODTaskThread.cpp */; };
 		1841B50E0E00AD6E00F386E9 /* ODWaveTrackTaskQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B5080E00AD6E00F386E9 /* ODWaveTrackTaskQueue.cpp */; };
 		1841B5110E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1841B50F0E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp */; };
+		1865A9B81004490500946EE6 /* Lyrics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1865A9B41004490400946EE6 /* Lyrics.cpp */; };
+		1865A9B91004490500946EE6 /* LyricsWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1865A9B61004490500946EE6 /* LyricsWindow.cpp */; };
 		186CCE6D0E51F47400659159 /* ODDecodeBlockFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCE6B0E51F47400659159 /* ODDecodeBlockFile.cpp */; };
 		186CCE720E51F48500659159 /* ODDecodeFlacTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCE6E0E51F48500659159 /* ODDecodeFlacTask.cpp */; };
 		186CCE730E51F48500659159 /* ODDecodeTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186CCE700E51F48500659159 /* ODDecodeTask.cpp */; };
@@ -1920,7 +1922,7 @@
 		174F73CD098D516D009CD6E0 /* AudacityOGG.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityOGG.icns; sourceTree = "<group>"; };
 		174F73CE098D516D009CD6E0 /* AudacityProject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityProject.icns; sourceTree = "<group>"; };
 		174F73CF098D516D009CD6E0 /* AudacityWAV.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityWAV.icns; sourceTree = "<group>"; };
-		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
+		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
 		176A1A5B098B7B8D00DC73B4 /* libnyquist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libnyquist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		176EE9DB09A2EC1000188F3B /* caf.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = caf.c; sourceTree = "<group>"; };
 		176EE9DC09A2EC1000188F3B /* flac.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = flac.c; sourceTree = "<group>"; };
@@ -2230,6 +2232,10 @@
 		1841B5090E00AD6E00F386E9 /* ODWaveTrackTaskQueue.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ODWaveTrackTaskQueue.h; path = ondemand/ODWaveTrackTaskQueue.h; sourceTree = "<group>"; };
 		1841B50F0E00AD8D00F386E9 /* ODPCMAliasBlockFile.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ODPCMAliasBlockFile.cpp; sourceTree = "<group>"; };
 		1841B5100E00AD8D00F386E9 /* ODPCMAliasBlockFile.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ODPCMAliasBlockFile.h; sourceTree = "<group>"; };
+		1865A9B41004490400946EE6 /* Lyrics.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Lyrics.cpp; sourceTree = "<group>"; };
+		1865A9B51004490400946EE6 /* Lyrics.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Lyrics.h; sourceTree = "<group>"; };
+		1865A9B61004490500946EE6 /* LyricsWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = LyricsWindow.cpp; sourceTree = "<group>"; };
+		1865A9B71004490500946EE6 /* LyricsWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LyricsWindow.h; sourceTree = "<group>"; };
 		186CCE6B0E51F47400659159 /* ODDecodeBlockFile.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ODDecodeBlockFile.cpp; sourceTree = "<group>"; };
 		186CCE6C0E51F47400659159 /* ODDecodeBlockFile.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ODDecodeBlockFile.h; sourceTree = "<group>"; };
 		186CCE6E0E51F48500659159 /* ODDecodeFlacTask.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ODDecodeFlacTask.cpp; path = ondemand/ODDecodeFlacTask.cpp; sourceTree = "<group>"; };
@@ -4259,6 +4265,10 @@
 				1790B0A409883BFD008A330A /* Legacy.h */,
 				28B6ED8D0DE3D1B50046F0F3 /* LoadModules.cpp */,
 				28B6ED8E0DE3D1B50046F0F3 /* LoadModules.h */,
+				1865A9B41004490400946EE6 /* Lyrics.cpp */,
+				1865A9B51004490400946EE6 /* Lyrics.h */,
+				1865A9B61004490500946EE6 /* LyricsWindow.cpp */,
+				1865A9B71004490500946EE6 /* LyricsWindow.h */,
 				28FB121F0A3790A8006F0917 /* MacroMagic.h */,
 				28EBA7FF0A78FAF800C8BB1F /* Matrix.cpp */,
 				28EBA8000A78FAF800C8BB1F /* Matrix.h */,
@@ -8364,6 +8374,8 @@
 				28DABFBE0FF19DB100AC7848 /* RealFFTf.cpp in Sources */,
 				2800FE370FF32566005CA9E5 /* MidiIOPrefs.cpp in Sources */,
 				1818559A0FFE916C0026D190 /* ScreenshotCommand.cpp in Sources */,
+				1865A9B81004490500946EE6 /* Lyrics.cpp in Sources */,
+				1865A9B91004490500946EE6 /* LyricsWindow.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
