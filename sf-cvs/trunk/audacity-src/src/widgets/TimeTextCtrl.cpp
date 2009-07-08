@@ -1158,7 +1158,7 @@ void TimeTextCtrl::SetFieldFocus(int digit)
    GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_FOCUS,
                                 this,
                                 wxOBJID_CLIENT,
-                                mLastField);
+                                mFocusedDigit + 1);
 #endif
 }
 
@@ -1172,7 +1172,7 @@ void TimeTextCtrl::Updated()
    GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_NAMECHANGE,
                                 this,
                                 wxOBJID_CLIENT,
-                                mLastField);
+                                mFocusedDigit + 1);
    SetFieldFocus(mFocusedDigit);
 #endif
 }
@@ -1375,6 +1375,8 @@ TimeTextCtrlAx::TimeTextCtrlAx(TimeTextCtrl *ctrl)
 :  wxWindowAccessible(ctrl)
 {
    mCtrl = ctrl;
+   mLastField = -1;
+   mLastDigit = -1;
 }
 
 TimeTextCtrlAx::~TimeTextCtrlAx()
@@ -1407,7 +1409,7 @@ wxAccStatus TimeTextCtrlAx::GetChild(int childId, wxAccessible **child)
 // Gets the number of children.
 wxAccStatus TimeTextCtrlAx::GetChildCount(int *childCount)
 {
-   *childCount = mCtrl->mFields.GetCount();
+   *childCount = mCtrl->mDigits.GetCount();
 
    return wxACC_OK;
 }
@@ -1440,7 +1442,7 @@ wxAccStatus TimeTextCtrlAx::GetDescription(int childId, wxString *description)
 // If this object has the focus, child should be 'this'.
 wxAccStatus TimeTextCtrlAx::GetFocus(int *childId, wxAccessible **child)
 {
-   *childId = mCtrl->GetFocusedField();
+   *childId = mCtrl->GetFocusedDigit();
    *child = this;
 
    return wxACC_OK;
@@ -1479,8 +1481,9 @@ wxAccStatus TimeTextCtrlAx::GetLocation(wxRect & rect, int elementId)
    rect = mCtrl->GetRect();
 
    if (elementId != wxACC_SELF) {
-      rect.x += mCtrl->mFields[elementId - 1].fieldX;
-      rect.width =  mCtrl->mFields[elementId - 1].fieldW;
+//      rect.x += mCtrl->mFields[elementId - 1].fieldX;
+//      rect.width =  mCtrl->mFields[elementId - 1].fieldW;
+        rect = mCtrl->mDigits[elementId - 1].digitBox;
    }
 
    rect.SetPosition(mCtrl->GetParent()->ClientToScreen(rect.GetPosition()));
@@ -1491,18 +1494,63 @@ wxAccStatus TimeTextCtrlAx::GetLocation(wxRect & rect, int elementId)
 // Gets the name of the specified object.
 wxAccStatus TimeTextCtrlAx::GetName(int childId, wxString *name)
 {
+   wxString value = mCtrl->GetTimeString();
+   int field = mCtrl->GetFocusedField();
+
+   // Return the entire time string including the control label
+   // when the requested child ID is wxACC_SELF.  (Mainly when
+   // the control gets the focus.)
    if (childId == wxACC_SELF) {
       *name = mCtrl->GetName();
       if (name->IsEmpty()) {
          *name = mCtrl->GetLabel();
       }
 
-      *name += wxT(" ") + mCtrl->GetTimeString();
+      *name += wxT(" ") +
+               mCtrl->GetTimeString();
    }
-   else {
-      *name = mCtrl->mFields[mCtrl->GetFocusedField() - 1].str +
+   // The user has moved from one field of the time to another so
+   // report the value of the field and the field's label.
+   else if (mLastField != field) {
+      wxString label = mCtrl->mFields[field - 1].label;
+      int cnt = mCtrl->mFields.GetCount();
+      wxString decimal = wxLocale::GetInfo(wxLOCALE_DECIMAL_POINT, wxLOCALE_CAT_NUMBER);
+
+      // If the new field is the last field, then check it to see if
+      // it represents fractions of a second.
+      if (field > 1 && field == cnt) {
+         if (mCtrl->mFields[field - 2].label == decimal) {
+            int digits = mCtrl->mFields[field - 1].digits;
+            if (digits == 2) {
+               label = _("centiseconds");
+            }
+            else if (digits == 3) {
+               label = _("milliseconds");
+            }
+         }
+      }
+      // If the field following this one represents fractions of a
+      // second then use that label instead of the decimal point.
+      else if (label == decimal && field == cnt - 1) {
+         label = mCtrl->mFields[field].label;
+      }
+
+      *name = mCtrl->mFields[field - 1].str +
               wxT(" ") +
-              mCtrl->mFields[mCtrl->GetFocusedField() - 1].label;
+              label;
+      mLastField = field;
+      mLastDigit = childId;
+   }
+   // The user has moved from one digit to another within a field so
+   // just report the digit under the cursor.
+   else if (mLastDigit != childId) {
+      *name = mCtrl->GetTimeString().at(mCtrl->mDigits[childId - 1].pos);
+      mLastDigit = childId;
+   }
+   // The user has updated the value of a field, so report the field's
+   // value only.
+   else {
+      *name = mCtrl->mFields[field - 1].str;
    }
 
    return wxACC_OK;

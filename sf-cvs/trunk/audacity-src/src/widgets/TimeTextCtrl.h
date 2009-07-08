@@ -82,6 +82,7 @@ class TimeTextCtrl: public wxControl{
    void EnableMenu(bool enable = true);
 
    int GetFocusedField() { return mLastField; };
+   int GetFocusedDigit() { return mFocusedDigit; };
 
 private:
 
@@ -231,6 +232,8 @@ public:
 
 private:
    TimeTextCtrl *mCtrl;
+   int mLastField;
+   int mLastDigit;
 };
 
 #endif // wxUSE_ACCESSIBILITY
