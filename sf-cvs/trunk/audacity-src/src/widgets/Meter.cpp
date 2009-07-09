@@ -5,6 +5,7 @@
   Meter.cpp
 
   Dominic Mazzoni
+  Vaughan Johnson
 
   2004.06.25 refresh rate limited to 30mS, by ChackoN
 
@@ -15,6 +16,10 @@
 
   This is a bunch of common code that can display many different
   forms of VU meters and other displays.
+
+  But note that a lot of later code here assumes these are 
+  MeterToolBar meters, e.g., Meter::StartMonitoring, 
+  so these are not as generic/common as originally intended.
 
 *//****************************************************************//**
 
@@ -40,10 +45,7 @@
 #include <wx/dcmemory.h>
 #include <wx/image.h>
 #include <wx/intl.h>
-#define WANT_METER_MENU 1 //vvv
-#if WANT_METER_MENU
-   #include <wx/menu.h>
-#endif
+#include <wx/menu.h>
 #include <wx/settings.h>
 #include <wx/textdlg.h>
 #include <wx/numdlg.h>
@@ -185,20 +187,18 @@ BEGIN_EVENT_TABLE(Meter, wxPanel)
    EVT_ERASE_BACKGROUND(Meter::OnErase)
    EVT_PAINT(Meter::OnPaint)
    EVT_SIZE(Meter::OnSize)
-   #if WANT_METER_MENU
-      EVT_MENU(OnDisableMeterID, Meter::OnDisableMeter)
-      EVT_MENU(OnHorizontalID, Meter::OnHorizontal)
-      EVT_MENU(OnVerticalID, Meter::OnVertical)
-      EVT_MENU(OnMultiID, Meter::OnMulti)
-      EVT_MENU(OnEqualizerID, Meter::OnEqualizer)
-      EVT_MENU(OnWaveformID, Meter::OnWaveform)
-      EVT_MENU(OnLinearID, Meter::OnLinear)
-      EVT_MENU(OnDBID, Meter::OnDB)
-      EVT_MENU(OnClipID, Meter::OnClip)
-      EVT_MENU(OnMonitorID, Meter::OnMonitor)
-      EVT_MENU(OnFloatID, Meter::OnFloat)
-      EVT_MENU(OnPreferencesID, Meter::OnPreferences)
-   #endif
+   EVT_MENU(OnDisableMeterID, Meter::OnDisableMeter)
+   EVT_MENU(OnHorizontalID, Meter::OnHorizontal)
+   EVT_MENU(OnVerticalID, Meter::OnVertical)
+   EVT_MENU(OnMultiID, Meter::OnMulti)
+   EVT_MENU(OnEqualizerID, Meter::OnEqualizer)
+   EVT_MENU(OnWaveformID, Meter::OnWaveform)
+   EVT_MENU(OnLinearID, Meter::OnLinear)
+   EVT_MENU(OnDBID, Meter::OnDB)
+   EVT_MENU(OnClipID, Meter::OnClip)
+   EVT_MENU(OnMonitorID, Meter::OnMonitor)
+   EVT_MENU(OnFloatID, Meter::OnFloat)
+   EVT_MENU(OnPreferencesID, Meter::OnPreferences)
 END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(Meter, wxPanel)
@@ -206,12 +206,13 @@ IMPLEMENT_CLASS(Meter, wxPanel)
 Meter::Meter(wxWindow* parent, wxWindowID id,
              bool isInput,
              const wxPoint& pos /*= wxDefaultPosition*/,
-             const wxSize& size /*= wxDefaultSize*/):
-   wxPanel(parent, id, pos, size),
+             const wxSize& size /*= wxDefaultSize*/, 
+             Style style /*= HorizontalStereo*/)
+: wxPanel(parent, id, pos, size),
    mQueue(1024),
    mWidth(size.x), mHeight(size.y),
    mIsInput(isInput),
-   mStyle(HorizontalStereo),
+   mStyle(style),
    mDB(true),
    mDBRange(ENV_DB_RANGE),
    mDecay(true),
@@ -276,7 +277,10 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mRMSBrush = mDisabledBkgndBrush;
    }
 
-   CreateIcon(2);
+   // MixerTrackCluster style has no menu, so disallows SetStyle, so never needs icon.
+   if (mStyle != MixerTrackCluster)
+      CreateIcon(2);
+
    mRuler.SetFonts(GetFont(), GetFont(), GetFont());
 
    mTimer.SetOwner(this, OnMeterUpdateID);
@@ -361,6 +365,9 @@ void Meter::OnSize(wxSizeEvent &evt)
 
 void Meter::OnMouse(wxMouseEvent &evt)
 {
+   if (mStyle == MixerTrackCluster) // MixerTrackCluster style has no menu.
+      return;
+
   #if wxUSE_TOOLTIPS // Not available in wxX11
    if (evt.Leaving()){
       GetActiveProject()->TP_DisplayStatusMessage(wxT(""));
@@ -375,57 +382,51 @@ void Meter::OnMouse(wxMouseEvent &evt)
    }
   #endif
 
-   #if WANT_METER_MENU
-      if (evt.RightDown() ||
-          (evt.ButtonDown() && mMenuRect.Contains(evt.m_x, evt.m_y))) 
-      {
-         wxMenu *menu = new wxMenu();
-         // Note: these should be kept in the same order as the enum
-         if (mMeterDisabled)
-            menu->Append(OnDisableMeterID, _("Enable Meter"));
+   if (evt.RightDown() ||
+       (evt.ButtonDown() && mMenuRect.Contains(evt.m_x, evt.m_y))) 
+   {
+      wxMenu *menu = new wxMenu();
+      // Note: these should be kept in the same order as the enum
+      if (mMeterDisabled)
+         menu->Append(OnDisableMeterID, _("Enable Meter"));
+      else
+         menu->Append(OnDisableMeterID, _("Disable Meter"));
+      if (mIsInput) {
+         if (gAudioIO->IsMonitoring())
+            menu->Append(OnMonitorID, _("Stop Monitoring"));
          else
-            menu->Append(OnDisableMeterID, _("Disable Meter"));
-         if (mIsInput) {
-            if (gAudioIO->IsMonitoring())
-               menu->Append(OnMonitorID, _("Stop Monitoring"));
-            else
-               menu->Append(OnMonitorID, _("Start Monitoring"));
-         }
-         menu->AppendSeparator();
+            menu->Append(OnMonitorID, _("Start Monitoring"));
+      }
+      menu->AppendSeparator();
 
-         menu->Append(OnHorizontalID, _("Horizontal Stereo"));
-         menu->Append(OnVerticalID, _("Vertical Stereo"));
-         //menu->Append(OnMultiID, _("Vertical Multichannel"));
-         //menu->Append(OnEqualizerID, _("Equalizer"));
-         //menu->Append(OnWaveformID, _("Waveform"));
-         //menu->Enable(OnHorizontalID + mStyle, false);
-         menu->Enable(mStyle==VerticalStereo? OnVerticalID: OnHorizontalID, false);
-         menu->AppendSeparator();
+      menu->Append(OnHorizontalID, _("Horizontal Stereo"));
+      menu->Append(OnVerticalID, _("Vertical Stereo"));
+      //menu->Append(OnMultiID, _("Vertical Multichannel"));
+      //menu->Append(OnEqualizerID, _("Equalizer"));
+      //menu->Append(OnWaveformID, _("Waveform"));
+      //menu->Enable(OnHorizontalID + mStyle, false);
+      menu->Enable(mStyle==VerticalStereo? OnVerticalID: OnHorizontalID, false);
+      menu->AppendSeparator();
 
-         menu->Append(OnLinearID, _("Linear"));
-         menu->Append(OnDBID, _("dB"));
-         menu->Enable(mDB? OnDBID: OnLinearID, false);
-         //menu->AppendSeparator();
-         //menu->Append(OnClipID, _("Turn on clipping"));
-         //menu->AppendSeparator();
-         //menu->Append(OnFloatID, _("Float Window"));
+      menu->Append(OnLinearID, _("Linear"));
+      menu->Append(OnDBID, _("dB"));
+      menu->Enable(mDB? OnDBID: OnLinearID, false);
+      //menu->AppendSeparator();
+      //menu->Append(OnClipID, _("Turn on clipping"));
+      //menu->AppendSeparator();
+      //menu->Append(OnFloatID, _("Float Window"));
 
-         menu->AppendSeparator();
-         menu->Append(OnPreferencesID, _("Preferences..."));
+      menu->AppendSeparator();
+      menu->Append(OnPreferencesID, _("Preferences..."));
 
 
-         if (evt.RightDown())
-            PopupMenu(menu, evt.m_x, evt.m_y);
-         #if WANT_METER_MENU
-            else
-               PopupMenu(menu, mMenuRect.x + 1, mMenuRect.y + mMenuRect.height + 1);
-         #endif // WANT_METER_MENU
-         delete menu;
-      }       
-      else 
-   #endif // WANT_METER_MENU
-
-   if (evt.ButtonDown()) {
+      if (evt.RightDown())
+         PopupMenu(menu, evt.m_x, evt.m_y);
+      else
+         PopupMenu(menu, mMenuRect.x + 1, mMenuRect.y + mMenuRect.height + 1);
+      delete menu;
+   }
+   else if (evt.ButtonDown()) {
       if (mIsInput)
          StartMonitoring();
    }
@@ -433,6 +434,9 @@ void Meter::OnMouse(wxMouseEvent &evt)
 
 void Meter::SetStyle(Meter::Style newStyle)
 {
+   // MixerTrackCluster disallows style change.
+   if (mStyle == MixerTrackCluster)
+      return;
    mStyle = newStyle;
    mLayoutValid = false;
    Refresh(true);
@@ -547,6 +551,56 @@ void Meter::UpdateDisplay(int numChannels, int numFrames, float *sampleData)
    mQueue.Put(msg);
 }
 
+void Meter::UpdateDisplay(int numChannels, int numFrames, 
+                           // Need to make these double-indexed arrays if we handle more than 2 channels.
+                           float* maxLeft, float* rmsLeft, 
+                           float* maxRight, float* rmsRight)
+{
+   int i, j;
+   int num = intmin(numChannels, mNumBars);
+   MeterUpdateMsg msg;
+
+   msg.numFrames = numFrames;
+   for(j=0; j<mNumBars; j++) {
+      msg.peak[j] = 0.0;
+      msg.rms[j] = 0.0;
+      msg.clipping[j] = false;
+      msg.headPeakCount[j] = 0;
+      msg.tailPeakCount[j] = 0;
+   }
+
+   for(i=0; i<numFrames; i++) {
+      for(j=0; j<num; j++) {
+         msg.peak[j] = floatMax(msg.peak[j], ((j == 0) ? maxLeft[i] : maxRight[i]));
+         msg.rms[j] = floatMax(msg.rms[j], ((j == 0) ? rmsLeft[i] : rmsRight[i]));
+
+         // In addition to looking for mNumPeakSamplesToClip peaked
+         // samples in a row, also send the number of peaked samples
+         // at the head and tail, in case there's a run 
+         // of peaked samples that crosses block boundaries.
+         if (fabs((j == 0) ? maxLeft[i] : maxRight[i]) >= 1.0)
+         {
+            if (msg.headPeakCount[j]==i)
+               msg.headPeakCount[j]++;
+            msg.tailPeakCount[j]++;
+            if (msg.tailPeakCount[j] > mNumPeakSamplesToClip)
+               msg.clipping[j] = true;
+         }
+         else
+            msg.tailPeakCount[j] = 0;
+      }
+   }
+
+   if (mDB) {
+      for(j=0; j<mNumBars; j++) {
+         msg.peak[j] = ToDB(msg.peak[j], mDBRange);
+         msg.rms[j] = ToDB(msg.rms[j], mDBRange);
+      }
+   }
+
+   mQueue.Put(msg);
+}
+
 void Meter::OnMeterUpdate(wxTimerEvent &evt)
 {
    MeterUpdateMsg msg;
@@ -562,6 +616,7 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
       double deltaT = msg.numFrames / mRate;
       int j;
       
+      // <Why is this in the loop, rather than top of the method?>
       if (mMeterDisabled)
          return;
       //wxLogDebug(wxT("Pop: %s"), msg.toString().c_str());
@@ -645,10 +700,17 @@ void Meter::ResetBar(MeterBar *b, bool resetClipping)
 
 void Meter::HandleLayout()
 {
-   int iconWidth = mIcon->GetWidth();
-   int iconHeight = mIcon->GetHeight();
-   int menuWidth = 17;
-   int menuHeight = 14;
+   int iconWidth = 0;
+   int iconHeight = 0;
+   int menuWidth = 0;
+   int menuHeight = 0;
+   if (mStyle != MixerTrackCluster)
+   {
+      iconWidth = mIcon->GetWidth();
+      iconHeight = mIcon->GetHeight();
+      menuWidth = 17;
+      menuHeight = 11;
+   }
    int width = mWidth;
    int height = mHeight;
    int left = 0, top = 0;
@@ -664,20 +726,25 @@ void Meter::HandleLayout()
       wxPrintf(wxT("Style not handled yet!\n"));
       break;
    case VerticalStereo:
-      #if WANT_METER_MENU
-         mMenuRect = wxRect(mWidth - menuWidth - 5, mHeight - menuHeight - 2,
-                            menuWidth, menuHeight);
-         if (mHeight < (menuHeight + iconHeight + 8))
-            mIconPos = wxPoint(-999, -999); // Don't display
-         else
-      #endif // WANT_METER_MENU
-            mIconPos = wxPoint(mWidth - iconWidth - 1, 1);
+      mMenuRect = wxRect(mWidth - menuWidth - 5, mHeight - menuHeight - 2,
+                         menuWidth, menuHeight);
+      if (mHeight < (menuHeight + iconHeight + 8))
+         mIconPos = wxPoint(-999, -999); // Don't display
+      else
+         mIconPos = wxPoint(mWidth - iconWidth - 1, 1);
       width = intmin(mWidth-(iconWidth+2), mWidth-(menuWidth+3));
+   case MixerTrackCluster:
+      // Doesn't show menu, icon, or L/R labels,
+      // but otherwise like VerticalStereo.
+
       if (width >= mLeftSize.x + mRightSize.x + 24) {
-         mLeftTextPos = wxPoint(2, height-2-mLeftSize.y);
+         if (mStyle != MixerTrackCluster)
+         {
+            mLeftTextPos = wxPoint(2, height-2-mLeftSize.y);
+            left += mLeftSize.x+4;
+         }
          mRightTextPos = wxPoint(width-mLeftSize.x, height-2-mLeftSize.y);
-         left += mLeftSize.x+4;
-         width -= mLeftSize.x + mRightSize.x + 8;
+         width -= mLeftSize.x + mRightSize.x + 8; //vvvvv ...but then -8 in UmixIt? -- for vertical only?
       }
       barw = (width-2)/2;
       barh = height - 4;
@@ -713,24 +780,19 @@ void Meter::HandleLayout()
          mRuler.SetRange(1, 0);
          mRuler.SetFormat(Ruler::RealFormat);
       }
-      #if WANT_METER_MENU
+      if (mStyle != MixerTrackCluster) // MixerTrackCluster style has no menu.
          mRuler.OfflimitsPixels(mMenuRect.y-mBar[1].r.y, mBar[1].r.height);
-      #endif // WANT_METER_MENU
       break;
    case HorizontalStereo:
       if (mWidth < menuWidth + iconWidth + 8) {
          mIconPos = wxPoint(-999, -999); // Don't display icon
-         #if WANT_METER_MENU
-            mMenuRect = wxRect(2, mHeight - menuHeight - 2,
-                               menuWidth, menuHeight);
-         #endif // WANT_METER_MENU
+         mMenuRect = wxRect(2, mHeight - menuHeight - 2,
+                            menuWidth, menuHeight);
       }         
       else {
          mIconPos = wxPoint(2, mHeight - iconHeight);
-         #if WANT_METER_MENU
-            mMenuRect = wxRect(iconWidth + 2, mHeight - menuHeight - 5,
-                               menuWidth, menuHeight);
-         #endif // WANT_METER_MENU
+         mMenuRect = wxRect(iconWidth + 2, mHeight - menuHeight - 5,
+                            menuWidth, menuHeight);
       }
       height = intmin(height-(menuHeight+3), height-iconHeight) - 2;
       left = 2 + intmax(mLeftSize.x, mRightSize.x);
@@ -771,9 +833,7 @@ void Meter::HandleLayout()
          mRuler.SetRange(0, 1);
          mRuler.SetFormat(Ruler::RealFormat);
       }
-      #if WANT_METER_MENU
-         mRuler.OfflimitsPixels(0, mMenuRect.x+mMenuRect.width-4);
-      #endif // WANT_METER_MENU
+      mRuler.OfflimitsPixels(0, mMenuRect.x+mMenuRect.width-4);
       break;
    case Waveform:
       mNumBars = 0;
@@ -801,7 +861,9 @@ void Meter::HandleLayout()
       mAllBarsRect = wxRect(left, top, right-left+1, bottom-top+1);
    }
 
-   CreateIcon(mIconPos.y % 4);
+   // MixerTrackCluster style has no popup, so disallows SetStyle, so never needs icon.
+   //vvvvv There's an ASSERT failure if this:  if (mStyle != MixerTrackCluster)
+      CreateIcon(mIconPos.y % 4);
 
    mLayoutValid = true;
 }
@@ -811,9 +873,21 @@ void Meter::HandlePaint(wxDC &dc)
    int i;
 
    dc.SetFont(GetFont());
-   if (mLeftSize.x == 0) {
-      dc.GetTextExtent(mLeftText, &mLeftSize.x, &mLeftSize.y);
-      dc.GetTextExtent(mRightText, &mRightSize.x, &mRightSize.y);
+   if (mLeftSize.x == 0) { // Not yet initialized to dc.
+      if (mStyle != MixerTrackCluster) // MixerTrackCluster style has no L/R labels.
+      {
+         dc.GetTextExtent(mLeftText, &mLeftSize.x, &mLeftSize.y);
+         dc.GetTextExtent(mRightText, &mRightSize.x, &mRightSize.y);
+      }
+      if ((mStyle == VerticalStereo) || (mStyle == MixerTrackCluster)) // VerticalMulti?
+      {
+         // For any vertical style, also need mRightSize big enough for Ruler width.
+         int rulerWidth;
+         int rulerHeight;
+         dc.GetTextExtent(wxT("-88"), &rulerWidth, &rulerHeight); // -88 is nice and wide.
+         if (mRightSize.x < rulerWidth)
+            mRightSize.x = rulerWidth;
+      }
    }
 
    if (!mLayoutValid)
@@ -832,42 +906,36 @@ void Meter::HandlePaint(wxDC &dc)
    dc.DrawRectangle(0, 0, mWidth, mHeight);
 #endif
 
-   dc.DrawBitmap(*mIcon, mIconPos.x, mIconPos.y, true);
+   // MixerTrackCluster style has no icon or menu.
+   if (mStyle != MixerTrackCluster)
+   {
+      dc.DrawBitmap(*mIcon, mIconPos.x, mIconPos.y, true);
 
-   #if WANT_METER_MENU
       // Draws a beveled button and a down pointing triangle.
       // The style and sizing matches the ones in the title 
       // bar of the waveform left-hand-side panels.
-      {
-         wxRect r = mMenuRect;
-         AColor::Bevel(dc, true, r);
-         dc.SetBrush(*wxBLACK_BRUSH);
-         dc.SetPen(*wxBLACK_PEN);
-         AColor::Arrow(dc,
-                       r.x + 3,
-                       r.y + 5,
-                       10);
-      }
 
-      if (mNumBars>0)
-         mRuler.Draw(dc);
-   #else
-      // Label as "Mix Volume" and "Input Volume" for Camp Jam. 
-      int nFontSize = this->GetFont().GetPointSize();
-      int nXPos = mIconPos.x + mIcon->GetWidth() + 8;
-      int nYPos = mIconPos.y + (mIcon->GetHeight() - nFontSize - 6)/2;
-      if (nYPos < 0)
-         nYPos = 0;
-      if (mIsInput)
-         dc.DrawText(_("Input Volume"), nXPos, nYPos);
-      else
-         dc.DrawText(_("Mix Volume"), nXPos, nYPos);
-   #endif // WANT_METER_MENU
+      wxRect r = mMenuRect;
+      AColor::Bevel(dc, true, r);
+      dc.SetBrush(*wxBLACK_BRUSH);
+      dc.SetPen(*wxBLACK_PEN);
+      AColor::Arrow(dc,
+                    r.x + 3,
+                    r.y + 5,
+                    10);
+   }
+
+   if (mNumBars>0)
+      mRuler.Draw(dc);
    
-   dc.SetFont(GetFont());
-   dc.DrawText(mLeftText, mLeftTextPos.x, mLeftTextPos.y);
-   dc.DrawText(mRightText, mRightTextPos.x, mRightTextPos.y);
-   
+   // MixerTrackCluster style has no L/R labels.
+   if (mStyle != MixerTrackCluster)
+   {
+      dc.SetFont(GetFont());
+      dc.DrawText(mLeftText, mLeftTextPos.x, mLeftTextPos.y);
+      dc.DrawText(mRightText, mRightTextPos.x, mRightTextPos.y);
+   }
+
    for(i=0; i<mNumBars; i++)
       DrawMeterBar(dc, &mBar[i]);
 }
@@ -998,12 +1066,10 @@ void Meter::StartMonitoring()
    if (gAudioIO->IsMonitoring())
       gAudioIO->StopStream();
    else {
-      #if WANT_METER_MENU
-         if (mMeterDisabled){
-            wxCommandEvent dummy;
-            OnDisableMeter(dummy);
-         }
-      #endif
+      if (mMeterDisabled){
+         wxCommandEvent dummy;
+         OnDisableMeter(dummy);
+      }
 
       AudacityProject *p = GetActiveProject();
       if (p) {
@@ -1020,7 +1086,6 @@ void Meter::StartMonitoring()
 
 }
 
-#if WANT_METER_MENU
 //
 // Pop-up menu handlers
 //
@@ -1156,8 +1221,6 @@ void Meter::OnPreferences(wxCommandEvent &evt)
    
    mTimer.Start(1000 / mMeterRefreshRate);
 }
-
-#endif // WANT_METER_MENU
 
 // Indentation settings for Vim and Emacs.
 // Please do not modify past this point.

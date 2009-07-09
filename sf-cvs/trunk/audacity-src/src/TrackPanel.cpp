@@ -191,6 +191,10 @@ is time to refresh some aspect of the screen.
    #include "Lyrics.h"
    #include "LyricsWindow.h"
 #endif
+#ifdef EXPERIMENTAL_MIXER_BOARD
+   #include "MixerBoard.h"
+#endif
+
 #include "NoteTrack.h"
 #include "Prefs.h"
 #include "Project.h"
@@ -826,6 +830,11 @@ void TrackPanel::OnTimer()
          }
       }
    #endif
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      MixerBoard* pMixerBoard = p->GetMixerBoard();
+      if (pMixerBoard && (p->GetAudioIOToken() > 0))
+         pMixerBoard->UpdateMeters(gAudioIO->GetStreamTime());
+   #endif
 
    // Each time the loop, check to see if we were playing or
    // recording audio, but the stream has stopped.
@@ -836,6 +845,10 @@ void TrackPanel::OnTimer()
 #endif
 	  ) {
       p->GetControlToolBar()->OnStop(dummyEvent);
+      #ifdef EXPERIMENTAL_MIXER_BOARD
+         if (pMixerBoard) 
+            pMixerBoard->ResetMeters();
+      #endif
    }
 
    // Next, check to see if we were playing or recording
@@ -1263,6 +1276,15 @@ void TrackPanel::HandleCursorForLastMouseEvent()
 {
    HandleCursor(mLastMouseEvent);
 }
+
+#ifdef EXPERIMENTAL_MIXER_BOARD
+   MixerBoard* TrackPanel::GetMixerBoard()
+   {
+      AudacityProject *p = (AudacityProject*)GetParent();
+      wxASSERT(p);
+      return p->GetMixerBoard();
+   }
+#endif
 
 /// Used to determine whether it is safe or not to perform certain
 /// edits at the moment.
@@ -3353,6 +3375,16 @@ void TrackPanel::RemoveTrack(Track * toRemove)
    wxString name = toRemove->GetName();
    Track *partner = toRemove->GetLink();
 
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      if (toRemove->GetKind() == Track::Wave)
+      {
+         // Update mixer board displayed tracks.
+         MixerBoard* pMixerBoard = this->GetMixerBoard(); 
+         if (pMixerBoard)
+            pMixerBoard->RemoveTrackCluster((WaveTrack*)toRemove); // Will remove partner shown in same cluster.
+      }
+   #endif
+
    mTracks->Remove(toRemove, true);
    if (partner) {
       mTracks->Remove(partner, true);
@@ -3426,18 +3458,11 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    {      
       if (buttonRect.Contains(event.m_x, event.m_y)) 
       {
-         //v Disrupts workflow to have these on the stack, so no longer doing it.
-         //    For either, MakeParentPushState to make the track state dirty.
+         // For either, MakeParentPushState to make the track state dirty.
          if(solo)
-         {
             OnTrackSolo(event.ShiftDown(),t);
-            //v MakeParentPushState(_("Soloed track"), _("Solo"), true /* consolidate */);
-         }
          else
-         {
             OnTrackMute(event.ShiftDown(),t);
-            //v MakeParentPushState(_("Muted track"), _("Mute"), true /* consolidate */);
-         }
       }  
       SetCapturedTrack( NULL );
       // mTrackInfo.DrawMuteSolo(&dc, r, t, false, solo);
@@ -3496,16 +3521,29 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
 
    float newValue = slider->Get();
    WaveTrack *link = (WaveTrack *)mTracks->GetLink(mCapturedTrack);
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
+   #endif
    
    if (pan) {
       ((WaveTrack *)mCapturedTrack)->SetPan(newValue);
       if (link)
          link->SetPan(newValue);
+
+      #ifdef EXPERIMENTAL_MIXER_BOARD
+         if (pMixerBoard) 
+            pMixerBoard->UpdatePan((WaveTrack*)mCapturedTrack);
+      #endif
    }
    else {
       ((WaveTrack *)mCapturedTrack)->SetGain(newValue);
       if (link)
          link->SetGain(newValue);
+
+      #ifdef EXPERIMENTAL_MIXER_BOARD
+         if (pMixerBoard) 
+            pMixerBoard->UpdateGain((WaveTrack*)mCapturedTrack);
+      #endif
    }
 
    RefreshTrack(mCapturedTrack);
@@ -3675,14 +3713,25 @@ void TrackPanel::HandleRearrange(wxMouseEvent & event)
       return;
    }
 
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
+   #endif
    wxString dir;
    if (event.m_y < mMoveUpThreshold || event.m_y < 0) {
       mTracks->MoveUp(mCapturedTrack);
       dir = _("up");
+      #ifdef EXPERIMENTAL_MIXER_BOARD
+         if (pMixerBoard)
+            pMixerBoard->MoveTrackCluster((WaveTrack*)mCapturedTrack, true);
+      #endif
    }
    else if (event.m_y > mMoveDownThreshold || event.m_y > GetRect().GetHeight()) {
       mTracks->MoveDown(mCapturedTrack);
       dir = _("down");
+      #ifdef EXPERIMENTAL_MIXER_BOARD
+         if (pMixerBoard)
+            pMixerBoard->MoveTrackCluster((WaveTrack*)mCapturedTrack, false);
+      #endif
    }
    else
    {
@@ -5968,6 +6017,16 @@ void TrackPanel::OnTrackMute(bool shiftDown, Track *t)
       }
    }
 
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      // Update mixer board, too.
+      MixerBoard* pMixerBoard = this->GetMixerBoard(); 
+      if (pMixerBoard) 
+      {
+         pMixerBoard->UpdateMute(); // Update for all tracks.
+         pMixerBoard->UpdateSolo(); // Update for all tracks.
+      }
+   #endif
+
    mAx->Updated();
    Refresh(false);
 }
@@ -6032,6 +6091,16 @@ void TrackPanel::OnTrackSolo(bool shiftDown, Track *t)
          i = iter.Next();
       }
    }
+
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      // Update mixer board, too.
+      MixerBoard* pMixerBoard = this->GetMixerBoard(); 
+      if (pMixerBoard) 
+      {
+         pMixerBoard->UpdateMute(); // Update for all tracks.
+         pMixerBoard->UpdateSolo(); // Update for all tracks.
+      }
+   #endif
 
    mAx->Updated();
    Refresh(false);
@@ -6570,7 +6639,14 @@ void TrackPanel::OnSetTimeTrackRange(wxCommandEvent & /*event*/)
 void TrackPanel::OnMoveTrack(wxCommandEvent & event)
 {
    wxASSERT(event.GetId() == OnMoveUpID || event.GetId() == OnMoveDownID);
-   if (mTracks->Move(mPopupMenuTarget, OnMoveUpID == event.GetId())) {
+   bool bUp = (OnMoveUpID == event.GetId());
+   if (mTracks->Move(mPopupMenuTarget, bUp)) {
+      #ifdef EXPERIMENTAL_MIXER_BOARD
+         MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
+         if (pMixerBoard)
+            pMixerBoard->MoveTrackCluster((WaveTrack*)mPopupMenuTarget, bUp);
+      #endif
+
       MakeParentPushState(wxString::Format(_("Moved '%s' %s"),
                                            mPopupMenuTarget->GetName().
                                            c_str(),
@@ -6610,6 +6686,13 @@ void TrackPanel::OnSetName(wxCommandEvent &event)
                                            _("Track Name"), defaultStr);
       if (newName != wxT(""))
          t->SetName(newName);
+
+      #ifdef EXPERIMENTAL_MIXER_BOARD
+         MixerBoard* pMixerBoard = this->GetMixerBoard();
+         if (pMixerBoard) 
+            pMixerBoard->UpdateName((WaveTrack*)t);
+      #endif
+
       MakeParentPushState(wxString::Format(_("Renamed '%s' to '%s'"),
                                            defaultStr.c_str(),
                                            newName.c_str()),

@@ -250,6 +250,9 @@ void OnHistory();
 #ifdef EXPERIMENTAL_LYRICS_WINDOW
    void OnLyrics();
 #endif
+#ifdef EXPERIMENTAL_MIXER_BOARD
+   void OnMixerBoard();
+#endif
 
 void OnPlotSpectrum();
 void OnContrast();
