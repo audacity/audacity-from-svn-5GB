@@ -188,8 +188,6 @@ struct TrackListNode
    TrackListNode *prev;
 };
 
-class TrackList;
-
 class AUDACITY_DLL_API TrackListIterator
 {
  public:
