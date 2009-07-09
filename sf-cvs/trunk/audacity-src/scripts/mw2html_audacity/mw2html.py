@@ -506,7 +506,15 @@ def url_open(url):
   while redirect != '':
     l_redir += [url]
 
-    rel_url = url
+    L = urlparse.urlparse(url)
+    if L[1] != domain:
+      conn.close()
+      print "connection to",domain,"closed."
+      conn = httplib.HTTPConnection(L[1])
+      domain = L[1]
+      print "connection to",domain,"opened."
+
+    rel_url = url   
     pos = url.find(domain)
     if pos != -1:
       rel_url = url[pos+len(domain):]
@@ -525,6 +533,7 @@ def url_open(url):
         r = conn.getresponse()
         print 'Status',r.status,r.reason,'accessing',rel_url
         if r.status == 404:
+          print "it's not possible to recover this error."
           errors += 1
           return ('','')
         if r.status == 500:
@@ -546,7 +555,7 @@ def url_open(url):
           conn = httplib.HTTPConnection(domain)
           attempts += 1
         else:
-          sys.exit()
+          print "it's not possible to recover this error."
           errors += 1
           return ('','')
 
@@ -554,6 +563,7 @@ def url_open(url):
       print "error recovered"
 
     if not success:
+      print "it was not possible to recover this error."
       errors += 1
       return ('', '')
       
@@ -579,12 +589,17 @@ def url_to_filename(url):
   """ 
   global config
   nurl = normalize_url(url)
-
+  
   if nurl in url_filename_cache:
     return url_filename_cache[nurl]
 
   #ParseResult(scheme='http', netloc='www.cwi.nl:80', path='/%7Eguido/Python.html', params='', query='', fragment='')
   L = list(urlparse.urlparse(nurl))
+  
+  #this way the url will not create a folder outside of the maindomain
+  droot = get_domain(config.rooturl)
+  if (L[1] != droot):
+    L[1] = droot
 
   L[2] = L[2].strip('/')
   lpath = L[2].split('/')
@@ -593,10 +608,12 @@ def url_to_filename(url):
     L[2] += '/' + INDEX_HTML
   else:
     # 'title=' parsing
-    if L[4].startswith('title=') and L[2].endswith('/index.php'):
+    if L[4].startswith('title=') and L[2].endswith('index.php'):
       L[4] = L[4][len('title='):]
-      L[2] = L[2][:-len('/index.php')]
+      L[2] = L[2][:-len('index.php')]
 
+  L[2] = L[2].strip('/')
+  
   #don't sanitize / for path
   L[0] = ''
   L[2] = urllib.quote_plus(L[2], '/')
@@ -682,11 +699,11 @@ def url_to_relative(url, cururl):
   cururl = split_section(cururl)[0]
   (url, section) = split_section(url)
  
-  L1 = url_to_filename(url).replace(os.sep, '/').split('/')
+  L1 = url_to_filename(url).replace(os.sep, '/').strip('/').split('/')
   if L1 == '':
     return ''
 
-  L2 = url_to_filename(cururl).replace(os.sep, '/').split('/')
+  L2 = url_to_filename(cururl).replace(os.sep, '/').strip('/').split('/')
 
   while L1 != [] and L2 != [] and L1[0] == L2[0]:
     L1 = L1[1:]
@@ -738,8 +755,10 @@ def should_follow(url):
     return False
 
   # False if different domains.
-  nurl = normalize_url(url)
-  if get_domain(config.rooturl) != get_domain(nurl):
+  nurl  = normalize_url(url)
+  droot = get_domain(config.rooturl)
+  dn    = get_domain(nurl) 
+  if droot != dn and not (dn.endswith(droot) or droot.endswith(dn)):
     if config.debug:
       print url, 'not in the same domain'
     return False
