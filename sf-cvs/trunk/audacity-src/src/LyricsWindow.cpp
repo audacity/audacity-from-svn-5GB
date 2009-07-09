@@ -9,6 +9,9 @@
 
 **********************************************************************/
 
+#include "Experimental.h"
+#ifdef EXPERIMENTAL_LYRICS_WINDOW
+
 #include "LyricsWindow.h"
 #include "Lyrics.h"
 #include "Project.h"
@@ -51,7 +54,7 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
             wxPoint(100, 300), gSize, 
             wxDEFAULT_FRAME_STYLE
 #ifndef __WXMAC__
-           | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT)
+           | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT) //vvvvv
 #endif
              )
 {
@@ -129,3 +132,4 @@ void LyricsWindow::OnStyle_Highlight(wxCommandEvent &evt)
    mLyricsPanel->SetLyricsStyle(Lyrics::kHighlightLyrics);
 }
 
+#endif // EXPERIMENTAL_LYRICS_WINDOW

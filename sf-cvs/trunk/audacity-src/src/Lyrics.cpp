@@ -31,8 +31,8 @@ HighlightTextCtrl::HighlightTextCtrl(Lyrics* parent,
                                        wxWindowID id, 
                                        const wxString& value /*= ""*/, 
                                        const wxPoint& pos /*= wxDefaultPosition*/, 
-                                       const wxSize& size /*= wxDefaultSize*/) : 
-   wxTextCtrl(parent, id, // wxWindow* parent, wxWindowID id, 
+                                       const wxSize& size /*= wxDefaultSize*/)
+: wxTextCtrl(parent, id, // wxWindow* parent, wxWindowID id, 
                value, // const wxString& value = "", 
                pos, // const wxPoint& pos = wxDefaultPosition, 
                size, // const wxSize& size = wxDefaultSize, 
