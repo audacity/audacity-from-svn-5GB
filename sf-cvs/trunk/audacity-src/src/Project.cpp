@@ -809,9 +809,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    SetSizer( bs );
    bs->Layout();
 
-   mHsbar = new ScrollBar(pPage, HSBarID, wxSB_HORIZONTAL);
-   mVsbar = new ScrollBar(pPage, VSBarID, wxSB_VERTICAL);
-
    mTrackPanel = new TrackPanel(pPage,
                                 TrackPanelID,
                                 wxDefaultPosition,
@@ -820,6 +817,14 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                 &mViewInfo,
                                 this,
                                 mRuler);
+
+   // LLL: When Audacity starts or becomes active after returning from
+   //      another application, the first window that can accept focus
+   //      will be given the focus even if we try to SetFocus().  By
+   //      creating the scrollbars after the TrackPanel, we resolve 
+   //      several focus problems.
+   mHsbar = new ScrollBar(pPage, HSBarID, wxSB_HORIZONTAL);
+   mVsbar = new ScrollBar(pPage, VSBarID, wxSB_VERTICAL);
 
    // LLL: When Audacity starts or becomes active after returning from
    //      another application, the first window that can accept focus
