@@ -435,8 +435,8 @@ void LWSlider::Init(wxWindow * parent,
    mDefaultValue = 0.0f;
    mDefaultShortcut = false;
    mBitmap = NULL;
-   mScrollLine = 1;
-   mScrollPage = 5;
+   mScrollLine = 0.05;
+   mScrollPage = 0.5;
 
    // Get the Thumb bitmap.  Generic version fo rnow...
 //#ifdef USE_AQUA
@@ -808,6 +808,10 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       if( mDefaultShortcut && event.CmdDown() )
       {
          mCurrentValue = mDefaultValue;
+      }
+
+      if( event.RightDown() ) {
+         mParent->SetFocus();
       }
 
       // Thumb clicked?
