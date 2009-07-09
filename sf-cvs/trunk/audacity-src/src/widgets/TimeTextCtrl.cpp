@@ -1537,7 +1537,9 @@ wxAccStatus TimeTextCtrlAx::GetName(int childId, wxString *name)
 
       *name = mCtrl->mFields[field - 1].str +
               wxT(" ") +
-              label;
+              label +
+              wxT(" ") +
+              mCtrl->GetTimeString().at(mCtrl->mDigits[childId - 1].pos);
       mLastField = field;
       mLastDigit = childId;
    }
@@ -1560,7 +1562,6 @@ wxAccStatus TimeTextCtrlAx::GetName(int childId, wxString *name)
 wxAccStatus TimeTextCtrlAx::GetRole(int childId, wxAccRole *role)
 {
    *role = wxROLE_SYSTEM_STATICTEXT;
-
    return wxACC_OK;
 }
 
