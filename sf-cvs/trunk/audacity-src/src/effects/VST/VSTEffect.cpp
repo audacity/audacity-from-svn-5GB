@@ -1249,9 +1249,11 @@ long int VSTEffect::audioMaster(AEffect * effect,
          return (index < mChannels ? 0 : 1);
 
       default:
+#if 0
 #if defined(__WXDEBUG__)
          wxPrintf(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
                   effect, opcode, index, value, ptr, opt, effect->user);
+#endif
 #endif
          return 0;
    }
