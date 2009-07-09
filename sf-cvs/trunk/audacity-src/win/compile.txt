@@ -194,11 +194,11 @@ Local help (optional, but required for a full 'release ready' version).
 Run audacity\scripts\mw2html_audacity\wiki2htm.bat to get an up to date copy of
 the manual wiki onto your local system, at audacity\help (don't do this too often, it will load the server).
 Copy your audacity\help\manual directory (and subdirectories) into the directory that you will get the .exe in.  So it look like (eg)
-C:\Audacity\audacity\win\unicode debug\help\images
 C:\Audacity\audacity\win\unicode debug\help\manual
 C:\Audacity\audacity\win\unicode debug\help\manual\images
+C:\Audacity\audacity\win\unicode debug\help\manual\manual
 C:\Audacity\audacity\win\unicode debug\help\manual\skins
-(this should be done by an automatic process, but I can't figure it out at th moment (MJS)).
+(this should be done by an automatic process, but I can't figure it out at the moment (MJS)).
 
 Some functionality in Audacity is currently turned on its default
 configuration, but requires that extra libraries be downloaded

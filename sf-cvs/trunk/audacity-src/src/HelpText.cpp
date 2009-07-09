@@ -173,13 +173,13 @@ wxString HelpTextBuiltIn( const wxString & Key )
    {
       return WrapText(
          wxString(wxT("")) +
-         _("<center><h3>Getting Started</h3></center><br>") +
+         _("<center><h3>How to get Help</h3></center><br>") +
          _("Welcome to Audacity ") + AUDACITY_VERSION_STRING + wxT("!<br>") +
          _("These are our support methods:") + wxT("<br>") +
-         _("   A [[file:quick_help.html|quick guide]] (should be installed locally, <a href=\"http://audacityteam.org/manual/index.php?title=Quick_Help\">internet version if it isn't</a>)") + wxT("<br>") +
-         _("   Our [[file:index.html|Manual]] (should be installed locally, <a href=\"http://audacityteam.org/manual/index.php\">internet version if it isn't</a>)") + wxT("<br>") +
-         _("   Our [[http://audacityteam.org/wiki/index.php|Wiki]] (on the internet)") + wxT("<br>") +
-         _("   Our <a href=\"http://audacityteam.org/forum/\">Forum</a> (on the internet)") + wxT("<br>")
+         _("   Our [[file:quick_help.html|Quick Help]] (should be installed locally, <a href=\"http://manual.audacityteam.org/index.php?title=Quick_Help\">internet version if it isn't</a>)") + wxT("<br>") +
+         _("   Our [[file:index.html|Manual]] (should be installed locally, <a href=\"http://manual.audacityteam.org/index.php\">internet version if it isn't</a>)") + wxT("<br>") +
+         _("   Our [[http://wiki.audacityteam.org/index.php|Wiki]] (on the internet)") + wxT("<br>") +
+         _("   Our <a href=\"http://forum.audacityteam.org/\">Forum</a> (on the internet)") + wxT("<br>")
       );
    }
 
