@@ -96,7 +96,7 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
       S.TieCheckBox(_("Er&gonomic order of audio I/O buttons"),
                     wxT("/GUI/ErgonomicTransportButtons"),
                     true);
-      S.TieCheckBox(_("Show &support message at program start up"),
+      S.TieCheckBox(_("Show '&How to get Help' message at program start up"),
                     wxT("/GUI/ShowSplashScreen"),
                     true);
 

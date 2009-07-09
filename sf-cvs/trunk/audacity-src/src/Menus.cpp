@@ -5193,7 +5193,7 @@ void AudacityProject::OnQuickHelp()
    ShowHelpDialog( 
       this, 
       FileNames::HtmlHelpIndexFile(true),
-      wxT("http://audacityteam.org/manual/index.php?title=Quick_Help" ));
+      wxT("http://manual.audacityteam.org/index.php?title=Quick_Help" ));
 }
 
 void AudacityProject::OnManual()
@@ -5201,7 +5201,7 @@ void AudacityProject::OnManual()
    ShowHelpDialog( 
       this, 
       FileNames::HtmlHelpIndexFile(false),
-      wxT("http://audacityteam.org/manual/index.php?title=Main_Page" ));
+      wxT("http://manual.audacityteam.org/index.php?title=Main_Page" ));
 }
 
 void AudacityProject::OnLog()
