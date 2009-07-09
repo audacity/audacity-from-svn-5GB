@@ -31,7 +31,7 @@ class wxTextCtrl;
 class wxButton;
 
 //
-// Predefined slider types
+// Predefined slider types (mStyle)
 //
 #define FRAC_SLIDER 1    // 0.0...1.0
 #define DB_SLIDER 2      // -36...36 dB
@@ -50,6 +50,7 @@ class wxButton;
 // window (used inside Track Labels).  The ASlider class,
 // which uses this class, is below.
 //
+
 class LWSlider
 {
    friend class ASlider;
@@ -59,17 +60,17 @@ class LWSlider
 
    // MM: Construct customizable slider
    LWSlider(wxWindow * parent,
-       wxString name,
-       const wxPoint &pos,
-       const wxSize &size,
-       float minValue,
-       float maxValue,
-       float stepValue,
-       bool canUseShift,
-       int style,
-       bool heavyweight=false,
-       bool popup=true
-       );
+            wxString name,
+            const wxPoint &pos,
+            const wxSize &size,
+            float minValue,
+            float maxValue,
+            float stepValue,
+            bool canUseShift,
+            int style,
+            bool heavyweight=false,
+            bool popup=true, 
+            int orientation = wxHORIZONTAL); // wxHORIZONTAL or wxVERTICAL. wxVERTICAL is currently only for DB_SLIDER.
     
    // Construct predefined slider
    LWSlider(wxWindow * parent,
@@ -78,7 +79,8 @@ class LWSlider
             const wxSize &size,
             int style,
             bool heavyweight=false,
-            bool popup=true);
+            bool popup=true, 
+            int orientation = wxHORIZONTAL); // wxHORIZONTAL or wxVERTICAL. wxVERTICAL is currently only for DB_SLIDER.
 
    void Init(wxWindow * parent,
              wxString name,
@@ -91,8 +93,8 @@ class LWSlider
              int style,
              bool heavyweight,
              bool popup,
-             float speed
-   );
+             float speed, 
+             int orientation = wxHORIZONTAL); // wxHORIZONTAL or wxVERTICAL. wxVERTICAL is currently only for DB_SLIDER.
 
    virtual ~LWSlider();
 
@@ -140,14 +142,15 @@ class LWSlider
    void SendUpdate( float newValue );
 
    int ValueToPosition(float val);
-   float DragPositionToValue(int xPos, bool shiftDown);
-   float ClickPositionToValue(int xPos, bool shiftDown);
+   float DragPositionToValue(int fromPos, bool shiftDown);
+   float ClickPositionToValue(int fromPos, bool shiftDown);
    
    wxWindow* GetToolTipParent() const;
       
    wxWindow *mParent;
 
    int mStyle;
+   int mOrientation; // wxHORIZONTAL or wxVERTICAL. wxVERTICAL is currently only for DB_SLIDER.
 
    bool mHW; // is it really heavyweight (in a window)
    bool mPopup; // should display dialog on double click
@@ -158,17 +161,26 @@ class LWSlider
    int mWidth;                  //In pixels
    int mHeight;                 //In pixels
 
+   // for (mOrientation == wxHORIZONTAL)
    int mCenterY;
 
    int mLeftX;
    int mRightX;
    int mWidthX;
 
+   // for (mOrientation == wxVERTICAL) //v Vertical PAN_SLIDER currently not handled, forced to horizontal.
+   int mCenterX;
+
+   int mTopY;
+   int mBottomY; // low values at bottom 
+   int mHeightY;
+
+
    int mThumbWidth;             //In pixels
    int mThumbHeight;            //In pixels
 
    float mClickValue;
-   int mClickX;
+   int mClickPos; // position in x if (mOrientation == wxHORIZONTAL), else in y
 
    float mMinValue;
    float mMaxValue;
@@ -213,7 +225,8 @@ class ASlider :public wxPanel
             int style = FRAC_SLIDER,
             bool popup = true,
             bool canUseShift = true,
-            float stepValue = STEP_CONTINUOUS );
+            float stepValue = STEP_CONTINUOUS, 
+            int orientation = wxHORIZONTAL);
    virtual ~ASlider();
 
    void GetScroll(float & line, float & page);
