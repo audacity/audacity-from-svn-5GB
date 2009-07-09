@@ -65,6 +65,10 @@ class HistoryWindow;
 #ifdef EXPERIMENTAL_LYRICS_WINDOW
    class LyricsWindow;
 #endif
+#ifdef EXPERIMENTAL_MIXER_BOARD
+   class MixerBoard;
+   class MixerBoardFrame;
+#endif
 class Importer;
 class AdornedRulerPanel;
 
@@ -299,6 +303,9 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    #ifdef EXPERIMENTAL_LYRICS_WINDOW
       LyricsWindow* GetLyricsWindow() { return mLyricsWindow; };
    #endif
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      MixerBoard* GetMixerBoard() { return mMixerBoard; };
+   #endif
 
  public:
 
@@ -350,6 +357,9 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    
    #ifdef EXPERIMENTAL_LYRICS_WINDOW
       void UpdateLyrics();
+   #endif
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      void UpdateMixerBoard();
    #endif
    
    void GetRegionsByLabel( Regions &regions );
@@ -423,6 +433,10 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    HistoryWindow *mHistoryWindow;
    #ifdef EXPERIMENTAL_LYRICS_WINDOW
       LyricsWindow* mLyricsWindow;
+   #endif
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      MixerBoard* mMixerBoard;
+      MixerBoardFrame* mMixerBoardFrame;
    #endif
 
 

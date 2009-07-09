@@ -66,6 +66,9 @@ simplifies construction of menu items.
 #ifdef EXPERIMENTAL_LYRICS_WINDOW
    #include "LyricsWindow.h"
 #endif
+#ifdef EXPERIMENTAL_MIXER_BOARD
+   #include "MixerBoard.h"
+#endif
 #include "Internat.h"
 #include "FileFormats.h"
 #include "FreqWindow.h"
@@ -528,6 +531,9 @@ void AudacityProject::CreateMenusAndCommands()
 
    #ifdef EXPERIMENTAL_LYRICS_WINDOW
       c->AddItem(wxT("Lyrics"), _("&Lyrics..."), FN(OnLyrics), LabelTracksExistFlag, LabelTracksExistFlag); 
+   #endif
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      c->AddItem(wxT("MixerBoard"), _("&Mixer Board..."), FN(OnMixerBoard), WaveTracksExistFlag, WaveTracksExistFlag);
    #endif
 
    c->AddSeparator();
@@ -3915,6 +3921,9 @@ void AudacityProject::OnSelectNone()
    ModifyState();
    
    mTrackPanel->Refresh(false);
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      mMixerBoard->Refresh(false);
+   #endif
 }
 
 void AudacityProject::OnSelectCursorEnd()
@@ -4175,6 +4184,17 @@ void AudacityProject::OnHistory()
       wxASSERT(mLyricsWindow);
       mLyricsWindow->Show();
    }
+#endif
+#ifdef EXPERIMENTAL_MIXER_BOARD
+   void AudacityProject::OnMixerBoard()
+   {
+      if (!mMixerBoardFrame)
+      {
+         mMixerBoardFrame = new MixerBoardFrame(this);
+         mMixerBoard = mMixerBoardFrame->mMixerBoard;
+      }
+      mMixerBoardFrame->Show();
+  }
 #endif
 
 void AudacityProject::OnPlotSpectrum()
@@ -5142,6 +5162,10 @@ void AudacityProject::OnRemoveTracks()
 
    while (t) {
       if (t->GetSelected()) {
+         #ifdef EXPERIMENTAL_MIXER_BOARD
+            if (t->GetKind() == Track::Wave)
+               mMixerBoard->RemoveTrackCluster((WaveTrack*)t);
+         #endif
          if (!f)
             f = l;         // Capture the track preceeding the first removed track
          t = iter.RemoveCurrent(true);
@@ -5171,6 +5195,9 @@ void AudacityProject::OnRemoveTracks()
    PushState(_("Removed audio track(s)"), _("Remove Track"));
 
    mTrackPanel->Refresh(false);
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      mMixerBoard->Refresh(true);
+   #endif
 }
 
 //

@@ -706,6 +706,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\MixerBoard.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\MixerBoard.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\lib-src\lib-widget-extra\NonGuiThread.cpp"
 				>
 			</File>

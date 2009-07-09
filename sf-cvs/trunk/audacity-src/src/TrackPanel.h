@@ -26,18 +26,17 @@
 class wxMenu;
 class wxRect;
 
-class TrackList;
-class Track;
 class TrackPanel;
 class TrackArtist;
-class WaveTrack;
-class LabelTrack;
 class Ruler;
 class SnapManager;
 class AdornedRulerPanel;
 class LWSlider;
 class ControlToolBar; //Needed because state of controls can affect what gets drawn.
 class ToolsToolBar; //Needed because state of controls can affect what gets drawn.
+#ifdef EXPERIMENTAL_MIXER_BOARD
+   class MixerBoard;
+#endif
 class AudacityProject;
 
 class TrackPanelAx;
@@ -222,7 +221,9 @@ class TrackPanel:public wxPanel {
    void UpdateVRulerSize();
 
  private:
-
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      MixerBoard* GetMixerBoard();
+   #endif
    bool IsUnsafe();
    bool HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMouseEvent & event);
    bool HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxMouseEvent &event);
