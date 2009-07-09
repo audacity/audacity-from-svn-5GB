@@ -46,6 +46,7 @@ class SpectrumPrefs:public PrefsPanel
    wxTextCtrl *mMaxFreq;
    wxTextCtrl *mGain;
    wxTextCtrl *mRange;
+   wxTextCtrl *mFrequencyGain;
 
    wxArrayString mSizeChoices;
    wxArrayInt mSizeCodes;

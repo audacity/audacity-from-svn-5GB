@@ -153,15 +153,17 @@ void SpectrumPrefs::PopulateOrExchange(ShuttleGui & S)
                          wxT("/Spectrum/Range"),
                          80,
                          8);
+
+         mFrequencyGain =
+            S.TieTextBox(_("Frequency gain: (dB/dec)"),
+                    wxT("/Spectrum/FrequencyGain"),
+                    0,
+                    4);
       }
       S.EndTwoColumn();
 
       S.TieCheckBox(_("Show the spectrum using &grayscale colors"),
                     wxT("/Spectrum/Grayscale"),
-                    false);
-
-      S.TieCheckBox(_("Use a frequency-proportional scale factor"),
-                    wxT("/Spectrum/FrequencyGain"),
                     false);
 
 #ifdef EXPERIMENTAL_FFT_Y_GRID
@@ -245,6 +247,19 @@ bool SpectrumPrefs::Validate()
       return false;
    }
 
+   long frequencygain;
+   if (!mFrequencyGain->GetValue().ToLong(&frequencygain)) {
+      wxMessageBox(_("The frequency gain must be an integer"));
+      return false;
+   }
+   if (frequencygain < 0) {
+      wxMessageBox(_("The frequency gain cannot be negative"));
+      return false;
+   }
+   if (frequencygain > 60) {
+      wxMessageBox(_("The frequency gain must be no more than 60 dB/dec"));
+      return false;
+   }
 #ifdef EXPERIMENTAL_FIND_NOTES
    long findNotesMinA;
    if (!mFindNotesMinA->GetValue().ToLong(&findNotesMinA)) {
