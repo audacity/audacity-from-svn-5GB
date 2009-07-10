@@ -47,17 +47,17 @@ define('min_src_size',    5.1);
 define('full_src_size',    13);
 define('src_suffix',  '.tar.bz2');
 
-$win_exe_url = "audacity-win/audacity-win-".win_exe_version.".exe";
-$win_zip_url = "audacity-win-zip/audacity-win-".win_zip_version.".zip";
-$win_exe_unicode_url = "audacity-win-unicode/audacity-win-unicode-".win_exe_unicode_version.".exe";
-$win_zip_unicode_url = "audacity-win-unicode-zip/audacity-win-unicode-".win_zip_unicode_version.".zip";
+$win_exe_url = "http://audacity.googlecode.com/files/audacity-win-" .win_exe_version.".exe";
+$win_zip_url = "http://audacity.googlecode.com/files/audacity-win-" .win_zip_version.".zip";
+$win_exe_unicode_url = "http://audacity.googlecode.com/files/audacity-win-unicode-" .win_exe_unicode_version.".exe";
+$win_zip_unicode_url = "http://audacity.googlecode.com/files/audacity-win-unicode-" .win_zip_unicode_version.".zip";
 
 $min_src_url = "audacity-minsrc-".src_version.src_suffix;
 $full_src_url = "audacity-fullsrc-".src_version.src_suffix;
 
 $ladspa_url = "ladspa/ladspa-".ladspa_version.".exe";
 
-$macosx_ub_url = "audacity-macosx-ub/audacity-macosx-ub-".macosx_ub_version.".dmg";
+$macosx_ub_url = "http://audacity.googlecode.com/files/audacity-macosx-ub-" .macosx_ub_version.".dmg";
 
 $macosx_intel_url = "audacity-macosx-intel/audacity-macosx-intel-".macosx_intel_version.".dmg";
 $macosx_ppc_url = "audacity-macosx-ppc/audacity-macosx-ppc-".macosx_ppc_version.".dmg";
