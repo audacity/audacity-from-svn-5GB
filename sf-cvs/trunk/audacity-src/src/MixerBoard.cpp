@@ -391,8 +391,6 @@ void MixerTrackCluster::OnPaint(wxPaintEvent &evt)
 {
    wxPaintDC dc(this);
 
-   dc.BeginDrawing();
-
    #ifdef __WXMAC__
       // Fill with correct color, not scroller background. Done automatically on Windows.
       AColor::Medium(&dc, false);
@@ -411,8 +409,6 @@ void MixerTrackCluster::OnPaint(wxPaintEvent &evt)
    }
    else
       AColor::Bevel(dc, true, bev);
-
-   dc.EndDrawing();
 }
 
 
