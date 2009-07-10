@@ -1166,6 +1166,7 @@
 		2897F6F80AB3DB5A003C20C5 /* ToolsToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6EC0AB3DB5A003C20C5 /* ToolsToolBar.cpp */; };
 		2897F6F90AB3DB5A003C20C5 /* TranscriptionToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6EE0AB3DB5A003C20C5 /* TranscriptionToolBar.cpp */; };
 		2897F6FE0AB3DCD0003C20C5 /* Grabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6FC0AB3DCD0003C20C5 /* Grabber.cpp */; };
+		289E750A1006D0BD00CEF79B /* MixerBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 289E75081006D0BD00CEF79B /* MixerBoard.cpp */; };
 		289F9C7E0AC671BB00797DC1 /* DeviceToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */; };
 		28A4E2AC0F60319300E9E7F2 /* fftext.c in Sources */ = {isa = PBXBuildFile; fileRef = 28A4E2A40F60319300E9E7F2 /* fftext.c */; };
 		28A4E2AD0F60319300E9E7F2 /* fftext.h in Headers */ = {isa = PBXBuildFile; fileRef = 28A4E2A50F60319300E9E7F2 /* fftext.h */; };
@@ -1922,7 +1923,7 @@
 		174F73CD098D516D009CD6E0 /* AudacityOGG.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityOGG.icns; sourceTree = "<group>"; };
 		174F73CE098D516D009CD6E0 /* AudacityProject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityProject.icns; sourceTree = "<group>"; };
 		174F73CF098D516D009CD6E0 /* AudacityWAV.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AudacityWAV.icns; sourceTree = "<group>"; };
-		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
+		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
 		176A1A5B098B7B8D00DC73B4 /* libnyquist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libnyquist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		176EE9DB09A2EC1000188F3B /* caf.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = caf.c; sourceTree = "<group>"; };
 		176EE9DC09A2EC1000188F3B /* flac.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = flac.c; sourceTree = "<group>"; };
@@ -3065,6 +3066,8 @@
 		2897F6EF0AB3DB5A003C20C5 /* TranscriptionToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = TranscriptionToolBar.h; sourceTree = "<group>"; };
 		2897F6FC0AB3DCD0003C20C5 /* Grabber.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Grabber.cpp; sourceTree = "<group>"; };
 		2897F6FD0AB3DCD0003C20C5 /* Grabber.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Grabber.h; sourceTree = "<group>"; };
+		289E75081006D0BD00CEF79B /* MixerBoard.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = MixerBoard.cpp; sourceTree = "<group>"; };
+		289E75091006D0BD00CEF79B /* MixerBoard.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = MixerBoard.h; sourceTree = "<group>"; };
 		289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceToolBar.cpp; sourceTree = "<group>"; };
 		289F9C7D0AC671BB00797DC1 /* DeviceToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = DeviceToolBar.h; sourceTree = "<group>"; };
 		28A4E2A40F60319300E9E7F2 /* fftext.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = fftext.c; path = ffts/src/fftext.c; sourceTree = "<group>"; };
@@ -4276,6 +4279,8 @@
 				1790B0A809883BFD008A330A /* Menus.h */,
 				1790B0AB09883BFD008A330A /* Mix.cpp */,
 				1790B0AC09883BFD008A330A /* Mix.h */,
+				289E75081006D0BD00CEF79B /* MixerBoard.cpp */,
+				289E75091006D0BD00CEF79B /* MixerBoard.h */,
 				1790B0AF09883BFD008A330A /* NoteTrack.cpp */,
 				1790B0B009883BFD008A330A /* NoteTrack.h */,
 				1790B0B109883BFD008A330A /* PitchName.cpp */,
@@ -8376,6 +8381,7 @@
 				1818559A0FFE916C0026D190 /* ScreenshotCommand.cpp in Sources */,
 				1865A9B81004490500946EE6 /* Lyrics.cpp in Sources */,
 				1865A9B91004490500946EE6 /* LyricsWindow.cpp in Sources */,
+				289E750A1006D0BD00CEF79B /* MixerBoard.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
