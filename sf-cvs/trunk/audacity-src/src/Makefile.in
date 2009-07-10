@@ -79,6 +79,7 @@ OBJS = \
 	Matrix.o \
 	Menus.o \
 	Mix.o \
+	MixerBoard.o \
 	PitchName.o \
 	PlatformCompatibility.o \
 	Printing.o \
