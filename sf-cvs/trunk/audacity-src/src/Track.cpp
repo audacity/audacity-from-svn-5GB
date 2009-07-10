@@ -493,6 +493,11 @@ Track *TrackAndGroupIterator::NextGroup(bool skiplinked)
 
    Track* t = cur->t;
    
+   if (t->GetKind() == Track::Label) {
+      // the next group when we have a LabelTrack is the next track
+      return TrackListIterator::Next(skiplinked);
+   }
+
    TrackGroupIterator git(l);
    if (git.First(t) == NULL) {
       //not part of a group

@@ -2049,43 +2049,23 @@ bool LabelTrack::Paste(double t, Track * src)
 
 bool LabelTrack::Clear(double t0, double t1)
 {
-
    AudacityProject *p = GetActiveProject();   
    if (p && p->IsSticky()){
-      bool onlyLabelTrackSel = true;
-      TrackListIterator iter(p->GetTracks());
-      Track *t = iter.First();
-      while (t){
-         if (t!=this && t->GetSelected()){
-            onlyLabelTrackSel = false;
-            break;
-         }
-         t=iter.Next();
+      Track* t = NULL;
+      if (mNode) {
+         TrackListNode* n = mNode->prev;
+         if (n)
+            t = n->t;
       }
-      if (onlyLabelTrackSel){
-         int editGroup = 0;
-         t=iter.First();
-         Track *n=t;
-         
-         while (t && t!= this){//find edit group number
-            n=iter.Next();
-            if (n && n->GetKind()==Track::Wave && t->GetKind()==Track::Label) 
-               editGroup++;
-            t=n;
-         }
-
-         t=iter.First();
-         for (int i=0; i<editGroup; i++){//go to first in edit group
-            while (t && t->GetKind()==Track::Wave) t=iter.Next();
-            while (t && t->GetKind()==Track::Label) t=iter.Next();
-         }
-
-         if (t && t->GetKind()==Track::Wave)
-            ((WaveTrack*)t)->HandleGroupClear(t0, t1, false, false);
-      }
-   }else{
-      ShiftLabelsOnClear(t0, t1);
+      // if it is part of a group
+      if (t && t->GetKind() != Track::Time && t->GetKind() != Track::Label)
+         t->Clear(t0, t1);
+      else
+         ShiftLabelsOnClear(t0, t1);
    }
+   else
+      ShiftLabelsOnClear(t0, t1);
+
    return true;
 }
 
