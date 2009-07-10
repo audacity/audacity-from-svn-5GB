@@ -57,7 +57,7 @@ XGETTEXT_ARGS=-F -C -k_ -k_NoAcc -kwxTRANSLATE \
 
 # implicit rules
 
-%/$(PROGNAME).mo: %.po
+%/$(PROGNAME).mo: %.po $(POTFILE)
 	@test -d $* || mkdir $*
 	$(MSGFMT) -o $@ $<
 
