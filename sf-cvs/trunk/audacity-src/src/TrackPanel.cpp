@@ -1280,7 +1280,7 @@ void TrackPanel::HandleCursorForLastMouseEvent()
 #ifdef EXPERIMENTAL_MIXER_BOARD
    MixerBoard* TrackPanel::GetMixerBoard()
    {
-      AudacityProject *p = (AudacityProject*)GetParent();
+      AudacityProject *p = GetProject();
       wxASSERT(p);
       return p->GetMixerBoard();
    }
