@@ -217,6 +217,7 @@ class AUDACITY_DLL_API TrackListOfKindIterator: public TrackListIterator
 {
  public:
    TrackListOfKindIterator(int kind, TrackList * val = NULL);
+   virtual ~TrackListOfKindIterator() {};
 
    // Iterate functions
    Track *First(TrackList * val = NULL);
@@ -235,6 +236,7 @@ class AUDACITY_DLL_API SelectedTrackListOfKindIterator: public TrackListOfKindIt
 {
  public:
     SelectedTrackListOfKindIterator(int kind, TrackList * val = NULL) : TrackListOfKindIterator(kind, val) {};
+	virtual ~SelectedTrackListOfKindIterator() {};
 
    // Iterate functions
    Track *First(TrackList * val = NULL);
@@ -253,6 +255,7 @@ class AUDACITY_DLL_API VisibleTrackIterator: public TrackListIterator
 {
  public:
    VisibleTrackIterator(AudacityProject *project);
+   virtual ~VisibleTrackIterator() {};
 
    // Iterate functions
    Track *First();
@@ -273,6 +276,7 @@ class AUDACITY_DLL_API TrackGroupIterator: public TrackListIterator
 {
  public:
    TrackGroupIterator(TrackList * val);
+   virtual ~TrackGroupIterator() {};
 
    // Iterate functions
    Track *First(Track *member);
