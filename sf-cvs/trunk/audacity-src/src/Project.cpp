@@ -1791,7 +1791,18 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 
    mIsDeleting = true;
 
-   ClearClipboard();
+   bool quitOnClose;
+#ifdef __WXMAC__
+   bool defaultQuitOnClose = false;
+#else
+   bool defaultQuitOnClose = true;
+#endif
+   gPrefs->Read(wxT("/GUI/QuitOnClose"), &quitOnClose, defaultQuitOnClose);
+
+   // DanH: If we're definitely about to quit, delete the clipboard.
+   //       Doing this after Deref'ing the DirManager causes problems.
+   if ((gAudacityProjects.GetCount() == 1) && (quitOnClose || gIsQuitting))
+      DeleteClipboard();
 
    // JKC: For Win98 and Linux do not detach the menu bar.
    // We want wxWindows to clean it up for us.
@@ -1882,20 +1893,11 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    }
    
    if (gAudacityProjects.IsEmpty() && !gIsQuitting) {
-      bool quitOnClose;
 
       // LL:  On the Mac, we don't want the logger open after all projects
       //      have been closed since it's menu will show instead of the
       //      common menu.
       wxGetApp().mLogger->Show(false);
-      
-#ifdef __WXMAC__
-      bool defaultQuitOnClose = false;
-#else
-      bool defaultQuitOnClose = true;
-#endif
-      
-      gPrefs->Read(wxT("/GUI/QuitOnClose"), &quitOnClose, defaultQuitOnClose);
       
       if (quitOnClose)
          QuitAudacity();
