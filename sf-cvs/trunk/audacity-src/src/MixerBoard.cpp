@@ -963,18 +963,25 @@ void MixerBoard::UpdateMeters(double t)
 
 void MixerBoard::UpdateWidth()
 {
-   int newWidth = this->GetTrackClustersWidth() + kDoubleInset; // a bit extra padding on the right
+   // All these width calculations have extra padding on right, so there's 
+   // always gray area to click to deselect all tracks. 
+   // Min width is one cluster wide, plus margins.
+   const int kMinWidth = kInset + MIXER_TRACK_CLUSTER_WIDTH + kTripleInset;
+
+   int newWidth = this->GetTrackClustersWidth() + kDoubleInset;
+   if (newWidth < kMinWidth)
+      newWidth = kMinWidth;
    int width;
    int height;
-   this->GetSize(&width, &height);
-   if (newWidth == width)
+   this->GetClientSize(&width, &height);
+   if (newWidth == width - 3) // -3 is fudge to accommodate GetClientSize.
       return;
 
    mScrolledWindow->SetVirtualSize(newWidth, -1);
 
    wxWindow* pParent = this->GetParent(); // Might be mProject, or might be a MixerBoardFrame.
    pParent->SetSizeHints(
-      kInset + MIXER_TRACK_CLUSTER_WIDTH, // int minW=-1, // Show at least one cluster wide. 
+      kMinWidth, // int minW=-1, 
       MIXER_BOARD_MIN_HEIGHT, // int minH=-1, 
       newWidth); // int maxW=-1, 
    wxPoint parentPos = pParent->GetPosition();
