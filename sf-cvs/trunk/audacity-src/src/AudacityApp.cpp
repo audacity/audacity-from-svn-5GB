@@ -301,9 +301,6 @@ void QuitAudacity(bool bForce)
    //temporarilly commented out till it is added to all projects
    //delete Profiler::Instance();
    
-   //Delete the clipboard
-   AudacityProject::DeleteClipboard();
-   
    //delete the static lock for audacity projects
    AudacityProject::DeleteAllProjectsDeleteLock();
 
