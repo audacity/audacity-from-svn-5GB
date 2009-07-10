@@ -470,7 +470,9 @@ void LWSlider::Init(wxWindow * parent,
 LWSlider::~LWSlider()
 {
    delete mBitmap;
-   //   delete mThumbBitmap;
+   if (mOrientation == wxVERTICAL && mThumbBitmap) {
+      delete mThumbBitmap;
+   }
    delete mPopWin;
 }
 
