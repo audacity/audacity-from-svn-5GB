@@ -499,17 +499,26 @@ void LabelStruct::DrawLines(wxDC & dc, const wxRect & r)
 
    // If y is positive then it is the center line for the 
    // Label.
-   if((x  >= r.x) && (x  <= (r.x+r.width)))
+   if( y >= 0 )
    {
-      // Draw line above and below left dragging widget.
-      AColor::Line(dc, x, r.y,  x, yIconStart - 1);
-      AColor::Line(dc, x, yIconEnd, x, r.y + r.height);
+      if((x  >= r.x) && (x  <= (r.x+r.width)))
+      {
+         // Draw line above and below left dragging widget.
+         AColor::Line(dc, x, r.y,  x, yIconStart - 1);
+         AColor::Line(dc, x, yIconEnd, x, r.y + r.height);
+      }
+      if((x1 >= r.x) && (x1 <= (r.x+r.width)))
+      {
+         // Draw line above and below right dragging widget.
+         AColor::Line(dc, x1, r.y,  x1, yIconStart - 1);
+         AColor::Line(dc, x1, yIconEnd, x1, r.y + r.height);
+      }
    }
-   if((x1 >= r.x) && (x1 <= (r.x+r.width)))
+   else
    {
-      // Draw line above and below right dragging widget.
-      AColor::Line(dc, x1, r.y,  x1, yIconStart - 1);
-      AColor::Line(dc, x1, yIconEnd, x1, r.y + r.height);
+      // Draw the line, even though the widget is off screen
+      AColor::Line(dc, x, r.y,  x, r.y + r.height);
+      AColor::Line(dc, x1, r.y,  x1, r.y + r.height);
    }
 }
 
@@ -520,6 +529,10 @@ void LabelStruct::DrawGlyphs(wxDC & dc, const wxRect & r, int GlyphLeft, int Gly
 {
    const int xHalfWidth=LabelTrack::mIconWidth/2;
    const int yStart=y-LabelTrack::mIconHeight/2+(LabelTrack::mTextHeight+3)/2;
+
+   // If y == -1, nothing to draw
+   if( y == -1 )
+      return;
 
    if((x  >= r.x) && (x  <= (r.x+r.width)))
       dc.DrawBitmap(LabelTrack::GetGlyph(GlyphLeft), x-xHalfWidth,yStart, true);
@@ -539,6 +552,10 @@ void LabelStruct::DrawText(wxDC & dc, const wxRect & r)
 {
    //If y is positive then it is the center line for the 
    //text we are about to draw.
+   //if it isn't, nothing to draw.
+
+   if( y == -1 )
+      return;
 
    // Draw frame for the text...
    // We draw it half an icon width left of the text itself.
@@ -553,6 +570,7 @@ void LabelStruct::DrawText(wxDC & dc, const wxRect & r)
          dc.DrawText(title, xText, y-LabelTrack::mTextHeight/2);
       }
    }
+
 }
 
 void LabelStruct::DrawTextBox(wxDC & dc, const wxRect & r) 
@@ -562,6 +580,8 @@ void LabelStruct::DrawTextBox(wxDC & dc, const wxRect & r)
    const int yBarHeight=3;
    const int yFrameHeight = LabelTrack::mTextHeight+3;
    const int xBarShorten  = LabelTrack::mIconWidth+4;
+   if( y == -1 )
+      return;
 
    {
       const int xStart=wxMax(r.x,x+xBarShorten/2);
