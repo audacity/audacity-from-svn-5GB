@@ -41,6 +41,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="..\..\..\lib-src\portmixer\include;..\..\..\lib-src\portaudio-v19\include;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;PX_USE_WIN_MME"
 				StringPooling="true"
@@ -245,6 +246,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="..\..\..\lib-src\portmixer\include;..\..\..\lib-src\portaudio-v19\include;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;PX_USE_WIN_MME"
 				StringPooling="true"

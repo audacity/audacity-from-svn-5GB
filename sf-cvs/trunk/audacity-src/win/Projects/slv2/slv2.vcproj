@@ -40,6 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="..\slv2;&quot;..\..\..\lib-src\slv2&quot;;&quot;..\..\..\lib-src\slv2\src&quot;;&quot;..\..\..\lib-src\redland\librdf&quot;;..\raptor;&quot;..\..\..\lib-src\redland\raptor\src&quot;;&quot;..\..\..\lib-src\ffmpeg\win32&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;LIBSLV2_SOURCE=1;CONFIG_H_PATH=\&quot;win32_config.h\&quot;"
 				StringPooling="true"
@@ -235,6 +236,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="..\slv2;&quot;..\..\..\lib-src\slv2&quot;;&quot;..\..\..\lib-src\slv2\src&quot;;&quot;..\..\..\lib-src\redland\librdf&quot;;..\raptor;&quot;..\..\..\lib-src\redland\raptor\src&quot;;&quot;..\..\..\lib-src\ffmpeg\win32&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;LIBSLV2_SOURCE=1;CONFIG_H_PATH=\&quot;win32_config.h\&quot;"
 				StringPooling="true"

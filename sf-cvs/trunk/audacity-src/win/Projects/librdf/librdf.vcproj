@@ -40,6 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\redland\librdf&quot;;..\raptor;&quot;..\..\..\lib-src\redland\raptor\src&quot;;..\rasqal;&quot;..\..\..\lib-src\redland\rasqal\src&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;LIBRDF_INTERNAL=1;PKGDATADIR=\&quot;.\&quot;"
 				StringPooling="true"
@@ -235,6 +236,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\redland\librdf&quot;;..\raptor;&quot;..\..\..\lib-src\redland\raptor\src&quot;;..\rasqal;&quot;..\..\..\lib-src\redland\rasqal\src&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;LIBRDF_INTERNAL=1;PKGDATADIR=\&quot;.\&quot;"
 				StringPooling="true"

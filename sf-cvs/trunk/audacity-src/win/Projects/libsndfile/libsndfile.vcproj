@@ -40,6 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories=".;&quot;..\..\..\lib-src\libsndfile\include&quot;;&quot;..\..\..\lib-src\libsndfile\src&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;inline=__inline;LIBSNDFILE_PRIVATE_CONFIG"
 				StringPooling="true"
@@ -235,6 +236,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories=".;&quot;..\..\..\lib-src\libsndfile\include&quot;;&quot;..\..\..\lib-src\libsndfile\src&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;inline=__inline;LIBSNDFILE_PRIVATE_CONFIG"
 				StringPooling="true"

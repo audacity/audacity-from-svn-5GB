@@ -105,6 +105,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\..\..\lib-src\sbsms\include;..\..\..\lib-src\sbsms\win"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
@@ -234,6 +235,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\..\..\lib-src\sbsms\include;..\..\..\lib-src\sbsms\win"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"

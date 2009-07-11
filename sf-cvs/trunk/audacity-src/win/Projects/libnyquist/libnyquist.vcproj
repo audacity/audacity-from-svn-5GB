@@ -41,6 +41,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\libnyquist&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\cmt&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\ffts\src&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\nyqsrc&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\nyqstk&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\nyqstk\include&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\snd&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\tran&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\sys\win\msvc&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\xlisp&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\win&quot;;..\libsndfile;&quot;..\..\..\lib-src\portaudio-v19\include&quot;"
 				PreprocessorDefinitions="NDEBUG;WIN32;_LIB"
 				StringPooling="true"
@@ -239,6 +240,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;..\..\..\lib-src\libnyquist&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\cmt&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\ffts\src&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\nyqsrc&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\nyqstk&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\nyqstk\include&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\snd&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\tran&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\sys\win\msvc&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\xlisp&quot;;&quot;..\..\..\lib-src\libnyquist\nyquist\win&quot;;..\libsndfile;&quot;..\..\..\lib-src\portaudio-v19\include&quot;"
 				PreprocessorDefinitions="NDEBUG;WIN32;_LIB"
 				StringPooling="true"
