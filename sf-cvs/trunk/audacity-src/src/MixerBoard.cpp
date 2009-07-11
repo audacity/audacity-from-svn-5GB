@@ -134,34 +134,21 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
    if (!(ctrlSize.x & 1))
       ctrlSize.x--;
 
-   /* i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically */
+   /* i18n-hint: Title of the Pan slider, used to move the sound left or right */
    mSlider_Pan = new ASlider(this, ID_ASLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER, true); //vvvvv popup?
-
-   // Instead of an even split, give this many extra pixels to the meter
-   const int kExtraMeter = 8;
 
    // gain slider & level meter
    ctrlPos.x = kDoubleInset;
    ctrlPos.y += PAN_HEIGHT + kQuadrupleInset;
 
-   //vvv For the slider width, subtracting kTripleInset instead of kQuadrupleInset makes it not show 
-   //    ticks on Windows -- wxSlider bug. But it looks better this way with the now wider meter.
+   // Instead of an even split of the cluster width, give extra pixels to the meter
+   const int kExtraMeter = 8;
    ctrlSize = wxSize((nHalfWidth - kTripleInset - kExtraMeter), 
                      (size.GetHeight() - ctrlPos.y - kQuadrupleInset));
 
-   // ASlider doesn't do vertical, so use wxSlider for now. 
    /* i18n-hint: Title of the Gain slider, used to adjust the volume */
    mSlider_Gain = 
       new ASlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER, true, true, 0.0, wxVERTICAL);
-      //v new wxSlider(this, ID_SLIDER_GAIN, // wxWindow* parent, wxWindowID id, 
-      //             this->GetGainToSliderValue(),  // int value, 
-      //             #ifdef __WXMSW__
-      //                -kGainSliderMax, -kGainSliderMin, // Max is at bottom for Windows! // int minValue, int maxValue, 
-      //             #else
-      //                kGainSliderMin, kGainSliderMax, // int minValue, int maxValue, 
-      //             #endif
-      //            ctrlPos, ctrlSize, // const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, 
-      //            wxSL_VERTICAL | wxSL_AUTOTICKS | wxSUNKEN_BORDER); // long style = wxSL_HORIZONTAL, ...
 
    // too much color:   mSlider_Gain->SetBackgroundColour(this->GetTrackColor());
    // too dark:   mSlider_Gain->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_3DSHADOW));
@@ -184,12 +171,6 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
       mStaticText_TrackName->SetToolTip(_T("Track Name"));
       mToggleButton_Mute->SetToolTip(_T("Mute"));
       mToggleButton_Solo->SetToolTip(_T("Solo"));
-      // LWSlider already shows the value, so don't do this:   mSlider_Pan->SetToolTip(_T("Pan"));
-      
-      //v LWSlider already shows the value, so don't do this:
-      //wxScrollEvent dummy;
-      //this->OnSliderScroll_Gain(dummy); // Set the tooltip to show the current value.
-
       mMeter->SetToolTip(_T("Signal Level Meter"));
    #endif // wxUSE_TOOLTIPS
 
@@ -421,7 +402,10 @@ void MixerTrackCluster::OnButton_Mute(wxCommandEvent& event)
       return;
    }
 
-   mLeftTrack->SetMute(mToggleButton_Mute->IsDown());
+   bool bValue = mToggleButton_Mute->IsDown();
+   mLeftTrack->SetMute(bValue);
+   if (mRightTrack)
+      mRightTrack->SetMute(bValue);
    mToggleButton_Mute->SetAlternate(mLeftTrack->GetSolo());
 
    // Update the TrackPanel correspondingly. 
@@ -441,6 +425,8 @@ void MixerTrackCluster::OnButton_Solo(wxCommandEvent& event)
 
    bool bValue = mToggleButton_Solo->IsDown();
    mLeftTrack->SetSolo(bValue);
+   if (mRightTrack)
+      mRightTrack->SetSolo(bValue);
    mMixerBoard->IncrementSoloCount(bValue ? 1 : -1);
    mToggleButton_Mute->SetAlternate(bValue);
 
@@ -963,31 +949,35 @@ void MixerBoard::UpdateMeters(double t)
 
 void MixerBoard::UpdateWidth()
 {
-   // All these width calculations have extra padding on right, so there's 
+   // All these calculations have extra padding on right, so there's 
    // always gray area to click to deselect all tracks. 
+   int newWidth = this->GetTrackClustersWidth() + kDoubleInset;
+
    // Min width is one cluster wide, plus margins.
    const int kMinWidth = kInset + MIXER_TRACK_CLUSTER_WIDTH + kTripleInset;
-
-   int newWidth = this->GetTrackClustersWidth() + kDoubleInset;
    if (newWidth < kMinWidth)
       newWidth = kMinWidth;
+
+   mScrolledWindow->SetVirtualSize(newWidth, -1);
+
+   // Now limit newWidth to visible screen.
+   wxWindow* pParent = this->GetParent(); // In UmixIt, would be mProject. But here, always its MixerBoardFrame.
+   wxPoint parentPos = pParent->GetPosition();
+   const int kMaxWidth = wxSystemSettings::GetMetric(wxSYS_SCREEN_X) - parentPos.x;
+   if (newWidth > kMaxWidth) 
+      newWidth = kMaxWidth;
+
    int width;
    int height;
    this->GetClientSize(&width, &height);
    if (newWidth == width - 3) // -3 is fudge to accommodate GetClientSize.
       return;
 
-   mScrolledWindow->SetVirtualSize(newWidth, -1);
-
-   wxWindow* pParent = this->GetParent(); // Might be mProject, or might be a MixerBoardFrame.
+   pParent->SetSize(newWidth, -1);
    pParent->SetSizeHints(
       kMinWidth, // int minW=-1, 
       MIXER_BOARD_MIN_HEIGHT, // int minH=-1, 
       newWidth); // int maxW=-1, 
-   wxPoint parentPos = pParent->GetPosition();
-   int maxWidth = wxSystemSettings::GetMetric(wxSYS_SCREEN_X) - parentPos.x;
-   if (newWidth > maxWidth) 
-      newWidth = maxWidth;
    pParent->SetSize(newWidth, -1);
 }
 

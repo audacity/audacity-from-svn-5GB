@@ -7358,7 +7358,7 @@ void TrackInfo::MakeMoreSliders()
    slider->SetDefaultValue(1.0);
    mGains.Add(slider);
    
-   /* i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically */
+   /* i18n-hint: Title of the Pan slider, used to move the sound left or right */
    slider = new LWSlider(pParent, _("Pan"),
                          wxPoint(panRect.x, panRect.y),
                          wxSize(panRect.width, panRect.height),

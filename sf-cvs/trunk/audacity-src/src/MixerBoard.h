@@ -40,7 +40,7 @@ public:
                      WaveTrack* pLeftTrack, WaveTrack* pRightTrack = NULL, 
                      const wxPoint& pos = wxDefaultPosition, 
                      const wxSize& size = wxDefaultSize);
-   ~MixerTrackCluster() {};
+   virtual ~MixerTrackCluster() {};
 
    void ResetMeter();
 
@@ -96,7 +96,7 @@ WX_DEFINE_ARRAY(MixerTrackCluster*, MixerTrackClusterArray);
 class MusicalInstrument {
 public:
    MusicalInstrument(wxBitmap* pBitmap, const wxString strXPMfilename);
-   ~MusicalInstrument();
+   virtual ~MusicalInstrument();
 
    wxBitmap*      mBitmap;
    wxArrayString  mKeywords;
@@ -115,7 +115,7 @@ public:
                               const wxPoint& pos = wxDefaultPosition, 
                               const wxSize& size = wxDefaultSize, 
                               long style = wxHSCROLL | wxVSCROLL);
-   ~MixerBoardScrolledWindow();
+   virtual ~MixerBoardScrolledWindow();
 
 private:
    void OnMouseEvent(wxMouseEvent& event);
@@ -140,7 +140,7 @@ public:
                wxFrame* parent, 
                const wxPoint& pos = wxDefaultPosition, 
                const wxSize& size = wxDefaultSize);
-   ~MixerBoard();
+   virtual ~MixerBoard();
 
    // Add clusters for any tracks we're not yet showing.
    // Update pointers for tracks we're aleady showing. 
@@ -214,7 +214,8 @@ public:
 class MixerBoardFrame : public wxFrame { 
 public:
    MixerBoardFrame(AudacityProject* parent);
-   ~MixerBoardFrame();
+   virtual ~MixerBoardFrame();
+
 private:
    // event handlers
    void OnCloseWindow(wxCloseEvent &WXUNUSED(event));
