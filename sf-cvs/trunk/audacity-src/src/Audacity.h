@@ -25,7 +25,7 @@
 #define AUDACITY_RELEASE   3
 #define AUDACITY_REVISION  8
 #define AUDACITY_MODLEVEL  0
-#define AUDACITY_SUFFIX    wxT("-alpha_") __TDATE__ // wxT("") 
+#define AUDACITY_SUFFIX    wxT("-rc1")// __TDATE__ // wxT("") 
 
 #define AUDACITY_MAKESTR( x ) #x
 #define AUDACITY_QUOTE( x ) AUDACITY_MAKESTR( x )
