@@ -41,6 +41,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_dll\mswu&quot;;&quot;$(WXWIN)\include&quot;"
 				PreprocessorDefinitions="WXUSINGDLL;WIN32;NDEBUG;_LIB"
 				StringPooling="true"
@@ -236,6 +237,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_dll\msw&quot;;&quot;$(WXWIN)\include&quot;"
 				PreprocessorDefinitions="WXUSINGDLL;WIN32;NDEBUG;_LIB"
 				StringPooling="true"

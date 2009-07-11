@@ -40,6 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="..\..\..\lib-src\libmad\msvc++"
 				PreprocessorDefinitions="NDEBUG;__WX__;WIN32;_WINDOWS;__WINDOWS__;__WXMSW__;__WIN95__;__WIN32__;_LIB;HAVE_CONFIG_H;FPM_INTEL"
 				StringPooling="true"
@@ -235,6 +236,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="..\..\..\lib-src\libmad\msvc++"
 				PreprocessorDefinitions="NDEBUG;__WX__;WIN32;_WINDOWS;__WINDOWS__;__WXMSW__;__WIN95__;__WIN32__;_LIB;HAVE_CONFIG_H;FPM_INTEL"
 				StringPooling="true"

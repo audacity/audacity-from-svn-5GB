@@ -40,6 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_dll\mswu&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(SolutionDir)&quot;"
 				PreprocessorDefinitions="BUILDING_SCRIPT_PIPE;WXUSINGDLL;__WXMSW__;NDEBUG;_USRDLL;WIN32"
 				StringPooling="true"
@@ -267,6 +268,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_dll\msw&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(SolutionDir)&quot;"
 				PreprocessorDefinitions="BUILDING_SCRIPT_PIPE;WXUSINGDLL;__WXMSW__;NDEBUG;_USRDLL;WIN32"
 				StringPooling="true"
