@@ -658,7 +658,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mTrackFactory(NULL),
      mAutoScrolling(false),
      mActive(true),
-     mLastFocusedWindow(NULL),
      mHistoryWindow(NULL),
      #ifdef EXPERIMENTAL_LYRICS_WINDOW
         mLyricsWindow(NULL),
@@ -673,6 +672,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mTracksFitVerticallyZoomed(false),  //lda
      mCleanSpeechMode(false),            //lda
      mShowId3Dialog(true),               //lda
+     mLastFocusedWindow(NULL),
      mKeyboardCaptured(false),
      mImportXMLTagHandler(NULL),
      mLastAutoSaveTime(0),
@@ -1651,6 +1651,12 @@ void AudacityProject::OnUpdateUI(wxUpdateUIEvent & event)
 
 void AudacityProject::OnActivate(wxActivateEvent & event)
 {
+   // Activate events can fire during window teardown, so just
+   // ignore them.
+   if (mIsDeleting) {
+      return;
+   }
+
    mActive = event.GetActive();
 
    // Under Windows, focus can be "lost" when returning to 
@@ -1665,16 +1671,26 @@ void AudacityProject::OnActivate(wxActivateEvent & event)
    // activate event, we restore that focus to the child or the track
    // panel if no child had the focus (which probably should never happen).
    if (!mActive) {
-      mLastFocusedWindow = FindFocus();
+      // We only want to remember the last focused window if FindFocus() returns
+      // a window within the current project frame.  On wxGTK with "focus follows
+      // the pointer" option enabled, the focused window may actually be within
+      // a different project and we only want to remember our focused subwindows.
+      if (IsActive()) {
+         mLastFocusedWindow = FindFocus();
+      }
    }
-   else if (mActive && !mIsDeleting) { // Can fire during close...protect against it
+   else {
       SetActiveProject(this);
       if (mLastFocusedWindow) {
          mLastFocusedWindow->SetFocus();
       }
       else {
-         mTrackPanel->SetFocus();
+         if (mTrackPanel) {
+            mTrackPanel->SetFocus();
+         }
       }
+      // No longer need to remember the last focused window
+      mLastFocusedWindow = NULL;
    }
    event.Skip();
 }
@@ -1789,6 +1805,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       SaveWindowSize();
    }
 
+   mLastFocusedWindow = NULL;
    mIsDeleting = true;
 
    bool quitOnClose;
