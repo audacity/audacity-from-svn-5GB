@@ -956,8 +956,9 @@ void AudacityProject::UpdatePrefs()
 
    SetProjectTitle();
 
-   if (mTrackPanel)
+   if (mTrackPanel) {
       mTrackPanel->UpdatePrefs();
+   }
 
    SetSnapTo(gPrefs->Read(wxT("/SnapTo"), 0L)!=0);
 
@@ -967,7 +968,7 @@ void AudacityProject::UpdatePrefs()
 
    // The toolbars will be recreated, so make sure we don't leave
    // a stale pointer hanging around.
-   mLastFocusedWindow = wxWindow::FindFocus();
+   mLastFocusedWindow = NULL;
 }
 
 void AudacityProject::RedrawProject(const bool bForceWaveTracks /*= false*/)
@@ -1672,11 +1673,10 @@ void AudacityProject::OnActivate(wxActivateEvent & event)
    // panel if no child had the focus (which probably should never happen).
    if (!mActive) {
       // We only want to remember the last focused window if FindFocus() returns
-      // a window within the current project frame.  On wxGTK with "focus follows
-      // the pointer" option enabled, the focused window may actually be within
-      // a different project and we only want to remember our focused subwindows.
-      if (IsActive()) {
-         mLastFocusedWindow = FindFocus();
+      // a window within the current project frame.
+      wxWindow *w = FindFocus();
+      if (wxGetTopLevelParent(w) ==this) {
+         mLastFocusedWindow = w;
       }
    }
    else {
