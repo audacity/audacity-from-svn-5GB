@@ -432,9 +432,9 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
 
    return true;
 }
-bool WaveTrack::Paste(double t0, Track *src, bool relativeLabels)
+bool WaveTrack::Paste(double t0, Track *src)
 {
-   return Paste(t0, src, NULL, relativeLabels);
+   return Paste(t0, src, NULL, false);
 }
 
 bool WaveTrack::Paste(double t0, Track *src, TrackList* tracks, bool relativeLabels)
