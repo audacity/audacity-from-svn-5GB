@@ -42,6 +42,9 @@
 #define MUTE_SOLO_HEIGHT 16
 #define PAN_HEIGHT 24
 
+// If we decide we want more than 1 frame, base it on sample rate. 
+const int kFramesPerBuffer = 1; // for calls to mMeter->UpdateDisplay
+
 const int kGainSliderMin = -36; 
 const int kGainSliderMax = 6; 
 
@@ -165,7 +168,11 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
       new Meter(this, -1, // wxWindow* parent, wxWindowID id, 
                 false, // bool isInput
                 ctrlPos, ctrlSize, // const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
-                Meter::MixerTrackCluster); // Style style = HorizontalStereo
+                Meter::MixerTrackCluster, // Style style = HorizontalStereo, 
+
+                // 1024 is typical for framesPerBuffer in calls to audacityAudioCallback.
+                // But we're far fewer frames, so scale the decay rate accordingly.
+                60.0f * 1024.0f / (float)kFramesPerBuffer); // float fDecayRate = 60); 
 
    #if wxUSE_TOOLTIPS
       mStaticText_TrackName->SetToolTip(_T("Track Name"));
@@ -253,32 +260,23 @@ void MixerTrackCluster::UpdateGain()
    mSlider_Gain->Set(mLeftTrack->GetGain()); //v mSlider_Gain->SetValue(this->GetGainToSliderValue());
 }
 
-void MixerTrackCluster::UpdateMeter(double t1)
+void MixerTrackCluster::UpdateMeter(double t0, double t1)
 {
-   if ((t1 < 0.0) || // bad time value
+   if ((t0 < 0.0) || (t1 < 0.0) || (t0 > t1) || // bad time value
          ((mMixerBoard->HasSolo() || mLeftTrack->GetMute()) && !mLeftTrack->GetSolo()))
    {
       this->ResetMeter();
       return;
    }
 
-   // 50ms is TrackPanel's timer interval. 
-   const double kTimerInterval = 0.005; 
-   
-   double t0 = t1 - kTimerInterval;
-   if (t0 < 0.0)
-      return; // Don't update until we have enough frames.
-
-   const int kFramesPerBuffer = 5; 
    float min; // A dummy, since it's not shown in meters. 
-
    float* maxLeft = new float[kFramesPerBuffer];
    float* rmsLeft = new float[kFramesPerBuffer];
    float* maxRight = new float[kFramesPerBuffer];
    float* rmsRight = new float[kFramesPerBuffer];
 
    bool bSuccess = true;
-   const double kFrameInterval = kTimerInterval / (double)kFramesPerBuffer;
+   const double kFrameInterval = (t1 - t0) / (double)kFramesPerBuffer;
    double dFrameT0 = t0;
    double dFrameT1 = t0 + kFrameInterval;
    unsigned int i = 0;
@@ -659,7 +657,7 @@ MixerBoard::MixerBoard(AudacityProject* pProject,
       */
 
    mSoloCount = 0;
-   mT = -1.0;
+   mPrevT1 = 0.0;
    mTracks = mProject->GetTracks();
 }
 
@@ -882,6 +880,8 @@ void MixerBoard::RefreshTrackClusters()
 
 void MixerBoard::ResetMeters()
 {
+   mPrevT1 = 0.0;
+
    if (!this->IsShown())
       return;
 
@@ -972,15 +972,15 @@ void MixerBoard::UpdateGain(const WaveTrack* pLeftTrack)
       pMixerTrackCluster->UpdateGain();
 }
 
-void MixerBoard::UpdateMeters(double t)
+void MixerBoard::UpdateMeters(double t1)
 {
-   if (!this->IsShown() || (t == mT))
+   if (!this->IsShown() || (t1 <= mPrevT1))
       return;
 
-   mT = t;
-
    for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
-      mMixerTrackClusters[i]->UpdateMeter(t);
+      mMixerTrackClusters[i]->UpdateMeter(mPrevT1, t1);
+
+   mPrevT1 = t1;
 }
 
 void MixerBoard::UpdateWidth()

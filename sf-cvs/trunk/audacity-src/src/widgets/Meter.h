@@ -100,7 +100,8 @@ class Meter : public wxPanel
          bool isInput,
          const wxPoint& pos = wxDefaultPosition,
          const wxSize& size = wxDefaultSize, 
-         Style style = HorizontalStereo);
+         Style style = HorizontalStereo, 
+         float fDecayRate = 60.0f);
 
    ~Meter();
 

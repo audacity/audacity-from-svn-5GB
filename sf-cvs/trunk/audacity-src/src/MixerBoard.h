@@ -52,7 +52,7 @@ public:
    void UpdateSolo();
    void UpdatePan();
    void UpdateGain();
-   void UpdateMeter(double t1);
+   void UpdateMeter(double t0, double t1);
 
 private:
    int GetGainToSliderValue();
@@ -167,7 +167,7 @@ public:
    void UpdatePan(const WaveTrack* pLeftTrack);
    void UpdateGain(const WaveTrack* pLeftTrack);
    
-   void UpdateMeters(double t);
+   void UpdateMeters(double t1);
 
    void UpdateWidth();
 
@@ -203,7 +203,7 @@ private:
    AudacityProject*           mProject;
    MixerBoardScrolledWindow*  mScrolledWindow; // Holds the MixerTrackClusters and handles scrolling.
    unsigned int               mSoloCount;
-   double                     mT;
+   double                     mPrevT1;
    TrackList*                 mTracks;
 
 public:
