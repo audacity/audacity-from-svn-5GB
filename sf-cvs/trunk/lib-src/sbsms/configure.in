@@ -39,8 +39,18 @@ SHARED_VERSION_INFO="8:0:7"
 AC_PROG_LIBTOOL
 AM_PROG_LIBTOOL
 
+# save $CXXFLAGS etc. since AC_PROG_CXX likes to insert "-g -O2"
+# if $CXXFLAGS is blank and it finds GCC
+cflags_save="$CFLAGS"
+cppflags_save="$CPPFLAGS"
+cxxflags_save="$CXXFLAGS"
 AC_LANG([C++])
 AC_PROG_CXX
+AC_PROG_CXXCPP
+# restore those variables back
+CFLAGS="$cflags_save"
+CPPFLAGS="$cppflags_save"
+CXXFLAGS="$cxxflags_save"
 
 AC_CHECK_FUNCS(malloc calloc free memcpy)
 
@@ -123,12 +133,10 @@ else
 fi
 AM_CONDITIONAL(ENABLE_PORTAUDIO, test x$enable_portaudio = xyes)
 
-CXXFLAGS=`echo $CXXFLAGS | sed -e "s/-g//" -e "s/-O2//"`
-
+# legitimately we can add -g to flags for debug builds, because they won't
+# be much use otherwise
 if test x$enable_debug = xyes; then
-   CXXFLAGS="$CXXFLAGS -g -O0"
-else
-   CXXFLAGS="$CXXFLAGS -O3 -fomit-frame-pointer"
+   CXXFLAGS="$CXXFLAGS -g"
 fi
 
 if test x$enable_static = xyes; then
