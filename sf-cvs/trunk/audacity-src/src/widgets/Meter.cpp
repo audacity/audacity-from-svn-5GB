@@ -578,7 +578,7 @@ void Meter::UpdateDisplay(int numChannels, int numFrames,
          // samples in a row, also send the number of peaked samples
          // at the head and tail, in case there's a run 
          // of peaked samples that crosses block boundaries.
-         if (fabs((j == 0) ? maxLeft[i] : maxRight[i]) >= 1.0)
+         if (fabs((j == 0) ? maxLeft[i] : maxRight[i]) >= MAX_AUDIO)
          {
             if (msg.headPeakCount[j]==i)
                msg.headPeakCount[j]++;
@@ -616,7 +616,8 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
       double deltaT = msg.numFrames / mRate;
       int j;
       
-      // <Why is this in the loop, rather than top of the method?>
+      // <Why is this in the loop, rather than top of the method? 
+      //    Or just a condition on the following, so we pop all the msgs while disabled?>
       if (mMeterDisabled)
          return;
       //wxLogDebug(wxT("Pop: %s"), msg.toString().c_str());
