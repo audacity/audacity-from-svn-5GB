@@ -129,8 +129,8 @@ extern void AddPages(   AudacityProject * pProj, GuiFactory & Factory,  wxNotebo
 #ifdef EXPERIMENTAL_AUDACITY_TESTER
 #endif
 
-#define EXPERIMENTAL_LYRICS_WINDOW //vvvvv Vaughan, 2009-07-06
-#define EXPERIMENTAL_MIXER_BOARD //vvvvv Vaughan, 2009-07-07
+#define EXPERIMENTAL_LYRICS_WINDOW //vvv Vaughan, 2009-07-06
+#define EXPERIMENTAL_MIXER_BOARD //vvv Vaughan, 2009-07-07
 
 #endif
 
