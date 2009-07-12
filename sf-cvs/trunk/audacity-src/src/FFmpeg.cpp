@@ -808,7 +808,6 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avformat,av_alloc_format_context);
    INITDYN(avformat,guess_format);
    INITDYN(avformat,av_write_trailer);
-   INITDYN(avformat,av_init_packet);
    INITDYN(avformat,av_codec_get_id);
    INITDYN(avformat,av_codec_get_tag);
    INITDYN(avformat,avformat_version);
@@ -818,6 +817,8 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(avformat,match_ext);
 
    INITDYN(codec,avcodec_init);
+   INITDYN(codec,av_init_packet);
+   INITDYN(codec,av_free_packet);
    INITDYN(codec,avcodec_find_encoder);
    INITDYN(codec,avcodec_find_encoder_by_name);
    INITDYN(codec,avcodec_find_decoder);
@@ -842,12 +843,12 @@ bool FFmpegLibs::InitLibs(wxString libpath_format, bool showerr)
    INITDYN(util,av_free);
    INITDYN(util,av_log_set_callback);
    INITDYN(util,av_log_default_callback);
-   INITDYN(util,av_fifo_init);
+   INITDYN(util,av_fifo_alloc);
    INITDYN(util,av_fifo_free);
-   INITDYN(util,av_fifo_read);
+   INITDYN(util,av_fifo_generic_read);
    INITDYN(util,av_fifo_size);
    INITDYN(util,av_fifo_generic_write);
-   INITDYN(util,av_fifo_realloc);
+   INITDYN(util,av_fifo_realloc2);
    INITDYN(util,av_malloc);
    INITDYN(util,av_freep);
    INITDYN(util,av_rescale_q);
