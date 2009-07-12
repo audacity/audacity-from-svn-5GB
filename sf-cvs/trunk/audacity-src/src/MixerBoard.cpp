@@ -135,7 +135,7 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
       ctrlSize.x--;
 
    /* i18n-hint: Title of the Pan slider, used to move the sound left or right */
-   mSlider_Pan = new ASlider(this, ID_ASLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER, true); //vvvvv popup?
+   mSlider_Pan = new ASlider(this, ID_ASLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER, true); //vvvvv popup feedback?
 
    // gain slider & level meter
    ctrlPos.x = kDoubleInset;
@@ -263,14 +263,13 @@ void MixerTrackCluster::UpdateMeter(double t1)
    }
 
    // 50ms is TrackPanel's timer interval. 
-   // But be more recent here, just the last 10%.
-   const double kTimerInterval = 0.0005; 
+   const double kTimerInterval = 0.005; 
    
    double t0 = t1 - kTimerInterval;
    if (t0 < 0.0)
       return; // Don't update until we have enough frames.
 
-   const int kFramesPerBuffer = 500; 
+   const int kFramesPerBuffer = 5; 
    float min; // A dummy, since it's not shown in meters. 
 
    float* maxLeft = new float[kFramesPerBuffer];
@@ -626,7 +625,7 @@ MixerBoard::MixerBoard(AudacityProject* pProject,
    mImageSoloDown = NULL;
    mImageSoloDisabled = NULL;
 
-   mMuteSoloWidth = 24; //vvvvv good estimate, but really set in MixerBoard::CreateMuteSoloImages
+   mMuteSoloWidth = 44; //v good estimate, but really set in MixerBoard::CreateMuteSoloImages
 
    // private data members
    this->LoadMusicalInstruments(); // Set up mMusicalInstruments.
@@ -1018,17 +1017,17 @@ void MixerBoard::UpdateWidth()
    pParent->SetSize(newWidth, -1);
 }
 
+//
 // private methods
+//
+
 void MixerBoard::CreateMuteSoloImages()
 {
-   // Much of this is taken TrackLabel::DrawMuteSolo 
    wxMemoryDC dc;
-   wxBitmap dummy(100, 100);
-   dc.SelectObject(dummy);
-
    wxString str = _("Mute"); 
    long textWidth, textHeight;
-   //vvvvv deprecated:     AColor::SetLabelFont(dc);
+
+   //vvvvv See TrackPanel::OnSetFont because this is deprecated:     AColor::SetLabelFont(dc);
    dc.GetTextExtent(str, &textWidth, &textHeight);
    mMuteSoloWidth = textWidth + (3 * kInset);
 
