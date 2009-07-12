@@ -253,7 +253,17 @@ void QuitAudacity(bool bForce)
    // BG: unless force is true
 
    // BG: Are there any projects open?
-   if (!gAudacityProjects.IsEmpty())
+	//-   if (!gAudacityProjects.IsEmpty())
+/*start+*/
+   if (gAudacityProjects.IsEmpty())
+   {
+#ifdef __WXMAC__
+      AudacityProject::DeleteClipboard();
+#endif
+   }
+	else
+/*end+*/
+
    {
       while (gAudacityProjects.Count())
       {
