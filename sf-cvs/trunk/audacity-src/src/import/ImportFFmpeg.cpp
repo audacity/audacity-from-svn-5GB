@@ -558,7 +558,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
          // Cleanup after frame decoding
          if (sc->m_pktValid)
          {
-            av_free_packet(&sc->m_pkt);
+            FFmpegLibsInst->av_free_packet(&sc->m_pkt);
             sc->m_pktValid = 0;
          }    
       }
@@ -575,7 +575,7 @@ int FFmpegImportFileHandle::Import(TrackFactory *trackFactory,
 
             if (mScs[i]->m_pktValid)
             {
-               av_free_packet(&mScs[i]->m_pkt);
+               FFmpegLibsInst->av_free_packet(&mScs[i]->m_pkt);
                mScs[i]->m_pktValid = 0;
             }				
          }
@@ -644,7 +644,7 @@ streamContext *FFmpegImportFileHandle::ReadNextFrame()
    // When not all streams are selected for import this will happen very often.
    if (sc == NULL)
    {
-      av_free_packet(&pkt);
+      FFmpegLibsInst->av_free_packet(&pkt);
       return (streamContext*)1;
    }
 

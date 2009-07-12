@@ -148,7 +148,7 @@ private:
    AVCodecContext  *	mEncAudioCodecCtx;		// the encoder for the output audio stream
    uint8_t         *	mEncAudioEncodedBuf;		// buffer to hold frames encoded by the encoder
    int			      mEncAudioEncodedBufSiz;		
-   AVFifoBuffer		mEncAudioFifo;				// FIFO to write incoming audio samples into
+   AVFifoBuffer		 *  mEncAudioFifo;				// FIFO to write incoming audio samples into
    uint8_t         *	mEncAudioFifoOutBuf;		// buffer to read _out_ of the FIFO into
 
    wxString          mName;
@@ -463,7 +463,8 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    // The encoder may require a minimum number of raw audio samples for each encoding but we can't
    // guarantee we'll get this minimum each time an audio frame is decoded from the input file so 
    // we use a FIFO to store up incoming raw samples until we have enough for one call to the codec.
-   FFmpegLibsInst->av_fifo_init(&mEncAudioFifo, 1024);
+   //FFmpegLibsInst->av_fifo_init(&mEncAudioFifo, 1024);
+   mEncAudioFifo = FFmpegLibsInst->av_fifo_alloc(1024);
 
    // Allocate a buffer to read OUT of the FIFO into. The FIFO maintains its own buffer internally.
    if ((mEncAudioFifoOutBuf = (uint8_t*)FFmpegLibsInst->av_malloc(2*MAX_AUDIO_PACKET_SIZE)) == NULL)
@@ -483,7 +484,7 @@ bool ExportFFmpeg::Finalize()
    for (;;)
    {
       AVPacket	pkt;
-      int		nFifoBytes = FFmpegLibsInst->av_fifo_size(&mEncAudioFifo);	// any bytes left in audio FIFO?
+      int		nFifoBytes = FFmpegLibsInst->av_fifo_size(mEncAudioFifo);	// any bytes left in audio FIFO?
 
       nEncodedBytes = 0;
       int		nAudioFrameSizeOut = mEncAudioCodecCtx->frame_size * mEncAudioCodecCtx->channels * sizeof(int16_t);
@@ -520,7 +521,7 @@ bool ExportFFmpeg::Finalize()
                nFifoBytes, mEncAudioCodecCtx->frame_size);
 
             // Pull the bytes out from the FIFO and feed them to the encoder.
-            if (FFmpegLibsInst->av_fifo_read(&mEncAudioFifo, mEncAudioFifoOutBuf, nFifoBytes) == 0)
+            if (FFmpegLibsInst->av_fifo_generic_read(mEncAudioFifo, mEncAudioFifoOutBuf, nFifoBytes, NULL) == 0)
             {
                if (mEncAudioCodecCtx->frame_size != 1)
                   nEncodedBytes = FFmpegLibsInst->avcodec_encode_audio(mEncAudioCodecCtx, mEncAudioEncodedBuf, mEncAudioEncodedBufSiz, (int16_t*)mEncAudioFifoOutBuf);
@@ -584,7 +585,8 @@ bool ExportFFmpeg::Finalize()
    if (mEncAudioFifoOutBuf != NULL)
       FFmpegLibsInst->av_free(mEncAudioFifoOutBuf);
 
-   FFmpegLibsInst->av_fifo_free(&mEncAudioFifo);
+   FFmpegLibsInst->av_fifo_free(mEncAudioFifo);
+   mEncAudioFifo = NULL;
    return true;
 }
 
@@ -599,15 +601,15 @@ bool ExportFFmpeg::EncodeAudioFrame(int16_t *pFrame, int frameSize)
 
    nBytesToWrite = frameSize;
    pRawSamples  = (uint8_t*)pFrame;
-   FFmpegLibsInst->av_fifo_realloc(&mEncAudioFifo, FFmpegLibsInst->av_fifo_size(&mEncAudioFifo) + frameSize);
+   FFmpegLibsInst->av_fifo_realloc2(mEncAudioFifo, FFmpegLibsInst->av_fifo_size(mEncAudioFifo) + frameSize);
    // Put the raw audio samples into the FIFO.
-   ret = FFmpegLibsInst->av_fifo_generic_write(&mEncAudioFifo, pRawSamples, nBytesToWrite,NULL);
+   ret = FFmpegLibsInst->av_fifo_generic_write(mEncAudioFifo, pRawSamples, nBytesToWrite,NULL);
    wxASSERT(ret == nBytesToWrite);
 
    // Read raw audio samples out of the FIFO in nAudioFrameSizeOut byte-sized groups to encode.
-   while ((ret = FFmpegLibsInst->av_fifo_size(&mEncAudioFifo)) >= nAudioFrameSizeOut)
+   while ((ret = FFmpegLibsInst->av_fifo_size(mEncAudioFifo)) >= nAudioFrameSizeOut)
    {
-      ret = FFmpegLibsInst->av_fifo_read(&mEncAudioFifo, mEncAudioFifoOutBuf, nAudioFrameSizeOut);
+      ret = FFmpegLibsInst->av_fifo_generic_read(mEncAudioFifo, mEncAudioFifoOutBuf, nAudioFrameSizeOut, NULL);
       FFmpegLibsInst->av_init_packet(&pkt);
 
       pkt.size = FFmpegLibsInst->avcodec_encode_audio(mEncAudioCodecCtx, 
