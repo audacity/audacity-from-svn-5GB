@@ -142,8 +142,8 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
    ctrlPos.y += PAN_HEIGHT + kQuadrupleInset;
 
    // Instead of an even split of the cluster width, give extra pixels to the meter
-   const int kExtraMeter = 8;
-   ctrlSize = wxSize((nHalfWidth - kTripleInset - kExtraMeter), 
+   const int kExtraWidthForMeter = 8;
+   ctrlSize = wxSize((nHalfWidth - kTripleInset - kExtraWidthForMeter), 
                      (size.GetHeight() - ctrlPos.y - kQuadrupleInset));
 
    /* i18n-hint: Title of the Gain slider, used to adjust the volume */
@@ -158,8 +158,8 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
    //   mSlider_Gain->SetBackgroundColour(wxColour(192, 192, 192));
    //#endif
 
-   ctrlPos.x = nHalfWidth - kExtraMeter;
-   ctrlSize.SetWidth(nHalfWidth - kInset + kExtraMeter);
+   ctrlPos.x = nHalfWidth - kExtraWidthForMeter;
+   ctrlSize.SetWidth(nHalfWidth - kInset + kExtraWidthForMeter);
 
    mMeter = 
       new Meter(this, -1, // wxWindow* parent, wxWindowID id, 
@@ -262,35 +262,72 @@ void MixerTrackCluster::UpdateMeter(double t1)
       return;
    }
 
-   int numChannels = (mRightTrack != NULL) ? 2 : 1; // Doesn't handle more than 2 channels, as per kMaxMeterBars.
+   // 50ms is TrackPanel's timer interval. 
+   // But be more recent here, just the last 10%.
+   const double kTimerInterval = 0.0005; 
+   
+   double t0 = t1 - kTimerInterval;
+   if (t0 < 0.0)
+      return; // Don't update until we have enough frames.
 
-   // This value 256 is similar to typical values I saw for 
-   // framesPerBuffer in audacityAudioCallback, 
-   // but a smaller number gives better performance.
-   const int framesPerBuffer = 256; 
+   const int kFramesPerBuffer = 500; 
+   float min; // A dummy, since it's not shown in meters. 
 
-   sampleCount pos1 = mLeftTrack->TimeToLongSamples(t1);
-   sampleCount pos0 = pos1 - framesPerBuffer + 1;
-   if (pos0 < 0)
-      pos0 = 0;
-   double t0 =  mLeftTrack->LongSamplesToTime(pos0);
+   float* maxLeft = new float[kFramesPerBuffer];
+   float* rmsLeft = new float[kFramesPerBuffer];
+   float* maxRight = new float[kFramesPerBuffer];
+   float* rmsRight = new float[kFramesPerBuffer];
 
-   // Arrays containing the shape of the waveform - each array has one value per pixel.
-   float* min = new float[framesPerBuffer]; // Don't need separate left & right ones, because it's ignored.
-   float* maxLeft = new float[framesPerBuffer];
-   float* rmsLeft = new float[framesPerBuffer];
-   float* maxRight = (numChannels == 1) ? NULL : new float[framesPerBuffer];
-   float* rmsRight = (numChannels == 1) ? NULL : new float[framesPerBuffer];
+   bool bSuccess = true;
+   const double kFrameInterval = kTimerInterval / (double)kFramesPerBuffer;
+   double dFrameT0 = t0;
+   double dFrameT1 = t0 + kFrameInterval;
+   unsigned int i = 0;
+   while (bSuccess && (i < kFramesPerBuffer))
+   {
+      bSuccess &= 
+         mLeftTrack->GetMinMax(&min, &(maxLeft[i]), dFrameT0, dFrameT1) && 
+         mLeftTrack->GetRMS(&(rmsLeft[i]), dFrameT0, dFrameT1);
+      if (bSuccess && mRightTrack)
+         bSuccess &=
+            mRightTrack->GetMinMax(&min, &(maxRight[i]), dFrameT0, dFrameT1) && 
+            mRightTrack->GetRMS(&(rmsRight[i]), dFrameT0, dFrameT1);
+      else
+      {
+         // Mono: Start with raw values same as left. 
+         // To be modified by bWantPostFadeValues and channel pan/gain.
+         maxRight[i] = maxLeft[i];
+         rmsRight[i] = rmsLeft[i];
+      }
+      dFrameT0 += kFrameInterval;
+      dFrameT1 += kFrameInterval;
+      i++;
+   }
 
-   if (mLeftTrack->GetMinMax(min, maxLeft, t0, t1) && 
-         mLeftTrack->GetRMS(rmsLeft, t0, t1) && 
-         (!mRightTrack || 
-            (mRightTrack->GetMinMax(min, maxRight, t0, t1) && 
-               mRightTrack->GetRMS(rmsRight, t0, t1))))
-      mMeter->UpdateDisplay(numChannels, framesPerBuffer, 
-                              maxLeft, rmsLeft, maxRight, rmsRight);
+   bool bWantPostFadeValues = true; //vvvvv Turn this into a pref, default true.
+   if (bSuccess && bWantPostFadeValues)
+   {
+      for (i = 0; i < kFramesPerBuffer; i++)
+      {
+         float gain = mLeftTrack->GetChannelGain(0);
+         maxLeft[i] *= gain;
+         rmsLeft[i] *= gain;
+         if (mRightTrack)
+            gain = mRightTrack->GetChannelGain(1);
+         else
+            gain = mLeftTrack->GetChannelGain(1);
+         maxRight[i] *= gain;
+         rmsRight[i] *= gain;
+      }
+   }
 
-   delete[] min;
+   if (bSuccess)
+      mMeter->UpdateDisplay(
+         2, // If mono, show left track values in both meters, as in MeterToolBar.      kNumChannels, 
+         kFramesPerBuffer, 
+         maxLeft, rmsLeft, 
+         maxRight, rmsRight);
+
    delete[] maxLeft;
    delete[] rmsLeft;
    delete[] maxRight;
