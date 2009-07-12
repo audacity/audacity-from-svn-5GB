@@ -123,7 +123,7 @@ function cleanfulltree {
 	printf "removing unused libraries from CVS tree ..."
 	myrmrvf $1 lib-src/iAVC lib-src/id3lib ;
 	myrmrvf $1 lib-src/portaudio lib-src/portburn lib-src/rtaudio; 
-	myrmrvf $1 lib-src/wave++ lib-src/mod-script-pipe;
+	myrmrvf $1 lib-src/wave++;
 	printf "Done\n"
 }
 
