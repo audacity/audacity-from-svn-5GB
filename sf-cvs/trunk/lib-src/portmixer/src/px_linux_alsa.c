@@ -114,10 +114,44 @@ static int open_mixer(PxDev *dev, int card, int playback)
          break;
       }
 
+#if 1
+      do {
+
+         snd_hctl_t *hctl;
+         snd_ctl_elem_id_t *id;
+         snd_ctl_elem_type_t *type;
+         snd_ctl_elem_info_t *info;
+         snd_hctl_elem_t *e;
+
+         if (snd_mixer_get_hctl(dev->handle, name, &hctl) < 0) {
+            break;
+         }
+
+         snd_ctl_elem_id_alloca(&id);
+         snd_ctl_elem_info_alloca(&info);
+
+         for (e = snd_hctl_first_elem(hctl); e; e = snd_hctl_elem_next(e)) {
+
+            snd_hctl_elem_info(e, info);
+            snd_hctl_elem_get_id(e, id);
+            printf("inactive %d\n", snd_ctl_elem_info_is_inactive(info));
+
+            printf("numid=%u, iface= %s, name = %s\n",
+               snd_ctl_elem_id_get_numid(id),
+               snd_ctl_elem_iface_name(snd_ctl_elem_id_get_interface(id)),
+               snd_ctl_elem_id_get_name(id));
+
+         }
+
+      } while(FALSE);
+#endif
+
       for (elem = snd_mixer_first_elem(dev->handle);
            elem != NULL;
            elem = snd_mixer_elem_next(elem))
       {
+printf("type = %d\n", snd_mixer_elem_get_type(elem));
+
          if (playback) {
             if (!snd_mixer_selem_has_common_volume(elem) &&
                 !snd_mixer_selem_has_playback_volume(elem)) {
