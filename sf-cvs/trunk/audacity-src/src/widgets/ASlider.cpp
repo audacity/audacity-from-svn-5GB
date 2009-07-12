@@ -444,8 +444,8 @@ void LWSlider::Init(wxWindow * parent,
    mDefaultValue = 0.0f;
    mDefaultShortcut = false;
    mBitmap = NULL;
-   mScrollLine = 0.05f;
-   mScrollPage = 0.5;
+   mScrollLine = 1.0f;
+   mScrollPage = 5.0f;
 
    // Get the Thumb bitmap.  Generic version for now...
    if (mOrientation == wxHORIZONTAL)
