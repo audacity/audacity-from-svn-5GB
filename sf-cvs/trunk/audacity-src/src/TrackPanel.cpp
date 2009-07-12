@@ -234,6 +234,7 @@ WX_DEFINE_OBJARRAY(TrackClipArray);
 
 #define kLeftInset 4
 #define kTopInset 4
+#define kTimerInterval 50 // milliseconds
 
 // Is the distance between A and B less than D?
 template < class A, class B, class DIST > bool within(A a, B b, DIST d)
@@ -499,7 +500,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
 
    mTimeCount = 0;
    mTimer.parent = this;
-   mTimer.Start(50, FALSE);
+   mTimer.Start(kTimerInterval, FALSE);
 
    //Initialize a member variable pointing to the current
    //drawing track.
@@ -4199,7 +4200,7 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       // When this timer fires, we call TrackPanel::OnTimer and
       // possibly update the screen for offscreen scrolling.
       mTimer.Stop();
-      mTimer.Start(50, FALSE);
+      mTimer.Start(kTimerInterval, FALSE);
    }
 
    if (event.ButtonDown()) {
