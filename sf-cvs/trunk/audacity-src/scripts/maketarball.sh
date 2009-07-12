@@ -262,6 +262,10 @@ fi
 # matter what options, but the generation of a Makefile in lib-src/ in
 # particular is important. Check that lib-src/Makefile is present and newer than
 # lib-src/Makefile.in before continuing
+
+# Mac OS X also has problems if libsndfile isn't configured with automake
+# dependency turned off, so we should check that libsndfile is clean, and ask
+# for reconfiguration if not.
 reconf=0
 if [[ -f "lib-src/Makefile" ]] ; then
 	# we have a Makefile - is it new enough?
@@ -276,16 +280,34 @@ else
 	reconf=1
 fi
 
-if [[ x"$reconf" = x1 ]] ; then
-	echo "Your Makefiles are out of date or missing. (Re)runing configure to"
-	echo "create up-to-date Makefiles before building tarballs..."
+if [[ -f "lib-src/libsndfile/Makefile" ]] ; then
+	# has a Makefile - is it newer than .am? (this is an automake package)
+	t2=$(date +%s -r "lib-src/libsndfile/Makefile")
+	t1=$(date +%s -r "lib-src/libsndfile/Makefile.am")
+	if [[ $t1 -gt $t2 ]] ; then
+		# not new enough, reconfigure
+		reconf=1
+	fi
+else
+	# if no Makefile, need to configure libsndfile to get it built enough for
+	# Mac systems to complete the job
+	reconf=1
 fi
 
-if [ $mode -eq 1 ]; then
-	./configure;
-else
-	./configure 2>/dev/null > /dev/null;
+if [[ x"$reconf" = x1 ]] ; then
+	echo "Your Makefiles are out of date or missing. (Re)running configure to"
+	echo "create up-to-date Makefiles before building tarballs..."
+	echo "\t./configure --enable-maintainer-mode --with-libsndfile=local"
 fi
+
+# if we are in silent mode, then redirect the output of configure
+if [ $mode -eq 1 ]; then
+	configargs="";
+else
+	configargs="2>/dev/null > /dev/null";
+fi
+# actually run configure
+	./configure --enable-maintainer-mode --with-libsndfile=local ${configargs};
 
 # find version number from C header file
 major_version=`awk '/^#define+ AUDACITY_VERSION / {print $3}' src/Audacity.h`
