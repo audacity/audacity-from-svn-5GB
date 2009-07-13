@@ -56,8 +56,9 @@
 
 typedef struct PxSelem
 {
-   snd_mixer_selem_id_t *sid;
    snd_mixer_elem_t *elem;
+   snd_mixer_elem_t *src;
+   unsigned int item;
    char *name;
 } PxSelem;
 
@@ -80,9 +81,29 @@ typedef struct PxInfo
    PxDev playback;
 } PxInfo;
 
+static snd_mixer_elem_t *find_source(PxDev *dev, int index)
+{
+   snd_mixer_elem_t *elem;
+
+   for (elem = snd_mixer_first_elem(dev->handle);
+        elem != NULL;
+        elem = snd_mixer_elem_next(elem))
+   {
+      if (!snd_mixer_selem_is_enum_capture(elem)) {
+         continue;
+      }
+      if (snd_mixer_selem_get_index(elem) == index) {
+         return elem;
+      }
+   }
+
+   return NULL;
+}
+
 static int open_mixer(PxDev *dev, int card, int playback)
 {
    snd_mixer_elem_t *elem;
+   snd_mixer_elem_t *src;
    char name[256];
    int err;
    int i;
@@ -114,49 +135,16 @@ static int open_mixer(PxDev *dev, int card, int playback)
          break;
       }
 
-#if 1
-      do {
-
-         snd_hctl_t *hctl;
-         snd_ctl_elem_id_t *id;
-         snd_ctl_elem_type_t *type;
-         snd_ctl_elem_info_t *info;
-         snd_hctl_elem_t *e;
-
-         if (snd_mixer_get_hctl(dev->handle, name, &hctl) < 0) {
-            break;
-         }
-
-         snd_ctl_elem_id_alloca(&id);
-         snd_ctl_elem_info_alloca(&info);
-
-         for (e = snd_hctl_first_elem(hctl); e; e = snd_hctl_elem_next(e)) {
-
-            snd_hctl_elem_info(e, info);
-            snd_hctl_elem_get_id(e, id);
-            printf("inactive %d\n", snd_ctl_elem_info_is_inactive(info));
-
-            printf("numid=%u, iface= %s, name = %s\n",
-               snd_ctl_elem_id_get_numid(id),
-               snd_ctl_elem_iface_name(snd_ctl_elem_id_get_interface(id)),
-               snd_ctl_elem_id_get_name(id));
-
-         }
-
-      } while(FALSE);
-#endif
-
       for (elem = snd_mixer_first_elem(dev->handle);
            elem != NULL;
            elem = snd_mixer_elem_next(elem))
       {
-printf("type = %d\n", snd_mixer_elem_get_type(elem));
-
          if (playback) {
             if (!snd_mixer_selem_has_common_volume(elem) &&
                 !snd_mixer_selem_has_playback_volume(elem)) {
                continue;
             }
+            dev->numselems++;
          }
          else {
             if ((!snd_mixer_selem_has_common_volume(elem) &&
@@ -164,8 +152,15 @@ printf("type = %d\n", snd_mixer_elem_get_type(elem));
                 !snd_mixer_selem_has_capture_switch(elem)) {
                continue;
             }
+
+            src = find_source(dev, snd_mixer_selem_get_index(elem));
+            if (src) {
+               dev->numselems += snd_mixer_selem_get_enum_items(src);
+            }
+            else {
+               dev->numselems++;
+            }
          }
-         dev->numselems++;
       }
 
       dev->selems = calloc(dev->numselems, sizeof(PxSelem));
@@ -178,7 +173,10 @@ printf("type = %d\n", snd_mixer_elem_get_type(elem));
            elem != NULL;
            elem = snd_mixer_elem_next(elem))
       {
+         snd_mixer_elem_t *src;
          int ndx;
+
+         src = NULL;
 
          if (playback) {
             if (!snd_mixer_selem_has_common_volume(elem) &&
@@ -192,30 +190,47 @@ printf("type = %d\n", snd_mixer_elem_get_type(elem));
                 !snd_mixer_selem_has_capture_switch(elem)) {
                continue;
             }
-         }
-               
-         if (snd_mixer_selem_id_malloc(&dev->selems[i].sid) < 0) {
-            break;
+
+            src = find_source(dev, snd_mixer_selem_get_index(elem));
          }
 
-         if (snd_mixer_selem_id_malloc(&dev->selems[i].sid) < 0) {
-            break;
+         if (src) {
+            unsigned int cnt = snd_mixer_selem_get_enum_items(src);
+            unsigned int j;
+
+            for (j = 0; j < cnt; j++) {
+               char iname[256];
+               snd_mixer_selem_get_enum_item_name(src, j, sizeof(iname), iname);
+               snprintf(name,
+                        sizeof(name),
+                        "%s:%d:%s",
+                        snd_mixer_selem_get_name(elem),
+                        snd_mixer_selem_get_index(elem),
+                        iname);
+               dev->selems[i].src = src;
+               dev->selems[i].item = j;
+               dev->selems[i].elem = elem;
+               dev->selems[i].name = strdup(name);
+               if (!dev->selems[i].name) {
+                  break;
+               }
+               i++;
+            }
          }
-
-         snd_mixer_selem_get_id(elem, dev->selems[i].sid);
-         dev->selems[i].elem = elem;
-
-         snprintf(name,
-                  sizeof(name),
-                  "%s:%d",
-                  snd_mixer_selem_id_get_name(dev->selems[i].sid),
-                  snd_mixer_selem_id_get_index(dev->selems[i].sid));
-
-         dev->selems[i].name = strdup(name);
-         if (!dev->selems[i].name) {
-            break;
+         else {
+            snprintf(name,
+                     sizeof(name),
+                     "%s:%d",
+                     snd_mixer_selem_get_name(elem),
+                     snd_mixer_selem_get_index(elem));
+   
+            dev->selems[i].elem = elem;
+            dev->selems[i].name = strdup(name);
+            if (!dev->selems[i].name) {
+               break;
+            }
+            i++;
          }
-         i++;
       }
 
       if (i == dev->numselems) {
@@ -226,9 +241,6 @@ printf("type = %d\n", snd_mixer_elem_get_type(elem));
 
    if (dev->selems) {
       for (i = 0; i < dev->numselems; i++) {
-         if (dev->selems[i].sid) {
-            snd_mixer_selem_id_free(dev->selems[i].sid);
-         }
          if (dev->selems[i].name) {
             free(dev->selems[i].name);
          }
@@ -314,9 +326,6 @@ static int cleanup(px_mixer *Px)
 
    if (info->capture.selems) {
       for (i = 0; i < info->capture.numselems; i++) {
-         if (info->capture.selems[i].sid) {
-            snd_mixer_selem_id_free(info->capture.selems[i].sid);
-         }
          if (info->capture.selems[i].name) {
             free(info->capture.selems[i].name);
          }
@@ -330,9 +339,6 @@ static int cleanup(px_mixer *Px)
 
    if (info->playback.selems) {
       for (i = 0; i < info->playback.numselems; i++) {
-         if (info->playback.selems[i].sid) {
-            snd_mixer_selem_id_free(info->playback.selems[i].sid);
-         }
          if (info->playback.selems[i].name) {
             free(info->playback.selems[i].name);
          }
@@ -643,10 +649,18 @@ static int get_current_input_source(px_mixer *Px)
          continue;
       }
 
-
       snd_mixer_selem_get_capture_switch(elem, SND_MIXER_SCHN_FRONT_LEFT, &sw);
       if (!sw) {
          continue;
+      }
+
+      elem = info->capture.selems[i].src;
+      if (elem) {
+         unsigned int src;
+         if (snd_mixer_selem_get_enum_item(elem, SND_MIXER_SCHN_FRONT_LEFT, &src) < 0) {
+            continue;
+         }
+         return i + src;
       }
 
       return i;
@@ -679,6 +693,11 @@ static void set_current_input_source(px_mixer *Px, int i)
       
    elem = info->capture.selems[i].elem;
    snd_mixer_selem_set_capture_switch_all(elem, TRUE);
+
+   elem = info->capture.selems[i].src;
+   if (elem) {
+      snd_mixer_selem_set_enum_item(elem, SND_MIXER_SCHN_FRONT_LEFT, info->capture.selems[i].item);
+   }
 
    return;
 }
