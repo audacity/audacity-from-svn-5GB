@@ -382,10 +382,10 @@ LWSlider::LWSlider(wxWindow *parent,
       break;
    case DB_SLIDER:
       minValue = -36.0f;
-      if (orientation == wxHORIZONTAL)
+      //if (orientation == wxHORIZONTAL)
          maxValue = 36.0f;
-      else 
-         maxValue = 6.0f; // for MixerBoard
+      //else 
+      //   maxValue = 6.0f; // for MixerBoard
       stepValue = 1.0f;
       speed = 0.5;
       break;
