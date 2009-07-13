@@ -592,7 +592,6 @@ if [[ "$use_portmixer" = "yes" ]] ; then
 
    CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/include $CXXFLAGS"
    LOCAL_LIBS="$LOCAL_LIBS portmixer/libportmixer.a"
-   EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/libportmixer.a"
 
    AC_CONFIG_SUBDIRS([lib-src/portmixer])
    ac_configure_args="$ac_configure_args --with-pa-include=../portaudio-v19/include"
