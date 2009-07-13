@@ -3922,7 +3922,8 @@ void AudacityProject::OnSelectNone()
    
    mTrackPanel->Refresh(false);
    #ifdef EXPERIMENTAL_MIXER_BOARD
-      mMixerBoard->Refresh(false);
+      if (mMixerBoard)
+         mMixerBoard->Refresh(false);
    #endif
 }
 
@@ -5163,7 +5164,7 @@ void AudacityProject::OnRemoveTracks()
    while (t) {
       if (t->GetSelected()) {
          #ifdef EXPERIMENTAL_MIXER_BOARD
-            if (t->GetKind() == Track::Wave)
+            if (mMixerBoard && (t->GetKind() == Track::Wave))
                mMixerBoard->RemoveTrackCluster((WaveTrack*)t);
          #endif
          if (!f)
@@ -5196,7 +5197,8 @@ void AudacityProject::OnRemoveTracks()
 
    mTrackPanel->Refresh(false);
    #ifdef EXPERIMENTAL_MIXER_BOARD
-      mMixerBoard->Refresh(true);
+      if (mMixerBoard)
+         mMixerBoard->Refresh(true);
    #endif
 }
 
