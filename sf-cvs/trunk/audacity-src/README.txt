@@ -297,6 +297,10 @@ GPL-compatible license.  Specifically:
     Reads/writes ID3 tags in MP3 files.  Optional
     separate download as part of libmad.
 
+  libflac: Xiph.Org BSD-like licence (the parts we use)
+    Decodes and Encodes Free Lossless Audio Codec files. Optional separate
+	download.
+
   libmad: GPL
     Decodes MP3 files.  Optional separate download.
 
@@ -311,9 +315,19 @@ GPL-compatible license.  Specifically:
     Reads and writes uncompressed PCM audio files.
     Included with Audacity.
 
+  libvamp: new-style BSD
+    Plug-in interface and support library for audio analysis plug-ins.
+	Included with Audacity.
+
   libvorbis: BSD-like license.
     Decodes and encodes Ogg Vorbis files.  Optional
     separate download.
+
+  portsmf: BSD-like license.
+    library for reading and writing midi files. Included with Audacity
+
+  sbsms: GPL v2
+    Pitch and tempo changing library. Included in Audacity
 
   SoundTouch: LGPL
     Changes tempo without changing pitch and vice versa.
