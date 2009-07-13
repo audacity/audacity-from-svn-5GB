@@ -507,7 +507,7 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
 
    sampleCount originalLen = len;
 
-   int i;
+   int i,j;
    for(i=0; i<windowSize; i++)
       lastWindow[i] = 0;
 
@@ -524,8 +524,6 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
 
       t->Get((samplePtr)buffer, floatSample, s, block);
 
-      int j = 0;
-
       for(i=0; i<block; i+=L)   //go through block in lumps of length L
       {
          wcopy = L;
@@ -539,7 +537,7 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
          Filter(windowSize, thisWindow);
 
          // Overlap - Add
-         for(j=0; j<mM-1; j++)
+         for(j=0; (j<mM-1) && (j<wcopy); j++)
             buffer[i+j] = thisWindow[j] + lastWindow[L + j];
          for(j=mM-1; j<wcopy; j++)
             buffer[i+j] = thisWindow[j];
@@ -563,8 +561,19 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
    if(bLoopSuccess)
    {
       // mM-1 samples of 'tail' left in lastWindow, get them now
-      for(int j=0; j<mM-1; j++)
-         buffer[j] = lastWindow[wcopy + j];
+      if(wcopy < (mM-1)) {
+         // Still have some overlap left to process
+         // (note that lastWindow and thisWindow have been exchanged at this point
+         //  so that 'thisWindow' is really the window prior to 'lastWindow')
+         for(j=0; j<mM-1-wcopy; j++)
+            buffer[j] = lastWindow[wcopy + j] + thisWindow[L + wcopy + j];
+         // And fill in the remainder after the overlap
+         for( ; j<mM-1; j++)
+            buffer[j] = lastWindow[wcopy + j];
+      } else {
+         for(j=0; j<mM-1; j++)
+            buffer[j] = lastWindow[wcopy + j];
+      }
       output->Append((samplePtr)buffer, floatSample, mM-1);
       output->Flush();
 
@@ -673,7 +682,11 @@ void EqualizationPanel::Recalc()
    mOuti = new float[mWindowSize];
 
    mParent->CalcFilter();   //to calculate the actual response
-   FFT(mWindowSize,true,mFilterFuncR,mFilterFuncI,mOutr,mOuti);   //work out FIR response
+#ifdef EXPERIMENTAL_USE_REALFFTF
+   InverseRealFFT(mWindowSize, mFilterFuncR, mFilterFuncI, mOutr);
+#else
+   FFT(mWindowSize,true,mFilterFuncR,mFilterFuncI,mOutr,mOuti);   //work out FIR response - note mOuti will be all zeros
+#endif // EXPERIMENTAL_USE_REALFFTF
 }
 
 void EqualizationPanel::OnSize(wxSizeEvent & evt)
@@ -1543,7 +1556,11 @@ bool EqualizationDialog::CalcFilter()
    //transfer to time domain to do the padding and windowing
    float *outr = new float[mWindowSize];
    float *outi = new float[mWindowSize];
+#ifdef EXPERIMENTAL_USE_REALFFTF
+   InverseRealFFT(mWindowSize, mFilterFuncR, NULL, outr); // To time domain
+#else
    FFT(mWindowSize,true,mFilterFuncR,NULL,outr,outi);   //To time domain
+#endif
 
    for(i=0;i<=(M-1)/2;i++)
    {   //Windowing - could give a choice, fixed for now - MJS
@@ -1578,7 +1595,7 @@ bool EqualizationDialog::CalcFilter()
    }
 
    //Back to the frequency domain so we can use it
-   FFT(mWindowSize,false,outr,NULL,mFilterFuncR,mFilterFuncI);
+   RealFFT(mWindowSize,outr,mFilterFuncR,mFilterFuncI);
 
    delete[] outr;
    delete[] outi;
