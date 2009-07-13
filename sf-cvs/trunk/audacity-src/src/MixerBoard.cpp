@@ -43,10 +43,10 @@
 #define PAN_HEIGHT 24
 
 // If we decide we want more than 1 frame, base it on sample rate. 
-const int kFramesPerBuffer = 1; // for calls to mMeter->UpdateDisplay
+const int kFramesPerBuffer = 4; // for calls to mMeter->UpdateDisplay
 
 const int kGainSliderMin = -36; 
-const int kGainSliderMax = 6; 
+const int kGainSliderMax =  36; //vvv Don't want TrackPanel gain to be higher than 6, but this one showing only 6.   6; 
 
 enum {
    ID_TOGGLEBUTTON_MUTE = 13000,
@@ -96,6 +96,7 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
    //v Useful when different tracks are different colors, but not now.   
    //    mStaticText_TrackName->SetBackgroundColour(this->GetTrackColor());
 
+   
    // musical instrument image
    ctrlPos.x = (size.GetWidth() - MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH) / 2; // center
    ctrlPos.y += TRACK_NAME_HEIGHT + kDoubleInset;
@@ -105,6 +106,7 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
    mStaticBitmap_MusicalInstrument = 
       new wxStaticBitmap(this, -1, *bitmap, ctrlPos, ctrlSize);
 
+   
    // mute/solo buttons
    int nHalfWidth = (size.GetWidth() / 2);
    ctrlPos.x = ((nHalfWidth - mMixerBoard->mMuteSoloWidth) / 2) + kInset;
@@ -119,6 +121,7 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
    mToggleButton_Mute->SetAlternateImages(
       *(mMixerBoard->mImageMuteUp), *(mMixerBoard->mImageMuteOver), 
       *(mMixerBoard->mImageMuteDown), *(mMixerBoard->mImageMuteDisabled));
+   this->UpdateMute();
 
    ctrlPos.x = nHalfWidth + kInset;
    mToggleButton_Solo = 
@@ -127,7 +130,9 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
                   *(mMixerBoard->mImageSoloUp), *(mMixerBoard->mImageSoloOver), 
                   *(mMixerBoard->mImageSoloDown), *(mMixerBoard->mImageSoloDisabled), 
                   true); // toggle button
+   this->UpdateSolo();
 
+   
    // pan slider
    ctrlPos.x = (size.GetWidth() / 10);
    ctrlPos.y += MUTE_SOLO_HEIGHT + kQuadrupleInset;
@@ -138,7 +143,10 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
       ctrlSize.x--;
 
    /* i18n-hint: Title of the Pan slider, used to move the sound left or right */
-   mSlider_Pan = new ASlider(this, ID_ASLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER, true); //vvvvv popup feedback?
+   mSlider_Pan = new ASlider(this, ID_ASLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER, true); 
+
+   this->UpdatePan();
+
 
    // gain slider & level meter
    ctrlPos.x = kDoubleInset;
@@ -160,6 +168,9 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
    //#else
    //   mSlider_Gain->SetBackgroundColour(wxColour(192, 192, 192));
    //#endif
+
+   this->UpdateGain();
+
 
    ctrlPos.x = nHalfWidth - kExtraWidthForMeter;
    ctrlSize.SetWidth(nHalfWidth - kInset + kExtraWidthForMeter);
@@ -301,7 +312,7 @@ void MixerTrackCluster::UpdateMeter(double t0, double t1)
       i++;
    }
 
-   bool bWantPostFadeValues = true; //vvvvv Turn this into a pref, default true.
+   bool bWantPostFadeValues = true; //vvv Turn this into a pref, default true.
    if (bSuccess && bWantPostFadeValues)
    {
       for (i = 0; i < kFramesPerBuffer; i++)
@@ -486,16 +497,6 @@ void MixerTrackCluster::OnSlider_Pan(wxCommandEvent& event)
 
 void MixerTrackCluster::OnSlider_Gain(wxCommandEvent& event)
 {
-   // Analog to LWSlider::Set() calc for DB_SLIDER. 
-   //v int sliderValue = mSlider_Gain->GetValue();
-
-   //#ifdef __WXMSW__
-   //   // Negate because wxSlider on Windows has min at top, max at bottom. 
-   //   // mSlider_Gain->GetValue() is in [-6,36]. wxSlider has min at top, so this is [-36dB,6dB]. 
-   //   sliderValue = -sliderValue;
-   //#endif
-
-   //float fValue = pow(10.0f, (float)sliderValue / 20.0f); 
    float fValue = mSlider_Gain->Get();
    mLeftTrack->SetGain(fValue);
    if (mRightTrack != NULL)
@@ -562,7 +563,6 @@ WX_DEFINE_OBJARRAY(MusicalInstrumentArray);
 
 BEGIN_EVENT_TABLE(MixerBoardScrolledWindow, wxScrolledWindow)
    EVT_MOUSE_EVENTS(MixerBoardScrolledWindow::OnMouseEvent)
-   EVT_PAINT(MixerBoardScrolledWindow::OnPaint)
 END_EVENT_TABLE()
 
 MixerBoardScrolledWindow::MixerBoardScrolledWindow(AudacityProject* project, 
@@ -1005,11 +1005,10 @@ void MixerBoard::UpdateWidth()
 
    int width;
    int height;
-   this->GetClientSize(&width, &height);
-   if (newWidth == width - 3) // -3 is fudge to accommodate GetClientSize.
-      return;
+   pParent->GetSize(&width, &height);
+   if (newWidth == width) 
+      return; // No need to update. 
 
-   pParent->SetSize(newWidth, -1);
    pParent->SetSizeHints(
       kMinWidth, // int minW=-1, 
       MIXER_BOARD_MIN_HEIGHT, // int minH=-1, 
@@ -1023,11 +1022,16 @@ void MixerBoard::UpdateWidth()
 
 void MixerBoard::CreateMuteSoloImages()
 {
+   // Much of this is taken TrackLabel::DrawMuteSolo 
    wxMemoryDC dc;
    wxString str = _("Mute"); 
    long textWidth, textHeight;
 
-   //vvvvv See TrackPanel::OnSetFont because this is deprecated:     AColor::SetLabelFont(dc);
+   int fontSize = 10;
+   #ifdef __WXMSW__
+      fontSize = 8;
+   #endif
+   dc.SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
    dc.GetTextExtent(str, &textWidth, &textHeight);
    mMuteSoloWidth = textWidth + (3 * kInset);
 
@@ -1036,7 +1040,7 @@ void MixerBoard::CreateMuteSoloImages()
    wxRect bev(0, 0, mMuteSoloWidth - 1, MUTE_SOLO_HEIGHT - 1);
 
    // mute button images
-   AColor::Mute(&dc, false, true, false);
+   AColor::Mute(&dc, false, false, false);
    dc.DrawRectangle(bev);
 
    wxCoord x = bev.x + (bev.width - textWidth) / 2;
@@ -1064,7 +1068,7 @@ void MixerBoard::CreateMuteSoloImages()
 
 
    // solo button images
-   AColor::Solo(&dc, false, true);
+   AColor::Solo(&dc, false, false);
    dc.DrawRectangle(bev);
 
    str = _("Solo");
@@ -1260,6 +1264,7 @@ void MixerBoard::OnSize(wxSizeEvent &evt)
    this->UpdateWidth(); // primarily to update mScrolledWindow's virtual width
    for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
       mMixerTrackClusters[i]->UpdateHeight();
+   this->RefreshTrackClusters();
 }
 
 

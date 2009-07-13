@@ -324,12 +324,14 @@ void Meter::UpdatePrefs()
 {
    mDBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    mMeterRefreshRate = gPrefs->Read(wxT("/Meter/MeterRefreshRate"), 30);
-   if (mIsInput) {
+
+   // MixerTrackCluster style has no menu, so disallows disabling the meter.
+   if (mStyle == MixerTrackCluster)
+      mMeterDisabled = 0L;
+   else if (mIsInput) 
       mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterInputDisabled"), (long)0);
-   }
-   else {
+   else 
       mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterOutputDisabled"), (long)0);
-   }
 }
 
 void Meter::OnErase(wxEraseEvent &evt)
