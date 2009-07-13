@@ -173,13 +173,14 @@ wxString HelpTextBuiltIn( const wxString & Key )
    {
       return WrapText(
          wxString(wxT("")) +
-         _("<center><h3>How to get Help</h3></center><br>") +
-         _("Welcome to Audacity ") + AUDACITY_VERSION_STRING + wxT("!<br>") +
-         _("These are our support methods:") + wxT("<br>") +
-         _("   Our [[file:quick_help.html|Quick Help]] (should be installed locally, <a href=\"http://manual.audacityteam.org/index.php?title=Quick_Help\">internet version if it isn't</a>)") + wxT("<br>") +
-         _("   Our [[file:index.html|Manual]] (should be installed locally, <a href=\"http://manual.audacityteam.org/index.php\">internet version if it isn't</a>)") + wxT("<br>") +
-         _("   Our [[http://wiki.audacityteam.org/index.php|Wiki]] (on the internet)") + wxT("<br>") +
-         _("   Our <a href=\"http://forum.audacityteam.org/\">Forum</a> (on the internet)") + wxT("<br>")
+         _("<center><h3>How to get Help</h3></center>") +
+         _("Welcome to Audacity ") + AUDACITY_VERSION_STRING + wxT("!<p>") +
+         _("These are our support methods:") + wxT("</p>") + wxT("<ul><li>") + 
+         _(" [[file:quick_help.html|Quick Help]] (should be installed locally, <a href=\"http://manual.audacityteam.org/index.php?title=Quick_Help\">internet version if it isn't</a>)") + wxT("</li><li>") +
+         _(" [[file:index.html|Manual]] (should be installed locally, <a href=\"http://manual.audacityteam.org/index.php\">internet version if it isn't</a>)") + wxT("</li><li>") +
+         _(" [[http://wiki.audacityteam.org/index.php|Wiki]] (the latest tips, tricks and tutorials, on the internet)") + wxT("</li><li>") +
+         _(" <a href=\"http://forum.audacityteam.org/\">Forum</a> (ask your question directly, on the internet)") + wxT("</li></ul></p><p>") +
+         _(" For even quicker answers, all the online resources above are <b>searchable</b>.")  + wxT("</p>") 
       );
    }
 
@@ -190,7 +191,7 @@ wxString HelpTextBuiltIn( const wxString & Key )
    {
 // *URL* will be replaced by whatever URL we are looking for.
       return WrapText(_("<p>You do not appear to have 'help' installed on your computer.<br> \
-Please try  <a href=\"*URL*\">to view it online</a>.")
+Please <a href=\"*URL*\">view or download it online</a>.")
          );
    }
    return wxT("");
