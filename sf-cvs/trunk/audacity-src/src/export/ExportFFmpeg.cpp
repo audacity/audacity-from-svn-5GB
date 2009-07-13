@@ -227,12 +227,7 @@ bool ExportFFmpeg::CheckFileName(wxFileName &filename, int format)
 {
    bool result = true;
    int subFormat = AdjustFormatIndex(format);
-   if (format == FMT_AMRNB || format == FMT_AMRWB)
-   {
-      wxMessageBox(_("Properly configured FFmpeg is required to proceed.\nYou can configure it at Preferences > Libraries.\n\nNote that AMR support is not available with our FFmpeg\ninstaller, but requires you compile FFmpeg yourself."), _("AMR support not distributable"));
-      result = false;
-   }
-   else if (!CheckFFmpegPresence())
+   if (!CheckFFmpegPresence())
    {
       result = false;
    }

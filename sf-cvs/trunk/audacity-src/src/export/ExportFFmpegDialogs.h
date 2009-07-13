@@ -51,12 +51,12 @@ struct ExposedFormat
 /// List of export types
 static ExposedFormat fmts[] = 
 {
-   {FMT_M4A,         wxT("M4A"),     wxT("m4a"),  wxT("ipod"), 48,  true ,true ,_("M4A (AAC) Files (FFmpeg)"),                            CODEC_ID_AAC,    true},
-   {FMT_AC3,         wxT("AC3"),     wxT("ac3"),  wxT("ac3"),  7,   false,false,_("AC3 Files (FFmpeg)"),                                  CODEC_ID_AC3,    true},
-   {FMT_AMRNB,       wxT("AMRNB"),   wxT("amr"),  wxT("amr"),  1,   false,false,_("AMR (narrow band) Files (FFmpeg, undistributable)"),   CODEC_ID_AMR_NB, true},
-   {FMT_AMRWB,       wxT("AMRWB"),   wxT("amr"),  wxT("amr"),  1,   false,false,_("AMR (wide band) Files (FFmpeg, undistributable)"),     CODEC_ID_AMR_WB, true},
-   {FMT_WMA2,        wxT("WMA"),     wxT("wma"),  wxT("asf"),  2,   true ,false,_("WMA (version 2) Files (FFmpeg)"),                      CODEC_ID_WMAV2,  true},
-   {FMT_OTHER,       wxT("FFMPEG"),  wxT(""),     wxT(""),     255, true ,true ,_("Custom FFmpeg Export"),                                CODEC_ID_NONE,   true}
+   {FMT_M4A,         wxT("M4A"),     wxT("m4a"),  wxT("ipod"), 48,  true ,true ,_("M4A (AAC) Files (FFmpeg)"),         CODEC_ID_AAC,    true},
+   {FMT_AC3,         wxT("AC3"),     wxT("ac3"),  wxT("ac3"),  7,   false,false,_("AC3 Files (FFmpeg)"),               CODEC_ID_AC3,    true},
+   {FMT_AMRNB,       wxT("AMRNB"),   wxT("amr"),  wxT("amr"),  1,   false,false,_("AMR (narrow band) Files (FFmpeg)"), CODEC_ID_AMR_NB, true},
+   {FMT_AMRWB,       wxT("AMRWB"),   wxT("amr"),  wxT("amr"),  1,   false,false,_("AMR (wide band) Files (FFmpeg)"),   CODEC_ID_AMR_WB, true},
+   {FMT_WMA2,        wxT("WMA"),     wxT("wma"),  wxT("asf"),  2,   true ,false,_("WMA (version 2) Files (FFmpeg)"),   CODEC_ID_WMAV2,  true},
+   {FMT_OTHER,       wxT("FFMPEG"),  wxT(""),     wxT(""),     255, true ,true ,_("Custom FFmpeg Export"),             CODEC_ID_NONE,   true}
 };
 
 /// Describes format-codec compatibility
