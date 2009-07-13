@@ -249,7 +249,7 @@ wxString XMLWriter::XMLEsc(const wxString & s)
    int len = s.Length();
 
    for(int i=0; i<len; i++) {
-      wxChar c = s.GetChar(i);
+      wxUChar c = s.GetChar(i);
 
       switch (c) {
          case wxT('\''):
