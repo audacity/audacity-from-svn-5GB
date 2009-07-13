@@ -644,7 +644,12 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
             mBar[j].peak = msg.peak[j];
 
          // This smooths out the RMS signal
-         mBar[j].rms = mBar[j].rms * 0.9 + msg.rms[j] * 0.1;
+         if (mStyle != MixerTrackCluster)
+            mBar[j].rms = mBar[j].rms * 0.9 + msg.rms[j] * 0.1;
+         else
+            // MixerTrackCluster needs far faster blend-in of new values, 
+            // because far fewer frames are being seen at this call. 
+            mBar[j].rms = (mBar[j].rms * 0.7) + (msg.rms[j] * 0.3);
          
          if (mT - mBar[j].peakHoldTime > mPeakHoldDuration ||
              mBar[j].peak > mBar[j].peakHold) {
