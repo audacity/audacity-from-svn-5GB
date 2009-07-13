@@ -66,13 +66,12 @@ PxMixer *Px_OpenMixer( void *pa_stream, int i );
 
 void Px_CloseMixer( PxMixer *mixer );
 
-/*
- Px_GetNumMixers returns the number of mixers which could be
- used with the given PortAudio device.  On most systems, there
- will be only one mixer for each device; however there may be
- multiple mixers for each device, or possibly multiple mixers
- which are independent of any particular PortAudio device.
-*/
+/** @brief  Px_GetNumMixers returns the number of mixers which could be used
+ * with the given PortAudio device.
+ *
+ * On most systems, there will be only one mixer for each device; however
+ * there may be multiple mixers for each device, or possibly multiple mixers
+ * which are independent of any particular PortAudio device. */
 
 int Px_GetNumMixers( PxMixer *mixer );
 const char *Px_GetMixerName( PxMixer *mixer, int i );
