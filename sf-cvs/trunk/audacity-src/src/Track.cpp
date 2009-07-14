@@ -437,6 +437,9 @@ Track *TrackGroupIterator::First(Track * member)
 {
    Track *t = NULL;
 
+   if (member && member->GetKind() == Track::Label)
+      return NULL;
+
    // Scan forward for a label track
    while (member && member->GetKind() == Track::Wave) {
       member = l->GetNext(member);
