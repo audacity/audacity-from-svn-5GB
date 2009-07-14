@@ -165,6 +165,12 @@ Patches:
 		Integration by upstream in progress. Will need updating as upstream
 		portaudio moves
 
+portaudio/libtool22.patch	Patch from Gentoo to ensure that static libraries
+are always built, not shared ones, otherwise the assumptions elsewhere in the
+build system break. Not suitable for upstream, what is needed is more
+powerfull autoconf features to pass the right options to portaudio's configure
+script, which suffers from the broken-ness of autoconf's subdirectory support
+
 portsmf
 -------
 http://portmedia.sourceforge.net/
