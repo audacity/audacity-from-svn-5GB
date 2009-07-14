@@ -388,6 +388,7 @@ FreqWindow::~FreqWindow()
       delete[] mBuffer;
    if (mProcessed)
       delete[] mProcessed;
+   gFreqWindow = NULL;
 }
 
 void FreqWindow::GetAudio()
@@ -924,6 +925,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 void FreqWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
 {
    this->Show(FALSE);
+   this->Destroy();
 }
 
 void FreqWindow::OnCloseButton(wxCommandEvent & WXUNUSED(event))
@@ -934,6 +936,7 @@ void FreqWindow::OnCloseButton(wxCommandEvent & WXUNUSED(event))
    gPrefs->Write(wxT("/FreqWindow/FuncChoice"), mFuncChoice->GetSelection());
    gPrefs->Write(wxT("/FreqWindow/AxisChoice"), mAxisChoice->GetSelection());
    this->Show(FALSE);
+   this->Destroy();
 }
 
 void FreqWindow::Plot()
