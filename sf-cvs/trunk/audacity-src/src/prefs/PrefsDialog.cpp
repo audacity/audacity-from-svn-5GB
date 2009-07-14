@@ -183,6 +183,12 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
 
    gPrefs->Write(wxT("/Prefs/PrefsCategory"), (long)mCategories->GetSelection());
 
+#if USE_PORTMIXER
+   if (gAudioIO) {
+      gAudioIO->HandleDeviceChange();
+   }
+#endif
+
    // LL:  wxMac can't handle recreating the menus when this dialog is still active,
    //      so AudacityProject::UpdatePrefs() or any of the routines it calls must
    //      not cause AudacityProject::RebuildMenuBar() to be executed.
