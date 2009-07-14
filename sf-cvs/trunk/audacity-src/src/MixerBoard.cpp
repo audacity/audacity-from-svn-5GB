@@ -46,7 +46,7 @@
 const int kFramesPerBuffer = 4; // for calls to mMeter->UpdateDisplay
 
 const int kGainSliderMin = -36; 
-const int kGainSliderMax =  36; //vvv Don't want TrackPanel gain to be higher than 6, but this one showing only 6.   6; 
+const int kGainSliderMax = 6; // headroom convention to match typical mixer boards layout
 
 enum {
    ID_TOGGLEBUTTON_MUTE = 13000,
