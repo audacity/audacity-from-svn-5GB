@@ -139,7 +139,6 @@ this version.
  * Effects and Analysis:
     * Nyquist effects, SoundTouch, SBSMS and Generators join separate 
        clips together.
-    * Equalization silences audio near the end of very short regions.
     * Equalization used in a chain applies the parameters last used 
        via the Effect menu instead of those stored in chain. 
     * LADSPA Multiband EQ (optional download) may not be visible in 
