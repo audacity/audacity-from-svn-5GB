@@ -365,10 +365,10 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mSampleRate = 8000;
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AMRNBBitRate"), 12200);
       break;
-   case FMT_AMRWB:
+/*   case FMT_AMRWB:
       mSampleRate = 16000;
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AMRWBBitRate"), 23850);
-      break;
+      break;*/
    case FMT_WMA2:
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/WMABitRate"), 198000);
       if (!CheckSampleRate(mSampleRate,ExportFFmpegWMAOptions::iWMASampleRates[0], ExportFFmpegWMAOptions::iWMASampleRates[4], &ExportFFmpegWMAOptions::iWMASampleRates[0]))
@@ -838,12 +838,12 @@ bool ExportFFmpeg::DisplayOptions(wxWindow *parent, int format)
       od.ShowModal();
       return true;
    }
-   else if (mSubFormat == FMT_AMRWB)
+/*   else if (mSubFormat == FMT_AMRWB)
    {
       ExportFFmpegAMRWBOptions od(parent);
       od.ShowModal();
       return true;
-   }
+   }*/
    else if (mSubFormat == FMT_WMA2)
    {
       ExportFFmpegWMAOptions od(parent);
