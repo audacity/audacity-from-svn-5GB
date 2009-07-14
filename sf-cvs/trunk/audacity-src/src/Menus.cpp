@@ -1493,14 +1493,6 @@ void AudacityProject::ModifyToolbarMenus()
 
 void AudacityProject::UpdateMenus()
 {
-   // DanH: We need to make sure this function isn't already executing before
-   //       we can continue safely.
-   static bool bAlreadyUpdating = false;
-   if (bAlreadyUpdating)
-      return;
-   else
-      bAlreadyUpdating = true;
-
 	//ANSWER-ME: Why UpdateMenus only does active project?
 	//JKC: Is this test fixing a bug when multiple projects are open?
 	//so that menu states work even when different in different projects?
@@ -1536,7 +1528,6 @@ void AudacityProject::UpdateMenus()
 #endif
 
    ModifyToolbarMenus();
-   bAlreadyUpdating = false;
 }
 
 //
