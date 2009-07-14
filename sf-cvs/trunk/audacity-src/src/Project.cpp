@@ -1643,9 +1643,6 @@ void AudacityProject::OnUpdateUI(wxUpdateUIEvent & event)
    // This is done by only checking the wxClipboard contents during an idle
    // event, thus preventing possible recursion during other event processing.
    //
-   if (!mInIdle)
-      return;
-
    mInIdle = true;
 
    UpdateMenus();
