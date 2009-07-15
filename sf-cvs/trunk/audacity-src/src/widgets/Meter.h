@@ -144,7 +144,8 @@ class Meter : public wxPanel
    void UpdateDisplay(int numChannels, int numFrames, 
                         // Need to make these double-indexed max and min arrays if we handle more than 2 channels.
                         float* maxLeft, float* rmsLeft, 
-                        float* maxRight, float* rmsRight);
+                        float* maxRight, float* rmsRight, 
+                        const sampleCount kSampleCount);
 
    /** \brief Find out if the level meter is disabled or not.
     *
