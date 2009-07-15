@@ -1,4 +1,4 @@
-/**********************************************************************
+	/**********************************************************************
 
   Audacity: A Digital Audio Editor
 
@@ -21,6 +21,7 @@
 #include <wx/timer.h>
 
 #include "../SampleFormat.h"
+#include "../Sequence.h"
 #include "Ruler.h"
 
 // Increase this when we add support for multichannel meters
