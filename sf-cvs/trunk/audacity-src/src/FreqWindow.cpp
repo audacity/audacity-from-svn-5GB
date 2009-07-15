@@ -88,8 +88,6 @@ enum {
    GridOnOffID
 };
 
-FreqWindow *gFreqWindow = NULL;
-
 // These specify the minimum plot window width
 
 #define FREQ_WINDOW_WIDTH 480
@@ -97,20 +95,24 @@ FreqWindow *gFreqWindow = NULL;
 
 void InitFreqWindow(wxWindow * parent)
 {
-   if(!gFreqWindow)
+   AudacityProject* p = GetActiveProject();
+   if (!p)
+      return;
+
+   if(!p->mFreqWindow)
    {
       wxPoint where;
 
       where.x = 150;
       where.y = 150;
 
-      gFreqWindow = new FreqWindow(parent, -1, _("Frequency Analysis"), where);
+      p->mFreqWindow = new FreqWindow(parent, -1, _("Frequency Analysis"), where);
    }
    wxCommandEvent dummy;
-   gFreqWindow->OnReplot(dummy);
-   gFreqWindow->Show(true);
-   gFreqWindow->Raise();
-   gFreqWindow->SetFocus();
+   p->mFreqWindow->OnReplot(dummy);
+   p->mFreqWindow->Show(true);
+   p->mFreqWindow->Raise();
+   p->mFreqWindow->SetFocus();
 }
 
 // FreqWindow
@@ -388,7 +390,6 @@ FreqWindow::~FreqWindow()
       delete[] mBuffer;
    if (mProcessed)
       delete[] mProcessed;
-   gFreqWindow = NULL;
 }
 
 void FreqWindow::GetAudio()
@@ -925,7 +926,6 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 void FreqWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
 {
    this->Show(FALSE);
-   this->Destroy();
 }
 
 void FreqWindow::OnCloseButton(wxCommandEvent & WXUNUSED(event))
@@ -936,7 +936,6 @@ void FreqWindow::OnCloseButton(wxCommandEvent & WXUNUSED(event))
    gPrefs->Write(wxT("/FreqWindow/FuncChoice"), mFuncChoice->GetSelection());
    gPrefs->Write(wxT("/FreqWindow/AxisChoice"), mAxisChoice->GetSelection());
    this->Show(FALSE);
-   this->Destroy();
 }
 
 void FreqWindow::Plot()
@@ -1269,7 +1268,13 @@ void FreqWindow::OnReplot(wxCommandEvent & WXUNUSED(event))
    if(dBRange < 90.)
       dBRange = 90.;
    GetAudio();
-   gFreqWindow->Plot();
+   
+   AudacityProject* p = GetActiveProject();
+   if (!p)
+      return;
+
+   if(p->mFreqWindow)
+      p->mFreqWindow->Plot();
 }
 
 void FreqWindow::OnGridOnOff(wxCommandEvent & WXUNUSED(event))
@@ -1278,7 +1283,13 @@ void FreqWindow::OnGridOnOff(wxCommandEvent & WXUNUSED(event))
       mDrawGrid = true;
    else
       mDrawGrid = false;
-   gFreqWindow->Plot();
+
+   AudacityProject* p = GetActiveProject();
+   if (!p)
+      return;
+
+   if(p->mFreqWindow)
+      p->mFreqWindow->Plot();
 }
 
 BEGIN_EVENT_TABLE(FreqPlot, wxWindow)

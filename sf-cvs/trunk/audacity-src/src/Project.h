@@ -29,6 +29,7 @@
 #include "effects/EffectManager.h"
 #include "xml/XMLTagHandler.h"
 #include "toolbars/SelectionBar.h"
+#include "FreqWindow.h"
 
 #include <wx/defs.h>
 #include <wx/event.h>
@@ -348,6 +349,9 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    
    void PushState(wxString desc, wxString shortDesc,
                   bool consolidate = false);
+
+   FreqWindow *mFreqWindow;
+
  private:
 
    void ClearClipboard();

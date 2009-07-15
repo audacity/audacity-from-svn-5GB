@@ -293,10 +293,6 @@ void QuitAudacity(bool bForce)
       wxGetApp().mLogger = NULL;
    }
 
-   if (gFreqWindow)
-      gFreqWindow->Destroy();
-   gFreqWindow = NULL;
-
    if (gParentFrame)
       gParentFrame->Destroy();
    gParentFrame = NULL;
