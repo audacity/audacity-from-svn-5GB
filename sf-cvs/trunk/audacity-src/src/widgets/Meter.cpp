@@ -557,13 +557,14 @@ void Meter::UpdateDisplay(int numChannels, int numFrames, float *sampleData)
 void Meter::UpdateDisplay(int numChannels, int numFrames, 
                            // Need to make these double-indexed arrays if we handle more than 2 channels.
                            float* maxLeft, float* rmsLeft, 
-                           float* maxRight, float* rmsRight)
+                           float* maxRight, float* rmsRight, 
+                           const sampleCount kSampleCount)
 {
    int i, j;
    int num = intmin(numChannels, mNumBars);
    MeterUpdateMsg msg;
 
-   msg.numFrames = numFrames;
+   msg.numFrames = kSampleCount;
    for(j=0; j<mNumBars; j++) {
       msg.peak[j] = 0.0;
       msg.rms[j] = 0.0;
@@ -644,12 +645,8 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
             mBar[j].peak = msg.peak[j];
 
          // This smooths out the RMS signal
-         if (mStyle != MixerTrackCluster)
-            mBar[j].rms = mBar[j].rms * 0.9 + msg.rms[j] * 0.1;
-         else
-            // MixerTrackCluster needs far faster blend-in of new values, 
-            // because far fewer frames are being seen at this call. 
-            mBar[j].rms = (mBar[j].rms * 0.7) + (msg.rms[j] * 0.3);
+         float smooth = pow(0.9, (double)msg.numFrames/1024.0);
+         mBar[j].rms = mBar[j].rms * smooth + msg.rms[j] * (1.0 - smooth);
          
          if (mT - mBar[j].peakHoldTime > mPeakHoldDuration ||
              mBar[j].peak > mBar[j].peakHold) {

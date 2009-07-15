@@ -179,11 +179,7 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
       new Meter(this, -1, // wxWindow* parent, wxWindowID id, 
                 false, // bool isInput
                 ctrlPos, ctrlSize, // const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
-                Meter::MixerTrackCluster, // Style style = HorizontalStereo, 
-
-                // 1024 is typical for framesPerBuffer in calls to audacityAudioCallback.
-                // But we're far fewer frames, so scale the decay rate accordingly.
-                60.0f * 1024.0f / (float)kFramesPerBuffer); // float fDecayRate = 60); 
+                Meter::MixerTrackCluster); // Style style = HorizontalStereo, 
 
    #if wxUSE_TOOLTIPS
       mStaticText_TrackName->SetToolTip(_T("Track Name"));
@@ -285,7 +281,8 @@ void MixerTrackCluster::UpdateMeter(double t0, double t1)
    float* rmsLeft = new float[kFramesPerBuffer];
    float* maxRight = new float[kFramesPerBuffer];
    float* rmsRight = new float[kFramesPerBuffer];
-
+   const sampleCount kSampleCount = mLeftTrack->TimeToLongSamples(t1 - t0);
+   
    bool bSuccess = true;
    const double kFrameInterval = (t1 - t0) / (double)kFramesPerBuffer;
    double dFrameT0 = t0;
@@ -334,7 +331,8 @@ void MixerTrackCluster::UpdateMeter(double t0, double t1)
          2, // If mono, show left track values in both meters, as in MeterToolBar.      kNumChannels, 
          kFramesPerBuffer, 
          maxLeft, rmsLeft, 
-         maxRight, rmsRight);
+         maxRight, rmsRight, 
+         kSampleCount);
 
    delete[] maxLeft;
    delete[] rmsLeft;
