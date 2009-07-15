@@ -83,6 +83,8 @@ New Features:
               * Improved support for non-mmap ALSA devices such as PulseAudio 
               * 32-bit float data over 0 dB now handled without clipping
               * "Stop" option when importing preserves already imported data
+              * AMR NB export now supported if the optional FFmpeg library
+                 is installed
               * Faster waveform drawing and better response in multi-track 
                  projects 
 
@@ -96,6 +98,8 @@ Bug fixes for:
               * Incorrect label movement and paste with linked audio and label 
                  tracks      
               * Equalization, Cut Preview and Advanced Mixing Options dialogue
+              * (Linux) Mixer Toolbar should now adjust levels and select input
+                 sources properly  
               * "Audio cache" preference caused crashes - data is now only
                  cached in memory if available RAM is above a level defined 
                  in preferences 
@@ -107,7 +111,7 @@ Bug fixes for:
 3. Known Issues at Release
 
 Please also check:
-  http://audacityteam.org/wiki/index.php?title=Known_Issues
+  http://wiki.audacityteam.org/index.php?title=Known_Issues
 
 for details of any issues that have been identified after release of
 this version.
@@ -117,21 +121,32 @@ this version.
  * Imports:
     * Non-MP3 files imported via drag or Recent Files will crash
        or freeze when filter in file open window is set to MP3.
-
+    * (Windows) The Audacity 1.3.8 executable cannot be added to 
+        the Explorer "Open With" menu if you have another version
+        of Audacity also called "audacity.exe". You can set the 
+        file association to always use Audacity 1.3.8 to open the 
+        required file type, but it will not appear in the list 
+        accessed by the "Open With" context menu item.    
+              
  * Exports:
+    * Metadata Editor appears before the Export window when exporting 
+       to any format. Click OK in Metadata Editor to proceed to the 
+       Export window. If you do not use metadata, you can go to the 
+       Import / Export tab of Preferences and uncheck "Show Metadata
+       Editor prior to export step". 
     * WAVEX (Microsoft) headers: GSM 6.10 files cannot be exported, and
        U-Law/A-Law files may not be playable
     * M4A: exports at rates below 44100 Hz have incorrect sample rates,
        and 38000 Hz exports may not play properly (FFmpeg bugs); M4A
        renamed to MOV will not play on Windows in iTunes or QuickTime
-    * Muting specific time-shifted mono tracks when produces audio at 
-       wrong point on timeline in exported file if muted tracks are 
-       to left of unmuted.
+    * Muting specific time-shifted mono tracks produces audio at wrong 
+       point on timeline in exported file if muted tracks are to left 
+       of unmuted.
 
  * It is currently possible to attempt simultaneous imports or exports
     by using shortcuts (or File > New on Mac): Audacity is not yet
     capable of running these simultaneous operations safely, and
-    attempting this may crash your project
+    attempting this may crash your project.
 
  * Genre WAV info tag (IGNR) not supported due to limitation in
     libsndfile. 
@@ -145,9 +160,9 @@ this version.
        the Effect menu, or may crash in use.
     * Compressor produces shorter attack/decay times than those specified 
        in the dialogue. 
-    * Plot Spectrum switches to window for previously plotted waveform
-       if called from menu in current window; closes when any project 
-       window is closed     
+    * If left open, Plot Spectrum switches to window for previously
+       plotted waveform when called from menu in current window; it 
+       also closes when any project window is closed.     
 
  * Audio generated or pasted when cursor is in white space overwrites
     instead of inserts.
@@ -175,11 +190,20 @@ this version.
        Windows. On all platforms, multiple files in one project will 
        not necessarily be sorted in file name order after import.  
 
+ * Mixer Board:
+    * The slider maximum gain is +6 dB, and its tooltip will not show 
+       more than this maximum even if the gain applied on the Track Panel
+       slider is higher.     
+    * Selecting a track by clicking the Track Panel does not select it on
+       the Mixer Board. 
+    * The meter range does not reflect a change in the dB range meter 
+       preferences until restart. 
+
  * Not all menu items are correctly enabled when the preference:
     "Select all audio in project, if none selected" is checked
 
  * A few interface elements do not change correctly after a language 
-    change without restart.
+    change until restart.
 
  * Calculation of "disk space remains for recording (time)" incorrect
     when recording in 24-bit quality. You may record for 50% longer
@@ -256,7 +280,12 @@ this version.
 
  * (Linux) Effects and other dialogues do not have focus on opening. 
     This is a bug in wxGTK for which there is no current workaround. 
-    Click in the dialogue to navigate it and change parameters.        
+    Click in the dialogue to navigate it and change parameters.    
+
+ * (Linux) If Portmixer uses emulated playback volume rather than 
+    native, the Audacity output slider will affect the VU playback 
+    meters and these may not then reflect the actual volume level 
+    of the waveform. 
 
  * (Linux) Audacity now supports interfacing with JACK, but this has
     not been tested, and has a number of known reliability and usability
@@ -298,7 +327,7 @@ GPL-compatible license.  Specifically:
 
   libflac: Xiph.Org BSD-like licence (the parts we use)
     Decodes and Encodes Free Lossless Audio Codec files. Optional separate
-	download.
+    download.
 
   libmad: GPL
     Decodes MP3 files.  Optional separate download.
