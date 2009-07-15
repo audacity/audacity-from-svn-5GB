@@ -3471,7 +3471,7 @@ void AudacityProject::Clear()
       if (n->GetSelected()) {
          n->Clear(mViewInfo.sel0, mViewInfo.sel1);
          // Wave and Label tracks have group behaviour
-         if (n->GetKind() == Track::Wave || n->GetKind() == Track::Label) n = iter.NextGroup();
+         if (IsSticky() && (n->GetKind() == Track::Wave || n->GetKind() == Track::Label)) n = iter.NextGroup();
          else n = iter.Next();
       }
       else n = iter.Next();
