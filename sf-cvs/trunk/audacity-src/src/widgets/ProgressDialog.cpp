@@ -1414,6 +1414,14 @@ int TimerProgressDialog::Update(const wxString & message /*= wxEmptyString*/)
       Show(true);
    }
 
+   int nGaugeValue = (1000 * elapsed) / mDuration; // range = [0,1000]
+   wxASSERT((nGaugeValue >= 0) && (nGaugeValue <= 1000));
+   if (nGaugeValue != mLastValue)
+   {
+      mGauge->SetValue(nGaugeValue);
+      mLastValue = nGaugeValue;
+   }
+
    // Only update if a full second has passed.
    if (now - mLastUpdate > 1000)
    {

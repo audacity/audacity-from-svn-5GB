@@ -72,21 +72,19 @@ class AUDACITY_DLL_API ProgressDialog:public wxDialog
  protected:
    wxStaticText *mElapsed;
    wxStaticText *mRemaining;
+   wxGauge *mGauge;
 
    wxLongLong_t mStartTime;
    wxLongLong_t mLastUpdate;
+   int mLastValue; // gauge value, range = [0,1000]
 
    bool mCancel;
    bool mStop;
 
  private:
    wxWindow *mHadFocus;
-   wxGauge *mGauge;
    wxStaticText *mMessage;
    wxWindowDisabler *mDisable;
-
-   int mLastValue;
-
    
    DECLARE_EVENT_TABLE();
 };
