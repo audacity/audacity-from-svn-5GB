@@ -67,8 +67,9 @@ New Features:
                  processing each file 
               * Updated Nyquist implementation with support for SAL 
                  syntax and improved memory management 
-              * Plot Spectrum can now analyze nearly four minutes of audio
-                 with improved display; new preferences for Spectrograms 
+              * Plot Spectrum now analyzes up to 237.8 seconds of audio,
+                 with separate windows for each project and improved 
+                 display; new preferences for Spectrograms 
               * Contrast Analysis tool now modeless for easier use    
            * Interface:
               * Draft Manual/Quick Help included in Windows and Mac 
@@ -160,10 +161,7 @@ this version.
        the Effect menu, or may crash in use.
     * Compressor produces shorter attack/decay times than those specified 
        in the dialogue. 
-    * If left open, Plot Spectrum switches to window for previously
-       plotted waveform when called from menu in current window; it 
-       also closes when any project window is closed.     
-
+   
  * Audio generated or pasted when cursor is in white space overwrites
     instead of inserts.
 
