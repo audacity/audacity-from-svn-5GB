@@ -32,8 +32,6 @@ class FreqWindow;
 
 class TrackList;
 
-extern FreqWindow *gFreqWindow;
-
 void InitFreqWindow(wxWindow * parent);
 
 class FreqWindow;

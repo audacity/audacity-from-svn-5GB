@@ -683,7 +683,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mWantSaveCompressed(false),
      mLastEffect(NULL),
      mLastEffectType(0),
-     mLastEffectDesc(_("Repeat Last Effect"))
+     mLastEffectDesc(_("Repeat Last Effect")),
+     mFreqWindow(NULL)
 {
    int widths[] = {-1, 130};
    mStatusBar = CreateStatusBar(2);
@@ -1712,9 +1713,9 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 //     and/or attempts to delete objects twice.
 void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 {
-   if (gFreqWindow) {
-      gFreqWindow->Destroy();
-      gFreqWindow = NULL;
+   if (mFreqWindow) {
+      mFreqWindow->Destroy();
+      mFreqWindow = NULL;
    }
 
    if (wxIsBusy()) {
