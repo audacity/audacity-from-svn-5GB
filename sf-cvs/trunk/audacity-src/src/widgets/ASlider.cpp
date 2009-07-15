@@ -705,7 +705,7 @@ void LWSlider::Draw()
       }
    }
 
-   // internal tick marks
+   // tick marks
    int divs = 10;
    double upp;
    if (mOrientation == wxHORIZONTAL) 
@@ -716,23 +716,24 @@ void LWSlider::Draw()
          divs = (int)(mMaxValue - mMinValue);
       upp = divs / (double)(mHeightY-1);
    }
-   double d = 0;
+   double d = 0.0;
    int int_d = -1;
    const int kMax = (mOrientation == wxHORIZONTAL) ? mWidthX : mHeightY;
    for(int p = 0; p <= kMax; p++) {
       if (((int)d) > int_d) {
          int_d = (int)d;
-         int ht = (int_d==0 || int_d==divs? 5: 3);
+         int tickLength = ((int_d == 0) || (int_d == divs)) ? 5: 3; // longer ticks at extremes
          AColor::Light(dc, false);
          if (mOrientation == wxHORIZONTAL)
-            AColor::Line(*dc, mLeftX+p, mCenterY-ht, mLeftX+p, mCenterY-1); // ticks above
+            AColor::Line(*dc, mLeftX+p, mCenterY-tickLength, mLeftX+p, mCenterY-1); // ticks above
          else
-            AColor::Line(*dc, mCenterX-ht, mTopY+p, mCenterX-1, mTopY+p); // ticks at left
+            AColor::Line(*dc, mCenterX-tickLength, mTopY+p, mCenterX-1, mTopY+p); // ticks at left
+
          AColor::Dark(dc, false);
          if (mOrientation == wxHORIZONTAL)
-            AColor::Line(*dc, mLeftX+p+1, mCenterY-ht+1, mLeftX+p+1, mCenterY-1); // ticks above
+            AColor::Line(*dc, mLeftX+p+1, mCenterY-tickLength+1, mLeftX+p+1, mCenterY-1); // ticks above
          else
-            AColor::Line(*dc, mCenterX-ht+1, mTopY+p+1, mCenterX-1, mTopY+p+1); // ticks at left
+            AColor::Line(*dc, mCenterX-tickLength+1, mTopY+p+1, mCenterX-1, mTopY+p+1); // ticks at left
       }
       d += upp;
    }
