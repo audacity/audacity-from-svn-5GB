@@ -160,6 +160,8 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    bool HandleGroupPaste(double t0, Track *src, TrackList* tracks, bool relativeLabels);
    bool HandlePaste(double t0, Track *src);
 
+   bool Cut(double t0, double t1, Track **dest, bool groupCut);
+
    // Returns true if there are no WaveClips in that region
    bool IsEmpty(double t0, double t1);
 
