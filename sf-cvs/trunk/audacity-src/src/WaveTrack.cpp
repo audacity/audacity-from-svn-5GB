@@ -907,7 +907,7 @@ bool WaveTrack::HandlePaste(double t0, Track *src)
    
    // Make room for the pasted data, unless the space being pasted in is empty of
    // any clips
-   if (!IsEmpty(t0, t0+insertDuration-1.0/mRate) && editClipCanMove) {
+   if (editClipCanMove) {
       if (other->GetNumClips() > 1) {
          // We need to insert multiple clips, so split the current clip and
          // move everything to the right, then try to paste again
