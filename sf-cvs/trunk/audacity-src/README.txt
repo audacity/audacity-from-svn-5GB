@@ -285,6 +285,9 @@ this version.
     meters and these may not then reflect the actual volume level 
     of the waveform. 
 
+ * (Linux) Audacity will require a FFmpeg package or build later than
+    0.5 in order for optional FFmpeg import/export features to work.    
+
  * (Linux) Audacity now supports interfacing with JACK, but this has
     not been tested, and has a number of known reliability and usability
     issues: patches to improve both will be welcomed
