@@ -269,13 +269,22 @@ bool WaveTrack::IsEmpty(double t0, double t1)
 
 bool WaveTrack::Cut(double t0, double t1, Track **dest)
 {
+   return Cut(t0, t1, dest, true);
+}
+
+bool WaveTrack::Cut(double t0, double t1, Track **dest, bool groupCut)
+{
    if (t1 < t0)
       return false;
 
    // Cut is the same as 'Copy', then 'Delete'
    if (!Copy(t0, t1, dest))
       return false;
-   return Clear(t0, t1);
+
+   if (groupCut)
+      return Clear(t0, t1);
+   else
+      return HandleClear(t0, t1, false, false);
 }
 
 bool WaveTrack::SplitCut(double t0, double t1, Track **dest)
@@ -905,16 +914,17 @@ bool WaveTrack::HandlePaste(double t0, Track *src)
 
    //printf("Check if we need to make room for the pasted data\n");
    
-   // Make room for the pasted data, unless the space being pasted in is empty of
-   // any clips
+   // Make room for the pasted data
    if (editClipCanMove) {
       if (other->GetNumClips() > 1) {
          // We need to insert multiple clips, so split the current clip and
          // move everything to the right, then try to paste again
-         Track *tmp = NULL;
-         Cut(t0, GetEndTime()+1.0/mRate, &tmp);
-         HandlePaste(t0 + insertDuration, tmp);
-         delete tmp;
+         if (!IsEmpty(t0, GetEndTime())) {
+            Track *tmp = NULL;
+            Cut(t0, GetEndTime()+1.0/mRate, &tmp, false);
+            HandlePaste(t0 + insertDuration, tmp);
+            delete tmp;
+         }
       } else
       {
          // We only need to insert one single clip, so just move all clips
