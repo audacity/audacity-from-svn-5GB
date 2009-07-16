@@ -168,6 +168,7 @@ class LabelTrack:public Track {
    int getCurrentCursorPosition() const { return mCurrentCursorPos; };
    
    void ShiftLabelsOnClear(double b, double e);
+   void ChangeLabelsOnClear(double b, double e);
    void ShiftLabelsOnInsert(double length, double pt);
    void ChangeLabelsOnReverse(double b, double e);
    void ScaleLabels(double b, double e, double change);
