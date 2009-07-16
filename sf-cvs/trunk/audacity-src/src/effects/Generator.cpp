@@ -30,40 +30,59 @@ bool Generator::Process()
    // Iterate over the tracks
    bool bGoodResult = true;
    int ntrack = 0;
-   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
-   WaveTrack *track = (WaveTrack *)iter.First();
-   while (track) {
-      if (mDuration > 0.0)
-      {
-         // Create a temporary track
-         WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(),
-                                                 track->GetRate());
-         BeforeTrack(*track);
+   TrackListIterator iter(mOutputTracks);
+   Track* t = iter.First();
 
-         // Fill it with data
-         if (!GenerateTrack(tmp, *track, ntrack))
-            bGoodResult = false;
+   // we only do a "group change" in the first selected track of the group. 
+   // ClearAndPaste has a call to Paste that does changes to the group tracks
+   bool first = true;
 
-         // Transfer the data from the temporary track to the actual one
-         tmp->Flush();
-         track->ClearAndPaste(mT0, mT1, tmp, true, true, mOutputTracks);
-         delete tmp;
+   while (t != NULL)
+   {
+      if (t->GetKind() == Track::Label)
+         first = true;
+      else if (t->GetKind() == Track::Wave && t->GetSelected()) {
+         WaveTrack* track = (WaveTrack*)t;
 
-         if (!bGoodResult) {
-            Failure();
-            return false;
+         if (mDuration > 0.0)
+         {
+            // Create a temporary track
+            WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(),
+                                                    track->GetRate());
+            BeforeTrack(*track);
+
+            // Fill it with data
+            if (!GenerateTrack(tmp, *track, ntrack))
+               bGoodResult = false;
+
+            // Transfer the data from the temporary track to the actual one
+            tmp->Flush();
+            if (first) {
+               track->ClearAndPaste(mT0, mT1, tmp, true, true, mOutputTracks);
+               first = false;
+            }
+            else {
+               track->HandleClear(mT0, mT1, false, false);
+               track->HandlePaste(mT0, tmp);
+            }
+            delete tmp;
+
+            if (!bGoodResult) {
+               Failure();
+               return false;
+            }
          }
-      }
-      else
-      {
-         // If the duration is zero, there's no need to actually
-         // generate anything
-         track->Clear(mT0, mT1);
-      }
+         else
+         {
+            // If the duration is zero, there's no need to actually
+            // generate anything
+            track->Clear(mT0, mT1);
+         }
 
+         ntrack++;
+      }
       // Move on to the next track
-      ntrack++;
-      track = (WaveTrack *)iter.Next();
+      t = iter.Next();
    }
 
    Success();
