@@ -149,13 +149,11 @@ void LabelTrack::SetOffset(double dOffset)
 void LabelTrack::ShiftLabelsOnClear(double b, double e)
 {
    for (size_t i=0;i<mLabels.GetCount();i++){
-      double x = mLabels[i]->t;
-      double y = mLabels[i]->t1;
       if (mLabels[i]->t >= e){//label is after deletion region
          mLabels[i]->t  = mLabels[i]->t  - (e-b);
          mLabels[i]->t1 = mLabels[i]->t1 - (e-b);
       }else if (mLabels[i]->t >= b && mLabels[i]->t1 <= e){//deletion region encloses label
-         wxASSERT((i < mLabels.GetCount()));
+         wxASSERT(i < mLabels.GetCount());
          mLabels.RemoveAt(i);
          i--;
       }else if (mLabels[i]->t >= b && mLabels[i]->t1 > e){//deletion region covers start
@@ -171,6 +169,23 @@ void LabelTrack::ShiftLabelsOnClear(double b, double e)
    }
 }
 
+//used when we want to use clear only on the labels
+void LabelTrack::ChangeLabelsOnClear(double b, double e)
+{
+   for (size_t i=0;i<mLabels.GetCount();i++) {
+      if (mLabels[i]->t >= b && mLabels[i]->t1 <= e){//deletion region encloses label
+         wxASSERT(i < mLabels.GetCount());
+         mLabels.RemoveAt(i);
+         i--;
+      }else if (mLabels[i]->t < b && mLabels[i]->t1 > e){//label encloses deletion region
+         mLabels[i]->t1 = mLabels[i]->t1 - (e-b);
+      }else if (mLabels[i]->t <= e && mLabels[i]->t1 > e){//deletion region covers label start
+         mLabels[i]->t  = e;
+      }else if (mLabels[i]->t < b && mLabels[i]->t1 >= b){//deletion regions covers label end
+         mLabels[i]->t1 = b;
+      }
+   }
+}
 void LabelTrack::ShiftLabelsOnInsert(double length, double pt)
 {
    for (unsigned int i=0;i<mLabels.GetCount();i++){
@@ -2084,7 +2099,7 @@ bool LabelTrack::Clear(double t0, double t1)
          ShiftLabelsOnClear(t0, t1);
    }
    else
-      ShiftLabelsOnClear(t0, t1);
+      ChangeLabelsOnClear(t0, t1);
 
    return true;
 }

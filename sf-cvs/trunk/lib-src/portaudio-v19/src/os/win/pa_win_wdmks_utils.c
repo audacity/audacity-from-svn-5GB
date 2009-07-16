@@ -40,6 +40,7 @@
 #include <ks.h>
 #include <ksmedia.h>
 #include <stdio.h>              // just for some development printfs
+#include <stddef.h>
 
 #include "portaudio.h"
 #include "pa_util.h"
@@ -155,7 +156,7 @@ static int KSFilterPinPropertyIdentifiersInclude(
 {
     KSMULTIPLE_ITEM* item = NULL;
     KSIDENTIFIER* identifier;
-    int i;
+    size_t i;
     int result = 0;
 
     if( WdmGetPinPropertyMulti( deviceHandle, pinId, property, &item) != paNoError )
@@ -163,7 +164,7 @@ static int KSFilterPinPropertyIdentifiersInclude(
 
     identifier = (KSIDENTIFIER*)(item+1);
 
-    for( i = 0; i < (int)item->Count; i++ )
+    for( i = 0; i < item->Count; i++ )
     {
         if( !memcmp( (void*)&identifier[i].Set, (void*)identifierSet, sizeof( GUID ) ) &&
            ( identifier[i].Id == identifierId ) )
@@ -185,8 +186,9 @@ static int KSFilterPinPropertyIdentifiersInclude(
 int PaWin_WDMKS_QueryFilterMaximumChannelCount( void *wcharDevicePath, int isInput )
 {
     HANDLE deviceHandle;
-    int pinCount, pinId, i;
+    int pinCount, pinId;
     int result = 0;
+    size_t i;
     KSPIN_DATAFLOW requiredDataflowDirection = (isInput ? KSPIN_DATAFLOW_OUT : KSPIN_DATAFLOW_IN );
 
     if( !wcharDevicePath )
