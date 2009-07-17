@@ -1,12 +1,12 @@
 <?php
 // The main version number, when we don't distinguish between platforms
-define('beta_version', '1.3.7');
+define('beta_version', '1.3.8');
 
 // Note: Sizes are in MB.
-define('beta_macosx_version', '1.3.7');
+define('beta_macosx_version', '1.3.8');
 
-define('macosx_ub_version', '1.3.7');
-define('macosx_ub_size',    9.8);
+define('macosx_ub_version', '1.3.8');
+define('macosx_ub_size',    14.6);
 
 //define('macosx_ppc_version', '1.3.3');
 //define('macosx_ppc_size',    7.2);
@@ -22,7 +22,7 @@ define('macosx_ub_size',    9.8);
 
 
 
-define('beta_win_exe_version', '1.3.7');
+define('beta_win_exe_version', '1.3.8');
 
 define('win_exe_version', '1.3.7');
 define('win_exe_size',    4.0);
@@ -30,21 +30,21 @@ define('win_exe_size',    4.0);
 define('win_zip_version', '1.3.7');
 define('win_zip_size',    6.2);
 
-define('win_exe_unicode_version', '1.3.7');
-define('win_exe_unicode_size',    4.1);
+define('win_exe_unicode_version', '1.3.8');
+define('win_exe_unicode_size',    7.6);
 
-define('win_zip_unicode_version', '1.3.7');
-define('win_zip_unicode_size',    6.2);
+define('win_zip_unicode_version', '1.3.8');
+define('win_zip_unicode_size',    7.5);
 
 
 define('ladspa_version', '0.4.15');
 define('ladspa_size',    1.5);
 
 
-define('beta_src_version', '1.3.7');
-define('src_version', '1.3.7');
-define('min_src_size',    5.1);
-define('full_src_size',    13);
+define('beta_src_version', '1.3.8');
+define('src_version', '1.3.8');
+define('min_src_size',    6.4);
+define('full_src_size',    17.6);
 define('src_suffix',  '.tar.bz2');
 
 $win_exe_url = "http://audacity.googlecode.com/files/audacity-win-" .win_exe_version.".exe";

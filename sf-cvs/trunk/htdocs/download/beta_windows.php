@@ -18,12 +18,11 @@
 <?php include "betawarning.inc.php" ?>
 
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
-<?php include "recommended.inc.php" ?>
 <ul>
 
-  <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor. See <a href="http://audacityteam.org/wiki/index.php?title=Windows_Vista_OS">further information about Vista</a>.'), "".$win_exe_unicode_url, win_exe_unicode_version, win_exe_unicode_size)?></p></li>
-
-  <li><p>Windows 98/ME: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.</a>'), "".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
+  <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor, including help files. See <a href="http://audacityteam.org/wiki/index.php?title=Windows_Vista_OS">further information about Vista</a>.'), "".$win_exe_unicode_url, win_exe_unicode_version, win_exe_unicode_size)?></p></li>
+<div id="ansi"></div>
+  <li><p>Windows 98/ME: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest available version for Windows 98 and ME.</a>'), "".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
 
 </ul>
 
@@ -43,7 +42,7 @@
 
   <?php include "common.inc.php"; ?>
   <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB)
-  - If you cannot run the installer because you are in a computer lab or other restricted environment, download and unzip this or the file below instead.'),
+  - If you want a download without help files, or cannot run the installer because of restricted permissions, download and unzip this or the file below instead.'),
     "".$win_zip_unicode_url, win_zip_unicode_version, win_zip_unicode_size)?></p></li>
 
   <li><p>Windows 98/ME: <?php printf('<a href="%s">Audacity %s zip file</a> (%.1lf MB)',
