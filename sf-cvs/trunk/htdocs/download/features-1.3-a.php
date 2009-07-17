@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2008 Dominic Mazzoni, Gale Andrews
+ * Copyright 2005-2009 Dominic Mazzoni, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -8,7 +8,6 @@
   $pageId = "features-1.3-a";
   $pageTitle = _("New features in Audacity 1.3");
   include "../include/header.inc.php";
-  include "../latest/versions.inc.php";
 ?>
 
 <h2><?=$pageTitle?></h2>
@@ -24,6 +23,83 @@
   <li>Some parts of the program are not yet documented or translated into different languages.</li>
  </ul>
 ')?></p>
+
+<h3 id="details"><?=_("New in Audacity 1.3.8")?></h3>
+
+<?=_("
+<dl>
+   <dt> New Features </dt>
+	       <dd> Effects and Analysis:
+                 <ul>
+                        <li>VST Effects now display GUI by default</li> 
+                        <li>Faster Equalization and Noise Removal; improved 
+                            Truncate Silence and Click Track</li>
+                        <li>Chains applied to files now clear temporary data after 
+                            processing each file</li> 
+                        <li>Updated Nyquist implementation with support for SAL 
+                            syntax and improved memory management</li> 
+                        <li>Plot Spectrum now analyzes up to 237.8 seconds of audio,
+                            with separate windows for each project and improved 
+                            display; new preferences for Spectrograms</li> 
+                        <li>Contrast Analysis tool now modeless for easier use</li>
+                 </ul>
+          </dd>
+
+          <dd> Interface:
+                 <ul>  
+                        <li>Draft Manual/Quick Help included in Windows and Mac 
+                            installers</li> 
+                        <li>New \"Mixer Board\" view with per-track VU meters</li> 
+                        <li>Mute, solo, gain, pan and track height saved in projects</li>
+                        <li>More compact Preferences window with easier-to-use Keyboard
+                            tab and new toolbars shortcuts</li>   
+                        <li>New Screenshot Tools and improved screen reader support</li>  
+                 </ul>
+          </dd>
+
+          <dd> Other:
+                 <ul>
+                        <li>Record more than 16 channels (hardware/drivers permitting)</li>
+                        <li>Improved support for non-mmap ALSA devices such as PulseAudio</li> 
+                        <li>32-bit float data over 0 dB now handled without clipping</li>
+                        <li>\"Stop\" option when importing preserves already imported data</li>
+                        <li>AMR NB export now supported if the optional 
+                            <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">
+                            FFmpeg library</a> is installed</li>
+                        <li>Faster waveform drawing and better response in multi-track 
+                            projects</li> 
+                 </ul> 
+          </dd>
+
+   <dt> Bug fixes for: </dt>
+          <dd>   
+                 <ul>
+                        <li>Export Multiple: failed if empty label encountered; files silenced 
+                             if overwriting imported WAV files without copying them in</li>   
+                        <li>Metadata Editor hidden if it was on a now unavailable second
+                            monitor</li>
+                        <li>Misaligned audio after \"Split New\" or Noise Removal effect</li>
+                        <li>Incorrect label movement and paste with linked audio and label
+                            tracks</li>      
+                        <li>Equalization, Cut Preview and Advanced Mixing Options dialogue</li>
+                        <li><i>(Linux)</i> Mixer Toolbar should now adjust levels and select
+                            input sources properly</li>  
+                        <li>\"Audio cache\" preference caused crashes - data is now only
+                            cached in memory if available RAM is above a level defined
+                            in preferences</li> 
+                        <li>Various other crashes</li>
+                 </ul>
+          </dd>
+
+</dl>
+
+<p>
+Please be aware of 
+<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.8#Known_Issues_at_Release\">
+Known Issues at Release</a> (also viewable in the included README.txt).
+</p>
+")?>
+
 
 <h3 id="details"><?=_("New in Audacity 1.3.7")?></h3>
 

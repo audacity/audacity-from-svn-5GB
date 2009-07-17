@@ -40,6 +40,47 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "July 17, 2009",
+  	"1.3.8-release",
+  _("Audacity 1.3.8 released"),
+  _("
+<p>
+The Audacity Team is pleased to announce the release of
+<a href=\"/download\">Audacity 1.3.8 (Beta)</a> 
+for Windows, Mac and Linux/Unix. It contains a number of significant 
+improvements, plus some bug fixes. Highlights include:  
+</p>
+<p>
+   <ul>
+      <li>VST Effects now display in GUI mode by default</li>  
+      <li>Updated Nyquist implementation</li> 
+      <li>Improvements to Equalization, Noise Removal, Truncate 
+          Silence, Click Track and effects chains</li>
+      <li>Improved Plot Spectrum analysis and new preferences
+          for Spectrograms</li>
+      <li>Record more than 16 channels (hardware/drivers permitting)</li>  
+      <li>New \"Mixer Board\" view with per-track VU meters</li> 
+      <li>AMR NB export support via the optional 
+          <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">
+          FFmpeg library</a></li>
+      <li>32-bit float data over 0 dB handled without clipping</li>
+      <li>Draft Manual/Quick Help included in Windows and Mac installers</li> 
+      <li>Faster waveform drawing and better response in multi-track projects</li> 
+      <li>Various bug fixes, stability and accessibility improvements</li>
+   </ul>
+</p>
+<p>See 
+<a href=\"http://audacity.sourceforge.net/download/features-1.3-a#details\">   
+New in Audacity 1.3.8</a> for more on the latest features and fixes.
+</p>
+<p>
+<b>Note:</b> This release does not support Windows 98 or ME, for which 1.3.7 is 
+<a href=\"http://audacity.sourceforge.net/download/beta_windows#recdown\">
+still available</a>. 
+</p>
+"));
+
+add_news_item(
   "May 10, 2009",
   	"Linux_Journal_and_Bestcovery_Awards_and_Audacity_compact_book",
   _("Linux Journal and Bestcovery Awards, and new \"Audacity compact\" book"),
