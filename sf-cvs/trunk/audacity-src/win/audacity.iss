@@ -100,7 +100,13 @@ Name: "{userdesktop}\Audacity 1.3 Beta"; Filename: "{app}\audacity.exe"; MinVers
 ; Get rid of Audacity 1.0.0 stuff that's no longer used.
 Type: files; Name: "{app}\audacity-help.htb"
 Type: files; Name: "{app}\audacity-1.2-help.htb"
-; Don't think we want to do this because user may have stored their own.
+
+; Get rid of previous versions of MSVC runtimes.
+Type: files; Name: "{app}\Microsoft.VC80.CRT.manifest"
+Type: files; Name: "{app}\msvcp80.dll"
+Type: files; Name: "{app}\msvcr80.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+; Don't want to do this because user may have stored their own.
 ;   Type: filesandordirs; Name: "{app}\vst"
 
 ; We've switched from a folder in the start menu to just the Audacity.exe at the top level.
@@ -119,6 +125,9 @@ Root: HKCR; Subkey: "Audacity.Project"; ValueType: string; ValueData: "Audacity 
 Root: HKCR; Subkey: "Audacity.Project\shell"; ValueType: string; ValueData: ""; Flags: createvalueifdoesntexist uninsdeletekey;
 Root: HKCR; Subkey: "Audacity.Project\shell\open"; Flags: createvalueifdoesntexist uninsdeletekey;
 Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; ValueData: """{app}\audacity.exe"" ""%1"""; Flags: createvalueifdoesntexist uninsdeletekey;
+
+;The following would allow a following 'help' installer to know where to put the 'help' files.
+;Root: HKCR; Subkey: "Audacity.Project\Path";  ValueType: string; ValueData: {app}; Flags: createvalueifdoesntexist uninsdeletekey;
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
