@@ -91,6 +91,8 @@ class VSTEffect:public Effect
    wxString mVendor;
    wxString mName;
 
+   VstTimeInfo mTimeInfo;
+
    sampleCount mBlockSize;
    float **mInBuffer;
    float **mOutBuffer;

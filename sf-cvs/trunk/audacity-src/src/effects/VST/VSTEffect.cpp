@@ -927,6 +927,10 @@ VSTEffect::VSTEffect(const wxString & path, void *module, AEffect * aeffect)
 
    mAEffect->user = this;
 
+   mTimeInfo.samplePos = 0.0;
+   mTimeInfo.sampleRate = 0;
+   mTimeInfo.flags = 0;
+
    callDispatcher(effOpen, 0, 0, NULL, 0.0);
 
    mVendor = GetString(effGetVendorString);
@@ -1072,6 +1076,16 @@ bool VSTEffect::Process()
       if (mBlockSize == 0) {
          mBlockSize = left->GetMaxBlockSize() * 2;
 
+         // Some VST effects (Antress Modern is an example), do not like
+         // overly large block sizes.  Unfortunately, I have not found a
+         // way to determine if the effect has a maximum it will support,
+         // so just limit to small value for now.  This will increase
+         // processing time and, it's a shame, because most plugins seem
+         // to be able to handle much larger sizes.
+         if (mBlockSize > 8192) { // The Antress limit
+            mBlockSize = 8192;
+         }
+
          mInBuffer = new float *[mInputs];
          for (int i = 0; i < mInputs; i++) {
             mInBuffer[i] = new float[mBlockSize];
@@ -1136,6 +1150,11 @@ bool VSTEffect::ProcessStereo(int count,
 {
    bool rc = true;
 
+   // Initialize time info
+   mTimeInfo.samplePos = 0.0;
+   mTimeInfo.sampleRate = left->GetRate();
+   mTimeInfo.flags = kVstTransportPlaying;
+
    // Turn the power on
    callDispatcher(effMainsChanged, 0, 1, NULL, 0.0);
 
@@ -1164,7 +1183,8 @@ bool VSTEffect::ProcessStereo(int count,
       len -= block;
       ls += block;
       rs += block;
-      
+      mTimeInfo.samplePos += ((double) block / mTimeInfo.sampleRate);
+
       if (mInputs > 1) {      
          if (TrackGroupProgress(count, (ls - lstart) / (double)originalLen)) {
             rc = false;
@@ -1181,6 +1201,11 @@ bool VSTEffect::ProcessStereo(int count,
 
    // Turn the power off
    callDispatcher(effMainsChanged, 0, 0, NULL, 0.0);
+
+   // No longer playing
+   mTimeInfo.samplePos = 0.0;
+   mTimeInfo.sampleRate = 0;
+   mTimeInfo.flags = 0;
 
    return rc;
 }
@@ -1236,11 +1261,6 @@ float VSTEffect::callGetParameter(long index)
    return mAEffect->getParameter(mAEffect, index);
 }
 
-// We don't support time requests yet, but some plugins don't
-// handle a NULL ptr return like they should.  So, send back
-// an empty time info block.
-static VstTimeInfo dummyTimeInfo = { 0 };
-
 long int VSTEffect::audioMaster(AEffect * effect,
                                 long int opcode,
                                 long int index,
@@ -1250,14 +1270,28 @@ long int VSTEffect::audioMaster(AEffect * effect,
 {
    switch (opcode)
    {
+      // Let the effect know if a pin (channel in our case) is connected
       case audioMasterPinConnected:
          return (index < mChannels ? 0 : 1);
 
+      // Some (older) effects depend on an effIdle call when requested.  An
+      // example is the Antress Modern plugins which uses the call to update
+      // the editors display when the program (preset) changes.
+      case audioMasterNeedIdle:
+         effect->dispatcher(effect, effIdle, 0, 0, NULL, 0.0);
+         return 0;
+
+      // Give the effect a chance to update the editor display
+      case audioMasterUpdateDisplay:
+         effect->dispatcher(effect, effEditIdle, 0, 0, NULL, 0.0);
+         return 0;
+
+      // Return the current time info.
       case audioMasterGetTime:
-         return (long int) &dummyTimeInfo;
+         return (long int) &mTimeInfo;
 
       default:
-#if 0
+#if 1
 #if defined(__WXDEBUG__)
          wxPrintf(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
                   effect, opcode, index, value, ptr, opt, effect->user);

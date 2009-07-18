@@ -118,6 +118,8 @@ const int effGetVendorString = 47;
 const int effGetProductString = 48;
 const int effGetVendorVersion = 49;
 const int effCanDo = 51; // currently unused
+// The next one was gleaned from http://asseca.com/vst-24-specs/efIdle.html
+const int effIdle = 53;
 const int effGetVstVersion = 58; // currently unused
 
 const int kEffectMagic = CCONST( 'V', 's', 't', 'P' );
