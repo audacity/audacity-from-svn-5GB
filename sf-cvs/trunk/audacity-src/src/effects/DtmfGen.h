@@ -32,7 +32,7 @@
 class EffectDtmf : public Generator {
 
  public:
-   EffectDtmf() {
+   EffectDtmf() : mIsSelection(false) {
       SetEffectFlags(BUILTIN_EFFECT | INSERT_EFFECT);
    }
 
@@ -58,6 +58,7 @@ class EffectDtmf : public Generator {
       return wxString(_("Generating DTMF tones"));
    }
 
+   virtual bool Init();
    virtual bool PromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
 
@@ -70,6 +71,7 @@ class EffectDtmf : public Generator {
    double dtmfSilence;        // duration of silence between tones in ms
    double dtmfDutyCycle;      // ratio of dtmfTone/(dtmfTone+dtmfSilence)
    double dtmfAmplitude;      // amplitude of dtmf tone sequence, restricted to (0-1)
+   bool mIsSelection;
 
  protected:
    virtual bool MakeDtmfTone(float *buffer, sampleCount len, float fs,
