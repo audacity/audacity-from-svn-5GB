@@ -104,7 +104,7 @@ Type: files; Name: "{app}\audacity-1.2-help.htb"
 ; Get rid of previous versions of MSVC runtimes.
 Type: files; Name: "{app}\Microsoft.VC80.CRT.manifest"
 Type: files; Name: "{app}\msvcp80.dll"
-Type: files; Name: "{app}\msvcr80.dll"; DestDir: "{app}"; Flags: ignoreversion
+Type: files; Name: "{app}\msvcr80.dll"
 
 ; Don't want to do this because user may have stored their own.
 ;   Type: filesandordirs; Name: "{app}\vst"
