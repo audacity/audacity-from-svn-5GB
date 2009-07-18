@@ -1236,6 +1236,11 @@ float VSTEffect::callGetParameter(long index)
    return mAEffect->getParameter(mAEffect, index);
 }
 
+// We don't support time requests yet, but some plugins don't
+// handle a NULL ptr return like they should.  So, send back
+// an empty time info block.
+static VstTimeInfo dummyTimeInfo = { 0 };
+
 long int VSTEffect::audioMaster(AEffect * effect,
                                 long int opcode,
                                 long int index,
@@ -1248,11 +1253,16 @@ long int VSTEffect::audioMaster(AEffect * effect,
       case audioMasterPinConnected:
          return (index < mChannels ? 0 : 1);
 
+      case audioMasterGetTime:
+         return (long int) &dummyTimeInfo;
+
       default:
 #if 0
 #if defined(__WXDEBUG__)
          wxPrintf(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
                   effect, opcode, index, value, ptr, opt, effect->user);
+         wxLogDebug(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p"),
+                    effect, opcode, index, value, ptr, opt, effect->user);
 #endif
 #endif
          return 0;
