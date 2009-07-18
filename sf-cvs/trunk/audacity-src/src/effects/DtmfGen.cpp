@@ -51,11 +51,8 @@
 // EffectDtmf
 //
 
-bool EffectDtmf::PromptUser()
+bool EffectDtmf::Init()
 {
-   DtmfDialog dlog(this, mParent, _("DTMF Tone Generator"));
-
-
    // dialog will be passed values from effect
    // Effect retrieves values from saved config
    // Dialog will take care of using them to initialize controls
@@ -66,11 +63,11 @@ bool EffectDtmf::PromptUser()
    if (mT1 > mT0) {
       // there is a selection: let's fit in there...
       mDuration = mT1 - mT0;
-      dlog.dIsSelection = true;
+      mIsSelection = true;
    } else {
       // retrieve last used values
       gPrefs->Read(wxT("/CsPresets/DtmfGen_SequenceDuration"), &mDuration, 1L);
-      dlog.dIsSelection = false;
+      mIsSelection = false;
    }
    /// \todo this code shouldn't be using /CsPresets - need to review its use
    gPrefs->Read(wxT("/CsPresets/DtmfGen_String"), &dtmfString, wxT("audacity"));
@@ -79,7 +76,17 @@ bool EffectDtmf::PromptUser()
 
    dtmfNTones = wxStrlen(dtmfString);
 
+   return true;
+}
+
+bool EffectDtmf::PromptUser()
+{
+   DtmfDialog dlog(this, mParent, _("DTMF Tone Generator"));
+
+   Init();
+
    // Initialize dialog locals
+   dlog.dIsSelection = mIsSelection;
    dlog.dString = dtmfString;
    dlog.dDutyCycle = dtmfDutyCycle;
    dlog.dDuration = mDuration;

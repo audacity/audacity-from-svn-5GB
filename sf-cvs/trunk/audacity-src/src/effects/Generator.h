@@ -37,6 +37,8 @@ protected:
                               const WaveTrack &track,
                               int ntrack) = 0;
 
+   virtual bool Init() { return true; }
+
    // Actions to perform at the respective points in the generation process
    virtual void BeforeGenerate() { };
    virtual void BeforeTrack(const WaveTrack &track) { };
