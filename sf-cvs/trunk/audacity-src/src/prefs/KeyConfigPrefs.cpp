@@ -77,10 +77,13 @@ KeyConfigPrefs::KeyConfigPrefs(wxWindow * parent)
 
 KeyConfigPrefs::~KeyConfigPrefs()
 {
-   mKey->Disconnect(wxEVT_KEY_DOWN,
-                    wxKeyEventHandler(KeyConfigPrefs::OnCaptureKeyDown));
-   mKey->Disconnect(wxEVT_CHAR,
-                    wxKeyEventHandler(KeyConfigPrefs::OnCaptureChar));
+   if (mKey)
+   {
+      mKey->Disconnect(wxEVT_KEY_DOWN,
+            wxKeyEventHandler(KeyConfigPrefs::OnCaptureKeyDown));
+      mKey->Disconnect(wxEVT_CHAR,
+            wxKeyEventHandler(KeyConfigPrefs::OnCaptureChar));
+   }
 }
 
 void KeyConfigPrefs::Populate()
