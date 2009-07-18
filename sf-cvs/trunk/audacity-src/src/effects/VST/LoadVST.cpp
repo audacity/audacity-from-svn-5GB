@@ -65,7 +65,7 @@ static long int audioMaster(AEffect * effect,
          return 0;
 
       default:
-#if 0
+#if 1
 #if defined(__WXDEBUG__)
          wxPrintf(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
                   effect, opcode, index, value, ptr, opt, effect->user);
