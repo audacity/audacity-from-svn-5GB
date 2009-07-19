@@ -184,9 +184,11 @@ void VSTEffectDialog::BuildFancy()
    wxASSERT(subview != NULL);
 
 #elif defined(__WXMSW__)
-   mEffect->callDispatcher(effEditOpen, 0, 0, GetHWND(), 0.0);
+   wxWindow *w = new wxWindow(this, wxID_ANY);
 
-   HWND child = FindWindowEx((HWND) GetHWND(), NULL, NULL, NULL);
+   mEffect->callDispatcher(effEditOpen, 0, 0, w->GetHWND(), 0.0);
+
+   HWND child = FindWindowEx((HWND) w->GetHWND(), NULL, NULL, NULL);
 #else
 #endif
 
@@ -220,7 +222,8 @@ void VSTEffectDialog::BuildFancy()
    ::RemoveEventHandler((EventHandlerRef)MacGetEventHandler());
 
 #elif defined(__WXMSW__)
-   SetWindowPos(child, NULL, pos.x, pos.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+   w->SetPosition(pos);
+   w->SetSize(si->GetSize());
 #else
 #endif
 }
@@ -928,8 +931,11 @@ VSTEffect::VSTEffect(const wxString & path, void *module, AEffect * aeffect)
    mAEffect->user = this;
 
    mTimeInfo.samplePos = 0.0;
-   mTimeInfo.sampleRate = 0;
-   mTimeInfo.flags = 0;
+   mTimeInfo.sampleRate = 44100.0;
+   mTimeInfo.tempo = 120.0;
+   mTimeInfo.timeSigNumerator = 4;
+   mTimeInfo.timeSigDenominator = 4;
+   mTimeInfo.flags = kVstTempoValid;
 
    callDispatcher(effOpen, 0, 0, NULL, 0.0);
 
@@ -1153,7 +1159,7 @@ bool VSTEffect::ProcessStereo(int count,
    // Initialize time info
    mTimeInfo.samplePos = 0.0;
    mTimeInfo.sampleRate = left->GetRate();
-   mTimeInfo.flags = kVstTransportPlaying;
+   mTimeInfo.flags |= kVstTransportPlaying;
 
    // Turn the power on
    callDispatcher(effMainsChanged, 0, 1, NULL, 0.0);
@@ -1204,8 +1210,11 @@ bool VSTEffect::ProcessStereo(int count,
 
    // No longer playing
    mTimeInfo.samplePos = 0.0;
-   mTimeInfo.sampleRate = 0;
-   mTimeInfo.flags = 0;
+   mTimeInfo.sampleRate = 44100.0;
+   mTimeInfo.tempo = 120.0;
+   mTimeInfo.timeSigNumerator = 4;
+   mTimeInfo.timeSigDenominator = 4;
+   mTimeInfo.flags = kVstTempoValid;
 
    return rc;
 }
@@ -1289,6 +1298,12 @@ long int VSTEffect::audioMaster(AEffect * effect,
       // Return the current time info.
       case audioMasterGetTime:
          return (long int) &mTimeInfo;
+
+      // Ignore these
+      case audioMasterBeginEdit:
+      case audioMasterEndEdit:
+      case audioMasterAutomate:
+         return 0;
 
       default:
 #if 1
