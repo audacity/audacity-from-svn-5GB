@@ -184,11 +184,9 @@ void VSTEffectDialog::BuildFancy()
    wxASSERT(subview != NULL);
 
 #elif defined(__WXMSW__)
-   wxWindow *w = new wxWindow(this, wxID_ANY);
+   wxWindow *w = new wxPanel(this, wxID_ANY);
 
    mEffect->callDispatcher(effEditOpen, 0, 0, w->GetHWND(), 0.0);
-
-   HWND child = FindWindowEx((HWND) w->GetHWND(), NULL, NULL, NULL);
 #else
 #endif
 
