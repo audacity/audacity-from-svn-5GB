@@ -339,6 +339,10 @@ wxSizer *VSTEffectDialog::BuildProgramBar()
 
    int progn = mEffect->callDispatcher(effGetProgram, 0, 0, NULL, 0.0);
 
+   if (progn < 0) {
+      progn = 0;
+   }
+
    wxBoxSizer *hs = new wxBoxSizer(wxHORIZONTAL);
 
    wxStaticText *st = new wxStaticText(this, wxID_ANY, _("Presets:"));
@@ -1301,15 +1305,27 @@ long int VSTEffect::audioMaster(AEffect * effect,
       case audioMasterBeginEdit:
       case audioMasterEndEdit:
       case audioMasterAutomate:
+      case audioMasterGetCurrentProcessLevel:
+         return 0;
+
+      case audioMasterCanDo:
+#if !defined(__WXMSW__)
+         wxPrintf(wxT("effect: %p cando: %s\n"), effect, LAT1CTOWX((char *)ptr).c_str());
+#else
+         wxLogDebug(wxT("effect: %p cando: %s\n"), effect, LAT1CTOWX((char *)ptr).c_str());
+#endif
          return 0;
 
       default:
 #if 1
 #if defined(__WXDEBUG__)
+#if !defined(__WXMSW__)
          wxPrintf(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
                   effect, opcode, index, value, ptr, opt, effect->user);
+#else
          wxLogDebug(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p"),
                     effect, opcode, index, value, ptr, opt, effect->user);
+#endif
 #endif
 #endif
          return 0;
