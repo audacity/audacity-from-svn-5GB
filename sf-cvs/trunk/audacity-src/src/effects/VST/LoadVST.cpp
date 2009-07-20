@@ -64,13 +64,20 @@ static long int audioMaster(AEffect * effect,
       case audioMasterWantMidi:
          return 0;
 
+      case audioMasterCanDo:
+         wxPrintf(wxT("effect: %p cando: %s\n"), effect, LAT1CTOWX((char *)ptr).c_str());
+         return 0;
+
       default:
 #if 1
 #if defined(__WXDEBUG__)
+#if !defined(__WXMSW__)
          wxPrintf(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
                   effect, opcode, index, value, ptr, opt, effect->user);
+#else
          wxLogDebug(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p"),
                     effect, opcode, index, value, ptr, opt, effect->user);
+#endif
 #endif
 #endif
          return 0;
