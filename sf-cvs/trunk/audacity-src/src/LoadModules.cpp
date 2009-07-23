@@ -33,11 +33,13 @@ i.e. an alternative to the usual interface, for Audacity.
 #include "LoadModules.h"
 
 #define initFnName      "ExtensionModuleInit"
+#define versionFnName   "GetVersionString"
 #define scriptFnName    "RegScriptServerFunc"
 #define mainPanelFnName "MainPanelFunc"
 
 typedef wxWindow * pwxWindow;
 typedef int (*tModuleInit)(int);
+typedef wxString (*tVersionFn)();
 typedef pwxWindow (*tPanelFn)(int);
 
 // This variable will hold the address of a subroutine in 
@@ -85,11 +87,31 @@ void LoadModule(wxString fname)
    wxDynamicLibrary* pDLL = new wxDynamicLibrary();
    if (pDLL && pDLL->Load(fname, wxDL_LAZY)) 
    {
-      int result =1;
+      int result = 1;
       mainFn   = (tModuleInit)(pDLL->GetSymbol(wxT(initFnName)));
 
       if (mainFn) 
          result = mainFn( 0 );
+
+      // If the module provides a version string, check that it matches the
+      // Audacity version string. (For now, they must match exactly)
+      // For compatibility reasons, if no version string is provided we try to
+      // load the module anyway.
+      tVersionFn versionFn = (tVersionFn)(pDLL->GetSymbol(wxT(versionFnName)));
+      if (versionFn)
+      {
+         wxString moduleVersion = versionFn();
+         if (moduleVersion != AUDACITY_VERSION_STRING)
+         {
+            wxLogDebug(wxT("The module %s is designed to work with Audacity version %s; it will not be loaded."), fname.c_str(), moduleVersion.c_str());
+            delete pDLL;
+            return;
+         }
+      }
+      else
+      {
+         wxLogDebug(wxT("The module %s does not provide a version string. Attempting to load it anyway."), fname.c_str());
+      }
 
       if(( scriptFn == NULL ) &&(result>=0 ))
          scriptFn = (tpRegScriptServerFunc)(pDLL->GetSymbol(wxT(scriptFnName)));

@@ -43,13 +43,9 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 extern void PipeServer();
 
-
 extern "C" {
 
-   // This is an example of an exported variable
-
 typedef SCRIPT_PIPE_DLL_IMPORT int (*tpExecScriptServerFunc)( wxString * pIn, wxString * pOut);
-
 
 static tpExecScriptServerFunc pScriptServerFn=NULL;
 
@@ -178,6 +174,9 @@ int SCRIPT_PIPE_DLL_API ExtensionModuleInit(int ix)
    return 0;
 }
 
-
+wxString SCRIPT_PIPE_DLL_API GetVersionString()
+{
+   return SCRIPT_PIPE_VERSION_STRING;
 }
 
+} // End extern "C"
