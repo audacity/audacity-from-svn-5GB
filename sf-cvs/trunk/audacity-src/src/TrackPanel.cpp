@@ -1047,6 +1047,18 @@ void TrackPanel::DoDrawIndicator(wxDC & dc)
    // Calculate the horizontal position of the indicator
    x = GetLeftOffset() + int ( ( pos - mViewInfo->h ) * mViewInfo->zoom );
 
+   mRuler->DrawIndicator( pos, rec );
+
+   // Ensure that we don't draw through the Track Info
+   wxRect clip = GetRect();
+   int leftCutoff = clip.x + GetLabelWidth();
+   int rightInset = kLeftInset + 2; // See the call to SetInset
+   int rightCutoff = clip.x + clip.width - rightInset;
+   if (!between_inclusive(leftCutoff, x, rightCutoff))
+   {
+      return;
+   }
+
    // Draw indicator in all visible tracks
    VisibleTrackIterator iter( GetProject() );
    for( Track *t = iter.First(); t; t = iter.Next() )
@@ -1067,8 +1079,6 @@ void TrackPanel::DoDrawIndicator(wxDC & dc)
                    x,
                    y + t->GetHeight() - 3 );
    }
-
-   mRuler->DrawIndicator( pos, rec );
 }
 
 /// This function draws the cursor things, both in the
