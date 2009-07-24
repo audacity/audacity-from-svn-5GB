@@ -265,8 +265,10 @@ Provide access to the wxWidgets DLLs
 Each Audacity executable needs access to five specific wxWidgets
 DLLs from those you built in "MSVC++ STEP 2:  Build wxWidgets" 
 above. You can copy them to your Windows PATH, or more simply,
-to the same directory as the executable. The ones required are at 
-"C:\wxWidgets-2.8.10\lib\vc_dll":
+to the same directory as the executable. If you are building 
+Audacity for public release using the *.iss installer script, 
+you must copy them to the executable directory. The DLLs required 
+are at "C:\wxWidgets-2.8.10\lib\vc_dll":
 
 	wxbase28*_net_vc_custom.dll
 	wxbase28*_vc_custom.dll
