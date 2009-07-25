@@ -22,7 +22,7 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 
-#include "../widgets/Ruler.h"
+#include "widgets/Ruler.h"
 
 class wxStatusBar;
 class wxButton;
