@@ -107,8 +107,10 @@ class ODFileDecoder
 {
 public:
    ///This should handle unicode converted to UTF-8 on mac/linux, but OD TODO:check on windows
-   ODFileDecoder(const char* fName);
+   ODFileDecoder(const wxString& fName);
    virtual ~ODFileDecoder();
+	
+	virtual bool Init(){};
    
    ///Decodes the samples for this blockfile from the real file into a float buffer.  
    ///This is file specific, so subclasses must implement this only.
@@ -121,12 +123,16 @@ public:
    
    ///Read header.  Subclasses must override.  Probably should save the info somewhere.
    ///Ideally called once per decoding of a file.  This complicates the task because 
-   virtual void ReadHeader()=0;  
+   virtual bool ReadHeader()=0;  
    
-   char* GetFileName(){return mFName;}
+   wxString GetFileName(){return mFName;}
 
 protected:   
-   char* mFName;
+   wxString  mFName;
+	
+	unsigned int mSampleRate;
+	unsigned int mNumSamples;//this may depend on the channel - so TODO: we should probably let the decoder create/modify the track info directly.
+	unsigned int mNumChannels;
 };
 
 #endif
