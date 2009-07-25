@@ -886,6 +886,11 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
             t->Add(newRecordingTracks[i]);
       }
 
+      //Automatic Volume Initialization
+      #ifdef AUTOMATIC_VOLUME
+         gAudioIO->AVInitialize();
+      #endif
+
       int token = gAudioIO->StartStream(playbackTracks,
                                         newRecordingTracks,
 #ifdef EXPERIMENTAL_MIDI_OUT                                        

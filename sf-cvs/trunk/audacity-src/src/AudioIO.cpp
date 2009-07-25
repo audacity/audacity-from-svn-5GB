@@ -45,6 +45,7 @@ writing audio.
 
 #include <math.h>
 #include <stdlib.h>
+#include <algorithm>
 
 #ifdef __WXMSW__
 #include <malloc.h>
@@ -52,6 +53,10 @@ writing audio.
 
 #ifdef HAVE_ALLOCA_H
 #include <alloca.h>
+#endif
+
+#if USE_PORTMIXER
+#include "portmixer.h"
 #endif
 
 #include <wx/log.h>
@@ -86,6 +91,11 @@ writing audio.
 #include "../Experimental.h"
 
 #define NO_STABLE_INDICATOR -1000000000
+#define LOWER_BOUND 0.0
+#define UPPER_BOUND 1.0
+
+using std::max;
+using std::min;
 
 AudioIO *gAudioIO;
 
@@ -2495,6 +2505,91 @@ void AudioIO::FillMidiBuffers()
 }
 #endif
 
+// Automatic Volume - Automatically tries to find an acceptable input volume
+#ifdef AUTOMATIC_VOLUME
+void AudioIO::AVInitialize() {
+   gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &mAVActive,         false);
+   gPrefs->Read(wxT("/AudioIO/BestPeakVolume"),        &mAVGoldPoint,      AV_DEF_BEST_PEAK);
+   gPrefs->Read(wxT("/AudioIO/DeltaPeakVolume"),       &mAVGoldDelta,      AV_DEF_DELTA_PEAK);
+   gPrefs->Read(wxT("/AudioIO/AnalysisTime"),          &mAVAnalysisTime,   AV_DEF_ANALYSIS_TIME);
+   gPrefs->Read(wxT("/AudioIO/NumberAnalysis"),        &mAVTotalAnalysis,  AV_DEF_NUMBER_ANALYSIS);
+   mAVGoldDelta      /= 100.0;
+   mAVGoldPoint      /= 100.0; 
+   mAVAnalysisTime   /= 1000.0;
+   mAVMax             = 0.0;
+   mAVLastStartTime   = max(0.0, mT0);
+   mAVClipped         = false;
+   mAVAnalysisCounter = 0;
+}
+
+void AudioIO::AVProcess() {
+   AudacityProject *proj = GetActiveProject();
+   if (proj && mAVActive) {
+      mAVMax = max(mAVMax, mInputMeter->GetMaxPeak());
+      if (mInputMeter->IsClipping())
+         mAVClipped = true;
+      
+      if ((mAVTotalAnalysis == 0 || mAVAnalysisCounter < mAVTotalAnalysis) && mTime - mAVLastStartTime >= mAVAnalysisTime) {
+         double iv = (double) Px_GetInputVolume(mPortMixer);
+         if (mAVClipped || mAVMax > mAVGoldPoint + mAVGoldDelta) {
+            //if clipped or too high
+            if (iv <= LOWER_BOUND) {
+               //we can't improve it more now
+               if (mAVTotalAnalysis != 0) {
+                  mAVActive = false;
+                  proj->TP_DisplayStatusMessage("Automatic Volume stopped. It was not possible to optimize it more. Still too high.");
+               }
+            }
+            else {
+               double vol = max(LOWER_BOUND, iv+mAVGoldPoint-mAVMax);
+               Px_SetInputVolume(mPortMixer, vol);
+               wxString msg;
+               msg.Printf(_("Automatic Volume decreased the volume to %f."), vol);
+               proj->TP_DisplayStatusMessage(msg);
+            }
+         }
+         else if ( mAVMax < mAVGoldPoint - mAVGoldDelta ) {
+            //if too low
+            if (iv >= UPPER_BOUND) {
+               //we can't improve it more
+               if (mAVTotalAnalysis != 0) {
+                  mAVActive = false;
+                  proj->TP_DisplayStatusMessage("Automatic Volume stopped. It was not possible to optimize it more. Still too low.");
+               }
+            }
+            else {
+               double vol = min(UPPER_BOUND, iv+mAVGoldPoint-mAVMax);
+               Px_SetInputVolume(mPortMixer, vol);
+               wxString msg;
+               msg.Printf(_("Automatic Volume increased the volume to %.2f."), vol);
+               proj->TP_DisplayStatusMessage(msg);
+            }
+         }
+         else if (mAVTotalAnalysis != 0) {
+            //when we are satisfied with the current volume
+            mAVActive = false;
+            wxString msg;
+            msg.Printf(_("Automatic Volume stopped. %.2f seems an aceptable volume."), iv);
+            proj->TP_DisplayStatusMessage(msg);
+         }
+
+         mAVAnalysisCounter++;
+         mAVMax           = 0;
+         mAVClipped       = false;  
+         mAVLastStartTime = mTime;
+      }
+
+      if (mAVActive && mAVTotalAnalysis != 0 && mAVAnalysisCounter >= mAVTotalAnalysis) {
+         mAVActive = false;
+         if (mAVMax > mAVGoldPoint + mAVGoldDelta)
+            proj->TP_DisplayStatusMessage("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too high.");
+         else
+            proj->TP_DisplayStatusMessage("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too low.");
+      }
+   }
+}
+#endif
+
 //////////////////////////////////////////////////////////////////////
 //
 //    PortAudio callback thread context
@@ -2579,6 +2674,9 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
       gAudioIO->mUpdatingMeters = false;
    }  // end recording VU meter update
 
+   #ifdef AUTOMATIC_VOLUME
+      gAudioIO->AVProcess();
+   #endif
 
    // Stop recording if 'silence' is detected
    if(gAudioIO->mPauseRec && inputBuffer) {
