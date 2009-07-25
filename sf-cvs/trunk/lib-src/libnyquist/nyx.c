@@ -18,6 +18,7 @@
 #ifndef WIN32
 #include <unistd.h>
 #else
+#include <windows.h>
 #include <direct.h>
 #endif
 
@@ -1332,23 +1333,113 @@ LVAL xechoenabled()
    return NULL;
 }
 
-/* osdir_list_start -- open a directory listing */
+#if defined(WIN32)
+
+static WIN32_FIND_DATA FindFileData;
+static HANDLE hFind = INVALID_HANDLE_VALUE;
+#define OSDIR_LIST_READY 0
+#define OSDIR_LIST_STARTED 1
+#define OSDIR_LIST_DONE 2
+static int osdir_list_status = OSDIR_LIST_READY;
+#define OSDIR_MAX_PATH 256
+static char osdir_path[OSDIR_MAX_PATH];
+
+// osdir_list_start -- prepare to list a directory
 int osdir_list_start(char *path)
 {
-   return FALSE;
+   if (strlen(path) >= OSDIR_MAX_PATH - 2) {
+      xlcerror("LISTDIR path too big", "return nil", NULL);
+      return FALSE;
+   }
+   strcpy(osdir_path, path);
+   strcat(osdir_path, "/*"); // make a pattern to match all files
+
+   if (osdir_list_status != OSDIR_LIST_READY) {
+      osdir_list_finish(); // close previously interrupted listing
+   }
+
+   hFind = FindFirstFile(osdir_path, &FindFileData); // get the "."
+   if (hFind == INVALID_HANDLE_VALUE) {
+      return FALSE;
+   }
+   if (FindNextFile(hFind, &FindFileData) == 0) {
+      return FALSE; // get the ".."
+   }
+
+   osdir_list_status = OSDIR_LIST_STARTED;
+
+   return TRUE;
 }
 
 /* osdir_list_next -- read the next entry from a directory */
 char *osdir_list_next()
 {
-   return NULL;
+   if (FindNextFile(hFind, &FindFileData) == 0) {
+      osdir_list_status = OSDIR_LIST_DONE;
+      return NULL;
+   }
+   return FindFileData.cFileName;
 }
 
 /* osdir_list_finish -- close an open directory */
 void osdir_list_finish()
 {
-   return;
+   if (osdir_list_status != OSDIR_LIST_READY) {
+      FindClose(hFind);
+   }
+   osdir_list_status = OSDIR_LIST_READY;
 }
+
+#else
+
+#include <dirent.h>
+#define OSDIR_LIST_READY 0
+#define OSDIR_LIST_STARTED 1
+#define OSDIR_LIST_DONE 2
+static int osdir_list_status = OSDIR_LIST_READY;
+static DIR *osdir_dir;
+
+/* osdir_list_start -- open a directory listing */
+int osdir_list_start(char *path)
+{
+   if (osdir_list_status != OSDIR_LIST_READY) {
+      osdir_list_finish(); /* close current listing */
+   }
+   osdir_dir = opendir(path);
+   if (!osdir_dir) {
+      return FALSE;
+   }
+   osdir_list_status = OSDIR_LIST_STARTED;
+   return TRUE;
+}
+
+/* osdir_list_next -- read the next entry from a directory */
+char *osdir_list_next()
+{
+   struct dirent *entry;
+
+   if (osdir_list_status != OSDIR_LIST_STARTED) {
+      return NULL;
+   }
+
+   entry = readdir(osdir_dir);
+   if (!entry) {
+      osdir_list_status = OSDIR_LIST_DONE;
+      return NULL;
+   }
+   return entry->d_name;
+}
+
+/* osdir_list_finish -- close an open directory */
+void osdir_list_finish()
+{
+    if (osdir_list_status != OSDIR_LIST_READY) {
+        closedir(osdir_dir);
+    }
+    osdir_list_status = OSDIR_LIST_READY;
+}
+
+#endif
 
 /* xget_temp_path -- get a path to create temp files */
 LVAL xget_temp_path()
