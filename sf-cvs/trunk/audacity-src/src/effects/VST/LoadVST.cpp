@@ -65,17 +65,17 @@ static long int audioMaster(AEffect * effect,
          return 0;
 
       case audioMasterCanDo:
-         wxPrintf(wxT("effect: %p cando: %s\n"), effect, LAT1CTOWX((char *)ptr).c_str());
+         wxPrintf(wxT("loadvst: %p cando: %s\n"), effect, LAT1CTOWX((char *)ptr).c_str());
          return 0;
 
       default:
 #if 1
 #if defined(__WXDEBUG__)
 #if !defined(__WXMSW__)
-         wxPrintf(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
+         wxPrintf(wxT("loadvst: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
                   effect, opcode, index, value, ptr, opt, effect->user);
 #else
-         wxLogDebug(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p"),
+         wxLogDebug(wxT("loadvst: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p"),
                     effect, opcode, index, value, ptr, opt, effect->user);
 #endif
 #endif
@@ -177,7 +177,6 @@ static void LoadVSTPlugin(const wxString & fname)
 
    // Was it successful?
    if (aeffect) {
-
       // Ensure that it looks like a plugin and can deal with ProcessReplacing
       // calls.  Also exclude synths for now.
       if (aeffect->magic == kEffectMagic &&
@@ -187,24 +186,28 @@ static void LoadVSTPlugin(const wxString & fname)
          // Looks good...try to create the VSTEffect
          VSTEffect *vst = new VSTEffect(fname, module, aeffect);
          if (vst != NULL) {
-
             // Success...register it and get out
             EffectManager::Get().RegisterEffect(vst);
             return;
          }
       }
+
 #if defined(__WXDEBUG__)
-      else {
-         wxPrintf(wxT("bypassing %s - magic %08x flags %08x\n"),
-                  fname.c_str(), aeffect->magic, aeffect->flags);
-         wxLogDebug(wxT("bypassing %s - magic %08x flags %08x"),
-                    fname.c_str(), aeffect->magic, aeffect->flags);
-      }
+#if !defined(__WXMSW__)
+      wxPrintf(wxT("bypassing %s - magic %08x flags %08x\n"),
+               fname.c_str(), aeffect->magic, aeffect->flags);
+#else
+      wxLogDebug(wxT("bypassing %s - magic %08x flags %08x"),
+                 fname.c_str(), aeffect->magic, aeffect->flags);
 #endif
+#endif
+
+      // Some effects need an effClose call before being unloaded.
+      aeffect->dispatcher(aeffect, effClose, 0, 0, NULL, 0.0);
    }
 
    // Only way we can get here is if something went wrong...clean up
-   
+
 #if defined(__WXMAC__)
    CFRelease(bundleRef);
 #else

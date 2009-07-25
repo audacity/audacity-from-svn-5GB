@@ -1310,9 +1310,9 @@ long int VSTEffect::audioMaster(AEffect * effect,
 
       case audioMasterCanDo:
 #if !defined(__WXMSW__)
-         wxPrintf(wxT("effect: %p cando: %s\n"), effect, LAT1CTOWX((char *)ptr).c_str());
+         wxPrintf(wxT("vsteffect: %p cando: %s\n"), effect, LAT1CTOWX((char *)ptr).c_str());
 #else
-         wxLogDebug(wxT("effect: %p cando: %s\n"), effect, LAT1CTOWX((char *)ptr).c_str());
+         wxLogDebug(wxT("vsteffect: %p cando: %s\n"), effect, LAT1CTOWX((char *)ptr).c_str());
 #endif
          return 0;
 
@@ -1320,10 +1320,10 @@ long int VSTEffect::audioMaster(AEffect * effect,
 #if 1
 #if defined(__WXDEBUG__)
 #if !defined(__WXMSW__)
-         wxPrintf(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
+         wxPrintf(wxT("vsteffect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
                   effect, opcode, index, value, ptr, opt, effect->user);
 #else
-         wxLogDebug(wxT("effect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p"),
+         wxLogDebug(wxT("vsteffect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p"),
                     effect, opcode, index, value, ptr, opt, effect->user);
 #endif
 #endif
