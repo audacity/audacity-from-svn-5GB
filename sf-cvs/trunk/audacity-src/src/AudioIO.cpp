@@ -2537,7 +2537,7 @@ void AudioIO::AVProcess() {
                //we can't improve it more now
                if (mAVTotalAnalysis != 0) {
                   mAVActive = false;
-                  proj->TP_DisplayStatusMessage("Automatic Volume stopped. It was not possible to optimize it more. Still too high.");
+                  proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. It was not possible to optimize it more. Still too high."));
                }
             }
             else {
@@ -2554,7 +2554,7 @@ void AudioIO::AVProcess() {
                //we can't improve it more
                if (mAVTotalAnalysis != 0) {
                   mAVActive = false;
-                  proj->TP_DisplayStatusMessage("Automatic Volume stopped. It was not possible to optimize it more. Still too low.");
+                  proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. It was not possible to optimize it more. Still too low."));
                }
             }
             else {
@@ -2582,9 +2582,9 @@ void AudioIO::AVProcess() {
       if (mAVActive && mAVTotalAnalysis != 0 && mAVAnalysisCounter >= mAVTotalAnalysis) {
          mAVActive = false;
          if (mAVMax > mAVGoldPoint + mAVGoldDelta)
-            proj->TP_DisplayStatusMessage("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too high.");
+            proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too high."));
          else
-            proj->TP_DisplayStatusMessage("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too low.");
+            proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too low."));
       }
    }
 }
