@@ -67,6 +67,13 @@ public:
 #define DEFAULT_LATENCY_DURATION 100.0
 #define DEFAULT_LATENCY_CORRECTION -130.0
 
+#ifdef AUTOMATIC_VOLUME
+   #define AV_DEF_BEST_PEAK 92
+   #define AV_DEF_DELTA_PEAK 2
+   #define AV_DEF_ANALYSIS_TIME 1000
+   #define AV_DEF_NUMBER_ANALYSIS 5
+#endif
+
 class AUDACITY_DLL_API AudioIO {
 
  public:
@@ -267,6 +274,14 @@ class AUDACITY_DLL_API AudioIO {
     */
    static bool ValidateDeviceNames(wxString play, wxString rec);
 
+   /** \brief Function to automatically set an acceptable volume
+    *
+    */
+   #ifdef AUTOMATIC_VOLUME
+      void AVInitialize();
+      void AVProcess();
+   #endif
+
 private:
    /** \brief Return a valid sample rate that is supported by the current I/O
     * device(s).
@@ -372,6 +387,19 @@ private:
    //   NoteTrackArray      mMidiCaptureTracks;
 
 #endif
+
+#ifdef AUTOMATIC_VOLUME
+   bool     mAVActive;
+   bool     mAVClipped;
+   int      mAVTotalAnalysis;
+   int      mAVAnalysisCounter;
+   float    mAVMax;
+   double   mAVGoldPoint;
+   double   mAVGoldDelta;
+   double   mAVAnalysisTime;
+   double   mAVLastStartTime;
+#endif
+
    AudioThread        *mThread;
    Resample          **mResample;
    RingBuffer        **mCaptureBuffers;

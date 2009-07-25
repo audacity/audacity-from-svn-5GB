@@ -132,6 +132,11 @@ extern void AddPages(   AudacityProject * pProj, GuiFactory & Factory,  wxNotebo
 #define EXPERIMENTAL_LYRICS_WINDOW //vvv Vaughan, 2009-07-06
 #define EXPERIMENTAL_MIXER_BOARD //vvv Vaughan, 2009-07-07
 
+#if USE_PORTMIXER
+   //Automatically tries to find an acceptable input volume
+   #define AUTOMATIC_VOLUME
+#endif
+
 #endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

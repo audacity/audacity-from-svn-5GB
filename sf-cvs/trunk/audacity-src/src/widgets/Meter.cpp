@@ -628,6 +628,7 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
 
       mT += deltaT;
       for(j=0; j<mNumBars; j++) {
+         mBar[j].clipping = false;
          if (mDecay) {
             if (mDB) {
                float decayAmount = mDecayRate * deltaT / mDBRange;
@@ -661,6 +662,7 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
              mBar[j].tailPeakCount+msg.headPeakCount[j] >=
              mNumPeakSamplesToClip)
             mBar[j].clipping = true;
+
          mBar[j].tailPeakCount = msg.tailPeakCount[j];
       }
    } // while
@@ -702,6 +704,14 @@ void Meter::ResetBar(MeterBar *b, bool resetClipping)
       b->peakPeakHold =0.0;
    }
    b->tailPeakCount = 0;
+}
+
+bool Meter::IsClipping()
+{
+   for (int c = 0; c < kMaxMeterBars; c++)
+      if (mBar[c].clipping)
+         return true;
+   return false;
 }
 
 void Meter::HandleLayout()

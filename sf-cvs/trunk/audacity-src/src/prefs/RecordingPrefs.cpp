@@ -22,6 +22,7 @@
 
 #include <wx/defs.h>
 #include <wx/textctrl.h>
+#include <algorithm>
 
 #include "../AudioIO.h"
 #include "../Envelope.h"
@@ -29,6 +30,8 @@
 #include "../ShuttleGui.h"
 
 #include "RecordingPrefs.h"
+
+using std::min;
 
 RecordingPrefs::RecordingPrefs(wxWindow * parent)
 :  PrefsPanel(parent, _("Recording"))
@@ -120,6 +123,50 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
       S.EndMultiColumn();
    }
    S.EndStatic();
+
+   #ifdef AUTOMATIC_VOLUME
+      S.StartStatic(_("Automatic Volume Recording"));
+      {
+         S.TieCheckBox(_("Enable Automatic Volume recording."),
+                       wxT("/AudioIO/AutomaticVolumeRecord"),
+                       false);
+
+         S.StartMultiColumn(2, wxEXPAND);
+         {
+            S.SetStretchyCol(1);
+
+            S.TieSlider(_("Best Peak Volume:"),
+                        wxT("/AudioIO/BestPeakVolume"),
+                        AV_DEF_BEST_PEAK,
+                        100,
+                        0);
+
+            S.TieSlider(_("Delta Peak Volume:"),
+                     wxT("/AudioIO/DeltaPeakVolume"),
+                     AV_DEF_DELTA_PEAK,
+                     100,
+                     0);
+         }
+         S.EndMultiColumn();
+
+         S.StartThreeColumn();
+         {
+            S.TieTextBox(_("Analysis Time:"),
+                             wxT("/AudioIO/AnalysisTime"),
+                             AV_DEF_ANALYSIS_TIME,
+                             9);
+            S.AddUnits(_("milliseconds (time of one analysis)"));
+
+            S.TieTextBox(_("Number of consecutive analysis:"),
+                          wxT("/AudioIO/NumberAnalysis"),
+                          AV_DEF_NUMBER_ANALYSIS,
+                          2);
+            S.AddUnits(_("0 means endless"));
+          }
+          S.EndThreeColumn();
+      }
+      S.EndStatic();
+   #endif
 }
 
 bool RecordingPrefs::Apply()
@@ -133,6 +180,22 @@ bool RecordingPrefs::Apply()
       gPrefs->Write(wxT("/AudioIO/LatencyDuration"), DEFAULT_LATENCY_DURATION);
    }
 
+   #ifdef AUTOMATIC_VOLUME
+      double bestpeak, deltapeak;
+      gPrefs->Read(wxT("/AudioIO/BestPeakVolume"),  &bestpeak);
+      gPrefs->Read(wxT("/AudioIO/DeltaPeakVolume"), &deltapeak);
+      if (bestpeak + deltapeak > 100.0 || bestpeak - deltapeak < 0.0)
+         gPrefs->Write(wxT("/AudioIO/DeltaPeakVolume"), min(100.0 - bestpeak, bestpeak));
+
+      int value;
+      gPrefs->Read(wxT("/AudioIO/AnalysisTime"), &value);
+      if (value <= 0)
+         gPrefs->Write(wxT("/AudioIO/AnalysisTime"), AV_DEF_ANALYSIS_TIME);
+
+      gPrefs->Read(wxT("/AudioIO/NumberAnalysis"), &value);
+      if (value < 0)
+         gPrefs->Write(wxT("/AudioIO/NumberAnalysis"), AV_DEF_NUMBER_ANALYSIS);
+   #endif
    return true;
 }
 
