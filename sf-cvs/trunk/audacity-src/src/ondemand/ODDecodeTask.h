@@ -110,7 +110,7 @@ public:
    ODFileDecoder(const wxString& fName);
    virtual ~ODFileDecoder();
 	
-	virtual bool Init(){};
+	virtual bool Init(){return false;};
    
    ///Decodes the samples for this blockfile from the real file into a float buffer.  
    ///This is file specific, so subclasses must implement this only.
