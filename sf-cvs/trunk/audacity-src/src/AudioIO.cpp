@@ -2537,15 +2537,19 @@ void AudioIO::AVProcess() {
                //we can't improve it more now
                if (mAVTotalAnalysis != 0) {
                   mAVActive = false;
-                  proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. It was not possible to optimize it more. Still too high."));
+                  #ifndef __WXMAC__
+                     proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. It was not possible to optimize it more. Still too high."));
+                  #endif
                }
             }
             else {
                double vol = max(LOWER_BOUND, iv+mAVGoldPoint-mAVMax);
                Px_SetInputVolume(mPortMixer, vol);
-               wxString msg;
-               msg.Printf(_("Automatic Volume decreased the volume to %f."), vol);
-               proj->TP_DisplayStatusMessage(msg);
+               #ifndef __WXMAC__
+                  wxString msg;
+                  msg.Printf(_("Automatic Volume decreased the volume to %f."), vol);
+                  proj->TP_DisplayStatusMessage(msg);
+               #endif
             }
          }
          else if ( mAVMax < mAVGoldPoint - mAVGoldDelta ) {
@@ -2554,23 +2558,29 @@ void AudioIO::AVProcess() {
                //we can't improve it more
                if (mAVTotalAnalysis != 0) {
                   mAVActive = false;
-                  proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. It was not possible to optimize it more. Still too low."));
+                  #ifndef __WXMAC__
+                     proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. It was not possible to optimize it more. Still too low."));
+                  #endif
                }
             }
             else {
                double vol = min(UPPER_BOUND, iv+mAVGoldPoint-mAVMax);
                Px_SetInputVolume(mPortMixer, vol);
-               wxString msg;
-               msg.Printf(_("Automatic Volume increased the volume to %.2f."), vol);
-               proj->TP_DisplayStatusMessage(msg);
+               #ifndef __WXMAC__
+                  wxString msg;
+                  msg.Printf(_("Automatic Volume increased the volume to %.2f."), vol);
+                  proj->TP_DisplayStatusMessage(msg);
+               #endif
             }
          }
          else if (mAVTotalAnalysis != 0) {
             //when we are satisfied with the current volume
             mAVActive = false;
-            wxString msg;
-            msg.Printf(_("Automatic Volume stopped. %.2f seems an aceptable volume."), iv);
-            proj->TP_DisplayStatusMessage(msg);
+            #ifndef __WXMAC__
+               wxString msg;
+               msg.Printf(_("Automatic Volume stopped. %.2f seems an aceptable volume."), iv);
+               proj->TP_DisplayStatusMessage(msg);
+            #endif
          }
 
          mAVAnalysisCounter++;
@@ -2581,10 +2591,12 @@ void AudioIO::AVProcess() {
 
       if (mAVActive && mAVTotalAnalysis != 0 && mAVAnalysisCounter >= mAVTotalAnalysis) {
          mAVActive = false;
-         if (mAVMax > mAVGoldPoint + mAVGoldDelta)
-            proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too high."));
-         else
-            proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too low."));
+         #ifndef __WXMAC__
+            if (mAVMax > mAVGoldPoint + mAVGoldDelta)
+               proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too high."));
+            else
+               proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too low."));
+         #endif
       }
    }
 }
