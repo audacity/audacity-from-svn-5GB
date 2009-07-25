@@ -230,7 +230,7 @@ ODFileDecoder* ODDecodeTask::GetOrCreateMatchingFileDecoder(ODDecodeBlockFile* b
    //see if the filename matches any of our decoders, if so, return it.
    for(int i=0;i<(int)mDecoders.size();i++)
    {
-      if(strcmp(mDecoders[i]->GetFileName(),blockFile->GetAudioFileName().GetFullPath().mb_str()) ==0)
+      if(mDecoders[i]->GetFileName()==blockFile->GetAudioFileName().GetFullPath())
       {
          ret = mDecoders[i];
          break;
@@ -253,19 +253,11 @@ int ODDecodeTask::GetNumFileDecoders()
 
 
 ///This should handle unicode converted to UTF-8 on mac/linux, but OD TODO:check on windows
-ODFileDecoder::ODFileDecoder(const char* fName)
+ODFileDecoder::ODFileDecoder(const wxString & fName)
 {
-   if(fName)
-   {
-      mFName = new char[strlen(fName)];
-      strcpy(mFName,fName);
-   }
-   else
-      mFName=NULL;
+	mFName = fName;
 }
 
 ODFileDecoder::~ODFileDecoder()
 {
-  if(mFName)
-      delete [] mFName;
 }

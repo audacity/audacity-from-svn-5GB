@@ -31,10 +31,14 @@ robust enough to allow all the user changes such as copy/paste, delete, and so o
 #include <vector>
 #include "ODDecodeTask.h"
 #include "ODTaskThread.h"
+
+#include "FLAC++/decoder.h"
+
 class ODDecodeBlockFile;
 class WaveTrack;
 class ODFileDecoder;
 
+class ODFlacDecoder;
 
 /// A class representing a modular task to be used with the On-Demand structures.
 class ODDecodeFlacTask:public ODDecodeTask
@@ -47,16 +51,46 @@ class ODDecodeFlacTask:public ODDecodeTask
    
    virtual ODTask* Clone()=0;
    ///Creates an ODFileDecoder that decodes a file of filetype the subclass handles.
-   virtual ODFileDecoder* CreateFileDecoder(const char* fileName)=0;
+   virtual ODFileDecoder* CreateFileDecoder(const wxString & fileName);
  
 };
+
+
+class ODFLACFile : public FLAC::Decoder::File
+{
+ public:
+   ODFLACFile(ODFlacDecoder *decoder) : mDecoder(decoder)
+   {
+      mWasError = false;
+      set_metadata_ignore_all();
+      set_metadata_respond(FLAC__METADATA_TYPE_VORBIS_COMMENT);
+      set_metadata_respond(FLAC__METADATA_TYPE_STREAMINFO);
+   }
+   
+   bool get_was_error() const
+   {
+      return mWasError;
+   }
+ private:
+   friend class ODFlacDecoder;
+   ODFlacDecoder *mDecoder;
+   bool                  mWasError;
+   wxArrayString         mComments;
+ protected:
+   virtual FLAC__StreamDecoderWriteStatus write_callback(const FLAC__Frame *frame,
+							 const FLAC__int32 * const buffer[]);
+   virtual void metadata_callback(const FLAC__StreamMetadata *metadata);
+   virtual void error_callback(FLAC__StreamDecoderErrorStatus status);
+};
+
 
 ///class to decode a particular file (one per file).  Saves info such as filename and length (after the header is read.)
 class ODFlacDecoder:public ODFileDecoder
 {
+   friend class ODFLACFile;
 public:
    ///This should handle unicode converted to UTF-8 on mac/linux, but OD TODO:check on windows
-   ODFlacDecoder(const char* fName):ODFileDecoder(fName){}
+   ODFlacDecoder(const wxString & fileName):ODFileDecoder(fileName){}
    virtual ~ODFlacDecoder(){}
    
    ///Decodes the samples for this blockfile from the real file into a float buffer.  
@@ -66,11 +100,24 @@ public:
    ///this->ReadData(sampleData, floatSample, 0, mLen);
    ///This class should call ReadHeader() first, so it knows the length, and can prepare 
    ///the file object if it needs to. 
-   virtual void Decode(samplePtr data, sampleFormat format, sampleCount start, sampleCount len)=0;
+   virtual void Decode(samplePtr data, sampleFormat format, sampleCount start, sampleCount len);
    
    ///Read header.  Subclasses must override.  Probably should save the info somewhere.
    ///Ideally called once per decoding of a file.  This complicates the task because 
-   virtual void ReadHeader()=0;  
+   virtual bool ReadHeader();  
+
+private:
+	sampleFormat          mFormat;
+   ODFLACFile           *mFile;
+   wxFFile               mHandle;
+   unsigned long         mSampleRate;
+   unsigned long         mNumChannels;
+   unsigned long         mBitsPerSample;
+   FLAC__uint64          mNumSamples;
+   FLAC__uint64          mSamplesDone;
+   bool                  mStreamInfoDone;
+   int                   mUpdateResult;
+   WaveTrack           **mChannels;
 
 };
 
