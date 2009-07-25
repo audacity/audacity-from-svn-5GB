@@ -152,6 +152,7 @@ void ODFlacDecoder::Decode(samplePtr data, sampleFormat format, sampleCount star
 bool ODFlacDecoder::ReadHeader()
 {
 	//this will call the metadata_callback when it is done.
+   return false;
 }  
 
 
