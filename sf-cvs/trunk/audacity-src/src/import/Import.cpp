@@ -130,7 +130,8 @@ int Importer::Import(wxString fName,
    
    // If user explicitly selected a filter,
    // then we should try importing via corresponding plugin first
-   wxString type = gPrefs->Read(wxT("/DefaultOpenType"),wxT(""));
+   wxString type = gPrefs->Read(wxT("/LastOpenType"),wxT(""));
+   gPrefs->Write(wxT("/LastOpenType"),wxT(""));
 
    // First, add all explicitly compatible plugins
    importPluginNode = mImportPluginList->GetFirst();

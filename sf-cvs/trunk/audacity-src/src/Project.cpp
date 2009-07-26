@@ -2040,6 +2040,7 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
       mask = mask.AfterFirst(wxT('|')).AfterFirst(wxT('|'));
    }
    gPrefs->Write(wxT("/DefaultOpenType"), mask.BeforeFirst(wxT('|')));
+   gPrefs->Write(wxT("/LastOpenType"), mask.BeforeFirst(wxT('|')));
 
    // Return the selected files
    dlog.GetPaths(selected);
