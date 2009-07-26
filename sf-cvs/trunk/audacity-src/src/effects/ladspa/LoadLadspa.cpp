@@ -24,6 +24,7 @@
 #include <queue>
 
 #include <wx/dynlib.h>
+#include <wx/filename.h>
 #include <wx/hashmap.h>
 #include <wx/list.h>
 #include <wx/log.h>
@@ -116,6 +117,13 @@ static void LoadLadspaEffect(wxSortedArrayString &uniq, wxString fname,
 {
    wxLogNull logNo;
    LADSPA_Descriptor_Function mainFn = NULL;
+
+   // Since we now have builtin VST support, ignore the VST bridge as it
+   // causes duplicate menu entries to appear.
+   wxFileName f(fname);
+   if (f.GetName().CmpNoCase(wxT("vst-bridge")) == 0) {
+      return;
+   }
 
    // As a courtesy to some plug-ins that might be bridges to
    // open other plug-ins, we set the current working
