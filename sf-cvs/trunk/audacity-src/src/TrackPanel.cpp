@@ -832,7 +832,7 @@ void TrackPanel::OnTimer()
       }
    #endif
    #ifdef EXPERIMENTAL_MIXER_BOARD
-      MixerBoard* pMixerBoard = p->GetMixerBoard();
+      MixerBoard* pMixerBoard = this->GetMixerBoard();
       if (pMixerBoard && (p->GetAudioIOToken() > 0))
          pMixerBoard->UpdateMeters(gAudioIO->GetStreamTime());
    #endif
@@ -844,7 +844,8 @@ void TrackPanel::OnTimer()
 #ifdef EXPERIMENTAL_MIDI_OUT
        && !gAudioIO->IsMidiActive()
 #endif
-	  ) {
+      ) 
+   {
       p->GetControlToolBar()->OnStop(dummyEvent);
       #ifdef EXPERIMENTAL_MIXER_BOARD
          if (pMixerBoard) 
@@ -1879,22 +1880,17 @@ void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge,
 
    double origSel0, origSel1;
    double sel0, sel1;
-//   Track *track0, *track1;  //mchinen:commenting out - variables not used.  remove if after August 2008
 
    if (pTrack == NULL && mCapturedTrack != NULL)
       pTrack = mCapturedTrack;
 
    if (mSelStart < selend) {
       sel0 = mSelStart;
-//      track0 = mCapturedTrack;
       sel1 = selend;
-//      track1 = pTrack;
    }
    else {
       sel1 = mSelStart;
-//      track1 = mCapturedTrack;
       sel0 = selend;
-//      track0 = pTrack;
    }
 
    origSel0 = sel0;
@@ -3690,6 +3686,11 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    if (event.ShiftDown()) {
       mTracks->Select(t, !t->GetSelected());
       RefreshTrack(t);
+      #ifdef EXPERIMENTAL_MIXER_BOARD
+         MixerBoard* pMixerBoard = this->GetMixerBoard();
+         if (pMixerBoard && (t->GetKind() == Track::Wave))
+            pMixerBoard->RefreshTrackCluster((WaveTrack*)t);
+      #endif
       return;
    }
 
@@ -3708,7 +3709,13 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
       mViewInfo->sel1 = t->GetEndTime();
    }
 
-   Refresh(false);  
+   this->Refresh(false);  
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      MixerBoard* pMixerBoard = this->GetMixerBoard();
+      if (pMixerBoard)
+         pMixerBoard->RefreshTrackClusters();
+   #endif
+
    if (!unsafe)
       MakeParentModifyState();
 }
@@ -3732,7 +3739,7 @@ void TrackPanel::HandleRearrange(wxMouseEvent & event)
       mTracks->MoveUp(mCapturedTrack);
       dir = _("up");
       #ifdef EXPERIMENTAL_MIXER_BOARD
-         if (pMixerBoard)
+         if (pMixerBoard && (mCapturedTrack->GetKind() == Track::Wave))
             pMixerBoard->MoveTrackCluster((WaveTrack*)mCapturedTrack, true);
       #endif
    }
@@ -3740,7 +3747,7 @@ void TrackPanel::HandleRearrange(wxMouseEvent & event)
       mTracks->MoveDown(mCapturedTrack);
       dir = _("down");
       #ifdef EXPERIMENTAL_MIXER_BOARD
-         if (pMixerBoard)
+         if (pMixerBoard && (mCapturedTrack->GetKind() == Track::Wave))
             pMixerBoard->MoveTrackCluster((WaveTrack*)mCapturedTrack, false);
       #endif
    }
@@ -6654,7 +6661,7 @@ void TrackPanel::OnMoveTrack(wxCommandEvent & event)
    if (mTracks->Move(mPopupMenuTarget, bUp)) {
       #ifdef EXPERIMENTAL_MIXER_BOARD
          MixerBoard* pMixerBoard = this->GetMixerBoard(); // Update mixer board, too.
-         if (pMixerBoard)
+         if (pMixerBoard && (mPopupMenuTarget->GetKind() == Track::Wave))
             pMixerBoard->MoveTrackCluster((WaveTrack*)mPopupMenuTarget, bUp);
       #endif
 
@@ -6700,7 +6707,7 @@ void TrackPanel::OnSetName(wxCommandEvent &event)
 
       #ifdef EXPERIMENTAL_MIXER_BOARD
          MixerBoard* pMixerBoard = this->GetMixerBoard();
-         if (pMixerBoard) 
+         if (pMixerBoard && (t->GetKind() == Track::Wave))
             pMixerBoard->UpdateName((WaveTrack*)t);
       #endif
 

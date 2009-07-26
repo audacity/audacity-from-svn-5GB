@@ -392,7 +392,7 @@ VisibleTrackIterator::VisibleTrackIterator(AudacityProject *project)
 {
    mProject = project;
    mPanelRect.SetTop(mProject->mViewInfo.vpos);
-   mPanelRect.SetSize(mProject->TP_GetTracksUsableArea());
+   mPanelRect.SetSize(mProject->GetTPTracksUsableArea());
 }
 
 Track *VisibleTrackIterator::First()

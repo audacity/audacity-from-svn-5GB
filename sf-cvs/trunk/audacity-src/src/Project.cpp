@@ -996,6 +996,7 @@ void AudacityProject::RedrawProject(const bool bForceWaveTracks /*= false*/)
       }
    }
    mTrackPanel->Refresh(false);
+   //v \todo MixerBoard calls this, but are there cases where this needs to refresh MixerBoard?
 }
 
 void AudacityProject::RefreshCursor()
@@ -1503,7 +1504,6 @@ void AudacityProject::OnODTaskUpdate(wxCommandEvent & event)
 //redraws the task and does other book keeping after the task is complete.
 void AudacityProject::OnODTaskComplete(wxCommandEvent & event)
 {
-
   if(mTrackPanel)
       mTrackPanel->Refresh(false);
 }
@@ -3492,13 +3492,16 @@ void AudacityProject::Clear()
 void AudacityProject::SelectNone()
 {
    TrackListIterator iter(mTracks);
-
    Track *t = iter.First();
    while (t) {
       t->SetSelected(false);
       t = iter.Next();
    }
    mTrackPanel->Refresh(false);
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      if (mMixerBoard)
+         mMixerBoard->Refresh(false);
+   #endif
 }
 
 // Utility function called by other zoom methods
@@ -3894,13 +3897,23 @@ void AudacityProject::TP_DisplaySelection()
       mRuler->SetPlayRegion(mViewInfo.sel0, mViewInfo.sel1);
 }
 
-// TrackPanel callback method
-wxSize AudacityProject::TP_GetTracksUsableArea()
+
+// TrackPanel access
+
+wxSize AudacityProject::GetTPTracksUsableArea()
 {
    wxSize s;
    mTrackPanel->GetTracksUsableArea(&s.x, &s.y);
    return s;
 }
+
+void AudacityProject::RefreshTPTrack(Track* pTrk, bool refreshbacking /*= true*/)
+{
+   mTrackPanel->RefreshTrack(pTrk, refreshbacking);
+}
+
+
+// TrackPanel callback methods
 
 int AudacityProject::TP_GetCurrentTool()
 {

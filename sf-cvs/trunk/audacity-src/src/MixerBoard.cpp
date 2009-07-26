@@ -264,7 +264,7 @@ void MixerTrackCluster::UpdatePan()
 
 void MixerTrackCluster::UpdateGain()
 {
-   mSlider_Gain->Set(mLeftTrack->GetGain()); //v mSlider_Gain->SetValue(this->GetGainToSliderValue());
+   mSlider_Gain->Set(mLeftTrack->GetGain()); 
 }
 
 void MixerTrackCluster::UpdateMeter(double t0, double t1)
@@ -342,23 +342,6 @@ void MixerTrackCluster::UpdateMeter(double t0, double t1)
 
 // private
 
-int MixerTrackCluster::GetGainToSliderValue()
-{
-   int nSliderValue = 
-      // Analog to LWSlider::Set() calc for DB_SLIDER. 
-      (int)(20.0f * log10(mLeftTrack->GetGain()));
-   if (nSliderValue < kGainSliderMin)
-      nSliderValue = kGainSliderMin;
-   if (nSliderValue > kGainSliderMax)
-      nSliderValue = kGainSliderMax;
-
-   #ifdef __WXMSW__
-      nSliderValue = -nSliderValue; // wxSlider on Windows has max at bottom!
-   #endif
-
-   return nSliderValue;
-}
-
 wxColour MixerTrackCluster::GetTrackColor()
 {
    //#if (AUDACITY_BRANDING == BRAND_UMIXIT)
@@ -385,7 +368,10 @@ void MixerTrackCluster::OnMouseEvent(wxMouseEvent& event)
          mLeftTrack->SetSelected(bSelect);
          if (mRightTrack)
             mRightTrack->SetSelected(bSelect);
-         this->Refresh(false); // Refresh only this MixerTrackCluster.
+
+         // Refresh only this MixerTrackCluster and WaveTrack in TrackPanel.
+         this->Refresh(true); 
+         mProject->RefreshTPTrack(mLeftTrack);
       }
       else
       {
@@ -406,7 +392,7 @@ void MixerTrackCluster::OnMouseEvent(wxMouseEvent& event)
          //    This could just be a call to wxWindow::Refresh, but this is 
          //    more efficient and when ProjectLogo is shown as background, 
          //    it's necessary to prevent blinking.
-         mMixerBoard->RefreshTrackClusters();
+         mMixerBoard->RefreshTrackClusters(false);
       }
    }
 }
@@ -441,7 +427,7 @@ void MixerTrackCluster::OnButton_Mute(wxCommandEvent& event)
    // Shift-click mutes this track and unmutes other tracks. Tell mMixerBoard to handle it.
    if (mToggleButton_Mute->WasShiftDown())
    {
-      mMixerBoard->UniquelyMuteOrSolo(mLeftTrack, false);
+      mMixerBoard->UniquelyMuteOrSolo(mLeftTrack, false); //vvvvv
       return;
    }
 
@@ -462,7 +448,7 @@ void MixerTrackCluster::OnButton_Solo(wxCommandEvent& event)
    // Shift-click solos this track and unsolos other tracks. Tell mMixerBoard to handle it.
    if (mToggleButton_Solo->WasShiftDown())
    {
-      mMixerBoard->UniquelyMuteOrSolo(mLeftTrack, true);
+      mMixerBoard->UniquelyMuteOrSolo(mLeftTrack, true); //vvvvv
       return;
    }
 
@@ -483,7 +469,7 @@ void MixerTrackCluster::OnSlider_Pan(wxCommandEvent& event)
 {
    float fValue = mSlider_Pan->Get();
    mLeftTrack->SetPan(fValue);
-   if (mRightTrack != NULL)
+   if (mRightTrack)
       mRightTrack->SetPan(fValue);
    mProject->TP_PushState(_("Moved pan slider"), _("Pan"), true /* consolidate */);
 
@@ -497,7 +483,7 @@ void MixerTrackCluster::OnSlider_Gain(wxCommandEvent& event)
 {
    float fValue = mSlider_Gain->Get();
    mLeftTrack->SetGain(fValue);
-   if (mRightTrack != NULL)
+   if (mRightTrack)
       mRightTrack->SetGain(fValue);
    mProject->TP_PushState(_("Moved gain slider"), _("Gain"), true /* consolidate */);
 
@@ -586,7 +572,6 @@ void MixerBoardScrolledWindow::OnMouseEvent(wxMouseEvent& event)
       // here, MixerBoard::OnMouseEvent never gets called.
       // So, added mProject to MixerBoardScrolledWindow and just directly do what's needed here.
       mProject->SelectNone();
-      mMixerBoard->RefreshTrackClusters();
    }
    else
       event.Skip();
@@ -870,10 +855,18 @@ void MixerBoard::IncrementSoloCount(int nIncrement /*= 1*/)
    mSoloCount += nIncrement; 
 }
 
-void MixerBoard::RefreshTrackClusters()
+void MixerBoard::RefreshTrackCluster(const WaveTrack* pLeftTrack, bool bEraseBackground /*= true*/)
+{
+   MixerTrackCluster* pMixerTrackCluster;
+   this->FindMixerTrackCluster(pLeftTrack, &pMixerTrackCluster);
+   if (pMixerTrackCluster) 
+      pMixerTrackCluster->Refresh(bEraseBackground);
+}
+
+void MixerBoard::RefreshTrackClusters(bool bEraseBackground /*= true*/)
 {
    for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
-      mMixerTrackClusters[i]->Refresh();
+      mMixerTrackClusters[i]->Refresh(bEraseBackground);
 }
 
 void MixerBoard::ResetMeters()
@@ -887,7 +880,7 @@ void MixerBoard::ResetMeters()
       mMixerTrackClusters[i]->ResetMeter();
 }
 
-void MixerBoard::UniquelyMuteOrSolo(const WaveTrack* pTargetLeftTrack, bool bSolo)
+void MixerBoard::UniquelyMuteOrSolo(const WaveTrack* pTargetLeftTrack, bool bSolo) //vvvvv
 {
    wxASSERT(mTracks && !mTracks->IsEmpty());
    TrackListIterator iterTracks(mTracks);
@@ -911,14 +904,14 @@ void MixerBoard::UniquelyMuteOrSolo(const WaveTrack* pTargetLeftTrack, bool bSol
    }
    else 
       this->UpdateMute(); // Update all the MixerTrackCluster mute buttons.
-   mProject->RedrawProject(); // Update all the TrackLabel mute buttons.
+   mProject->RedrawProject(); // Update all the TrackLabel mute/solo buttons.
 }
 
 void MixerBoard::UpdateName(const WaveTrack* pLeftTrack)
 {
    MixerTrackCluster* pMixerTrackCluster;
    this->FindMixerTrackCluster(pLeftTrack, &pMixerTrackCluster);
-   if (pMixerTrackCluster != NULL) // Found it.
+   if (pMixerTrackCluster) 
       pMixerTrackCluster->UpdateName();
 }
 
@@ -933,7 +926,7 @@ void MixerBoard::UpdateMute(const WaveTrack* pLeftTrack /*= NULL*/) // NULL mean
    {
       MixerTrackCluster* pMixerTrackCluster;
       this->FindMixerTrackCluster(pLeftTrack, &pMixerTrackCluster);
-      if (pMixerTrackCluster != NULL) // Found it.
+      if (pMixerTrackCluster) 
          pMixerTrackCluster->UpdateMute();
    }
 }
@@ -949,7 +942,7 @@ void MixerBoard::UpdateSolo(const WaveTrack* pLeftTrack /*= NULL*/) // NULL mean
    {
       MixerTrackCluster* pMixerTrackCluster;
       this->FindMixerTrackCluster(pLeftTrack, &pMixerTrackCluster);
-      if (pMixerTrackCluster != NULL) // Found it.
+      if (pMixerTrackCluster) 
          pMixerTrackCluster->UpdateSolo();
    }
 }
@@ -958,7 +951,7 @@ void MixerBoard::UpdatePan(const WaveTrack* pLeftTrack)
 {
    MixerTrackCluster* pMixerTrackCluster;
    this->FindMixerTrackCluster(pLeftTrack, &pMixerTrackCluster);
-   if (pMixerTrackCluster != NULL) // Found it.
+   if (pMixerTrackCluster) 
       pMixerTrackCluster->UpdatePan();
 }
 
@@ -966,7 +959,7 @@ void MixerBoard::UpdateGain(const WaveTrack* pLeftTrack)
 {
    MixerTrackCluster* pMixerTrackCluster;
    this->FindMixerTrackCluster(pLeftTrack, &pMixerTrackCluster);
-   if (pMixerTrackCluster != NULL) // Found it.
+   if (pMixerTrackCluster) 
       pMixerTrackCluster->UpdateGain();
 }
 
@@ -1262,7 +1255,7 @@ void MixerBoard::OnSize(wxSizeEvent &evt)
    this->UpdateWidth(); // primarily to update mScrolledWindow's virtual width
    for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
       mMixerTrackClusters[i]->UpdateHeight();
-   this->RefreshTrackClusters();
+   this->RefreshTrackClusters(false);
 }
 
 
