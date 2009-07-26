@@ -286,8 +286,10 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
 
    mTimer.SetOwner(this, OnMeterUpdateID);
    Reset(44100.0, true);
-   for(i=0; i<kMaxMeterBars; i++)
+   for(i=0; i<kMaxMeterBars; i++) {
       mBar[i].clipping = false;
+      mBar[i].isclipping = false;
+   }
 }
 
 void Meter::CreateIcon(int aquaOffset)
@@ -628,7 +630,8 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
 
       mT += deltaT;
       for(j=0; j<mNumBars; j++) {
-         mBar[j].clipping = false;
+         mBar[j].isclipping = false;
+
          if (mDecay) {
             if (mDB) {
                float decayAmount = mDecayRate * deltaT / mDBRange;
@@ -660,8 +663,10 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
          
          if (msg.clipping[j] ||
              mBar[j].tailPeakCount+msg.headPeakCount[j] >=
-             mNumPeakSamplesToClip)
+             mNumPeakSamplesToClip){
             mBar[j].clipping = true;
+            mBar[j].isclipping = true;
+         }
 
          mBar[j].tailPeakCount = msg.tailPeakCount[j];
       }
@@ -703,13 +708,14 @@ void Meter::ResetBar(MeterBar *b, bool resetClipping)
       b->clipping = false;
       b->peakPeakHold =0.0;
    }
+   b->isclipping = false;
    b->tailPeakCount = 0;
 }
 
 bool Meter::IsClipping()
 {
    for (int c = 0; c < kMaxMeterBars; c++)
-      if (mBar[c].clipping)
+      if (mBar[c].isclipping)
          return true;
    return false;
 }

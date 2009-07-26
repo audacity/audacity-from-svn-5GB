@@ -37,6 +37,7 @@ struct MeterBar {
    double peakHoldTime;
    wxRect rClip;
    bool   clipping;
+   bool   isclipping;
    int    tailPeakCount;
    float  peakPeakHold;
 };
