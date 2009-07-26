@@ -61,6 +61,7 @@ int DoSrv(char *pIn)
    wxString Str1(pIn, wxConvISO8859_1);
    Str1.Replace( wxT("\r"), wxT(""));
    Str1.Replace( wxT("\n"), wxT(""));
+   Str2 = wxEmptyString;
    (*pScriptServerFn)( &Str1 , &Str2);
 
    Str2 += wxT('\n');
@@ -72,13 +73,10 @@ int DoSrv(char *pIn)
    {
       if( Str2[i] == wxT('\n') )
       {
-         aStr.Add( Str2.Mid( iStart, i-iStart) + wxT('\n') );
+         aStr.Add( Str2.Mid( iStart, i-iStart) + wxT("\n") );
          iStart = i+1;
       }
    }
-
-   // The end of the responses is signalled by an empty line.
-   aStr.Add(wxT('\n'));
 
    currentLine     = 0;
    currentPosition = 0;
@@ -115,7 +113,10 @@ int DoSrvMore(char *pOut, size_t nMax)
       {
          // Write as much of the rest of the line as will fit in the buffer
          size_t charsToWrite = smin(charsLeftInLine, nMax - 1);
-         memcpy(pOut, lineString.Right(charsToWrite).mb_str(), charsToWrite);
+         memcpy(pOut, 
+                lineString.Mid(currentPosition, 
+                               currentPosition + charsToWrite).mb_str(), 
+                charsToWrite);
          pOut[charsToWrite] = '\0';
          currentPosition    += charsToWrite;
          // Need to cast to prevent compiler warnings

@@ -23,6 +23,7 @@ objects needn't be concerned with what happens to the information.
 #include <wx/msgdlg.h>
 #include <wx/statusbr.h>
 #include "../widgets/ProgressDialog.h"
+#include "../commands/ResponseQueue.h"
 
 /// Interface for objects that can receive command progress information
 class CommandProgressTarget
@@ -97,6 +98,50 @@ public:
    }
 };
 
+/// Adds messages to a response queue (to be sent back to a script)
+class ResponseQueueTarget : public CommandMessageTarget
+{
+private:
+   ResponseQueue &mResponseQueue;
+public:
+   ResponseQueueTarget(ResponseQueue &responseQueue)
+      : mResponseQueue(responseQueue)
+   { }
+   virtual ~ResponseQueueTarget()
+   {
+      mResponseQueue.AddResponse(wxString(wxT("\n")));
+   }
+   virtual void Update(wxString message)
+   {
+      mResponseQueue.AddResponse(message);
+   }
+};
+
+/// Sends messages to two message targets at once
+class CombinedMessageTarget : public CommandMessageTarget
+{
+private:
+   CommandMessageTarget *m1, *m2;
+public:
+   CombinedMessageTarget(CommandMessageTarget *t1, CommandMessageTarget *t2)
+      : m1(t1), m2(t2)
+   {
+      wxASSERT(t1 != NULL);
+      wxASSERT(t2 != NULL);
+   }
+   ~CombinedMessageTarget()
+   {
+      delete m1;
+      delete m2;
+   }
+   virtual void Update(wxString message)
+   {
+      m1->Update(message);
+      m2->Update(message);
+   }
+};
+
+
 // By default, we ignore progress updates but display all other messages directly
 class TargetFactory
 {
@@ -125,8 +170,8 @@ public:
 
 };
 
-/// Used to aggregate the various output targets a command may have
-// Assumes responsibility for pointers passed into it
+/// Used to aggregate the various output targets a command may have.
+/// Assumes responsibility for pointers passed into it.
 class CommandOutputTarget
 {
 private:
@@ -142,7 +187,8 @@ public:
    ~CommandOutputTarget()
    {
       delete mProgressTarget;
-      delete mStatusTarget;
+      if (mErrorTarget != mStatusTarget)
+         delete mStatusTarget;
       delete mErrorTarget;
    }
    void Progress(double completed)

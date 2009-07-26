@@ -11,12 +11,8 @@
 \file CommandHandler.cpp
 \brief Contains definitions for the CommandHandler class.
 
-*//****************************************************************//**
-
 \class CommandHandler
 \brief Contains methods for applying commands that are passed to it.
-
-May possibly inherit from wxEvtHandler in the future...
 
 *//*******************************************************************/
 
@@ -29,8 +25,7 @@ May possibly inherit from wxEvtHandler in the future...
 
 CommandHandler::CommandHandler(AudacityApp &app)
  : mCurrentContext(new CommandExecutionContext(&app, GetActiveProject()))
-{
-}
+{ }
 
 CommandHandler::~CommandHandler()
 {
@@ -50,16 +45,7 @@ void CommandHandler::OnReceiveCommand(AppCommandEvent &event)
    // Then apply it to current application & project.  Note that the
    // command may change the context - for example, switching to a
    // different project.
-   bool rc = cmd->Apply(*mCurrentContext);
-
-   // Rudimentary error handling
-   wxString msgOut;
-   if (rc)
-      msgOut = wxT("OK");
-   else
-      msgOut = wxT("Command FAILED!");
-
-   ScriptCommandRelay::SendResponse(msgOut);
+   cmd->ApplyWithResponse(*mCurrentContext);
 
    // Done with the command so delete it.
    delete cmd;

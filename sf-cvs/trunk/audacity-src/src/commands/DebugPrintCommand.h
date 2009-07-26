@@ -16,7 +16,7 @@
 \class DebugPrintCommand
 \brief Command to tell Audacity to print out a message.
 
-   Intended for testing and debugging.
+Intended for testing and debugging.
 
 *//*******************************************************************/
 
@@ -26,26 +26,28 @@
 #include <wx/msgout.h>
 #include "Command.h"
 
-
 class DebugPrintCommand : public Command
 {
-private:
-   wxString mMessage;
-
 public:
-   DebugPrintCommand(const wxString &message)
-      : Command(wxT("DebugPrintCommand")),
-      mMessage(message) { }
+   DebugPrintCommand(const wxString &cmdName,
+                     const ParamMap &signature,
+                     CommandOutputTarget *target)
+      : Command(cmdName, signature, target) {}
    ~DebugPrintCommand() {}
 
    virtual bool Apply(CommandExecutionContext context)
    {
-      wxMessageOutputDebug().Printf(wxT("In DebugPrintCommand::Apply"));
-      wxMessageOutputDebug().Printf(mMessage);
+      wxString message = GetString(wxT("DebugString"));
+      wxMessageOutputDebug.Printf(message);
       return true;
    }
 
-   static ParamMap GetSignature()
+   static wxString BuildName()
+   {
+      return wxT("DebugMessage");
+   }
+
+   static ParamMap BuildSignature()
    {
       ParamMap signature;
       Validator stringValidator;

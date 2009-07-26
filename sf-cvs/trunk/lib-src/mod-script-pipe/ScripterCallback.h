@@ -42,8 +42,8 @@
 // exactly for Audacity to agree to load the module.
 #define SCRIPT_PIPE_VERSION   1
 #define SCRIPT_PIPE_RELEASE   3
-#define SCRIPT_PIPE_REVISION  8
-#define SCRIPT_PIPE_SUFFIX
+#define SCRIPT_PIPE_REVISION  9
+#define SCRIPT_PIPE_SUFFIX wxT("-alpha-") __TDATE__
 
 #define SCRIPT_PIPE_MAKESTR( x ) #x
 #define SCRIPT_PIPE_QUOTE( x ) SCRIPT_PIPE_MAKESTR( x )

@@ -20,8 +20,7 @@
 
 ResponseQueue::ResponseQueue()
    : mCondition(mMutex)
-{
-}
+{ }
 
 ResponseQueue::~ResponseQueue()
 { }
@@ -36,7 +35,10 @@ void ResponseQueue::AddResponse(Response response)
 Response ResponseQueue::WaitAndGetResponse()
 {
    wxMutexLocker locker(mMutex);
-   mCondition.Wait();
+   if (mResponses.empty())
+   {
+      mCondition.Wait();
+   }
    wxASSERT(!mResponses.empty());
    Response msg = mResponses.front();
    mResponses.pop();

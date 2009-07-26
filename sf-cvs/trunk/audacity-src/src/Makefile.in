@@ -112,9 +112,13 @@ OBJS = \
 	WaveTrack.o \
 	WrappedType.o \
 	commands/AppCommandEvent.o \
+	commands/BatchEvalCommand.o \
 	commands/CommandBuilder.o \
+	commands/CommandDirectory.o \
 	commands/CommandHandler.o \
 	commands/CommandManager.o \
+	commands/ExecMenuCommand.o \
+	commands/GetAllMenuCommands.o \
 	commands/Keyboard.o \
 	commands/ResponseQueue.o \
 	commands/ScreenshotCommand.o \
