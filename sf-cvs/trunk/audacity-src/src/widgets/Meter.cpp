@@ -878,7 +878,7 @@ void Meter::HandleLayout()
    }
 
    // MixerTrackCluster style has no popup, so disallows SetStyle, so never needs icon.
-   //vvvvv There's an ASSERT failure if this:  if (mStyle != MixerTrackCluster)
+   if (mStyle != MixerTrackCluster) 
       CreateIcon(mIconPos.y % 4);
 
    mLayoutValid = true;

@@ -451,7 +451,7 @@ void LWSlider::Init(wxWindow * parent,
    if (mOrientation == wxHORIZONTAL)
       mThumbBitmap = &theTheme.Bitmap( bmpSliderThumb );
    else
-   //vvvvv \todo Convert this to an image in AllThemeResources, as bmpSliderThumb.
+   //vvv \todo Convert this to an image in AllThemeResources, as bmpSliderThumb.
    {
       wxImage thumbImage(wxBitmap(SliderThumb_Vertical).ConvertToImage());
       mThumbBitmap = new wxBitmap(thumbImage);
