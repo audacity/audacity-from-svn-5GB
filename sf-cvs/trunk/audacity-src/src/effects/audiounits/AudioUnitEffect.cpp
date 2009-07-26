@@ -96,17 +96,16 @@ AudioUnitEffect::AudioUnitEffect(wxString name, Component component):
    mComponent(component)
 {
    SetEffectFlags(PLUGIN_EFFECT | PROCESS_EFFECT);
-   OSErr result;
 
    mUnit = NULL;
-   result = OpenAComponent(mComponent, &mUnit);
-   if (result != 0)
-      return;
+   OpenAComponent(mComponent, &mUnit);
 }
 
 AudioUnitEffect::~AudioUnitEffect()
 {
-   CloseComponent(mUnit);
+   if (mUnit) {
+      CloseComponent(mUnit);
+   }
 }
 
 wxString AudioUnitEffect::GetEffectName()
@@ -142,7 +141,9 @@ wxString AudioUnitEffect::GetEffectAction()
 
 bool AudioUnitEffect::Init()
 {
-   ComponentResult auResult;
+   if (!mUnit) {
+      return false;
+   }
 
    mSupportsMono = SetRateAndChannels(mUnit, 1, mProjectRate);
    mSupportsStereo = SetRateAndChannels(mUnit, 2, mProjectRate);
@@ -156,12 +157,6 @@ bool AudioUnitEffect::Init()
          printf("Audio Unit doesn't support mono or stereo.\n");
          return false;
       }
-   }
-
-   auResult = AudioUnitInitialize(mUnit);
-   if (auResult != 0) {
-      printf("Unable to initialize\n");
-      return false;
    }
 
    return true;
@@ -235,7 +230,6 @@ bool AudioUnitEffect::Process()
    
 void AudioUnitEffect::End()
 {
-   AudioUnitUninitialize(mUnit);
 }
 
 bool AudioUnitEffect::SetRateAndChannels(AudioUnit unit,
@@ -256,7 +250,7 @@ bool AudioUnitEffect::SetRateAndChannels(AudioUnit unit,
    streamFormat.mSampleRate = sampleRate;
    streamFormat.mFormatID = kAudioFormatLinearPCM;
    streamFormat.mFormatFlags = kAudioFormatFlagsNativeFloatPacked |
-      kAudioFormatFlagIsNonInterleaved;
+                               kAudioFormatFlagIsNonInterleaved;
    streamFormat.mBitsPerChannel = 32;
    streamFormat.mChannelsPerFrame = numChannels;
    streamFormat.mFramesPerPacket = 1;
@@ -355,35 +349,23 @@ bool AudioUnitEffect::ProcessStereo(int count,
                                     sampleCount rstart,
                                     sampleCount len)
 {
-   int numChannels = (right != NULL? 2: 1);
+   int numChannels = (right != NULL ? 2 : 1);
    Float64 sampleRate = left->GetRate();
-   AudioUnit trackUnit;
+   AudioUnit trackUnit = mUnit;
    AURenderCallbackStruct callbackStruct;
    AudioTimeStamp timeStamp;
+   AudioBufferList *bufferList = NULL;
    ComponentResult auResult;
    int waveTrackBlockSize;
-   UInt32 size, unitBlockSize;
-   float *leftBuffer, *rightBuffer;
-
-   // Audio Units cannot have their rate and number of channels set
-   // after they've been initialized.  So, we open a new audio unit
-   // for each track (or pair of tracks) and copy the parameters
-   // over.  The only area where this might sometimes present a
-   // problem is when the parameter is tied to the sample rate, and
-   // the sample rate for a track is different than the project sample
-   // rate.  The user can always work around this by making the track
-   // and project sample rates match temporarily, though.
-
-   auResult = OpenAComponent(mComponent, &trackUnit);
-   if (auResult != 0) {
-      printf("Couldn't open audio unit\n");
-      return false;
-   }
+   UInt32 size;
+   UInt32 unitBlockSize;
+   float *leftBuffer;
+   float *rightBuffer;
+   bool success = true;
 
    if (!SetRateAndChannels(trackUnit, numChannels, sampleRate)) {
       printf("Unable to setup audio unit for channels=%d rate=%.1f\n",
              numChannels, sampleRate);
-      CloseComponent(trackUnit);
       return false;
    }
 
@@ -395,6 +377,7 @@ bool AudioUnitEffect::ProcessStereo(int count,
                                    0,
                                    &unitBlockSize,
                                    &size);
+
    if (unitBlockSize == 0 || auResult != 0) {
       printf("Warning: didn't get audio unit's MaximumFramesPerSlice\n");
       printf("Trying to set MaximumFramesPerSlice to 512\n");
@@ -412,13 +395,6 @@ bool AudioUnitEffect::ProcessStereo(int count,
    auResult = AudioUnitInitialize(trackUnit);
    if (auResult != 0) {   
       printf("Couldn't initialize audio unit\n");
-      CloseComponent(trackUnit);
-      return false;
-   }
-
-   if (!CopyParameters(mUnit, trackUnit)) {
-      AudioUnitUninitialize(trackUnit);
-      CloseComponent(trackUnit);
       return false;
    }
 
@@ -426,7 +402,6 @@ bool AudioUnitEffect::ProcessStereo(int count,
    if (auResult != 0) {
       printf("Reset failed.\n");
       AudioUnitUninitialize(trackUnit);
-      CloseComponent(trackUnit);
       return false;
    }
 
@@ -441,7 +416,6 @@ bool AudioUnitEffect::ProcessStereo(int count,
    if (auResult != 0) {
       printf("Setting input render callback failed.\n");
       AudioUnitUninitialize(trackUnit);
-      CloseComponent(trackUnit);
       return false;
    }
 
@@ -452,130 +426,136 @@ bool AudioUnitEffect::ProcessStereo(int count,
 
    waveTrackBlockSize = left->GetMaxBlockSize() * 2;
 
-   leftBuffer = rightBuffer = NULL;
-   mLeftBufferForCallback = mRightBufferForCallback = NULL;
+   leftBuffer = NULL;
+   rightBuffer = NULL;
+   mLeftBufferForCallback = NULL;
+   mRightBufferForCallback = NULL;
 
    if (left) {
       leftBuffer = new float[waveTrackBlockSize];
-      mLeftBufferForCallback = new float[unitBlockSize];
    }
+
    if (right) {
       rightBuffer = new float[waveTrackBlockSize];
-      mRightBufferForCallback = new float[unitBlockSize];
    }
+
+   bufferList = (AudioBufferList *)malloc(sizeof(UInt32) +
+                                          numChannels * sizeof(AudioBuffer));
+   bufferList->mNumberBuffers = numChannels;
 
    sampleCount originalLen = len;
    sampleCount ls = lstart;
    sampleCount rs = rstart;
    while (len) {
       int block = waveTrackBlockSize;
-      if (block > len)
+      if (block > len) {
          block = len;
-
-      if (left)
-         left->Get((samplePtr)leftBuffer, floatSample, ls, block);
-      if (right)
-         right->Get((samplePtr)rightBuffer, floatSample, rs, block);
-
-      if (!DoRender(trackUnit, numChannels, leftBuffer, rightBuffer,
-                    block, unitBlockSize, &timeStamp)) {
-         if (leftBuffer) {
-            delete[] leftBuffer;
-            delete[] mLeftBufferForCallback;
-         }
-         if (rightBuffer) {
-            delete[] rightBuffer;
-            delete[] mRightBufferForCallback;
-         }
-         AudioUnitUninitialize(trackUnit);
-         CloseComponent(trackUnit);
-         return false;
       }
 
-      if (left)
+      if (left) {
+         left->Get((samplePtr)leftBuffer, floatSample, ls, block);
+      }
+
+      if (right) {
+         right->Get((samplePtr)rightBuffer, floatSample, rs, block);
+      }
+
+      success = DoRender(trackUnit, numChannels, leftBuffer, rightBuffer,
+                         block, unitBlockSize, &timeStamp, bufferList);
+      if (!success) {
+         break;
+      }
+
+      if (left) {
          left->Set((samplePtr)leftBuffer, floatSample, ls, block);
-      if (right)
+      }
+
+      if (right) {
          right->Set((samplePtr)rightBuffer, floatSample, rs, block);
+      }
 
       len -= block;
       ls += block;
       rs += block;
 
       if (left && right) {
-         if (TrackGroupProgress(count, (ls-lstart)/(double)originalLen))
-            return false;
+         if (TrackGroupProgress(count, (ls-lstart)/(double)originalLen)) {
+            success = false;
+            break;
+         }
       }
       else {
-         if (TrackProgress(count, (ls-lstart)/(double)originalLen))
-            return false;
+         if (TrackProgress(count, (ls-lstart)/(double)originalLen)) {
+            success = false;
+            break;
+         }
       }
    }
    
+   if (bufferList) {
+      free(bufferList);
+   }
+
    if (leftBuffer) {
       delete[] leftBuffer;
-      delete[] mLeftBufferForCallback;
    }
+
    if (rightBuffer) {
       delete[] rightBuffer;
-      delete[] mRightBufferForCallback;
    }
-   AudioUnitUninitialize(trackUnit);
-   CloseComponent(trackUnit);
 
-   return true;
+   AudioUnitUninitialize(trackUnit);
+
+   return success;
 }
 
 bool AudioUnitEffect::DoRender(AudioUnit unit,
                                int numChannels,
-                               float *leftBuffer, float *rightBuffer,
+                               float *leftBuffer,
+                               float *rightBuffer,
                                int len,
                                int unitBlockSize,
-                               AudioTimeStamp *timeStamp)
+                               AudioTimeStamp *timeStamp,
+                               AudioBufferList *bufferList)
 {
-   AudioBufferList *bufferList;
    AudioUnitRenderActionFlags flags;
    ComponentResult auResult;
-   int i, j, block;
+   int block;
 
-   bufferList = (AudioBufferList *)malloc(sizeof(UInt32) +
-                                          numChannels * sizeof(AudioBuffer));
-   bufferList->mNumberBuffers = numChannels;
-   
-   i = 0;
-   while(i < len) {
+   for (int i = 0; i < len; i += block) {
       block = unitBlockSize;
-      if (i + block > len)
+      if (i + block > len) {
          block = len - i;
+      }
 
-      if (leftBuffer)
-         memcpy(mLeftBufferForCallback, &leftBuffer[i], block*sizeof(float));
-      if (rightBuffer)
-         memcpy(mRightBufferForCallback, &rightBuffer[i], block*sizeof(float));
-
-      flags = 0;
-      for(j=0; j<numChannels; j++) {
+      for (int j = 0; j<numChannels; j++) {
          bufferList->mBuffers[j].mNumberChannels = 1;
          bufferList->mBuffers[j].mData = NULL;
          bufferList->mBuffers[j].mDataByteSize = sizeof(float) * block;
       }
+
+      if (leftBuffer) {
+         mLeftBufferForCallback = &leftBuffer[i];
+         bufferList->mBuffers[0].mData = mLeftBufferForCallback;
+      }
+
+      if (rightBuffer) {
+         mRightBufferForCallback = &rightBuffer[i];
+         bufferList->mBuffers[1].mData = mRightBufferForCallback;
+      }
+
+      flags = 0;
+
       auResult = AudioUnitRender(unit, &flags, timeStamp,
                                  0, block, bufferList);
       if (auResult != 0) {
          printf("Render failed: %d %4.4s\n", (int)auResult, (char *)&auResult);
-         free(bufferList);
          return false;
       }
 
-      if (leftBuffer)
-         memcpy(&leftBuffer[i], bufferList->mBuffers[0].mData, block*sizeof(float));
-      if (rightBuffer)
-         memcpy(&rightBuffer[i], bufferList->mBuffers[1].mData, block*sizeof(float));
-         
       timeStamp->mSampleTime += block;
-      i += block;
    }
 
-   free(bufferList);
    return true;
 }
 
@@ -590,10 +570,13 @@ OSStatus AudioUnitEffect::SimpleAudioRenderCallback
 {
    AudioUnitEffect *This = (AudioUnitEffect *)inRefCon;
 
-   if (This->mLeftBufferForCallback)
+   if (This->mLeftBufferForCallback) {
       ioData->mBuffers[0].mData = This->mLeftBufferForCallback;
-   if (This->mRightBufferForCallback)
+   }
+
+   if (This->mRightBufferForCallback) {
       ioData->mBuffers[1].mData = This->mRightBufferForCallback;
+   }
 
    return 0;
 }
