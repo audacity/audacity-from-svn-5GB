@@ -4,7 +4,7 @@
 // Author:      Stefan Csomor
 // Modified by: Leland Lucius
 // Created:     1998-01-01
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.5 2009-01-15 00:13:04 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.6 2009-07-26 08:58:50 llucius Exp $
 // Copyright:   (c) Stefan Csomor
 // Licence:     wxWindows licence
 //
@@ -418,10 +418,10 @@ int FileDialog::ShowModal()
    // this was always unset in the old code
    dialogCreateOptions.optionFlags &= ~kNavSelectDefaultLocation;
    
-   wxMacCFStringHolder message(m_message, m_font.GetEncoding());
+   wxMacCFStringHolder message(m_message, GetFont().GetEncoding());
    dialogCreateOptions.windowTitle = message;
    
-   wxMacCFStringHolder defaultFileName(m_fileName, m_font.GetEncoding());
+   wxMacCFStringHolder defaultFileName(m_fileName, GetFont().GetEncoding());
    dialogCreateOptions.saveFileName = defaultFileName;
    
    NavDialogRef dialog;
@@ -453,7 +453,7 @@ int FileDialog::ShowModal()
       {
          ::AppendMenuItemTextWithCFString(myData.menu,
                                           wxMacCFStringHolder(myData.name[i],
-                                                              m_font.GetEncoding()),
+                                                              GetFont().GetEncoding()),
                                           4,
                                           i,
                                           NULL);
