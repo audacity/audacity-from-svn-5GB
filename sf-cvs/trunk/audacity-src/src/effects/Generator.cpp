@@ -13,8 +13,10 @@
   Vaughan Johnson
 
 **********************************************************************/
-#include "Generator.h"
 
+#include "../Prefs.h"
+
+#include "Generator.h"
 
 bool Generator::Process()
 {
