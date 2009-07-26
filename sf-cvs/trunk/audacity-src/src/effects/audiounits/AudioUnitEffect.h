@@ -53,7 +53,8 @@ class AudioUnitEffect:public Effect {
    bool DoRender(AudioUnit unit, int numChannels,
                  float *leftBuffer, float *rightBuffer,
                  int len, int unitBlockSize,
-                 AudioTimeStamp *timeStamp);
+                 AudioTimeStamp *timeStamp,
+                 AudioBufferList *bufferList);
 
    bool CopyParameters(AudioUnit srcUnit, AudioUnit dstUnit);
 
