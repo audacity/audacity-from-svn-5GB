@@ -43,6 +43,17 @@ bool Generator::Process()
          first = true;
       else if (t->GetKind() == Track::Wave && t->GetSelected()) {
          WaveTrack* track = (WaveTrack*)t;
+         
+         bool editClipCanMove;
+         gPrefs->Read(wxT("/GUI/EditClipCanMove"), &editClipCanMove, true);
+
+         if (!editClipCanMove && mT0 < track->GetStartTime() && mT0 + mDuration > track->GetStartTime()) {
+            wxMessageBox(
+               _("There is not enough room available to generate the audio"),
+               _("Error"), wxICON_STOP);   
+            Failure();
+            return false;
+         }
 
          if (mDuration > 0.0)
          {
@@ -54,18 +65,20 @@ bool Generator::Process()
             // Fill it with data
             if (!GenerateTrack(tmp, *track, ntrack))
                bGoodResult = false;
-
-            // Transfer the data from the temporary track to the actual one
-            tmp->Flush();
-            if (first) {
-               track->ClearAndPaste(mT0, mT1, tmp, true, true, mOutputTracks);
-               first = false;
-            }
             else {
-               track->HandleClear(mT0, mT1, false, false);
-               track->HandlePaste(mT0, tmp);
+               // Transfer the data from the temporary track to the actual one
+               tmp->Flush();
+               if (first) {
+                  bGoodResult = track->ClearAndPaste(mT0, mT1, tmp, true, true, mOutputTracks);
+                  first = false;
+               }
+               else {
+                  bGoodResult = track->HandleClear(mT0, mT1, false, false);
+                  if (bGoodResult)
+                     bGoodResult = track->HandlePaste(mT0, tmp);
+               }
+               delete tmp;
             }
-            delete tmp;
 
             if (!bGoodResult) {
                Failure();

@@ -3304,12 +3304,10 @@ void AudacityProject::OnPaste()
             ((WaveTrack *) c)->Lock();
 
          if (c->GetKind() == Track::Wave && n && n->GetKind() == Track::Wave)
-            ((WaveTrack*)n)->ClearAndPaste(t0, t1, (WaveTrack*)c);
+            pastedSomething = ((WaveTrack*)n)->ClearAndPaste(t0, t1, (WaveTrack*)c);
          else
-            n->Paste(t0, c);
-         
-         pastedSomething = true;
-         
+            pastedSomething = n->Paste(t0, c);
+                 
          // When copying from mono to stereo track, paste the wave form
          // to both channels
          if (n->GetLinked() && !c->GetLinked())
