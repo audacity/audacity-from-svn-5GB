@@ -3899,26 +3899,17 @@ void AudacityProject::OnSelectAll()
    ModifyState();
    
    mTrackPanel->Refresh(false);
-}
-
-void AudacityProject::OnSelectNone()
-{
-   TrackListIterator iter(mTracks);
-
-   Track *t = iter.First();
-   while (t) {
-      t->SetSelected(false);
-      t = iter.Next();
-   }
-   mViewInfo.sel1 = mViewInfo.sel0;
-
-   ModifyState();
-   
-   mTrackPanel->Refresh(false);
    #ifdef EXPERIMENTAL_MIXER_BOARD
       if (mMixerBoard)
          mMixerBoard->Refresh(false);
    #endif
+}
+
+void AudacityProject::OnSelectNone()
+{
+   this->SelectNone();
+   mViewInfo.sel1 = mViewInfo.sel0;
+   ModifyState();
 }
 
 void AudacityProject::OnSelectCursorEnd()

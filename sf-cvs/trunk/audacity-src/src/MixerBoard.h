@@ -55,7 +55,6 @@ public:
    void UpdateMeter(double t0, double t1);
 
 private:
-   int GetGainToSliderValue();
    wxColour GetTrackColor();
 
    // event handlers
@@ -156,10 +155,11 @@ public:
    bool HasSolo();
    void IncrementSoloCount(int nIncrement = 1);
 
-   void RefreshTrackClusters();
+   void RefreshTrackCluster(const WaveTrack* pLeftTrack, bool bEraseBackground = true);
+   void RefreshTrackClusters(bool bEraseBackground = true);
    void ResetMeters();
 
-   void UniquelyMuteOrSolo(const WaveTrack* pTargetLeftTrack, bool bSolo);
+   void UniquelyMuteOrSolo(const WaveTrack* pTargetLeftTrack, bool bSolo); //vvvvv
 
    void UpdateName(const WaveTrack* pLeftTrack);
    void UpdateMute(const WaveTrack* pLeftTrack = NULL); // NULL means update for all tracks.

@@ -271,12 +271,18 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void FinishAutoScroll();
    void FixScrollbars();
 
-   // TrackPanel callback methods
+   // TrackPanel access
+   virtual wxSize GetTPTracksUsableArea();
+   virtual void RefreshTPTrack(Track* pTrk, bool refreshbacking = true);
 
-   virtual wxSize TP_GetTracksUsableArea();
-   virtual void TP_DisplayStatusMessage(wxString msg);
+   // TrackPanel callback methods, overrides of TrackPanelListener
    virtual void TP_DisplaySelection();
+   virtual void TP_DisplayStatusMessage(wxString msg);
+
    virtual int TP_GetCurrentTool();
+   virtual ToolsToolBar * TP_GetToolsToolBar();
+   virtual ControlToolBar * TP_GetControlToolBar();
+
    virtual void TP_OnPlayKey();
    virtual void TP_PushState(wxString longDesc, wxString shortDesc,
                              bool consolidate);
@@ -287,8 +293,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    virtual void TP_ScrollWindow(double scrollto);
    virtual void TP_ScrollUpDown(int delta);
    virtual void TP_HandleResize();
-   virtual ControlToolBar * TP_GetControlToolBar();
-   virtual ToolsToolBar * TP_GetToolsToolBar();
 
    // ToolBar
 

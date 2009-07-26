@@ -63,9 +63,11 @@ class AUDACITY_DLL_API TrackPanelListener {
 
    virtual void TP_DisplaySelection() = 0;
    virtual void TP_DisplayStatusMessage(wxString msg) = 0;
+
    virtual int TP_GetCurrentTool() = 0;
    virtual ToolsToolBar * TP_GetToolsToolBar() = 0;
    virtual ControlToolBar * TP_GetControlToolBar() = 0;
+
    virtual void TP_OnPlayKey() = 0;
    virtual void TP_PushState(wxString shortDesc, wxString longDesc,
                              bool consolidate = false) = 0;
