@@ -201,14 +201,12 @@ void ScreenshotCommand::CaptureDock(wxWindow *win, wxString fileName)
    Capture(fileName, win, x, y, width, height);
 }
 
-ScreenshotCommand::ScreenshotCommand(CommandOutputTarget *output,
-                                     wxWindow *ignore)
-   : Command(wxT("screenshot"), output),
-     mIgnore(ignore),
-     mBackground(false)
-{ }
+wxString ScreenshotCommand::BuildName()
+{
+   return wxT("Screenshot");
+}
 
-ParamMap ScreenshotCommand::GetSignature()
+ParamMap ScreenshotCommand::BuildSignature()
 {
    OptionValidator captureModeValidator;
    captureModeValidator.AddOption(wxT("window"));

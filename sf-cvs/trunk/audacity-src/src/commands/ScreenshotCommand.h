@@ -41,9 +41,18 @@ private:
 
 public:
    wxTopLevelWindow *GetFrontWindow(AudacityProject *project);
-   ScreenshotCommand(CommandOutputTarget *output, wxWindow *ignore = NULL);
+   ScreenshotCommand(wxString cmdName, 
+                     const ParamMap &signature,
+                     CommandOutputTarget *output)
+      : Command(cmdName, signature, output), 
+         mIgnore(NULL), mBackground(false)
+   { }
+   ScreenshotCommand(CommandOutputTarget *output, wxWindow *ignore = NULL)
+      : Command(BuildName(), BuildSignature(), output), mIgnore(ignore)
+   { }
    bool Apply(CommandExecutionContext context);
-   static ParamMap GetSignature();
+   static ParamMap BuildSignature();
+   static wxString BuildName();
 };
 
 #endif /* End of include guard: __SCREENSHOTCOMMAND__ */

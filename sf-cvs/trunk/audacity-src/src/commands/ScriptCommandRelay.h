@@ -22,8 +22,7 @@
 class CommandHandler;
 class ResponseQueue;
 class Response;
-
-
+class ResponseQueueTarget;
 
 typedef int (*tpExecScriptServerFunc)( wxString * pIn, wxString * pOut);
 typedef int (*tpRegScriptServerFunc)(tpExecScriptServerFunc pFn);
@@ -49,6 +48,7 @@ class ScriptCommandRelay
 
       static void SendResponse(const wxString &response);
       static Response ReceiveResponse();
+      static ResponseQueueTarget *GetResponseTarget();
 };
 
 #endif /* End of include guard: __SCRIPTCOMMANDRELAY__ */

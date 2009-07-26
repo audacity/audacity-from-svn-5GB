@@ -13,7 +13,6 @@
 
 *//******************************************************************/
 
-
 #ifndef __COMMANDHANDLER__
 #define __COMMANDHANDLER__
 
@@ -36,7 +35,6 @@ class CommandHandler
 
       // Whenever a command is recieved, process it.
       void OnReceiveCommand(AppCommandEvent &event);
-
 };
 
 #endif /* End of include guard: __COMMANDHANDLER__ */

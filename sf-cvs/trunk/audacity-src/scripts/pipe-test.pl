@@ -3,6 +3,8 @@
 # Test script for communicating with audacity via mod-script-pipe
 # Audacity should be running first, with the scripting plugin loaded.
 
+use Time::HiRes qw( gettimeofday tv_interval );
+
 sub startUp{
    # TODO: Maybe get the pipe names from audacity?
    if ($^O eq 'MSWin32') {
@@ -30,13 +32,23 @@ sub startUp{
 }
 
 sub finish{
+   print "Done: press return to end.";
+   <>;
    close TO_SRV;
    close FROM_SRV;
-   print "Done: press return to end.";
-   <>
+}
+
+sub startTiming{
+   $t0 = [gettimeofday];
+}
+
+sub stopTiming{
+   my $elapsed = tv_interval ( $t0, [gettimeofday] );
+   print "Total time for command: $elapsed seconds.\n";
 }
 
 sub doCommand{
+   startTiming();
    my $command = shift;
    if ($^O eq 'MSWin32') {
       print TO_SRV "$command\r\n\0";
@@ -52,35 +64,56 @@ sub doCommand{
       print "Recd:'$ttt'\n";
    }
 
+   stopTiming();
    return $ttt;
+}
+
+# Send a screenshot command
+sub screenshot{
+   my $filePath    = shift;
+   my $captureMode = shift;
+   my $background  = shift;
+   doCommand("Screenshot: FilePath=$filePath CaptureMode=$captureMode Background=$background");
+}
+
+# Send a menu command
+sub menuCommand{
+   my $commandName = shift;
+   doCommand("MenuCommand: CommandName=$commandName");
+}
+
+# Send a command which requests a list of all available menu commands
+sub getMenuCommands{
+   doCommand("GetAllMenuCommands:");
+}
+
+# Send a string that should be a syntax error
+sub syntaxError{
+   doCommand("CommandWithNoColon foo bar");
+}
+
+# Send a command that doesn't exist
+sub noSuchCommand{
+   doCommand("NoSuchCommand: myParam=3");
 }
 
 # Send some test commands
 # (Delay between sends so it's clearer what's going on)
 $delay = 1.0;
 
-# Fill in the path where you want the screenshots to appear
-$filePath = "/home/dan/Temp";
-
 startUp();
-sleep($delay);
-doCommand( "screenshot: FilePath=$filePath CaptureMode=window Background=None" );
-sleep($delay);
-doCommand( "screenshot: FilePath=$filePath CaptureMode=fullwindow Background=Blue" );
-sleep($delay);
-doCommand( "screenshot: FilePath=$filePath CaptureMode=windowplus Background=White" );
-sleep($delay);
-doCommand( "screenshot: FilePath=$filePath CaptureMode=fullscreen Background=None" );
-sleep($delay);
-doCommand( "screenshot: FilePath=$filePath CaptureMode=mixer Background=None" );
-sleep($delay);
-doCommand( "screenshot: FilePath=$filePath CaptureMode=device Background=None" );
-sleep($delay);
-doCommand( "screenshot: FilePath=$filePath CaptureMode=ruler Background=None" );
-sleep($delay);
-doCommand( "screenshot: FilePath=$filePath CaptureMode=firsttrack Background=None" );
+
+$screenshotDir = "/home/dan/Temp";
+
+getMenuCommands();
+menuCommand("Play");
+
+#syntaxError();
+#noSuchCommand();
+
+#screenshot($screenshotDir, "window", "None");
 #sleep($delay);
-#doCommand( "Amplify: Ratio=0.1" );
+#doCommand( "BatchCommand: CommandName=Amplify ParamString=Ratio=0.1" );
 #sleep($delay);
 #doCommand( "Echo: Delay=1.0 Decay=0.5" );
 #sleep($delay);
@@ -91,4 +124,11 @@ doCommand( "screenshot: FilePath=$filePath CaptureMode=firsttrack Background=Non
 #doCommand( "ExportMp3" );
 #sleep($delay);
 #doCommand( "<Not a valid command>");
+
+#print "> ";
+#while($input = <>) {
+#   chomp($input);
+#   print "> ";
+#}
+
 finish();
