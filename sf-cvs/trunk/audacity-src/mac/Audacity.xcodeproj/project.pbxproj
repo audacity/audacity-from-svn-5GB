@@ -1192,6 +1192,10 @@
 		28A96DC30E28642300F3CE01 /* strparse.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F3A4010E28289500729866 /* strparse.h */; };
 		28B6ED8F0DE3D1B50046F0F3 /* LoadModules.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28B6ED8D0DE3D1B50046F0F3 /* LoadModules.cpp */; };
 		28B97B890FBF771A0076CF28 /* VSTEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28B97B850FBF771A0076CF28 /* VSTEffect.cpp */; };
+		28BD8AB1101DF4C700686679 /* BatchEvalCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28BD8AA9101DF4C600686679 /* BatchEvalCommand.cpp */; };
+		28BD8AB2101DF4C700686679 /* CommandDirectory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28BD8AAA101DF4C600686679 /* CommandDirectory.cpp */; };
+		28BD8AB3101DF4C700686679 /* ExecMenuCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28BD8AAC101DF4C600686679 /* ExecMenuCommand.cpp */; };
+		28BD8AB4101DF4C700686679 /* GetAllMenuCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28BD8AAE101DF4C600686679 /* GetAllMenuCommands.cpp */; };
 		28CCDD000F939FD70081F2FC /* FileHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28CCDCFF0F939FD70081F2FC /* FileHistory.cpp */; };
 		28D540050FD1912A00FA7C75 /* AppCommandEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D53FFA0FD1912A00FA7C75 /* AppCommandEvent.cpp */; };
 		28D540060FD1912A00FA7C75 /* CommandBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28D53FFE0FD1912A00FA7C75 /* CommandBuilder.cpp */; };
@@ -3100,6 +3104,14 @@
 		28B6ED8E0DE3D1B50046F0F3 /* LoadModules.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LoadModules.h; sourceTree = "<group>"; };
 		28B97B850FBF771A0076CF28 /* VSTEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = VSTEffect.cpp; path = VST/VSTEffect.cpp; sourceTree = "<group>"; };
 		28B97B860FBF771A0076CF28 /* VSTEffect.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = VSTEffect.h; path = VST/VSTEffect.h; sourceTree = "<group>"; };
+		28BD8AA9101DF4C600686679 /* BatchEvalCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = BatchEvalCommand.cpp; sourceTree = "<group>"; };
+		28BD8AAA101DF4C600686679 /* CommandDirectory.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = CommandDirectory.cpp; sourceTree = "<group>"; };
+		28BD8AAB101DF4C600686679 /* CommandDirectory.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = CommandDirectory.h; sourceTree = "<group>"; };
+		28BD8AAC101DF4C600686679 /* ExecMenuCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ExecMenuCommand.cpp; sourceTree = "<group>"; };
+		28BD8AAD101DF4C600686679 /* ExecMenuCommand.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ExecMenuCommand.h; sourceTree = "<group>"; };
+		28BD8AAE101DF4C600686679 /* GetAllMenuCommands.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = GetAllMenuCommands.cpp; sourceTree = "<group>"; };
+		28BD8AAF101DF4C600686679 /* GetAllMenuCommands.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = GetAllMenuCommands.h; sourceTree = "<group>"; };
+		28BD8AB0101DF4C600686679 /* Validators.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Validators.h; sourceTree = "<group>"; };
 		28CCDCFF0F939FD70081F2FC /* FileHistory.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FileHistory.cpp; sourceTree = "<group>"; };
 		28CCDD040F93A0B20081F2FC /* FileHistory.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FileHistory.h; sourceTree = "<group>"; };
 		28D53FFA0FD1912A00FA7C75 /* AppCommandEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = AppCommandEvent.cpp; sourceTree = "<group>"; };
@@ -3998,10 +4010,13 @@
 			children = (
 				28D53FFA0FD1912A00FA7C75 /* AppCommandEvent.cpp */,
 				28D53FFB0FD1912A00FA7C75 /* AppCommandEvent.h */,
+				28BD8AA9101DF4C600686679 /* BatchEvalCommand.cpp */,
 				28D53FFC0FD1912A00FA7C75 /* BatchEvalCommand.h */,
 				28D53FFD0FD1912A00FA7C75 /* Command.h */,
 				28D53FFE0FD1912A00FA7C75 /* CommandBuilder.cpp */,
 				28D53FFF0FD1912A00FA7C75 /* CommandBuilder.h */,
+				28BD8AAA101DF4C600686679 /* CommandDirectory.cpp */,
+				28BD8AAB101DF4C600686679 /* CommandDirectory.h */,
 				28D540000FD1912A00FA7C75 /* CommandHandler.cpp */,
 				28D540010FD1912A00FA7C75 /* CommandHandler.h */,
 				174D9026098C78AF00D5909F /* CommandManager.cpp */,
@@ -4009,6 +4024,10 @@
 				1818558F0FFE916C0026D190 /* CommandMisc.h */,
 				181855900FFE916C0026D190 /* CommandTargets.h */,
 				28D540020FD1912A00FA7C75 /* DebugPrintCommand.h */,
+				28BD8AAC101DF4C600686679 /* ExecMenuCommand.cpp */,
+				28BD8AAD101DF4C600686679 /* ExecMenuCommand.h */,
+				28BD8AAE101DF4C600686679 /* GetAllMenuCommands.cpp */,
+				28BD8AAF101DF4C600686679 /* GetAllMenuCommands.h */,
 				174D902A098C78AF00D5909F /* Keyboard.cpp */,
 				174D902B098C78AF00D5909F /* Keyboard.h */,
 				28DB34770FDC2C5D0011F589 /* ResponseQueue.h */,
@@ -4017,6 +4036,7 @@
 				181855960FFE916C0026D190 /* ScreenshotCommand.h */,
 				28D540030FD1912A00FA7C75 /* ScriptCommandRelay.cpp */,
 				28D540040FD1912A00FA7C75 /* ScriptCommandRelay.h */,
+				28BD8AB0101DF4C600686679 /* Validators.h */,
 			);
 			path = commands;
 			sourceTree = "<group>";
@@ -8382,6 +8402,10 @@
 				1865A9B81004490500946EE6 /* Lyrics.cpp in Sources */,
 				1865A9B91004490500946EE6 /* LyricsWindow.cpp in Sources */,
 				289E750A1006D0BD00CEF79B /* MixerBoard.cpp in Sources */,
+				28BD8AB1101DF4C700686679 /* BatchEvalCommand.cpp in Sources */,
+				28BD8AB2101DF4C700686679 /* CommandDirectory.cpp in Sources */,
+				28BD8AB3101DF4C700686679 /* ExecMenuCommand.cpp in Sources */,
+				28BD8AB4101DF4C700686679 /* GetAllMenuCommands.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
