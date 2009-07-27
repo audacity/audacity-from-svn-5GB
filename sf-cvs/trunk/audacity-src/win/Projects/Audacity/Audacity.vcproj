@@ -1928,6 +1928,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\commands\BatchEvalCommand.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\commands\BatchEvalCommand.h"
 				>
 			</File>
@@ -1941,6 +1945,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\commands\CommandBuilder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\CommandDirectory.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\CommandDirectory.h"
 				>
 			</File>
 			<File
@@ -1964,7 +1976,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\commands\CommandTargets.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\commands\DebugPrintCommand.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\ExecMenuCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\ExecMenuCommand.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\GetAllMenuCommands.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\GetAllMenuCommands.h"
 				>
 			</File>
 			<File
@@ -1997,6 +2029,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\commands\ScriptCommandRelay.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\Validators.h"
 				>
 			</File>
 		</Filter>
