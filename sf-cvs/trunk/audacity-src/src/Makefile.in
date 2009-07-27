@@ -189,6 +189,7 @@ OBJS = \
    prefs/BatchPrefs.o \
    prefs/DevicePrefs.o \
    prefs/DirectoriesPrefs.o \
+   prefs/EffectsPrefs.o \
    prefs/GUIPrefs.o \
    prefs/ImportExportPrefs.o \
    prefs/KeyConfigPrefs.o \

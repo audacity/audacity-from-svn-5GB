@@ -1155,6 +1155,7 @@
 		2882177B0A35D8730029AF41 /* ShuttlePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288217790A35D8730029AF41 /* ShuttlePrefs.cpp */; };
 		2885BFF40FC108F800128165 /* LoadVST.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2885BFF20FC108F800128165 /* LoadVST.cpp */; };
 		2891B2870C531D2C0044FBE3 /* FindClipping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2891B2850C531D2C0044FBE3 /* FindClipping.cpp */; };
+		28948427101DF8FC005B0713 /* EffectsPrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28948425101DF8FC005B0713 /* EffectsPrefs.cpp */; };
 		2897F6F00AB3DB5A003C20C5 /* ControlToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6DC0AB3DB5A003C20C5 /* ControlToolBar.cpp */; };
 		2897F6F10AB3DB5A003C20C5 /* EditToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6DE0AB3DB5A003C20C5 /* EditToolBar.cpp */; };
 		2897F6F20AB3DB5A003C20C5 /* MeterToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6E00AB3DB5A003C20C5 /* MeterToolBar.cpp */; };
@@ -3048,6 +3049,8 @@
 		2885BFF30FC108F800128165 /* LoadVST.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = LoadVST.h; path = VST/LoadVST.h; sourceTree = "<group>"; };
 		2891B2850C531D2C0044FBE3 /* FindClipping.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FindClipping.cpp; sourceTree = "<group>"; };
 		2891B2860C531D2C0044FBE3 /* FindClipping.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FindClipping.h; sourceTree = "<group>"; };
+		28948425101DF8FC005B0713 /* EffectsPrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = EffectsPrefs.cpp; sourceTree = "<group>"; };
+		28948426101DF8FC005B0713 /* EffectsPrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = EffectsPrefs.h; sourceTree = "<group>"; };
 		2897F6DC0AB3DB5A003C20C5 /* ControlToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ControlToolBar.cpp; sourceTree = "<group>"; };
 		2897F6DD0AB3DB5A003C20C5 /* ControlToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ControlToolBar.h; sourceTree = "<group>"; };
 		2897F6DE0AB3DB5A003C20C5 /* EditToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = EditToolBar.cpp; sourceTree = "<group>"; };
@@ -4604,6 +4607,8 @@
 				284B278F0FC66863005EAC96 /* DevicePrefs.h */,
 				1790B0BB09883BFD008A330A /* DirectoriesPrefs.cpp */,
 				1790B0BC09883BFD008A330A /* DirectoriesPrefs.h */,
+				28948425101DF8FC005B0713 /* EffectsPrefs.cpp */,
+				28948426101DF8FC005B0713 /* EffectsPrefs.h */,
 				1790B0BF09883BFD008A330A /* GUIPrefs.cpp */,
 				1790B0C009883BFD008A330A /* GUIPrefs.h */,
 				284B27900FC66863005EAC96 /* ImportExportPrefs.cpp */,
@@ -8406,6 +8411,7 @@
 				28BD8AB2101DF4C700686679 /* CommandDirectory.cpp in Sources */,
 				28BD8AB3101DF4C700686679 /* ExecMenuCommand.cpp in Sources */,
 				28BD8AB4101DF4C700686679 /* GetAllMenuCommands.cpp in Sources */,
+				28948427101DF8FC005B0713 /* EffectsPrefs.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

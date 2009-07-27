@@ -45,6 +45,7 @@
 #include "BatchPrefs.h"
 #include "DevicePrefs.h"
 #include "DirectoriesPrefs.h"
+#include "EffectsPrefs.h"
 #include "GUIPrefs.h"
 #include "ImportExportPrefs.h"
 #include "KeyConfigPrefs.h"
@@ -101,6 +102,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent)
          w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName(), false, 0);
          w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName(), false, 0);
          w = new WarningsPrefs(mCategories);    mCategories->AddPage(w, w->GetName(), false, 0);
+         w = new EffectsPrefs(mCategories);     mCategories->AddPage(w, w->GetName(), false, 0);
 
 #ifdef EXPERIMENTAL_THEME_PREFS
          w = new ThemePrefs(mCategories);       mCategories->AddPage(w, w->GetName(), false, 0);

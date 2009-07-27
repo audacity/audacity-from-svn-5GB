@@ -1592,6 +1592,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\prefs\EffectsPrefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\prefs\EffectsPrefs.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\prefs\GUIPrefs.cpp"
 				>
 			</File>
