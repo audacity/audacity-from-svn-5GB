@@ -55,9 +55,9 @@ void EffectsPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Enable"));
    {
-#if USE_NYQUIST
-      S.TieCheckBox(_("Nyquist effects"),
-                    wxT("/Nyquist/Enable"),
+#if USE_AUDIO_UNITS
+      S.TieCheckBox(_("Audio Unit effects"),
+                    wxT("/AudioUnits/Enable"),
                     true);
 #endif
 
@@ -67,15 +67,9 @@ void EffectsPrefs::PopulateOrExchange(ShuttleGui & S)
                     true);
 #endif
 
-#if USE_VST
-      S.TieCheckBox(_("VST effects"),
-                    wxT("/VST/Enable"),
-                    true);
-#endif
-
-#if USE_AUDIO_UNITS
-      S.TieCheckBox(_("Audio Unit effects"),
-                    wxT("/AudioUnits/Enable"),
+#if USE_NYQUIST
+      S.TieCheckBox(_("Nyquist effects"),
+                    wxT("/Nyquist/Enable"),
                     true);
 #endif
 
@@ -84,10 +78,17 @@ void EffectsPrefs::PopulateOrExchange(ShuttleGui & S)
                     wxT("/VAMP/Enable"),
                     true);
 #endif
-      S.AddFixedText(_("Audacity must be restarted for changes to take affect."));
+
+#if USE_VST
+      S.TieCheckBox(_("VST effects"),
+                    wxT("/VST/Enable"),
+                    true);
+#endif
+      S.AddFixedText(_("Restart Audacity to apply changes."));
    }
    S.EndStatic();
 
+#if USE_VST || USE_AUDIO_UNITS
    S.StartStatic(_("Mode"));
    {
 #if USE_VST
@@ -103,6 +104,7 @@ void EffectsPrefs::PopulateOrExchange(ShuttleGui & S)
 #endif
    }
    S.EndStatic();
+#endif
 }
 
 bool EffectsPrefs::Apply()
