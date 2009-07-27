@@ -145,11 +145,6 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
       S.TieCheckBox(_("Cl&eanSpeech Mode (Customized GUI)"), 
                     wxT("/Batch/CleanSpeechMode"),
                     false);
-#if USE_VST
-      S.TieCheckBox(_("Display VST effects in GUI mode"), 
-                    wxT("/VST/GUI"),
-                    true);
-#endif
 #ifdef __WXDEBUG__
       S.TieCheckBox(_("Don't a&pply effects in batch mode"),  
                     wxT("/Batch/Debug"),
