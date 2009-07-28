@@ -6899,7 +6899,11 @@ wxRect TrackPanel::FindTrackRect(Track * target, bool label)
             GetSize().GetWidth(),
             target->GetHeight());
 
-   if (target->GetLinked()) {
+   // The check for a null linked track is necessary because there's
+   // a possible race condition between the time the 2 linked tracks
+   // are added and when wxAccessible functions are called.  This is
+   // most evident when using Jaws.
+   if (target->GetLinked() && target->GetLink()) {
       r.height += target->GetLink()->GetHeight();
    }
 
