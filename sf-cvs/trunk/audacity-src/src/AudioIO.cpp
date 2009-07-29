@@ -2578,7 +2578,7 @@ void AudioIO::AVProcess() {
             mAVActive = false;
             #ifndef __WXMAC__
                wxString msg;
-               msg.Printf(_("Automatic Volume stopped. %.2f seems an aceptable volume."), iv);
+               msg.Printf(_("Automatic Volume stopped. %.2f seems an acceptable volume."), iv);
                proj->TP_DisplayStatusMessage(msg);
             #endif
          }
