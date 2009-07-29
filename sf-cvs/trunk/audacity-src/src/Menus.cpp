@@ -530,7 +530,7 @@ void AudacityProject::CreateMenusAndCommands()
               AudioIONotBusyFlag | UndoAvailableFlag);
 
    #ifdef EXPERIMENTAL_LYRICS_WINDOW
-      c->AddItem(wxT("Lyrics"), _("&Lyrics..."), FN(OnLyrics), LabelTracksExistFlag, LabelTracksExistFlag); 
+      c->AddItem(wxT("Karaoke"), _("&Karaoke..."), FN(OnKaraoke), LabelTracksExistFlag, LabelTracksExistFlag); 
    #endif
    #ifdef EXPERIMENTAL_MIXER_BOARD
       c->AddItem(wxT("MixerBoard"), _("&Mixer Board..."), FN(OnMixerBoard), WaveTracksExistFlag, WaveTracksExistFlag);
@@ -4161,12 +4161,13 @@ void AudacityProject::OnHistory()
 }
 
 #ifdef EXPERIMENTAL_LYRICS_WINDOW
-   void AudacityProject::OnLyrics()
+   void AudacityProject::OnKaraoke()
    {
       if (!mLyricsWindow)
          mLyricsWindow = new LyricsWindow(this);
       wxASSERT(mLyricsWindow);
       mLyricsWindow->Show();
+      mLyricsWindow->Raise();
    }
 #endif
 #ifdef EXPERIMENTAL_MIXER_BOARD
@@ -4178,6 +4179,8 @@ void AudacityProject::OnHistory()
          mMixerBoard = mMixerBoardFrame->mMixerBoard;
       }
       mMixerBoardFrame->Show();
+      mMixerBoardFrame->Raise();
+      mMixerBoardFrame->SetFocus();
   }
 #endif
 

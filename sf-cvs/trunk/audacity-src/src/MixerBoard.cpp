@@ -49,7 +49,8 @@ const int kGainSliderMin = -36;
 const int kGainSliderMax = 6; // headroom convention to match typical mixer boards layout
 
 enum {
-   ID_TOGGLEBUTTON_MUTE = 13000,
+   ID_MUSICAL_INSTRUMENT_IMAGE = 13000, 
+   ID_TOGGLEBUTTON_MUTE, 
    ID_TOGGLEBUTTON_SOLO,
    ID_ASLIDER_PAN,
    ID_SLIDER_GAIN,
@@ -580,8 +581,10 @@ void MixerBoardScrolledWindow::OnMouseEvent(wxMouseEvent& event)
 
 // class MixerBoard
 
-#define MIXER_BOARD_MIN_HEIGHT 500
-#define MIXER_TRACK_CLUSTER_WIDTH 100 - kInset
+#define MIXER_BOARD_MIN_HEIGHT      500
+#define MIXER_TRACK_CLUSTER_WIDTH   100 - kInset
+#define MIXER_BOARD_MIN_WIDTH       kDoubleInset + MIXER_TRACK_CLUSTER_WIDTH + kDoubleInset
+
 
 BEGIN_EVENT_TABLE(MixerBoard, wxWindow)
    EVT_SIZE(MixerBoard::OnSize)
@@ -694,9 +697,10 @@ void MixerBoard::UpdateTrackClusters()
          {
             // Not already showing it. Add a new MixerTrackCluster.
             wxPoint clusterPos(
-               ((nClusterIndex * 
-                  (kInset + MIXER_TRACK_CLUSTER_WIDTH)) + // left margin and width for each to its left
-                  kInset), // plus left margin for new cluster
+               (kInset +                                       // extra inset to left for first one.
+                  (nClusterIndex * 
+                     (kInset + MIXER_TRACK_CLUSTER_WIDTH)) +   // left margin and width for each to its left
+                  kInset),                                     // plus left margin for new cluster
                kInset); 
             wxSize clusterSize(MIXER_TRACK_CLUSTER_WIDTH, kClusterHeight);
             pMixerTrackCluster = 
@@ -735,9 +739,10 @@ void MixerBoard::UpdateTrackClusters()
 int MixerBoard::GetTrackClustersWidth()
 {
    return 
+      kInset +                                     // extra margin at left for first one
       (mMixerTrackClusters.GetCount() *            // number of tracks times
-         (kInset + MIXER_TRACK_CLUSTER_WIDTH)) +   // left margin and width for each
-      kInset;                                      // plus final right margin
+         (kInset + MIXER_TRACK_CLUSTER_WIDTH)) +   //    left margin and width for each
+      kDoubleInset;                                // plus final right margin
 }
 
 void MixerBoard::MoveTrackCluster(const WaveTrack* pLeftTrack, 
@@ -974,37 +979,17 @@ void MixerBoard::UpdateMeters(double t1)
    mPrevT1 = t1;
 }
 
+
 void MixerBoard::UpdateWidth()
 {
-   // All these calculations have extra padding on right, so there's 
-   // always gray area to click to deselect all tracks. 
-   int newWidth = this->GetTrackClustersWidth() + kDoubleInset;
+   int newWidth = this->GetTrackClustersWidth(); 
 
    // Min width is one cluster wide, plus margins.
-   const int kMinWidth = kInset + MIXER_TRACK_CLUSTER_WIDTH + kTripleInset;
-   if (newWidth < kMinWidth)
-      newWidth = kMinWidth;
+   if (newWidth < MIXER_BOARD_MIN_WIDTH)
+      newWidth = MIXER_BOARD_MIN_WIDTH;
 
    mScrolledWindow->SetVirtualSize(newWidth, -1);
-
-   // Now limit newWidth to visible screen.
-   wxWindow* pParent = this->GetParent(); // In UmixIt, would be mProject. But here, always its MixerBoardFrame.
-   wxPoint parentPos = pParent->GetPosition();
-   const int kMaxWidth = wxSystemSettings::GetMetric(wxSYS_SCREEN_X) - parentPos.x;
-   if (newWidth > kMaxWidth) 
-      newWidth = kMaxWidth;
-
-   int width;
-   int height;
-   pParent->GetSize(&width, &height);
-   if (newWidth == width) 
-      return; // No need to update. 
-
-   pParent->SetSizeHints(
-      kMinWidth, // int minW=-1, 
-      MIXER_BOARD_MIN_HEIGHT, // int minH=-1, 
-      newWidth); // int maxW=-1, 
-   pParent->SetSize(newWidth, -1);
+   this->GetParent()->SetSize(newWidth + kDoubleInset, -1);
 }
 
 //
@@ -1252,7 +1237,6 @@ void MixerBoard::OnSize(wxSizeEvent &evt)
    // this->FitInside() doesn't work, and it doesn't happen automatically. Is wxScrolledWindow wrong?
    mScrolledWindow->SetSize(evt.GetSize());
    
-   this->UpdateWidth(); // primarily to update mScrolledWindow's virtual width
    for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
       mMixerTrackClusters[i]->UpdateHeight();
    this->RefreshTrackClusters(false);
@@ -1269,9 +1253,7 @@ END_EVENT_TABLE()
 
 // Default to fitting one track.
 const wxSize kDefaultSize = 
-   wxSize((kInset + MIXER_TRACK_CLUSTER_WIDTH) + // left margin and width for one track.
-               kDoubleInset, // plus final right margin
-            MIXER_BOARD_MIN_HEIGHT); 
+   wxSize(MIXER_BOARD_MIN_WIDTH, MIXER_BOARD_MIN_HEIGHT); 
 
 MixerBoardFrame::MixerBoardFrame(AudacityProject* parent)
 : wxFrame(parent, -1,
@@ -1281,16 +1263,11 @@ MixerBoardFrame::MixerBoardFrame(AudacityProject* parent)
                                  wxString::Format(wxT(" - %s"),
                                                 parent->GetName().c_str()).c_str())), 
             wxDefaultPosition, kDefaultSize, 
-            wxDEFAULT_FRAME_STYLE
-            #ifndef __WXMAC__
-               | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT)
-            #endif
-            )
+            wxDEFAULT_FRAME_STYLE)
 {
    mMixerBoard = new MixerBoard(parent, this, wxDefaultPosition, kDefaultSize);
   
-   this->SetSizeHints(kInset + MIXER_TRACK_CLUSTER_WIDTH, // int minW=-1, // Show at least one cluster wide. 
-                        MIXER_BOARD_MIN_HEIGHT); // int minH=-1, 
+   this->SetSizeHints(MIXER_BOARD_MIN_WIDTH, MIXER_BOARD_MIN_HEIGHT); 
 
    mMixerBoard->UpdateTrackClusters();
 
