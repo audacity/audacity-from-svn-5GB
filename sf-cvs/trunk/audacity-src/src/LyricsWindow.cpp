@@ -45,18 +45,14 @@ const wxSize gSize = wxSize(LYRICS_DEFAULT_WIDTH, LYRICS_DEFAULT_HEIGHT);
 
 LyricsWindow::LyricsWindow(AudacityProject *parent):
    wxFrame(parent, -1, 
-            wxString::Format(_("Audacity Lyrics%s"), 
+            wxString::Format(_("Audacity Karaoke%s"), 
                               ((parent->GetName() == wxEmptyString) ? 
                                  wxT("") :
                                  wxString::Format(
                                    wxT(" - %s"),
                                    parent->GetName().c_str()).c_str())),
             wxPoint(100, 300), gSize, 
-            wxDEFAULT_FRAME_STYLE
-#ifndef __WXMAC__
-           | ((parent == NULL) ? 0x0 : wxFRAME_FLOAT_ON_PARENT) //vvvvv
-#endif
-             )
+            wxDEFAULT_FRAME_STYLE)
 {
 #ifdef __WXMAC__
    // WXMAC doesn't support wxFRAME_FLOAT_ON_PARENT, so we do
