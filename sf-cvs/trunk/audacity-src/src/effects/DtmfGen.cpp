@@ -479,8 +479,8 @@ void DtmfDialog::PopulateOrExchange( ShuttleGui & S )
 bool DtmfDialog::TransferDataToWindow()
  {
    mDtmfDutyS->SetValue((int)dDutyCycle);
-   mDtmfStringT->SetValue(dString);
    mDtmfDurationT->SetTimeValue(dDuration);
+   mDtmfStringT->SetValue(dString);
 
    return true;
 }
