@@ -46,34 +46,70 @@
 #include "../widgets/Ruler.h"
 #include "../AColor.h"
 #include "../Shuttle.h"
+#include "../Prefs.h"
 
 EffectCompressor::EffectCompressor()
 {
    mNormalize = true;
-   mFloor = 0.001;
+   mUseRMS = false;
+   mThreshold = 0.25;
    mAttackTime = 0.2;      // seconds
    mDecayTime = 1.0;       // seconds
    mRatio = 2.0;           // positive number > 1.0
+   mCompression = 0.5;
    mThresholdDB = -12.0;
-   mCircle = NULL;
+   mNoiseFloorDB = -40.0;
+   mNoiseFloor = 0.01;
+	mCircle = NULL;
 	mLevelCircle = NULL;
+	mFollow1 = NULL;
+	mFollow2 = NULL;
+	mFollowLen = 0;
+}
+
+bool EffectCompressor::Init()
+{
+   // Restore the saved preferences
+   gPrefs->Read(wxT("/Effects/Compressor/ThresholdDB"), &mThresholdDB, -12.0f );
+   gPrefs->Read(wxT("/Effects/Compressor/NoiseFloorDB"), &mNoiseFloorDB, -40.0f );
+   gPrefs->Read(wxT("/Effects/Compressor/Ratio"), &mRatio, 2.0f );
+   gPrefs->Read(wxT("/Effects/Compressor/AttackTime"), &mAttackTime, 0.2f );
+   gPrefs->Read(wxT("/Effects/Compressor/DecayTime"), &mDecayTime, 1.0f );
+   gPrefs->Read(wxT("/Effects/Compressor/Normalize"), &mNormalize, true );
+   gPrefs->Read(wxT("/Effects/Compressor/UseRMS"), &mUseRMS, false );
+
+   return true;
 }
 
 EffectCompressor::~EffectCompressor()
 {
-   if (mCircle)
+   if (mCircle) {
       delete[] mCircle;
-   if (mLevelCircle)
+      mCircle = NULL;
+   }
+   if (mLevelCircle) {
       delete[] mLevelCircle;
+      mLevelCircle = NULL;
+   }
+   if(mFollow1!=NULL) {
+	   delete[] mFollow1;
+	   mFollow1 = NULL;
+   }
+   if(mFollow2!=NULL) {
+	   delete[] mFollow2;
+	   mFollow2 = NULL;
+   }
 }
 
 bool EffectCompressor::TransferParameters( Shuttle & shuttle )
 {
    shuttle.TransferDouble( wxT("Threshold"), mThresholdDB, -12.0f );
+   shuttle.TransferDouble( wxT("NoiseFloor"), mNoiseFloorDB, -40.0f );
    shuttle.TransferDouble( wxT("Ratio"), mRatio, 2.0f );
    shuttle.TransferDouble( wxT("AttackTime"), mAttackTime, 0.2f );
-   shuttle.TransferDouble( wxT("DecayTime"), mDecayTime, 0.2f );
+   shuttle.TransferDouble( wxT("DecayTime"), mDecayTime, 1.0f );
    shuttle.TransferBool( wxT("Normalize"), mNormalize, true );
+   shuttle.TransferBool( wxT("UseRMS"), mUseRMS, false );
    return true;
 }
 
@@ -81,10 +117,12 @@ bool EffectCompressor::PromptUser()
 {
    CompressorDialog dlog(this, mParent);
    dlog.threshold = mThresholdDB;
+   dlog.noisefloor = mNoiseFloorDB;
    dlog.ratio = mRatio;
    dlog.attack = mAttackTime;
    dlog.decay = mDecayTime;
    dlog.useGain = mNormalize;
+   dlog.useRMS = mUseRMS;
    dlog.TransferDataToWindow();
 
    dlog.CentreOnParent();
@@ -94,37 +132,55 @@ bool EffectCompressor::PromptUser()
       return false;
 
    mThresholdDB = dlog.threshold;
+   mNoiseFloorDB = dlog.noisefloor;
    mRatio = dlog.ratio;
    mAttackTime = dlog.attack;
    mDecayTime = dlog.decay;
    mNormalize = dlog.useGain;
+   mUseRMS = dlog.useRMS;
+
+   // Retain the settings
+   gPrefs->Write(wxT("/Effects/Compressor/ThresholdDB"), mThresholdDB);
+   gPrefs->Write(wxT("/Effects/Compressor/NoiseFloorDB"), mNoiseFloorDB);
+   gPrefs->Write(wxT("/Effects/Compressor/Ratio"), mRatio);
+   gPrefs->Write(wxT("/Effects/Compressor/AttackTime"), mAttackTime);
+   gPrefs->Write(wxT("/Effects/Compressor/DecayTime"), mDecayTime);
+   gPrefs->Write(wxT("/Effects/Compressor/Normalize"), mNormalize);
+   gPrefs->Write(wxT("/Effects/Compressor/UseRMS"), mUseRMS);
 
    return true;
 }
 
 bool EffectCompressor::NewTrackPass1()
 {
+   mThreshold = pow(10.0, mThresholdDB/20); // factor of 20 because it's power
+   mNoiseFloor = pow(10.0, mNoiseFloorDB/20);
+   mNoiseCounter = 100;
+
+   mAttackInverseFactor = exp(log(mThreshold) / (mCurRate * mAttackTime + 0.5));
+   mAttackFactor = 1.0 / mAttackInverseFactor;
+   mDecayFactor = exp(log(mThreshold) / (mCurRate * mDecayTime + 0.5));
+
+   if(mRatio > 1)
+      mCompression = 1.0-1.0/mRatio;
+   else
+      mCompression = 0.0;
+
+   mLastLevel = mThreshold;
+
    if (mCircle)
       delete[] mCircle;
    if (mLevelCircle)
       delete[] mLevelCircle;
-
    mCircleSize = 100;
    mCircle = new double[mCircleSize];
    mLevelCircle = new double[mCircleSize];
    for(int j=0; j<mCircleSize; j++) {
       mCircle[j] = 0.0;
-      mLevelCircle[j] = mFloor;
+      mLevelCircle[j] = mThreshold;
    }
    mCirclePos = 0;
    mRMSSum = 0.0;
-
-   mThreshold = pow(10.0, mThresholdDB/20); // factor of 20 because it's power
-
-   mAttackFactor = exp(-log(mFloor) / (mCurRate * mAttackTime + 0.5));
-   mDecayFactor = exp(log(mFloor) / (mCurRate * mDecayTime + 0.5));
-
-   mLastLevel = 0.0;
 
    return true;
 }
@@ -133,6 +189,33 @@ bool EffectCompressor::InitPass1()
    mMax=0.0;
    if (!mNormalize)
        DisableSecondPass();
+
+   // Find the maximum block length required for any track
+   sampleCount maxlen=0;
+   TrackListIterator iter(mTracks);
+   WaveTrack *track = (WaveTrack *) iter.First();
+   while (track) {
+	  sampleCount len=track->GetMaxBlockSize();
+	  if(len > maxlen)
+		  maxlen = len;
+	  //Iterate to the next track
+      track = (WaveTrack *) iter.Next();
+   }
+   if(mFollow1!=NULL) {
+	   delete[] mFollow1;
+	   mFollow1 = NULL;
+   }
+   if(mFollow2!=NULL) {
+	   delete[] mFollow2;
+	   mFollow2 = NULL;
+   }
+   // Allocate buffers for the envelope
+   if(maxlen > 0) {
+	   mFollow1 = new float[maxlen];
+	   mFollow2 = new float[maxlen];
+   }
+   mFollowLen = maxlen;
+
    return true;
 }
 bool EffectCompressor::InitPass2()
@@ -141,31 +224,54 @@ bool EffectCompressor::InitPass2()
     // DisableSecondPass() before, if mNormalize is false.
     return mNormalize;
 }
-bool EffectCompressor::ProcessPass1(float *buffer, sampleCount len)
+
+// Process the input with 2 buffers available at a time
+// buffer1 will be written upon return
+// buffer2 will be passed as buffer1 on the next call
+bool EffectCompressor::TwoBufferProcessPass1(float *buffer1, sampleCount len1, float *buffer2, sampleCount len2)
 {
-   double *follow = new double[len];
-   int i;
-   
-    // This makes sure that the initial value is well-chosen
-	if (mLastLevel == 0.0) {
-		int preSeed = mCircleSize;
-		if (preSeed > len)
-			preSeed = len;
-		for(i=0; i<preSeed; i++)
-			AvgCircle(buffer[i]);
+	int i;
+
+	// If buffers are bigger than allocated, then abort
+	// (this should never happen, but if it does, we don't want to crash)
+	if((len1 > mFollowLen) || (len2 > mFollowLen))
+		return false;
+
+	// This makes sure that the initial value is well-chosen
+	// buffer1 == NULL on the first and only the first call
+	if (buffer1 == NULL) {
+		// Initialize the mLastLevel to the peak level in the first buffer
+		// This avoids problems with large spike events near the beginning of the track
+		mLastLevel = mThreshold;
+		for(i=0; i<len2; i++) {
+			if(mLastLevel < fabs(buffer2[i]))
+				mLastLevel = fabs(buffer2[i]);
+		}
 	}
 
-	for (i = 0; i < len; i++) {
-		Follow(buffer[i], &follow[i], i);
+	// buffer2 is NULL on the last and only the last call
+	if(buffer2 != NULL) {
+		Follow(buffer2, mFollow2, len2, mFollow1, len1);
 	}
 
-	for (i = 0; i < len; i++) {
-		buffer[i] = DoCompression(buffer[i], follow[i]);
+	if(buffer1 != NULL) {
+		for (i = 0; i < len1; i++) {
+			buffer1[i] = DoCompression(buffer1[i], mFollow1[i]);
+		}
 	}
 
-	delete[] follow;
 
-    return true;
+#if 0
+	// Copy the envelope over the track data (for debug purposes)
+	memcpy(buffer1, mFollow1, len1*sizeof(float));
+#endif
+
+	// Rotate the buffer pointers
+	float *tmpfloat = mFollow1;
+	mFollow1 = mFollow2; 
+	mFollow2 = tmpfloat;
+
+	return true;
 }
 
 bool EffectCompressor::ProcessPass2(float *buffer, sampleCount len)
@@ -177,6 +283,15 @@ bool EffectCompressor::ProcessPass2(float *buffer, sampleCount len)
     }
 		
 	return true;
+}
+
+void EffectCompressor::FreshenCircle()
+{
+	// Recompute the RMS sum periodically to prevent accumulation of rounding errors
+	// during long waveforms
+	mRMSSum = 0;
+	for(int i=0; i<mCircleSize; i++)
+		mRMSSum += mCircle[i];
 }
 
 float EffectCompressor::AvgCircle(float value)
@@ -192,18 +307,10 @@ float EffectCompressor::AvgCircle(float value)
    mLevelCircle[mCirclePos] = level;
    mCirclePos = (mCirclePos+1)%mCircleSize;
 
-#if 0 // Peak instead of RMS
-   int j;
-   level = 0.0;
-   for(j=0; j<mCircleSize; j++)
-      if (mCircle[j] > level)
-         level = mCircle[j];
-#endif
-
    return level;
 }
 
-void EffectCompressor::Follow(float x, double *outEnv, int maxBack)
+void EffectCompressor::Follow(float *buffer, float *env, int len, float *previous, int previous_len)
 {
    /*
 
@@ -239,75 +346,106 @@ void EffectCompressor::Follow(float x, double *outEnv, int maxBack)
     The value has a lower limit of floor to make sure value has a
     reasonable positive value from which to begin an attack.
    */
+	int i;
+	double level,last;
 
-   float level = AvgCircle(x);
-   float high = mLastLevel * mAttackFactor;
-   float low = mLastLevel * mDecayFactor;
-
-   if (low < mFloor)
-      low = mFloor;
-
-   if (level < low)
-      *outEnv = low;
-   else if (level < high)
-      *outEnv = level;
-   else {
-      // Backtrack
-      double attackInverse = 1.0 / mAttackFactor;
-      double temp = level * attackInverse;
-
-      int backtrack = 50;
-      if (backtrack > maxBack)
-         backtrack = maxBack;
-
-      double *ptr = &outEnv[-1];
-      int i;
-      bool ok = false;
-      for(i=0; i<backtrack-2; i++) {
-         if (*ptr < temp) {
-            *ptr-- = temp;
-            temp *= attackInverse;
-         }
-         else {
-            ok = true;
-            break;
-         }
-      }
-
-      if (!ok && backtrack>1 && (*ptr < temp)) {
-         temp = *ptr;
-         for (i = 0; i < backtrack-1; i++) {
-            ptr++;
-            temp *= mAttackFactor;
-            *ptr = temp;
-         }
-      }
-      else
-         *outEnv = level;
+   if(mUseRMS) {
+	   // Update RMS sum directly from the circle buffer
+	   // to avoid accumulation of rounding errors
+	   FreshenCircle();
    }
+	// First apply a peak detect with the requested decay rate
+	last = mLastLevel;
+	for(i=0; i<len; i++) {
+      if(mUseRMS)
+		   level = AvgCircle(buffer[i]);
+      else // use Peak
+         level = fabs(buffer[i]);
+      // Don't increase gain when signal is continuously below the noise floor
+      if(level < mNoiseFloor) {
+         mNoiseCounter++;
+      } else {
+         mNoiseCounter = 0;
+      }
+		if(mNoiseCounter < 100) {
+			last *= mDecayFactor;
+			if(last < mThreshold)
+				last = mThreshold;
+			if(level > last)
+				last = level;
+		}
+		env[i] = last;
+	}
+	mLastLevel = last;
 
-   mLastLevel = *outEnv;
+	// Next do the same process in reverse direction to get the requested attack rate
+	last = mLastLevel;
+	for(i=len-1; i>=0; i--) {
+		last *= mAttackInverseFactor;
+		if(last < mThreshold)
+			last = mThreshold;
+		if(env[i] < last)
+			env[i] = last;
+		else
+			last = env[i];
+	}
+
+	if((previous != NULL) && (previous_len > 0)) {
+		// If the previous envelope was passed, propagate the rise back until we intersect
+		for(i=previous_len-1; i>0; i--) {
+			last *= mAttackInverseFactor;
+			if(last < mThreshold)
+				last = mThreshold;
+			if(previous[i] < last)
+				previous[i] = last;
+			else // Intersected the previous envelope buffer, so we are finished
+				return;
+		}
+		// If we can't back up far enough, project the starting level forward
+		// until we intersect the desired envelope
+		last = previous[0];
+		for(i=1; i<previous_len; i++) {
+			last *= mAttackFactor;
+			if(previous[i] > last)
+				previous[i] = last;
+			else // Intersected the desired envelope, so we are finished
+				return;
+		}
+		// If we still didn't intersect, then continue ramp up into current buffer
+		for(i=0; i<len; i++) {
+			last *= mAttackFactor;
+			if(buffer[i] > last)
+				buffer[i] = last;
+			else // Finally got an intersect
+				return;
+		}
+		// If we still didn't intersect, then reset mLastLevel
+		mLastLevel = last;
+	}
 }
 
 float EffectCompressor::DoCompression(float value, double env)
 {
-   float mult;
    float out;
+   if(mUseRMS) {
+      // Nominally the RMS will be about 1/4 of the peak,
+      // so this choice keeps the compressed waveform peaks below 1.0
+      out = value * pow(0.25/env, mCompression);
+   } else {
+      // Peak values map 1.0 to 1.0
+      out = value * pow(1.0/env, mCompression);
+   }
 
-   if (env > mThreshold)
-      mult = pow(mThreshold/env, 1.0-1.0/mRatio);
-   else
-      mult = 1.0;
-
-   out = value * mult;
-
-   if (out > 1.0)
-      out = 1.0;
-
-   if (out < -1.0)
-      out = -1.0;
-
-   mMax=mMax<fabs(out)?fabs(out):mMax;
+   // If we aren't doing a normalization pass, clip the signal
+   if(!mNormalize) {
+	   if (out > 1.0)
+		  out = 1.0;
+	   if (out < -1.0)
+		  out = -1.0;
+   }
+   // Retain the maximum value for use in the normalization pass
+   if(mMax < fabs(out))
+	   mMax = fabs(out);
 
    return out;
 }
@@ -406,9 +544,10 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    mEnvRect.Deflate( 2, 2 );
 
    int kneeX = (int)rint((rangeDB+threshold)*mEnvRect.width/rangeDB);
-   int kneeY = (int)rint((rangeDB+threshold)*mEnvRect.height/rangeDB);
+   int kneeY = (int)rint((rangeDB+threshold/ratio)*mEnvRect.height/rangeDB);
 
-   int finalY = kneeY + (int)rint((-threshold/ratio)*mEnvRect.height/rangeDB);
+   int finalY = mEnvRect.height;
+   int startY = (int)rint((threshold*(1.0/ratio-1.0))*mEnvRect.height/rangeDB);
 
    // Yellow line for threshold
    memDC.SetPen(wxPen(wxColour(220, 220, 0), 1, wxSOLID));
@@ -426,7 +565,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
 
    AColor::Line(memDC,
                 mEnvRect.x,
-                mEnvRect.y + mEnvRect.height,
+                mEnvRect.y + mEnvRect.height - startY,
                 mEnvRect.x + kneeX - 1,
                 mEnvRect.y + mEnvRect.height - kneeY);
 
@@ -454,6 +593,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
 
 enum {
    ThresholdID = 7100,
+   NoiseFloorID,
    RatioID,
    AttackID,
    DecayID
@@ -463,6 +603,7 @@ BEGIN_EVENT_TABLE(CompressorDialog, EffectDialog)
    EVT_SIZE( CompressorDialog::OnSize )
    EVT_BUTTON( ID_EFFECT_PREVIEW, CompressorDialog::OnPreview )
    EVT_SLIDER( ThresholdID, CompressorDialog::OnSlider )
+   EVT_SLIDER( NoiseFloorID, CompressorDialog::OnSlider )
    EVT_SLIDER( RatioID, CompressorDialog::OnSlider )
    EVT_SLIDER( AttackID, CompressorDialog::OnSlider )
    EVT_SLIDER( DecayID, CompressorDialog::OnSlider )
@@ -494,6 +635,7 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
       S.SetBorder(10);
       mPanel = new CompressorPanel(S.GetParent(), wxID_ANY);
       mPanel->threshold = threshold;
+	  mPanel->noisefloor = noisefloor;
       mPanel->ratio = ratio;
       S.Prop(true).AddWindow(mPanel, wxEXPAND | wxALL);
       S.SetBorder(5);
@@ -506,9 +648,17 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
       mThresholdLabel = S.AddVariableText(_("Threshold:"), true,
                                           wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
       S.SetStyle(wxSL_HORIZONTAL);
-      mThresholdSlider = S.Id(ThresholdID).AddSlider(wxT(""), -8, -1, -60);
+      mThresholdSlider = S.Id(ThresholdID).AddSlider(wxT(""), -12, -1, -60);
       mThresholdSlider->SetName(_("Threshold"));
       mThresholdText = S.AddVariableText(wxT("XXX dB"), true,
+                                         wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+
+      mNoiseFloorLabel = S.AddVariableText(_("Noise Floor:"), true,
+                                          wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+      S.SetStyle(wxSL_HORIZONTAL);
+      mNoiseFloorSlider = S.Id(NoiseFloorID).AddSlider(wxT(""), -8, -4, -16);
+      mNoiseFloorSlider->SetName(_("Noise Floor"));
+      mNoiseFloorText = S.AddVariableText(wxT("XXX dB"), true,
                                          wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
       mRatioLabel = S.AddVariableText(_("Ratio:"), true,
@@ -522,7 +672,7 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
       mAttackLabel = S.AddVariableText(_("Attack Time:"), true,
                                       wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
       S.SetStyle(wxSL_HORIZONTAL);
-      mAttackSlider = S.Id(AttackID).AddSlider(wxT(""), 2, 10, 1);
+      mAttackSlider = S.Id(AttackID).AddSlider(wxT(""), 2, 50, 1);
       mAttackSlider->SetName(_("Attack Time"));
       mAttackText = S.AddVariableText(wxT("XXXX secs"), true,
                                       wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
@@ -530,7 +680,7 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
       mDecayLabel = S.AddVariableText(_("Decay Time:"), true,
                                       wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
       S.SetStyle(wxSL_HORIZONTAL);
-      mDecaySlider = S.Id(DecayID).AddSlider(wxT(""), 2, 10, 1);
+      mDecaySlider = S.Id(DecayID).AddSlider(wxT(""), 2, 30, 1);
       mDecaySlider->SetName(_("Decay Time"));
       mDecayText = S.AddVariableText(wxT("XXXX secs"), true,
                                      wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
@@ -539,8 +689,10 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
 
    S.StartHorizontalLay(wxCENTER, false);
    {
-      mGainCheckBox = S.AddCheckBox(_("Make-up gain for 0dB after compressing"),
+      mGainCheckBox = S.AddCheckBox(_("Normalize to 0dB after compressing"),
                                     wxT("true"));
+      mRMSCheckBox = S.AddCheckBox(_("Compress based on RMS"),
+                                    wxT("false"));
    }
    S.EndHorizontalLay();
 }
@@ -548,13 +700,16 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
 bool CompressorDialog::TransferDataToWindow()
 {
    mPanel->threshold = threshold;
+   mPanel->noisefloor = noisefloor;
    mPanel->ratio = ratio;
 
    mThresholdSlider->SetValue((int)rint(threshold));
+   mNoiseFloorSlider->SetValue((int)rint(noisefloor/5));
    mRatioSlider->SetValue((int)rint(ratio*2));
    mAttackSlider->SetValue((int)rint(attack*10));
-   mDecaySlider->SetValue((int)rint(attack));
+   mDecaySlider->SetValue((int)rint(decay));
    mGainCheckBox->SetValue(useGain);
+   mRMSCheckBox->SetValue(useRMS);
 
    TransferDataFromWindow();
 
@@ -564,16 +719,22 @@ bool CompressorDialog::TransferDataToWindow()
 bool CompressorDialog::TransferDataFromWindow()
 {
    threshold = (double)mThresholdSlider->GetValue();
+   noisefloor = (double)mNoiseFloorSlider->GetValue() * 5.0;
    ratio = (double)(mRatioSlider->GetValue() / 2.0);
    attack = (double)(mAttackSlider->GetValue() / 10.0);
    decay = (double)(mDecaySlider->GetValue());
    useGain = mGainCheckBox->GetValue();
+   useRMS = mRMSCheckBox->GetValue();
 
    mPanel->threshold = threshold;
+   mPanel->noisefloor = noisefloor;
    mPanel->ratio = ratio;
 
    mThresholdLabel->SetName(wxString::Format(_("Threshold %d dB"), (int)threshold));
    mThresholdText->SetLabel(wxString::Format(_("%3d dB"), (int)threshold));
+
+   mNoiseFloorLabel->SetName(wxString::Format(_("Noise Floor %d dB"), (int)noisefloor));
+   mNoiseFloorText->SetLabel(wxString::Format(_("%3d dB"), (int)noisefloor));
 
    if (mRatioSlider->GetValue()%2 == 0) {
       mRatioLabel->SetName(wxString::Format(_("Ratio %.0f to 1"), ratio));
@@ -609,23 +770,30 @@ void CompressorDialog::OnPreview(wxCommandEvent &event)
    double    oldAttackTime = mEffect->mAttackTime;
    double    oldDecayTime = mEffect->mDecayTime;
    double    oldThresholdDB = mEffect->mThresholdDB;
+   double    oldNoiseFloorDB = mEffect->mNoiseFloorDB;
    double    oldRatio = mEffect->mRatio;
    bool      oldUseGain = mEffect->mNormalize;
+   bool      oldUseRMS = mEffect->mUseRMS;
 
    mEffect->mAttackTime = attack;
    mEffect->mDecayTime = decay;
    mEffect->mThresholdDB = threshold;
+   mEffect->mNoiseFloorDB = noisefloor;
    mEffect->mRatio = ratio;
    mEffect->mNormalize = useGain;
+   mEffect->mUseRMS = useRMS;
 
    mEffect->Preview();
 
    mEffect->mAttackTime = oldAttackTime;
    mEffect->mDecayTime = oldDecayTime;
    mEffect->mThresholdDB = oldThresholdDB;
+   mEffect->mNoiseFloorDB = oldNoiseFloorDB;
    mEffect->mRatio = oldRatio;
    mEffect->mNormalize = oldUseGain;
+   mEffect->mUseRMS = oldUseRMS;
 }
+
 void CompressorDialog::OnSlider(wxCommandEvent &event)
 {
    TransferDataFromWindow();

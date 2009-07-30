@@ -51,11 +51,12 @@ public:
       return wxString(_("Applying Dynamic Range Compression..."));
    }
    
+   virtual bool Init();
    virtual bool PromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
 
  protected:
-   virtual bool ProcessPass1(float *buffer, sampleCount len);
+   virtual bool TwoBufferProcessPass1(float *buffer1, sampleCount len1, float *buffer2, sampleCount len2);
    virtual bool ProcessPass2(float *buffer, sampleCount len);
 
  private:
@@ -64,27 +65,37 @@ public:
    virtual bool InitPass1();
    virtual bool InitPass2();
 
+   void FreshenCircle();
    float AvgCircle(float x);
-   void Follow(float x, double *outEnv, int maxBack);
-   float DoCompression(float x, double env);
-   
-   double    mAttackTime;
-   double    mThresholdDB;
-   double    mRatio;
-   bool      mNormalize;	//MJS
-   
-   double    mDecayTime;
-   double    mAttackFactor;
-   double    mDecayFactor;
-   double    mFloor;
-   double    mThreshold;
-   double    mGain;
    double    mRMSSum;
    int       mCircleSize;
    int       mCirclePos;
    double   *mCircle;
    double   *mLevelCircle;
+
+   void Follow(float *buffer, float *env, int len, float *previous, int previous_len);
+   float DoCompression(float x, double env);
+   
+   double    mAttackTime;
+   double    mThresholdDB;
+   double    mNoiseFloorDB;
+   double    mRatio;
+   bool      mNormalize;	//MJS
+   bool      mUseRMS;
+   
+   double    mDecayTime;
+   double    mAttackFactor;
+   double    mAttackInverseFactor;
+   double    mDecayFactor;
+   double    mThreshold;
+   double    mCompression;
+   double    mNoiseFloor;
+   int       mNoiseCounter;
+   double    mGain;
    double    mLastLevel;
+   float	*mFollow1;
+   float	*mFollow2;
+   sampleCount mFollowLen;
 
    double    mMax;			//MJS
 
@@ -101,6 +112,7 @@ public:
    void OnPaint(wxPaintEvent & event);
 
    double threshold;
+   double noisefloor;
    double ratio;
 
 private:
@@ -130,10 +142,12 @@ public:
    bool TransferDataFromWindow();
 
    double threshold;
+   double noisefloor;
    double ratio;
    double attack;
    double decay;
    bool useGain;
+   bool useRMS;
 
 private:
    void OnSize( wxSizeEvent &event );
@@ -146,6 +160,10 @@ private:
    wxStaticText *mThresholdLabel;
    wxSlider *mThresholdSlider;
    wxStaticText *mThresholdText;
+
+   wxStaticText *mNoiseFloorLabel;
+   wxSlider *mNoiseFloorSlider;
+   wxStaticText *mNoiseFloorText;
 
    wxStaticText *mRatioLabel;
    wxSlider *mRatioSlider;
@@ -160,6 +178,7 @@ private:
    wxStaticText *mDecayText;
 
    wxCheckBox *mGainCheckBox;
+   wxCheckBox *mRMSCheckBox;
    
 private:
    DECLARE_EVENT_TABLE()
