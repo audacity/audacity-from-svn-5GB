@@ -40,6 +40,22 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "July 30, 2009",
+        "SourceForge_CCA_2009",
+  _("SourceForge.net Community Choice Awards 2009"),
+  _("
+<p>
+Audacity was voted <b>\"Best Project for Multimedia\"</b> in the
+<a href=\"http://sourceforge.net/community/cca09/\">
+SourceForge.net Community Choice Awards 2009</a>!
+Congratulations to the other winners. Huge thanks to everyone
+who voted, to all who contribute to making Audacity a leader
+in its field, and not least to SourceForge.net for all their 
+support over the years!
+</p>
+"));
+
+add_news_item(
   "July 17, 2009",
   	"1.3.8-release",
   _("Audacity 1.3.8 released"),
