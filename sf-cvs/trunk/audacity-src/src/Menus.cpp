@@ -5115,7 +5115,7 @@ wxString AudacityProject::BuildCleanFileName(wxString fileName)
 //      bool isStereo;
 //      double endTime = project->mTracks->GetEndTime();
 //      double startTime = 0.0;
-      OnSelectAll();
+      //OnSelectAll();
       pathName = gPrefs->Read(wxT("/DefaultOpenPath"), ::wxGetCwd());
       ::wxMessageBox(wxString::Format(wxT("Export recording to %s\n/cleaned/%s.mp3"), 
          pathName.c_str(), justName.c_str()),
