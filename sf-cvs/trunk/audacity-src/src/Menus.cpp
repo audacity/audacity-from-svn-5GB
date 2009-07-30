@@ -4859,7 +4859,6 @@ int AudacityProject::DoAddLabel(double left, double right)
    if (!lt) {
       lt = new LabelTrack(mDirManager);
       mTracks->Add(lt);
-      lt->SetSelected(true);
    }
 
 // LLL: Commented as it seemed a little forceful to remove users
