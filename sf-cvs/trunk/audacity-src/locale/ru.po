@@ -1,15 +1,12 @@
-# Russian translation of Audacity 1.3.8
+# Russian translation of Audacity 1.3.9
 # Copyright (C) 2002,2003, 2004, 2005, 2006 Free Software Foundation, Inc.
-# Alexandre Prokoudine <avp@altlinux.ru>, 2002.
-# Alexandre Prokoudine <avp@altlinux.ru>, 2003, 2004.
-# Alexandre Prokoudine <techwriter@land.ru>, 2004.
-# Alexandre Prokoudine <alexandre.prokoudine@gmail.com>, 2005, 2006.
+# Alexandre Prokoudine <alexandre.prokoudine@gmail.com>, 2002-2009
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-12-06 21:32+0300\n"
-"PO-Revision-Date: 2009-07-14 14:18+0300\n"
+"POT-Creation-Date: 2009-07-30 01:32+0300\n"
+"PO-Revision-Date: 2009-07-30 06:19+0300\n"
 "Last-Translator: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@lists.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -441,6 +438,37 @@ msgstr ""
 #: AudioIO.cpp:1375
 msgid "Latency problem"
 msgstr "Неполадки с задержкой исгнала"
+
+#: AudioIO.cpp:2541
+msgid "Automatic Volume stopped. It was not possible to optimize it more. Still too high."
+msgstr ""
+
+#: AudioIO.cpp:2550
+#, c-format
+msgid "Automatic Volume decreased the volume to %f."
+msgstr ""
+
+#: AudioIO.cpp:2562
+msgid "Automatic Volume stopped. It was not possible to optimize it more. Still too low."
+msgstr ""
+
+#: AudioIO.cpp:2571
+#, c-format
+msgid "Automatic Volume increased the volume to %.2f."
+msgstr ""
+
+#: AudioIO.cpp:2581
+#, c-format
+msgid "Automatic Volume stopped. %.2f seems an aceptable volume."
+msgstr ""
+
+#: AudioIO.cpp:2596
+msgid "Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too high."
+msgstr ""
+
+#: AudioIO.cpp:2598
+msgid "Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too low."
+msgstr ""
 
 #: AutoRecovery.cpp:54
 msgid "Automatic Crash Recovery"
@@ -1422,8 +1450,8 @@ msgid "No Local Help"
 msgstr "Локальная справка отсутствует"
 
 #: HelpText.cpp:176
-msgid "<center><h3>Getting Started</h3></center><br>"
-msgstr ""
+msgid "<center><h3>How to get Help</h3></center>"
+msgstr "<center><h3>Как получить помощь</h3></center>"
 
 #: HelpText.cpp:150
 msgid "Welcome to Audacity "
@@ -1431,27 +1459,31 @@ msgstr "Добро пожаловать в Audacity"
 
 #: HelpText.cpp:178
 msgid "These are our support methods:"
-msgstr ""
+msgstr "Способы получить поддержку таковы:"
 
 #: HelpText.cpp:179
-msgid "   A [[file:quick_help.html|quick guide]] (should be installed locally, <a href=\"http://audacityteam.org/manual/index.php?title=Quick_Help\">internet version if it isn't</a>)"
-msgstr ""
+msgid " [[file:quick_help.html|Quick Help]] (should be installed locally, <a href=\"http://manual.audacityteam.org/index.php?title=Quick_Help\">internet version if it isn't</a>)"
+msgstr " [[file:quick_help.html|Вводный курс]] (должен быть установлен локально; <a href=\"http://manual.audacityteam.org/index.php?title=Quick_Help\">открыть в Интернете, если его нет</a>)"
 
 #: HelpText.cpp:180
-msgid "   Our [[file:index.html|Manual]] (should be installed locally, <a href=\"http://audacityteam.org/manual/index.php\">internet version if it isn't</a>)"
-msgstr ""
+msgid " [[file:index.html|Manual]] (should be installed locally, <a href=\"http://manual.audacityteam.org/index.php\">internet version if it isn't</a>)"
+msgstr " [[file:index.html|Руководство пользователя]] (должно быть установлено локально; <a href=\"http://manual.audacityteam.org/index.php\">открыть версию в Интернете, если его нет</a>)"
 
 #: HelpText.cpp:181
-msgid "   Our [[http://audacityteam.org/wiki/index.php|Wiki]] (on the internet)"
-msgstr ""
+msgid " [[http://wiki.audacityteam.org/index.php|Wiki]] (the latest tips, tricks and tutorials, on the internet)"
+msgstr " [[http://wiki.audacityteam.org/index.php|Вики]] (самые свежие советы, хитрости и уроки; доступны только в Интернете)"
 
 #: HelpText.cpp:182
-msgid "   Our <a href=\"http://audacityteam.org/forum/\">Forum</a> (on the internet)"
-msgstr ""
+msgid " <a href=\"http://forum.audacityteam.org/\">Forum</a> (ask your question directly, on the internet)"
+msgstr " <a href=\"http://forum.audacityteam.org/\">Форум</a> (вы сами задаете вопросы другим пользователям)"
 
-#: HelpText.cpp:192
-msgid "<p>You do not appear to have 'help' installed on your computer.<br> Please try  <a href=\"*URL*\">to view it online</a>."
-msgstr "<p>Похоже, что справка в вашей системе не установлена.<br> Попробуйте <a href=\"*URL*\">прочитать её в Интернете</a>."
+#: HelpText.cpp:183
+msgid " For even quicker answers, all the online resources above are <b>searchable</b>."
+msgstr "Все сетевые ресурсы содержат функцию <b>поиска</b>, так что найти ответ можно еще быстрее."
+
+#: HelpText.cpp:193
+msgid "<p>You do not appear to have 'help' installed on your computer.<br> Please <a href=\"*URL*\">view or download it online</a>."
+msgstr "<p>Похоже, что вводный курс не установлен.<br> Вы можете <a href=\"*URL*\">прочитать его в Интернете или скачать</a>."
 
 #: HistoryWindow.cpp:53
 msgid "Undo History"
@@ -1467,11 +1499,11 @@ msgstr "Действие"
 
 #: HistoryWindow.cpp:86
 msgid "&Undo Levels Available"
-msgstr "&Доступное кол-во уровней отмены"
+msgstr "&Всего уровней отмены:"
 
 #: HistoryWindow.cpp:92
 msgid "Levels To Discard"
-msgstr "Уровней отмены"
+msgstr "От скольких отказаться:"
 
 #: HistoryWindow.cpp:103
 msgid "&Discard"
@@ -1616,7 +1648,7 @@ msgstr "Введите название дорожки"
 #: LabelDialog.h:52
 #: LabelTrack.cpp:92
 msgid "Label Track"
-msgstr ""
+msgstr "Дорожка пометок"
 
 #: LangChoice.cpp:57
 msgid "Audacity First Run"
@@ -1644,10 +1676,10 @@ msgstr ""
 msgid "Opening Audacity Project"
 msgstr "Открывается проект Audacity"
 
-#: LyricsWindow.cpp:45
+#: LyricsWindow.cpp:48
 #, c-format
-msgid "Audacity Lyrics%s"
-msgstr "Либретто в Audacity %s"
+msgid "Audacity Karaoke%s"
+msgstr "Караоке в Audacity%s"
 
 #: LyricsWindow.cpp:77
 msgid "Bouncing Ball"
@@ -1983,9 +2015,13 @@ msgstr "&Показывать перегрузку"
 msgid "&History..."
 msgstr "&История изменений в проекте..."
 
-#: Menus.cpp:530
-msgid "&Lyrics..."
-msgstr "&Либретто..."
+#: Menus.cpp:533
+msgid "&Karaoke..."
+msgstr "&Караоке..."
+
+#: Menus.cpp:536
+msgid "&Mixer Board..."
+msgstr "&Микшер..."
 
 #: Menus.cpp:566
 msgid "&Toolbars"
@@ -2210,11 +2246,11 @@ msgstr "Отсортировать &дорожки"
 
 #: Menus.cpp:717
 msgid "by &Start time"
-msgstr "по &времени начала"
+msgstr "По &времени начала"
 
 #: Menus.cpp:719
 msgid "by &Name"
-msgstr "по н&азванию"
+msgstr "По н&азванию"
 
 #: Menus.cpp:730
 msgid "&Generate"
@@ -2317,7 +2353,7 @@ msgstr "Предыдущий инструмент"
 
 #: Menus.cpp:997
 msgid "Play/Stop"
-msgstr ""
+msgstr "Воспроизведение/Стоп"
 
 #: Menus.cpp:1001
 msgid "Play/Stop and Set Cursor"
@@ -2353,19 +2389,19 @@ msgstr "Вторая клавиша удаления"
 
 #: Menus.cpp:1019
 msgid "Short seek left during playback"
-msgstr ""
+msgstr "Короткий переход влево при воспроизведении"
 
 #: Menus.cpp:1020
 msgid "Short seek right during playback"
-msgstr ""
+msgstr "Короткий переход вправо при воспроизведении"
 
 #: Menus.cpp:1021
 msgid "Long seek left during playback"
-msgstr ""
+msgstr "Длинный переход влево при воспроизведении"
 
 #: Menus.cpp:1022
 msgid "Long Seek right during playback"
-msgstr ""
+msgstr "Длинный переход вправо при воспроизведении"
 
 #: Menus.cpp:1034
 msgid "Move Focus to Previous Track"
@@ -2373,7 +2409,7 @@ msgstr "Перейти на дорожку вверх"
 
 #: Menus.cpp:1027
 msgid "Move Focus to Previous and Select"
-msgstr ""
+msgstr "Переместить фокус на дорожку выше и выделить"
 
 #: Menus.cpp:1036
 msgid "Move Focus to Next Track"
@@ -2381,7 +2417,7 @@ msgstr "Перейти на дорожку вниз"
 
 #: Menus.cpp:1029
 msgid "Move Focus to Next and Select"
-msgstr ""
+msgstr "Переместить фокус на дорожку ниже и выделить"
 
 #: Menus.cpp:1038
 msgid "Toggle Focused Track"
@@ -2389,43 +2425,43 @@ msgstr "Переключить фокус дорожки"
 
 #: Menus.cpp:1033
 msgid "Cursor Left"
-msgstr ""
+msgstr "Курсор влево"
 
 #: Menus.cpp:1034
 msgid "Cursor Right"
-msgstr ""
+msgstr "Курсор вправо"
 
 #: Menus.cpp:1044
 msgid "Cursor Short Jump Left"
-msgstr ""
+msgstr "Короткий переход курсора влево"
 
 #: Menus.cpp:1045
 msgid "Cursor Short Jump Right"
-msgstr ""
+msgstr "Короткий переход курсора вправо"
 
 #: Menus.cpp:1046
 msgid "Cursor Long Jump Left"
-msgstr ""
+msgstr "Длинный переход курсора влево"
 
 #: Menus.cpp:1047
 msgid "Cursor Long Jump Right"
-msgstr ""
+msgstr "Длинный переход курсора вправо"
 
 #: Menus.cpp:1040
 msgid "Selection Extend Left"
-msgstr ""
+msgstr "Расширить выделение влево"
 
 #: Menus.cpp:1041
 msgid "Selection Extend Right"
-msgstr ""
+msgstr "Расширить выделение вправо"
 
 #: Menus.cpp:1052
 msgid "Set (or Extend) Left Selection"
-msgstr ""
+msgstr "Установить/расширить выделение слева"
 
 #: Menus.cpp:1053
 msgid "Set (or Extend) Right Selection"
-msgstr ""
+msgstr "Установить/расширить выделение справа"
 
 #: Menus.cpp:1055
 msgid "Selection Contract Left"
@@ -2489,47 +2525,47 @@ msgstr "Полноэкранный режим"
 
 #: Menus.cpp:1066
 msgid "Adjust output gain"
-msgstr ""
+msgstr "Скорректировать усиление выхода"
 
 #: Menus.cpp:1067
 msgid "Increase output gain"
-msgstr ""
+msgstr "Увеличить усиление выхода"
 
 #: Menus.cpp:1068
 msgid "Decrease output gain"
-msgstr ""
+msgstr "Уменьшить усиление выхода"
 
 #: Menus.cpp:1069
 msgid "Adjust input gain"
-msgstr ""
+msgstr "Скорректировать усиление входа"
 
 #: Menus.cpp:1070
 msgid "Increase input gain"
-msgstr ""
+msgstr "Увеличить усиление входа"
 
 #: Menus.cpp:1071
 msgid "Decrease input gain"
-msgstr ""
+msgstr "Уменьшить усиление входа"
 
 #: Menus.cpp:1073
 msgid "Adjust input source"
-msgstr ""
+msgstr "Изменить источник записи"
 
 #: Menus.cpp:1086
 msgid "Play at speed"
-msgstr ""
+msgstr "Воспроизведение на скорости"
 
 #: Menus.cpp:1087
 msgid "Adjust playback speed"
-msgstr ""
+msgstr "Изменить скорость воспроизведения"
 
 #: Menus.cpp:1088
 msgid "Increase playback speed"
-msgstr ""
+msgstr "Увеличить скорость воспроизведения"
 
 #: Menus.cpp:1089
 msgid "Decrease playback speed"
-msgstr ""
+msgstr "Уменьшить скорость воспроизведения"
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
 #: Menus.cpp:1153
@@ -2582,11 +2618,11 @@ msgstr "Положение"
 
 #: Menus.cpp:2058
 msgid "Set Left Selection Boundary"
-msgstr ""
+msgstr "Установить левую границу выделения"
 
 #: Menus.cpp:2094
 msgid "Set Right Selection Boundary"
-msgstr ""
+msgstr "Установить правую границу выделения"
 
 #: Menus.cpp:2333
 msgid "You must select a track first."
@@ -3033,6 +3069,41 @@ msgstr "Микс"
 #: Mix.cpp:122
 msgid "Mixing and rendering tracks"
 msgstr "Сводятся дорожки"
+
+#. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
+#: TrackPanel.cpp:3449
+#: TrackPanel.cpp:5641
+#: TrackPanel.cpp:7251
+msgid "Pan"
+msgstr "Панорама"
+
+#. i18n-hint: Title of the Gain slider, used to adjust the volume
+#: TrackPanel.cpp:3449
+#: TrackPanel.cpp:5703
+#: TrackPanel.cpp:7244
+msgid "Gain"
+msgstr "Громкость"
+
+#: TrackPanel.cpp:3448
+msgid "Moved pan slider"
+msgstr "Регулятор панорамы смещён"
+
+#: TrackPanel.cpp:3448
+msgid "Moved gain slider"
+msgstr "Регулятор громкости смещён"
+
+#: TrackPanel.cpp:7171
+msgid "Mute"
+msgstr "Тихо"
+
+#: TrackPanel.cpp:7171
+msgid "Solo"
+msgstr "Соло"
+
+#: MixerBoard.cpp:1260
+#, c-format
+msgid "Audacity Mixer Board%s"
+msgstr "Микшер Audacity%s"
 
 #: NoteTrack.cpp:43
 msgid "Note Track"
@@ -4192,28 +4263,6 @@ msgstr "Удалена дорожка '%s.'"
 msgid "Track Remove"
 msgstr "Удалить дорожку"
 
-#: TrackPanel.cpp:3448
-msgid "Moved gain slider"
-msgstr "Регулятор громкости смещён"
-
-#: TrackPanel.cpp:3448
-msgid "Moved pan slider"
-msgstr "Регулятор панорамы смещён"
-
-#. i18n-hint: Title of the Gain slider, used to adjust the volume
-#: TrackPanel.cpp:3449
-#: TrackPanel.cpp:5703
-#: TrackPanel.cpp:7244
-msgid "Gain"
-msgstr "Громкость"
-
-#. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#: TrackPanel.cpp:3449
-#: TrackPanel.cpp:5641
-#: TrackPanel.cpp:7251
-msgid "Pan"
-msgstr "Панорама"
-
 #: TrackPanel.cpp:3576
 #: TrackPanel.cpp:6441
 msgid "up"
@@ -4390,14 +4439,6 @@ msgstr ""
 #: TrackPanel.cpp:6931
 msgid "Stereo, 999999Hz"
 msgstr "Стерео, 999999 Гц"
-
-#: TrackPanel.cpp:7171
-msgid "Mute"
-msgstr "Тихо"
-
-#: TrackPanel.cpp:7171
-msgid "Solo"
-msgstr "Соло"
 
 #: TrackPanelAx.cpp:273
 msgid "TrackView"
@@ -5528,6 +5569,10 @@ msgstr "Найти перегрузки..."
 msgid "Detecting clipping"
 msgstr "Выполняется поиск перегрузки"
 
+#: effects/Generator.cpp:57
+msgid "There is not enough room available to generate the audio"
+msgstr ""
+
 #: effects/Invert.h:27
 msgid "Invert"
 msgstr "Инвертирование"
@@ -6600,19 +6645,6 @@ msgid ""
 "You can configure it at Preferences > Libraries."
 msgstr ""
 
-#: export/ExportFFmpeg.cpp:232
-msgid "AMR support not distributable"
-msgstr ""
-
-#: export/ExportFFmpeg.cpp:232
-msgid ""
-"Properly configured FFmpeg is required to proceed.\n"
-"You can configure it at Preferences > Libraries.\n"
-"\n"
-"Note that AMR support is not available with our FFmpeg\n"
-"installer, but requires you compile FFmpeg yourself."
-msgstr ""
-
 #: export/ExportFFmpeg.cpp:394
 #, c-format
 msgid ""
@@ -6848,6 +6880,8 @@ msgid ""
 "Sample rate (Hz)\n"
 "0 - don't change sample rate"
 msgstr ""
+"Частота сэмплирования (Гц)\n"
+"0 — не менять частоту сэмплирования"
 
 #: export/ExportFFmpegDialogs.cpp:946
 msgid "Cutoff Bandwidth:"
@@ -7058,11 +7092,7 @@ msgid "AC3 Files (FFmpeg)"
 msgstr "Файлы AC3 (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:56
-msgid "AMR (narrow band) Files (FFmpeg, undistributable)"
-msgstr ""
-
-#: export/ExportFFmpegDialogs.h:57
-msgid "AMR (wide band) Files (FFmpeg, undistributable)"
+msgid "AMR (narrow band) Files (FFmpeg)"
 msgstr ""
 
 #: export/ExportFFmpegDialogs.h:57
@@ -8166,6 +8196,50 @@ msgstr ""
 "Изменения касательно каталога для хранения временных файлов \n"
 "не возымеют эффекта, пока программа Audacity не будет перезагружена."
 
+#: prefs/EffectsPrefs.cpp:32
+msgid "Effects"
+msgstr "Эффекты"
+
+#: prefs/EffectsPrefs.cpp:56
+msgid "Enable"
+msgstr "Управление доступностью эффектов"
+
+#: prefs/EffectsPrefs.cpp:59
+msgid "Audio Unit effects"
+msgstr "Эффекты Audio Unit"
+
+#: prefs/EffectsPrefs.cpp:65
+msgid "LADSPA effects"
+msgstr "Эффекты LADSPA"
+
+#: prefs/EffectsPrefs.cpp:71
+msgid "Nyquist effects"
+msgstr "Эффекты Nyquist"
+
+#: prefs/EffectsPrefs.cpp:77
+msgid "VAMP effects"
+msgstr "Эффекты VAMP"
+
+#: prefs/EffectsPrefs.cpp:83
+msgid "VST effects"
+msgstr "Эффекты VST"
+
+#: prefs/EffectsPrefs.cpp:87
+msgid "Restart Audacity to apply changes."
+msgstr "Изменения возымеют силу при следующем запуске Audacity."
+
+#: prefs/EffectsPrefs.cpp:92
+msgid "Mode"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:95
+msgid "Display VST effects in graphical mode"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:101
+msgid "Display Audio Unit effects in graphical mode"
+msgstr ""
+
 #: prefs/GUIPrefs.cpp:49
 msgid "Local"
 msgstr "Локально"
@@ -8231,8 +8305,8 @@ msgid "Er&gonomic order of audio I/O buttons"
 msgstr "&Эргономичный порядок контрольных кнопок"
 
 #: prefs/GUIPrefs.cpp:99
-msgid "Show &support message at program start up"
-msgstr ""
+msgid "Show '&How to get Help' message at program start up"
+msgstr "Показать диалог «Как получить помощь» сразу после запуска программы"
 
 #: prefs/GUIPrefs.cpp:109
 msgid "Meter/Waveform dB range:"
@@ -8253,10 +8327,6 @@ msgstr "Извещать звуком о завершении &длительн�
 #: prefs/GUIPrefs.cpp:126
 msgid "Modes"
 msgstr "Режимы"
-
-#: prefs/GUIPrefs.cpp:147
-msgid "Display VST effects in GUI mode"
-msgstr "Загружать собственный интерфейс эффектов VST"
 
 #: prefs/GUIPrefs.cpp:129
 msgid "Don't a&pply effects in batch mode"
@@ -8539,7 +8609,7 @@ msgstr "Кнопки"
 #: prefs/MousePrefs.cpp:117
 #: prefs/MousePrefs.cpp:122
 msgid "Left-Click"
-msgstr "Левая клавиша-Щелчок"
+msgstr "Щелчок левой клавишей"
 
 #: prefs/MousePrefs.cpp:98
 #: prefs/MousePrefs.cpp:99
@@ -8561,7 +8631,7 @@ msgstr "Установить точку выделения"
 #: prefs/MousePrefs.cpp:119
 #: prefs/MousePrefs.cpp:123
 msgid "Left-Drag"
-msgstr "Левая клавиша-Перетаскивание"
+msgstr "Перетаскивание левой клавишей"
 
 #: prefs/MousePrefs.cpp:99
 #: prefs/MousePrefs.cpp:123
@@ -8574,23 +8644,23 @@ msgstr "Расширить область выделения"
 
 #: prefs/MousePrefs.cpp:100
 msgid "Shift-Left-Click"
-msgstr "Shift-Left-Щелчок"
+msgstr "Shift-Щелчок левой клавишей"
 
 #: prefs/MousePrefs.cpp:101
 msgid "Left-Double-Click"
-msgstr ""
+msgstr "Двойной щелчок левой клавишей"
 
 #: prefs/MousePrefs.cpp:101
 msgid "Select Clip or Entire Track"
-msgstr ""
+msgstr "Выделить клип или целую дорожку"
 
 #: prefs/MousePrefs.cpp:102
 msgid "Ctrl-Left-Click"
-msgstr ""
+msgstr "Ctrl-Щелчок левой клавишей"
 
 #: prefs/MousePrefs.cpp:102
 msgid "Set Selection Point and Play"
-msgstr ""
+msgstr "Запустить воспроизведение с нужного места"
 
 #: prefs/MousePrefs.cpp:104
 #: prefs/MousePrefs.cpp:105
@@ -8618,7 +8688,7 @@ msgstr "То же, что и перетаскивание правой клав�
 #: prefs/MousePrefs.cpp:106
 #: prefs/MousePrefs.cpp:124
 msgid "Right-Click"
-msgstr "Правая клавиша-Щелчок"
+msgstr "Щелчок правой клавишей"
 
 #: prefs/MousePrefs.cpp:106
 #: prefs/MousePrefs.cpp:124
@@ -8628,7 +8698,7 @@ msgstr "Отдалить на один шаг"
 #: prefs/MousePrefs.cpp:107
 #: prefs/MousePrefs.cpp:125
 msgid "Right-Drag"
-msgstr "Правая клавиша - Перетаскивание"
+msgstr "Перетаскивание правой клавишей"
 
 #: prefs/MousePrefs.cpp:107
 msgid "same as left-drag"
@@ -8636,27 +8706,27 @@ msgstr "То же, что и перетаскивание левой клави�
 
 #: prefs/MousePrefs.cpp:108
 msgid "Shift-Drag"
-msgstr ""
+msgstr "Shift-Перетаскивание"
 
 #: prefs/MousePrefs.cpp:108
 msgid "Zoom out on a Range"
-msgstr ""
+msgstr "Уменьшить масштаб в область"
 
 #: prefs/MousePrefs.cpp:109
 msgid "Middle-Click"
-msgstr ""
+msgstr "Щелчок средней клавишей"
 
 #: prefs/MousePrefs.cpp:109
 msgid "Zoom default"
-msgstr ""
+msgstr "Масштаб по умолчанию"
 
 #: prefs/MousePrefs.cpp:111
 msgid "Time shift clip or move up/down between tracks"
-msgstr ""
+msgstr "Переместить клип во времени или вверх-вниз"
 
 #: prefs/MousePrefs.cpp:112
 msgid "Shift-Left-Drag"
-msgstr "Shift-Left-Перетаскивание"
+msgstr "Shift-Перетаскивание левой клавишей"
 
 #: prefs/MousePrefs.cpp:112
 msgid "Time shift all clips in track"
@@ -8665,7 +8735,7 @@ msgstr "Сместить во времени все области в дорож
 #: prefs/MousePrefs.cpp:113
 #: prefs/MousePrefs.cpp:120
 msgid "Ctrl-Left-Drag"
-msgstr "Ctrl-Left-Перетаскивание"
+msgstr "Ctrl-Перетаскивание левой клавишей"
 
 #: prefs/MousePrefs.cpp:113
 msgid "Move clip up/down between tracks"
@@ -8688,7 +8758,7 @@ msgstr "Карандаш"
 
 #: prefs/MousePrefs.cpp:118
 msgid "Alt-Left-Click"
-msgstr "Alt-Щелчок левой кнопкой мыши"
+msgstr "Alt-Щелчок левой клавишей"
 
 #: prefs/MousePrefs.cpp:118
 msgid "Smooth at Sample"
@@ -8731,19 +8801,19 @@ msgstr "Прокрутить вверх или вниз"
 
 #: prefs/MousePrefs.cpp:127
 msgid "Wheel-Rotate"
-msgstr "Вращение колеса"
+msgstr "Вращение колесом мыши"
 
 #: prefs/MousePrefs.cpp:128
 msgid "Scroll left or right"
-msgstr ""
+msgstr "Прокрутка влево или вправо"
 
 #: prefs/MousePrefs.cpp:128
 msgid "Shift-Wheel-Rotate"
-msgstr ""
+msgstr "Shift-Вращение колесом"
 
 #: prefs/MousePrefs.cpp:129
 msgid "Ctrl-Wheel-Rotate"
-msgstr "Ctrl-Поворот-Колёсиком"
+msgstr "Ctrl-Вращение колесом"
 
 #: prefs/MousePrefs.cpp:129
 msgid "Zoom in or out"
@@ -8878,6 +8948,38 @@ msgstr "Запись с активацией по уровню громкост�
 #: prefs/SmartRecordPrefs.cpp:71
 msgid "Sound Activation Level (dB):"
 msgstr "Уровень громкости (Дб):"
+
+#: prefs/RecordingPrefs.cpp:128
+msgid "Automatic Volume Recording"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:130
+msgid "Enable Automatic Volume recording."
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:138
+msgid "Best Peak Volume:"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:144
+msgid "Delta Peak Volume:"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:154
+msgid "Analysis Time:"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:158
+msgid "milliseconds (time of one analysis)"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:160
+msgid "Number of consecutive analysis:"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:164
+msgid "0 means endless"
+msgstr ""
 
 #: prefs/SpectrumPrefs.cpp:41
 #: prefs/SpectrumPrefs.cpp:42
@@ -9332,11 +9434,11 @@ msgstr ""
 
 #: toolbars/MixerToolBar.cpp:300
 msgid "Select Input Source"
-msgstr ""
+msgstr "Выберите источник записи"
 
 #: toolbars/MixerToolBar.cpp:314
 msgid "Input Source:"
-msgstr ""
+msgstr "Источник записи:"
 
 #: toolbars/SelectionBar.cpp:86
 msgid "Selection"
@@ -9644,10 +9746,6 @@ msgstr "Вертикальная ориентация"
 #: widgets/Meter.cpp:425
 msgid "Preferences..."
 msgstr "Параметры..."
-
-#: widgets/Meter.cpp:876
-msgid "Mix Volume"
-msgstr "Микс"
 
 #: widgets/Meter.cpp:1133
 msgid ""
