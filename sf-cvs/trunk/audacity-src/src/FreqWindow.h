@@ -87,6 +87,7 @@ class FreqWindow:public wxDialog {
    int mFunc;
    int mAxis;
    int dBRange;
+   AudacityProject *p;
 
 #ifdef __WXMSW__
    static const int fontSize = 8;
