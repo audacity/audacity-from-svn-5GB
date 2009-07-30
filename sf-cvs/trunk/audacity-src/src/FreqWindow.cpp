@@ -142,6 +142,9 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    mRate = 0;
    mDataLen = 0;
    mBuffer = NULL;
+   p = GetActiveProject();
+   if (!p)
+      return;
 
    mFreqFont = wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
@@ -397,7 +400,6 @@ void FreqWindow::GetAudio()
    int selcount = 0;
    int i;
    bool warning = false;
-   AudacityProject *p = GetActiveProject();
    TrackListIterator iter(p->GetTracks());
    Track *t = iter.First();
    while (t) {
@@ -1269,10 +1271,6 @@ void FreqWindow::OnReplot(wxCommandEvent & WXUNUSED(event))
       dBRange = 90.;
    GetAudio();
    
-   AudacityProject* p = GetActiveProject();
-   if (!p)
-      return;
-
    if(p->mFreqWindow)
       p->mFreqWindow->Plot();
 }
@@ -1283,10 +1281,6 @@ void FreqWindow::OnGridOnOff(wxCommandEvent & WXUNUSED(event))
       mDrawGrid = true;
    else
       mDrawGrid = false;
-
-   AudacityProject* p = GetActiveProject();
-   if (!p)
-      return;
 
    if(p->mFreqWindow)
       p->mFreqWindow->Plot();
