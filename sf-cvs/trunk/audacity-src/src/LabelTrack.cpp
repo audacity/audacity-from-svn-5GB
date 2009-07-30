@@ -1417,7 +1417,7 @@ bool LabelTrack::CaptureKey(wxKeyEvent & event)
          AudacityProject * pProj = GetActiveProject();
          CommandManager * cm = pProj->GetCommandManager();
          if (pProj->GetAudioIOToken() > 0 && gAudioIO->IsStreamActive(pProj->GetAudioIOToken()) &&
-            cm && cm->GetKeyFromName("AddLabelPlaying") == keyCode)
+            cm && cm->GetKeyFromName(wxT("AddLabelPlaying")) == keyCode)
             return false;
 
          // IF Label already there, then don't add a new one on typing.
