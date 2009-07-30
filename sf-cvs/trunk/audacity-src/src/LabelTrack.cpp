@@ -55,6 +55,7 @@ for drawing different aspects of the label and its text box.
 #include "AllThemeResources.h"
 #include "AColor.h"
 #include "Project.h"
+#include "commands/CommandManager.h"
 
 wxFont LabelTrack::msFont;
 
@@ -1414,6 +1415,11 @@ bool LabelTrack::CaptureKey(wxKeyEvent & event)
    {
       if( IsGoodLabelFirstCharacter(keyCode, charCode) && !event.CmdDown() ){
          AudacityProject * pProj = GetActiveProject();
+         CommandManager * cm = pProj->GetCommandManager();
+         if (pProj->GetAudioIOToken() > 0 && gAudioIO->IsStreamActive(pProj->GetAudioIOToken()) &&
+            cm && cm->GetKeyFromName("AddLabelPlaying") == keyCode)
+            return false;
+
          // IF Label already there, then don't add a new one on typing.
          if( GetLabelIndex( pProj->mViewInfo.sel0,  pProj->mViewInfo.sel1) != wxNOT_FOUND )
             return false;
@@ -1571,7 +1577,7 @@ bool LabelTrack::OnKeyDown(double & newSel0, double & newSel1, wxKeyEvent & even
          }
          break;
 
-      case WXK_RETURN:
+      case WXK_RETURN: 
       case WXK_NUMPAD_ENTER:
 
       case WXK_ESCAPE:
