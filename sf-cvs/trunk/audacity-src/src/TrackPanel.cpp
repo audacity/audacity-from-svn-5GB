@@ -3553,7 +3553,11 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
       #endif
    }
 
-   RefreshTrack(mCapturedTrack);
+   VisibleTrackIterator iter(GetProject());
+   for (Track *t = iter.First(); t; t = iter.Next())
+   {
+      RefreshTrack(t);
+   }
 
    if (event.ButtonUp()) {
       MakeParentPushState(pan ? _("Moved pan slider") : _("Moved gain slider"),
