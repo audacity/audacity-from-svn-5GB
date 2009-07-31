@@ -599,8 +599,8 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect, wxWindow *parent)
 {
    Init();
 
-   SetSizeHints(500, 300);
-   SetSize(500, 400);
+   SetSizeHints(500, 400);
+   SetSize(500, 500);
 }
 
 void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
