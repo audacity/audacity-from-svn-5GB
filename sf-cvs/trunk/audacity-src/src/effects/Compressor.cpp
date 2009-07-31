@@ -61,7 +61,6 @@ EffectCompressor::EffectCompressor()
    mNoiseFloorDB = -40.0;
    mNoiseFloor = 0.01;
 	mCircle = NULL;
-	mLevelCircle = NULL;
 	mFollow1 = NULL;
 	mFollow2 = NULL;
 	mFollowLen = 0;
@@ -86,10 +85,6 @@ EffectCompressor::~EffectCompressor()
    if (mCircle) {
       delete[] mCircle;
       mCircle = NULL;
-   }
-   if (mLevelCircle) {
-      delete[] mLevelCircle;
-      mLevelCircle = NULL;
    }
    if(mFollow1!=NULL) {
 	   delete[] mFollow1;
@@ -170,14 +165,10 @@ bool EffectCompressor::NewTrackPass1()
 
    if (mCircle)
       delete[] mCircle;
-   if (mLevelCircle)
-      delete[] mLevelCircle;
    mCircleSize = 100;
    mCircle = new double[mCircleSize];
-   mLevelCircle = new double[mCircleSize];
    for(int j=0; j<mCircleSize; j++) {
       mCircle[j] = 0.0;
-      mLevelCircle[j] = mThreshold;
    }
    mCirclePos = 0;
    mRMSSum = 0.0;
@@ -304,7 +295,6 @@ float EffectCompressor::AvgCircle(float value)
    mCircle[mCirclePos] = value*value;
    mRMSSum += mCircle[mCirclePos];
    level = sqrt(mRMSSum/mCircleSize);
-   mLevelCircle[mCirclePos] = level;
    mCirclePos = (mCirclePos+1)%mCircleSize;
 
    return level;
@@ -436,13 +426,6 @@ float EffectCompressor::DoCompression(float value, double env)
       out = value * pow(1.0/env, mCompression);
    }
 
-   // If we aren't doing a normalization pass, clip the signal
-   if(!mNormalize) {
-	   if (out > 1.0)
-		  out = 1.0;
-	   if (out < -1.0)
-		  out = -1.0;
-   }
    // Retain the maximum value for use in the normalization pass
    if(mMax < fabs(out))
 	   mMax = fabs(out);
@@ -635,7 +618,7 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
       S.SetBorder(10);
       mPanel = new CompressorPanel(S.GetParent(), wxID_ANY);
       mPanel->threshold = threshold;
-	  mPanel->noisefloor = noisefloor;
+      mPanel->noisefloor = noisefloor;
       mPanel->ratio = ratio;
       S.Prop(true).AddWindow(mPanel, wxEXPAND | wxALL);
       S.SetBorder(5);
@@ -689,7 +672,7 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
 
    S.StartHorizontalLay(wxCENTER, false);
    {
-      mGainCheckBox = S.AddCheckBox(_("Normalize to 0dB after compressing"),
+      mGainCheckBox = S.AddCheckBox(_("Make-up gain for 0dB after compressing"),
                                     wxT("true"));
       mRMSCheckBox = S.AddCheckBox(_("Compress based on RMS"),
                                     wxT("false"));

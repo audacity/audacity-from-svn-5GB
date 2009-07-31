@@ -71,7 +71,6 @@ public:
    int       mCircleSize;
    int       mCirclePos;
    double   *mCircle;
-   double   *mLevelCircle;
 
    void Follow(float *buffer, float *env, int len, float *previous, int previous_len);
    float DoCompression(float x, double env);
