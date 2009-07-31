@@ -257,6 +257,7 @@ class ASlider :public wxPanel
    LWSlider *mLWSlider;
    bool mSliderIsFocused;
 
+ protected:
    int mStyle;
 
  public:
