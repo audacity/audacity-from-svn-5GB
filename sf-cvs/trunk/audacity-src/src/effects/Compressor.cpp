@@ -625,50 +625,54 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
    }
    S.EndHorizontalLay();
 
-   S.StartMultiColumn(3, wxEXPAND | wxALIGN_CENTER_VERTICAL);
+   S.StartStatic(wxT(""));
    {
-      S.SetStretchyCol(1);
-      mThresholdLabel = S.AddVariableText(_("Threshold:"), true,
-                                          wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-      S.SetStyle(wxSL_HORIZONTAL);
-      mThresholdSlider = S.Id(ThresholdID).AddSlider(wxT(""), -12, -1, -60);
-      mThresholdSlider->SetName(_("Threshold"));
-      mThresholdText = S.AddVariableText(wxT("XXX dB"), true,
+      S.StartMultiColumn(3, wxEXPAND | wxALIGN_CENTER_VERTICAL);
+      {
+         S.SetStretchyCol(1);
+         mThresholdLabel = S.AddVariableText(_("Threshold:"), true,
+                                             wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+         S.SetStyle(wxSL_HORIZONTAL);
+         mThresholdSlider = S.Id(ThresholdID).AddSlider(wxT(""), -12, -1, -60);
+         mThresholdSlider->SetName(_("Threshold"));
+         mThresholdText = S.AddVariableText(wxT("XXX dB"), true,
+                                            wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+
+         mNoiseFloorLabel = S.AddVariableText(_("Noise Floor:"), true,
+                                             wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+         S.SetStyle(wxSL_HORIZONTAL);
+         mNoiseFloorSlider = S.Id(NoiseFloorID).AddSlider(wxT(""), -8, -4, -16);
+         mNoiseFloorSlider->SetName(_("Noise Floor"));
+         mNoiseFloorText = S.AddVariableText(wxT("XXX dB"), true,
+                                            wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+
+         mRatioLabel = S.AddVariableText(_("Ratio:"), true,
+                                         wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+         S.SetStyle(wxSL_HORIZONTAL);
+         mRatioSlider = S.Id(RatioID).AddSlider(wxT(""), 4, 20, 3);
+         mRatioSlider->SetName(_("Ratio"));
+         mRatioText = S.AddVariableText(wxT("XXXX:1"), true,
+                                             wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+
+         mAttackLabel = S.AddVariableText(_("Attack Time:"), true,
+                                         wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+         S.SetStyle(wxSL_HORIZONTAL);
+         mAttackSlider = S.Id(AttackID).AddSlider(wxT(""), 2, 50, 1);
+         mAttackSlider->SetName(_("Attack Time"));
+         mAttackText = S.AddVariableText(wxT("XXXX secs"), true,
                                          wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
 
-      mNoiseFloorLabel = S.AddVariableText(_("Noise Floor:"), true,
-                                          wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-      S.SetStyle(wxSL_HORIZONTAL);
-      mNoiseFloorSlider = S.Id(NoiseFloorID).AddSlider(wxT(""), -8, -4, -16);
-      mNoiseFloorSlider->SetName(_("Noise Floor"));
-      mNoiseFloorText = S.AddVariableText(wxT("XXX dB"), true,
-                                         wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
-
-      mRatioLabel = S.AddVariableText(_("Ratio:"), true,
-                                      wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-      S.SetStyle(wxSL_HORIZONTAL);
-      mRatioSlider = S.Id(RatioID).AddSlider(wxT(""), 4, 20, 3);
-      mRatioSlider->SetName(_("Ratio"));
-      mRatioText = S.AddVariableText(wxT("XXXX:1"), true,
-                                          wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
-
-      mAttackLabel = S.AddVariableText(_("Attack Time:"), true,
-                                      wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-      S.SetStyle(wxSL_HORIZONTAL);
-      mAttackSlider = S.Id(AttackID).AddSlider(wxT(""), 2, 50, 1);
-      mAttackSlider->SetName(_("Attack Time"));
-      mAttackText = S.AddVariableText(wxT("XXXX secs"), true,
-                                      wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
-
-      mDecayLabel = S.AddVariableText(_("Decay Time:"), true,
-                                      wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-      S.SetStyle(wxSL_HORIZONTAL);
-      mDecaySlider = S.Id(DecayID).AddSlider(wxT(""), 2, 30, 1);
-      mDecaySlider->SetName(_("Decay Time"));
-      mDecayText = S.AddVariableText(wxT("XXXX secs"), true,
-                                     wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+         mDecayLabel = S.AddVariableText(_("Decay Time:"), true,
+                                         wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
+         S.SetStyle(wxSL_HORIZONTAL);
+         mDecaySlider = S.Id(DecayID).AddSlider(wxT(""), 2, 30, 1);
+         mDecaySlider->SetName(_("Decay Time"));
+         mDecayText = S.AddVariableText(wxT("XXXX secs"), true,
+                                        wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL);
+      }
+      S.EndMultiColumn();
    }
-   S.EndMultiColumn();
+   S.EndStatic();
 
    S.StartHorizontalLay(wxCENTER, false);
    {
