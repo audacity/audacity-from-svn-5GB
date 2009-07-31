@@ -30,6 +30,45 @@
    #include "../images/AudacityLogo48x48.xpm"
 #endif
 
+
+// class MixerTrackSlider
+
+BEGIN_EVENT_TABLE(MixerTrackSlider, ASlider)
+   EVT_MOUSE_EVENTS(MixerTrackSlider::OnMouseEvent)
+END_EVENT_TABLE()
+
+MixerTrackSlider::MixerTrackSlider(wxWindow * parent,
+                                    wxWindowID id,
+                                    wxString name,
+                                    const wxPoint & pos, 
+                                    const wxSize & size,
+                                    int style /*= FRAC_SLIDER*/,
+                                    bool popup /*= true*/,
+                                    bool canUseShift /*= true*/,
+                                    float stepValue /*= STEP_CONTINUOUS*/, 
+                                    int orientation /*= wxHORIZONTAL*/)
+: ASlider(parent, id, name, pos, size,
+            style, popup, canUseShift, stepValue, orientation)
+{
+}
+
+void MixerTrackSlider::OnMouseEvent(wxMouseEvent &event)
+{
+   ASlider::OnMouseEvent(event);
+
+   if (event.ButtonUp())
+   {
+      MixerTrackCluster* pMixerTrackCluster = (MixerTrackCluster*)(this->GetParent());
+      switch (mStyle)
+      {
+      case DB_SLIDER: pMixerTrackCluster->HandleSliderGain(true); break;
+      case PAN_SLIDER: pMixerTrackCluster->HandleSliderPan(true); break;
+      default: break; // no-op
+      }
+   }
+}
+
+
 // class MixerTrackCluster
 
 #define kInset 4
@@ -52,7 +91,7 @@ enum {
    ID_MUSICAL_INSTRUMENT_IMAGE = 13000, 
    ID_TOGGLEBUTTON_MUTE, 
    ID_TOGGLEBUTTON_SOLO,
-   ID_ASLIDER_PAN,
+   ID_SLIDER_PAN,
    ID_SLIDER_GAIN,
 };
 
@@ -62,7 +101,7 @@ BEGIN_EVENT_TABLE(MixerTrackCluster, wxPanel)
    EVT_COMMAND(ID_TOGGLEBUTTON_MUTE, wxEVT_COMMAND_BUTTON_CLICKED, MixerTrackCluster::OnButton_Mute)
    EVT_COMMAND(ID_TOGGLEBUTTON_SOLO, wxEVT_COMMAND_BUTTON_CLICKED, MixerTrackCluster::OnButton_Solo)
    EVT_PAINT(MixerTrackCluster::OnPaint)
-   EVT_SLIDER(ID_ASLIDER_PAN, MixerTrackCluster::OnSlider_Pan)
+   EVT_SLIDER(ID_SLIDER_PAN, MixerTrackCluster::OnSlider_Pan)
    EVT_SLIDER(ID_SLIDER_GAIN, MixerTrackCluster::OnSlider_Gain)
    //v EVT_COMMAND_SCROLL(ID_SLIDER_GAIN, MixerTrackCluster::OnSliderScroll_Gain)
 END_EVENT_TABLE()
@@ -144,7 +183,8 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
       ctrlSize.x--;
 
    /* i18n-hint: Title of the Pan slider, used to move the sound left or right */
-   mSlider_Pan = new ASlider(this, ID_ASLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER, true); 
+   mSlider_Pan = 
+      new MixerTrackSlider(this, ID_SLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER, true); 
 
    this->UpdatePan();
 
@@ -160,7 +200,8 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
 
    /* i18n-hint: Title of the Gain slider, used to adjust the volume */
    mSlider_Gain = 
-      new ASlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER, true, true, 0.0, wxVERTICAL);
+      new MixerTrackSlider(this, ID_SLIDER_GAIN, _("Gain"), ctrlPos, ctrlSize, DB_SLIDER, true, 
+                           true, 0.0, wxVERTICAL);
 
    // too much color:   mSlider_Gain->SetBackgroundColour(this->GetTrackColor());
    // too dark:   mSlider_Gain->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_3DSHADOW));
@@ -194,6 +235,34 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
       this->OnSize(dummyEvent);
       UpdateGain();
    #endif
+}
+
+void MixerTrackCluster::HandleSliderGain(const bool bWantPushState /*= false*/)
+{
+   float fValue = mSlider_Gain->Get();
+   mLeftTrack->SetGain(fValue);
+   if (mRightTrack)
+      mRightTrack->SetGain(fValue);
+
+   // Update the TrackPanel correspondingly. 
+   mProject->RefreshTPTrack(mLeftTrack);
+
+   if (bWantPushState)
+      mProject->TP_PushState(_("Moved gain slider"), _("Gain"), true /* consolidate */);
+}
+
+void MixerTrackCluster::HandleSliderPan(const bool bWantPushState /*= false*/)
+{
+   float fValue = mSlider_Pan->Get();
+   mLeftTrack->SetPan(fValue);
+   if (mRightTrack)
+      mRightTrack->SetPan(fValue);
+
+   // Update the TrackPanel correspondingly. 
+   mProject->RefreshTPTrack(mLeftTrack);
+
+   if (bWantPushState)
+      mProject->TP_PushState(_("Moved pan slider"), _("Pan"), true /* consolidate */);
 }
 
 void MixerTrackCluster::ResetMeter()
@@ -352,7 +421,9 @@ wxColour MixerTrackCluster::GetTrackColor()
    //#endif
 }
 
+
 // event handlers
+
 void MixerTrackCluster::OnKeyEvent(wxKeyEvent & event)
 {
    mProject->HandleKeyDown(event);
@@ -439,9 +510,7 @@ void MixerTrackCluster::OnButton_Mute(wxCommandEvent& event)
    mToggleButton_Mute->SetAlternate(mLeftTrack->GetSolo());
 
    // Update the TrackPanel correspondingly. 
-   // Calling RedrawProject is inefficient relative to sending a msg to TrackPanel 
-   // for a particular track and control, but not a real performance hit.
-   mProject->RedrawProject();
+   mProject->RefreshTPTrack(mLeftTrack);
 }
 
 void MixerTrackCluster::OnButton_Solo(wxCommandEvent& event)
@@ -461,37 +530,17 @@ void MixerTrackCluster::OnButton_Solo(wxCommandEvent& event)
    mToggleButton_Mute->SetAlternate(bValue);
 
    // Update the TrackPanel correspondingly. 
-   // Calling RedrawProject is inefficient relative to sending a msg to TrackPanel 
-   // for a particular track and control, but not a real performance hit.
-   mProject->RedrawProject(); 
-}
-
-void MixerTrackCluster::OnSlider_Pan(wxCommandEvent& event)
-{
-   float fValue = mSlider_Pan->Get();
-   mLeftTrack->SetPan(fValue);
-   if (mRightTrack)
-      mRightTrack->SetPan(fValue);
-   mProject->TP_PushState(_("Moved pan slider"), _("Pan"), true /* consolidate */);
-
-   // Update the TrackPanel correspondingly. 
-   // Calling RedrawProject is inefficient relative to sending a msg to TrackPanel 
-   // for a particular track and control, but not a real performance hit.
-   mProject->RedrawProject();
+   mProject->RefreshTPTrack(mLeftTrack);
 }
 
 void MixerTrackCluster::OnSlider_Gain(wxCommandEvent& event)
 {
-   float fValue = mSlider_Gain->Get();
-   mLeftTrack->SetGain(fValue);
-   if (mRightTrack)
-      mRightTrack->SetGain(fValue);
-   mProject->TP_PushState(_("Moved gain slider"), _("Gain"), true /* consolidate */);
+   this->HandleSliderGain();
+}
 
-   // Update the TrackPanel correspondingly. 
-   // Calling RedrawProject is inefficient relative to sending a msg to TrackPanel 
-   // for a particular track and control, but not a real performance hit.
-   mProject->RedrawProject();
+void MixerTrackCluster::OnSlider_Pan(wxCommandEvent& event)
+{
+   this->HandleSliderPan();
 }
 
 //v void MixerTrackCluster::OnSliderScroll_Gain(wxScrollEvent& event)
@@ -909,6 +958,7 @@ void MixerBoard::UniquelyMuteOrSolo(const WaveTrack* pTargetLeftTrack, bool bSol
    }
    else 
       this->UpdateMute(); // Update all the MixerTrackCluster mute buttons.
+
    mProject->RedrawProject(); // Update all the TrackLabel mute/solo buttons.
 }
 
