@@ -1272,6 +1272,8 @@ ASlider::ASlider( wxWindow * parent,
 
    mSliderIsFocused = false;
 
+   mStyle = style;
+
 #if wxUSE_ACCESSIBILITY
    SetAccessible( new ASliderAx( this ) );
 #endif
