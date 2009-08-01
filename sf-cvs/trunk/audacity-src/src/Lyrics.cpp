@@ -89,6 +89,8 @@ Lyrics::Lyrics(wxWindow* parent, wxWindowID id,
    mLyricsStyle = kBouncingBallLyrics; // default
    mKaraokeFontSize = this->GetDefaultFontSize(); // Call only after mLyricsStyle is set.
 
+   this->SetBackgroundColour(*wxWHITE);
+
    mHighlightTextCtrl = 
       new HighlightTextCtrl(this, -1, // wxWindow* parent, wxWindowID id, 
                               wxT(""), // const wxString& value = wxT(""), 
@@ -499,6 +501,8 @@ void Lyrics::OnSize(wxSizeEvent &evt)
       mHighlightTextCtrl->SetSize(mWidth, mKaraokeHeight);
       this->SetHighlightFont();
    }
+
+   this->Refresh(false);
 }
 
 //v Doesn't seem to be a way to capture a selection event in a read-only wxTextCtrl.
