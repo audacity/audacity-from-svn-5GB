@@ -156,8 +156,8 @@ void KeyConfigPrefs::PopulateOrExchange(ShuttleGui & S)
          }
          S.AddWindow(mKey);
 
-         S.Id(SetButtonID).AddButton(_("S&et"));
-         S.Id(ClearButtonID).AddButton(_("&Clear"));
+         S.Id(SetButtonID).AddButton(_("Se&t"));
+         S.Id(ClearButtonID).AddButton(_("Cl&ear"));
       }
       S.EndThreeColumn();
 
