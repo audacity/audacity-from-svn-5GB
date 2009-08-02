@@ -79,6 +79,7 @@ public:
    void UpdateHeight(); // For wxSizeEvents, update gain slider and meter.
 
    // These are used by TrackPanel for synchronizing control states, etc.
+   void UpdateForStateChange(); // Update the controls that can be affected by state change.
    void UpdateName();
    void UpdateMute();
    void UpdateSolo();

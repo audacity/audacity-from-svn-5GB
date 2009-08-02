@@ -81,12 +81,6 @@ void MixerTrackSlider::OnMouseEvent(wxMouseEvent &event)
 #define MUTE_SOLO_HEIGHT 16
 #define PAN_HEIGHT 24
 
-// If we decide we want more than 1 frame, base it on sample rate. 
-const int kFramesPerBuffer = 4; // for calls to mMeter->UpdateDisplay
-
-const int kGainSliderMin = -36; 
-const int kGainSliderMax = 6; // headroom convention to match typical mixer boards layout
-
 enum {
    ID_MUSICAL_INSTRUMENT_IMAGE = 13000, 
    ID_TOGGLEBUTTON_MUTE, 
@@ -302,6 +296,15 @@ void MixerTrackCluster::UpdateHeight() // For wxSizeEvents, update gain slider a
 
 
 // These are used by TrackPanel for synchronizing control states, etc.
+
+// Update the controls that can be affected by state change.
+void MixerTrackCluster::UpdateForStateChange() 
+{
+   this->UpdateName();
+   this->UpdatePan();
+   this->UpdateGain();
+}
+
 void MixerTrackCluster::UpdateName()
 {
    mStaticText_TrackName->SetLabel(mLeftTrack->GetName()); 
@@ -346,6 +349,7 @@ void MixerTrackCluster::UpdateMeter(double t0, double t1)
       return;
    }
 
+   const int kFramesPerBuffer = 4; 
    float min; // A dummy, since it's not shown in meters. 
    float* maxLeft = new float[kFramesPerBuffer];
    float* rmsLeft = new float[kFramesPerBuffer];
@@ -631,7 +635,7 @@ void MixerBoardScrolledWindow::OnMouseEvent(wxMouseEvent& event)
 // class MixerBoard
 
 #define MIXER_BOARD_MIN_HEIGHT      500
-#define MIXER_TRACK_CLUSTER_WIDTH   100 - kInset
+#define MIXER_TRACK_CLUSTER_WIDTH   120
 #define MIXER_BOARD_MIN_WIDTH       kDoubleInset + MIXER_TRACK_CLUSTER_WIDTH + kDoubleInset
 
 
@@ -740,7 +744,7 @@ void MixerBoard::UpdateTrackClusters()
             // on the undo stack, so update the pointers and display name.
             mMixerTrackClusters[nClusterIndex]->mLeftTrack = (WaveTrack*)pLeftTrack;
             mMixerTrackClusters[nClusterIndex]->mRightTrack = (WaveTrack*)pRightTrack;
-            mMixerTrackClusters[nClusterIndex]->UpdateName();
+            mMixerTrackClusters[nClusterIndex]->UpdateForStateChange();
          }
          else
          {
@@ -961,6 +965,7 @@ void MixerBoard::UniquelyMuteOrSolo(const WaveTrack* pTargetLeftTrack, bool bSol
 
    mProject->RedrawProject(); // Update all the TrackLabel mute/solo buttons.
 }
+
 
 void MixerBoard::UpdateName(const WaveTrack* pLeftTrack)
 {
