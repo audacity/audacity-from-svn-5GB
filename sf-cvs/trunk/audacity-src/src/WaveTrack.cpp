@@ -76,7 +76,7 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
       rate = GetActiveProject()->GetRate();
    }
 
-   gPrefs->Read(wxT("/GUI/DefaultViewMode"), &mDisplay, 0L);
+   gPrefs->Read(wxT("/GUI/DefaultViewMode"), &mDisplay, 0);
 
    mLegacyProjectFileOffset = 0;
 
@@ -96,7 +96,7 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
 WaveTrack::WaveTrack(WaveTrack &orig):
    Track(orig)
 {
-   gPrefs->Read(wxT("/GUI/DefaultViewMode"), &mDisplay, 0L);
+   gPrefs->Read(wxT("/GUI/DefaultViewMode"), &mDisplay, 0);
 
    mLegacyProjectFileOffset = 0;
 

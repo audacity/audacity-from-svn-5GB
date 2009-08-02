@@ -35,7 +35,7 @@ class TracksPrefs:public PrefsPanel
 
    wxArrayString mSoloCodes;
    wxArrayString mSoloChoices;
-   wxArrayString mViewCodes;
+   wxArrayInt    mViewCodes;
    wxArrayString mViewChoices;
 };
 

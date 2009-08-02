@@ -47,11 +47,13 @@ void TracksPrefs::Populate()
    mSoloChoices.Add(_("Simple"));
    mSoloChoices.Add(_("None"));
 
-   mViewCodes.Add(wxT("Waveform"));
-   mViewCodes.Add(wxT("WaveformdB"));
-   mViewCodes.Add(wxT("Spectrum"));
-   mViewCodes.Add(wxT("SpectrumLogF"));
-   mViewCodes.Add(wxT("PitchEAC"));
+
+   // Keep the same order as in TrackPanel.cpp menu: OnWaveformID, OnWaveformDBID, OnSpectrumID, OnSpectrumLogID, OnPitchID
+   mViewCodes.Add(0);
+   mViewCodes.Add(1);
+   mViewCodes.Add(2);
+   mViewCodes.Add(3);
+   mViewCodes.Add(4);
 
    mViewChoices.Add(_("Waveform"));
    mViewChoices.Add(_("Waveform (dB)"));
@@ -87,7 +89,7 @@ void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
       {
          S.TieChoice(_("Default View Mode:"),
                      wxT("/GUI/DefaultViewMode"),
-                     wxT("Waveform"),
+                     0,
                      mViewChoices,
                      mViewCodes);
          S.SetSizeHints(mViewChoices);
