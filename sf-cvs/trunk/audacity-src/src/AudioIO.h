@@ -279,6 +279,8 @@ class AUDACITY_DLL_API AudioIO {
     */
    #ifdef AUTOMATIC_VOLUME
       void AVInitialize();
+      void AVDisable();
+      bool AVIsActive();
       void AVProcess();
    #endif
 

@@ -671,7 +671,24 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
          mBar[j].tailPeakCount = msg.tailPeakCount[j];
       }
    } // while
-  
+
+   #ifdef AUTOMATIC_VOLUME
+      bool AVActive;
+      gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &AVActive, false);
+      if (AVActive && gAudioIO->AVIsActive()) {
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            MeterToolBar *bar = p->GetMeterToolBar();
+            if (bar) {
+               Meter *play, *record;
+               bar->GetMeters(&play, &record);
+               if (this == record)
+                  gAudioIO->AVProcess();
+            }
+         }
+      }
+   #endif
+
    if (numChanges > 0)      
       RepaintBarsNow();
 }

@@ -705,6 +705,10 @@ void ControlToolBar::StopPlaying()
    SetPlay(false);
    SetRecord(false);
 
+   #ifdef AUTOMATIC_VOLUME
+      gAudioIO->AVDisable();
+   #endif
+
    mPause->PopUp();
    mPaused=false;
    //Make sure you tell gAudioIO to unpause
