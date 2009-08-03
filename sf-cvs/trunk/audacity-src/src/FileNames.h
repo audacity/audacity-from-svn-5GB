@@ -39,6 +39,8 @@ public:
    static wxString ChainDir();
    static wxString NRPDir();
    static wxString NRPFile();
+   static wxString PluginsCache();
+
    /** \brief The user plug-in directory (not a system one)
 	*
 	* This returns the string path to where the user may have put plug-ins

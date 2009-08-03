@@ -55,12 +55,6 @@ void EffectsPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Enable"));
    {
-#if USE_AUDIO_UNITS
-      S.TieCheckBox(_("Audio Unit effects"),
-                    wxT("/AudioUnits/Enable"),
-                    true);
-#endif
-
 #if USE_LADSPA
       S.TieCheckBox(_("LADSPA effects"),
                     wxT("/Ladspa/Enable"),
@@ -78,30 +72,40 @@ void EffectsPrefs::PopulateOrExchange(ShuttleGui & S)
                     wxT("/VAMP/Enable"),
                     true);
 #endif
-
-#if USE_VST
-      S.TieCheckBox(_("VST effects"),
-                    wxT("/VST/Enable"),
-                    true);
-#endif
       S.AddFixedText(_("Restart Audacity to apply changes."));
    }
    S.EndStatic();
 
-#if USE_VST || USE_AUDIO_UNITS
-   S.StartStatic(_("Mode"));
-   {
-#if USE_VST
-      S.TieCheckBox(_("Display VST effects in graphical mode"), 
-                    wxT("/VST/GUI"),
-                    true);
-#endif
-
 #if USE_AUDIO_UNITS
+   S.StartStatic(_("Audio Unit Effects"));
+   {
+      S.TieCheckBox(_("Enable Audio Unit effects"),
+                    wxT("/AudioUnits/Enable"),
+                    true);
       S.TieCheckBox(_("Display Audio Unit effects in graphical mode"), 
                     wxT("/AudioUnits/GUI"),
                     true);
+#if 0
+      S.TieCheckBox(_("Rescan VST effects next time Audacity is started"), 
+                    wxT("/VST/Rescan"),
+                    false);
 #endif
+   }
+   S.EndStatic();
+#endif
+
+#if USE_VST
+   S.StartStatic(_("VST Effects"));
+   {
+      S.TieCheckBox(_("Enable VST effects"),
+                    wxT("/VST/Enable"),
+                    true);
+      S.TieCheckBox(_("Display VST effects in graphical mode"), 
+                    wxT("/VST/GUI"),
+                    true);
+      S.TieCheckBox(_("Rescan VST effects next time Audacity is started"), 
+                    wxT("/VST/Rescan"),
+                    false);
    }
    S.EndStatic();
 #endif

@@ -748,6 +748,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\PluginManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\PluginManager.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\portaudio.h"
 				>
 			</File>
@@ -1375,14 +1383,6 @@
 		<Filter
 			Name="src/effects/VST"
 			>
-			<File
-				RelativePath="..\..\..\src\effects\VST\LoadVST.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\effects\VST\LoadVST.h"
-				>
-			</File>
 			<File
 				RelativePath="..\..\..\src\effects\VST\VSTEffect.cpp"
 				>

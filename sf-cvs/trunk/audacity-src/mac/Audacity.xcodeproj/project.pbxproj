@@ -1147,13 +1147,13 @@
 		287DBE8C0F3F6B2700C5BBED /* ima_oki_adpcm.h in Headers */ = {isa = PBXBuildFile; fileRef = 287DBE860F3F6B2700C5BBED /* ima_oki_adpcm.h */; };
 		287DBE8D0F3F6B2700C5BBED /* mpc2k.c in Sources */ = {isa = PBXBuildFile; fileRef = 287DBE870F3F6B2700C5BBED /* mpc2k.c */; };
 		287DBE8E0F3F6B2700C5BBED /* rf64.c in Sources */ = {isa = PBXBuildFile; fileRef = 287DBE880F3F6B2700C5BBED /* rf64.c */; };
+		287E207F102561F300BF47A2 /* PluginManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 287E207E102561F300BF47A2 /* PluginManager.cpp */; };
 		287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 287F9F3C0A69748F00F025FA /* TimeDialog.cpp */; };
 		288052870DEA69C900671EA4 /* PipeServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288052840DEA69C900671EA4 /* PipeServer.cpp */; };
 		288052880DEA69C900671EA4 /* ScripterCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288052850DEA69C900671EA4 /* ScripterCallback.cpp */; };
 		288052C20DEA73F500671EA4 /* NonGuiThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288052BC0DEA72F300671EA4 /* NonGuiThread.cpp */; };
 		288053740DEA9E4C00671EA4 /* ScripterCallback.h in Headers */ = {isa = PBXBuildFile; fileRef = 288052860DEA69C900671EA4 /* ScripterCallback.h */; };
 		2882177B0A35D8730029AF41 /* ShuttlePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288217790A35D8730029AF41 /* ShuttlePrefs.cpp */; };
-		2885BFF40FC108F800128165 /* LoadVST.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2885BFF20FC108F800128165 /* LoadVST.cpp */; };
 		2891B2870C531D2C0044FBE3 /* FindClipping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2891B2850C531D2C0044FBE3 /* FindClipping.cpp */; };
 		28948427101DF8FC005B0713 /* EffectsPrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28948425101DF8FC005B0713 /* EffectsPrefs.cpp */; };
 		2897F6F00AB3DB5A003C20C5 /* ControlToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6DC0AB3DB5A003C20C5 /* ControlToolBar.cpp */; };
@@ -3034,6 +3034,7 @@
 		287DBE860F3F6B2700C5BBED /* ima_oki_adpcm.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ima_oki_adpcm.h; sourceTree = "<group>"; };
 		287DBE870F3F6B2700C5BBED /* mpc2k.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = mpc2k.c; sourceTree = "<group>"; };
 		287DBE880F3F6B2700C5BBED /* rf64.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = rf64.c; sourceTree = "<group>"; };
+		287E207E102561F300BF47A2 /* PluginManager.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = PluginManager.cpp; sourceTree = "<group>"; };
 		287F9F3B0A69748F00F025FA /* TimeDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeDialog.h; sourceTree = "<group>"; };
 		287F9F3C0A69748F00F025FA /* TimeDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeDialog.cpp; sourceTree = "<group>"; };
 		2880527E0DEA694100671EA4 /* mod-script-pipe.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "mod-script-pipe.so"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3045,8 +3046,6 @@
 		288217790A35D8730029AF41 /* ShuttlePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ShuttlePrefs.cpp; sourceTree = "<group>"; };
 		2882177A0A35D8730029AF41 /* ShuttlePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ShuttlePrefs.h; sourceTree = "<group>"; };
 		2885BFF10FC108F800128165 /* aeffectx.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = aeffectx.h; path = VST/aeffectx.h; sourceTree = "<group>"; };
-		2885BFF20FC108F800128165 /* LoadVST.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = LoadVST.cpp; path = VST/LoadVST.cpp; sourceTree = "<group>"; };
-		2885BFF30FC108F800128165 /* LoadVST.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = LoadVST.h; path = VST/LoadVST.h; sourceTree = "<group>"; };
 		2891B2850C531D2C0044FBE3 /* FindClipping.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = FindClipping.cpp; sourceTree = "<group>"; };
 		2891B2860C531D2C0044FBE3 /* FindClipping.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = FindClipping.h; sourceTree = "<group>"; };
 		28948425101DF8FC005B0713 /* EffectsPrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = EffectsPrefs.cpp; sourceTree = "<group>"; };
@@ -4310,6 +4309,7 @@
 				1790B0B209883BFD008A330A /* PitchName.h */,
 				1790B0B309883BFD008A330A /* PlatformCompatibility.cpp */,
 				1790B0B409883BFD008A330A /* PlatformCompatibility.h */,
+				287E207E102561F300BF47A2 /* PluginManager.cpp */,
 				1790B0CC09883BFD008A330A /* Prefs.cpp */,
 				1790B0CD09883BFD008A330A /* Prefs.h */,
 				1790B0CE09883BFD008A330A /* Printing.cpp */,
@@ -6065,8 +6065,6 @@
 			isa = PBXGroup;
 			children = (
 				2885BFF10FC108F800128165 /* aeffectx.h */,
-				2885BFF20FC108F800128165 /* LoadVST.cpp */,
-				2885BFF30FC108F800128165 /* LoadVST.h */,
 				28B97B850FBF771A0076CF28 /* VSTEffect.cpp */,
 				28B97B860FBF771A0076CF28 /* VSTEffect.h */,
 			);
@@ -8387,7 +8385,6 @@
 				18A2840F0F79BCAB0013A1BE /* Generator.cpp in Sources */,
 				28CCDD000F939FD70081F2FC /* FileHistory.cpp in Sources */,
 				28B97B890FBF771A0076CF28 /* VSTEffect.cpp in Sources */,
-				2885BFF40FC108F800128165 /* LoadVST.cpp in Sources */,
 				284B279A0FC66864005EAC96 /* DevicePrefs.cpp in Sources */,
 				284B279B0FC66864005EAC96 /* ImportExportPrefs.cpp in Sources */,
 				284B279C0FC66864005EAC96 /* LibraryPrefs.cpp in Sources */,
@@ -8412,6 +8409,7 @@
 				28BD8AB3101DF4C700686679 /* ExecMenuCommand.cpp in Sources */,
 				28BD8AB4101DF4C700686679 /* GetAllMenuCommands.cpp in Sources */,
 				28948427101DF8FC005B0713 /* EffectsPrefs.cpp in Sources */,
+				287E207F102561F300BF47A2 /* PluginManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

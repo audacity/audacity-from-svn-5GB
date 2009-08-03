@@ -153,6 +153,11 @@ wxString FileNames::PlugInDir()
    return FileNames::MkDir( wxFileName( DataDir(), wxT("Plug-Ins") ).GetFullPath() );
 }
 
+wxString FileNames::PluginsCache()
+{
+   return wxFileName( DataDir(), wxT("plugins.cfg") ).GetFullPath();
+}
+
 wxString FileNames::ThemeDir()
 {
    return FileNames::MkDir( wxFileName( DataDir(), wxT("Theme") ).GetFullPath() );

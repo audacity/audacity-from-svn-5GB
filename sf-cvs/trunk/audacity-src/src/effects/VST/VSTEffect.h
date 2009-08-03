@@ -16,6 +16,9 @@
 
 #include "aeffectx.h"
 
+#define VSTCMDKEY wxT("-checkvst")
+#define VSTPLUGINTYPE wxT("VST")
+
 #define audacityVSTID CCONST('a', 'u', 'D', 'y');
 
 typedef long (*dispatcherFn)(AEffect * effect, long opCode,
@@ -36,7 +39,7 @@ class VSTEffect:public Effect
 {
  public:
 
-   VSTEffect(const wxString & path, void *module, AEffect * aeffect);
+   VSTEffect(const wxString & path);
    virtual ~VSTEffect();
 
    virtual wxString GetEffectName();
@@ -55,7 +58,20 @@ class VSTEffect:public Effect
    
    virtual void End();
 
+   // Plugin loading and unloading
+
+   bool Load();
+   void Unload();
+
+   // Plugin probing
+
+   static void Scan();
+   static void Check(const wxChar *fname);
+
    // Utility methods
+
+   int GetChannels();
+   VstTimeInfo *GetTimeInfo();
 
    wxString GetString(int opcode, int index = 0);
    void SetString(int opcode, const wxString & str, int index = 0);
@@ -68,14 +84,6 @@ class VSTEffect:public Effect
    void callSetParameter(long index, float parameter);
    float callGetParameter(long index);
 
-   // VST callback
-   long int audioMaster(AEffect * effect,
-                        long int opcode,
-                        long int index,
-                        long int value,
-                        void * ptr,
-                        float opt);
-
  private:
    bool ProcessStereo(int count,
                       WaveTrack *left,
@@ -85,6 +93,10 @@ class VSTEffect:public Effect
                       sampleCount len);
 
    wxString mPath;
+#if defined(__WXMAC__)
+   // Cheating a little ... type is really CFBundleRefNum
+   int mResource;
+#endif
    void *mModule;
    AEffect *mAEffect;
 
@@ -100,6 +112,8 @@ class VSTEffect:public Effect
    int mOutputs;
    int mChannels;
 };
+
+void RegisterVSTEffects();
 
 #endif // USE_VST
 
