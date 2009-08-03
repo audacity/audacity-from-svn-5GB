@@ -2492,7 +2492,7 @@ bool AudacityProject::OnEffect(int type,
       //mchinen:12/14/08 reapplying for generate effects
       if ( f->GetEffectFlags() & INSERT_EFFECT)
       {
-            OnZoomFit();
+            if (count == 0) OnZoomFit();
           //  mTrackPanel->Refresh(false);
       }
       RedrawProject();
