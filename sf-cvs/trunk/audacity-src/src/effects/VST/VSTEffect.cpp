@@ -25,10 +25,13 @@
 #include <wx/filename.h>
 #include <wx/frame.h>
 #include <wx/msgdlg.h>
+#include <wx/process.h>
 #include <wx/sizer.h>
 #include <wx/slider.h>
 #include <wx/scrolwin.h>
 #include <wx/stattext.h>
+#include <wx/stopwatch.h>
+#include <wx/utils.h>
 
 #if defined(__WXMAC__)
 #include <wx/mac/private.h>
@@ -36,13 +39,61 @@
 #include <wx/dynlib.h>
 #endif
 
+#if defined(__WXMSW__)
+   #include <wx/msw/seh.h>
+   #include <windows.h>
+   #include <shlwapi.h>
+   #pragma comment(lib, "shlwapi")
+#endif
+
+#include "FileDialog.h"
+
+#include "../../AudacityApp.h"
 #include "../../FileNames.h"
+#include "../../Internat.h"
+#include "../../PlatformCompatibility.h"
+#include "../../PluginManager.h"
 #include "../../Prefs.h"
 #include "../../xml/XMLFileReader.h"
 #include "../../xml/XMLWriter.h"
-#include "FileDialog.h"
+#include "../EffectManager.h"
 
 #include "VSTEffect.h"
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// RegisterVSTEffects
+//
+///////////////////////////////////////////////////////////////////////////////
+
+void RegisterVSTEffects()
+{
+   PluginManager & pm = PluginManager::Get();
+
+   pm.Open();
+
+   if (gPrefs->Read(wxT("/VST/Rescan"), (long) false) != false) {
+      pm.PurgeType(VSTPLUGINTYPE);
+      gPrefs->Write(wxT("/VST/Rescan"), false);
+   }
+
+   if (!pm.HasType(VSTPLUGINTYPE)) {
+      pm.Close();
+      VSTEffect::Scan();
+      pm.Open();
+   }
+
+   EffectManager & em = EffectManager::Get();
+
+   wxString path = pm.GetFirstPlugin(VSTPLUGINTYPE);
+   while (!path.IsEmpty()) {
+      em.RegisterEffect(new VSTEffect(path));
+
+      path = pm.GetNextPlugin(VSTPLUGINTYPE);
+   }
+
+   pm.Close();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -172,28 +223,34 @@ VSTEffectDialog::~VSTEffectDialog()
 
 void VSTEffectDialog::BuildFancy()
 {
+   struct
+   {
+      short top, left, bottom, right;
+   } *rect;
+
+   // Some effects like to have us get their rect before opening them.
+   mEffect->callDispatcher(effEditGetRect, 0, 0, &rect, 0.0);
+
 #if defined(__WXMAC__)
-   ControlRef view;
+   HIViewRef view;
    WindowRef win = (WindowRef) MacGetTopLevelWindowRef();
-   OSStatus status = HIViewFindByID(HIViewGetRoot(win), kHIViewWindowContentID, &view);
-   wxASSERT(status == 0);
+   HIViewFindByID(HIViewGetRoot(win), kHIViewWindowContentID, &view);
 
    mEffect->callDispatcher(effEditOpen, 0, 0, win, 0.0);
 
    HIViewRef subview = HIViewGetFirstSubview(view);
-   wxASSERT(subview != NULL);
-
+   if (subview == NULL) {
+      mEffect->callDispatcher(effEditClose, 0, 0, win, 0.0);
+      mGui = false;
+      BuildPlain();
+      return;
+   }
 #elif defined(__WXMSW__)
    wxWindow *w = new wxPanel(this, wxID_ANY);
 
    mEffect->callDispatcher(effEditOpen, 0, 0, w->GetHWND(), 0.0);
 #else
 #endif
-
-   struct
-   {
-      short top, left, bottom, right;
-   } *rect;
 
    mEffect->callDispatcher(effEditGetRect, 0, 0, &rect, 0.0);
 
@@ -202,7 +259,7 @@ void VSTEffectDialog::BuildFancy()
    wxSizerItem *si;
 
    vs->Add(BuildProgramBar(), 0, wxCENTER);
-   
+
    si = hs->Add(rect->right - rect->left, rect->bottom - rect->top);
    vs->Add(hs, 0, wxCENTER);
 
@@ -218,7 +275,6 @@ void VSTEffectDialog::BuildFancy()
    // LL:  Some VST effects do not work unless this is done.  But, it must be
    //      done last since proper window sizing will not occur otherwise.
    ::RemoveEventHandler((EventHandlerRef)MacGetEventHandler());
-
 #elif defined(__WXMSW__)
    w->SetPosition(pos);
    w->SetSize(si->GetSize());
@@ -918,43 +974,129 @@ int VSTEffectDialog::b64decode(wxString in, void *out)
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-VSTEffect::VSTEffect(const wxString & path, void *module, AEffect * aeffect)
-:  mPath(path),
-   mModule(module),
-   mAEffect(aeffect)
+typedef AEffect *(*vstPluginMain)(audioMasterCallback audioMaster);
+
+static long int audioMaster(AEffect * effect,
+                            long int opcode,
+                            long int index,
+                            long int value,
+                            void * ptr,
+                            float opt)
 {
-   mBlockSize = 0;
+   VSTEffect *vst = (effect ? (VSTEffect *) effect->user : NULL);
+
+   // Handles operations during initialization...before VSTEffect has had a
+   // chance to set its instance pointer.
+   switch (opcode)
+   {
+      case audioMasterVersion:
+         return 2400;
+
+      case audioMasterCurrentId:
+         return audacityVSTID;
+
+      // Let the effect know if a pin (channel in our case) is connected
+      case audioMasterPinConnected:
+         if (vst) {
+            return (index < vst->GetChannels() ? 0 : 1);
+         }
+         break;
+
+      // Some (older) effects depend on an effIdle call when requested.  An
+      // example is the Antress Modern plugins which uses the call to update
+      // the editors display when the program (preset) changes.
+      case audioMasterNeedIdle:
+         if (vst) {
+            return vst->callDispatcher(effIdle, 0, 0, NULL, 0.0);
+         }
+         break;
+
+      // Give the effect a chance to update the editor display
+      case audioMasterUpdateDisplay:
+         if (vst) {
+            return vst->callDispatcher(effEditIdle, 0, 0, NULL, 0.0);
+         }
+         break;
+
+      // Return the current time info.
+      case audioMasterGetTime:
+         if (vst) {
+            return (long int) vst->GetTimeInfo();
+         }
+         break;
+
+      // Ignore these
+      case audioMasterBeginEdit:
+      case audioMasterEndEdit:
+      case audioMasterAutomate:
+      case audioMasterGetCurrentProcessLevel:
+      case audioMasterIdle:
+      case audioMasterWantMidi:
+         return 0;
+
+      case audioMasterCanDo:
+         return 0;
+   }
+
+#if 1
+#if defined(__WXDEBUG__)
+#if !defined(__WXMSW__)
+   wxPrintf(wxT("vst: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
+            effect, opcode, index, value, ptr, opt, vst);
+#else
+   wxLogDebug(wxT("vst: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p"),
+              effect, opcode, index, value, ptr, opt, vst);
+#endif
+#endif
+#endif
+   return 0;
+}
+
+VSTEffect::VSTEffect(const wxString & path)
+:  mPath(path)
+{
+   mModule = NULL;
+   mAEffect = NULL;
    mInBuffer = NULL;
    mOutBuffer = NULL;
    mInputs = 0;
    mOutputs = 0;
    mChannels = 0;
+   mBlockSize = 0;
 
-   mAEffect->user = this;
-
+   memset(&mTimeInfo, 0, sizeof(mTimeInfo));
    mTimeInfo.samplePos = 0.0;
    mTimeInfo.sampleRate = 44100.0;
+   mTimeInfo.nanoSeconds = wxGetLocalTimeMillis().ToDouble();
    mTimeInfo.tempo = 120.0;
    mTimeInfo.timeSigNumerator = 4;
    mTimeInfo.timeSigDenominator = 4;
-   mTimeInfo.flags = kVstTempoValid;
+   mTimeInfo.flags = kVstTempoValid | kVstNanosValid;
 
-   callDispatcher(effOpen, 0, 0, NULL, 0.0);
+   PluginManager & pm = PluginManager::Get();
 
-   mVendor = GetString(effGetVendorString);
-   mName = GetString(effGetProductString);
+   if (pm.IsRegistered(VSTPLUGINTYPE, mPath)) {
+      mName = pm.Read(wxT("Name"), wxEmptyString);
+      mVendor = pm.Read(wxT("Vendor"), wxEmptyString);
+      mInputs = pm.Read(wxT("Inputs"), 0L);
+      mOutputs = pm.Read(wxT("Outputs"), 0L);
+   }
+   else if (Load()) {
+      pm.RegisterPlugin(VSTPLUGINTYPE, mPath);
+      pm.Write(wxT("Name"), mName);
+      pm.Write(wxT("Vendor"), mVendor);
+      pm.Write(wxT("Inputs"), mInputs);
+      pm.Write(wxT("Outputs"), mOutputs);
+   }
 
    if (mVendor.IsEmpty()) {
-      mVendor = wxT("VST");
+      mVendor = VSTPLUGINTYPE;
    }
 
    if (mName.IsEmpty()) {
       wxFileName fn(mPath);
       mName = fn.GetName();
    }
-
-   mInputs = mAEffect->numInputs;
-   mOutputs = mAEffect->numOutputs;
 
    int flags = PLUGIN_EFFECT;
    if (mInputs == 0) {
@@ -972,13 +1114,7 @@ VSTEffect::VSTEffect(const wxString & path, void *module, AEffect * aeffect)
 
 VSTEffect::~VSTEffect()
 {
-   callDispatcher(effClose, 0, 0, NULL, 0.0);
-
-#if defined(__WXMAC__)
-   CFRelease((CFBundleRef) mModule);
-#else
-   delete (wxDynamicLibrary *) mModule;
-#endif
+   Unload();
 }
 
 wxString VSTEffect::GetEffectName()
@@ -1007,6 +1143,14 @@ wxString VSTEffect::GetEffectAction()
 
 bool VSTEffect::Init()
 {
+   if (!mAEffect) {
+      Load();
+   }
+
+   if (!mAEffect) {
+      return false;
+   }
+
    mBlockSize = 0;
 
    TrackListIterator iter(mOutputTracks);
@@ -1074,7 +1218,7 @@ bool VSTEffect::Process()
 
       right = NULL;
       rstart = 0;
-      if (left->GetLinked() && mInputs>1) {
+      if (left->GetLinked() && mInputs > 1) {
          right = (WaveTrack *) iter.Next();         
          GetSamples(right, &rstart, &len);
          clear = false;
@@ -1166,6 +1310,9 @@ bool VSTEffect::ProcessStereo(int count,
    // Turn the power on
    callDispatcher(effMainsChanged, 0, 1, NULL, 0.0);
 
+   // Tell effect we're starting to process
+   callDispatcher(effStartProcess, 0, 0, NULL, 0.0);
+
    // Actually perform the effect here
    sampleCount originalLen = len;
    sampleCount ls = lstart;
@@ -1207,6 +1354,9 @@ bool VSTEffect::ProcessStereo(int count,
       }
    }
 
+   // Tell effect we're done
+   callDispatcher(effStopProcess, 0, 0, NULL, 0.0);
+
    // Turn the power off
    callDispatcher(effMainsChanged, 0, 0, NULL, 0.0);
 
@@ -1216,13 +1366,304 @@ bool VSTEffect::ProcessStereo(int count,
    mTimeInfo.tempo = 120.0;
    mTimeInfo.timeSigNumerator = 4;
    mTimeInfo.timeSigDenominator = 4;
-   mTimeInfo.flags = kVstTempoValid;
+   mTimeInfo.flags = kVstTempoValid | kVstNanosValid;
 
    return rc;
 }
 
 void VSTEffect::End()
 {
+}
+
+bool VSTEffect::Load()
+{
+   vstPluginMain pluginMain;
+   bool success = false;
+
+   mModule = NULL;
+   mAEffect = NULL;
+
+#if defined(__WXMAC__)
+   // Don't really know what this should be initialize to
+   mResource = -1;
+
+   // Convert the path to a CFSTring
+   wxMacCFStringHolder path(mPath);
+
+   // Convert the path to a URL
+   CFURLRef urlRef =
+      CFURLCreateWithFileSystemPath(kCFAllocatorDefault,
+                                    path,
+                                    kCFURLPOSIXPathStyle,
+                                    true);
+   if (urlRef == NULL) {
+      return false;
+   }
+
+   // Create the bundle using the URL
+   CFBundleRef bundleRef = CFBundleCreate(kCFAllocatorDefault, urlRef);
+
+   // Done with the URL
+   CFRelease(urlRef);
+
+   // Bail if the bundle wasn't created
+   if (bundleRef == NULL) {
+      return false;
+   }
+
+   // Try to locate the new plugin entry point
+   pluginMain = (vstPluginMain)
+      CFBundleGetFunctionPointerForName(bundleRef,
+                                        CFSTR("VSTPluginMain"));
+
+   // If not found, try finding the old entry point
+   if (pluginMain == NULL) {
+      pluginMain = (vstPluginMain)
+         CFBundleGetFunctionPointerForName(bundleRef,
+                                           CFSTR("main_macho"));
+   }
+
+   // Must not be a VST plugin
+   if (pluginMain == NULL) {
+      CFRelease(bundleRef);
+      return false;
+   }
+
+   // Open the resource map ... some plugins (like GRM Tools) need this.
+   mResource = (int) CFBundleOpenBundleResourceMap(bundleRef);
+
+   // Save the bundle reference
+   mModule = bundleRef;
+
+#else
+   // Try to load the library
+   wxDynamicLibrary *lib = new wxDynamicLibrary(mPath);
+   if (!lib) {
+      return false;
+   }
+
+   // Bail if it wasn't successful
+   if (!lib->IsLoaded()) {
+      delete lib;
+      return false;
+   }
+
+   // Try to find the entry point, while suppressing error messages
+   {
+      wxLogNull logNo;
+      pluginMain = (vstPluginMain) lib->GetSymbol(wxT("VSTPluginMain"));
+      if (pluginMain == NULL) {
+         pluginMain = (vstPluginMain) lib->GetSymbol(wxT("main"));
+         if (pluginMain == NULL) {
+            delete lib;
+            return false;
+         }
+      }
+   }
+
+   // Save the library reference
+   mModule = lib;
+
+#endif
+
+   // Initialize the plugin
+   mAEffect = pluginMain(audioMaster);
+
+   // Was it successful?
+   if (mAEffect) {
+      //
+      mAEffect->user = this;
+
+      //
+      callDispatcher(effOpen, 0, 0, NULL, 0.0);
+
+      // Ensure that it looks like a plugin and can deal with ProcessReplacing
+      // calls.  Also exclude synths for now.
+      if (mAEffect->magic == kEffectMagic &&
+         !(mAEffect->flags & effFlagsIsSynth) &&
+         mAEffect->flags & effFlagsCanReplacing) {
+
+         mVendor = GetString(effGetVendorString);
+         mName = GetString(effGetEffectName);
+         mInputs = mAEffect->numInputs;
+         mOutputs = mAEffect->numOutputs;
+         
+         // We could even go so far as to run a small test here.
+
+         success = true;
+      }
+   }
+
+   if (!success) {
+      Unload();
+   }
+
+   return success;
+}
+
+void VSTEffect::Unload()
+{
+   if (mAEffect) {
+      callDispatcher(effClose, 0, 0, NULL, 0.0);
+   }
+
+   if (mModule) {
+#if defined(__WXMAC__)
+      if (mResource != -1) {
+         CFBundleCloseBundleResourceMap((CFBundleRef) mModule, mResource);
+      }
+
+      CFRelease((CFBundleRef) mModule);
+#else
+      delete (wxDynamicLibrary *) mModule;
+#endif
+
+      mModule = NULL;
+      mAEffect = NULL;
+   }
+}
+
+/* static */
+void VSTEffect::Scan()
+{
+   wxArrayString audacityPathList = wxGetApp().audacityPathList;
+   wxArrayString pathList;
+   wxArrayString files;
+
+   // Check for the VST_PATH environment variable
+   wxString vstpath = wxGetenv(wxT("VST_PATH"));
+   if (!vstpath.IsEmpty()) {
+      wxGetApp().AddUniquePathToPathList(vstpath, pathList);
+   }
+
+   // Add Audacity specific paths
+   for (size_t i = 0; i < audacityPathList.GetCount(); i++) {
+      wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
+      wxGetApp().AddUniquePathToPathList(prefix + VSTPLUGINTYPE,
+                                         pathList);
+      wxGetApp().AddUniquePathToPathList(prefix + wxT("plugins"),
+                                         pathList);
+      wxGetApp().AddUniquePathToPathList(prefix + wxT("plug-ins"),
+                                         pathList);
+   }
+
+#if defined(__WXMAC__)
+#define VSTPATH wxT("/Library/Audio/Plug-Ins/VST")
+
+   // Look in /Library/Audio/Plug-Ins/VST and $HOME/Library/Audio/Plug-Ins/VST
+   wxGetApp().AddUniquePathToPathList(VSTPATH, pathList);
+   wxGetApp().AddUniquePathToPathList(wxString(wxGetenv(wxT("HOME"))) + VSTPATH,
+                                      pathList);
+
+   // Recursively search all paths for Info.plist files.  This will identify all
+   // bundles.
+   wxGetApp().FindFilesInPathList(wxT("Info.plist"), pathList, files, wxDIR_DEFAULT);
+
+   // Remove the 'Contents/Info.plist' portion of the names
+   for (size_t i = 0, cnt = files.GetCount(); i < cnt; i++) {
+      files[i] = wxPathOnly(wxPathOnly(files[i]));
+   }
+   
+#elif defined(__WXMSW__)
+   TCHAR dpath[MAX_PATH];
+   TCHAR tpath[MAX_PATH];
+   DWORD len = WXSIZEOF(tpath);
+
+   // Setup the default VST path.
+   dpath[0] = '\0';
+   ExpandEnvironmentStrings(wxT("%ProgramFiles%\\Steinberg\\VSTPlugins"),
+                            dpath,
+                            WXSIZEOF(dpath));
+
+   // Check registry for the real path
+   if (SHRegGetUSValue(wxT("Software\\VST"),
+                          wxT("VSTPluginsPath"),
+                          NULL,
+                          tpath,
+                          &len,
+                          FALSE,
+                          dpath,
+                          (DWORD) _tcslen(dpath)) == ERROR_SUCCESS) {
+      tpath[len] = 0;
+      ExpandEnvironmentStrings(tpath, dpath, WXSIZEOF(dpath));
+      wxGetApp().AddUniquePathToPathList(LAT1CTOWX(dpath), pathList);
+   }
+
+   // Recursively scan for all DLLs
+   wxGetApp().FindFilesInPathList(wxT("*.dll"), pathList, files, wxDIR_DEFAULT);
+
+#else
+
+   // Recursively scan for all shared objects
+   wxGetApp().FindFilesInPathList(wxT("*.so"), pathList, files);
+
+#endif
+
+   // This is a hack to allow for long paths in the progress dialog.  The
+   // progress dialog should really truncate the message if it's too wide
+   // for the dialog.
+   size_t cnt = files.GetCount();
+   wxString longest;
+
+   for (size_t i = 0; i < cnt; i++) {
+      if (files[i].Length() > longest.Length()) {
+         longest = files[i];
+      }
+   }
+
+   ProgressDialog *progress = new ProgressDialog(_("Scanning VST Plugins"),
+                                                 longest,
+                                                 pdlgHideStopButton);
+//   progress->SetSize(wxSize(500, -1));
+   progress->CenterOnScreen();
+
+   const wxChar * argv[4];
+   argv[0] = PlatformCompatibility::GetExecutablePath().c_str();
+   argv[1] = VSTCMDKEY;
+   argv[2] = NULL;
+   argv[3] = NULL;
+
+   for (size_t i = 0; i < cnt; i++) {
+      wxString file = files[i];
+      int status = progress->Update(wxLongLong(i),
+                                    wxLongLong(cnt),
+                                    wxString::Format(_("Checking %s"), file.c_str()));
+      if (status != eProgressSuccess) {
+         break;
+      }
+
+      argv[2] = file.c_str();
+      wxExecute((wxChar **) argv, wxEXEC_SYNC | wxEXEC_NODISABLE, NULL);
+   }
+
+   delete progress;   
+}
+
+/* static */
+void VSTEffect::Check(const wxChar *fname)
+{
+   PluginManager & pm = PluginManager::Get();
+
+   pm.Open();
+
+   VSTEffect *e = new VSTEffect(fname);
+
+   pm.Close();
+
+   if (e) {
+      delete e;
+   }
+}
+
+int VSTEffect::GetChannels()
+{
+   return mChannels;
+}
+
+VstTimeInfo *VSTEffect::GetTimeInfo()
+{
+   mTimeInfo.nanoSeconds = wxGetLocalTimeMillis().ToDouble();
+   return &mTimeInfo;
 }
 
 wxString VSTEffect::GetString(int opcode, int index)
@@ -1270,67 +1711,6 @@ void VSTEffect::callSetParameter(long index, float parameter)
 float VSTEffect::callGetParameter(long index)
 {
    return mAEffect->getParameter(mAEffect, index);
-}
-
-long int VSTEffect::audioMaster(AEffect * effect,
-                                long int opcode,
-                                long int index,
-                                long int value,
-                                void * ptr,
-                                float opt)
-{
-   switch (opcode)
-   {
-      // Let the effect know if a pin (channel in our case) is connected
-      case audioMasterPinConnected:
-         return (index < mChannels ? 0 : 1);
-
-      // Some (older) effects depend on an effIdle call when requested.  An
-      // example is the Antress Modern plugins which uses the call to update
-      // the editors display when the program (preset) changes.
-      case audioMasterNeedIdle:
-         effect->dispatcher(effect, effIdle, 0, 0, NULL, 0.0);
-         return 0;
-
-      // Give the effect a chance to update the editor display
-      case audioMasterUpdateDisplay:
-         effect->dispatcher(effect, effEditIdle, 0, 0, NULL, 0.0);
-         return 0;
-
-      // Return the current time info.
-      case audioMasterGetTime:
-         return (long int) &mTimeInfo;
-
-      // Ignore these
-      case audioMasterBeginEdit:
-      case audioMasterEndEdit:
-      case audioMasterAutomate:
-      case audioMasterGetCurrentProcessLevel:
-         return 0;
-
-      case audioMasterCanDo:
-#if !defined(__WXMSW__)
-         wxPrintf(wxT("vsteffect: %p cando: %s\n"), effect, LAT1CTOWX((char *)ptr).c_str());
-#else
-         wxLogDebug(wxT("vsteffect: %p cando: %s\n"), effect, LAT1CTOWX((char *)ptr).c_str());
-#endif
-         return 0;
-
-      default:
-#if 1
-#if defined(__WXDEBUG__)
-#if !defined(__WXMSW__)
-         wxPrintf(wxT("vsteffect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p\n"),
-                  effect, opcode, index, value, ptr, opt, effect->user);
-#else
-         wxLogDebug(wxT("vsteffect: %p opcode: %d index: %d value: %d ptr: %p opt: %f user: %p"),
-                    effect, opcode, index, value, ptr, opt, effect->user);
-#endif
-#endif
-#endif
-         return 0;
-   }
-
 }
 
 #endif // USE_VST

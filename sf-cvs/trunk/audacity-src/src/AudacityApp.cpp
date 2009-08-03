@@ -65,6 +65,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "commands/AppCommandEvent.h"
 #include "effects/LoadEffects.h"
 #include "effects/Contrast.h"
+#include "effects/VST/VSTEffect.h"
 #include "FFmpeg.h"
 #include "GStreamerLoader.h"
 #include "FreqWindow.h"
@@ -795,6 +796,12 @@ void AudacityApp::InitLang( const wxString & lang )
    Internat::Init();
 }
 
+// Only used when checking plugins
+void AudacityApp::OnFatalException()
+{
+   exit(-1);
+}
+
 // The `main program' equivalent, creating the windows and returning the
 // main frame
 bool AudacityApp::OnInit()
@@ -803,7 +810,15 @@ bool AudacityApp::OnInit()
    // Disable window animation
    wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
 #endif
-   
+
+   // Have we been started to check a plugin?
+   if (argc == 3 && wxStrcmp(argv[1], VSTCMDKEY) == 0) {
+      wxHandleFatalExceptions();
+
+      VSTEffect::Check(argv[2]);
+      return false;
+   }
+
    mLogger = NULL;
 
    #if USE_QUICKTIME

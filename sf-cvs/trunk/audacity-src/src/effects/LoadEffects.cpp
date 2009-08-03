@@ -60,7 +60,7 @@
 #endif
 
 #ifdef USE_VST
-#include "VST/LoadVST.h"
+#include "VST/VSTEffect.h"
 #endif
 
 #ifdef USE_LADSPA
@@ -283,7 +283,7 @@ void LoadEffects()
 
 #ifdef USE_VST
    if (gPrefs->Read(wxT("/VST/Enable"), true)) {
-      LoadVSTPlugins();
+      RegisterVSTEffects();
    }
 #endif
 

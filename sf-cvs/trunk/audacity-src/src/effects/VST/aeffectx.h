@@ -121,11 +121,15 @@ const int effCanDo = 51; // currently unused
 // The next one was gleaned from http://asseca.com/vst-24-specs/efIdle.html
 const int effIdle = 53;
 const int effGetVstVersion = 58; // currently unused
+// The next two were gleaned from http://www.kvraudio.com/forum/printview.php?t=143587&start=0
+const int effStartProcess = 71;
+const int effStopProcess = 72;
 
 const int kEffectMagic = CCONST( 'V', 's', 't', 'P' );
 const int kVstLangEnglish = 1;
 const int kVstMidiType = 1;
 const int kVstParameterUsesFloatStep = 1 << 2;
+const int kVstNanosValid = 1 << 8;
 const int kVstTempoValid = 1 << 10;
 const int kVstTransportPlaying = 1 << 1;
 
@@ -259,8 +263,10 @@ public:
 	double samplePos;
 	// 08
 	double sampleRate;
-	// unconfirmed 10 18
-	char empty1[8 + 8];
+   // 10
+	double nanoSeconds;
+	// unconfirmed 18
+	char empty1[8];
 	// 20?
 	double tempo;
 	// unconfirmed 28 30 38
