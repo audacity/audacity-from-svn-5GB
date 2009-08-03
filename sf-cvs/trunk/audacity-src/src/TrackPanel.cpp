@@ -4927,12 +4927,28 @@ void TrackPanel::DrawEverythingElse(wxDC * dc,
          skipBorder = true;
       }
 
+      // If the previous track is linked to this one but isn't on the screen
+      // (and thus would have been skipped by VisibleTrackIterator) we need to
+      // draw that track's border instead.
+      Track *borderTrack = t;
+      wxRect borderRect = r, borderTrackRect = trackRect;
+
+      if (l && !t->GetLinked() && trackRect.y < 0)
+      {
+         borderTrack = l;
+
+         borderTrackRect.y = l->GetY() - mViewInfo->vpos;
+         borderTrackRect.height = l->GetHeight();
+
+         borderRect = borderTrackRect;
+         borderRect.height += t->GetHeight();
+      }
+
       if (!skipBorder) {
          if (mAx->IsFocused(t)) {
-            focusRect = r;
+            focusRect = borderRect;
          }
-
-         DrawOutside(t, dc, r, trackRect);
+         DrawOutside(borderTrack, dc, borderRect, borderTrackRect);
       }
 
       // Believe it or not, we can speed up redrawing if we don't
