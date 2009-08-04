@@ -186,6 +186,7 @@ class Meter : public wxPanel
    void OnDB(wxCommandEvent &evt);
    void OnClip(wxCommandEvent &evt);
    void OnMonitor(wxCommandEvent &evt);
+   void OnAutomaticVolume(wxCommandEvent &evt);
    void OnFloat(wxCommandEvent &evt);
    void OnPreferences(wxCommandEvent &evt);
    bool IsClipping();

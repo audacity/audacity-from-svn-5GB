@@ -135,13 +135,13 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
          {
             S.SetStretchyCol(1);
 
-            S.TieSlider(_("Best Peak Volume:"),
-                        wxT("/AudioIO/BestPeakVolume"),
-                        AV_DEF_BEST_PEAK,
+            S.TieSlider(_("Target Peak:"),
+                        wxT("/AudioIO/TargetPeak"),
+                        AV_DEF_TARGET_PEAK,
                         100,
                         0);
 
-            S.TieSlider(_("Delta Peak Volume:"),
+            S.TieSlider(_("Within:"),
                      wxT("/AudioIO/DeltaPeakVolume"),
                      AV_DEF_DELTA_PEAK,
                      100,

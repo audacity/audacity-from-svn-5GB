@@ -56,6 +56,8 @@ class ControlToolBar:public ToolBar {
    void SetStop(bool down);
    void SetRecord(bool down);
 
+   bool IsRecordDown();
+
    // Play currently selected region, or if nothing selected,
    // play from current cursor.
    void PlayCurrentRegion(bool looped = false, bool cutpreview = false);

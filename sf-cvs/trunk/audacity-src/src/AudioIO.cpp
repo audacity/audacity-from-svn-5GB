@@ -2513,12 +2513,12 @@ void AudioIO::FillMidiBuffers()
 #ifdef AUTOMATIC_VOLUME
 void AudioIO::AVInitialize() {
    gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &mAVActive,         false);
-   gPrefs->Read(wxT("/AudioIO/BestPeakVolume"),        &mAVGoldPoint,      AV_DEF_BEST_PEAK);
-   gPrefs->Read(wxT("/AudioIO/DeltaPeakVolume"),       &mAVGoldDelta,      AV_DEF_DELTA_PEAK);
+   gPrefs->Read(wxT("/AudioIO/TargetPeak"),            &mAVGoalPoint,      AV_DEF_TARGET_PEAK);
+   gPrefs->Read(wxT("/AudioIO/DeltaPeakVolume"),       &mAVGoalDelta,      AV_DEF_DELTA_PEAK);
    gPrefs->Read(wxT("/AudioIO/AnalysisTime"),          &mAVAnalysisTime,   AV_DEF_ANALYSIS_TIME);
    gPrefs->Read(wxT("/AudioIO/NumberAnalysis"),        &mAVTotalAnalysis,  AV_DEF_NUMBER_ANALYSIS);
-   mAVGoldDelta      /= 100.0;
-   mAVGoldPoint      /= 100.0; 
+   mAVGoalDelta      /= 100.0;
+   mAVGoalPoint      /= 100.0; 
    mAVAnalysisTime   /= 1000.0;
    mAVMax             = 0.0;
    mAVLastStartTime   = max(0.0, mT0);
@@ -2543,7 +2543,7 @@ void AudioIO::AVProcess() {
       
       if ((mAVTotalAnalysis == 0 || mAVAnalysisCounter < mAVTotalAnalysis) && mTime - mAVLastStartTime >= mAVAnalysisTime) {
          double iv = (double) Px_GetInputVolume(mPortMixer);
-         if (mAVClipped || mAVMax > mAVGoldPoint + mAVGoldDelta) {
+         if (mAVClipped || mAVMax > mAVGoalPoint + mAVGoalDelta) {
             //if clipped or too high
             if (iv <= LOWER_BOUND) {
                //we can't improve it more now
@@ -2553,14 +2553,14 @@ void AudioIO::AVProcess() {
                }
             }
             else {
-               double vol = max(LOWER_BOUND, iv*mAVGoldPoint/mAVMax);
+               double vol = max(LOWER_BOUND, iv+mAVGoalPoint-mAVMax);
                Px_SetInputVolume(mPortMixer, vol);
                wxString msg;
                msg.Printf(_("Automatic Volume decreased the volume to %f."), vol);
                proj->TP_DisplayStatusMessage(msg);
             }
          }
-         else if ( mAVMax < mAVGoldPoint - mAVGoldDelta ) {
+         else if ( mAVMax < mAVGoalPoint - mAVGoalDelta ) {
             //if too low
             if (iv >= UPPER_BOUND) {
                //we can't improve it more
@@ -2570,20 +2570,21 @@ void AudioIO::AVProcess() {
                }
             }
             else {
-               double vol = min(UPPER_BOUND, iv*mAVGoldPoint/mAVMax);
+               double vol = min(UPPER_BOUND, iv+mAVGoalPoint-mAVMax);
                Px_SetInputVolume(mPortMixer, vol);
                wxString msg;
                msg.Printf(_("Automatic Volume increased the volume to %.2f."), vol);
                proj->TP_DisplayStatusMessage(msg);
             }
          }
-         else if (mAVTotalAnalysis != 0) {
-            //when we are satisfied with the current volume
-            mAVActive = false;
-            wxString msg;
-            msg.Printf(_("Automatic Volume stopped. %.2f seems an acceptable volume."), iv);
-            proj->TP_DisplayStatusMessage(msg);
-         }
+         // when we are satisfied with the current volume keep monitoring
+         //else if (mAVTotalAnalysis != 0) {
+         //   
+         //   mAVActive = false;
+         //   wxString msg;
+         //   msg.Printf(_("Automatic Volume stopped. %.2f seems an acceptable volume."), iv);
+         //   proj->TP_DisplayStatusMessage(msg);
+         //}
 
          mAVAnalysisCounter++;
          mAVMax           = 0;
@@ -2593,7 +2594,7 @@ void AudioIO::AVProcess() {
 
       if (mAVActive && mAVTotalAnalysis != 0 && mAVAnalysisCounter >= mAVTotalAnalysis) {
          mAVActive = false;
-         if (mAVMax > mAVGoldPoint + mAVGoldDelta)
+         if (mAVMax > mAVGoalPoint + mAVGoalDelta)
             proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too high."));
          else
             proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too low."));

@@ -413,6 +413,11 @@ void ControlToolBar::SetRecord(bool down)
    EnableDisableButtons();
 }
 
+bool ControlToolBar::IsRecordDown()
+{
+   return mRecord->IsDown();
+}
+
 void ControlToolBar::PlayPlayRegion(double t0, double t1,
                                     bool looped /* = false */,
                                     bool cutpreview /* = false */,

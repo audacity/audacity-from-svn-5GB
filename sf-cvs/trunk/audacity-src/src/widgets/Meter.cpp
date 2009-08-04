@@ -66,6 +66,7 @@
 //#include "../../images/MixerImages.h"
 #include "../Project.h"
 #include "../toolbars/MeterToolBar.h"
+#include "../toolbars/ControlToolBar.h"
 #include "../Prefs.h"
 
 #include "../Theme.h"
@@ -170,6 +171,7 @@ enum {
    OnDisableMeterID,
    OnMonitorID,
    OnHorizontalID,
+   OnAutomaticVolumeID,
    OnVerticalID,
    OnMultiID,
    OnEqualizerID,
@@ -197,6 +199,7 @@ BEGIN_EVENT_TABLE(Meter, wxPanel)
    EVT_MENU(OnDBID, Meter::OnDB)
    EVT_MENU(OnClipID, Meter::OnClip)
    EVT_MENU(OnMonitorID, Meter::OnMonitor)
+   EVT_MENU(OnAutomaticVolumeID, Meter::OnAutomaticVolume)
    EVT_MENU(OnFloatID, Meter::OnFloat)
    EVT_MENU(OnPreferencesID, Meter::OnPreferences)
 END_EVENT_TABLE()
@@ -401,6 +404,16 @@ void Meter::OnMouse(wxMouseEvent &evt)
             menu->Append(OnMonitorID, _("Stop Monitoring"));
          else
             menu->Append(OnMonitorID, _("Start Monitoring"));
+
+         #ifdef AUTOMATIC_VOLUME
+            if (gAudioIO->AVIsActive())
+               menu->Append(OnAutomaticVolumeID, _("Stop Automatic Volume"));
+            else
+               menu->Append(OnAutomaticVolumeID, _("Start Automatic Volume"));
+            if (!GetActiveProject()->GetControlToolBar()->IsRecordDown() == true)
+               menu->Enable(OnAutomaticVolumeID, false);
+         #endif
+
       }
       menu->AppendSeparator();
 
@@ -675,18 +688,9 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
    #ifdef AUTOMATIC_VOLUME
       bool AVActive;
       gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &AVActive, false);
-      if (AVActive && gAudioIO->AVIsActive()) {
-         AudacityProject *p = GetActiveProject();
-         if (p) {
-            MeterToolBar *bar = p->GetMeterToolBar();
-            if (bar) {
-               Meter *play, *record;
-               bar->GetMeters(&play, &record);
-               if (this == record)
-                  gAudioIO->AVProcess();
-            }
-         }
-      }
+      if (AVActive && gAudioIO->AVIsActive())
+         if (mIsInput)
+            gAudioIO->AVProcess();
    #endif
 
    if (numChanges > 0)      
@@ -1224,6 +1228,17 @@ void Meter::OnClip(wxCommandEvent &evt)
 void Meter::OnMonitor(wxCommandEvent &evt)
 {
    StartMonitoring();
+}
+
+void Meter::OnAutomaticVolume(wxCommandEvent &evt)
+{
+   if (gAudioIO->AVIsActive()) {
+      gAudioIO->AVDisable();
+      AudacityProject *p = GetActiveProject();
+      if (p) p->TP_DisplayStatusMessage(_("Automatic Volume stopped as requested by user."));
+   }
+   else
+      gAudioIO->AVInitialize();
 }
 
 void Meter::OnFloat(wxCommandEvent &evt)
