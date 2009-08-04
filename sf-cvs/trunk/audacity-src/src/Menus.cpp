@@ -2444,10 +2444,12 @@ bool AudacityProject::OnEffect(int type,
 
    //double prevEndTime = mTracks->GetEndTime();
    int count = 0;
-   
+   bool clean = true;
    while (t) {
-      if (t->GetSelected() && t->GetKind() == (Track::Wave))
+      if (t->GetSelected() && t->GetKind() == (Track::Wave)) {
+         if (t->GetEndTime() != 0.0) clean = false;
          count++;
+      }
       t = iter.Next();
    }
 
@@ -2492,7 +2494,7 @@ bool AudacityProject::OnEffect(int type,
       //mchinen:12/14/08 reapplying for generate effects
       if ( f->GetEffectFlags() & INSERT_EFFECT)
       {
-            if (count == 0) OnZoomFit();
+            if (count == 0 || (clean && mViewInfo.sel0 == 0.0)) OnZoomFit();
           //  mTrackPanel->Refresh(false);
       }
       RedrawProject();
