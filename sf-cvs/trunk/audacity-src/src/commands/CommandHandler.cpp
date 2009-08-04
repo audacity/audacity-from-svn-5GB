@@ -45,7 +45,7 @@ void CommandHandler::OnReceiveCommand(AppCommandEvent &event)
    // Then apply it to current application & project.  Note that the
    // command may change the context - for example, switching to a
    // different project.
-   cmd->ApplyWithResponse(*mCurrentContext);
+   cmd->Apply(*mCurrentContext);
 
    // Done with the command so delete it.
    delete cmd;

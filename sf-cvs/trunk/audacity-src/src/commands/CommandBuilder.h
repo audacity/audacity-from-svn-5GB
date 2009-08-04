@@ -29,8 +29,10 @@ class CommandBuilder
       Command *mCommand;
       wxString mError;
 
-      void BuildCommand(const wxString &cmdName, const wxString &cmdParams);
-      void BuildCommand(const wxString &cmdString);
+      void Failure(const wxString &msg = wxEmptyString);
+      void Success(Command *cmd);
+      void BuildCommand(const wxString &cmdName, wxString cmdParams);
+      void BuildCommand(wxString cmdString);
    public:
       CommandBuilder(const wxString &cmdString);
       CommandBuilder(const wxString &cmdName, 
@@ -38,6 +40,7 @@ class CommandBuilder
       ~CommandBuilder();
       bool WasValid();
       Command *GetCommand();
+      void Cleanup();
       const wxString &GetErrorMessage();
 };
 #endif /* End of include guard: __COMMANDBUILDER__ */

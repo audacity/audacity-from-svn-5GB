@@ -2,28 +2,24 @@
 
    Audacity - A Digital Audio Editor
    Copyright 1999-2009 Audacity Team
-   License: wxWidgets
+   License: GPL v2 - see LICENSE.txt
 
    Dan Horgan
 
 ******************************************************************//**
 
-\file GetAllMenuCommands.h
-\brief Contains declaration of GetAllMenuCommands class.
-
-\class GetAllMenuCommands
-\brief Command which outputs a list of available menu commands on the status
-channel.
+\file SelectCommand.h
+\brief Declarations for SelectCommand and SelectCommandType classes
 
 *//*******************************************************************/
 
-#ifndef __GETALLMENUCOMMANDS__
-#define __GETALLMENUCOMMANDS__
+#ifndef __SELECTCOMMAND__
+#define __SELECTCOMMAND__
 
-#include "Command.h"
 #include "CommandType.h"
+#include "Command.h"
 
-class GetAllMenuCommandsType : public CommandType
+class SelectCommandType : public CommandType
 {
 public:
    virtual wxString BuildName();
@@ -31,22 +27,15 @@ public:
    virtual Command *Create(CommandOutputTarget *target);
 };
 
-class GetAllMenuCommands : public CommandImplementation
+class SelectCommand : public CommandImplementation
 {
 public:
-   GetAllMenuCommands(CommandType &type,
-                      CommandOutputTarget *target)
-      : CommandImplementation(type, target)
-   { }
-
-   virtual ~GetAllMenuCommands()
-   { }
-
+   SelectCommand(SelectCommandType &type, CommandOutputTarget *target)
+      : CommandImplementation(type, target) { }
    virtual bool Apply(CommandExecutionContext context);
 };
 
-#endif /* End of include guard: __GETALLMENUCOMMANDS__ */
-
+#endif /* End of include guard: __SELECTCOMMAND__ */
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

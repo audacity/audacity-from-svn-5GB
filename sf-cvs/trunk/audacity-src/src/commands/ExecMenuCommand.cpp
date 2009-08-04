@@ -14,6 +14,24 @@
 *//*******************************************************************/
 
 #include "ExecMenuCommand.h"
+#include "CommandManager.h"
+#include "../Project.h"
+
+wxString ExecMenuCommandType::BuildName()
+{
+   return wxT("MenuCommand");
+}
+
+void ExecMenuCommandType::BuildSignature(CommandSignature &signature)
+{
+   Validator *menuCommandValidator(new Validator());
+   signature.AddParameter(wxT("CommandName"), wxT(""), menuCommandValidator);
+}
+
+Command *ExecMenuCommandType::Create(CommandOutputTarget *target)
+{
+   return new ExecMenuCommand(*this, target);
+}
 
 bool ExecMenuCommand::Apply(CommandExecutionContext context)
 {
@@ -23,18 +41,4 @@ bool ExecMenuCommand::Apply(CommandExecutionContext context)
    wxUint32 cmdFlags = 0; // TODO ?
    wxUint32 cmdMask = 0;
    return cmdManager->HandleTextualCommand(cmdName, cmdFlags, cmdMask);
-}
-
-wxString ExecMenuCommand::BuildName()
-{
-   return wxT("MenuCommand");
-}
-
-ParamMap ExecMenuCommand::BuildSignature()
-{
-   ParamMap signature;
-   Validator menuCommandValidator;
-   signature[wxT("CommandName")] =
-      std::pair<wxVariant, Validator>(wxT(""), menuCommandValidator);
-   return signature;
 }

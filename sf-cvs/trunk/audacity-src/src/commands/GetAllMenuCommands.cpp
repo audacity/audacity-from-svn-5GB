@@ -17,6 +17,21 @@
 #include "../Project.h"
 #include "CommandManager.h"
 
+wxString GetAllMenuCommandsType::BuildName()
+{
+   return wxT("GetAllMenuCommands");
+}
+
+void GetAllMenuCommandsType::BuildSignature(CommandSignature &signature)
+{
+   return;
+}
+
+Command *GetAllMenuCommandsType::Create(CommandOutputTarget *target)
+{
+   return new GetAllMenuCommands(*this, target);
+}
+
 bool GetAllMenuCommands::Apply(CommandExecutionContext context)
 {
    wxArrayString names;
@@ -29,15 +44,6 @@ bool GetAllMenuCommands::Apply(CommandExecutionContext context)
    return true;
 }
 
-wxString GetAllMenuCommands::BuildName()
-{
-   return wxT("GetAllMenuCommands");
-}
-
-ParamMap GetAllMenuCommands::BuildSignature()
-{
-   return ParamMap();
-}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

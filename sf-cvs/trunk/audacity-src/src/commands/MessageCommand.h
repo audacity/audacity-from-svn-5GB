@@ -2,28 +2,29 @@
 
    Audacity - A Digital Audio Editor
    Copyright 1999-2009 Audacity Team
-   License: wxWidgets
+   File License: wxWidgets
 
    Dan Horgan
 
 ******************************************************************//**
 
-\file GetAllMenuCommands.h
-\brief Contains declaration of GetAllMenuCommands class.
+\file MessageCommand.h
+\brief Contains definition of MessageCommand class.
 
-\class GetAllMenuCommands
-\brief Command which outputs a list of available menu commands on the status
-channel.
+*//***************************************************************//***
+
+\class MessageCommand
+\brief Command to send a message (currently on the status channel)
 
 *//*******************************************************************/
 
-#ifndef __GETALLMENUCOMMANDS__
-#define __GETALLMENUCOMMANDS__
+#ifndef __MESSAGECOMMAND__
+#define __MESSAGECOMMAND__
 
 #include "Command.h"
 #include "CommandType.h"
 
-class GetAllMenuCommandsType : public CommandType
+class MessageCommandType : public CommandType
 {
 public:
    virtual wxString BuildName();
@@ -31,21 +32,16 @@ public:
    virtual Command *Create(CommandOutputTarget *target);
 };
 
-class GetAllMenuCommands : public CommandImplementation
+class MessageCommand : public CommandImplementation
 {
 public:
-   GetAllMenuCommands(CommandType &type,
-                      CommandOutputTarget *target)
-      : CommandImplementation(type, target)
-   { }
-
-   virtual ~GetAllMenuCommands()
-   { }
-
+   MessageCommand(CommandType &type,
+                  CommandOutputTarget *target)
+      : CommandImplementation(type, target) {}
    virtual bool Apply(CommandExecutionContext context);
 };
 
-#endif /* End of include guard: __GETALLMENUCOMMANDS__ */
+#endif /* End of include guard: __MESSAGECOMMAND__ */
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

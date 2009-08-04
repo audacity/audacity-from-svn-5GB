@@ -1,32 +1,25 @@
 /**********************************************************************
 
-   Audacity: A Digital Audio Editor
-   Audacity(R) is copyright (c) 1999-2009 Audacity Team.
-   File License: wxwidgets
+   Audacity - A Digital Audio Editor
+   Copyright 1999-2009 Audacity Team
+   License: wxwidgets
 
-   BatchEvalCommand.h
    Dan Horgan
 
 ******************************************************************//**
 
-\class BatchEvalCommand
-\brief Given a string representing a command, pass it to the BatchCommands
-system.
-
-The eventual aim is to move the code from BatchCommands out into separate
-command classes, but until this happens, BatchEvalCommand can act as a 'bridge'
-to that system.
+\file GetTrackInfoCommand.h
+\brief Declarations of GetTrackInfoCommand and GetTrackInfoCommandType classes
 
 *//*******************************************************************/
 
-#ifndef __BATCHEVALCOMMAND__
-#define __BATCHEVALCOMMAND__
+#ifndef __GETTRACKINFOCOMMAND__
+#define __GETTRACKINFOCOMMAND__
 
 #include "Command.h"
 #include "CommandType.h"
-#include "../BatchCommands.h"
 
-class BatchEvalCommandType : public CommandType
+class GetTrackInfoCommandType : public CommandType
 {
 public:
    virtual wxString BuildName();
@@ -34,19 +27,19 @@ public:
    virtual Command *Create(CommandOutputTarget *target);
 };
 
-class BatchEvalCommand : public CommandImplementation
+class GetTrackInfoCommand : public CommandImplementation
 {
 public:
-   BatchEvalCommand(CommandType &type,
-                    CommandOutputTarget *target)
+   GetTrackInfoCommand(CommandType &type, CommandOutputTarget *target)
       : CommandImplementation(type, target)
    { }
+   virtual ~GetTrackInfoCommand()
+   { }
 
-   virtual ~BatchEvalCommand();
    virtual bool Apply(CommandExecutionContext context);
 };
 
-#endif /* End of include guard: __BATCHEVALCOMMAND__ */
+#endif /* End of include guard: __GETTRACKINFOCOMMAND__ */
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

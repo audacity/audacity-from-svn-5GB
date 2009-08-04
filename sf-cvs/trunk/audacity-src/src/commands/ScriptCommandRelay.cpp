@@ -25,6 +25,7 @@ code out of LoadModules.
 #include "AppCommandEvent.h"
 #include "ResponseQueue.h"
 #include "../Project.h"
+#include <wx/string.h>
 
 // Declare static class members
 CommandHandler *ScriptCommandRelay::sCmdHandler;
@@ -49,6 +50,16 @@ void ScriptCommandRelay::Run()
       sScriptFn(&ExecCommand);
 }
 
+/// Send a command to a project, to be applied in that context.
+void ScriptCommandRelay::PostCommand(AudacityProject *project, Command *cmd)
+{
+   wxASSERT(project != NULL);
+   wxASSERT(cmd != NULL);
+   AppCommandEvent ev;
+   ev.SetCommand(cmd);
+   project->AddPendingEvent(ev);
+}
+
 /// This is the function which actually obeys one command.  Rather than applying
 /// the command directly, an event containing a reference to the command is sent
 /// to the main (GUI) thread. This is because having more than one thread access
@@ -58,26 +69,26 @@ int ExecCommand(wxString *pIn, wxString *pOut)
    CommandBuilder builder(*pIn);
    if (builder.WasValid())
    {
+      AudacityProject *project = GetActiveProject();
+      project->SafeDisplayStatusMessage(wxT("Received script command"));
       Command *cmd = builder.GetCommand();
-      AppCommandEvent ev;
-      ev.SetCommand(cmd);
-      GetActiveProject()->AddPendingEvent(ev);
+      ScriptCommandRelay::PostCommand(project, cmd);
 
       *pOut = wxEmptyString;
-
-      // Wait until all responses from the command have been received.
-      // The last response is signalled by an empty line.
-      wxString msg = ScriptCommandRelay::ReceiveResponse().GetMessage();
-      while (msg != wxT("\n"))
-      {
-         *pOut += msg + wxT("\n");
-         msg = ScriptCommandRelay::ReceiveResponse().GetMessage();
-      }
    } else
    {
       *pOut = wxT("Syntax error!\n");
-      *pOut += builder.GetErrorMessage();
-      *pOut += wxT("\n");
+      *pOut += builder.GetErrorMessage() + wxT("\n");
+      builder.Cleanup();
+   }
+
+   // Wait until all responses from the command have been received.
+   // The last response is signalled by an empty line.
+   wxString msg = ScriptCommandRelay::ReceiveResponse().GetMessage();
+   while (msg != wxT("\n"))
+   {
+      *pOut += msg + wxT("\n");
+      msg = ScriptCommandRelay::ReceiveResponse().GetMessage();
    }
 
    return 0;
