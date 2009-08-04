@@ -68,7 +68,7 @@ public:
 #define DEFAULT_LATENCY_CORRECTION -130.0
 
 #ifdef AUTOMATIC_VOLUME
-   #define AV_DEF_BEST_PEAK 92
+   #define AV_DEF_TARGET_PEAK 92
    #define AV_DEF_DELTA_PEAK 2
    #define AV_DEF_ANALYSIS_TIME 1000
    #define AV_DEF_NUMBER_ANALYSIS 5
@@ -396,8 +396,8 @@ private:
    int      mAVTotalAnalysis;
    int      mAVAnalysisCounter;
    float    mAVMax;
-   double   mAVGoldPoint;
-   double   mAVGoldDelta;
+   double   mAVGoalPoint;
+   double   mAVGoalDelta;
    double   mAVAnalysisTime;
    double   mAVLastStartTime;
 #endif
