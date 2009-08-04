@@ -51,7 +51,7 @@
 EffectCompressor::EffectCompressor()
 {
    mNormalize = true;
-   mUseRMS = false;
+   mUsePeak = false;
    mThreshold = 0.25;
    mAttackTime = 0.2;      // seconds
    mDecayTime = 1.0;       // seconds
@@ -75,7 +75,7 @@ bool EffectCompressor::Init()
    gPrefs->Read(wxT("/Effects/Compressor/AttackTime"), &mAttackTime, 0.2f );
    gPrefs->Read(wxT("/Effects/Compressor/DecayTime"), &mDecayTime, 1.0f );
    gPrefs->Read(wxT("/Effects/Compressor/Normalize"), &mNormalize, true );
-   gPrefs->Read(wxT("/Effects/Compressor/UseRMS"), &mUseRMS, false );
+   gPrefs->Read(wxT("/Effects/Compressor/UsePeak"), &mUsePeak, false );
 
    return true;
 }
@@ -104,7 +104,7 @@ bool EffectCompressor::TransferParameters( Shuttle & shuttle )
    shuttle.TransferDouble( wxT("AttackTime"), mAttackTime, 0.2f );
    shuttle.TransferDouble( wxT("DecayTime"), mDecayTime, 1.0f );
    shuttle.TransferBool( wxT("Normalize"), mNormalize, true );
-   shuttle.TransferBool( wxT("UseRMS"), mUseRMS, false );
+   shuttle.TransferBool( wxT("UsePeak"), mUsePeak, false );
    return true;
 }
 
@@ -117,7 +117,7 @@ bool EffectCompressor::PromptUser()
    dlog.attack = mAttackTime;
    dlog.decay = mDecayTime;
    dlog.useGain = mNormalize;
-   dlog.useRMS = mUseRMS;
+   dlog.usePeak = mUsePeak;
    dlog.TransferDataToWindow();
 
    dlog.CentreOnParent();
@@ -132,7 +132,7 @@ bool EffectCompressor::PromptUser()
    mAttackTime = dlog.attack;
    mDecayTime = dlog.decay;
    mNormalize = dlog.useGain;
-   mUseRMS = dlog.useRMS;
+   mUsePeak = dlog.usePeak;
 
    // Retain the settings
    gPrefs->Write(wxT("/Effects/Compressor/ThresholdDB"), mThresholdDB);
@@ -141,7 +141,7 @@ bool EffectCompressor::PromptUser()
    gPrefs->Write(wxT("/Effects/Compressor/AttackTime"), mAttackTime);
    gPrefs->Write(wxT("/Effects/Compressor/DecayTime"), mDecayTime);
    gPrefs->Write(wxT("/Effects/Compressor/Normalize"), mNormalize);
-   gPrefs->Write(wxT("/Effects/Compressor/UseRMS"), mUseRMS);
+   gPrefs->Write(wxT("/Effects/Compressor/UsePeak"), mUsePeak);
 
    return true;
 }
@@ -339,7 +339,7 @@ void EffectCompressor::Follow(float *buffer, float *env, int len, float *previou
 	int i;
 	double level,last;
 
-   if(mUseRMS) {
+   if(!mUsePeak) {
 	   // Update RMS sum directly from the circle buffer
 	   // to avoid accumulation of rounding errors
 	   FreshenCircle();
@@ -347,10 +347,10 @@ void EffectCompressor::Follow(float *buffer, float *env, int len, float *previou
 	// First apply a peak detect with the requested decay rate
 	last = mLastLevel;
 	for(i=0; i<len; i++) {
-      if(mUseRMS)
-		   level = AvgCircle(buffer[i]);
-      else // use Peak
+      if(mUsePeak)
          level = fabs(buffer[i]);
+      else // use RMS
+		   level = AvgCircle(buffer[i]);
       // Don't increase gain when signal is continuously below the noise floor
       if(level < mNoiseFloor) {
          mNoiseCounter++;
@@ -417,13 +417,12 @@ void EffectCompressor::Follow(float *buffer, float *env, int len, float *previou
 float EffectCompressor::DoCompression(float value, double env)
 {
    float out;
-   if(mUseRMS) {
-      // Nominally the RMS will be about 1/4 of the peak,
-      // so this choice keeps the compressed waveform peaks below 1.0
-      out = value * pow(0.25/env, mCompression);
-   } else {
-      // Peak values map 1.0 to 1.0
+   if(mUsePeak) {
+      // Peak values map 1.0 to 1.0 - 'upward' compression
       out = value * pow(1.0/env, mCompression);
+   } else {
+      // With RMS-based compression don't change values below mThreshold - 'downward' compression
+      out = value * pow(mThreshold/env, mCompression);
    }
 
    // Retain the maximum value for use in the normalization pass
@@ -678,7 +677,7 @@ void CompressorDialog::PopulateOrExchange(ShuttleGui & S)
    {
       mGainCheckBox = S.AddCheckBox(_("Make-up gain for 0dB after compressing"),
                                     wxT("true"));
-      mRMSCheckBox = S.AddCheckBox(_("Compress based on RMS"),
+      mPeakCheckBox = S.AddCheckBox(_("Compress based on Peaks"),
                                     wxT("false"));
    }
    S.EndHorizontalLay();
@@ -696,7 +695,7 @@ bool CompressorDialog::TransferDataToWindow()
    mAttackSlider->SetValue((int)rint(attack*10));
    mDecaySlider->SetValue((int)rint(decay));
    mGainCheckBox->SetValue(useGain);
-   mRMSCheckBox->SetValue(useRMS);
+   mPeakCheckBox->SetValue(usePeak);
 
    TransferDataFromWindow();
 
@@ -711,7 +710,7 @@ bool CompressorDialog::TransferDataFromWindow()
    attack = (double)(mAttackSlider->GetValue() / 10.0);
    decay = (double)(mDecaySlider->GetValue());
    useGain = mGainCheckBox->GetValue();
-   useRMS = mRMSCheckBox->GetValue();
+   usePeak = mPeakCheckBox->GetValue();
 
    mPanel->threshold = threshold;
    mPanel->noisefloor = noisefloor;
@@ -760,7 +759,7 @@ void CompressorDialog::OnPreview(wxCommandEvent &event)
    double    oldNoiseFloorDB = mEffect->mNoiseFloorDB;
    double    oldRatio = mEffect->mRatio;
    bool      oldUseGain = mEffect->mNormalize;
-   bool      oldUseRMS = mEffect->mUseRMS;
+   bool      oldUsePeak = mEffect->mUsePeak;
 
    mEffect->mAttackTime = attack;
    mEffect->mDecayTime = decay;
@@ -768,7 +767,7 @@ void CompressorDialog::OnPreview(wxCommandEvent &event)
    mEffect->mNoiseFloorDB = noisefloor;
    mEffect->mRatio = ratio;
    mEffect->mNormalize = useGain;
-   mEffect->mUseRMS = useRMS;
+   mEffect->mUsePeak = usePeak;
 
    mEffect->Preview();
 
@@ -778,7 +777,7 @@ void CompressorDialog::OnPreview(wxCommandEvent &event)
    mEffect->mNoiseFloorDB = oldNoiseFloorDB;
    mEffect->mRatio = oldRatio;
    mEffect->mNormalize = oldUseGain;
-   mEffect->mUseRMS = oldUseRMS;
+   mEffect->mUsePeak = oldUsePeak;
 }
 
 void CompressorDialog::OnSlider(wxCommandEvent &event)
