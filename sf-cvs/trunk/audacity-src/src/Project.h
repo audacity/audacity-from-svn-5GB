@@ -271,10 +271,12 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void FinishAutoScroll();
    void FixScrollbars();
 
+   void SafeDisplayStatusMessage(const wxChar *msg);
+
    // TrackPanel access
    virtual wxSize GetTPTracksUsableArea();
    virtual void RefreshTPTrack(Track* pTrk, bool refreshbacking = true);
-
+   
    // TrackPanel callback methods, overrides of TrackPanelListener
    virtual void TP_DisplaySelection();
    virtual void TP_DisplayStatusMessage(wxString msg);

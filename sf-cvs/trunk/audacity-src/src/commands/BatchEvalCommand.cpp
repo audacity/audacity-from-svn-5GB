@@ -15,6 +15,24 @@
 
 #include "BatchEvalCommand.h"
 
+wxString BatchEvalCommandType::BuildName()
+{
+   return wxT("BatchCommand");
+}
+
+void BatchEvalCommandType::BuildSignature(CommandSignature &signature)
+{
+   Validator *commandNameValidator(new Validator());
+   signature.AddParameter(wxT("CommandName"), wxT(""), commandNameValidator);
+   Validator *paramValidator(new Validator());
+   signature.AddParameter(wxT("ParamString"), wxT(""), paramValidator);
+}
+
+Command *BatchEvalCommandType::Create(CommandOutputTarget *target)
+{
+   return new BatchEvalCommand(*this, target);
+}
+
 bool BatchEvalCommand::Apply(CommandExecutionContext context)
 {
    wxString cmdName = GetString(wxT("CommandName"));
@@ -26,22 +44,8 @@ bool BatchEvalCommand::Apply(CommandExecutionContext context)
    return Batch.ApplyCommand(cmdName, cmdParams);
 }
 
-wxString BatchEvalCommand::BuildName()
-{
-   return wxT("BatchEval");
-}
-
-ParamMap BatchEvalCommand::BuildSignature()
-{
-   ParamMap signature;
-   Validator commandNameValidator;
-   signature[wxT("CommandName")] =
-      std::pair<wxVariant, Validator>(wxT(""), commandNameValidator);
-   Validator paramValidator;
-   signature[wxT("ParamString")] =
-      std::pair<wxVariant, Validator>(wxT(""), paramValidator);
-   return signature;
-}
+BatchEvalCommand::~BatchEvalCommand()
+{ }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

@@ -16,6 +16,7 @@ project window.
 *//*******************************************************************/
 
 #include "ScreenshotCommand.h"
+#include "CommandTargets.h"
 #include "../AudacityApp.h"
 #include "../Project.h"
 #include <wx/toplevel.h>
@@ -201,48 +202,52 @@ void ScreenshotCommand::CaptureDock(wxWindow *win, wxString fileName)
    Capture(fileName, win, x, y, width, height);
 }
 
-wxString ScreenshotCommand::BuildName()
+wxString ScreenshotCommandType::BuildName()
 {
    return wxT("Screenshot");
 }
 
-ParamMap ScreenshotCommand::BuildSignature()
+void ScreenshotCommandType::BuildSignature(CommandSignature &signature)
 {
-   OptionValidator captureModeValidator;
-   captureModeValidator.AddOption(wxT("window"));
-   captureModeValidator.AddOption(wxT("fullwindow"));
-   captureModeValidator.AddOption(wxT("windowplus"));
-   captureModeValidator.AddOption(wxT("fullscreen"));
-   captureModeValidator.AddOption(wxT("toolbars"));
-   captureModeValidator.AddOption(wxT("selectionbar"));
-   captureModeValidator.AddOption(wxT("tools"));
-   captureModeValidator.AddOption(wxT("control"));
-   captureModeValidator.AddOption(wxT("mixer"));
-   captureModeValidator.AddOption(wxT("meter"));
-   captureModeValidator.AddOption(wxT("edit"));
-   captureModeValidator.AddOption(wxT("device"));
-   captureModeValidator.AddOption(wxT("transcription"));
-   captureModeValidator.AddOption(wxT("trackpanel"));
-   captureModeValidator.AddOption(wxT("ruler"));
-   captureModeValidator.AddOption(wxT("tracks"));
-   captureModeValidator.AddOption(wxT("firsttrack"));
-   captureModeValidator.AddOption(wxT("secondtrack"));
+   OptionValidator *captureModeValidator = new OptionValidator();
+   captureModeValidator->AddOption(wxT("window"));
+   captureModeValidator->AddOption(wxT("fullwindow"));
+   captureModeValidator->AddOption(wxT("windowplus"));
+   captureModeValidator->AddOption(wxT("fullscreen"));
+   captureModeValidator->AddOption(wxT("toolbars"));
+   captureModeValidator->AddOption(wxT("selectionbar"));
+   captureModeValidator->AddOption(wxT("tools"));
+   captureModeValidator->AddOption(wxT("control"));
+   captureModeValidator->AddOption(wxT("mixer"));
+   captureModeValidator->AddOption(wxT("meter"));
+   captureModeValidator->AddOption(wxT("edit"));
+   captureModeValidator->AddOption(wxT("device"));
+   captureModeValidator->AddOption(wxT("transcription"));
+   captureModeValidator->AddOption(wxT("trackpanel"));
+   captureModeValidator->AddOption(wxT("ruler"));
+   captureModeValidator->AddOption(wxT("tracks"));
+   captureModeValidator->AddOption(wxT("firsttrack"));
+   captureModeValidator->AddOption(wxT("secondtrack"));
 
-   OptionValidator backgroundValidator;
-   backgroundValidator.AddOption(wxT("Blue"));
-   backgroundValidator.AddOption(wxT("White"));
-   backgroundValidator.AddOption(wxT("None"));
+   OptionValidator *backgroundValidator = new OptionValidator();
+   backgroundValidator->AddOption(wxT("Blue"));
+   backgroundValidator->AddOption(wxT("White"));
+   backgroundValidator->AddOption(wxT("None"));
 
-   Validator filePathValidator;
+   Validator *filePathValidator = new Validator();
 
-   ParamMap signature;
-   signature[wxT("CaptureMode")] =
-      std::pair<wxVariant, Validator>(wxT("fullscreen"), captureModeValidator);
-   signature[wxT("Background")] =
-      std::pair<wxVariant, Validator>(wxT("None"), backgroundValidator);
-   signature[wxT("FilePath")] =
-      std::pair<wxVariant, Validator>(wxT(""), filePathValidator);
-   return signature;
+   signature.AddParameter(wxT("CaptureMode"),
+                          wxT("fullscreen"),
+                          captureModeValidator);
+   signature.AddParameter(wxT("Background"),
+                          wxT("None"),
+                          backgroundValidator);
+   signature.AddParameter(wxT("FilePath"), wxT(""), filePathValidator);
+}
+
+Command *ScreenshotCommandType::Create(CommandOutputTarget *target)
+{
+   return new ScreenshotCommand(*this, target);
 }
 
 wxString ScreenshotCommand::MakeFileName(wxString path, wxString basename)

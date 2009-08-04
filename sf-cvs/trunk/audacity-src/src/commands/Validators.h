@@ -42,13 +42,25 @@ a certain criterion. This is a base validator which allows anything.
 
 class Validator
 {
+private:
+   wxVariant mConverted;
+
 public:
    Validator() {};
    virtual ~Validator() {};
+   void SetConverted (const wxVariant &v)
+   {
+      mConverted = v;
+   }
+   const wxVariant &GetConverted()
+   {
+      return mConverted;
+   }
 
    /// Judge whether the passed value satisfies the Validator
-   virtual bool Validate(const wxVariant &v) const
+   virtual bool Validate(const wxVariant &v)
    {
+      SetConverted(v);
       return true;
    }
 
@@ -57,6 +69,12 @@ public:
    virtual wxString GetDescription() const
    {
       return wxT("any value");
+   }
+
+   /// This MUST be overridden, to avoid slicing!
+   virtual Validator *GetClone() const
+   {
+      return new Validator();
    }
 };
 
@@ -74,11 +92,12 @@ public:
    {
       mOptions.insert(mOptions.begin(), options.begin(), options.end());
    }
-   virtual bool Validate(const wxVariant &v) const
+   virtual bool Validate(const wxVariant &v)
    {
+      SetConverted(v);
       return (mOptions.Index(v.GetString()) != wxNOT_FOUND);
    }
-   virtual wxString GetDescription()
+   virtual wxString GetDescription() const
    {
       wxString desc = wxT("one of: ");
       int optionCount = mOptions.GetCount();
@@ -90,84 +109,124 @@ public:
       desc += mOptions[optionCount-1];
       return desc;
    }
+   virtual Validator *GetClone() const
+   {
+      OptionValidator *v = new OptionValidator();
+      v->mOptions = mOptions;
+      return v;
+   }
 };
 
 class BoolValidator : public Validator
 {
 public:
-   virtual bool Validate(const wxVariant &v) const
+   virtual bool Validate(const wxVariant &v)
    {
-      return v.IsType(wxT("bool"));
+      bool val;
+      if (!v.Convert(&val)) return false;
+      SetConverted(val);
+      return GetConverted().IsType(wxT("bool"));
    }
    virtual wxString GetDescription() const
    {
       return wxT("y/n");
+   }
+   virtual Validator *GetClone() const
+   {
+      return new BoolValidator();
    }
 };
 
 class DoubleValidator : public Validator
 {
 public:
-   virtual bool Validate(const wxVariant &v) const
+   virtual bool Validate(const wxVariant &v)
    {
-      return v.IsType(wxT("double"));
+      double val;
+      if (!v.Convert(&val)) return false;
+      SetConverted(val);
+      return GetConverted().IsType(wxT("double"));
    }
    virtual wxString GetDescription() const
    {
       return wxT("a floating-point number");
+   }
+   virtual Validator *GetClone() const
+   {
+      return new DoubleValidator();
    }
 };
 
 class RangeValidator : public Validator
 {
 private:
-   double lower, upper;
+   double mLower, mUpper;
 public:
-
-   virtual bool Validate(const wxVariant &v) const
+   RangeValidator(double l, double u)
+      : mLower(l), mUpper(u)
+   { }
+   virtual bool Validate(const wxVariant &v)
    {
-      double d = v.GetDouble();
-      return ((lower < d) && (d < upper));
+      double val;
+      if (!v.Convert(&val)) return false;
+      SetConverted(val);
+      return ((mLower < val) && (val < mUpper));
    }
    virtual wxString GetDescription() const
    {
-      return wxString::Format(wxT("between %d and %d"), lower, upper);
+      return wxString::Format(wxT("between %d and %d"), mLower, mUpper);
+   }
+   virtual Validator *GetClone() const
+   {
+      return new RangeValidator(mLower, mUpper);
    }
 };
 
 class IntValidator : public Validator
 {
 public:
-   virtual bool Validate(const wxVariant &v) const
+   virtual bool Validate(const wxVariant &v)
    {
-      if (!v.IsType(wxT("double"))) return false;
-      double d = v.GetDouble();
-      return ((long)d == d);
+      double val;
+      if (!v.Convert(&val)) return false;
+      SetConverted(val);
+      if (!GetConverted().IsType(wxT("double"))) return false;
+      return ((long)val == val);
    }
    virtual wxString GetDescription() const
    {
       return wxT("an integer");
    }
+   virtual Validator *GetClone() const
+   {
+      return new IntValidator();
+   }
 };
 
+/*
 class AndValidator : public Validator
 {
-   private:
-      const Validator &v1, &v2;
-   public:
-      AndValidator(const Validator &u1, const Validator &u2)
-         : v1(u1), v2(u2)
-      { }
-      virtual bool Validate(const wxVariant &v) const
-      {
-         if (!v1.Validate(v)) return false;
-         return v2.Validate(v);
-      }
-      virtual wxString GetDescription() const
-      {
-         return v1.GetDescription() + wxT(" and ") + v2.GetDescription();
-      }
-};
+private:
+   Validator &v1, &v2;
+public:
+   AndValidator(Validator *u1, Validator *u2)
+      : v1(*u1), v2(*u2)
+   { }
+   virtual bool Validate(const wxVariant &v)
+   {
+      if (!v1.Validate(v)) return false;
+      return v2.Validate(v);
+   }
+   virtual wxString GetDescription() const
+   {
+      return v1.GetDescription() + wxT(" and ") + v2.GetDescription();
+   }
+   virtual Validator *GetClone() const
+   {
+      return new AndValidator(v1.GetClone(), v2.GetClone());
+   }
+};*/
+
 #endif /* End of include guard: __VALIDATORS__ */
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

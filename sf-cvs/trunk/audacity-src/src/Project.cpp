@@ -148,6 +148,12 @@ scroll information.  It also has some status flags.
 #include "toolbars/ToolsToolBar.h"
 #include "toolbars/TranscriptionToolBar.h"
 
+#include "commands/ScriptCommandRelay.h"
+#include "commands/CommandDirectory.h"
+#include "commands/CommandTargets.h"
+#include "commands/Command.h"
+#include "commands/CommandType.h"
+
 using std::cout;
 
 TrackList *AudacityProject::msClipboard = new TrackList();
@@ -3871,10 +3877,30 @@ void AudacityProject::EditClipboardByLabel( WaveTrack::EditDestFunction action )
       delete regions.Item( i );
 }
 
+
 // TrackPanel callback method
 void AudacityProject::TP_DisplayStatusMessage(wxString msg)
 {
    mStatusBar->SetStatusText(msg);
+   mLastStatusUpdateTime = ::wxGetUTCTime();
+}
+
+// Set the status indirectly, using the command system
+// (more overhead, but can be used from a non-GUI thread)
+void AudacityProject::SafeDisplayStatusMessage(const wxChar *msg)
+{
+   CommandOutputTarget *target
+      = new CommandOutputTarget(TargetFactory::ProgressDefault(),
+                                new StatusBarTarget(*mStatusBar),
+                                TargetFactory::MessageDefault());
+   CommandType *type = CommandDirectory::Get()->LookUp(wxT("Message"));
+   wxASSERT_MSG(type != NULL, wxT("Message command not found!"));
+   Command *statusCmd = type->Create(target);
+   statusCmd->SetParameter(wxT("MessageString"), msg);
+   ScriptCommandRelay::PostCommand(this, statusCmd);
+
+   // Although the status hasn't actually been set yet, updating the time now
+   // is probably accurate enough
    mLastStatusUpdateTime = ::wxGetUTCTime();
 }
 

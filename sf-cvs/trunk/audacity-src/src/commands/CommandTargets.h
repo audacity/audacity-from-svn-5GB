@@ -14,6 +14,9 @@ receive output from a command. For instance, a progress target might pass the
 information to a GUI ProgressDialog. Using abstract targets means the command
 objects needn't be concerned with what happens to the information.
 
+Note: currently, reusing target objects is not generally safe - perhaps they
+should be reference-counted.
+
 *//*******************************************************************/
 
 #ifndef __COMMANDTARGETS__
@@ -50,6 +53,7 @@ public:
    GUIProgressTarget(ProgressDialog &pd)
       : mProgress(pd)
    {}
+   virtual ~GUIProgressTarget() {}
    virtual void Update(double completed)
    {
       mProgress.Update(completed);
@@ -62,6 +66,25 @@ class CommandMessageTarget
 public:
    virtual ~CommandMessageTarget() {}
    virtual void Update(wxString message) = 0;
+};
+
+/// 
+class ProgressToMessageTarget : public CommandProgressTarget
+{
+private:
+   CommandMessageTarget &mTarget;
+public:
+   ProgressToMessageTarget(CommandMessageTarget *target)
+      : mTarget(*target)
+   { }
+   virtual ~ProgressToMessageTarget()
+   {
+      // delete &mTarget;
+   }
+   virtual void Update(double completed)
+   {
+      mTarget.Update(wxString::Format(wxT("%.2f%%"), completed*100));
+   }
 };
 
 /// Used to ignore a command's message updates

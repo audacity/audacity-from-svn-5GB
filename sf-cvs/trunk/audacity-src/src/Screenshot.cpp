@@ -10,6 +10,8 @@
 
 #include "Screenshot.h"
 #include "commands/ScreenshotCommand.h"
+#include "commands/CommandTargets.h"
+#include "commands/CommandDirectory.h"
 #include <wx/defs.h>
 #include <wx/event.h>
 #include <wx/frame.h>
@@ -31,6 +33,8 @@
 #include "Project.h"
 #include "Prefs.h"
 #include "toolbars/ToolManager.h"
+
+class CommandType;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -253,7 +257,9 @@ ScreenshotCommand *ScreenFrame::CreateCommand()
       new CommandOutputTarget(new NullProgressTarget(),
                               new StatusBarTarget(*mStatus),
                               new MessageBoxTarget());
-   return new ScreenshotCommand(output, this);
+   CommandType *type = CommandDirectory::Get()->LookUp(wxT("Screenshot"));
+   wxASSERT_MSG(type != NULL, wxT("Screenshot command doesn't exist!"));
+   return new ScreenshotCommand(*type, output, this);
 }
 
 ScreenFrame::ScreenFrame(wxWindow * parent, wxWindowID id)

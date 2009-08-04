@@ -17,17 +17,29 @@
 #define __COMMANDMISC__
 
 #include <map>
-#include <utility>
 #include <wx/string.h>
 #include <wx/variant.h>
+#include "Validators.h"
+class CommandType;
 
-class Validator;
-class CommandFactory;
+// Map from parameter name to the value of the parameter
+typedef std::map<wxString, wxVariant> ParamValueMap;
 
-// Map from parameter name to the value of the parameter, with a suitable Validator
-typedef std::map<wxString, std::pair<wxVariant, Validator> > ParamMap;
+// Map from parameter name to a suitable Validator
+typedef std::map<wxString, Validator *> ValidatorMap;
 
-// Map from command name to factory
-typedef std::map<wxString, CommandFactory*> CommandMap;
+// Map from command name to type
+typedef std::map<wxString, CommandType*> CommandMap;
 
 #endif /* End of include guard: __COMMANDMISC__ */
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: TBD

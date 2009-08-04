@@ -21,22 +21,25 @@ name.
 #define __EXECMENUCOMMAND__
 
 #include "Command.h"
-#include "CommandManager.h"
-#include "../Project.h"
+#include "CommandType.h"
 
-class ExecMenuCommand : public Command
+class ExecMenuCommandType : public CommandType
 {
-   public:
-      ExecMenuCommand(const wxString &cmdName,
-                      const ParamMap &signature,
-                      CommandOutputTarget *target)
-         : Command(cmdName, signature, target)
-      { }
-      ~ExecMenuCommand() { }
+public:
+   virtual wxString BuildName();
+   virtual void BuildSignature(CommandSignature &signature);
+   virtual Command *Create(CommandOutputTarget *target);
+};
 
-      virtual bool Apply(CommandExecutionContext context);
-      static wxString BuildName();
-      static ParamMap BuildSignature();
+class ExecMenuCommand : public CommandImplementation
+{
+public:
+   ExecMenuCommand(CommandType &type,
+                   CommandOutputTarget *target)
+      : CommandImplementation(type, target)
+   { }
+   virtual ~ExecMenuCommand() { }
+   virtual bool Apply(CommandExecutionContext context);
 };
 
 #endif /* End of include guard: __EXECMENUCOMMAND__ */
