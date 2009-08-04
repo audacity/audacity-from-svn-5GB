@@ -811,6 +811,7 @@ bool AudacityApp::OnInit()
    wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
 #endif
 
+#ifdef USE_VST // if no VST support, answer is always no
    // Have we been started to check a plugin?
    if (argc == 3 && wxStrcmp(argv[1], VSTCMDKEY) == 0) {
       wxHandleFatalExceptions();
@@ -818,6 +819,7 @@ bool AudacityApp::OnInit()
       VSTEffect::Check(argv[2]);
       return false;
    }
+#endif
 
    mLogger = NULL;
 
