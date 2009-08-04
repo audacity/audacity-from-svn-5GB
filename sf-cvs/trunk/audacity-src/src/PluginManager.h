@@ -52,8 +52,8 @@ class PluginManager
    int GetPluginCount(const wxString & type);
    wxString GetPlugin(const wxString & type, int index);
 
-   wxString PluginManager::GetFirstPlugin(const wxString & type);
-   wxString PluginManager::GetNextPlugin(const wxString & type);
+   wxString GetFirstPlugin(const wxString & type);
+   wxString GetNextPlugin(const wxString & type);
 
    bool IsRegistered(const wxString & type, const wxString & path);
    void RegisterPlugin(const wxString & type, const wxString & path);
