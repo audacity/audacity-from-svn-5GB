@@ -80,7 +80,7 @@ public:
    double    mNoiseFloorDB;
    double    mRatio;
    bool      mNormalize;	//MJS
-   bool      mUseRMS;
+   bool      mUsePeak;
    
    double    mDecayTime;
    double    mAttackFactor;
@@ -146,7 +146,7 @@ public:
    double attack;
    double decay;
    bool useGain;
-   bool useRMS;
+   bool usePeak;
 
 private:
    void OnSize( wxSizeEvent &event );
@@ -177,7 +177,7 @@ private:
    wxStaticText *mDecayText;
 
    wxCheckBox *mGainCheckBox;
-   wxCheckBox *mRMSCheckBox;
+   wxCheckBox *mPeakCheckBox;
    
 private:
    DECLARE_EVENT_TABLE()
