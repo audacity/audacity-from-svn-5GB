@@ -927,7 +927,7 @@ void Meter::HandlePaint(wxDC &dc)
          // For any vertical style, also need mRightSize big enough for Ruler width.
          int rulerWidth;
          int rulerHeight;
-         dc.GetTextExtent(wxT("-88"), &rulerWidth, &rulerHeight); // -88 is nice and wide.
+         dc.GetTextExtent(wxT("-888"), &rulerWidth, &rulerHeight); // -888 is nice and wide.
          if (mRightSize.x < rulerWidth)
             mRightSize.x = rulerWidth;
       }
@@ -1232,13 +1232,15 @@ void Meter::OnMonitor(wxCommandEvent &evt)
 
 void Meter::OnAutomaticVolume(wxCommandEvent &evt)
 {
-   if (gAudioIO->AVIsActive()) {
-      gAudioIO->AVDisable();
-      AudacityProject *p = GetActiveProject();
-      if (p) p->TP_DisplayStatusMessage(_("Automatic Volume stopped as requested by user."));
-   }
-   else
-      gAudioIO->AVInitialize();
+   #ifdef AUTOMATIC_VOLUME
+      if (gAudioIO->AVIsActive()) {
+         gAudioIO->AVDisable();
+         AudacityProject *p = GetActiveProject();
+         if (p) p->TP_DisplayStatusMessage(_("Automatic Volume stopped as requested by user."));
+      }
+      else
+         gAudioIO->AVInitialize();
+   #endif
 }
 
 void Meter::OnFloat(wxCommandEvent &evt)
