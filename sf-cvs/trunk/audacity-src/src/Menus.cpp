@@ -4841,7 +4841,6 @@ int AudacityProject::DoAddLabel(double left, double right)
 {
    TrackListIterator iter(mTracks);
    LabelTrack *lt = NULL;
-   LabelTrack *st = NULL;
 
    bool selfound = false;
    Track *t = iter.First();
