@@ -4843,20 +4843,24 @@ int AudacityProject::DoAddLabel(double left, double right)
    LabelTrack *lt = NULL;
    LabelTrack *st = NULL;
 
+   bool selfound = false;
    Track *t = iter.First();
    while (t) {
-      if (t->GetKind() == Track::Label) {
-         lt = (LabelTrack *)t;
-         if (lt->GetSelected()) {
-            st = lt;
+      if (t->GetSelected()) {
+         selfound = true;
+         if (t->GetKind() == Track::Label) {
+            lt = (LabelTrack *)t;
+            break;
+         }
+      }
+      else if (selfound) {
+         if (t->GetKind() == Track::Label) {
+            lt = (LabelTrack *)t;
             break;
          }
       }
       t = iter.Next();
    }
-
-   if (st)
-      lt = st;
 
    if (!lt) {
       lt = new LabelTrack(mDirManager);
