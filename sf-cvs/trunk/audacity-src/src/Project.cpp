@@ -3431,7 +3431,7 @@ void AudacityProject::SetStateTo(unsigned int n)
       if (!mMixerBoard)
          return;
       mMixerBoard->UpdateTrackClusters();
-      mMixerBoard->UpdateMeters(gAudioIO->GetStreamTime()); 
+      mMixerBoard->UpdateMeters(gAudioIO->GetStreamTime(), (mLastPlayMode == loopedPlay)); 
    }
 #endif
 

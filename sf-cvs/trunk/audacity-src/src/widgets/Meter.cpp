@@ -1258,17 +1258,17 @@ void Meter::OnPreferences(wxCommandEvent &evt)
        1,
        100);
 
-#if defined(__WXMAC__)
-   // WXMAC doesn't support wxFRAME_FLOAT_ON_PARENT, so we do
-   //
-   // LL:  I've commented this out because if you have, for instance, the meter
-   //      toolbar undocked and large and then you open a dialog like an effect,
-   //      the dialog may appear behind the dialog and you can't move either one.
-   //
-   //      However, I'm leaving it here because I don't remember why I'd included
-   //      it in the first place.
-// SetWindowClass((WindowRef)d.MacGetWindowRef(), kFloatingWindowClass);
-#endif
+   //#if defined(__WXMAC__)
+      // WXMAC doesn't support wxFRAME_FLOAT_ON_PARENT, so we do
+      //
+      // LL:  I've commented this out because if you have, for instance, the meter
+      //      toolbar undocked and large and then you open a dialog like an effect,
+      //      the dialog may appear behind the dialog and you can't move either one.
+      //
+      //      However, I'm leaving it here because I don't remember why I'd included
+      //      it in the first place.
+      // SetWindowClass((WindowRef)d.MacGetWindowRef(), kFloatingWindowClass);
+   //#endif
 
    if (d.ShowModal() == wxID_OK) {
       mMeterRefreshRate = d.GetValue();
