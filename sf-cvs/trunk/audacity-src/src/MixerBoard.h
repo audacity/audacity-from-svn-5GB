@@ -85,7 +85,7 @@ public:
    void UpdateSolo();
    void UpdatePan();
    void UpdateGain();
-   void UpdateMeter(double t0, double t1);
+   void UpdateMeter(const double t0, const double t1);
 
 private:
    wxColour GetTrackColor();
@@ -203,7 +203,7 @@ public:
    void UpdatePan(const WaveTrack* pLeftTrack);
    void UpdateGain(const WaveTrack* pLeftTrack);
    
-   void UpdateMeters(double t1);
+   void UpdateMeters(const double t1, const bool bLoopedPlay);
 
    void UpdateWidth();
 

@@ -52,23 +52,28 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
                                    wxT(" - %s"),
                                    parent->GetName().c_str()).c_str())),
             wxPoint(100, 300), gSize, 
+            //v Bug in wxFRAME_FLOAT_ON_PARENT:
+            // If both the project frame and MixerBoardFrame are minimized and you restore MixerBoardFrame, you can't restore project frame until you close
+            // MixerBoardFrame, but then project frame and MixerBoardFrame are restored but MixerBoardFrames is unresponsive because it thinks it's not shown.
+            //    wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT)
             wxDEFAULT_FRAME_STYLE)
 {
-#ifdef __WXMAC__
-   // WXMAC doesn't support wxFRAME_FLOAT_ON_PARENT, so we do
-   SetWindowClass((WindowRef) MacGetWindowRef(), kFloatingWindowClass);
-#endif
+   //vvv Still necessary? It's commented out in ToolManager and Meter, so I did so here.
+   //   #ifdef __WXMAC__
+   //      // WXMAC doesn't support wxFRAME_FLOAT_ON_PARENT, so we do 
+   //      SetWindowClass((WindowRef) MacGetWindowRef(), kFloatingWindowClass);
+   //   #endif
    mProject = parent;
 
    // loads either the XPM or the windows resource, depending on the platform
-#if !defined(__WXMAC__) && !defined(__WXX11__)
-   #ifdef __WXMSW__
-      wxIcon ic(wxICON(AudacityLogo));
-   #else
-      wxIcon ic(wxICON(AudacityLogo48x48));
+   #if !defined(__WXMAC__) && !defined(__WXX11__)
+      #ifdef __WXMSW__
+         wxIcon ic(wxICON(AudacityLogo));
+      #else
+         wxIcon ic(wxICON(AudacityLogo48x48));
+      #endif
+      SetIcon(ic);
    #endif
-   SetIcon(ic);
-#endif
 
    wxToolBar* pToolBar = this->CreateToolBar();
    const int kHorizMargin = 8;
@@ -88,11 +93,11 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
    pToolBar->AddControl(pRadioButton_Highlight);
    pRadioButton_Highlight->Enable(false); //vvvvv not working right in ported version, so disabled.
 
-#if defined(__WXMAC__)
-   wxColour face = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-   pRadioButton_BouncingBall->SetBackgroundColour(face);
-   pRadioButton_Highlight->SetBackgroundColour(face);
-#endif
+   #if defined(__WXMAC__)
+      wxColour face = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
+      pRadioButton_BouncingBall->SetBackgroundColour(face);
+      pRadioButton_Highlight->SetBackgroundColour(face);
+   #endif
 
    pToolBar->Realize();
 

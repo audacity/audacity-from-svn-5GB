@@ -834,16 +834,17 @@ void TrackPanel::OnTimer()
    #ifdef EXPERIMENTAL_MIXER_BOARD
       MixerBoard* pMixerBoard = this->GetMixerBoard();
       if (pMixerBoard && (p->GetAudioIOToken() > 0))
-         pMixerBoard->UpdateMeters(gAudioIO->GetStreamTime());
+         pMixerBoard->UpdateMeters(gAudioIO->GetStreamTime(), 
+                                    (p->mLastPlayMode == loopedPlay));
    #endif
 
    // Each time the loop, check to see if we were playing or
    // recording audio, but the stream has stopped.
    if (p->GetAudioIOToken()>0 &&
-       !gAudioIO->IsStreamActive(p->GetAudioIOToken())
-#ifdef EXPERIMENTAL_MIDI_OUT
-       && !gAudioIO->IsMidiActive()
-#endif
+         !gAudioIO->IsStreamActive(p->GetAudioIOToken())
+         #ifdef EXPERIMENTAL_MIDI_OUT
+            && !gAudioIO->IsMidiActive()
+         #endif
       ) 
    {
       p->GetControlToolBar()->OnStop(dummyEvent);
@@ -859,12 +860,12 @@ void TrackPanel::OnTimer()
    // and flush the tracks once we've completely finished
    // recording new state.
    if (p->GetAudioIOToken()>0 &&
-       !gAudioIO->IsAudioTokenActive(p->GetAudioIOToken())
-#ifdef EXPERIMENTAL_MIDI_OUT
-       && !gAudioIO->IsMidiActive()
-#endif       
-       ) {
-
+         !gAudioIO->IsAudioTokenActive(p->GetAudioIOToken())
+         #ifdef EXPERIMENTAL_MIDI_OUT
+            && !gAudioIO->IsMidiActive()
+         #endif       
+         ) 
+   {
       if (gAudioIO->GetNumCaptureChannels() > 0) {
          // Tracks are buffered during recording.  This flushes
          // them so that there's nothing left in the append
