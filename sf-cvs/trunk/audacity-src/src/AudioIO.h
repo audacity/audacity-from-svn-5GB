@@ -391,15 +391,17 @@ private:
 #endif
 
 #ifdef AUTOMATIC_VOLUME
-   bool     mAVActive;
-   bool     mAVClipped;
-   int      mAVTotalAnalysis;
-   int      mAVAnalysisCounter;
-   float    mAVMax;
-   double   mAVGoalPoint;
-   double   mAVGoalDelta;
-   double   mAVAnalysisTime;
-   double   mAVLastStartTime;
+   bool           mAVActive;
+   bool           mAVClipped;
+   int            mAVTotalAnalysis;
+   int            mAVAnalysisCounter;
+   float          mAVMax;
+   double         mAVGoalPoint;
+   double         mAVGoalDelta;
+   double         mAVAnalysisTime;
+   double         mAVLastStartTime;
+   double         mAVChangeFactor;
+   unsigned short mAVLastChangeType;  //0 - no change, 1 - increase change, 2 - decrease change
 #endif
 
    AudioThread        *mThread;
