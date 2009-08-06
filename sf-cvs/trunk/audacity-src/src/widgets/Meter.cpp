@@ -199,7 +199,9 @@ BEGIN_EVENT_TABLE(Meter, wxPanel)
    EVT_MENU(OnDBID, Meter::OnDB)
    EVT_MENU(OnClipID, Meter::OnClip)
    EVT_MENU(OnMonitorID, Meter::OnMonitor)
+#ifdef AUTOMATIC_VOLUME
    EVT_MENU(OnAutomaticVolumeID, Meter::OnAutomaticVolume)
+#endif
    EVT_MENU(OnFloatID, Meter::OnFloat)
    EVT_MENU(OnPreferencesID, Meter::OnPreferences)
 END_EVENT_TABLE()
@@ -1230,18 +1232,18 @@ void Meter::OnMonitor(wxCommandEvent &evt)
    StartMonitoring();
 }
 
+#ifdef AUTOMATIC_VOLUME
 void Meter::OnAutomaticVolume(wxCommandEvent &evt)
 {
-   #ifdef AUTOMATIC_VOLUME
-      if (gAudioIO->AVIsActive()) {
-         gAudioIO->AVDisable();
-         AudacityProject *p = GetActiveProject();
-         if (p) p->TP_DisplayStatusMessage(_("Automatic Volume stopped as requested by user."));
-      }
-      else
-         gAudioIO->AVInitialize();
-   #endif
+   if (gAudioIO->AVIsActive()) {
+      gAudioIO->AVDisable();
+      AudacityProject *p = GetActiveProject();
+      if (p) p->TP_DisplayStatusMessage(_("Automatic Volume stopped as requested by user."));
+   }
+   else
+      gAudioIO->AVInitialize();
 }
+#endif
 
 void Meter::OnFloat(wxCommandEvent &evt)
 {

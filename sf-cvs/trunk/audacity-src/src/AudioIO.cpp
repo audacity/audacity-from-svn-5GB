@@ -2517,13 +2517,15 @@ void AudioIO::AVInitialize() {
    gPrefs->Read(wxT("/AudioIO/DeltaPeakVolume"),       &mAVGoalDelta,      AV_DEF_DELTA_PEAK);
    gPrefs->Read(wxT("/AudioIO/AnalysisTime"),          &mAVAnalysisTime,   AV_DEF_ANALYSIS_TIME);
    gPrefs->Read(wxT("/AudioIO/NumberAnalysis"),        &mAVTotalAnalysis,  AV_DEF_NUMBER_ANALYSIS);
-   mAVGoalDelta      /= 100.0;
-   mAVGoalPoint      /= 100.0; 
-   mAVAnalysisTime   /= 1000.0;
-   mAVMax             = 0.0;
-   mAVLastStartTime   = max(0.0, mT0);
-   mAVClipped         = false;
-   mAVAnalysisCounter = 0;
+   mAVGoalDelta         /= 100.0;
+   mAVGoalPoint         /= 100.0; 
+   mAVAnalysisTime      /= 1000.0;
+   mAVMax                = 0.0;
+   mAVLastStartTime      = max(0.0, mT0);
+   mAVClipped            = false;
+   mAVAnalysisCounter    = 0;
+   mAVChangeFactor       = 1.0;
+   mAVLastChangeType     = 0;
 }
 
 void AudioIO::AVDisable() {
@@ -2543,6 +2545,7 @@ void AudioIO::AVProcess() {
       
       if ((mAVTotalAnalysis == 0 || mAVAnalysisCounter < mAVTotalAnalysis) && mTime - mAVLastStartTime >= mAVAnalysisTime) {
          double iv = (double) Px_GetInputVolume(mPortMixer);
+         unsigned short changetype = 0; //0 - no change, 1 - increase change, 2 - decrease change
          if (mAVClipped || mAVMax > mAVGoalPoint + mAVGoalDelta) {
             //if clipped or too high
             if (iv <= LOWER_BOUND) {
@@ -2553,11 +2556,12 @@ void AudioIO::AVProcess() {
                }
             }
             else {
-               double vol = max(LOWER_BOUND, iv+mAVGoalPoint-mAVMax);
+               double vol = max(LOWER_BOUND, iv+(mAVGoalPoint-mAVMax)*mAVChangeFactor);
                Px_SetInputVolume(mPortMixer, vol);
                wxString msg;
                msg.Printf(_("Automatic Volume decreased the volume to %f."), vol);
                proj->TP_DisplayStatusMessage(msg);
+               changetype = 1;
             }
          }
          else if ( mAVMax < mAVGoalPoint - mAVGoalDelta ) {
@@ -2570,34 +2574,40 @@ void AudioIO::AVProcess() {
                }
             }
             else {
-               double vol = min(UPPER_BOUND, iv+mAVGoalPoint-mAVMax);
+               double vol = min(UPPER_BOUND, iv+(mAVGoalPoint-mAVMax)*mAVChangeFactor);
                Px_SetInputVolume(mPortMixer, vol);
                wxString msg;
                msg.Printf(_("Automatic Volume increased the volume to %.2f."), vol);
                proj->TP_DisplayStatusMessage(msg);
+               changetype = 2;
             }
          }
-         // when we are satisfied with the current volume keep monitoring
-         //else if (mAVTotalAnalysis != 0) {
-         //   
-         //   mAVActive = false;
-         //   wxString msg;
-         //   msg.Printf(_("Automatic Volume stopped. %.2f seems an acceptable volume."), iv);
-         //   proj->TP_DisplayStatusMessage(msg);
-         //}
 
          mAVAnalysisCounter++;
          mAVMax           = 0;
          mAVClipped       = false;  
          mAVLastStartTime = mTime;
+         
+         if (changetype == 0)
+            mAVChangeFactor *= 0.8; //time factor
+         else if (mAVLastChangeType == changetype)
+            mAVChangeFactor *= 1.15; //concordance factor
+         else
+            mAVChangeFactor *= 0.75; //discordance factor
+         mAVLastChangeType = changetype;
       }
 
       if (mAVActive && mAVTotalAnalysis != 0 && mAVAnalysisCounter >= mAVTotalAnalysis) {
          mAVActive = false;
          if (mAVMax > mAVGoalPoint + mAVGoalDelta)
             proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too high."));
-         else
+         else if (mAVMax < mAVGoalPoint - mAVGoalDelta)
             proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too low."));
+         else {
+            wxString msg;
+            msg.Printf(_("Automatic Volume stopped. %.2f seems an acceptable volume."), Px_GetInputVolume(mPortMixer));
+            proj->TP_DisplayStatusMessage(msg);
+         }
       }
    }
 }
