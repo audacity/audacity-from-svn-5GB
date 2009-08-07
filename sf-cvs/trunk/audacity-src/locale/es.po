@@ -1,21 +1,23 @@
-# translation of audacity.po to Spanish
+# translation of audacity.merged.po to Spanish
 # Copyright (C) 2004, 2007, 2008, 2009 Free Software Foundation, Inc.
 #
-# Antonio Paniagua Navarro <antpaniagua en gmail.com>, 2004, 2008.
-# Antonio Paniagua Navarro <antpaniagua@gmail.com>, 2009.
+#
+# Antonio Paniagua Navarro <antpaniagua en gmail.com>, 2004, 2008, 2009.
+# Rafael Barranco-Droege <www.rafaelbarranco.com>, 2009.
+# Antonio Paniagua Navarro <antpaniagua en gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: audacity\n"
+"Project-Id-Version: audacity.merged\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-06-30 22:14+0100\n"
-"PO-Revision-Date: 2009-07-03 10:49+0200\n"
-"Last-Translator: Antonio Paniagua Navarro <antpaniagua@gmail.com>\n"
+"PO-Revision-Date: 2009-08-06 11:58+0200\n"
+"Last-Translator: Antonio Paniagua Navarro <antpaniagua en gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: AboutDialog.cpp:143
 msgid "About Audacity..."
@@ -34,11 +36,11 @@ msgid ""
 "later, Mac OS X, Linux and other Unix-like operating systems. Older versions "
 "of Audacity are available for Mac OS 9."
 msgstr ""
-"Audacity es un programa libre escrito por un equipo de <a href=\"http://"
+"Audacity es un programa libre, escrito por un equipo de <a href=\"http://"
 "audacity.sourceforge.net/community/developers\">desarrolladores</a> "
 "voluntarios de todo el mundo. Queremos expresar nuestro agradecimiento a  <a "
 "href=\"http://sourceforge.net\">SourceForge.net</a> por alojar nuestro "
-"proyecto. Audacity está diponible para  Windows 98 o superior, Mac OS X, "
+"proyecto. Audacity está diponible para  Windows 98 y superiores, Mac OS X, "
 "Linux y otros sistemas operativos tipo Unix. Hay versiones antiguas de "
 "Audacity disponibles también para Mac OS 9."
 
@@ -50,12 +52,12 @@ msgid ""
 "address. For help using Audacity, please visit our <a href=\"http://"
 "audacityteam.org/forum/\">Forum</a>."
 msgstr ""
-"Esta es una versión beta del programa. Puede contener errores y características "
-"incompletas. Dependemos de la respuesta de nuestros usuarios: envie informes "
-"de errores y peticiones de características nuevas a nuestra "
-"<a href=\"mailto:feedback@audacityteam.org\">dirección de respuesta </a>. "
-"  Para obtener ayuda sobre el uso de  Audacity, visite nuestro <a href=\"http://"
-"audacityteam.org/forum/\">foro</a>."
+"Esta es una versión beta del programa. Puede contener errores y "
+"características incompletas. Dependemos de la respuesta de nuestros "
+"usuarios: envie informes de errores y peticiones de características nuevas a "
+"nuestra <a href=\"mailto:feedback@audacityteam.org\">dirección de respuesta "
+"</a>.   Para obtener ayuda sobre el uso de  Audacity, visite nuestro <a href="
+"\"http://audacityteam.org/forum/\">foro</a>."
 
 #: AboutDialog.cpp:182
 msgid ""
@@ -64,11 +66,11 @@ msgid ""
 "feedback@audacityteam.org\">Feedback</a> address. For help using Audacity, "
 "please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
 msgstr ""
-"Ésta es una versión estable y completa de Audacity. Sin embargo, "
-" si encuentra algún error o tiene alguna sugerencia escríbanos "
-"a <a href=\"mailto:feedback@audacityteam.org\">  nuestra "
-"dirección de respuesta</a>.  Para obtener ayuda sobre el uso de "
-"Audacity, visite nuestro <a href=\"http://audacityteam.org/forum/\">foro</a>."
+"Esta es una versión estable y completa de Audacity. Sin embargo,  si "
+"encuentra algún error o tiene alguna sugerencia escríbanos a <a href="
+"\"mailto:feedback@audacityteam.org\">  nuestra dirección de respuesta</a>.  "
+"Para obtener ayuda sobre el uso de Audacity, visite nuestro <a href=\"http://"
+"audacityteam.org/forum/\">foro</a>."
 
 #. i18n-hint: The translation of "translator_credits" will appear
 #. in the credits in the About Audacity window.  Use this to add
@@ -78,7 +80,9 @@ msgstr ""
 #.
 #: AboutDialog.cpp:192 AboutDialog.cpp:194
 msgid "translator_credits"
-msgstr "Traducción al Español por Antonio Paniagua Navarro"
+msgstr ""
+"Traducción al Español por Antonio Paniagua Navarro. "
+"<br>Aportaciones de Rafael Barranco-Droege y Francisco Vila."
 
 #: AboutDialog.cpp:207
 msgid "A Free Digital Audio Editor<br>"
@@ -96,7 +100,7 @@ msgstr "Equipo de desarrollo de Audacity %s"
 #: AboutDialog.cpp:220
 #, c-format
 msgid "Audacity %s Support Team"
-msgstr "Equipo de soporte de Audacity %s"
+msgstr "Equipo de asistencia técnica de de Audacity %s"
 
 #: AboutDialog.cpp:225
 msgid "Emeritus Developers"
@@ -124,9 +128,8 @@ msgid ""
 "<br>The name <b>Audacity&reg;</b> is a registered trademark of Dominic "
 "Mazzoni."
 msgstr ""
-"<b>Audacity&reg;</b> copyright &copy; 1999-2009 Audacity Team. "
-"<br>El nombre <b>Audacity&reg;</b> es una marca registrada de  Dominic "
-"Mazzoni."
+"<b>Audacity&reg;</b> copyright &copy; 1999-2009 Audacity Team. <br>El nombre "
+"<b>Audacity&reg;</b> es una marca registrada de  Dominic Mazzoni."
 
 #: AboutDialog.cpp:258
 msgid "Audacity"
@@ -147,7 +150,7 @@ msgstr "Deshabilitado"
 
 #: AboutDialog.cpp:321
 msgid "File Format Support"
-msgstr "Soporte de formato de archivo"
+msgstr "Formatos de archivo compatibles"
 
 #. i18n-hint: This is what the library (libmad) does - imports MP3 files
 #: AboutDialog.cpp:331 AboutDialog.cpp:333
@@ -160,7 +163,7 @@ msgstr "Importación y exportación de Ogg Vorbis"
 
 #: AboutDialog.cpp:347 AboutDialog.cpp:350
 msgid "ID3 tag support"
-msgstr "Soporte de etiquetas ID3"
+msgstr "Compatibilidad con etiquetas ID3"
 
 #: AboutDialog.cpp:357 AboutDialog.cpp:360
 msgid "FLAC import and export"
@@ -196,15 +199,15 @@ msgstr "Características"
 #: AboutDialog.cpp:428 AboutDialog.cpp:433 AboutDialog.cpp:436
 #: AboutDialog.cpp:441 AboutDialog.cpp:444
 msgid "Plug-in support"
-msgstr "Soporte de plug-in"
+msgstr "Plug-ins compatibles"
 
 #: AboutDialog.cpp:449 AboutDialog.cpp:452
 msgid "Sound card mixer support"
-msgstr "Soporte de mezclador de tarjeta de sonido"
+msgstr "Compatibilidad con mezclador de tarjeta de sonido"
 
 #: AboutDialog.cpp:457 AboutDialog.cpp:460
 msgid "Pitch and Tempo Change support"
-msgstr "Soporte de cambio de tono y ritmo"
+msgstr "Posibilidad de de cambio de tono y ritmo"
 
 #: AboutDialog.cpp:472
 msgid "Program build date: "
@@ -457,11 +460,11 @@ msgid ""
 "You may have to use the Time Shift Tool (<---> or F5) to drag the track to "
 "the right place."
 msgstr ""
-"La configuración de la corrección de latencia ha provocado que el audio grabado se oculte antes "
-"que cero.\n"
+"La configuración de la corrección de latencia ha provocado que el audio "
+"grabado se oculte antes que cero.\n"
 "Audacity lo ha reubicado para que comience en cero.\n"
-"Puede utilizar la herramienta de desplazamiento en el tiempo (<--> o F5) para arrastrar "
-"la pista al lugar correcto."
+"Puede utilizar la herramienta de desplazamiento en el tiempo (<--> o F5) "
+"para arrastrar la pista al lugar correcto."
 
 #: AudioIO.cpp:1301
 msgid "Latency problem"
@@ -493,7 +496,7 @@ msgstr "Nombre"
 msgid "Recovering a project will not change any files on disk before you save it."
 msgstr ""
 "La recuperación de un proyecto no realizará ningún cambio en los archivos "
-"hasta que éste sea guardado."
+"hasta que este sea guardado."
 
 #: AutoRecovery.cpp:88
 msgid "Quit Audacity"
@@ -560,13 +563,11 @@ msgstr "Efecto Estéreo a Mono no encontrado"
 
 #: BatchCommands.cpp:475
 msgid "Ogg Vorbis support is not included in this build of Audacity"
-msgstr ""
-"El soporte de archivos Ogg Vorbis no está incluido en esta versión de "
-"Audacity"
+msgstr "Esta versión de Audacity no incluye compatibilidad con archivos Ogg Vorbis"
 
 #: BatchCommands.cpp:487
 msgid "FLAC support is not included in this build of Audacity"
-msgstr "Esta versión de Audacity no incluye soporte para FLAC"
+msgstr "Esta versión de Audacity no incluye compatibilidad con FLAC"
 
 #: BatchCommands.cpp:491
 #, c-format
@@ -1092,7 +1093,7 @@ msgstr "Rectangular"
 
 #: FFmpeg.cpp:38
 msgid "FFmpeg support not compiled in"
-msgstr "Soporte de FFmpeg no incluido en la compilación"
+msgstr "La compatibilidad con FFmpeg no ha sido incluida en la compilación"
 
 #: FFmpeg.cpp:103
 msgid ""
@@ -1102,8 +1103,8 @@ msgid ""
 "\n"
 "You may want to go back to Preferences > Libraries and re-configure it."
 msgstr ""
-"FFmpeg fue configurado en las Preferencias y cargado correctamente "
-",                       \n"
+"FFmpeg fue configurado en Preferencias y cargado "
+"correctamente ,                       \n"
 "pero esta vez Audacity no logró cargarlo al iniciar.                       \n"
 "\n"
 "Acceda a Preferencias > Bibliotecas para configurarlo de nuevo."
@@ -1176,8 +1177,9 @@ msgstr ""
 "Audacity intentó utilizar FFmpeg para importar un archivo de audio,\n"
 "pero no se encontraron las bibliotecas necesarias.\n"
 "\n"
-"Ppara usar las características de importación de FFmpeg acceda a Preferencias > Bibliotecas\n"
-"para descargar o localizar las bibliotecas FFmpeg."
+"Para usar las características de importación de FFmpeg, acceda a "
+"Preferencias > Bibliotecas\n"
+"y descargue o localice las bibliotecas FFmpeg."
 
 #: FFmpeg.h:119
 msgid "Do not show this warning again"
@@ -1306,7 +1308,7 @@ msgstr "Hz"
 #: FreqWindow.cpp:422
 msgid "To plot the spectrum, all selected tracks must be the same sample rate."
 msgstr ""
-"Para dibujar el espectro, todas las pistas seleccionadas deben tener la "
+"Para analizar el espectro, todas las pistas seleccionadas deberán tener la "
 "misma frecuencia de muestreo."
 
 #: FreqWindow.cpp:449
@@ -1369,7 +1371,7 @@ msgid ""
 "                      You may want to go back to Preferences > Libraries and "
 "re-configure it."
 msgstr ""
-"GStreamer fue configurado en las Preferencias y cargado correctamente,\n"
+"GStreamer fue configurado en Preferencias y cargado correctamente,\n"
 "                      pero esta vez Audacity no logro cargarlo al iniciar.\n"
 "                      Acceda a Preferencias > Bibliotecas para configurarlo "
 "de nuevo."
@@ -1420,7 +1422,7 @@ msgstr "Guardado de un proyecto de Audacity"
 
 #: HelpText.cpp:129
 msgid "Unsupported Formats"
-msgstr "Formatos no soportados"
+msgstr "Formatos no compatibles"
 
 #: HelpText.cpp:133
 msgid "Burn to CD"
@@ -1494,13 +1496,13 @@ msgstr ""
 "similares. Consulte nuestra guía online [[wiki:How to import CDs|Importando "
 "CD]]</p><p> <p><b>Reproducción de audio: </b>Pulse el botón verde de "
 "reproducción. Pulse el botón de pausa azul para parar momentáneamente y una "
-"vez más para continuar. Para detenerlo, pulse el botón amarillo. También puede "
-"utilizar la barra espaciadora tanto para reproducir como para detener. Cuando "
-"comienza a reproducir después de una parada, ésta continua desde el desde "
-"el punto de inicio anterior. Para modificar el punto de inicio utilice los botones "
-" <b>|&lt;&lt;</b> y <b>&gt;&gt;|</b> para saltar al punto de inicio y de fin "
-"respectivamente. Haga clic en cualquier lugar de la pista para reiniciar desde "
-" ese punto.</p><br><br>"
+"vez más para continuar. Para detenerlo, pulse el botón amarillo. También "
+"puede utilizar la barra espaciadora tanto para reproducir como para detener. "
+"Cuando comienza a reproducir después de una parada, esta continua desde el "
+"desde el punto de inicio anterior. Para modificar el punto de inicio, "
+"utilice los botones  <b>|&lt;&lt;</b> y <b>&gt;&gt;|</b> para saltar al "
+"punto de inicio y de fin respectivamente. Haga clic en cualquier lugar de la "
+"pista para reiniciar desde ese punto.</p><br><br>"
 
 #: HelpText.cpp:194
 msgid ""
@@ -1525,13 +1527,13 @@ msgstr ""
 "<p><b>Para grabar:</b> Indique el dispositivo de grabación y la fuente de "
 "entrada, ajuste el nivel de entrada y pulse el botón rojo de Grabar.</b></p> "
 "<p> 1) [[inputdevice|Establezca el dispositivo de grabación]] en <i>pestaña "
-"de preferencias Audio E/S</i> o en la <i>barra de herramientas de "
-"dispositivos</i>. Las preferencias de E/S de audio le permite seleccionar "
-"una grabación estéreo si fuese necesario.<br> 2) [[inputsource|Establezca la "
+"de preferencias E/S Audio</i> o en la <i>barra de herramientas de "
+"dispositivos</i>. Las opciones de E/S de audio le permiten seleccionar una "
+"grabación estéreo si fuese necesario.<br> 2) [[inputsource|Establezca la "
 "fuente de entrada]] para ese dispositivo (por ejemplo, micrófono o entrada "
 "de línea) en el selector desplegable de la <i>barra de herramientas de "
 "mezcla</i>, o (en algunos sistemas) en Dispositivo de grabación en la "
-"<i>pestaña de preferencias Audio E/S</i> o en la <i>barra de herramientas de "
+"<i>pestaña de preferencias E/S Audio</i> o en la <i>barra de herramientas de "
 "dispositivos</i>.<br> 3) [[inputlevel|Ajuste el nivel de entrada]] mediante "
 "el control de la parte derecha de la <i>barra de herramientas de mezcla </"
 "i>Corregir el ajuste de nivel es imprescindible para prevenir la aparición "
@@ -1561,9 +1563,9 @@ msgid ""
 msgstr ""
 "<p>El dispositivo de entrada es el dispositivo físico de sonido desde el que "
 "se está grabando. Este es elegido en \"Dispositivo de grabación\", en la "
-"<i>pestaña Audio E/S de Preferencias</i>. En Windows y en Linux, la opción "
-"Preferencias se encuentra en la parte inferior del menú <i>Edición</i>. En Mac, "
-"está en el menú <i>Audacity</i> También es posible seleccionar el "
+"<i>pestaña E/S Audio de Preferencias</i>. En Windows y en Linux, la opción "
+"Preferencias se encuentra en la parte inferior del menú <i>Edición</i>. En "
+"Mac, está en el menú <i>Audacity</i> También es posible seleccionar el "
 "dispositivo de grabación en la <i>barra de herramientas de dispositivos</i>, "
 "que se puede mostrar mediante la opción <i>Ver &gt; Barra de herramientas..."
 "</i>. </p><p>De forma predeterminada, Audacity utiliza el dispositivo que "
@@ -1596,7 +1598,7 @@ msgstr ""
 "para su [inputdevice|dispositivo de grabación]]:<br> - <b>En Windows "
 "(excepto Vista)</b> y <b>Linux</b>, en el selector desplegable de la "
 "<i>barra de herramientas de mezcla</i>.<br> - <b>En Windows Vista</b> y "
-"<b>en Mac</b>, en Dispositivo de grabación en la <i>pestaña Audio E/S de "
+"<b>en Mac</b>, en Dispositivo de grabación en la <i>pestaña E/S Audio de "
 "Preferencias</i>, o en la<i>barra de herramientas de dispositivos</i>. La "
 "fuente se mostrará como una parte del dispositivo predecesor (por ejemplo, "
 "<i>Tarjeta de audio de alta definición:Micrófono</i>). Si es necesario, los "
@@ -1627,7 +1629,7 @@ msgid ""
 "Audio]] <br></p>"
 msgstr ""
 "<p>El nivel de entrada debe establecerse correctamente. Si el nivel de "
-"entrada es demasiado bajo, se producirán ruidos de fondo. Si éste es "
+"entrada es demasiado bajo, se producirán ruidos de fondo. Si este es "
 "demasiado alto, habrá distorsión en las partes más altas. </p><p>Para "
 "establecer el nivel, consulte la  [[wiki:Recording_levels|guía ilustrada "
 "online]] o siga estos pasos: <ol><li>Active <b>monitorización</b>. Haga "
@@ -1638,7 +1640,7 @@ msgstr ""
 "li><li>Ajuste el control de entrada en la <i>barra de herramientas de "
 "mezcla</i> (con el símbolo de micrófono, hasta que las barras rojas del "
 "medidor se acerquen  <b>pero no toquen</b> el borde derecho de la escala. Si "
-"no puede escuchar el audio monitorizado, acceda a <i>la pestaña Audio E/S de "
+"no puede escuchar el audio monitorizado, acceda a <i>la pestaña E/S Audio de "
 "Preferencias</i> y active \"Reproducción a través del software\". </li></"
 "ol></p><p> Regresar a [[record|Grabación de audio]] <br></p>"
 
@@ -1721,9 +1723,9 @@ msgid ""
 "Splitting_recordings_into_separate_tracks|split the tracks]] from an album "
 "for multiple export as separate files. </p><br><br>"
 msgstr ""
-"Para escuchar su trabajo en otros programas debe exportarlo a un archivo de "
-"audio como WAV o MP3 (algunos formatos [[wma-propietary|no están "
-"soportados]]). [[save|Guardar un proyecto de Audacity]] crea un archivo de "
+"Para escuchar su trabajo en otros programas, debe exportarlo a un archivo de "
+"audio como WAV o MP3 (algunos formatos [[wma-propietary|no son "
+"compatibles]]). [[save|Guardar un proyecto de Audacity]] crea un archivo de "
 "proyecto (enlazado con una carpeta _data) que contiene todas las pistas "
 "editadas, así que en cualquier momento se puede recuperar el trabajo. No "
 "obstante, otros programas no pueden leer los archivos de proyecto creados "
@@ -1763,9 +1765,9 @@ msgstr ""
 "<p>Audacity <b>no puede</b> [[play|reproducir]] o [[export|exportar]] "
 "archivos en la mayoría de formatos propietarios como <b>WMA, RealAudio, "
 "Shorten (SHN)</b> por problemas de licencia o restricciones de patente.  En "
-"ordenadores con Mac pueden ser importados formatos <b>AAC</b> no "
-"protegidos como <b>M4A</b>. Algunos formatos abiertos como <b>Ogg "
-"Speex</b> y <b>Musepack</b> aún no están soportados. Archivos protegidos por cualquier "
+"ordenadores con Mac pueden ser importados formatos <b>AAC</b> no protegidos "
+"como <b>M4A</b>. Algunos formatos abiertos como <b>Ogg Speex</b> y "
+"<b>Musepack</b> aún no son compatibles. Archivos protegidos por cualquier "
 "tipo de sistema de gestión de derechos digitales (DRM) incluídos la mayoría "
 "de los que se adquieren online en tiendas como iTunes o Napster, <b>no "
 "pueden</b> ser importados.</p><p> Si no puede importar un archivo en "
@@ -1777,7 +1779,7 @@ msgstr ""
 "\"http://cdexos.sourceforge.net/?q=download\">CDex</a> o Windows Media "
 "Player 11. También puede  <a href=\"http://audacity.sourceforge.net/help/faq?"
 "s=recording&amp;i=streaming\">grabar</a> el CD en su ordenador. <i>Para "
-"exportar a un formato no soportado, exporte a WAV o AIFF y conviértalo al "
+"exportar a un formato no compatible, exporte a WAV o AIFF y conviértalo al "
 "formato deseado con iTunes o <a href=\"http://www.erightsoft.com/SUPER."
 "html#Dnload\">SUPER</a>. </i></p><p>"
 
@@ -1793,17 +1795,17 @@ msgid ""
 "Player. For more help, see [[wiki:How_to_burn_CDs|How to burn CDs]] online. "
 "</p><p>"
 msgstr ""
-"<p>Para grabar su trabajo en un CD de audio para escucharlo en "
-"reproductores  de CD, primero [[export|expórtelo]] como WAV o AIFF. El "
-"archivo exportado debería ser estéreo, 44100 Hz (se establece en el botón "
-"\"Frecuencia del proyecto\" en la parte inferior izquierda) y 16 bit (se "
-"establece en el botón \"Opciones\" del cuadro de diálogo de exportación de "
-"archivo). Estas son las opciones de configuración predeterminadas en "
-"Audacity, así que probablemente no necesitará cambiar nada antes de exportar."
-"<p>Almacene los archivos exportados en un \"CD de audio\", no en un \"CD de "
-"datos\" o un \"CD MP3\", con un programa de grabación de CD como iTunes o "
-"Windows Media Player. Para obtener más información consulte la ayuda online "
-"[[wiki:How_to_burn_CDs|Como grabar CD]]. </p><p>"
+"<p>Para grabar su trabajo en un CD de audio y escucharlo en reproductores  "
+"de CD, primero [[export|expórtelo]] como WAV o AIFF. El archivo exportado "
+"debería ser estéreo, 44100 Hz (se establece en el botón \"Frecuencia del "
+"proyecto\" en la parte inferior izquierda) y 16 bit (se establece en el "
+"botón \"Opciones\" del cuadro de diálogo de exportación de archivo). Estas "
+"son las opciones de configuración predeterminadas en Audacity, así que "
+"probablemente no necesitará cambiar nada antes de exportar.<p>Almacene los "
+"archivos exportados en un \"CD de audio\", no en un \"CD de datos\" o un "
+"\"CD MP3\", con un programa de grabación de CD como iTunes o Windows Media "
+"Player. Para obtener más información consulte la ayuda online [[wiki:"
+"How_to_burn_CDs|Como grabar CD]]. </p><p>"
 
 #: HelpText.cpp:403
 msgid ""
@@ -1872,7 +1874,9 @@ msgstr "GB"
 
 #: Internat.cpp:181
 msgid "The specified filename could not be converted due to Unicode character use."
-msgstr "El nombre de archivo indicado no puede ser convertido por el uso de caracteres Unicode."
+msgstr ""
+"El nombre de archivo indicado no puede ser convertido por el uso de "
+"caracteres Unicode."
 
 #: Internat.cpp:183
 msgid "Specify New Filename:"
@@ -1984,8 +1988,8 @@ msgid ""
 "The language you have chosen, %s (%s), is not the same as the system "
 "language, %s (%s)."
 msgstr ""
-"El idioma que ha elegido, %s (%s), no es el predeterminado del "
-"sistema, %s (%s)."
+"El idioma que ha elegido, %s (%s), no es el predeterminado del sistema, %s (%"
+"s)."
 
 #: Legacy.cpp:372
 #, c-format
@@ -3259,8 +3263,8 @@ msgstr "Nueva pista de etiqueta creada"
 #: Menus.cpp:4784
 msgid "The version of Audacity you are using does not support multiple time tracks."
 msgstr ""
-"La versión de Audacity que está utilizando no soporta múltiples pistas de "
-"tiempo."
+"La versión de Audacity que está utilizando no permite el uso de varias "
+"pistas de tiempo."
 
 #: Menus.cpp:4795
 msgid "Created new time track"
@@ -3401,7 +3405,7 @@ msgstr "¿Guardar cambios?"
 
 #: Project.cpp:1954
 msgid "All files|*|All supported files|"
-msgstr "Todos los archivos|*|Todos los archivos soportados|"
+msgstr "Todos los archivos|*|Todos los archivos compatibles|"
 
 #: Project.cpp:1984
 msgid "Select one or more audio files..."
@@ -3446,7 +3450,8 @@ msgid ""
 "\n"
 "Please open the actual Audacity project file instead."
 msgstr ""
-"Está intentado abrir un archivo de copia de seguridad generado automáticamente.\n"
+"Está intentado abrir un archivo de copia de seguridad generado "
+"automáticamente.\n"
 "Esto puede conllevar una grave perdida de datos.\n"
 "\n"
 "En su lugar, abra el archivo de proyecto de Audacity."
@@ -3513,7 +3518,7 @@ msgid ""
 "a newer version to open this file."
 msgstr ""
 "Este archivo fue guardado usando Audacity %s.\n"
-"Está usando Audacity %s. Necesita actualizar a una\n"
+"Está usando Audacity %s. Deberá actualizar a una\n"
 "versión más moderna para poder abrir este archivo."
 
 #: Project.cpp:2479
@@ -3762,17 +3767,17 @@ msgstr "Remuestreo desactivado."
 #. i18n-hint: Audio data bit depth (precision): 16-bit integers
 #: SampleFormat.cpp:66
 msgid "16-bit PCM"
-msgstr "16-bit PCM"
+msgstr "16 bits, PCM"
 
 #. i18n-hint: Audio data bit depth (precision): 24-bit integers
 #: SampleFormat.cpp:69
 msgid "24-bit PCM"
-msgstr "24-bit PCM"
+msgstr "24 bits, PCM"
 
 #. i18n-hint: Audio data bit depth (precision): 32-bit floating point
 #: SampleFormat.cpp:72
 msgid "32-bit float"
-msgstr "32-bit flotante"
+msgstr "32 bits, flotante"
 
 #: Screenshot.cpp:279
 msgid "Screen Capture Frame"
@@ -3829,7 +3834,9 @@ msgstr "Capturar pantalla completa"
 
 #: Screenshot.cpp:368
 msgid "Wait 5 seconds and capture frontmost window/dialog"
-msgstr "Esperar cinco segundos y capturar el cuadro de diálogo o ventana en primer plano"
+msgstr ""
+"Esperar cinco segundos y capturar el cuadro de diálogo o ventana en primer "
+"plano"
 
 #: Screenshot.cpp:369 effects/Normalize.cpp:74 effects/Normalize.cpp:75
 msgid "false"
@@ -4437,7 +4444,7 @@ msgstr ""
 msgid "To use Draw, zoom in further until you can see the individual samples."
 msgstr ""
 "Para utilizar la herramienta de dibujo debe acercar la pista hasta poder ver "
-"las muestras individuales."
+"cada muestra"
 
 #: TrackPanel.cpp:3255
 msgid "Moved Sample"
@@ -4560,7 +4567,7 @@ msgstr "Dividir pista estéreo '%s'"
 #: TrackPanel.cpp:6255
 #, c-format
 msgid "Split Stereo to Mono '%s'"
-msgstr "Dividir pista estéro a mono '%s'"
+msgstr "Dividir pista estéreo a mono '%s'"
 
 #: TrackPanel.cpp:6287
 #, c-format
@@ -4829,8 +4836,8 @@ msgid ""
 "Auto Duck needs a control track which must be placed below the selected track"
 "(s)."
 msgstr ""
-"Auto Duck necesita una pista de control que se debe situar debajo de la pista"
-"(s) seleccionada."
+"Auto Duck necesita una pista de control que debe situarse bajo la(s) pista"
+"(s) seleccionada(s)."
 
 #: effects/AutoDuck.cpp:479
 msgid "Auto Duck by Markus Meyer"
@@ -5151,7 +5158,7 @@ msgstr "Eliminación de click...."
 
 #: effects/ClickRemoval.h:56
 msgid "Removing clicks and pops..."
-msgstr "Eliminando click y pop..."
+msgstr "sEliminando click y pop..."
 
 #: effects/Compressor.cpp:472
 msgid "Dynamic Range Compressor"
@@ -6521,7 +6528,9 @@ msgstr "Aplicando el efecto: "
 
 #: effects/VST/VSTEffect.cpp:1016
 msgid "Both channels of a stereo track must be the same sample rate."
-msgstr "Los dos canales de una pista estéro deben tener la misma frecuencia de muestreo."
+msgstr ""
+"Los dos canales de una pista estéreo deben tener la misma frecuencia de "
+"muestreo."
 
 #: effects/VST/VSTEffect.cpp:1021
 msgid "Both channels of a stereo track must be the same length."
@@ -6806,12 +6815,12 @@ msgid ""
 "Properly configured FFmpeg is required to proceed.\n"
 "You can configure it at Preferences > Libraries."
 msgstr ""
-"Se necesita contar con FFmpeg correctamente configurado.\n"
+"Esta operación requiere que FFmpeg esté bien configurado.\n"
 "Puede configurarlo en Preferencias > Bibliotecas."
 
 #: export/ExportFFmpeg.cpp:232
 msgid "AMR support not distributable"
-msgstr "Soporte AMR no distribuible"
+msgstr "Compatibilidad con AMR no distribuible"
 
 #: export/ExportFFmpeg.cpp:232
 msgid ""
@@ -6821,11 +6830,12 @@ msgid ""
 "Note that AMR support is not available with our FFmpeg\n"
 "installer, but requires you compile FFmpeg yourself."
 msgstr ""
-"Se necesita contar con FFmpeg correctamente configurado.\n"
+"Esta operación requiere que FFmpeg esté bien configurado.\n"
 "Puede configurarlo en Preferencias > Bibliotecas.\n"
 "\n"
-"Observe que no se dispone de soporte AMR con nuestro \n"
-"instalador FFmpeg, pero es neceario para poder compilar FFmpeg."
+"Tenga en cuenta que nuestro instalador FFmpeg\n"
+"no incluye compatibilidad con AMR. Para utilizar AMR\n"
+"tendrá que compilar FFmpeg usted mismo."
 
 #: export/ExportFFmpeg.cpp:433
 #, c-format
@@ -6834,7 +6844,8 @@ msgid ""
 "Support for this codec is probably not compiled in."
 msgstr ""
 "FFmpeg no puede encontrar el codec de audio 0x%x.\n"
-"Probablemente se ha realizado la compilación sin soporte para el."
+"Probablemente no se ha incluido la compatibilidad con\n"
+"el mismo en la compilación."
 
 #: export/ExportFFmpeg.cpp:655
 #, c-format
@@ -6865,7 +6876,7 @@ msgid ""
 "The project sample rate (%d) is not supported by the current output\n"
 "file format.  "
 msgstr ""
-"La frecuencia de muestreo del proyecto (%d) no está soportada por el\n"
+"La frecuencia de muestreo del proyecto (%d) no es compatible con el\n"
 "formato de archivo de salida actual."
 
 #: export/ExportFFmpeg.cpp:764
@@ -6874,9 +6885,9 @@ msgid ""
 "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
 "supported by the current output file format.  "
 msgstr ""
-"La frecuencia de muestra del proyecto (%d) combinada con la velocidad\n"
-"de transferencia (%d kbps) no está soportada por el formato de archivo de "
-"salida actual."
+"La combinación de frecuencia de muestreo (%d) y velocidad de\n"
+"transferencia (%d kbps) del proyecto no es compatible con el\n"
+"formato de archivo de salida actual."
 
 #: export/ExportFFmpeg.cpp:767 export/ExportMP3.cpp:1796
 msgid "You may resample to one of the rates below."
@@ -7001,7 +7012,7 @@ msgid ""
 "and samplerate) combinations are not compatible with some codecs too."
 msgstr ""
 "No todos los formatos y codecs son compatibles. Algunas combinaciones de "
-"(como la velocidad de transferencia y la frecuencia de muestra) parámetros "
+"(como la velocidad de transferencia y la frecuencia de muestreo) parámetros "
 "no son compatibles con algunos codecs."
 
 #: export/ExportFFmpegDialogs.cpp:905
@@ -7120,7 +7131,7 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:942
 msgid "Use Bit Reservoir"
-msgstr "Usar Buffer de bit (Bit Reservoir)"
+msgstr "Usar Buffer de bits (Bit Reservoir)"
 
 #: export/ExportFFmpegDialogs.cpp:945
 msgid "Use Variable Block Length"
@@ -7277,7 +7288,7 @@ msgstr "Usar LPC"
 
 #: export/ExportFFmpegDialogs.cpp:986
 msgid "MPEG container options"
-msgstr "Opciones de contendor MPEG"
+msgstr "Opciones de contenedor MPEG"
 
 #: export/ExportFFmpegDialogs.cpp:990
 msgid "Mux Rate:"
@@ -7309,7 +7320,7 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:1209
 msgid "You can't delete a preset without name"
-msgstr "No puede borrar an valor predefinido sin nombre"
+msgstr "No puede borrar un valor predefinido sin nombre"
 
 #: export/ExportFFmpegDialogs.cpp:1213
 #, c-format
@@ -7359,7 +7370,7 @@ msgstr "Archivos AMR (banda ancha) (FFmpeg, no distribuible)"
 
 #: export/ExportFFmpegDialogs.h:58
 msgid "WMA (version 2) Files (FFmpeg)"
-msgstr "Archivos WMA (version 2) (FFmpeg)"
+msgstr "Archivos WMA (versión 2) (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:59
 msgid "Custom FFmpeg Export"
@@ -7500,8 +7511,8 @@ msgstr "Archivos MP2"
 #: export/ExportMP2.cpp:230
 msgid "Cannot export MP2 with this sample rate and bit rate"
 msgstr ""
-"No se puede exportar a MP2 con esta frecuencia de muestreo y velocidad de "
-"transferencia"
+"No se puede exportar a MP2 con esta frecuencia de muestreo y esta velocidad "
+"de transferencia"
 
 #: export/ExportMP2.cpp:241 export/ExportMP3.cpp:1619 export/ExportOGG.cpp:184
 msgid "Unable to open target file for writing"
@@ -7656,7 +7667,7 @@ msgstr "No se ha podido abrir la biblioteca de codificación de MP3"
 
 #: export/ExportMP3.cpp:1531
 msgid "Not a valid or supported MP3 encoding library!"
-msgstr "No es una biblioteca de codificación MP3 soportada"
+msgstr "No es una biblioteca de codificación MP3 válida"
 
 #: export/ExportMP3.cpp:1608
 msgid "Unable to initialize MP3 stream"
@@ -7695,7 +7706,7 @@ msgstr "Exportando audio completo a %d kbps"
 #: export/ExportMP3.cpp:1699
 #, c-format
 msgid "Error %d returned from MP3 encoder"
-msgstr "Error %d devuelto del codificador de MP3"
+msgstr "Error %d devuelto por el codificador de MP3"
 
 #: export/ExportMP3.cpp:1790
 #, c-format
@@ -7703,8 +7714,8 @@ msgid ""
 "The project sample rate (%d) is not supported by the MP3\n"
 "file format.  "
 msgstr ""
-"La frecuencia de muestreo del proyecto (%d) no está soportada por el\n"
-"formato de archivo MP3.  "
+"La frecuencia de muestreo del proyecto (%d) no es\n"
+"compatible con el formato de archivo MP3.  "
 
 #: export/ExportMP3.cpp:1793
 #, c-format
@@ -7712,8 +7723,9 @@ msgid ""
 "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
 "supported by the MP3 file format.  "
 msgstr ""
-"La frecuencia de muestra del proyecto (%d) combinada con la velocidad\n"
-"de transferencia (%d kbps) no está soportada por el formato de archivo MP3.  "
+"La combinación de frecuencia de muestreo (%d) y velocidad de\n"
+"transferencia (%d kbps) del proyecto no es compatible con el\n"
+"formato de archivo MP3.  "
 
 #: export/ExportMP3.cpp:1970
 msgid "MP3 export library not found"
@@ -7956,7 +7968,7 @@ msgid ""
 "If you need more control over the export format please use the 'Other "
 "uncompressed files' format."
 msgstr ""
-"Si necesita más control sobre el formato de exportación utilice el formato "
+"Si necesita más control sobre el formato de exportación, utilice el formato "
 "'Otros archivos sin comprimir'."
 
 #: export/ExportPCM.cpp:745
@@ -7982,7 +7994,9 @@ msgstr "Seleccione flujo(s) a importar"
 #: import/Import.cpp:234
 #, c-format
 msgid "This version of Audacity was not compiled with %s support."
-msgstr "Esta versión de Audacity no fue compilada con soporte para %s."
+msgstr ""
+"Esta versión de Audacity no fue compilada con compatibilidad\n"
+"para %s."
 
 #: import/Import.cpp:247
 #, c-format
@@ -8035,7 +8049,7 @@ msgstr ""
 "\"%s\" es un archivo de Windows Media Audio. \n"
 "Audacity no puede abrir este tipo de archivo por restricciones en su "
 "patente. \n"
-"Necesita convertirlo a un formato de audio soportado, como WAV o AIFF."
+"Deberá convertirlo a un formato de audio compatible, como WAV o AIFF."
 
 #: import/Import.cpp:273
 #, c-format
@@ -8046,7 +8060,7 @@ msgid ""
 msgstr ""
 "\"%s\" es un archivo AAC (Advanced Audio Coding). \n"
 "Audacity no puede abrir este tipo de archivo. \n"
-"Necesita convertirlo a un formato de audio soportado, como WAV o AIFF."
+"Deberá convertirlo a un formato de audio compatible, como WAV o AIFF."
 
 #: import/Import.cpp:278
 #, c-format
@@ -8058,11 +8072,10 @@ msgid ""
 "extract the CD track to a supported audio format such as WAV or AIFF."
 msgstr ""
 "\"%s\" es un archivo de audio encriptado. \n"
-"Estos suelen provenir de una tienda de música online. \n"
-"Audacity no puede abrir este tipo de archivo porque están encriptados. \n"
+"Este tipo de archivo suele provenir de una tienda de música online. \n"
+"Audacity no puede abrir este tipo de archivo porque está encriptados. \n"
 "Intente grabar el archivo en Audacity, o grabarlo en un CD de audio para\n"
-"posteriormente extraer la pista de CD a un formato de audio soportado como "
-"WAV o AIFF."
+"después extraer la pista de CD a un formato compatible (WAV, AIFF)."
 
 #: import/Import.cpp:283
 #, c-format
@@ -8073,7 +8086,7 @@ msgid ""
 msgstr ""
 "\"%s\" es un archivo de RealPlayer. \n"
 "Audacity no puede abrir este formato propietario. \n"
-"Necesita convertirlo a un formato de audio soportado, como WAV o AIFF."
+"Deberá convertirlo a un formato de audio soportado, como WAV o AIFF."
 
 #: import/Import.cpp:289
 #, c-format
@@ -8100,10 +8113,9 @@ msgid ""
 msgstr ""
 "\"%s\" es un archivo de audio Musepack. \n"
 "Audacity no puede abrir este tipo de archivo. \n"
-"Si piensa que podría ser un archivo MP3, renómbrelo para que finalice con \"."
-"mp3\" \n"
-" e intente importarlo de nuevo. De otro modo necesitará convertirlo \n"
-"a un formato de audio soportado, como WAV o AIFF."
+"Si piensa que podría ser un archivo MP3, renombre la extensión a \".mp3\" \n"
+"e intente importarlo de nuevo. De otro modo, deberá convertirlo \n"
+"a un formato de audio compatible, como WAV o AIFF."
 
 #: import/Import.cpp:301
 #, c-format
@@ -8114,7 +8126,7 @@ msgid ""
 msgstr ""
 "\"%s\" es un archivo de audio Wavpack. \n"
 "Audacity no puede abrir este tipo de archivo. \n"
-"Necesita convertirlo a un formato de audio soportado, como WAV o AIFF."
+"Deberá convertirlo a un formato de audio compatible, como WAV o AIFF."
 
 #: import/Import.cpp:307
 #, c-format
@@ -8125,7 +8137,7 @@ msgid ""
 msgstr ""
 "\"%s\" es un archivo de audio Dolby Digital. \n"
 "Audacity no puede abrir este tipo de archivo. \n"
-"Necesita convertirlo a un formato de audio soportado, como WAV o AIFF."
+"Deberá convertirlo a un formato de audio compatible, como WAV o AIFF."
 
 #: import/Import.cpp:313
 #, c-format
@@ -8136,7 +8148,7 @@ msgid ""
 msgstr ""
 "\"%s\" es un archivo de audio Ogg Speex. \n"
 "Audacity no puede abrir este tipo de archivo. \n"
-"Necesita convertirlo a un formato de audio soportado, como WAV o AIFF."
+"Deberá convertirlo a un formato de audio compatible, como WAV o AIFF."
 
 #: import/Import.cpp:319
 #, c-format
@@ -8147,7 +8159,7 @@ msgid ""
 msgstr ""
 "\"%s\" es un archivo de vídeo. \n"
 "Audacity no puede abrir este tipo de archivo. \n"
-"Necesita extraer su audio a un formato soportado, como WAV o AIFF."
+"Deberá extraer el audio a un formato compatible, como WAV o AIFF."
 
 #: import/Import.cpp:324
 #, c-format
@@ -8302,7 +8314,7 @@ msgstr "Endianness predeterminado"
 
 #: import/ImportRaw.cpp:365
 msgid "1 Channel (Mono)"
-msgstr "1 Canal (Mono)"
+msgstr "1 Canal (mono)"
 
 #: import/ImportRaw.cpp:366
 msgid "2 Channels (Stereo)"
@@ -8360,7 +8372,7 @@ msgstr "No ap&licar efectos en modo de secuencia"
 
 #: prefs/BatchPrefs.cpp:81 prefs/GUIPrefs.cpp:147
 msgid "Cl&eanSpeech Mode (Customized GUI)"
-msgstr "Modo de limpi&eza de locución (interfaz personalizado)"
+msgstr "Modo de limpi&eza de locución (interfaz personalizada)"
 
 #: prefs/DevicePrefs.cpp:54
 msgid "Devices"
@@ -8477,7 +8489,7 @@ msgstr ""
 
 #: prefs/GUIPrefs.cpp:51
 msgid "In Browser"
-msgstr "En Explorador"
+msgstr "En Navegador"
 
 #: prefs/GUIPrefs.cpp:52
 msgid "From Internet"
@@ -8916,7 +8928,7 @@ msgstr "Reducir un paso"
 
 #: prefs/MousePrefs.cpp:111 prefs/MousePrefs.cpp:129
 msgid "Right-Drag"
-msgstr "Arrastre-derecho"
+msgstr "Arrastre derecho"
 
 #: prefs/MousePrefs.cpp:111
 msgid "same as left-drag"
@@ -9102,7 +9114,7 @@ msgstr "Muestreo"
 
 #: prefs/QualityPrefs.cpp:129
 msgid "Default Sample Rate:"
-msgstr "Frecuencia de muestreo predeterminada:"
+msgstr "Frecuencia de muestreo predefinida:"
 
 #: prefs/QualityPrefs.cpp:154
 msgid "Default Sample Format:"
@@ -9341,8 +9353,8 @@ msgstr ""
 "Haga clic en  \"Cargar caché de tema\" para cargar las imágenes cambiada y "
 "colores en Audacity.\n"
 "\n"
-"[Sólo la barra de herramientas de control y los colores de las pistas "
-"de onda se verán afectadas, incluso cuando\n"
+"[Sólo la barra de herramientas de control y los colores de las pistas de "
+"onda se verán afectadas, incluso cuando\n"
 "el archivo de imagen muestra también otros iconos.]"
 
 #: prefs/ThemePrefs.cpp:96
@@ -9351,9 +9363,10 @@ msgid ""
 "will save a\n"
 "C version of the image cache that can be compiled in as a default."
 msgstr ""
-"Ha compilado Audacity con un botón extra denominado 'Salida Sourcery'.  "
-"Este almacenará una \n"
-"versión C de la caché de imagen que puede ser compilada de forma predeterminada."
+"Ha compilado Audacity con un botón extra denominado 'Salida Sourcery'.  Este "
+"almacenará una \n"
+"versión C de la caché de imagen que puede ser compilada de forma "
+"predeterminada."
 
 #: prefs/ThemePrefs.cpp:101
 msgid ""
@@ -9361,8 +9374,8 @@ msgid ""
 "loaded\n"
 "when the program starts up."
 msgstr ""
-"Si la opción 'Cargar la caché del tema al iniciar' está activada, la caché de tema "
-"será cargada\n"
+"Si la opción 'Cargar la caché del tema al iniciar' está activada, la caché "
+"de tema será cargada\n"
 "cuando el programa comience."
 
 #: prefs/ThemePrefs.cpp:104
@@ -9676,7 +9689,7 @@ msgstr "Haga clic y arrastre para editar las muestras"
 
 #: toolbars/ToolsToolBar.cpp:67
 msgid "Click to Zoom In, Shift-Click to Zoom Out"
-msgstr "Haga clic para acercar, Mayús-clic para alejar"
+msgstr "Haga clic para acercar, Mayús-Clic para alejar"
 
 #: toolbars/ToolsToolBar.cpp:69
 msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
