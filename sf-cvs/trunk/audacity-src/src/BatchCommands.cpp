@@ -306,7 +306,7 @@ wxString BatchCommands::GetCurrentParamsFor(wxString command)
    return shuttle.mParams;
 }
 
-bool BatchCommands::PromptForParamsFor(wxString command)
+bool BatchCommands::PromptForParamsFor(wxString command, wxWindow *parent)
 {
    Effect * f = EffectManager::Get().GetEffectByIdentifier(command);
    if( f==NULL )
@@ -314,7 +314,7 @@ bool BatchCommands::PromptForParamsFor(wxString command)
 
    //mFactory = factory;
    //mProjectRate = projectRate;
-   f->mParent = NULL;
+   f->mParent = parent;
    //mTracks = list;
    return f->PromptUser();
 }

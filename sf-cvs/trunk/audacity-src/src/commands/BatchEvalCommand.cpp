@@ -26,6 +26,8 @@ void BatchEvalCommandType::BuildSignature(CommandSignature &signature)
    signature.AddParameter(wxT("CommandName"), wxT(""), commandNameValidator);
    Validator *paramValidator(new Validator());
    signature.AddParameter(wxT("ParamString"), wxT(""), paramValidator);
+   Validator *chainValidator(new Validator());
+   signature.AddParameter(wxT("ChainName"), wxT(""), chainValidator);
 }
 
 Command *BatchEvalCommandType::Create(CommandOutputTarget *target)
@@ -35,6 +37,15 @@ Command *BatchEvalCommandType::Create(CommandOutputTarget *target)
 
 bool BatchEvalCommand::Apply(CommandExecutionContext context)
 {
+
+   wxString chainName = GetString(wxT("ChainName"));
+   if (chainName != wxT(""))
+   {
+      BatchCommands batch;
+      batch.ReadChain(chainName);
+      return batch.ApplyChain();
+   }
+
    wxString cmdName = GetString(wxT("CommandName"));
    wxString cmdParams = GetString(wxT("ParamString"));
 

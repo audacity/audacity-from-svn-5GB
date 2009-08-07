@@ -116,6 +116,7 @@ private:
 
    void Filter(sampleCount len,
                float *buffer);
+   void ReadPrefs();
 
    HFFT hFFT;
    float *mFFTBuffer;
@@ -130,6 +131,7 @@ private:
    int mInterp;
    bool mPrompting;
    bool mDrawGrid;
+   bool mEditingBatchParams;
 
 public:
    enum curveType {
@@ -210,7 +212,7 @@ public:
    // constructors and destructors
    EqualizationDialog(EffectEqualization * effect,
                double loFreq, double hiFreq,
-               float *filterFuncR, float *filterFuncI, long windowSize, wxString CurveName,
+               float *filterFuncR, float *filterFuncI, long windowSize, wxString CurveName, bool disallowCustom,
                wxWindow *parent, wxWindowID id,
                const wxString &title,
                const wxPoint& pos = wxDefaultPosition,
@@ -313,6 +315,7 @@ private:
 private:
    EffectEqualization * m_pEffect;
 
+   bool mDisallowCustom;
    double mLoFreq;
    double mHiFreq;
    float *mFilterFuncR;
