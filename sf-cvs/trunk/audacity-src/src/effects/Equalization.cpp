@@ -305,14 +305,11 @@ const wxChar * EffectEqualization::curveNames[] =
 #define NUM_INTERP_CHOICES 3
 static wxString interpChoiceStrings[NUM_INTERP_CHOICES];
 
-EffectEqualization::EffectEqualization()
+void EffectEqualization::ReadPrefs()
 {
-   hFFT = InitializeFFT(windowSize);
-   mFFTBuffer = new float[windowSize];
-   mFilterFuncR = new float[windowSize];
-   mFilterFuncI = new float[windowSize];
+
    gPrefs->Read(wxT("/CsPresets/EQFilterLength"),
-                &mM, 4001);
+         &mM, 4001);
    if ((mM < 21) || (mM > 8191)) {  // corrupted Prefs?
       mM = 4001;  //default
       gPrefs->Write(wxT("/CsPresets/EQFilterLength"), mM);
@@ -332,6 +329,15 @@ EffectEqualization::EffectEqualization()
    gPrefs->Read(wxT("/CsPresets/EQDrawMode"), &mDrawMode, true);
    gPrefs->Read(wxT("/CsPresets/EQInterp"), &mInterp, 0);
    gPrefs->Read(wxT("/CsPresets/EQDrawGrid"), &mDrawGrid, true);
+}
+
+EffectEqualization::EffectEqualization()
+{
+   hFFT = InitializeFFT(windowSize);
+   mFFTBuffer = new float[windowSize];
+   mFilterFuncR = new float[windowSize];
+   mFilterFuncI = new float[windowSize];
+   ReadPrefs();
 
    mPrompting = false;
 
@@ -359,13 +365,18 @@ EffectEqualization::~EffectEqualization()
 
 bool EffectEqualization::Init()
 {
-   if(!mPrompting)
-      DontPromptUser();   // not previewing, ie batch mode or initial setup
    return(true);
 }
 
 bool EffectEqualization::PromptUser()
 {
+   // Detect whether we are editing a batch chain by checking the parent window
+   mEditingBatchParams = (mParent != GetActiveProject());
+   if (!mEditingBatchParams)
+   {
+      ReadPrefs();
+   }
+
    TrackListOfKindIterator iter(Track::Wave, mTracks);
    WaveTrack *t = (WaveTrack *) iter.First();
    float hiFreq;
@@ -376,7 +387,7 @@ bool EffectEqualization::PromptUser()
 
 
    EqualizationDialog dlog(this, ((double)loFreqI), hiFreq, mFilterFuncR, mFilterFuncI,
-                           windowSize, mCurveName, mParent, -1, _("Equalization"));
+                           windowSize, mCurveName, mEditingBatchParams, mParent, -1, _("Equalization"));
 
    dlog.M = mM;
    dlog.curveName = mCurveName;
@@ -404,14 +415,17 @@ bool EffectEqualization::PromptUser()
    mInterp = dlog.interp;
    mDrawGrid = dlog.drawGrid;
 
-   gPrefs->Write(wxT("/CsPresets/EQFilterLength"),mM);
-   gPrefs->Write(wxT("/CsPresets/EQCurveName"),mCurveName);
-   gPrefs->Write(wxT("/CsPresets/EQLin"),mLin);
-   gPrefs->Write(wxT("/CsPresets/EQdBMin"),mdBMin);
-   gPrefs->Write(wxT("/CsPresets/EQdBMax"),mdBMax);
-   gPrefs->Write(wxT("/CsPresets/EQDrawMode"),mDrawMode);
-   gPrefs->Write(wxT("/CsPresets/EQInterp"), mInterp);
-   gPrefs->Write(wxT("/CsPresets/EQDrawGrid"), mDrawGrid);
+   if (!mEditingBatchParams)
+   {
+      gPrefs->Write(wxT("/CsPresets/EQFilterLength"),mM);
+      gPrefs->Write(wxT("/CsPresets/EQCurveName"),mCurveName);
+      gPrefs->Write(wxT("/CsPresets/EQLin"),mLin);
+      gPrefs->Write(wxT("/CsPresets/EQdBMin"),mdBMin);
+      gPrefs->Write(wxT("/CsPresets/EQdBMax"),mdBMax);
+      gPrefs->Write(wxT("/CsPresets/EQDrawMode"),mDrawMode);
+      gPrefs->Write(wxT("/CsPresets/EQInterp"), mInterp);
+      gPrefs->Write(wxT("/CsPresets/EQDrawGrid"), mDrawGrid);
+   }
 
    return true;
 }
@@ -427,7 +441,7 @@ bool EffectEqualization::DontPromptUser()
       hiFreq = ((float)(GetActiveProject()->GetRate())/2.);
 
    EqualizationDialog dlog(this, ((double)loFreqI), hiFreq, mFilterFuncR, mFilterFuncI,
-                           windowSize, mCurveName, mParent, -1, _("Equalization"));
+                           windowSize, mCurveName, false, mParent, -1, _("Equalization"));
 
    dlog.M = mM;
    dlog.curveName = mCurveName;
@@ -447,6 +461,8 @@ bool EffectEqualization::TransferParameters( Shuttle & shuttle )
    shuttle.TransferBool(wxT("InterpolateLin"),mLin,false);
    shuttle.TransferEnum(wxT("interpolationMethod"),mInterp, NUM_INTERP_CHOICES,interpChoiceStrings);
 
+   if(!mPrompting)
+      DontPromptUser();   // not previewing, ie batch mode or initial setup
    return true;
 }
 
@@ -929,12 +945,14 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
                      float *filterFuncI,
                      long windowSize,
                      wxString curveName,
+                     bool disallowCustom,
                      wxWindow *parent, wxWindowID id,
                      const wxString &title,
                      const wxPoint &position,
                      const wxSize& size,
                      long style):
-   wxDialog( parent, id, title, position, size, style | wxRESIZE_BORDER | wxMAXIMIZE_BOX )
+   wxDialog( parent, id, title, position, size, style | wxRESIZE_BORDER | wxMAXIMIZE_BOX ),
+   mDisallowCustom(disallowCustom)
 {
    m_pEffect = effect;
 
@@ -2775,28 +2793,42 @@ void EqualizationDialog::OnOk(wxCommandEvent &event)
 
    if( Validate() )
    {
-      // Update custom curve (so it's there for next time)
-      //(done in a hurry, may not be the neatest -MJS)
-      if( (mDirty == true) & (drawMode == true) )
+      if (mDisallowCustom)
       {
-         int i, j;
-         int numPoints = mLogEnvelope->GetNumberOfPoints();
-         double *when = new double[ numPoints ];
-         double *value = new double[ numPoints ];
-         mLogEnvelope->GetPoints( when, value, numPoints );
-         for(i=0,j=0;j<numPoints-2;i++,j++)
+         while (curveName == wxT("custom"))
          {
-            if( (value[i]<value[i+1]+.05) && (value[i]>value[i+1]-.05) &&
-                (value[i+1]<value[i+2]+.05) && (value[i+1]>value[i+2]-.05) )
-            {   // within < 0.05 dB?
-               mLogEnvelope->Delete(j+1);
-               numPoints--;
-               j--;
-            }
+            wxMessageBox(_("To use this EQ curve in a batch chain, please choose a new name for it."),
+                  _("EQ Curve needs a different name"),
+                  wxOK | wxCENTRE,
+                  this);
+            OnSaveAs(event);
          }
-         delete [] when;
-         delete [] value;
-         Select( (int) mCurves.GetCount()-1 );
+      }
+      else
+      {
+         // Update custom curve (so it's there for next time)
+         //(done in a hurry, may not be the neatest -MJS)
+         if( (mDirty == true) & (drawMode == true) )
+         {
+            int i, j;
+            int numPoints = mLogEnvelope->GetNumberOfPoints();
+            double *when = new double[ numPoints ];
+            double *value = new double[ numPoints ];
+            mLogEnvelope->GetPoints( when, value, numPoints );
+            for(i=0,j=0;j<numPoints-2;i++,j++)
+            {
+               if( (value[i]<value[i+1]+.05) && (value[i]>value[i+1]-.05) &&
+                   (value[i+1]<value[i+2]+.05) && (value[i+1]>value[i+2]-.05) )
+               {   // within < 0.05 dB?
+                  mLogEnvelope->Delete(j+1);
+                  numPoints--;
+                  j--;
+               }
+            }
+            delete [] when;
+            delete [] value;
+            Select( (int) mCurves.GetCount()-1 );
+         }
       }
       SaveCurves();
 

@@ -181,7 +181,7 @@ void BatchCommandDialog::OnEditParams(wxCommandEvent &event)
    if( f==NULL )
       return;
    BatchCommands::SetCurrentParametersFor( f, command, params );
-   if( BatchCommands::PromptForParamsFor( command ))
+   if( BatchCommands::PromptForParamsFor( command, this ))
    {
       // we've just prompted for the parameters, so the values
       // that are current have changed.
