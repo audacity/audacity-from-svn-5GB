@@ -131,50 +131,45 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
    //    mStaticText_TrackName->SetBackgroundColour(this->GetTrackColor());
 
    
-   // musical instrument image
-   ctrlPos.x = (size.GetWidth() - MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH) / 2; // center
-   ctrlPos.y += TRACK_NAME_HEIGHT + kDoubleInset;
-   ctrlSize = wxSize(MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH, MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH);
-   wxBitmap* bitmap = mMixerBoard->GetMusicalInstrumentBitmap(mLeftTrack);
-   wxASSERT(bitmap);
-   mStaticBitmap_MusicalInstrument = 
-      new wxStaticBitmap(this, -1, *bitmap, ctrlPos, ctrlSize);
-
-   
-   int nHalfWidth = (size.GetWidth() / 2);
-
    // pan slider
    ctrlPos.x = (size.GetWidth() / 10);
-   ctrlPos.y += MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH + kQuadrupleInset;
+   ctrlPos.y += TRACK_NAME_HEIGHT + kQuadrupleInset;
    ctrlSize = wxSize((size.GetWidth() * 4 / 5), PAN_HEIGHT);
 
-   // The width of the pan slider must be odd (don't ask)
+   // The width of the pan slider must be odd (per Dominic, don't ask).
    if (!(ctrlSize.x & 1))
       ctrlSize.x--;
 
-   /* i18n-hint: Title of the Pan slider, used to move the sound left or right */
    mSlider_Pan = 
-      new MixerTrackSlider(this, ID_SLIDER_PAN, _("Pan"), ctrlPos, ctrlSize, PAN_SLIDER, true); 
+      new MixerTrackSlider(
+            this, ID_SLIDER_PAN, 
+            /* i18n-hint: Title of the Pan slider, used to move the sound left or right */
+            _("Pan"), 
+            ctrlPos, ctrlSize, PAN_SLIDER, true); 
 
    this->UpdatePan();
 
 
-   // gain slider at left
-   ctrlPos.x = kDoubleInset;
-   ctrlPos.y += PAN_HEIGHT + kQuadrupleInset;
-
-   // Instead of an even split of the cluster width, give extra pixels to the meter
+   const int kHalfWidth = (size.GetWidth() / 2);
+   // Instead of an even split of the cluster width, 
+   // give extra pixels to the meter.
    const int kExtraWidthForMeter = 16;
+
+   // gain slider at left
+   ctrlPos.x = kInset;
+   ctrlPos.y += PAN_HEIGHT + kDoubleInset;
+
    const int kGainSliderHeight = 
-      size.GetHeight() - ctrlPos.y - kQuadrupleInset;
+      size.GetHeight() - ctrlPos.y - kDoubleInset;
    ctrlSize = 
-      wxSize((nHalfWidth - kQuadrupleInset - kExtraWidthForMeter), 
+      wxSize((kHalfWidth - kDoubleInset - kExtraWidthForMeter), 
                kGainSliderHeight);
 
-   /* i18n-hint: Title of the Gain slider, used to adjust the volume */
    mSlider_Gain = 
       new MixerTrackSlider(
-            this, ID_SLIDER_GAIN, _("Gain"), 
+            this, ID_SLIDER_GAIN, 
+            /* i18n-hint: Title of the Gain slider, used to adjust the volume */
+            _("Gain"), 
             ctrlPos, ctrlSize, DB_SLIDER, true, 
             true, 0.0, wxVERTICAL);
 
@@ -190,11 +185,28 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
 
 
    // meter and other controls at right
-   ctrlPos.x = nHalfWidth - kExtraWidthForMeter;
-   const int kReqdHeightBelowMeter = 
+   const int kMeterStackX = kHalfWidth - kExtraWidthForMeter;
+
+   // musical instrument image
+   ctrlPos.x = ((size.GetWidth() - kMeterStackX - MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH) / 2) + kMeterStackX; // Center in right stack.
+   ctrlSize = wxSize(MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH, MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH);
+   wxBitmap* bitmap = mMixerBoard->GetMusicalInstrumentBitmap(mLeftTrack);
+   wxASSERT(bitmap);
+   mStaticBitmap_MusicalInstrument = 
+      new wxStaticBitmap(this, -1, *bitmap, ctrlPos, ctrlSize);
+
+
+   // meter
+   ctrlPos.x = kMeterStackX;
+   ctrlPos.y += MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH + kDoubleInset;
+
+   const int kRequiredHeightBelowMeter = //vvvvv Make this a global?
       (2 * (kDoubleInset + MUTE_SOLO_HEIGHT)) + kDoubleInset; // mute/solo buttons stacked at bottom right
-   const int kMeterHeight = kGainSliderHeight - kReqdHeightBelowMeter;
-   ctrlSize.Set(nHalfWidth - kInset + kExtraWidthForMeter, kMeterHeight);
+   const int kMeterHeight = 
+      kGainSliderHeight - 
+      (MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH + kDoubleInset) -
+      kRequiredHeightBelowMeter;
+   ctrlSize.Set(kHalfWidth - kInset + kExtraWidthForMeter, kMeterHeight);
    mMeter = 
       new Meter(this, -1, // wxWindow* parent, wxWindowID id, 
                 false, // bool isInput
@@ -282,13 +294,14 @@ void MixerTrackCluster::UpdateHeight() // For wxSizeEvents, update gain slider a
    this->SetSize(-1, newClusterHeight); 
 
    // Change the heights of only mSlider_Gain and mMeter.
+
+   // gain slider
    const int kGainSliderHeight = 
       newClusterHeight - 
       (kInset + // margin above mStaticText_TrackName
          TRACK_NAME_HEIGHT + kDoubleInset + // mStaticText_TrackName + margin
-         MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH + kQuadrupleInset + // musical instrument icon + margin
-         PAN_HEIGHT + kQuadrupleInset) - // pan slider
-      kQuadrupleInset; // margin below gain slider and meter 
+         PAN_HEIGHT + kDoubleInset) - // pan slider
+      kQuadrupleInset; // margin below gain slider and meter stack
 
    // -1 doesn't work right to preserve width for wxSlider, and it doesn't implement GetSize(void). //vvvvv Still true?
    //    mSlider_Gain->SetSize(-1, kGainSliderHeight);
@@ -297,9 +310,12 @@ void MixerTrackCluster::UpdateHeight() // For wxSizeEvents, update gain slider a
    mSlider_Gain->GetSize(&oldWidth, &oldHeight);
    mSlider_Gain->SetSize(oldWidth, kGainSliderHeight); 
 
-   const int kReqdHeightBelowMeter = 
+   const int kRequiredHeightBelowMeter = //vvvvv Make this a global?
       (2 * (kDoubleInset + MUTE_SOLO_HEIGHT)) + kDoubleInset; // mute/solo buttons stacked at bottom right
-   const int kMeterHeight = kGainSliderHeight - kReqdHeightBelowMeter;
+   const int kMeterHeight = 
+      kGainSliderHeight - 
+      (MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH + kDoubleInset) -
+      kRequiredHeightBelowMeter;
    mMeter->SetSize(-1, kMeterHeight);
 
    // Reposition mute/solo buttons.
@@ -1351,7 +1367,7 @@ MixerBoardFrame::MixerBoardFrame(AudacityProject* parent)
             wxDefaultPosition, kDefaultSize, 
             //vvv Bug in wxFRAME_FLOAT_ON_PARENT:
             // If both the project frame and MixerBoardFrame are minimized and you restore MixerBoardFrame, you can't restore project frame until you close
-            // MixerBoardFrame, but then project frame and MixerBoardFrame are restored but MixerBoardFrames is unresponsive because it thinks it's not shown.
+            // MixerBoardFrame, but then project frame and MixerBoardFrame are restored but MixerBoardFrame is unresponsive because it thinks it's not shown.
             //    wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT)
             wxDEFAULT_FRAME_STYLE)
 {
