@@ -1580,12 +1580,7 @@ bool LabelTrack::OnKeyDown(double & newSel0, double & newSel1, wxKeyEvent & even
       case WXK_RETURN: 
       case WXK_NUMPAD_ENTER:
 
-      case WXK_ESCAPE:
-         if (mLabels[mSelIndex]->title == wxT("")) {
-            delete mLabels[mSelIndex];
-            mLabels.RemoveAt(mSelIndex);
-         }
-         
+      case WXK_ESCAPE:        
          mSelIndex = -1;
          break;
          
