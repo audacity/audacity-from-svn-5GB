@@ -1,7 +1,6 @@
 <?php
 /*
- * Copyright 2003, 2004 Dominic Mazzoni
- * Copyright 2002, 2003, 2004 Matt Brubeck
+ * Copyright 2002-2009 Dominic Mazzoni, Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -18,13 +17,12 @@
   // i18n-hint: The two %s will be replaced by HTML tags to make the text
   // inbetween into a link to the mailing list page. They are thus invisible in
   // the final text.
-printf(_('A group of volunteers is translating the free Audacity sound editor into many different languages.  If you would like to help, please join the %saudacity-translation mailing list%s and introduce yourself.'), '<a href="../contact/lists#translation">', '</a>'); ?></p>
-
-<p><?=_('The translation effort is now focused on Audacity 1.3.  Translations from previous versions of Audacity have been imported and need to be updated.')?></p>
+printf(_('A group of volunteers is translating the free Audacity sound editor into many different languages. The translation effort is now focused exclusively on Audacity 1.3 Beta as we prepare it to be our next Stable Release. If you would like to help, please join the %saudacity-translation mailing list%s and introduce yourself. Please read the instructions below on how to start working on translations.'), '<a href="https://lists.sourceforge.net/lists/listinfo/audacity-translation">', '</a>'); ?></p>
 
 <h3><?=_("Resources for Translators")?></h3>
 <ul>
-  <li><a href="../contact/lists#translation"><?=_("Mailing list and archives")?></a></li>
+  <li><a href="https://lists.sourceforge.net/lists/listinfo/audacity-translation"><?=_("Mailing list and archives")?></a></li>
+  <li><a href="http://wiki.audacityteam.org/index.php?title=Translating_Audacity"> <?=_("Translating Audacity</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.")?></li>  
   <li><a href="../locale/audacity.pot"><?php
 		// i18n-hint: The three numbers will be year, month, day. Remember you
 		// can re-order the numbers if you want to - to get Day, Month, Year,
@@ -42,53 +40,50 @@ printf(_('A group of volunteers is translating the free Audacity sound editor in
 		'</a>', $web_year, $web_month, $web_day);
 ?></a></li>
   <li><a href="http://wxwidgets.org/i18n.php"><?=_("wxWidgets i18n")?></a></li>
+  <li><a href="http://manual.audacityteam.org/index.php?title=Main_Page"><?=_("Audacity Beta User Manual</a> - The Audacity Beta User Manual also requires translating. This is done online using Wiki software. To create an account and start translating, please contact")?> 
+<a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#103;&#x61;&#x6c;&#101;&#x40;&#x61;&#x75;&#x64;&#x61;&#x63;&#105;&#x74;&#x79;&#x74;&#x65;&#97;&#109;&#46;&#111;&#114;&#x67;&#x3f;&#115;&#x75;&#x62;&#106;&#101;&#x63;&#x74;&#61;&#x4d;&#x61;&#x6e;&#x75;&#x61;&#x6c;&#95;&#87;&#105;&#107;&#105;&#95;&#97;&#x63;&#99;&#x6f;&#117;&#110;&#116;">Gale</a>.</li>  
 </ul>
 
 <?php
   // i18n-hint: These instructions are for translators only, so you may
   // leave them untranslated if you like.
-  printf(_('<h3>Translation Instructions</h3>
+   printf(_('<h3>Translation Instructions (software and web site)</h3>
 
-<p>To start a new translation, download the POT file above. (If the links only produce text in the browser, right-click or control-click and "Save target as" or "Save link as"). Rename the POT to "audacity.po" (or "audacity_website.po" for web site translation) before starting your translation.</p>
-
-<p>To edit an existing translation, use the links below to download the PO file for your language:</p>
+<p>Normally there will already be a translation for your language of the Audacity software or web site, but often it needs to be updated for the latest changes. <b>To update an existing translation</b>, use the links below to download the .po file for your language:</p>
 <ul>
   <li><a href="%s">Audacity translations</a></li>
   <li><a href="%s">Audacity web site translations</a></li>
 </ul>
 
-<p>On the "log" page for your language, click the "download" link at the top, just to right of "Links to HEAD" (right-click or control-click and save the target or link if necessary).</p>
+<p>On the "Log" page for your language, click the "download" link at the top, just to right of "Links to HEAD" (right-click or control-click and save the target or link if necessary).</p> 
 
-<p>These programs can create and edit PO files:</p>
+<p><b>If there is no .po file for your language</b>, create one by downloading the latest "audacity.pot" or "audacity_website.pot" file under "Resources for Translators" above. (If the links only produce text in the browser, right-click or control-click and save the target or link). Rename the .pot to "audacity.po" (or "audacity_website.po" for web site translation) before starting your translation.</p>
+
+<p><b>Programs for creating and editing .po files:</b></p>
 <ul>
   <li><a href="http://poedit.sourceforge.net/">poEdit</a> for Windows and Unix.</li>
   <li><a href="http://i18n.kde.org/tools/kbabel/">KBabel</a> for KDE.</li>
   <li><a href="http://www.gnu.org/software/gettext/">GNU gettext</a> is standard on most Unix systems.  It includes a PO mode for the Emacs text editor.</li>
 </ul>
 
-<p>To start a new translation in poEdit, open the PO file, then:</p>
+<p><b>Basic usage of poEdit:</b><p>
 <ul>
-  <li><b>Catalog > Settings</b>: Fill in the settings. Set the target language in the <b>Language</b> menu.</li>
-  <li>When you <b>File > Save</b>, it writes both the PO and MO files.</li>
+  <li>For a newly created .po file, set its properties by clicking <b>Catalog > Settings</b> and filling in the required information. Set the target language in the <b>Language</b> menu. Make sure to set the "charset" option correctly, otherwise poEdit will not save any translations with non-English characters. </li>
+  <li>For an existing .po file, download "audacity.pot" or "audacity_website.pot" from "Resources for Translators" above. In poEdit, click <b>Catalog > Update from POT file</b> to update your .po file with the latest strings from the downloaded .pot file. Then translate the .po file (<b>not</b> the .pot file).</li>     
+  <li>When you File > Save, poEdit saves the .po file, plus a .mo file for use in Audacity.</li>
 </ul>
 
-<p>To test a new translation in Audacity:</p>
+<p><b>To test a translation in Audacity:</b></p>
 <ul>
-  <li>Create a new directory in audacity/languages named as the code for the target language. The abbreviations are shown at <a href="http://www.poedit.net/translations.php">http://www.poedit.net/translations.php</a>. For example, the code for Tamil is "ta", so create "audacity/languages/ta".</li>
-  <li>Copy audacity.mo into that new directory, for example, into "audacity/languages/ta". </li>
-  <li>Open Audacity and in <b>Preferences: Interface</b>, the new language should now appear in the Language menu. Choose it, quit, then restart and you should see your translations. </li>
+  <li>Navigate to the "Languages" directory inside the Audacity installation directory, and open the directory with the same name as your .po file. If creating a new translation, create a directory in the "Languages" folder using the correct language code from <a href="http://www.poedit.net/translations.php">http://www.poedit.net/translations.php</a>. For example, the code for Tamil is "ta", so create "Audacity\Languages\ta".</li>
+  <li>Rename the saved <b>.mo</b> file to "Audacity.mo", and paste it into the directory you opened or created.</li>
+  <li>Open Audacity and in <b>Preferences: Interface</b>, choose your language and click OK. You should now see your translations. </li>
 </ul>
 
-<p>Send completed PO files to <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x62;&#x75;&#x61;&#x6e;&#x7a;&#x6f;&#x40;&#x61;&#x75;&#100;&#x61;&#99;&#x69;&#116;&#121;&#x74;&#x65;&#x61;&#109;&#x2e;&#111;&#x72;&#x67;&#63;&#115;&#x75;&#98;&#x6a;&#101;&#x63;&#x74;&#x3d;&#80;&#x4f;&#32;&#x66;&#105;&#x6c;&#x65;&#x20;&#x66;&#x6f;&#114;&#x20;&#67;&#86;&#83;">Buanzo</a>.</p>
-
-<h3>Notes</h3>
-
+<p><b>Further information:</b></p>
 <ul>
-  <li><p>In poEdit, make sure to set the "charset" option correctly.  Otherwise, poEdit will not save any translations with non-English characters.</p>
-  <li><p>Strings like <b>"&amp;File"</b> and <b>"New &amp;Audio Track"</b> are menu items.  The letter after the "&amp;" symbol is used as an access key on the keyboard.</p>
-  <li><p><b>"Import Audio...\tCtrl+i"</b> is also a menu item.  The \t stands for a tab character, which separates the menu text from its keyboard shortcut.</p>
-  <li><p>You will find many strings like <b>"There were %%d buffer underruns, last near %%lf seconds."</b>  The %% signs mark places where numbers or names will be inserted into the string.  For example, this string might become "There were 4 buffer underruns, last near 3.01 seconds." If you change the order of the the %% markers in a string, add "1$" after the percent sign that used to be first, "2$" after the percent sign that used to be second, and so on.  For example:</p>
-  <blockquote><p><b>"The buffer underrun near %%2$lf seconds was the last of %%1$d."</b></p></blockquote>
+  <li><b>To submit a translation</b>, please send the completed .po file to the audacity-translation mailing list. A member of Audacity Team will commit the file and send a message to the list confirming this.</li> 
+  <li>Please read <a href="http://wiki.audacityteam.org/index.php?title=Translating_Audacity">Translating Audacity</a> for more tips on translating the Audacity source code, and to learn how the Audacity software and web site are translated.</li>
 </ul>'), "http://audacity.cvs.sourceforge.net/audacity/audacity-src/locale/", "http://audacity.cvs.sourceforge.net/audacity/htdocs/locale/");
 
   include "../include/footer.inc.php";
