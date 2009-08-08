@@ -710,6 +710,14 @@ float Meter::GetMaxPeak()
    return(maxPeak);
 }
 
+float Meter::GetLinearMaxPeak()
+{
+   float peak = GetMaxPeak();
+   if (mDB)
+      peak = pow(10.0, (-(1.0-peak)*mDBRange)/20.0);
+   return peak;
+}
+
 wxFont Meter::GetFont()
 {
    int fontSize = 10;
