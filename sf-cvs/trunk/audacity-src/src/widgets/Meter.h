@@ -158,6 +158,8 @@ class Meter : public wxPanel
    
    float GetMaxPeak();
 
+   float GetLinearMaxPeak();
+
    //
    // Event handlers
    //

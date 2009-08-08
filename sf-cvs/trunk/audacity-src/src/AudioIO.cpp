@@ -2539,7 +2539,7 @@ bool AudioIO::AVIsActive() {
 void AudioIO::AVProcess() {
    AudacityProject *proj = GetActiveProject();
    if (proj && mAVActive) {
-      mAVMax = max(mAVMax, mInputMeter->GetMaxPeak());
+      mAVMax = max(mAVMax, mInputMeter->GetLinearMaxPeak());
       if (mInputMeter->IsClipping())
          mAVClipped = true;
       
