@@ -174,11 +174,20 @@ bool EffectTruncSilence::Process()
    int truncLongestAllowedSilentSamples = 
       int((wxMax( mTruncLongestAllowedSilentMs, minTruncMs) * rate) / 1000.0);
 
-   // Don't allow either value to be less than the cross-fade length
+   // Require at least 4 samples for lengths
+   if(truncInitialAllowedSilentSamples < 4)
+      truncInitialAllowedSilentSamples = 4;
+   if(truncLongestAllowedSilentSamples < 4)
+      truncLongestAllowedSilentSamples = 4;
+
+   // If the cross-fade is longer than the minimum length,
+   // then limit the cross-fade length to the minimum length
+   // This allows us to have reasonable cross-fade by default
+   // and still allow for 1ms minimum lengths
    if(truncInitialAllowedSilentSamples < mBlendFrameCount)
-      truncInitialAllowedSilentSamples = mBlendFrameCount;
+      mBlendFrameCount = truncInitialAllowedSilentSamples;
    if(truncLongestAllowedSilentSamples < mBlendFrameCount)
-      truncLongestAllowedSilentSamples = mBlendFrameCount;
+      mBlendFrameCount = truncLongestAllowedSilentSamples;
 
    // For sake of efficiency, don't let blockLen be less than double the longest silent samples
    // up until a sane limit of 1Meg samples
