@@ -39,36 +39,36 @@ EffectTruncSilence::EffectTruncSilence()
 
 bool EffectTruncSilence::Init()
 {
-   mTruncInitialAllowedSilentMs = gPrefs->Read(wxT("/CsPresets/TruncInitialAllowedSilentMs"), 200L);
+   mTruncInitialAllowedSilentMs = gPrefs->Read(wxT("/Effects/TruncateSilence/InitialAllowedSilentMs"), 200L);
    if ((mTruncInitialAllowedSilentMs < 0) || (mTruncInitialAllowedSilentMs >= 9999999)) {  // corrupted Prefs?
       mTruncInitialAllowedSilentMs = 200L;
-      gPrefs->Write(wxT("/CsPresets/TruncInitialAllowedSilentMs"), mTruncInitialAllowedSilentMs);
+      gPrefs->Write(wxT("/Effects/TruncateSilence/InitialAllowedSilentMs"), mTruncInitialAllowedSilentMs);
    }
-   mTruncLongestAllowedSilentMs = gPrefs->Read(wxT("/CsPresets/TruncLongestAllowedSilentMs"), 1000L);
+   mTruncLongestAllowedSilentMs = gPrefs->Read(wxT("/Effects/TruncateSilence/LongestAllowedSilentMs"), 1000L);
    if ((mTruncLongestAllowedSilentMs < 0) || (mTruncLongestAllowedSilentMs >= 9999999)) {  // corrupted Prefs?
       mTruncLongestAllowedSilentMs = 1000L;
-      gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), mTruncLongestAllowedSilentMs);
+      gPrefs->Write(wxT("/Effects/TruncateSilence/LongestAllowedSilentMs"), mTruncLongestAllowedSilentMs);
    }
    
    if( mTruncLongestAllowedSilentMs < mTruncInitialAllowedSilentMs )
       mTruncInitialAllowedSilentMs = mTruncLongestAllowedSilentMs;
 
-   mTruncDbChoiceIndex = gPrefs->Read(wxT("/CsPresets/TruncDbChoiceIndex"), 4L);
+   mTruncDbChoiceIndex = gPrefs->Read(wxT("/Effects/TruncateSilence/DbChoiceIndex"), 4L);
    if ((mTruncDbChoiceIndex < 0) || (mTruncDbChoiceIndex >= Enums::NumDbChoices)) {  // corrupted Prefs?
       mTruncDbChoiceIndex = Enums::NumDbChoices - 1;  // Off-Skip
-      gPrefs->Write(wxT("/CsPresets/TruncDbChoiceIndex"), mTruncDbChoiceIndex);
+      gPrefs->Write(wxT("/Effects/TruncateSilence/DbChoiceIndex"), mTruncDbChoiceIndex);
       mTruncLongestAllowedSilentMs = SKIP_EFFECT_MILLISECOND;
-      gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), mTruncLongestAllowedSilentMs);
+      gPrefs->Write(wxT("/Effects/TruncateSilence/LongestAllowedSilentMs"), mTruncLongestAllowedSilentMs);
    }
-   mBlendFrameCount = gPrefs->Read(wxT("/CsPresets/BlendFrameCount"), 100L);
+   mBlendFrameCount = gPrefs->Read(wxT("/Effects/TruncateSilence/BlendFrameCount"), 100L);
    if ((mBlendFrameCount < 0) || (mBlendFrameCount >= 5000)) {  // corrupted Prefs?
       mBlendFrameCount = 100;
-      gPrefs->Write(wxT("/CsPresets/BlendFrameCount"), 100);
+      gPrefs->Write(wxT("/Effects/TruncateSilence/BlendFrameCount"), 100);
    }
-   mSilenceCompressRatio = 0.1*gPrefs->Read(wxT("/CsPresets/SilenceCompressRatio"), 40L);
+   mSilenceCompressRatio = 0.1*gPrefs->Read(wxT("/Effects/TruncateSilence/CompressRatio"), 40L);
    if ((mSilenceCompressRatio < 1.0) || (mSilenceCompressRatio > 20.0)) {  // corrupted Prefs?
       mSilenceCompressRatio = 4.0;
-      gPrefs->Write(wxT("/CsPresets/SilenceCompressRatio"), 40L);
+      gPrefs->Write(wxT("/Effects/TruncateSilence/CompressRatio"), 40L);
    }
    return true;
 }
@@ -93,10 +93,10 @@ bool EffectTruncSilence::PromptUser()
    if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
-   gPrefs->Write(wxT("/CsPresets/TruncInitialAllowedSilentMs"), mTruncInitialAllowedSilentMs);
-   gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), mTruncLongestAllowedSilentMs);
-   gPrefs->Write(wxT("/CsPresets/TruncDbChoiceIndex"), mTruncDbChoiceIndex);
-   gPrefs->Write(wxT("/CsPresets/SilenceCompressRatio"), (int)floor(10.0*mSilenceCompressRatio+0.5));
+   gPrefs->Write(wxT("/Effects/TruncateSilence/InitialAllowedSilentMs"), mTruncInitialAllowedSilentMs);
+   gPrefs->Write(wxT("/Effects/TruncateSilence/LongestAllowedSilentMs"), mTruncLongestAllowedSilentMs);
+   gPrefs->Write(wxT("/Effects/TruncateSilence/DbChoiceIndex"), mTruncDbChoiceIndex);
+   gPrefs->Write(wxT("/Effects/TruncateSilence/CompressRatio"), (int)floor(10.0*mSilenceCompressRatio+0.5));
 
    return true;
 }
