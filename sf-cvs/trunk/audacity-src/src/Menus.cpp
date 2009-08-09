@@ -4970,8 +4970,8 @@ void AudacityProject::OnExportCleanSpeechPresets()
          preset[8]  = gPrefs->Read(wxT("/CsPresets/Norm_RemoveDcOffset"), 1L);
          preset[9]  = gPrefs->Read(wxT("/CsPresets/SpikeDbChoiceIndex"), 13L);
          preset[10] = gPrefs->Read(wxT("/CsPresets/SpikeMaxDurationMs"), SKIP_EFFECT_MILLISECOND);
-         preset[11] = gPrefs->Read(wxT("/CsPresets/TruncDbChoiceIndex"), 8L);
-         preset[12] = gPrefs->Read(wxT("/CsPresets/TruncLongestAllowedSilentMs"), 1000L);
+         preset[11] = gPrefs->Read(wxT("/Effects/TruncateSilence/DbChoiceIndex"), 8L);
+         preset[12] = gPrefs->Read(wxT("/Effects/TruncateSilence/LongestAllowedSilentMs"), 1000L);
 //         preset[14] = gPrefs->Read(wxT("/GUI/Save128HqMasterAfter"), 0L);
 //         preset[15] = gPrefs->Read(wxT("/GUI/Save128HqMasterBefore"), 0L);
 
@@ -5054,8 +5054,8 @@ void AudacityProject::OnImportCleanSpeechPresets()
          gPrefs->Write(wxT("/CsPresets/Norm_RemoveDcOffset"), preset[8]);
          gPrefs->Write(wxT("/CsPresets/SpikeDbChoiceIndex"), preset[9]);
          gPrefs->Write(wxT("/CsPresets/SpikeMaxDurationMs"), preset[10]);
-         gPrefs->Write(wxT("/CsPresets/TruncDbChoiceIndex"), preset[11]);
-         gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), preset[12]);
+         gPrefs->Write(wxT("/Effects/TruncateSilence/DbChoiceIndex"), preset[11]);
+         gPrefs->Write(wxT("/Effects/TruncateSilence/LongestAllowedSilentMs"), preset[12]);
 //         gPrefs->Write(wxT("/GUI/Save128HqMasterAfter"), preset[14]);
 //         gPrefs->Write(wxT("/GUI/Save128HqMasterBefore"), preset[15]);
 
