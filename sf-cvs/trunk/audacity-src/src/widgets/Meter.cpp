@@ -73,6 +73,7 @@
 #include "../AllThemeResources.h"
 #include "../Experimental.h"
 
+
 /* Updates to the meter are passed accross via meter updates, each contained in
  * a MeterUpdateMsg object */
 wxString MeterUpdateMsg::toString()
@@ -295,6 +296,11 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mBar[i].clipping = false;
       mBar[i].isclipping = false;
    }
+}
+
+void Meter::Clear()
+{
+   mQueue.Clear();
 }
 
 void Meter::CreateIcon(int aquaOffset)
@@ -626,7 +632,7 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
 {
    MeterUpdateMsg msg;
    int numChanges = 0;
-  
+   double maxPeak = 0.0;
    // There may have been several update messages since the last
    // time we got to this function.  Catch up to real-time by
    // popping them off until there are none left.  It is necessary
@@ -684,19 +690,20 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
          }
 
          mBar[j].tailPeakCount = msg.tailPeakCount[j];
+
+         maxPeak = mBar[j].peak > maxPeak ? mBar[j].peak : maxPeak;
       }
    } // while
 
-   #ifdef AUTOMATIC_VOLUME
-      bool AVActive;
-      gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &AVActive, false);
-      if (AVActive && gAudioIO->AVIsActive())
-         if (mIsInput)
-            gAudioIO->AVProcess();
-   #endif
-
-   if (numChanges > 0)      
+   if (numChanges > 0) {
+      #ifdef AUTOMATIC_VOLUME
+         bool AVActive;
+         gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &AVActive, false);
+         if (AVActive && gAudioIO->AVIsActive() && mIsInput)
+            gAudioIO->AVProcess(maxPeak);
+      #endif
       RepaintBarsNow();
+   }
 }
 
 float Meter::GetMaxPeak()
@@ -710,12 +717,11 @@ float Meter::GetMaxPeak()
    return(maxPeak);
 }
 
-float Meter::GetLinearMaxPeak()
+double Meter::ToLinearIfDB(double value)
 {
-   float peak = GetMaxPeak();
    if (mDB)
-      peak = pow(10.0, (-(1.0-peak)*mDBRange)/20.0);
-   return peak;
+      value = pow(10.0, (-(1.0-value)*mDBRange)/20.0);
+   return value;
 }
 
 wxFont Meter::GetFont()

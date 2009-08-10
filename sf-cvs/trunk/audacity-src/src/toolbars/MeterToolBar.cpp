@@ -58,6 +58,12 @@ MeterToolBar::~MeterToolBar()
 {
 }
 
+void MeterToolBar::Clear()
+{
+   if (mPlayMeter)   mPlayMeter->Clear();
+   if (mRecordMeter) mRecordMeter->Clear();
+}
+
 void MeterToolBar::Create(wxWindow * parent)
 {
    ToolBar::Create(parent);
