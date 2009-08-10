@@ -2526,6 +2526,8 @@ void AudioIO::AVInitialize() {
    mAVAnalysisCounter    = 0;
    mAVChangeFactor       = 1.0;
    mAVLastChangeType     = 0;
+   mAVTopLevel           = 1.0;
+   mAVAnalysisEndTime    = -1.0;
 }
 
 void AudioIO::AVDisable() {
@@ -2536,17 +2538,40 @@ bool AudioIO::AVIsActive() {
    return mAVActive;
 }
 
-void AudioIO::AVProcess() {
+void AudioIO::AVProcess(double maxPeak) {
    AudacityProject *proj = GetActiveProject();
    if (proj && mAVActive) {
-      mAVMax = max(mAVMax, mInputMeter->GetLinearMaxPeak());
       if (mInputMeter->IsClipping())
          mAVClipped = true;
       
+      if (mAVAnalysisEndTime >= 0.0) {
+         if (mAVAnalysisEndTime < GetStreamTime()) { // if we past it already start monitoring again
+            mAVMax = 0.0; //reset max
+            mAVAnalysisEndTime = -1.0; //disable latency protection
+            //printf("mMaxPeak resetted!");
+         }
+         //printf("%f discarded\n", maxPeak);
+         return;
+      }
+      //printf("%f\n", maxPeak);
+      mAVMax = max(mAVMax, maxPeak);
+   
       if ((mAVTotalAnalysis == 0 || mAVAnalysisCounter < mAVTotalAnalysis) && mTime - mAVLastStartTime >= mAVAnalysisTime) {
+         //putchar('\n');
+         mAVMax = mInputMeter->ToLinearIfDB(mAVMax);
          double iv = (double) Px_GetInputVolume(mPortMixer);
          unsigned short changetype = 0; //0 - no change, 1 - increase change, 2 - decrease change
+         //printf("mAVAnalysisCounter:%d\n", mAVAnalysisCounter);
+         //printf("\tmAVClipped:%d\n", mAVClipped);
+         //printf("\tmAVMax:%f\n", mAVMax);
+         //printf("\tmAVGoalPoint:%f\n", mAVGoalPoint);
+         //printf("\tmAVGoalDelta:%f\n", mAVGoalDelta);
+         //printf("\tiv:%f\n", iv);
+         //printf("\tmAVChangeFactor:%f\n", mAVChangeFactor);
          if (mAVClipped || mAVMax > mAVGoalPoint + mAVGoalDelta) {
+            //printf("too high:\n");
+            mAVTopLevel = min(mAVTopLevel, iv);
+            //printf("\tmAVTopLevel:%f\n", mAVTopLevel);
             //if clipped or too high
             if (iv <= LOWER_BOUND) {
                //we can't improve it more now
@@ -2554,6 +2579,7 @@ void AudioIO::AVProcess() {
                   mAVActive = false;
                   proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. It was not possible to optimize it more. Still too high."));
                }
+               //printf("\talready min vol:%f\n", iv);
             }
             else {
                double vol = max(LOWER_BOUND, iv+(mAVGoalPoint-mAVMax)*mAVChangeFactor);
@@ -2562,39 +2588,54 @@ void AudioIO::AVProcess() {
                msg.Printf(_("Automatic Volume decreased the volume to %f."), vol);
                proj->TP_DisplayStatusMessage(msg);
                changetype = 1;
+               //printf("\tnew vol:%f\n", vol);
             }
          }
          else if ( mAVMax < mAVGoalPoint - mAVGoalDelta ) {
             //if too low
-            if (iv >= UPPER_BOUND) {
+            //printf("too low:\n"); 
+            if (iv >= UPPER_BOUND || iv + 0.005 > mAVTopLevel) { //condition for too low volumes and/or variable volumes that cause mAVTopLevel to decrease too much
                //we can't improve it more
                if (mAVTotalAnalysis != 0) {
                   mAVActive = false;
                   proj->TP_DisplayStatusMessage(_("Automatic Volume stopped. It was not possible to optimize it more. Still too low."));
                }
+               //printf("\talready max vol:%f\n", iv);
             }
             else {
                double vol = min(UPPER_BOUND, iv+(mAVGoalPoint-mAVMax)*mAVChangeFactor);
+               if (vol > mAVTopLevel) {
+                  vol = (iv + mAVTopLevel)/2.0;
+                  //printf("\tTruncated vol:%f\n", vol);
+               }
                Px_SetInputVolume(mPortMixer, vol);
                wxString msg;
                msg.Printf(_("Automatic Volume increased the volume to %.2f."), vol);
                proj->TP_DisplayStatusMessage(msg);
                changetype = 2;
+               //printf("\tnew vol:%f\n", vol);
             }
          }
 
          mAVAnalysisCounter++;
-         mAVMax           = 0;
-         mAVClipped       = false;  
-         mAVLastStartTime = mTime;
+         const PaStreamInfo* info = Pa_GetStreamInfo(mPortStreamV19);
+         double latency = 0.0;
+         if (info)
+            latency = info->inputLatency;
+         mAVAnalysisEndTime = mTime+latency;
+         mAVMax             = 0;
+         //printf("\tmAVMax resetted:%f\n", mAVMax);
+         mAVClipped         = false;  
+         mAVLastStartTime   = mTime;
          
          if (changetype == 0)
             mAVChangeFactor *= 0.8; //time factor
          else if (mAVLastChangeType == changetype)
-            mAVChangeFactor *= 1.15; //concordance factor
+            mAVChangeFactor *= 1.1; //concordance factor
          else
-            mAVChangeFactor *= 0.75; //discordance factor
+            mAVChangeFactor *= 0.7; //discordance factor
          mAVLastChangeType = changetype;
+         putchar('\n');
       }
 
       if (mAVActive && mAVTotalAnalysis != 0 && mAVAnalysisCounter >= mAVTotalAnalysis) {

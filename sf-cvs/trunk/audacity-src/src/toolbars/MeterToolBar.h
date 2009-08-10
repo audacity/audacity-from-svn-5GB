@@ -40,6 +40,7 @@ class MeterToolBar:public ToolBar {
 
    void GetMeters(Meter **playMeter, Meter **recordMeter);
    void StartMonitoring();
+   void Clear();
 
    virtual void OnSize(wxSizeEvent & event);
 

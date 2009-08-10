@@ -108,6 +108,7 @@ class Meter : public wxPanel
    ~Meter();
 
    void UpdatePrefs();
+   void Clear();
 
    Style GetStyle() { return mStyle; }
    void SetStyle(Style newStyle);
@@ -158,7 +159,7 @@ class Meter : public wxPanel
    
    float GetMaxPeak();
 
-   float GetLinearMaxPeak();
+   double ToLinearIfDB(double value);
 
    //
    // Event handlers
@@ -196,6 +197,7 @@ class Meter : public wxPanel
    bool IsClipping();
    
    void StartMonitoring();
+
  private:
    void DrawMeterBar(wxDC &dc, MeterBar *meterBar);
    void ResetBar(MeterBar *bar, bool resetClipping);

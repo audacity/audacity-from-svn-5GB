@@ -724,10 +724,12 @@ void ControlToolBar::StopPlaying()
    mBusyProject = NULL;
 
    // So that we continue monitoring after playing or recording.
+   // also clean the MeterQueues
    AudacityProject *project = GetActiveProject();
-   if( project )
+   if( project ) {
       project->MayStartMonitoring();
-
+      project->GetMeterToolBar()->Clear();
+   }
 }
 
 void ControlToolBar::OnBatch(wxCommandEvent &evt)
