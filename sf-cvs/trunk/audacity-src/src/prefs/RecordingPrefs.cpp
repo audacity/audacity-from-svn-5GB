@@ -181,11 +181,11 @@ bool RecordingPrefs::Apply()
    }
 
    #ifdef AUTOMATIC_VOLUME
-      double bestpeak, deltapeak;
-      gPrefs->Read(wxT("/AudioIO/BestPeakVolume"),  &bestpeak);
+      double targetpeak, deltapeak;
+      gPrefs->Read(wxT("/AudioIO/TargetPeak"),  &targetpeak);
       gPrefs->Read(wxT("/AudioIO/DeltaPeakVolume"), &deltapeak);
-      if (bestpeak + deltapeak > 100.0 || bestpeak - deltapeak < 0.0)
-         gPrefs->Write(wxT("/AudioIO/DeltaPeakVolume"), min(100.0 - bestpeak, bestpeak));
+      if (targetpeak + deltapeak > 100.0 || targetpeak - deltapeak < 0.0)
+         gPrefs->Write(wxT("/AudioIO/DeltaPeakVolume"), min(100.0 - targetpeak, targetpeak));
 
       int value;
       gPrefs->Read(wxT("/AudioIO/AnalysisTime"), &value);

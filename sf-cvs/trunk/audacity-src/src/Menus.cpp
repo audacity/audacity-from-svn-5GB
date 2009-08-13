@@ -601,6 +601,10 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCheck(wxT("SoundActivation"), _("Sound Activated Recording (on/off)"), FN(OnToggleSoundActivated), 0);
    c->AddItem(wxT("SoundActivationLevel"), _("Sound Activation Level..."), FN(OnSoundActivated));
 
+#ifdef AUTOMATIC_VOLUME
+   c->AddCheck(wxT("AutomaticVolumeOnOff"), _("Automatic Volume (on/off)"), FN(OnToogleAutomaticVolume), 0);
+#endif
+
    if (!mCleanSpeechMode) {
 
       //////////////////////////////////////////////////////////////////////////
@@ -1484,6 +1488,10 @@ void AudacityProject::ModifyToolbarMenus()
    bool active;
    gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"),&active, false);
    mCommandManager.Check(wxT("SoundActivation"), active);
+#ifdef AUTOMATIC_VOLUME
+   gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"),&active, false);
+   mCommandManager.Check(wxT("AutomaticVolumeOnOff"), active);
+#endif
    gPrefs->Read(wxT("/AudioIO/Duplex"),&active, true);
    mCommandManager.Check(wxT("Duplex"), active);
    gPrefs->Read(wxT("/AudioIO/SWPlaythrough"),&active, false);
@@ -1821,6 +1829,16 @@ void AudacityProject::OnToggleSWPlaythrough()
    gPrefs->Write(wxT("/AudioIO/SWPlaythrough"), !SWPlaythrough);
    ModifyToolbarMenus();
 }
+
+#ifdef AUTOMATIC_VOLUME
+void AudacityProject::OnToogleAutomaticVolume()
+{
+   bool AVEnabled;
+   gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &AVEnabled, false);
+   gPrefs->Write(wxT("/AudioIO/AutomaticVolumeRecord"), !AVEnabled);
+   ModifyToolbarMenus();
+}
+#endif
 
 double AudacityProject::GetTime(Track *t)
 {
