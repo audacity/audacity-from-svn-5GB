@@ -394,13 +394,21 @@ bool EffectTruncSilence::Process()
       index += count;
    }
 
+   AudacityProject *p = GetActiveProject();
+   if (!p)
+      return false;
+
    // Remove stale data at end of output tracks.
    if (!cancelled && (outTrackOffset < end)) {
       t = (WaveTrack *) iterOut.First();
-      while (t) {
+      if( p->IsSticky() )
          t->Clear(outTrackOffset / rate, t1, mOutputTracks);
-         t = (WaveTrack *) iterOut.Next();
-      }
+      else
+         while(t) {
+            t->Clear(outTrackOffset / rate, t1, mOutputTracks);
+            t = (WaveTrack *) iterOut.Next();
+         }         
+
       t1 = outTrackOffset / rate;
    }
 
