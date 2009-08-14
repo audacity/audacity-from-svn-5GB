@@ -418,7 +418,10 @@ void Meter::OnMouse(wxMouseEvent &evt)
                menu->Append(OnAutomaticVolumeID, _("Stop Automatic Volume"));
             else
                menu->Append(OnAutomaticVolumeID, _("Start Automatic Volume"));
-            if (!GetActiveProject()->GetControlToolBar()->IsRecordDown() == true)
+
+            bool AVActive;
+            gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &AVActive, false);
+            if (!AVActive || !GetActiveProject()->GetControlToolBar()->IsRecordDown())
                menu->Enable(OnAutomaticVolumeID, false);
          #endif
 
