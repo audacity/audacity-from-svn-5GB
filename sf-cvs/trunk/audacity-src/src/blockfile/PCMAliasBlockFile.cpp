@@ -178,6 +178,7 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
    wxFileName aliasFileName;
    int aliasStart=0, aliasLen=0, aliasChannel=0;
    float min=0, max=0, rms=0;
+   double dblValue;
    long nValue;
 
    while(*attrs)
@@ -225,7 +226,18 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
             max = nValue;
          else if( !wxStricmp(attr, wxT("rms")) )
             rms = nValue;
-      }
+      }      
+		//the min/max can be (are?) doubles as well, so handle this case:
+		else if( !wxStrcmp(attr, wxT("min")) && 
+               XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+         min = dblValue;
+      else if( !wxStrcmp(attr, wxT("max")) && 
+               XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+         max = dblValue;
+      else if( !wxStrcmp(attr, wxT("rms")) && 
+               XMLValueChecker::IsGoodString(strValue) && Internat::CompatibleToDouble(strValue, &dblValue))
+         rms = dblValue;
+
    }
 
    if (!XMLValueChecker::IsGoodFileName(summaryFileName.GetFullName(), summaryFileName.GetPath(wxPATH_GET_VOLUME)) || 
