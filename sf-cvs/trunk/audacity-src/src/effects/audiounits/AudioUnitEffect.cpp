@@ -189,7 +189,12 @@ bool AudioUnitEffect::PromptUser()
    
 bool AudioUnitEffect::Process()
 {
-   TrackListOfKindIterator iter(Track::Wave, mTracks);
+   bool bGoodResult = true;
+ 
+   CopyInputTracks();
+
+   TrackListIterator iter(mOutputTracks);
+
    int count = 0;
    Track *left = iter.First();
    Track *right;
@@ -218,14 +223,18 @@ bool AudioUnitEffect::Process()
       else success = ProcessStereo(count,
                                    (WaveTrack *)left, (WaveTrack *)right,
                                    lstart, rstart, len);
-      if (!success)
-         return false;
+      if (!success) {
+         bGoodResult = false;
+         break;
+      }
    
       left = iter.Next();
       count++;
    }
 
-   return true;
+   ReplaceProcessedTracks(bGoodResult); 
+
+   return bGoodResult;
 }
    
 void AudioUnitEffect::End()
