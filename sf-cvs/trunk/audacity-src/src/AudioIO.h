@@ -282,6 +282,8 @@ class AUDACITY_DLL_API AudioIO {
       void AVDisable();
       bool AVIsActive();
       void AVProcess(double maxPeak);
+      void AVSetStartTime();
+      double AVGetLastDecisionTime();
    #endif
 
 private:
@@ -403,6 +405,7 @@ private:
    double         mAVChangeFactor;
    double         mAVTopLevel;
    double         mAVAnalysisEndTime;
+   double         mAVAbsolutStartTime;
    unsigned short mAVLastChangeType;  //0 - no change, 1 - increase change, 2 - decrease change
 #endif
 

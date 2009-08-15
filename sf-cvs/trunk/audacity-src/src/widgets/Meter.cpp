@@ -694,7 +694,12 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
 
          mBar[j].tailPeakCount = msg.tailPeakCount[j];
 
-         maxPeak = mBar[j].peak > maxPeak ? mBar[j].peak : maxPeak;
+         if (mT > gAudioIO->AVGetLastDecisionTime()) {
+            maxPeak = mBar[j].peak > maxPeak ? mBar[j].peak : maxPeak;
+            printf("%f@%f ", mBar[j].peak, mT);
+         }
+         else
+            printf("%f@%f discarded\n", mBar[j].peak, mT);
       }
    } // while
 
@@ -702,8 +707,10 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
       #ifdef AUTOMATIC_VOLUME
          bool AVActive;
          gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &AVActive, false);
-         if (AVActive && gAudioIO->AVIsActive() && mIsInput)
+         if (AVActive && gAudioIO->AVIsActive() && mIsInput) {
             gAudioIO->AVProcess(maxPeak);
+            putchar('\n');
+         }
       #endif
       RepaintBarsNow();
    }
