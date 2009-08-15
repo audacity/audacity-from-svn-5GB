@@ -400,7 +400,8 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    Layout();
    Fit();
    ValueToControls();
-   ControlsToValue();
+   //mchinen - aug 15 09 - this seems to put the mTimeValue back to zero, and do nothing else.
+   //ControlsToValue(); 
 
 #if wxUSE_ACCESSIBILITY
    SetLabel(wxT(""));
