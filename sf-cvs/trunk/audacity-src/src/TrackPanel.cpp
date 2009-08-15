@@ -3509,6 +3509,7 @@ void TrackPanel::HandleMinimizing(wxMouseEvent & event)
 
       mTrackInfo.DrawMinimize(&dc, r, t, false, t->GetMinimized());
       Refresh(false);
+      GetActiveProject()->RedrawProject();
    }
 }
 
