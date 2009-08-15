@@ -499,7 +499,7 @@ void AudacityProject::CreateMenusAndCommands()
    /////////////////////////////////////////////////////////////////////////////
 
    c->BeginMenu(_("&View"));
-   c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
+   c->SetDefaultFlags(WaveTracksExistFlag, WaveTracksExistFlag);
 
    c->AddItem(wxT("ZoomIn"), _("Zoom &In"), FN(OnZoomIn), wxT("Ctrl+1"),
               ZoomInAvailableFlag,
@@ -511,7 +511,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddItem(wxT("FitInWindow"), _("&Fit in Window"), FN(OnZoomFit), wxT("Ctrl+F"));
    c->AddItem(wxT("FitV"), _("Fit &Vertically"), FN(OnZoomFitV), wxT("Ctrl+Shift+F"));
-   c->AddItem(wxT("ZoomSel"), _("&Zoom to Selection"), FN(OnZoomSel), wxT("Ctrl+E"));
+   c->AddItem(wxT("ZoomSel"), _("&Zoom to Selection"), FN(OnZoomSel), wxT("Ctrl+E"), TimeSelectedFlag, TimeSelectedFlag);
 
    c->AddSeparator();
 
