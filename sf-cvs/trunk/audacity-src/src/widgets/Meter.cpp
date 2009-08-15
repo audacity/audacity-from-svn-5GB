@@ -695,11 +695,11 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
          mBar[j].tailPeakCount = msg.tailPeakCount[j];
 
          if (mT > gAudioIO->AVGetLastDecisionTime()) {
-            maxPeak = mBar[j].peak > maxPeak ? mBar[j].peak : maxPeak;
-            printf("%f@%f ", mBar[j].peak, mT);
+            maxPeak = msg.peak[j] > maxPeak ? msg.peak[j] : maxPeak;
+            printf("%f@%f ", msg.peak[j], mT);
          }
          else
-            printf("%f@%f discarded\n", mBar[j].peak, mT);
+            printf("%f@%f discarded\n", msg.peak[j], mT);
       }
    } // while
 
