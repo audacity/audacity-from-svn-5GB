@@ -28,6 +28,8 @@ class wxWindow;
 #include "../Internat.h"
 #include "../widgets/ProgressDialog.h"
 
+class TimeWarper;
+
 #define PLUGIN_EFFECT   0x0001
 #define BUILTIN_EFFECT  0x0002
 // ADVANCED_EFFECT was introduced for Lynn Allan's 'CleanSpeech'
@@ -150,7 +152,7 @@ class AUDACITY_DLL_API Effect {
    Effect();
 
    //The destructor.
-   virtual ~Effect() {}
+   virtual ~Effect();
  
    // Called once each time an effect is called.  Perform any initialization;
    // make sure that the effect can be performed on the selected tracks and
@@ -197,6 +199,7 @@ class AUDACITY_DLL_API Effect {
    TrackList      *mOutputTracks; // used only if CopyInputTracks() is called.
    double         mT0;
    double         mT1;
+   TimeWarper     *mWarper;
 
  //
  // protected methods
@@ -226,6 +229,9 @@ class AUDACITY_DLL_API Effect {
 
    // Calculates the start time and selection length in samples
    void GetSamples(WaveTrack *track, sampleCount *start, sampleCount *len);
+
+   void SetTimeWarper(TimeWarper *warper);
+   TimeWarper *GetTimeWarper();
 
  //
  // protected static data

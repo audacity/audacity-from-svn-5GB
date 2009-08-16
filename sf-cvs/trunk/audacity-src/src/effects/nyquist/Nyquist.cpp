@@ -754,7 +754,7 @@ bool EffectNyquist::ProcessOne()
          out = mOutputTrack[0];
       }
 
-      mCurTrack[i]->ClearAndPaste(mT0, mT1, out);
+      mCurTrack[i]->ClearAndPaste(mT0, mT1, out, false, false);
    }
 
    for (i = 0; i < outChannels; i++) {

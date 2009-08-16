@@ -51,6 +51,8 @@ Track classes.
 
 #include "ondemand/ODManager.h"
 
+#include "effects/TimeWarper.h"
+
 using std::max;
 
 WaveTrack* TrackFactory::DuplicateWaveTrack(WaveTrack &orig)
@@ -496,8 +498,16 @@ bool WaveTrack::ClearAndAddCutLine(double t0, double t1)
 // be pasted with visible split lines.  Normally, effects do not
 // want these extra lines, so they may be merged out.
 //
-bool WaveTrack::ClearAndPaste(double t0, double t1, Track *src, bool preserve,
-                              bool merge, TrackList* tracks, bool relativeLabels)
+bool WaveTrack::ClearAndPaste(double t0, // Start of time to clear
+                              double t1, // End of time to clear
+                              Track *src, // What to paste
+                              bool preserve, // Whether to reinsert splits/cuts
+                              bool merge, // Whether to remove 'extra' splits
+                              TrackList* tracks, // Used in Paste
+                              bool relativeLabels, // Whether to handle labels
+                              bool useHandlePaste, // Which pasting method
+                              TimeWarper *effectWarper // How does time change
+                              )
 {
    WaveClipList::compatibility_iterator ic;
    WaveClipList::compatibility_iterator it;
@@ -509,6 +519,14 @@ bool WaveTrack::ClearAndPaste(double t0, double t1, Track *src, bool preserve,
    // If duration is 0, then it's just a plain paste
    if (dur == 0.0) {
       return Paste(t0, src, tracks, relativeLabels);
+   }
+
+   // If provided time warper was NULL, use a default one that does nothing
+   TimeWarper *warper = NULL;
+   if (effectWarper != NULL) {
+      warper = effectWarper;
+   } else {
+      warper = new IdentityTimeWarper();
    }
 
    // Align to a sample
@@ -525,6 +543,12 @@ bool WaveTrack::ClearAndPaste(double t0, double t1, Track *src, bool preserve,
       st = LongSamplesToTime(TimeToLongSamples(clip->GetStartTime()));
 
       // Remember split line
+      if (st >= t0 && st <= t1) {
+         splits.Add(st);
+      }
+
+      // Also remember the end of the clip
+      st = LongSamplesToTime(TimeToLongSamples(clip->GetEndTime()));
       if (st >= t0 && st <= t1) {
          splits.Add(st);
       }
@@ -555,8 +579,16 @@ bool WaveTrack::ClearAndPaste(double t0, double t1, Track *src, bool preserve,
 
    // Now, clear the selection
    if (HandleClear(t0, t1, false, false)) {
+
+      // The pasting method depends on how this method was called
+      bool pasteResult;
+      if (useHandlePaste)
+         pasteResult = HandlePaste(t0, src);
+      else
+         pasteResult = Paste(t0, src, tracks, relativeLabels);
+
       // And paste in the new data
-      if (Paste(t0, src, tracks, relativeLabels)) {
+      if (pasteResult) {
          unsigned int i;
 
          // First, merge the new clip(s) in with the existing clips
@@ -607,12 +639,12 @@ bool WaveTrack::ClearAndPaste(double t0, double t1, Track *src, bool preserve,
          // Restore cut/split lines
          if (preserve) {
 
-            // Restore the split lines by simply resplitting at the saved time.
+            // Restore the split lines, transforming the position appropriately
             for (i = 0; i < splits.GetCount(); i++) {
-               SplitAt(splits[i]);
+               SplitAt(warper->Warp(splits[i]));
             }
 
-            // Restore the saved cut lines
+            // Restore the saved cut lines, also transforming if time altered
             for (ic = GetClipIterator(); ic; ic = ic->GetNext()) {
                double st;
                double et;
@@ -629,7 +661,7 @@ bool WaveTrack::ClearAndPaste(double t0, double t1, Track *src, bool preserve,
                   // Offset the cut from the start of the clip and add it to
                   // this clips cutlines.
                   if (cs >= st && cs <= et) {
-                     cut->SetOffset(cs - st);
+                     cut->SetOffset(warper->Warp(cs) - st);
                      clip->GetCutLines()->Append(cut);
                      cuts.RemoveAt(i);
                      i--;
@@ -639,6 +671,10 @@ bool WaveTrack::ClearAndPaste(double t0, double t1, Track *src, bool preserve,
          }
       }
    }
+
+   // If we created a default time warper, we need to delete it
+   if (effectWarper == NULL)
+      delete warper;
 
    return true;
 }

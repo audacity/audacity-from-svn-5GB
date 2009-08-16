@@ -21,6 +21,7 @@
 #include "../PitchName.h"
 #include "../Spectrum.h"
 #include "../WaveTrack.h"
+#include "TimeWarper.h"
 
 #include <math.h>
 
@@ -153,6 +154,7 @@ bool EffectChangePitch::TransferParameters( Shuttle & shuttle )
 bool EffectChangePitch::Process()
 {
    mSoundTouch = new SoundTouch();
+   SetTimeWarper(new IdentityTimeWarper());
    mSoundTouch->setPitchSemiTones((float)(m_SemitonesChange));
    return this->EffectSoundTouch::Process();
 }

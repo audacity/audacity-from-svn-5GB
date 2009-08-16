@@ -27,6 +27,7 @@
 #include "../Envelope.h"
 #include "../Prefs.h"
 #include "../Project.h"
+#include "TimeWarper.h"
 
 #include <math.h>
 
@@ -248,12 +249,16 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
    // Take the output track and insert it in place of the original
    // sample data
 	if (bLoopSuccess) {
+
+      double mT1Dashed = mT0 + (mT1 - mT0)/(m_PercentChange/100.0 + 1.0);
+      SetTimeWarper(new LinearTimeWarper(mT0, mT0, mT1, mT1Dashed ));
+      track->ClearAndPaste(mCurT0, mCurT1, outputTrack, true, false, mOutputTracks, true, first, GetTimeWarper());
+
+      /*
       if (first)
-		   track->ClearAndPaste(mCurT0, mCurT1, outputTrack, true, true, mOutputTracks, true);
-      else {
-         track->HandleClear(mCurT0, mCurT1, false, false);
-         track->HandlePaste(mCurT0, outputTrack);
-      }
+      {
+         first = false;
+      }*/
 	}
 
 	double newLength = outputTrack->GetEndTime(); 

@@ -20,6 +20,7 @@ effect that uses SBSMS to do its processing (TimeScale)
 #include "SBSMSEffect.h"
 #include "../WaveTrack.h"
 #include "../Project.h"
+#include "TimeWarper.h"
 
 class resampleBuf
 {
@@ -254,8 +255,21 @@ bool EffectSBSMS::Process()
             sampleCount samplesToGenerate = (sampleCount) ((real)samplesToProcess * stretch2);
             sampleCount samplesOut = (sampleCount) ((real)samplesIn * stretch2);
             double duration =  (mCurT1-mCurT0) * stretch2;
+
             if(duration > maxDuration)
                maxDuration = duration;
+
+            TimeWarper *warper = NULL;
+            if (mCurT0 == mCurT1)
+            {
+               warper = new LinearTimeWarper(mCurT0, mCurT0,
+                                             mCurT1, mCurT0+maxDuration);
+            } else
+            {
+               warper = new LogarithmicTimeWarper(mCurT0, mCurT1,
+                                                  rateStart, rateEnd);
+            }
+            SetTimeWarper(warper);
             
             sbsmsInfo si;
             si.rs = rb.resampler;
@@ -358,16 +372,10 @@ bool EffectSBSMS::Process()
             if(rightTrack)
                rb.outputRightTrack->Flush();
             
-            if (first)
-               leftTrack->ClearAndPaste(mCurT0, mCurT1, rb.outputLeftTrack, true, true, NULL, true);
-            else {
-               leftTrack->HandleClear(mCurT0, mCurT1, false, false);
-               leftTrack->HandlePaste(mCurT0, rb.outputLeftTrack);
-            }
+            leftTrack->ClearAndPaste(mCurT0, mCurT1, rb.outputLeftTrack, true, false, NULL, true, first, GetTimeWarper());
 
             if(rightTrack) {
-               rightTrack->HandleClear(mCurT0, mCurT1, false, false);
-               rightTrack->HandlePaste(mCurT0, rb.outputRightTrack);
+               rightTrack->ClearAndPaste(mCurT0, mCurT1, rb.outputRightTrack, true, false, NULL, true, false, GetTimeWarper());
             }
 
             first = false;

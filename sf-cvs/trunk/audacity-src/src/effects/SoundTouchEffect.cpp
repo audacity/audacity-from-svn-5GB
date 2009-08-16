@@ -21,6 +21,7 @@ effect that uses SoundTouch to do its processing (ChangeTempo
 #include "SoundTouchEffect.h"
 #include "../WaveTrack.h"
 #include "../Project.h"
+#include "TimeWarper.h"
 
 
 bool EffectSoundTouch::Process()
@@ -202,12 +203,7 @@ bool EffectSoundTouch::ProcessOne(WaveTrack *track,
    
    // Take the output track and insert it in place of the original
    // sample data
-   if (first)
-      track->ClearAndPaste(mCurT0, mCurT1, outputTrack, true, true, NULL, true);
-   else {
-      track->HandleClear(mCurT0, mCurT1, false, false);
-      track->HandlePaste(mCurT0, outputTrack);
-   }
+   track->ClearAndPaste(mCurT0, mCurT1, outputTrack, true, false, NULL, true, first, GetTimeWarper());
    
    double newLength = outputTrack->GetEndTime(); 
    m_maxNewLength = wxMax(m_maxNewLength, newLength);
@@ -311,14 +307,8 @@ bool EffectSoundTouch::ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack
    
    // Take the output tracks and insert in place of the original
    // sample data.
-   if (first)
-      leftTrack->ClearAndPaste(mCurT0, mCurT1, outputLeftTrack, true, true, NULL, true);
-   else {
-      leftTrack->HandleClear(mCurT0, mCurT1, false, false);
-      leftTrack->HandlePaste(mCurT0, outputLeftTrack);
-   }
-   rightTrack->HandleClear(mCurT0, mCurT1, false, false);
-   rightTrack->HandlePaste(mCurT0, outputRightTrack);
+   leftTrack->ClearAndPaste(mCurT0, mCurT1, outputLeftTrack, true, false, NULL, true, first, GetTimeWarper());
+   rightTrack->ClearAndPaste(mCurT0, mCurT1, outputRightTrack, true, false, NULL, true, false, GetTimeWarper());
 
    // Track the longest result length
    double newLength = outputLeftTrack->GetEndTime();

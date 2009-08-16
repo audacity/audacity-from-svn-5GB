@@ -39,6 +39,8 @@ class EffectSoundTouch:public Effect {
 
  protected:
    SoundTouch *mSoundTouch;
+   double mCurT0;
+   double mCurT1;
 
  private:
    bool ProcessOne(WaveTrack * t,
@@ -50,8 +52,6 @@ class EffectSoundTouch:public Effect {
                               WaveTrack* outputRightTrack);
 
    int    mCurTrackNum;
-   double mCurT0;
-   double mCurT1;
 
 	double m_maxNewLength;
 };

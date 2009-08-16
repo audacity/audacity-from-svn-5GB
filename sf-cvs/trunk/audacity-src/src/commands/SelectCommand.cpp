@@ -106,8 +106,12 @@ bool SelectCommand::Apply(CommandExecutionContext context)
       TrackListIterator iter(tracks);
       Track *t = iter.First();
       while (t) {
-         t->SetSelected(firstTrack <= index && index <= lastTrack);
-         Status(wxT("Selected track '") + t->GetName() + wxT("'"));
+         bool sel = firstTrack <= index && index <= lastTrack;
+         t->SetSelected(sel);
+
+         if (sel)
+            Status(wxT("Selected track '") + t->GetName() + wxT("'"));
+
          t = iter.Next();
          ++index;
       }
@@ -120,8 +124,12 @@ bool SelectCommand::Apply(CommandExecutionContext context)
       TrackListIterator iter(tracks);
       Track *t = iter.First();
       while (t) {
-         t->SetSelected(t->GetName().IsSameAs(name));
-         Status(wxT("Selected track '") + t->GetName() + wxT("'"));
+         bool sel = t->GetName().IsSameAs(name);
+         t->SetSelected(sel);
+
+         if (sel)
+            Status(wxT("Selected track '") + t->GetName() + wxT("'"));
+
          t = iter.Next();
       }
    }

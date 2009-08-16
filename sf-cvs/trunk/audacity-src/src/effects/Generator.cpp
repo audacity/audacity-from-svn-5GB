@@ -17,6 +17,7 @@
 #include "../Prefs.h"
 
 #include "Generator.h"
+#include "TimeWarper.h"
 
 bool Generator::Process()
 {
@@ -73,14 +74,12 @@ bool Generator::Process()
             else {
                // Transfer the data from the temporary track to the actual one
                tmp->Flush();
+               SetTimeWarper(new StepTimeWarper(mT1, mDuration-mT1));
+               bGoodResult = track->ClearAndPaste(mT0, mT1, tmp, true,
+                     false, mOutputTracks,
+                     false, first, GetTimeWarper());
                if (first) {
-                  bGoodResult = track->ClearAndPaste(mT0, mT1, tmp, true, true, mOutputTracks);
                   first = false;
-               }
-               else {
-                  bGoodResult = track->HandleClear(mT0, mT1, false, false);
-                  if (bGoodResult)
-                     bGoodResult = track->HandlePaste(mT0, tmp);
                }
                delete tmp;
             }
