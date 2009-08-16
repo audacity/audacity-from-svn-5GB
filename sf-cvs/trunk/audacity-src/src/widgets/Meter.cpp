@@ -693,13 +693,14 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
          }
 
          mBar[j].tailPeakCount = msg.tailPeakCount[j];
-
+#ifdef AUTOMATIC_VOLUME
          if (mT > gAudioIO->AVGetLastDecisionTime()) {
             maxPeak = msg.peak[j] > maxPeak ? msg.peak[j] : maxPeak;
             printf("%f@%f ", msg.peak[j], mT);
          }
          else
             printf("%f@%f discarded\n", msg.peak[j], mT);
+#endif
       }
    } // while
 
