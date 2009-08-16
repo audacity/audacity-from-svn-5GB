@@ -39,6 +39,8 @@ SoundActivatedRecord::SoundActivatedRecord(wxWindow* parent)
 {
    ShuttleGui S(this, eIsCreatingFromPrefs);
    PopulateOrExchange(S);
+   Fit();
+   Center();
 }
 
 SoundActivatedRecord::~SoundActivatedRecord()
