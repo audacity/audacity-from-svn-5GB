@@ -2362,13 +2362,22 @@ double AudacityProject::NearestZeroCrossing(double t0)
       // Start by penalizing downward motion.  We prefer upward
       // zero crossings.
       if (oneDist[1] - oneDist[0] < 0)
-         oneDist[0] = oneDist[0]*6 + 0.3;
+         oneDist[0] = oneDist[0]*6 + (oneDist[0] > 0 ? 0.3 : -0.3);
       for(i=1; i<oneWindowSize; i++)
          if (oneDist[i] - oneDist[i-1] < 0)
-            oneDist[i] = oneDist[i]*6 + 0.3;
+            oneDist[i] = oneDist[i]*6 + (oneDist[i] > 0 ? 0.3 : -0.3);
 
-      for(i=0; i<oneWindowSize; i++)
-         oneDist[i] = fabs(oneDist[i]);
+      // Taking the absolute value -- apply a tiny LPF so square waves work.
+      float newVal, oldVal = oneDist[0];
+      oneDist[0] = fabs(.75 * oneDist[0] + .25 * oneDist[1]);
+      for(i=1; i<oneWindowSize-1; i++)
+      {
+         newVal = fabs(.25 * oldVal + .5 * oneDist[i] + .25 * oneDist[i+1]);
+         oldVal = oneDist[i];
+         oneDist[i] = newVal;
+      }
+      oneDist[oneWindowSize-1] = fabs(.25 * oldVal +
+            .75 * oneDist[oneWindowSize-1]);
 
       for(i=0; i<windowSize; i++) {
          if (windowSize != oneWindowSize)
@@ -2377,13 +2386,16 @@ double AudacityProject::NearestZeroCrossing(double t0)
             j = i;
 
          dist[i] += oneDist[j];
+         // Apply a small penalty for distance from the original endpoint
+         dist[i] += 0.1 * (abs(i - windowSize/2)) / float(windowSize/2);
       }
-         
+
       track = iter.Next();
    }
 
-   int argmin = windowSize/2; // Start at default pos in center
-   float min = dist[argmin];
+   // Find minimum
+   int argmin = 0;
+   float min = 1.0;
    for(i=0; i<windowSize; i++) {
       if (dist[i] < min) {
          argmin = i;
