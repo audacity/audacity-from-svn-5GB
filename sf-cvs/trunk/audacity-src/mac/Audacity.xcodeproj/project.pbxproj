@@ -1219,6 +1219,9 @@
 		28DA07390E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DA07380E4F5CEC003933C5 /* ExportFFmpegDialogs.cpp */; };
 		28DABFBE0FF19DB100AC7848 /* RealFFTf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DABFBC0FF19DB100AC7848 /* RealFFTf.cpp */; };
 		28DB34790FDC2C5D0011F589 /* ResponseQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DB34780FDC2C5D0011F589 /* ResponseQueue.cpp */; };
+		28DE72AE10388583007E18EC /* PreferenceCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DE72AA10388583007E18EC /* PreferenceCommands.cpp */; };
+		28DE72AF10388583007E18EC /* SetTrackInfoCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DE72AC10388583007E18EC /* SetTrackInfoCommand.cpp */; };
+		28DE72B2103885AA007E18EC /* TimeWarper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28DE72B0103885AA007E18EC /* TimeWarper.cpp */; };
 		28E2370D0E515D9200281398 /* audiomixerreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1000E50AD5700CC4BD3 /* audiomixerreader.cpp */; };
 		28E2370E0E515D9300281398 /* audiomixerreader.h in Headers */ = {isa = PBXBuildFile; fileRef = ED05D1010E50AD5700CC4BD3 /* audiomixerreader.h */; };
 		28E2370F0E515D9400281398 /* audioreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED05D1020E50AD5700CC4BD3 /* audioreader.cpp */; };
@@ -3165,6 +3168,12 @@
 		28DABFBD0FF19DB100AC7848 /* RealFFTf.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = RealFFTf.h; sourceTree = "<group>"; };
 		28DB34770FDC2C5D0011F589 /* ResponseQueue.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ResponseQueue.h; sourceTree = "<group>"; };
 		28DB34780FDC2C5D0011F589 /* ResponseQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ResponseQueue.cpp; sourceTree = "<group>"; };
+		28DE72AA10388583007E18EC /* PreferenceCommands.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = PreferenceCommands.cpp; sourceTree = "<group>"; };
+		28DE72AB10388583007E18EC /* PreferenceCommands.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = PreferenceCommands.h; sourceTree = "<group>"; };
+		28DE72AC10388583007E18EC /* SetTrackInfoCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SetTrackInfoCommand.cpp; sourceTree = "<group>"; };
+		28DE72AD10388583007E18EC /* SetTrackInfoCommand.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SetTrackInfoCommand.h; sourceTree = "<group>"; };
+		28DE72B0103885AA007E18EC /* TimeWarper.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = TimeWarper.cpp; sourceTree = "<group>"; };
+		28DE72B1103885AA007E18EC /* TimeWarper.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = TimeWarper.h; sourceTree = "<group>"; };
 		28E237080E515D1D00281398 /* libscorealign.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libscorealign.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportFLAC.h; sourceTree = "<group>"; };
 		28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFLAC.cpp; sourceTree = "<group>"; };
@@ -4066,6 +4075,8 @@
 				174D902B098C78AF00D5909F /* Keyboard.h */,
 				28851FA71027F16400152EE1 /* MessageCommand.cpp */,
 				28851FA81027F16400152EE1 /* MessageCommand.h */,
+				28DE72AA10388583007E18EC /* PreferenceCommands.cpp */,
+				28DE72AB10388583007E18EC /* PreferenceCommands.h */,
 				28DB34770FDC2C5D0011F589 /* ResponseQueue.h */,
 				28DB34780FDC2C5D0011F589 /* ResponseQueue.cpp */,
 				181855950FFE916C0026D190 /* ScreenshotCommand.cpp */,
@@ -4074,6 +4085,8 @@
 				28D540040FD1912A00FA7C75 /* ScriptCommandRelay.h */,
 				28851FA91027F16400152EE1 /* SelectCommand.cpp */,
 				28851FAA1027F16400152EE1 /* SelectCommand.h */,
+				28DE72AC10388583007E18EC /* SetTrackInfoCommand.cpp */,
+				28DE72AD10388583007E18EC /* SetTrackInfoCommand.h */,
 				28BD8AB0101DF4C600686679 /* Validators.h */,
 			);
 			path = commands;
@@ -4521,6 +4534,8 @@
 				1790B04D09883BFD008A330A /* StereoToMono.h */,
 				ED27074D0EF9C64F007D4FFD /* TimeScale.cpp */,
 				ED27074E0EF9C64F007D4FFD /* TimeScale.h */,
+				28DE72B0103885AA007E18EC /* TimeWarper.cpp */,
+				28DE72B1103885AA007E18EC /* TimeWarper.h */,
 				1790B04E09883BFD008A330A /* ToneGen.cpp */,
 				1790B04F09883BFD008A330A /* ToneGen.h */,
 				1790B05009883BFD008A330A /* TruncSilence.cpp */,
@@ -8454,6 +8469,9 @@
 				28851FB01027F16500152EE1 /* HelpCommand.cpp in Sources */,
 				28851FB11027F16500152EE1 /* MessageCommand.cpp in Sources */,
 				28851FB21027F16500152EE1 /* SelectCommand.cpp in Sources */,
+				28DE72AE10388583007E18EC /* PreferenceCommands.cpp in Sources */,
+				28DE72AF10388583007E18EC /* SetTrackInfoCommand.cpp in Sources */,
+				28DE72B2103885AA007E18EC /* TimeWarper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
