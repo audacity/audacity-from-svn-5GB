@@ -710,9 +710,7 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
 
    if (numChanges > 0) {
       #ifdef AUTOMATIC_VOLUME
-         bool AVActive;
-         gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &AVActive, false);
-         if (AVActive && gAudioIO->AVIsActive() && mIsInput && !discarded) {
+         if (gAudioIO->AVIsActive() && mIsInput && !discarded) {
             gAudioIO->AVProcess(maxPeak);
             putchar('\n');
          }
