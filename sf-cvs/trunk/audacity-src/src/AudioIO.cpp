@@ -679,7 +679,9 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
                                  mRate, paFramesPerBufferUnspecified,
                                  paNoFlag,
                                  audacityAudioCallback, NULL );
+#ifdef AUTOMATIC_VOLUME
    AVSetStartTime();
+#endif
 
 #if USE_PORTMIXER
    if (mPortStreamV19 != NULL && mLastPaError == paNoError) {
