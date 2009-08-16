@@ -636,6 +636,7 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
    MeterUpdateMsg msg;
    int numChanges = 0;
    double maxPeak = 0.0;
+   bool discarded = false;
    // There may have been several update messages since the last
    // time we got to this function.  Catch up to real-time by
    // popping them off until there are none left.  It is necessary
@@ -695,11 +696,14 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
          mBar[j].tailPeakCount = msg.tailPeakCount[j];
 #ifdef AUTOMATIC_VOLUME
          if (mT > gAudioIO->AVGetLastDecisionTime()) {
+            discarded = false;
             maxPeak = msg.peak[j] > maxPeak ? msg.peak[j] : maxPeak;
             printf("%f@%f ", msg.peak[j], mT);
          }
-         else
+         else {
+	         discarded = true;
             printf("%f@%f discarded\n", msg.peak[j], mT);
+	      }
 #endif
       }
    } // while
@@ -708,7 +712,7 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
       #ifdef AUTOMATIC_VOLUME
          bool AVActive;
          gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &AVActive, false);
-         if (AVActive && gAudioIO->AVIsActive() && mIsInput) {
+         if (AVActive && gAudioIO->AVIsActive() && mIsInput && !discarded) {
             gAudioIO->AVProcess(maxPeak);
             putchar('\n');
          }
