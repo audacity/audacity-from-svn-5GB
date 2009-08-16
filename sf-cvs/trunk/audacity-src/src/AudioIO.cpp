@@ -679,9 +679,6 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
                                  mRate, paFramesPerBufferUnspecified,
                                  paNoFlag,
                                  audacityAudioCallback, NULL );
-#ifdef AUTOMATIC_VOLUME
-   AVSetStartTime();
-#endif
 
 #if USE_PORTMIXER
    if (mPortStreamV19 != NULL && mLastPaError == paNoError) {
@@ -930,6 +927,10 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
          mResample[i] = new Resample( true, mFactor, mFactor );
       }
    }
+
+#ifdef AUTOMATIC_VOLUME
+   AVSetStartTime();
+#endif
 
    // We signal the audio thread to call FillBuffers, to prime the RingBuffers
    // so that they will have data in them when the stream starts.  Having the
@@ -2543,6 +2544,7 @@ bool AudioIO::AVIsActive() {
 
 void AudioIO::AVSetStartTime() {
    mAVAbsolutStartTime = Pa_GetStreamTime(mPortStreamV19);
+   printf("START TIME %f\n\n", mAVAbsolutStartTime);
 }
 
 double AudioIO::AVGetLastDecisionTime() {
@@ -2552,8 +2554,10 @@ double AudioIO::AVGetLastDecisionTime() {
 void AudioIO::AVProcess(double maxPeak) {
    AudacityProject *proj = GetActiveProject();
    if (proj && mAVActive) {
-      if (mInputMeter->IsClipping())
+      if (mInputMeter->IsClipping()) {
          mAVClipped = true;
+         printf("clipped");
+      }
       
       //if (mAVAnalysisEndTime >= 0.0) {
       //   if (mAVAnalysisEndTime < GetStreamTime()) { // if we past it already start monitoring again
@@ -2593,13 +2597,15 @@ void AudioIO::AVProcess(double maxPeak) {
                printf("\talready min vol:%f\n", iv);
             }
             else {
-               double vol = max(LOWER_BOUND, iv+(mAVGoalPoint-mAVMax)*mAVChangeFactor);
+               float vol = (float) max(LOWER_BOUND, iv+(mAVGoalPoint-mAVMax)*mAVChangeFactor);
                Px_SetInputVolume(mPortMixer, vol);
                wxString msg;
                msg.Printf(_("Automatic Volume decreased the volume to %f."), vol);
                proj->TP_DisplayStatusMessage(msg);
                changetype = 1;
                printf("\tnew vol:%f\n", vol);
+               float check = Px_GetInputVolume(mPortMixer);
+               printf("\tverified %f\n", check);
             }
          }
          else if ( mAVMax < mAVGoalPoint - mAVGoalDelta ) {
@@ -2614,7 +2620,7 @@ void AudioIO::AVProcess(double maxPeak) {
                printf("\talready max vol:%f\n", iv);
             }
             else {
-               double vol = min(UPPER_BOUND, iv+(mAVGoalPoint-mAVMax)*mAVChangeFactor);
+               float vol = (float) min(UPPER_BOUND, iv+(mAVGoalPoint-mAVMax)*mAVChangeFactor);
                if (vol > mAVTopLevel) {
                   vol = (iv + mAVTopLevel)/2.0;
                   printf("\tTruncated vol:%f\n", vol);
@@ -2625,6 +2631,8 @@ void AudioIO::AVProcess(double maxPeak) {
                proj->TP_DisplayStatusMessage(msg);
                changetype = 2;
                printf("\tnew vol:%f\n", vol);
+               float check = Px_GetInputVolume(mPortMixer);
+               printf("\tverified %f\n", check);
             }
          }
 
