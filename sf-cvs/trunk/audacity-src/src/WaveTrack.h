@@ -22,6 +22,8 @@
 #include <wx/longlong.h>
 #include <wx/thread.h>
 
+class TimeWarper;
+
 //
 // Tolerance for merging wave tracks (in seconds)
 //
@@ -132,7 +134,9 @@ class AUDACITY_DLL_API WaveTrack: public Track {
                               bool preserve = true,
                               bool merge = true,
                               TrackList* tracks = NULL,
-                              bool relativeLabels = false);
+                              bool relativeLabels = false,
+                              bool useHandlePaste = false,
+                              TimeWarper *effectWarper = NULL);
 
    virtual bool Silence(double t0, double t1);
    virtual bool InsertSilence(double t, double len);

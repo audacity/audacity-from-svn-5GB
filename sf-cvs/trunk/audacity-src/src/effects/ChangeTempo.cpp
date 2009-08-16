@@ -27,6 +27,7 @@
 #include "ChangeTempo.h"
 
 #include "../ShuttleGui.h"
+#include "TimeWarper.h"
 
 #include <math.h>
 
@@ -104,6 +105,8 @@ bool EffectChangeTempo::Process()
 {
    mSoundTouch = new SoundTouch();
    mSoundTouch->setTempoChange(m_PercentChange);
+   double mT1Dashed = mT0 + (mT1 - mT0)/(m_PercentChange/100.0 + 1.0);
+   SetTimeWarper(new LinearTimeWarper(mT0, mT0, mT1, mT1Dashed ));
    bool success = this->EffectSoundTouch::Process();
    if( success )
       mT1 = mT0 + (mT1 - mT0)/(m_PercentChange/100 + 1.);

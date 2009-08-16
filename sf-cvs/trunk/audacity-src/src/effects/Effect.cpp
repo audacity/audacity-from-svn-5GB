@@ -39,6 +39,7 @@ greater use in future.
 #include "../WaveTrack.h"
 #include "../widgets/ProgressDialog.h"
 #include "../ondemand/ODManager.h"
+#include "TimeWarper.h"
 
 WX_DECLARE_VOIDPTR_HASH_MAP( bool, t2bHash );
 
@@ -62,6 +63,7 @@ wxString Effect::StripAmpersand(const wxString& str)
 //
 
 Effect::Effect()
+   : mWarper(NULL)
 {
    mTracks = NULL;
    mOutputTracks = NULL;
@@ -73,6 +75,11 @@ Effect::Effect()
    // Can change effect flags later (this is the new way)
    // OR using the old way, over-ride GetEffectFlags().
    mFlags = BUILTIN_EFFECT | PROCESS_EFFECT | ADVANCED_EFFECT;
+}
+
+Effect::~Effect() {
+   if (mWarper != NULL)
+      delete mWarper;
 }
 
 bool Effect::DoEffect(wxWindow *parent, int flags,
@@ -201,6 +208,24 @@ void Effect::GetSamples(WaveTrack *track, sampleCount *start, sampleCount *len)
       *start = 0;
       *len  = 0;
    }
+}
+
+void Effect::SetTimeWarper(TimeWarper *warper)
+{
+   if (mWarper != NULL)
+   {
+      delete mWarper;
+      mWarper = NULL;
+   }
+
+   wxASSERT(warper != NULL);
+   mWarper = warper;
+}
+
+TimeWarper *Effect::GetTimeWarper()
+{
+   wxASSERT(mWarper != NULL);
+   return mWarper;
 }
 
 //

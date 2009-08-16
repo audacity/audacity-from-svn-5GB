@@ -128,10 +128,12 @@ OBJS = \
 	commands/HelpCommand.o \
 	commands/Keyboard.o \
 	commands/MessageCommand.o \
+	commands/PreferenceCommands.o \
 	commands/ResponseQueue.o \
 	commands/ScreenshotCommand.o \
 	commands/ScriptCommandRelay.o \
 	commands/SelectCommand.o \
+	commands/SetTrackInfoCommand.o \
 	effects/Effect.o \
 	effects/Generator.o \
 	effects/EffectCategory.o \
@@ -168,6 +170,7 @@ OBJS = \
 	effects/Silence.o \
 	effects/SpikeCleaner.o \
 	effects/StereoToMono.o \
+	effects/TimeWarper.o \
 	effects/ToneGen.o \
 	effects/TruncSilence.o \
 	effects/TwoPassSimpleMono.o \

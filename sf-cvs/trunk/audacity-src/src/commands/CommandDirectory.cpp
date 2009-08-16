@@ -25,6 +25,8 @@
 #include "HelpCommand.h"
 #include "SelectCommand.h"
 #include "CompareAudioCommand.h"
+#include "SetTrackInfoCommand.h"
+#include "PreferenceCommands.h"
 
 CommandDirectory *CommandDirectory::mInstance = NULL;
 
@@ -44,6 +46,9 @@ CommandDirectory::CommandDirectory()
    AddCommand(new HelpCommandType());
    AddCommand(new SelectCommandType());
    AddCommand(new CompareAudioCommandType());
+   AddCommand(new SetTrackInfoCommandType());
+   AddCommand(new SetPreferenceCommandType());
+   AddCommand(new GetPreferenceCommandType());
 }
 
 CommandDirectory::~CommandDirectory()

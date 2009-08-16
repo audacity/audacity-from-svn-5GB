@@ -30,6 +30,11 @@
 // EffectNoise
 //
 
+bool EffectNoise::Init()
+{
+   return gPrefs->Read(wxT("/CsPresets/NoiseGen_Duration"), &mDuration, 1L);
+}
+
 bool EffectNoise::PromptUser()
 {
    wxArrayString noiseTypeList;

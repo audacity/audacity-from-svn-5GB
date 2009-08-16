@@ -37,6 +37,7 @@ class EffectNoise : public BlockGenerator {
       noiseType = 0;
       noiseAmplitude = 1.0;
    }
+   virtual bool Init();
 
    virtual wxString GetEffectName() {
       return wxString(_("Noise..."));
