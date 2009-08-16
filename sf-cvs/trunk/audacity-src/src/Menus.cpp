@@ -499,7 +499,7 @@ void AudacityProject::CreateMenusAndCommands()
    /////////////////////////////////////////////////////////////////////////////
 
    c->BeginMenu(_("&View"));
-   c->SetDefaultFlags(WaveTracksExistFlag, WaveTracksExistFlag);
+   c->SetDefaultFlags(TracksExistFlag, TracksExistFlag);
 
    c->AddItem(wxT("ZoomIn"), _("Zoom &In"), FN(OnZoomIn), wxT("Ctrl+1"),
               ZoomInAvailableFlag,
