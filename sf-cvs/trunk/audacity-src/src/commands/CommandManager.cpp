@@ -788,6 +788,17 @@ void CommandManager::EnableUsingFlags(wxUint32 flags, wxUint32 mask)
    }
 }
 
+bool CommandManager::GetEnabled(const wxString &name)
+{
+   CommandListEntry *entry = mCommandNameHash[name];
+   if (!entry || !entry->menu) {
+      wxLogDebug(wxT("Warning: command doesn't exist: '%s'"),
+                 (const wxChar*)name);
+      return false;
+   }
+   return entry->enabled;
+}
+
 void CommandManager::Check(wxString name, bool checked)
 {
    CommandListEntry *entry = mCommandNameHash[name];

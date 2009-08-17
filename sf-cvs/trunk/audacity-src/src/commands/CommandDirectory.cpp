@@ -27,6 +27,7 @@
 #include "CompareAudioCommand.h"
 #include "SetTrackInfoCommand.h"
 #include "PreferenceCommands.h"
+#include "ImportExportCommands.h"
 
 CommandDirectory *CommandDirectory::mInstance = NULL;
 
@@ -49,6 +50,8 @@ CommandDirectory::CommandDirectory()
    AddCommand(new SetTrackInfoCommandType());
    AddCommand(new SetPreferenceCommandType());
    AddCommand(new GetPreferenceCommandType());
+   AddCommand(new ImportCommandType());
+   AddCommand(new ExportCommandType());
 }
 
 CommandDirectory::~CommandDirectory()

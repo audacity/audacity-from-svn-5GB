@@ -24,7 +24,8 @@ wxString GetAllMenuCommandsType::BuildName()
 
 void GetAllMenuCommandsType::BuildSignature(CommandSignature &signature)
 {
-   return;
+   BoolValidator *showStatusValidator = new BoolValidator();
+   signature.AddParameter(wxT("ShowStatus"), 0, showStatusValidator);
 }
 
 Command *GetAllMenuCommandsType::Create(CommandOutputTarget *target)
@@ -34,12 +35,21 @@ Command *GetAllMenuCommandsType::Create(CommandOutputTarget *target)
 
 bool GetAllMenuCommands::Apply(CommandExecutionContext context)
 {
+   bool showStatus = GetBool(wxT("ShowStatus"));
    wxArrayString names;
-   context.proj->GetCommandManager()->GetAllCommandNames(names, false);
+   CommandManager *cmdManager = context.proj->GetCommandManager();
+   cmdManager->GetAllCommandNames(names, false);
    wxArrayString::iterator iter;
    for (iter = names.begin(); iter != names.end(); ++iter)
    {
-      Status(*iter);
+      wxString name = *iter;
+      wxString out = name;
+      if (showStatus)
+      {
+         out += wxT("\t");
+         out += cmdManager->GetEnabled(name) ? wxT("Enabled") : wxT("Disabled");
+      }
+      Status(out);
    }
    return true;
 }
