@@ -83,7 +83,6 @@ bool EffectFindClipping::Process()
          l->Copy(l->GetStartTime(), l->GetEndTime(), &original);
          original->SetOffset(l->GetStartTime());
          original->SetName(wxT("Clipping"));
-         l->Clear(l->GetStartTime(), l->GetEndTime());
          break;
       }
    }
