@@ -105,6 +105,7 @@ various graphing code, such as provided by FreqWindow and FilterPanel.
 #include <math.h>
 
 #include <wx/arrimpl.cpp>
+
 WX_DEFINE_OBJARRAY( EQPointArray );
 WX_DEFINE_OBJARRAY( EQCurveArray );
 
@@ -441,7 +442,7 @@ bool EffectEqualization::DontPromptUser()
       hiFreq = ((float)(GetActiveProject()->GetRate())/2.);
 
    EqualizationDialog dlog(this, ((double)loFreqI), hiFreq, mFilterFuncR, mFilterFuncI,
-                           windowSize, mCurveName, false, mParent, -1, _("Equalization"));
+                           windowSize, mCurveName, false, NULL, -1, _("Equalization"));
 
    dlog.M = mM;
    dlog.curveName = mCurveName;
@@ -952,7 +953,8 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
                      const wxSize& size,
                      long style):
    wxDialog( parent, id, title, position, size, style | wxRESIZE_BORDER | wxMAXIMIZE_BOX ),
-   mDisallowCustom(disallowCustom)
+   mDisallowCustom(disallowCustom),
+   mCustomBackup(wxT("custom"))
 {
    m_pEffect = effect;
 
@@ -985,6 +987,13 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
 
    // Load the EQ curves
    LoadCurves();
+   if (mDisallowCustom)
+   {
+      mCustomBackup.Name = wxT("custom");
+      EQCurve &realCustom = mCurves[mCurves.GetCount()-1];
+      wxASSERT(realCustom.Name.IsSameAs(wxT("custom")));
+      mCustomBackup.points = realCustom.points;
+   }
 
    // Create the dialog
    MakeEqualizationDialog();
@@ -1088,6 +1097,9 @@ void EqualizationDialog::LoadDefaultCurves()
 //
 void EqualizationDialog::SaveCurves()
 {
+   if (mDisallowCustom)
+      RevertCustom();
+
    // Construct default curve filename
    //
    // LLL:  Wouldn't you know that as of WX 2.6.2, there is a conflict
@@ -1400,11 +1412,23 @@ void EqualizationDialog::CreateChoice()
 }
 
 //
-// Validate data (A do nothing routine)
+// Validate data
 //
 bool EqualizationDialog::Validate()
 {
-   return TRUE;
+   // If editing a batch chain, we don't want to be using the custom curve so
+   // we offer to save it.
+   while (mDisallowCustom && curveName.IsSameAs(wxT("custom")))
+   {
+      wxMessageBox(_("To use this EQ curve in a batch chain, please choose a new name for it."),
+            _("EQ Curve needs a different name"),
+            wxOK | wxCENTRE,
+            this);
+
+      if (!SaveAs())
+         return false;
+   }
+   return true;
 }
 
 //
@@ -2576,6 +2600,11 @@ void EqualizationDialog::OnCurve(wxCommandEvent &event)
 //
 void EqualizationDialog::OnSaveAs(wxCommandEvent &event)
 {
+   SaveAs();
+}
+
+bool EqualizationDialog::SaveAs()
+{
    wxString name;
    int numCurves = mCurves.GetCount();
    int curve;
@@ -2603,7 +2632,7 @@ void EqualizationDialog::OnSaveAs(wxCommandEvent &event)
    {   // Show the dialog and bail if the user cancels
       if( dlg.ShowModal() == wxID_CANCEL )
       {
-         return;
+         return false;
       }
 
       // Extract the name from the dialog
@@ -2640,7 +2669,8 @@ void EqualizationDialog::OnSaveAs(wxCommandEvent &event)
    }
 
    if( overWrite == false)
-   {   // Create a new entry
+   {
+      // Create a new entry
       mCurves.Add( EQCurve( wxT("custom") ) );
 
       // Copy over the points
@@ -2667,6 +2697,7 @@ void EqualizationDialog::OnSaveAs(wxCommandEvent &event)
 
    // Save the curves to file - enables the user to set up curves without applying them
    SaveCurves();
+   return true;
 }
 
 //
@@ -2774,7 +2805,14 @@ void EqualizationDialog::OnGridOnOff(wxCommandEvent & WXUNUSED(event))
    mPanel->Refresh(false);
 }
 
-void EqualizationDialog::OnCancel(wxCommandEvent &event)
+void EqualizationDialog::RevertCustom()
+{
+   EQCurve &realCustom = mCurves[mCurves.GetCount()-1];
+   wxASSERT(realCustom.Name.IsSameAs(wxT("custom")));
+   realCustom.points = mCustomBackup.points;
+}
+
+void EqualizationDialog::Finish(bool ok)
 {
    if(mLogEnvelope)
      delete mLogEnvelope;
@@ -2784,7 +2822,15 @@ void EqualizationDialog::OnCancel(wxCommandEvent &event)
    mLinEnvelope = NULL;
    mPanel = NULL;
 
-   EndModal(false);
+   EndModal(ok);
+}
+
+void EqualizationDialog::OnCancel(wxCommandEvent &event)
+{
+   if (mDisallowCustom)
+      RevertCustom();
+
+   Finish(false);
 }
 
 void EqualizationDialog::OnOk(wxCommandEvent &event)
@@ -2793,22 +2839,11 @@ void EqualizationDialog::OnOk(wxCommandEvent &event)
 
    if( Validate() )
    {
-      if (mDisallowCustom)
+      // Update custom curve (so it's there for next time)
+      //(done in a hurry, may not be the neatest -MJS)
+      if( !mDisallowCustom)
       {
-         while (curveName == wxT("custom"))
-         {
-            wxMessageBox(_("To use this EQ curve in a batch chain, please choose a new name for it."),
-                  _("EQ Curve needs a different name"),
-                  wxOK | wxCENTRE,
-                  this);
-            OnSaveAs(event);
-         }
-      }
-      else
-      {
-         // Update custom curve (so it's there for next time)
-         //(done in a hurry, may not be the neatest -MJS)
-         if( (mDirty == true) & (drawMode == true) )
+         if ( mDirty && drawMode )
          {
             int i, j;
             int numPoints = mLogEnvelope->GetNumberOfPoints();
@@ -2829,22 +2864,13 @@ void EqualizationDialog::OnOk(wxCommandEvent &event)
             delete [] value;
             Select( (int) mCurves.GetCount()-1 );
          }
+         SaveCurves();
       }
-      SaveCurves();
-
-      if(mLogEnvelope)
-         delete mLogEnvelope;
-      mLogEnvelope = NULL;
-      if(mLinEnvelope)
-         delete mLinEnvelope;
-      mLinEnvelope = NULL;
-      mPanel = NULL;
-
-      EndModal(true);
+      Finish(true);
    }
    else
    {
-      event.Skip();
+      event.Skip(false);
    }
 }
 

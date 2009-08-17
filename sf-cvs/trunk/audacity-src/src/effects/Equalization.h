@@ -260,6 +260,9 @@ private:
    void spline(double x[], double y[], int n, double y2[]);
    double splint(double x[], double y[], int n, double y2[], double xr);
    void LayoutEQSliders();
+   bool SaveAs();
+   void RevertCustom();
+   void Finish(bool ok);
 
    // XMLTagHandler callback methods for loading and saving
    bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
@@ -352,6 +355,7 @@ private:
    wxCheckBox *mGridOnOff;
 
    EQCurveArray mCurves;
+   EQCurve mCustomBackup;
 
 private:
    DECLARE_EVENT_TABLE()
