@@ -1515,18 +1515,48 @@ void AudacityProject::UpdateMenus()
    wxUint32 flags = GetUpdateFlags();
    wxUint32 flags2 = flags;
 
-   // JKC change to grey out effects less often...
-   if( mSelectAllOnNone && ((flags & WaveTracksExistFlag) != 0 ))
-      flags2 |= /*AudioIONotBusyFlag |*/ TimeSelectedFlag | WaveTracksSelectedFlag;
-
-   if( mSelectAllOnNone && ((flags & WaveTracksExistFlag) != 0 ))
-      flags2 |= CutCopyAvailableFlag;
+   // We can enable some extra items if we have select-all-on-none
+   if (mSelectAllOnNone)
+   {
+      if ((flags & TracksExistFlag) != 0)
+      {
+         flags2 |= TracksSelectedFlag;
+         if ((flags & WaveTracksExistFlag) != 0 )
+         {
+            flags2 |= TimeSelectedFlag 
+                   |  WaveTracksSelectedFlag
+                   |  CutCopyAvailableFlag;
+         }
+      }
+   }
 
    if (flags == mLastFlags)
       return;
    mLastFlags = flags;
 
    mCommandManager.EnableUsingFlags(flags2 , 0xFFFFFFFF);
+
+   // With select-all-on-none, some items that we don't want enabled may have
+   // been enabled, since we changed the flags.  Here we manually disable them.
+   if (mSelectAllOnNone)
+   {
+      if ((flags & TracksSelectedFlag) == 0)
+      {
+         mCommandManager.Enable(wxT("SplitCut"), false);
+
+         if ((flags & WaveTracksSelectedFlag) == 0)
+         {
+            mCommandManager.Enable(wxT("Split"), false);
+         }
+         if ((flags & TimeSelectedFlag) == 0)
+         {
+            mCommandManager.Enable(wxT("ExportSel"), false);
+            mCommandManager.Enable(wxT("SplitNew"), false);
+            mCommandManager.Enable(wxT("Trim"), false);
+            mCommandManager.Enable(wxT("SplitDelete"), false);
+         }
+      }
+   }
 
 #if 0
    if (flags & CutCopyAvailableFlag) {
