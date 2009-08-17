@@ -10,6 +10,7 @@
 use strict;
 use warnings;
 use Time::HiRes qw( gettimeofday tv_interval );
+use List::Util qw( max );
 
 # Where should screenshots be saved?
 our $screenshotDir = "/home/dan/Temp";
@@ -137,7 +138,13 @@ sub menuCommand{
 
 # Send a command which requests a list of all available menu commands
 sub getMenuCommands{
-   doCommand("GetAllMenuCommands:");
+   doCommand("GetAllMenuCommands: ShowStatus=0");
+}
+
+sub showMenuStatus{
+   sendCommand("GetAllMenuCommands: ShowStatus=1");
+   my @resps = getResponses();
+   map { print "$_\n"; } @resps;
 }
 
 # Send a string that should be a syntax error
@@ -203,7 +210,9 @@ sub message{
 # Send a CompareAudio command with a given threshold
 sub compareAudio{
    my $threshold = shift;
-   doCommand("CompareAudio: Threshold=$threshold");
+   my @resps = doCommand("CompareAudio: Threshold=$threshold");
+   shift(@resps);
+   return @resps;
 }
 
 # Delete all tracks
@@ -351,12 +360,133 @@ sub testClearAndPasters{
    setPref("/CsPresets/NoiseGen_Duration", $origDuration);
 }
 
+
+###############################################################################
+#  Effect testing                                                             #
+###############################################################################
+
+# A list of effects to test (could be got from Audacity in future)
+sub getEffects{
+
+   # (These ones will need special handling)
+   # AutoDuck
+   # Repair
+   # NoiseRemoval
+
+   # TimeScale (disabled because it's so slow)
+
+   my @effects = qw(
+      Amplify
+      BassBoost
+      ChangePitch
+      ChangeSpeed
+      ChangeTempo
+      ClickRemoval
+      Compressor
+      Echo
+      Equalization
+      FadeIn
+      FadeOut
+      Invert
+      Leveller
+      Normalize
+      Phaser
+      Repeat
+      Reverse
+      TruncateSilence
+      Wahwah
+   );
+   return @effects;
+}
+
+# Create a chirp for an effect to be applied to
+sub generateBase{
+   my $genCmd = "Chirp";
+   my $duration = 30.0;
+   menuCommand("NewAudioTrack");
+   doCommand("$genCmd:");
+   my $desc = $genCmd . "-" . $duration . "s";
+   return $desc;
+}
+
+# Apply an effect and save the results (for use as reference output)
+sub saveEffectResults{
+   my $dirname = shift;
+   my $effect = shift;
+   deleteAll();
+
+   my $filename = $dirname . "/" . generateBase() . "-" . $effect . ".wav";
+   doCommand($effect);
+
+   printHeading("Exporting to $filename\n");
+   doCommand("Export: Mode=All Filename=$filename Channels=1");
+}
+
+# Apply an effect and compare the result to reference output
+sub doEffectTest{
+   my $dirname = shift;
+   my $effect = shift;
+
+   deleteAll();
+   my $filename = $dirname . "/" . generateBase() . "-" . $effect . ".wav";
+   doCommand("SetTrackInfo: TrackIndex=0 Type=Name Name=$effect");
+   doCommand($effect);
+   doCommand("Import: Filename=$filename");
+   doCommand("Select: Mode=All");
+   my @result = compareAudio(0.001);
+   return @result;
+}
+
+# Export reference copies of the effects in the list 
+sub exportEffects{
+   my $exportDir = shift;
+   my @effects = getEffects();
+   foreach my $effect (@effects) {
+      saveEffectResults($exportDir, $effect);
+   }
+}
+
+# Test each of the effects in the list
+sub testEffects{
+   my $referenceDir = shift;
+   my %results = ();
+
+   my @effects = getEffects();
+   foreach my $effect (@effects) {
+      printHeading("Testing effect: $effect");
+      my @res = doEffectTest($referenceDir, $effect);
+      $results{ $effect }[0] = $res[0];
+      $results{ $effect }[1] = $res[1];
+   }
+
+   # Print out table of results
+   my $padLength = max(map { length($_) } @effects);
+
+   printHeading("Test results");
+   print "Effect name\tSamples\tSeconds\n\n";
+   for my $effect (keys %results) {
+      my $padded = sprintf("%-${padLength}s", $effect);
+      my $badSamples = $results{ $effect }[0];
+      my $badSeconds = $results{ $effect }[1];
+      print "$padded\t$badSamples\t$badSeconds\n";
+   }
+}
+
+# Print text with ascii lines above and below
+sub printHeading{
+   my $msg = shift;
+   my $line = "-" x length($msg);
+   print "$line\n$msg\n$line\n\n";
+}
+
 ###############################################################################
 
 startUp();
 
 # Send some test commands
 
-testClearAndPasters();
+our $effectTestDir = "/home/dan/Temp/ref";
+exportEffects($effectTestDir);
+testEffects($effectTestDir);
 
 finish();

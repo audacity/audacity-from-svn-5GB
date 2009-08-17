@@ -126,6 +126,7 @@ OBJS = \
 	commands/GetAllMenuCommands.o \
 	commands/GetTrackInfoCommand.o \
 	commands/HelpCommand.o \
+	commands/ImportExportCommands.o \
 	commands/Keyboard.o \
 	commands/MessageCommand.o \
 	commands/PreferenceCommands.o \

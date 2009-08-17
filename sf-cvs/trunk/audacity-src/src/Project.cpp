@@ -3144,7 +3144,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
 }
 
 // If pNewTrackList is passed in non-NULL, it gets filled with the pointers to new tracks.
-void AudacityProject::Import(wxString fileName, WaveTrackArray* pTrackArray /*= NULL*/)
+bool AudacityProject::Import(wxString fileName, WaveTrackArray* pTrackArray /*= NULL*/)
 {
    Track **newTracks;
    int numTracks;
@@ -3165,14 +3165,14 @@ void AudacityProject::Import(wxString fileName, WaveTrackArray* pTrackArray /*= 
                  errorMessage, wxT("innerlink:wma-proprietary"));   
    }
    if (numTracks <= 0)
-      return;
+      return false;
 
    wxGetApp().AddFileToHistory(fileName);
 
    // for LOF ("list of files") files, do not import the file as if it
    // were an audio file itself
    if (fileName.AfterLast('.').IsSameAs(wxT("lof"), false)) {
-      return;
+      return false;
    }
 
    // Have to set up newTrackList before calling AddImportedTracks, 
@@ -3197,6 +3197,7 @@ void AudacityProject::Import(wxString fileName, WaveTrackArray* pTrackArray /*= 
    }
 
    GetDirManager()->FillBlockfilesCache();
+   return true;
 }
 
 bool AudacityProject::SaveAs(bool bWantSaveCompressed /*= false*/)
