@@ -93,9 +93,6 @@ It handles initialization and termination by subclassing wxApp.
 #include "LoadModules.h"
 
 #include "import/Import.h"
-#ifdef USE_QUICKTIME
-#include "import/ImportQT.h"
-#endif
 
 #ifdef _DEBUG
     #ifdef _MSC_VER
@@ -822,10 +819,6 @@ bool AudacityApp::OnInit()
 #endif
 
    mLogger = NULL;
-
-   #if USE_QUICKTIME
-   ::InitQuicktime();
-   #endif
 
    // Unused strings that we want to be translated, even though
    // we're not using them yet...

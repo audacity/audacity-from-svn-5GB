@@ -42,10 +42,12 @@ void GetQTImportPlugin(ImportPluginList *importPluginList,
 // There's a name collision between our Track and QuickTime's...workaround it
 #define Track XTrack
 
-#ifdef __MACH__
+#if defined(__WXMAC__)
 // These get used when building under OSX
    #include <Carbon/Carbon.h>
    #include <QuickTime/QuickTime.h>
+
+   #include <wx/mac/private.h>
 #else
 // These get used when building under Windows
    #include <ConditionalMacros.h>
@@ -66,75 +68,103 @@ void GetQTImportPlugin(ImportPluginList *importPluginList,
 #include "../WaveTrack.h"
 #include "ImportQT.h"
 
-// Prototype for the callback
-static pascal Boolean
-SoundConverterFillBufferCallback(SoundComponentDataPtr *outData, void *userData);
-
-Media GetMediaFromMovie(Movie mov);
-
-// Structure used to pass data to the sound converter fill buffer callback
-struct CallbackData
-{
-   ExtendedSoundComponentData compData;
-   Handle hSource; // source media buffer
-   Media sourceMedia; // sound media identifier
-   TimeValue getMediaAtThisTime;
-   TimeValue sourceDuration;
-   UInt32 maxBufferSize;
-   Boolean isThereMoreSource;
-   Boolean isSourceVBR;
-};
+#define kQTAudioPropertyID_MaxAudioSampleSize   'mssz'
 
 class QTImportPlugin : public ImportPlugin
 {
-public:
+ public:
    QTImportPlugin()
-   :  ImportPlugin(wxArrayString(WXSIZEOF(exts), exts))
+   :  ImportPlugin(wxArrayString(WXSIZEOF(exts), exts)),
+      mInitialized(false)
    {
+      OSErr err = noErr;
+
+#if defined(__WXMSW__)
+      err = ::InitializeQTML(0);
+#endif
+
+      if (err == noErr) {
+         err = ::EnterMovies();
+         if (err == noErr) {
+            mInitialized = true;
+         }
+         else {
+#if defined(__WXMSW__)
+            TerminateQTML();
+#endif
+         }
+      }
    }
 
-   ~QTImportPlugin() { }
+   ~QTImportPlugin()
+   {
+      if (mInitialized) {
+         ExitMovies();
+#if defined(__WXMSW__)
+         TerminateQTML();
+#endif
+      }
+
+      mInitialized = false;
+   }
 
    wxString GetPluginFormatDescription();
    ImportFileHandle *Open(wxString Filename);
+
+ private:
+   bool mInitialized;
 };
 
 class QTImportFileHandle : public ImportFileHandle
 {
-public:
-   QTImportFileHandle(const wxString & name, Movie movie, Media media)
-   :  ImportFileHandle(name),
-      mMovie(movie),
-      mMedia(media)
+ public:
+   QTImportFileHandle(const wxString & name, Movie movie)
+   :  ImportFileHandle(name)
    {
+      mMovie = movie;
    }
-   ~QTImportFileHandle() { }
+
+   virtual ~QTImportFileHandle()
+   {
+      if (mMovie) {
+         DisposeMovie(mMovie);
+         mMovie = NULL;
+      }
+   }
 
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
 
-   wxInt32 GetStreamCount(){ return 1; }
+   wxInt32 GetStreamCount()
+   {
+      return 1;
+   }
 
-   wxArrayString *GetStreamInfo(){ return NULL; }
+   wxArrayString *GetStreamInfo()
+   {
+      return NULL;
+   }
 
-   void SetStreamUsage(wxInt32 StreamID, bool Use){}
+   void SetStreamUsage(wxInt32 StreamID, bool Use)
+   {
+   }
 
-   int Import(TrackFactory *trackFactory, Track ***outTracks,
-              int *outNumTracks, Tags *tags);
-private:
+   int Import(TrackFactory *trackFactory,
+              Track ***outTracks,
+              int *outNumTracks,
+              Tags *tags);
+
+ private:
    void AddMetadata(Tags *tags);
 
    Movie mMovie;
-   Media mMedia;
 };
-
 
 void GetQTImportPlugin(ImportPluginList *importPluginList,
                        UnusableImportPluginList *unusableImportPluginList)
 {
    importPluginList->Append(new QTImportPlugin);
 }
-
 
 wxString QTImportPlugin::GetPluginFormatDescription()
 {
@@ -143,57 +173,42 @@ wxString QTImportPlugin::GetPluginFormatDescription()
 
 ImportFileHandle *QTImportPlugin::Open(wxString Filename)
 {
-   FSRef inRef;
-   FSSpec inFile;
-   FSCatalogInfo catInfo;
-   Movie theMovie = 0;
-   Media theMedia;
    OSErr err;
+   FSRef inRef;
+   Movie theMovie = NULL;
+   Handle dataRef = NULL;
+   OSType dataRefType = 0;
+   short resID = 0;
 
-   // Make sure QuickTime is initialized
-   //::EnterMovies();
-
+#if defined(__WXMAC__)
+   err = wxMacPathToFSRef(Filename, &inRef);
+#else
+   // LLL:  This will not work for pathnames with Unicode characters...find
+   //       another method.
    err = FSPathMakeRef((UInt8 *)OSFILENAME(Filename), &inRef, NULL);
-   if (err != noErr)
-      return NULL;
+#endif
 
-   err = FSGetCatalogInfo(&inRef, kFSCatInfoFinderInfo, &catInfo, NULL, &inFile, NULL);
-   if (err != noErr)
-      return NULL;
-
-   if (((FInfo *)&catInfo.finderInfo)->fdType == kQTFileTypeSystemSevenSound)
-   {
-      // TODO: handle this case.  it is special because system seven sounds cannot
-      // be opened in place
-   }
-   else
-   {
-      short theRefNum;
-      short theResID = 0;  // we want the first movie
-      Boolean wasChanged;
-
-      // open the movie file
-      err = OpenMovieFile(&inFile, &theRefNum, fsRdPerm);
-      if (err != noErr)
-         return NULL;
-
-      // instantiate the movie
-      err = NewMovieFromFile(&theMovie, theRefNum, &theResID, NULL, newMovieActive, &wasChanged);
-      CloseMovieFile(theRefNum);
-      if (err != noErr)
-         return NULL;
-   }
-
-
-   // get and return the sound track media
-   theMedia = GetMediaFromMovie(theMovie);
-   if (theMedia == NULL)
-   {
-      DisposeMovie(theMovie);
+   if (err != noErr) {
       return NULL;
    }
 
-   return new QTImportFileHandle(Filename, theMovie, theMedia);
+   err = QTNewDataReferenceFromFSRef(&inRef, 0, &dataRef, &dataRefType);
+   if (err != noErr) {
+      return NULL;
+   }
+
+   // instantiate the movie
+   err = NewMovieFromDataRef(&theMovie, 
+                             newMovieActive | newMovieDontAskUnresolvedDataRefs,
+                             &resID,
+                             dataRef,
+                             dataRefType);
+   DisposeHandle(dataRef);
+   if (err != noErr) {
+      return NULL;
+   }
+
+   return new QTImportFileHandle(Filename, theMovie);
 }
 
 
@@ -207,253 +222,168 @@ int QTImportFileHandle::GetFileUncompressedBytes()
    return 0;
 }
 
-int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
-                               int *outNumTracks, Tags *tags)
+int QTImportFileHandle::Import(TrackFactory *trackFactory,
+                               Track ***outTracks,
+                               int *outNumTracks,
+                               Tags *tags)
 {
    OSErr err = noErr;
+   MovieAudioExtractionRef maer = NULL;
+   int updateResult = eProgressSuccess;
+   sampleCount totSamples = (sampleCount) GetMovieDuration(mMovie);
+   sampleCount numSamples = 0;
+   Boolean discrete = true;
+   UInt32 quality = kQTAudioRenderQuality_Max;
+   AudioStreamBasicDescription desc;
+   UInt32 maxSampleSize;
+   UInt32 numchan;
+   UInt32 bufsize;
 
    CreateProgress();
 
-   //
-   // Determine the file format.
-   //
-
-   // GetMediaSampleDescription takes a SampleDescriptionHandle, but apparently
-   // if the media is a sound (which presumably we know it is) then it will treat
-   // it as a SoundDescriptionHandle (which in addition to the format of single
-   // samples, also tells you sample rate, number of channels, etc.)
-   // Pretty messed up interface, if you ask me.
-   SoundDescriptionHandle soundDescription = (SoundDescriptionHandle)NewHandle(0);
-   GetMediaSampleDescription(mMedia, 1, (SampleDescriptionHandle)soundDescription);
-
-   // If this is a compressed format, it may have out-of-stream compression
-   // parameters that need to be passed to the sound converter.  We retrieve
-   // these in the form of an audio atom.  To do this, however we have to
-   // get the data by way of a handle, then copy it manually from the handle to
-   // the atom.  These interfaces get worse all the time!
-   Handle decompressionParamsHandle = NewHandle(0);
-   AudioFormatAtomPtr decompressionParamsAtom = NULL;
-   err = GetSoundDescriptionExtension(soundDescription, &decompressionParamsHandle,
-                                      siDecompressionParams);
-   if (err == noErr)
-   {
-      // this stream has decompression parameters.  copy from the handle to the atom.
-      int paramsSize = GetHandleSize(decompressionParamsHandle);
-      HLock(decompressionParamsHandle);
-      decompressionParamsAtom = (AudioFormatAtomPtr)NewPtr(paramsSize);
-      //err = MemError();
-      BlockMoveData(*decompressionParamsHandle, decompressionParamsAtom, paramsSize);
-      HUnlock(decompressionParamsHandle);
+   err = MovieAudioExtractionBegin(mMovie, 0, &maer);
+   if (err != noErr) {
+      wxMessageBox(_("Unable to start QuickTime extraction"));
+      goto done;
    }
 
-   if (decompressionParamsHandle)
-      DisposeHandle(decompressionParamsHandle);
-
-   //
-   // Now we set up a sound converter to decompress the data if it is compressed.
-   //
-
-   SoundComponentData inputFormat;
-   SoundComponentData outputFormat;
-   SoundConverter     soundConverter = NULL;
-
-   inputFormat.flags       = outputFormat.flags       = 0;
-   inputFormat.sampleCount = outputFormat.sampleCount = 0;
-   inputFormat.reserved    = outputFormat.reserved    = 0;
-   inputFormat.buffer      = outputFormat.buffer      = NULL;
-   inputFormat.numChannels = outputFormat.numChannels = (*soundDescription)->numChannels;
-   inputFormat.sampleSize  = outputFormat.sampleSize  = (*soundDescription)->sampleSize;
-   inputFormat.sampleRate  = outputFormat.sampleRate  = (*soundDescription)->sampleRate;
-
-   inputFormat.format = (*soundDescription)->dataFormat;
-   outputFormat.format = kSoundNotCompressed;
-
-   err = SoundConverterOpen(&inputFormat, &outputFormat, &soundConverter);
-   if (err != noErr)
-   {
-      // Need to do cleanup here...
-      return false;
+   err = MovieAudioExtractionSetProperty(maer,
+													  kQTPropertyClass_MovieAudioExtraction_Audio,
+													  kQTMovieAudioExtractionAudioPropertyID_RenderQuality,
+                                         sizeof(quality),
+                                         &quality);
+   if (err != noErr) {
+      wxMessageBox(_("Unable to set QuickTime render quality"));
+      goto done;
    }
 
-   //
-   // Create the Audacity WaveTracks to house the new data
-   //
+   err = MovieAudioExtractionSetProperty(maer,
+                                         kQTPropertyClass_MovieAudioExtraction_Movie,
+                                         kQTMovieAudioExtractionMoviePropertyID_AllChannelsDiscrete,
+                                         sizeof(discrete),
+                                         &discrete);
+   if (err != noErr) {
+      wxMessageBox(_("Unable to set QuickTime discrete channels property"));
+      goto done;
+   }
 
-   WaveTrack **channels = new WaveTrack *[outputFormat.numChannels];
+   err = MovieAudioExtractionGetProperty(maer,
+                                         kQTPropertyClass_MovieAudioExtraction_Audio,
+                                         kQTAudioPropertyID_MaxAudioSampleSize,
+                                         sizeof(maxSampleSize),
+                                         &maxSampleSize,
+                                         NULL);
+   if (err != noErr) {
+      wxMessageBox(_("Unable to get QuickTime sample size property"));
+      goto done;
+   }
+
+   err = MovieAudioExtractionGetProperty(maer,
+                                         kQTPropertyClass_MovieAudioExtraction_Audio,
+                                         kQTMovieAudioExtractionAudioPropertyID_AudioStreamBasicDescription,
+                                         sizeof(desc),
+                                         &desc,
+                                         NULL);
+   if (err != noErr) {
+      wxMessageBox(_("Unable to retrieve stream description"));
+      goto done;
+   }
+
+   numchan = desc.mChannelsPerFrame;
+   bufsize = 5 * desc.mSampleRate;
 
    // determine sample format
-
    sampleFormat format;
-   int bytesPerSample;
-
-   // TODO: do we know for sure that 24 and 32 bit samples are the same kind
-   // of 24 and 32 bit samples we expect?
-   switch(outputFormat.sampleSize) {
+   switch (maxSampleSize)
+   {
       case 16:
          format = int16Sample;
-         bytesPerSample = 2;
          break;
 
       case 24:
          format = int24Sample;
-         bytesPerSample = 3;
-         break;
-
-      case 32:
-         format = floatSample;
-         bytesPerSample = 4;
          break;
 
       default:
-         printf("I can't import a %d-bit file!\n", outputFormat.sampleSize);
-         return false;
+         format = floatSample;
+         break;
    }
 
-   int c;
-   for (c = 0; c < outputFormat.numChannels; c++)
-   {
-      channels[c] = trackFactory->NewWaveTrack(format);
-      channels[c]->SetRate(outputFormat.sampleRate / 65536.0);
+   AudioBufferList *abl = (AudioBufferList *)
+      calloc(1, offsetof(AudioBufferList, mBuffers) + (sizeof(AudioBuffer) * numchan));
+   abl->mNumberBuffers = numchan;
 
-      if(outputFormat.numChannels == 2)
-      {
-         if(c == 0)
-         {
+   WaveTrack **channels = new WaveTrack *[numchan];
+
+   int c;
+   for (c = 0; c < numchan; c++) {
+      abl->mBuffers[c].mNumberChannels = 1;
+      abl->mBuffers[c].mDataByteSize = sizeof(float) * bufsize;
+      abl->mBuffers[c].mData = malloc(abl->mBuffers[c].mDataByteSize);
+
+      channels[c] = trackFactory->NewWaveTrack(format);
+      channels[c]->SetRate(desc.mSampleRate);
+
+      if (numchan == 2) {
+         if (c == 0) {
             channels[c]->SetChannel(Track::LeftChannel);
             channels[c]->SetLinked(true);
          }
-         else if(c == 1)
-         {
+         else if (c == 1) {
             channels[c]->SetChannel(Track::RightChannel);
          }
       }
    }
 
-   //
-   // Give the converter the decompression atom.
-   //
+   do {
+      UInt32 flags = 0;
+      UInt32 numFrames = bufsize;
 
-   // (judging from the sample code, it's OK if the atom is NULL, which
-   // it will be if there was no decompression information)
-
-   err = SoundConverterSetInfo(soundConverter, siDecompressionParams, decompressionParamsAtom);
-   if(err == siUnknownInfoType)
-   {
-      // the decompressor didn't need the decompression atom, but that's ok.
-      err = noErr;
-   }
-
-   // Tell the converter we're cool with VBR audio
-   SoundConverterSetInfo(soundConverter, siClientAcceptsVBR, Ptr(true));
-
-   //
-   // Determine buffer sizes and allocate output buffer
-   //
-
-   int inputBufferSize = 655360;
-   int outputBufferSize = 524288;
-   char *outputBuffer = new char[outputBufferSize];
-
-   //
-   // Populate the structure of data that is passed to the callback
-   //
-
-   CallbackData cbData;
-   memset(&cbData.compData, 0, sizeof(ExtendedSoundComponentData));
-
-   cbData.isSourceVBR        = ((*soundDescription)->compressionID == variableCompression);
-   cbData.sourceMedia        = mMedia;
-   cbData.getMediaAtThisTime = 0;
-   cbData.sourceDuration     = GetMediaDuration(mMedia);
-   cbData.isThereMoreSource  = true;
-   cbData.maxBufferSize      = inputBufferSize;
-
-   // allocate source media buffer
-   cbData.hSource            = NewHandle((long)cbData.maxBufferSize);
-   HLock(cbData.hSource);
-
-   cbData.compData.desc = inputFormat;
-   cbData.compData.desc.buffer = (BytePtr)*cbData.hSource;
-
-   cbData.compData.desc.flags = kExtendedSoundData;
-   cbData.compData.extendedFlags = kExtendedSoundBufferSizeValid |
-                                   kExtendedSoundSampleCountNotValid;
-   if(cbData.isSourceVBR)
-      cbData.compData.extendedFlags |= kExtendedSoundCommonFrameSizeValid;
-
-   cbData.compData.bufferSize = 0; // filled in during callback
-
-   // this doesn't make sense to me, but it is taken from sample code
-   cbData.compData.recordSize = sizeof(ExtendedSoundComponentData);
-
-
-   //
-   // Begin the Conversion
-   //
-
-   err = SoundConverterBeginConversion(soundConverter);
-
-   SoundConverterFillBufferDataUPP fillBufferUPP;
-   fillBufferUPP = NewSoundConverterFillBufferDataUPP(SoundConverterFillBufferCallback);
-
-   bool done = false;
-   int updateResult = eProgressSuccess;
-   sampleCount samplesSinceLastCallback = 0;
-   UInt32 outputFrames;
-   UInt32 outputBytes;
-   UInt32 outputFlags;
-
-#define SAMPLES_PER_CALLBACK 10000
-
-   while(!done && updateResult == eProgressSuccess)
-   {
-      err = SoundConverterFillBuffer(soundConverter,    // a sound converter
-                                     fillBufferUPP,     // the callback
-                                     &cbData,           // refCon passed to FillDataProc
-                                     outputBuffer,      // the buffer to decompress into
-                                     outputBufferSize,  // size of that buffer
-                                     &outputBytes,      // number of bytes actually output
-                                     &outputFrames,     // number of frames actually output
-                                     &outputFlags);     // fillbuffer retured advisor flags
-      if (err)
+      err = MovieAudioExtractionFillBuffer(maer,
+                                           &numFrames,
+                                           abl,
+                                           &flags);
+      if (err != noErr) {
+         wxMessageBox(_("Unable to get fill buffer"));
          break;
-
-      if((outputFlags & kSoundConverterHasLeftOverData) == false)
-         done = true;
-
-      for(c = 0; c < outputFormat.numChannels; c++)
-         channels[c]->Append(outputBuffer + (c*bytesPerSample),
-                             format,
-                             outputFrames,
-                             outputFormat.numChannels);
-
-      samplesSinceLastCallback += outputFrames;
-      if( samplesSinceLastCallback > SAMPLES_PER_CALLBACK )
-      {
-         updateResult = mProgress->Update((wxULongLong_t)cbData.getMediaAtThisTime,
-                                          (wxULongLong_t)cbData.sourceDuration);
-         samplesSinceLastCallback -= SAMPLES_PER_CALLBACK;
       }
-   }
 
-   HUnlock(cbData.hSource);
+      for (c = 0; c < numchan; c++) {
+         channels[c]->Append((char *) abl->mBuffers[c].mData, floatSample, numFrames);
+      }
 
-   // Flush any remaining data to the output buffer.
-   // It appears that we have no way of telling this routine how big the output
-   // buffer is!  We had better hope that there isn't more data left than
-   // the buffer is big.
-   SoundConverterEndConversion(soundConverter, outputBuffer, &outputFrames, &outputBytes);
+      numSamples += numFrames;
 
-   for(c = 0; c < outputFormat.numChannels; c++)
-   {
-       channels[c]->Append(outputBuffer + (c*bytesPerSample),
-                           format,
-                           outputFrames,
-                          outputFormat.numChannels);
-      channels[c]->Flush();
-   }
+      updateResult = mProgress->Update((wxULongLong_t)numSamples,
+                                       (wxULongLong_t)totSamples);
+
+      if (numFrames == 0 || flags & kQTMovieAudioExtractionComplete) {
+         break;
+      }
+   } while (updateResult == eProgressSuccess);
 
    bool res = (updateResult == eProgressSuccess && err == noErr);
+
+   if (res) {
+      for (c = 0; c < numchan; c++) {
+         channels[c]->Flush();
+      }
+
+      *outTracks = (Track **) channels;
+      *outNumTracks = numchan;
+   }
+   else {
+      for (c = 0; c < numchan; c++) {
+         delete channels[c];
+      }
+
+      delete [] channels;
+   }
+
+   for (c = 0; c < numchan; c++) {
+      free(abl->mBuffers[c].mData);
+   }
+   free(abl);
 
    //
    // Extract any metadata
@@ -462,26 +392,13 @@ int QTImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       AddMetadata(tags);
    }
 
-   delete[] outputBuffer;
-   DisposeHandle(cbData.hSource);
-   SoundConverterClose(soundConverter);
-   DisposeMovie(mMovie);
+done:
 
-   if (!res) {
-      for (c = 0; c < outputFormat.numChannels; c++)
-         delete channels[c];
-      delete[] channels;
-
-      return (updateResult == eProgressCancelled ? eProgressCancelled : eProgressFailed);
+   if (maer) {
+      MovieAudioExtractionEnd(maer);
    }
-
-   *outNumTracks = outputFormat.numChannels;
-   *outTracks = new Track *[outputFormat.numChannels];
-   for(c = 0; c < outputFormat.numChannels; c++)
-         (*outTracks)[c] = channels[c];
-      delete[] channels;
-
-   return eProgressSuccess;
+   
+   return (res ? eProgressSuccess : eProgressFailed);
 }
 
 static const struct
@@ -614,99 +531,6 @@ void QTImportFileHandle::AddMetadata(Tags *tags)
    QTMetaDataRelease(metaDataRef);
 
    return;
-}
-
-static pascal Boolean
-SoundConverterFillBufferCallback(SoundComponentDataPtr *outData, void *userData)
-{
-   CallbackData *pFillData = (CallbackData*)userData;
-
-   OSErr err;
-
-   // if after getting the last chunk of data the total time is over the duration, we're done
-   if (pFillData->getMediaAtThisTime >= pFillData->sourceDuration)
-   {
-      pFillData->isThereMoreSource = false;
-      pFillData->compData.desc.buffer = NULL;
-      pFillData->compData.desc.sampleCount = 0;
-      pFillData->compData.bufferSize = 0;
-      pFillData->compData.commonFrameSize = 0;
-   }
-
-   if (pFillData->isThereMoreSource) {
-
-      long    sourceBytesReturned;
-      long    numberOfSamples;
-      TimeValue sourceReturnedTime, durationPerSample;
-
-      // in calling GetMediaSample, we'll get a buffer that consists of equal
-      // sized frames - the degenerate case is only 1 frame -- for
-      // non-self-framed vbr formats (like AAC in QT 6.0) we need to provide
-      // some more framing information - either the frameCount, frameSizeArray
-      // pair or commonFrameSize field must be valid -- because we always get
-      // equal sized frames, we use commonFrameSize and set the
-      // kExtendedSoundCommonFrameSizeValid flag -- if there is only 1 frame
-      // then (common frame size == media sample size), if there are multiple
-      // frames, then (common frame size == media sample size / number of
-      // frames).
-
-      HUnlock(pFillData->hSource);
-
-      err = GetMediaSample(
-               pFillData->sourceMedia,   // media to retrieve data from
-               pFillData->hSource,       // where to put the data
-               pFillData->maxBufferSize, // maximum number of bytes to be returned
-               &sourceBytesReturned,     // number of bytes actually returned
-               pFillData->getMediaAtThisTime,  // starting time of the sample to be retrieved (must be in Media's TimeScale)
-               &sourceReturnedTime,      // actual time of the returned sample data
-               &durationPerSample,       // duration of each sample in the media
-               NULL,                     // sample description of the returned data
-               NULL,                     // index value to the sample description
-               0,                        // maximum number of samples to be returned (0 to use a value that is appropriate for the media)
-               &numberOfSamples,         // number of samples it actually returned
-               NULL);                    // flags that describe the sample
-
-      if ((noErr != err) || (sourceBytesReturned == 0)) {
-         pFillData->isThereMoreSource = false;
-         pFillData->compData.desc.buffer = NULL;
-         pFillData->compData.desc.sampleCount = 0;
-         pFillData->compData.bufferSize = 0;
-         pFillData->compData.commonFrameSize = 0;
-
-         if(sourceBytesReturned == 0)
-            wxMessageBox(wxT("There were simply no bytes returned!"));
-         if(err != noErr)
-            wxMessageBox(wxString::Format(wxT("Error returned: %d"), err));
-         if ((err != noErr) && (sourceBytesReturned > 0))
-            wxMessageBox(wxT("GetMediaSample - Failed in FillBufferDataProc"));
-      }
-
-      pFillData->getMediaAtThisTime = sourceReturnedTime + (durationPerSample * numberOfSamples);
-
-      // (the following comment is out of the example code.  I would never call
-      // a sound conversion routine "studly."  -JH
-      //
-      // we've specified kExtendedSoundSampleCountNotValid and the 'studly'
-      // Sound Converter will take care of sampleCount for us, so while this is
-      // not required we fill out all the information we have to simply
-      // demonstrate how this would be done sampleCount is the number of PCM
-      // samples
-      pFillData->compData.desc.sampleCount = numberOfSamples * durationPerSample;
-
-      // kExtendedSoundBufferSizeValid was specified - make sure this field is
-      // filled in correctly
-      pFillData->compData.bufferSize = sourceBytesReturned;
-
-      // for VBR audio we specified the kExtendedSoundCommonFrameSizeValid flag
-      // - make sure this field is filled in correctly
-      if (pFillData->isSourceVBR)
-         pFillData->compData.commonFrameSize = sourceBytesReturned / numberOfSamples;
-   }
-
-   // set outData to a properly filled out ExtendedSoundComponentData struct
-   *outData = (SoundComponentDataPtr)&pFillData->compData;
-
-   return (pFillData->isThereMoreSource);
 }
 
 #endif
