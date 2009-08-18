@@ -17,13 +17,6 @@ class UnusableImportPluginList;
 void GetQTImportPlugin(ImportPluginList *importPluginList,
                        UnusableImportPluginList *unusableImportPluginList);
 
-#ifdef USE_QUICKTIME
-
-void InitQuicktime();
-void ExitQuicktime();
-
-#endif
-
 #endif
 
 // Indentation settings for Vim and Emacs.
