@@ -1502,6 +1502,7 @@
 		ED2707510EF9C64F007D4FFD /* TimeScale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED27074D0EF9C64F007D4FFD /* TimeScale.cpp */; };
 		ED3D7FF00DF73889000F43E3 /* EffectCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED3D7FEC0DF73889000F43E3 /* EffectCategory.cpp */; };
 		ED3D7FF10DF73889000F43E3 /* EffectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED3D7FEE0DF73889000F43E3 /* EffectManager.cpp */; };
+		EDD94EDB103CB520000873F1 /* ImportExportCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EDD94ED9103CB520000873F1 /* ImportExportCommands.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -3487,6 +3488,8 @@
 		ED3D7FED0DF73889000F43E3 /* EffectCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectCategory.h; sourceTree = "<group>"; };
 		ED3D7FEE0DF73889000F43E3 /* EffectManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectManager.cpp; sourceTree = "<group>"; };
 		ED3D7FEF0DF73889000F43E3 /* EffectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectManager.h; sourceTree = "<group>"; };
+		EDD94ED9103CB520000873F1 /* ImportExportCommands.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportExportCommands.cpp; sourceTree = "<group>"; };
+		EDD94EDA103CB520000873F1 /* ImportExportCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportExportCommands.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -4069,6 +4072,8 @@
 				28851FA41027F16400152EE1 /* GetTrackInfoCommand.h */,
 				28851FA51027F16400152EE1 /* HelpCommand.cpp */,
 				28851FA61027F16400152EE1 /* HelpCommand.h */,
+				EDD94ED9103CB520000873F1 /* ImportExportCommands.cpp */,
+				EDD94EDA103CB520000873F1 /* ImportExportCommands.h */,
 				174D902A098C78AF00D5909F /* Keyboard.cpp */,
 				174D902B098C78AF00D5909F /* Keyboard.h */,
 				28851FA71027F16400152EE1 /* MessageCommand.cpp */,
@@ -8468,6 +8473,7 @@
 				28DE72AE10388583007E18EC /* PreferenceCommands.cpp in Sources */,
 				28DE72AF10388583007E18EC /* SetTrackInfoCommand.cpp in Sources */,
 				28DE72B2103885AA007E18EC /* TimeWarper.cpp in Sources */,
+				EDD94EDB103CB520000873F1 /* ImportExportCommands.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
