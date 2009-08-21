@@ -255,6 +255,14 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    bool GetStickyFlag() { return mStickyFlag; };
    void SetStickyFlag(bool flag) { mStickyFlag = flag; };
 
+   // "exclusive" mute means mute the chosen track and unmute all others.
+   void HandleTrackMute(Track *t, const bool exclusive); 
+
+   // Type of solo (standard or simple) follows the set preference, unless
+   // alternate == true, which causes the opposite behavior.
+   void HandleTrackSolo(Track *t, const bool alternate);
+
+
    // Snap To
 
    void SetSnapTo(bool state);
@@ -380,6 +388,10 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void DeleteCurrentAutoSaveFile();
    
    static bool GetCacheBlockFiles();
+   
+   bool IsSimpleSolo() { return mSoloPref == wxT("Simple"); };
+
+ private:
 
    // The project's name and file info
    wxString mFileName;
@@ -454,6 +466,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    ToolManager *mToolManager;
    bool mShowSplashScreen;
    wxString mHelpPref;
+   wxString mSoloPref;
 
  private:
    int  mAudioIOToken;

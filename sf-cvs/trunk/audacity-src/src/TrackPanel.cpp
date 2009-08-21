@@ -5990,72 +5990,12 @@ void TrackPanel::OnTrackMenu(Track *t)
 
 void TrackPanel::OnTrackMute(bool shiftDown, Track *t)
 {
-   if(!t) {
+   if (!t) {
       t = GetFocusedTrack();
-      if(!t) return;
+      if (!t || (t->GetKind() != Track::Wave)) 
+         return;
    }
-
-   if (shiftDown) 
-   {
-      // Cosmetic...  
-      // Shift-click mutes this track and unmutes other tracks.
-      TrackListIterator iter(mTracks);
-      Track *i = iter.First();
-      while (i) {
-         if (i == t) {
-            i->SetMute(true);
-            if(i->GetLinked()) { // also mute the linked track
-               i = iter.Next();
-               i->SetMute(true);
-            }
-         }
-         else {
-            i->SetMute(false);
-         }
-         i->SetSolo(false);
-         i = iter.Next();
-      }
-   }
-   else {
-      // Normal click toggles this track.
-      t->SetMute(!t->GetMute());
-      if(t->GetLinked())   // set mute the same on both, if a pair
-      {
-         bool muted = t->GetMute();
-         TrackListIterator iter(mTracks);
-         Track *i = iter.First();
-         while (i != t) {  // search for this track
-            i = iter.Next();
-         }
-         i = iter.Next();  // get the next one, since linked
-         i->SetMute(muted);   // and mute it as well
-      }
-
-      if( IsSimpleSolo() )
-      {
-         TrackListIterator iter(mTracks);
-         Track *i = iter.First();
-         int nPlaying=0;
-
-         // We also set a solo indicator if we have just one track / stereo pair playing.
-         // otherwise clear solo on everything.
-         while (i) {
-            if( !i->GetMute())
-            {
-               nPlaying += 1;
-               if(i->GetLinked())
-                  i = iter.Next();  // don't count this one as it is linked
-            }
-            i = iter.Next();
-         }
-
-         i = iter.First();
-         while (i) {
-            i->SetSolo( (nPlaying==1) && !i->GetMute() );   // will set both of a stereo pair
-            i = iter.Next();
-         }
-      }
-   }
+   GetProject()->HandleTrackMute(t, shiftDown);
 
    #ifdef EXPERIMENTAL_MIXER_BOARD
       // Update mixer board, too.
@@ -6074,63 +6014,13 @@ void TrackPanel::OnTrackMute(bool shiftDown, Track *t)
 
 void TrackPanel::OnTrackSolo(bool shiftDown, Track *t)
 {
-   if(!t) {
+   if (!t) 
+   {
       t = GetFocusedTrack();
-      if(!t) return;
+      if (!t || (t->GetKind() != Track::Wave)) 
+         return;
    }
-
-   bool bSoloMultiple = !IsSimpleSolo() ^ shiftDown;
-
-   // Standard and Simple solo have opposite defaults:
-   //   Standard - Behaves as individual buttons, shift=radio buttons
-   //   Simple   - Behaves as radio buttons, shift=individual
-   // In addition, Simple solo will mute/unmute tracks 
-   // when in standard radio button mode.
-   if ( bSoloMultiple ) 
-   {
-      t->SetSolo( !t->GetSolo() );
-      if(t->GetLinked())
-      {
-         bool soloed = t->GetSolo();
-         TrackListIterator iter(mTracks);
-         Track *i = iter.First();
-         while (i != t) {  // search for this track
-            i = iter.Next();
-         }
-         i = iter.Next();  // get the next one, since linked
-         i->SetSolo(soloed);   // and solo it as well
-      }
-   }
-   else 
-   {
-      // Normal click solo this track only, mute everything else.
-      // OR unmute and unsolo everything.
-      TrackListIterator iter(mTracks);
-      Track *i = iter.First();
-      bool bWasSolo = t->GetSolo();
-      while (i) {
-         if( i==t )
-         {
-            i->SetSolo(!bWasSolo);
-            if( IsSimpleSolo() )
-               i->SetMute(false);
-            if(t->GetLinked())
-            {
-               i = iter.Next();
-               i->SetSolo(!bWasSolo);
-               if( IsSimpleSolo() )
-                  i->SetMute(false);
-            }
-         }
-         else
-         {
-            i->SetSolo(false);
-            if( IsSimpleSolo() )
-               i->SetMute(!bWasSolo);
-         }
-         i = iter.Next();
-      }
-   }
+   GetProject()->HandleTrackSolo(t, shiftDown);
 
    #ifdef EXPERIMENTAL_MIXER_BOARD
       // Update mixer board, too.
