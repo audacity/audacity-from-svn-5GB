@@ -5370,6 +5370,10 @@ void AudacityProject::OnMuteAllTracks()
 
    ModifyState();
    RedrawProject();
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      if (mMixerBoard)
+         mMixerBoard->UpdateMute();
+   #endif
 }
 
 void AudacityProject::OnUnMuteAllTracks()
@@ -5385,6 +5389,10 @@ void AudacityProject::OnUnMuteAllTracks()
 
    ModifyState();
    RedrawProject();
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      if (mMixerBoard)
+         mMixerBoard->UpdateMute();
+   #endif
 }
 
 void AudacityProject::OnLockPlayRegion()
