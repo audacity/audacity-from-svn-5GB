@@ -1103,14 +1103,14 @@ void MixerBoard::CreateMuteSoloImages()
    // Much of this is taken TrackLabel::DrawMuteSolo 
    wxMemoryDC dc;
    wxString str = _("Mute"); 
-   long textWidth, textHeight;
+   int textWidth, textHeight;
 
    int fontSize = 10;
    #ifdef __WXMSW__
       fontSize = 8;
    #endif
-   dc.SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
-   dc.GetTextExtent(str, &textWidth, &textHeight);
+   wxFont font(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
+   GetTextExtent(str, &textWidth, &textHeight, NULL, NULL, &font);
    mMuteSoloWidth = textWidth + (3 * kInset);
 
    wxBitmap bitmap(mMuteSoloWidth, MUTE_SOLO_HEIGHT);
@@ -1123,6 +1123,7 @@ void MixerBoard::CreateMuteSoloImages()
 
    wxCoord x = bev.x + (bev.width - textWidth) / 2;
    wxCoord y = bev.y + (bev.height - textHeight) / 2;
+   dc.SetFont(font);
    dc.DrawText(str, x, y);
 
    AColor::Bevel(dc, true, bev);
