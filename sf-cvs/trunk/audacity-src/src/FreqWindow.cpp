@@ -314,7 +314,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    vRuler = new RulerPanel(this, wxID_ANY);
    vRuler->ruler.SetBounds(0, 0, 100, 100); // Ruler can't handle small sizes
    vRuler->ruler.SetOrientation(wxVERTICAL);
-   vRuler->ruler.SetRange(10.0, -dBRange);
+   vRuler->ruler.SetRange(10.0, -dBRange); // Note inversion for vertical.
    vRuler->ruler.SetFormat(Ruler::LinearDBFormat);
    vRuler->ruler.SetUnits(_("dB"));
    vRuler->ruler.SetLabelEdges(false);
@@ -525,7 +525,7 @@ void FreqWindow::DrawPlot()
    }
    int w1, w2, h;
    vRuler->ruler.GetMaxSize(&w1, &h);
-   vRuler->ruler.SetRange(mYMax, mYMin);
+   vRuler->ruler.SetRange(mYMax, mYMin); // Note inversion for vertical.
    vRuler->ruler.GetMaxSize(&w2, &h);
    if( w1 != w2 )   // Reduces flicker
    {
