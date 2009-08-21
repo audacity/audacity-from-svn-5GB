@@ -451,7 +451,7 @@ void LWSlider::Init(wxWindow * parent,
    if (mOrientation == wxHORIZONTAL)
       mThumbBitmap = &theTheme.Bitmap( bmpSliderThumb );
    else
-   //vvv \todo Convert this to an image in AllThemeResources, as bmpSliderThumb.
+   //vvv \todo Convert this to an image in AllThemeResources, as bmpSliderThumb. Make an alpha also, as for horizontal slider thumb?
    {
       wxImage thumbImage(wxBitmap(SliderThumb_Vertical).ConvertToImage());
       mThumbBitmap = new wxBitmap(thumbImage);
@@ -460,10 +460,11 @@ void LWSlider::Init(wxWindow * parent,
    //   mThumbBitmap = new wxBitmap( SliderThumb );
    //   mThumbBitmap->SetMask( new wxMask( wxBitmap( SliderThumbAlpha ), *wxBLACK ) );
 
+   mpRuler = NULL; // Do this and Move() before Draw().
+   Move(pos);
    Draw();
 
    mPopWin = NULL;
-   Move(pos);
    CreatePopWin();
 }
 
@@ -474,6 +475,7 @@ LWSlider::~LWSlider()
       delete mThumbBitmap;
    }
    delete mPopWin;
+   delete mpRuler;
 }
 
 wxWindowID LWSlider::GetId()
@@ -649,8 +651,13 @@ void LWSlider::Draw()
    dc->SetBackground( wxBrush( TransparentColour  ) );
    dc->Clear();
 
+   // Draw the line along which the thumb moves.
    AColor::Dark(dc, false);
-   AColor::Line(*dc, mLeftX, mCenterY+1, mRightX+2, mCenterY+1);
+   if (mOrientation == wxHORIZONTAL)
+      AColor::Line(*dc, mLeftX, mCenterY+1, mRightX+2, mCenterY+1);
+   else //vvvvv if (mStyle != DB_SLIDER) // Let the ruler do it for vertical DB_SLIDER.
+      AColor::Line(*dc, mCenterX+1, mTopY, mCenterX+1, mBottomY+2);
+
 
    // Draw +/- or L/R first.  We need to draw these before the tick marks.
    if (mStyle == PAN_SLIDER)
@@ -697,45 +704,81 @@ void LWSlider::Draw()
          AColor::Line(*dc, mRightX-5, mCenterY-10, mRightX-1, mCenterY-10);
          AColor::Line(*dc, mRightX-3, mCenterY-12, mRightX-3, mCenterY-8);
       }
-      else
+      else 
       {
-         AColor::Line(*dc, mCenterX-12, mBottomY-3,  mCenterX-8, mBottomY-3);
-         AColor::Line(*dc, mCenterX-12, mTopY+3,     mCenterX-8, mTopY+3);
-         AColor::Line(*dc, mCenterX-10, mTopY,       mCenterX-10, mTopY+5);
+         // Vertical DB_SLIDER is for gain slider in MixerBoard. 
+         // We use a Ruler instead of marks & ticks.
+         // Draw '+' and '-' only for other vertical sliders. 
+         if (mStyle != DB_SLIDER) 
+         {
+            AColor::Line(*dc, mCenterX-12, mBottomY-3,  mCenterX-8, mBottomY-3);
+            AColor::Line(*dc, mCenterX-12, mTopY+3,     mCenterX-8, mTopY+3);
+            AColor::Line(*dc, mCenterX-10, mTopY,       mCenterX-10, mTopY+5);
+         }
       }
    }
 
-   // tick marks
-   int divs = 10;
-   double upp;
-   if (mOrientation == wxHORIZONTAL) 
-      upp = divs / (double)(mWidthX-1);
-   else 
+   //vvvvv 20090820: Ruler doesn't align with slider correctly -- yet.
+   //if ((mOrientation == wxVERTICAL) && (mStyle == DB_SLIDER))
+   //{
+   //   if (!mpRuler)
+   //   {
+   //      mpRuler = new Ruler();
+   //      mpRuler->mbTicksOnly = false;
+   //      mpRuler->mbTicksAtExtremes = true;
+
+   //      #ifdef __WXMSW__
+   //         const int kFontSize = 8;
+   //      #else
+   //         const int kFontSize = 10;
+   //      #endif
+   //      wxFont rulerFont(kFontSize, wxSWISS, wxNORMAL, wxNORMAL);
+   //      mpRuler->SetFonts(rulerFont, rulerFont, rulerFont);
+
+   //      mpRuler->SetFlip(false);
+   //      mpRuler->SetLabelEdges(true);
+
+   //      mpRuler->SetOrientation(wxVERTICAL);
+   //      mpRuler->SetRange(mMaxValue, mMinValue);
+   //      mpRuler->SetFormat(Ruler::LinearDBFormat);
+   //   }
+   //   mpRuler->SetBounds(mLeft, mTop,  mWidth, mHeightY); //vvvvv Why the magic number reqd on height to get it to line up?    + 9); 
+   //   mpRuler->Draw(*dc);
+   //}
+   //else 
    {
-      if (mStyle == DB_SLIDER)
-         divs = (int)(mMaxValue - mMinValue);
-      upp = divs / (double)(mHeightY-1);
-   }
-   double d = 0.0;
-   int int_d = -1;
-   const int kMax = (mOrientation == wxHORIZONTAL) ? mWidthX : mHeightY;
-   for(int p = 0; p <= kMax; p++) {
-      if (((int)d) > int_d) {
-         int_d = (int)d;
-         int tickLength = ((int_d == 0) || (int_d == divs)) ? 5: 3; // longer ticks at extremes
-         AColor::Light(dc, false);
-         if (mOrientation == wxHORIZONTAL)
-            AColor::Line(*dc, mLeftX+p, mCenterY-tickLength, mLeftX+p, mCenterY-1); // ticks above
-         else
-            AColor::Line(*dc, mCenterX-tickLength, mTopY+p, mCenterX-1, mTopY+p); // ticks at left
-
-         AColor::Dark(dc, false);
-         if (mOrientation == wxHORIZONTAL)
-            AColor::Line(*dc, mLeftX+p+1, mCenterY-tickLength+1, mLeftX+p+1, mCenterY-1); // ticks above
-         else
-            AColor::Line(*dc, mCenterX-tickLength+1, mTopY+p+1, mCenterX-1, mTopY+p+1); // ticks at left
+      // tick marks
+      int divs = 10;
+      double upp;
+      if (mOrientation == wxHORIZONTAL) 
+         upp = divs / (double)(mWidthX-1);
+      else 
+      {
+         if (mStyle == DB_SLIDER) 
+            divs = mMaxValue - mMinValue + 1;
+         upp = divs / (double)(mHeightY-1);
       }
-      d += upp;
+      double d = 0.0;
+      int int_d = -1;
+      const int kMax = (mOrientation == wxHORIZONTAL) ? mWidthX : mHeightY;
+      for(int p = 0; p <= kMax; p++) {
+         if (((int)d) > int_d) {
+            int_d = (int)d;
+            int tickLength = ((int_d == 0) || (int_d == divs)) ? 5: 3; // longer ticks at extremes
+            AColor::Light(dc, false);
+            if (mOrientation == wxHORIZONTAL)
+               AColor::Line(*dc, mLeftX+p, mCenterY-tickLength, mLeftX+p, mCenterY-1); // ticks above
+            else
+               AColor::Line(*dc, mCenterX-tickLength, mTopY+p, mCenterX-1, mTopY+p); // ticks at left
+
+            AColor::Dark(dc, false);
+            if (mOrientation == wxHORIZONTAL)
+               AColor::Line(*dc, mLeftX+p+1, mCenterY-tickLength+1, mLeftX+p+1, mCenterY-1); // ticks above
+            else
+               AColor::Line(*dc, mCenterX-tickLength+1, mTopY+p+1, mCenterX-1, mTopY+p+1); // ticks at left
+         }
+         d += upp;
+      }
    }
 
    

@@ -1250,7 +1250,12 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
          if (mFlip)
             mDC->DrawLine(mLeft, mTop, mLeft, mBottom+1);
          else
-            mDC->DrawLine(mRect.x-mRect.width, mTop, mRect.x-mRect.width, mBottom+1);
+         {
+            // These calculations tappear to be wrong, and to never have been used (so not tested) prior to MixerBoard.
+            //    mDC->DrawLine(mRect.x-mRect.width, mTop, mRect.x-mRect.width, mBottom+1);
+            const int nLineX = mRight - 1;
+            mDC->DrawLine(nLineX, mTop, nLineX, mBottom+1);
+         }
       }
    }
 
