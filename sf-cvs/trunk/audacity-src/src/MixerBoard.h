@@ -71,14 +71,14 @@ public:
                      const wxSize& size = wxDefaultSize);
    virtual ~MixerTrackCluster() {};
 
+   void HandleResize(); // For wxSizeEvents, update gain slider and meter.
+
    void HandleSliderGain(const bool bWantPushState = false);
    void HandleSliderPan(const bool bWantPushState = false);
 
    void ResetMeter();
 
-   void UpdateHeight(); // For wxSizeEvents, update gain slider and meter.
-
-   // These are used by TrackPanel for synchronizing control states, etc.
+   // These are used by TrackPanel for synchronizing control states.
    void UpdateForStateChange(); // Update the controls that can be affected by state change.
    void UpdateName();
    void UpdateMute();
@@ -194,8 +194,6 @@ public:
    void RefreshTrackCluster(const WaveTrack* pLeftTrack, bool bEraseBackground = true);
    void RefreshTrackClusters(bool bEraseBackground = true);
    void ResetMeters();
-
-   void UniquelyMuteOrSolo(const WaveTrack* pTargetLeftTrack, bool bSolo); //vvvvv
 
    void UpdateName(const WaveTrack* pLeftTrack);
    void UpdateMute(const WaveTrack* pLeftTrack = NULL); // NULL means update for all tracks.
