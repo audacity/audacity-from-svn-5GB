@@ -91,10 +91,13 @@ private:
    wxColour GetTrackColor();
 
    // event handlers
+   void HandleSelect(const bool bShiftDown);
+
    void OnKeyEvent(wxKeyEvent& event);
    void OnMouseEvent(wxMouseEvent& event);
    void OnPaint(wxPaintEvent& evt);
 
+   void OnButton_MusicalInstrument(wxCommandEvent& event);
    void OnButton_Mute(wxCommandEvent& event);
    void OnButton_Solo(wxCommandEvent& event);
    void OnSlider_Gain(wxCommandEvent& event);
@@ -111,7 +114,7 @@ private:
 
    // controls
    wxStaticText* mStaticText_TrackName;
-   wxStaticBitmap* mStaticBitmap_MusicalInstrument;
+   wxBitmapButton* mBitmapButton_MusicalInstrument;
    AButton* mToggleButton_Mute;
    AButton* mToggleButton_Solo;
    MixerTrackSlider* mSlider_Pan;
