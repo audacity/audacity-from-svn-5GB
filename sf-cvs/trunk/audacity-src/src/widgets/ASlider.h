@@ -201,6 +201,8 @@ class LWSlider
 
    wxWindow *mPopWin;
 
+   Ruler* mpRuler;
+
    bool mIsDragging;
 
    wxBitmap *mBitmap;

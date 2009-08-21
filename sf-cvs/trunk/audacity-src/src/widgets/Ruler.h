@@ -139,7 +139,7 @@ class AUDACITY_DLL_API Ruler {
    void TickCustom(int labelIdx, bool major, bool minor);
 
 public:
-   bool mbTicksOnly;
+   bool mbTicksOnly; // true => no line the length of the ruler
    bool mbTicksAtExtremes;
    wxRect mRect;
 
