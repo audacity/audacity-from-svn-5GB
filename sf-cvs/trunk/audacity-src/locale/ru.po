@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-07-30 01:32+0300\n"
-"PO-Revision-Date: 2009-07-30 06:19+0300\n"
+"PO-Revision-Date: 2009-08-21 04:16+0300\n"
 "Last-Translator: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@lists.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -426,7 +426,7 @@ msgstr ""
 
 #: AudioIO.cpp:288
 msgid "Error Initializing Midi"
-msgstr ""
+msgstr "Ошибка при инициализации MIDI"
 
 #: AudioIO.cpp:1223
 msgid ""
@@ -446,7 +446,7 @@ msgstr ""
 #: AudioIO.cpp:2550
 #, c-format
 msgid "Automatic Volume decreased the volume to %f."
-msgstr ""
+msgstr "Громкость автоматически уменьшена до %f."
 
 #: AudioIO.cpp:2562
 msgid "Automatic Volume stopped. It was not possible to optimize it more. Still too low."
@@ -455,12 +455,7 @@ msgstr ""
 #: AudioIO.cpp:2571
 #, c-format
 msgid "Automatic Volume increased the volume to %.2f."
-msgstr ""
-
-#: AudioIO.cpp:2581
-#, c-format
-msgid "Automatic Volume stopped. %.2f seems an aceptable volume."
-msgstr ""
+msgstr "Громкость автоматически увеличена до %f."
 
 #: AudioIO.cpp:2596
 msgid "Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too high."
@@ -468,6 +463,11 @@ msgstr ""
 
 #: AudioIO.cpp:2598
 msgid "Automatic Volume stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too low."
+msgstr ""
+
+#: AudioIO.cpp:2669
+#, c-format
+msgid "Automatic Volume stopped. %.2f seems an acceptable volume."
 msgstr ""
 
 #: AutoRecovery.cpp:54
@@ -2127,6 +2127,10 @@ msgstr "Запись с активацией по уровню громкост�
 msgid "Sound Activation Level..."
 msgstr "Уровень громкости для активации..."
 
+#: Menus.cpp:605
+msgid "Automatic Volume (on/off)"
+msgstr ""
+
 #: Menus.cpp:622
 msgid "&Tracks"
 msgstr "Дорож&ки"
@@ -3085,12 +3089,12 @@ msgid "Gain"
 msgstr "Громкость"
 
 #: TrackPanel.cpp:3448
-msgid "Moved pan slider"
-msgstr "Регулятор панорамы смещён"
-
-#: TrackPanel.cpp:3448
 msgid "Moved gain slider"
 msgstr "Регулятор громкости смещён"
+
+#: TrackPanel.cpp:3448
+msgid "Moved pan slider"
+msgstr "Регулятор панорамы смещён"
 
 #: TrackPanel.cpp:7171
 msgid "Mute"
@@ -4586,7 +4590,7 @@ msgstr "Усиление сигнала"
 #: effects/Compressor.cpp:476
 #: effects/Normalize.cpp:337
 msgid "by Dominic Mazzoni"
-msgstr "Фильтр написал Dominic Mazzoni"
+msgstr "Автор — Доминик Маццони"
 
 #: effects/Amplify.cpp:168
 msgid "Amplification (dB):"
@@ -4723,7 +4727,7 @@ msgstr "Усиление баса"
 #: effects/Phaser.cpp:219
 #: effects/Wahwah.cpp:214
 msgid "by Nasca Octavian Paul"
-msgstr "Автор — Nasca Octavian Paul"
+msgstr "Автор — Наска Октавиан Пол"
 
 #: effects/BassBoost.cpp:196
 #: effects/ChangePitch.cpp:322
@@ -4775,12 +4779,12 @@ msgstr "Смена высоты тона без смены темпа"
 #: effects/ChangeSpeed.cpp:336
 #: effects/ChangeTempo.cpp:176
 msgid "by Vaughan Johnson && Dominic Mazzoni"
-msgstr "Авторы — Vaughan Johnson и Dominic Mazzoni"
+msgstr "Авторы — Вохан Джонсон и Доминик Маццони"
 
 #: effects/ChangePitch.cpp:260
 #: effects/ChangeTempo.cpp:178
 msgid "using SoundTouch, by Olli Parviainen"
-msgstr "с использованием SoundTouch (Olli Parviainen)"
+msgstr "с использованием SoundTouch (Олли Парвиайнен)"
 
 #: effects/ChangePitch.cpp:269
 msgid "Pitch:"
@@ -4989,6 +4993,14 @@ msgstr "Компрессор динамического диапазона"
 msgid "Threshold"
 msgstr "Порог"
 
+#: effects/Compressor.cpp:640
+msgid "Noise Floor:"
+msgstr ""
+
+#: effects/Compressor.cpp:644
+msgid "Noise Floor"
+msgstr ""
+
 #: effects/Compressor.cpp:502
 msgid "Ratio:"
 msgstr "Соотношение:"
@@ -5017,6 +5029,10 @@ msgstr "Время первичного затухания"
 msgid "Make-up gain for 0dB after compressing"
 msgstr "Подогнать усиление под 0 Дб после компрессии"
 
+#: effects/Compressor.cpp:680
+msgid "Compress based on Peaks"
+msgstr "Компрессия по пикам"
+
 #: effects/Compressor.cpp:563
 #, c-format
 msgid "Threshold %d dB"
@@ -5026,6 +5042,11 @@ msgstr "Порог: %d Дб"
 #, c-format
 msgid "%3d dB"
 msgstr "%3d Дб"
+
+#: effects/Compressor.cpp:722
+#, c-format
+msgid "Noise Floor %d dB"
+msgstr ""
 
 #: effects/Compressor.cpp:567
 #, c-format
@@ -5317,7 +5338,7 @@ msgstr "Создание тоновых сигналов (DTMF)"
 
 #: effects/DtmfGen.cpp:456
 msgid "by Salvo Ventura (2006)"
-msgstr "Автор — Salvo Ventura (2006)"
+msgstr "Автор — Сальво Вентура (2006)"
 
 #: effects/DtmfGen.cpp:460
 msgid "DTMF sequence:"
@@ -5384,7 +5405,7 @@ msgstr "Эхо"
 #: effects/Echo.cpp:195
 #: effects/Repeat.cpp:199
 msgid "by Dominic Mazzoni && Vaughan Johnson"
-msgstr "Авторы — Dominic Mazzoni и Vaughan Johnson"
+msgstr "Авторы — Доминик Маццони и Вохан Джонсон"
 
 #: effects/Echo.cpp:207
 msgid "Delay time (seconds):"
@@ -5500,6 +5521,14 @@ msgstr "Сохранить как..."
 msgid "Flat"
 msgstr "Всё в ноль"
 
+#: effects/Equalization.cpp:1423
+msgid "To use this EQ curve in a batch chain, please choose a new name for it."
+msgstr ""
+
+#: effects/Equalization.cpp:1424
+msgid "EQ Curve needs a different name"
+msgstr "Кривой эквалайзера нужно другое название"
+
 #: effects/Equalization.cpp:2511
 msgid "Enter the desired name of the curve"
 msgstr "Введите желаемое название кривой"
@@ -5547,7 +5576,7 @@ msgstr "Поиск перегрузки"
 
 #: effects/FindClipping.cpp:222
 msgid "by Leland Lucius"
-msgstr "Автор — Leland Lucius"
+msgstr "Автор — Леланд Люшес"
 
 #: effects/FindClipping.cpp:234
 msgid "Start threshold (samples):"
@@ -5571,7 +5600,7 @@ msgstr "Выполняется поиск перегрузки"
 
 #: effects/Generator.cpp:57
 msgid "There is not enough room available to generate the audio"
-msgstr ""
+msgstr "Недостаточно места для создания звуковых данных"
 
 #: effects/Invert.h:27
 msgid "Invert"
@@ -5612,7 +5641,7 @@ msgstr "Самая большая"
 #: effects/Leveller.cpp:212
 #: effects/TruncSilence.cpp:331
 msgid "by Lynn Allan"
-msgstr "Автор — Lynn Allan"
+msgstr "Автор — Линн Аллан"
 
 #: effects/Leveller.cpp:222
 msgid "Degree of Leveling"
@@ -5733,7 +5762,7 @@ msgstr "Обработка спектра"
 
 #: effects/LoadEffects.cpp:153
 msgid "Pitch Shifter"
-msgstr ""
+msgstr "Смещение высоты тона"
 
 #: effects/LoadEffects.cpp:155
 msgid "Amplifier"
@@ -5860,7 +5889,7 @@ msgstr ""
 
 #: effects/NoiseRemoval.cpp:822
 msgid "Noise Removal by Dominic Mazzoni"
-msgstr "Удаление шума, автор — Dominic Mazzoni"
+msgstr "Удаление шума, автор — Доминик Маццони"
 
 #: effects/NoiseRemoval.cpp:830
 msgid "Get Noise Profile"
@@ -5980,7 +6009,7 @@ msgstr "Частота LFO (Гц):"
 #: effects/Phaser.cpp:239
 #: effects/Wahwah.cpp:224
 msgid "LFO frequency in hertz"
-msgstr ""
+msgstr "Частота LFO в герцах"
 
 #: effects/Phaser.cpp:241
 #: effects/Wahwah.cpp:226
@@ -5990,7 +6019,7 @@ msgstr "Начальная фаза LFO (степень):"
 #: effects/Phaser.cpp:244
 #: effects/Wahwah.cpp:229
 msgid "LFO start phase in degrees"
-msgstr ""
+msgstr "Начальная фаза LFO в градусах"
 
 #: effects/Phaser.cpp:246
 msgid "Depth:"
@@ -5999,7 +6028,7 @@ msgstr "Глубина:"
 #: effects/Phaser.cpp:249
 #: effects/Wahwah.cpp:234
 msgid "Depth in percent"
-msgstr ""
+msgstr "Глубина в проецнтах"
 
 #: effects/Phaser.cpp:251
 msgid "Feedback (%):"
@@ -6007,7 +6036,7 @@ msgstr "Отдача (%):"
 
 #: effects/Phaser.cpp:254
 msgid "Feedback in percent"
-msgstr ""
+msgstr "Отклик в процентах"
 
 #: effects/Phaser.h:45
 msgid "Phaser..."
@@ -6154,7 +6183,7 @@ msgstr "Плавная смена темпа и высоты тона"
 
 #: effects/TimeScale.cpp:178
 msgid "using SBSMS, by Clayton Otey"
-msgstr "при помощи SBSMS, автор — Clayton Otey"
+msgstr "при помощи SBSMS, автор — Клейтон Оти"
 
 #: effects/TimeScale.cpp:187
 msgid "Initial Tempo Change (%):"
@@ -6245,11 +6274,11 @@ msgstr ""
 
 #: effects/ToneGen.cpp:360
 msgid "Amplitude Start"
-msgstr ""
+msgstr "Начало амплитуды"
 
 #: effects/ToneGen.cpp:361
 msgid "Amplitude End"
-msgstr ""
+msgstr "Конец амплитуды"
 
 #: effects/ToneGen.cpp:365
 msgid "Interpolation:"
@@ -6282,7 +6311,7 @@ msgstr "Вырезание тишины"
 
 #: effects/TruncSilence.cpp:453
 msgid "by Lynn Allan && Philip Van Baren"
-msgstr ""
+msgstr "Авторы — Линн Алан и Филип ван Барен"
 
 #: effects/TruncSilence.cpp:467
 msgid "Min silence duration:"
@@ -6352,20 +6381,20 @@ msgstr "Сохранить"
 
 #: effects/VST/VSTEffect.cpp:368
 msgid "Load VST Program:"
-msgstr ""
+msgstr "Загрузить программу VST:"
 
 #: effects/VST/VSTEffect.cpp:386
 msgid "Error loading program"
-msgstr ""
+msgstr "Ошибка при загрузке программы"
 
 #: effects/VST/VSTEffect.cpp:401
 msgid "Save VST Program As:"
-msgstr ""
+msgstr "Сохранить программу VST как:"
 
 #: effects/VST/VSTEffect.cpp:516
 #, c-format
 msgid "This parameter file was saved from %s.  Continue?"
-msgstr ""
+msgstr "Этот файл с параметрами был сохранен в %s. Продолжить?"
 
 #: effects/VST/VSTEffect.cpp:719
 msgid "Performing Effect: "
@@ -6378,6 +6407,15 @@ msgstr ""
 #: effects/VST/VSTEffect.cpp:745
 msgid "Both channels of a stereo track must be the same length."
 msgstr ""
+
+#: effects/VST/VSTEffect.cpp:1614
+msgid "Scanning VST Plugins"
+msgstr ""
+
+#: effects/VST/VSTEffect.cpp:1630
+#, c-format
+msgid "Checking %s"
+msgstr "Выполняется проверка %s"
 
 #: effects/Wahwah.cpp:61
 #, c-format
@@ -6444,12 +6482,12 @@ msgstr "Длительность (с)"
 #: effects/lv2/LV2Effect.cpp:849
 #: effects/lv2/LV2Effect.cpp:852
 msgid "Note length (seconds)"
-msgstr ""
+msgstr "Длительность ноты (с)"
 
 #: effects/lv2/LV2Effect.cpp:860
 #: effects/lv2/LV2Effect.cpp:863
 msgid "Note velocity"
-msgstr ""
+msgstr "Сила нажатия ноты"
 
 #: effects/lv2/LV2Effect.cpp:871
 #: effects/lv2/LV2Effect.cpp:874
@@ -6536,7 +6574,7 @@ msgstr ""
 
 #: export/Export.cpp:522
 msgid "Export File"
-msgstr ""
+msgstr "Экспорт файла"
 
 #: export/Export.cpp:530
 msgid "&Options..."
@@ -6644,6 +6682,8 @@ msgid ""
 "Properly configured FFmpeg is required to proceed.\n"
 "You can configure it at Preferences > Libraries."
 msgstr ""
+"Необходимо корректно настроить FFmpeg.\n"
+"Сделайте это в диалоге «Параметры > Библиотеки»."
 
 #: export/ExportFFmpeg.cpp:394
 #, c-format
@@ -7022,11 +7062,11 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:977
 msgid "Use LPC"
-msgstr ""
+msgstr "Использовать LPC"
 
 #: export/ExportFFmpegDialogs.cpp:984
 msgid "MPEG container options"
-msgstr ""
+msgstr "Параметры контейнера MPEG"
 
 #: export/ExportFFmpegDialogs.cpp:1001
 msgid "Mux Rate:"
@@ -7041,7 +7081,7 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:1004
 msgid "Packet Size:"
-msgstr ""
+msgstr "Размер пакета:"
 
 #: export/ExportFFmpegDialogs.cpp:1005
 msgid ""
@@ -7093,7 +7133,7 @@ msgstr "Файлы AC3 (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:56
 msgid "AMR (narrow band) Files (FFmpeg)"
-msgstr ""
+msgstr "Файлы AMR (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:57
 msgid "WMA (version 2) Files (FFmpeg)"
@@ -7101,11 +7141,11 @@ msgstr "Файлы WMA версии 2 (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:58
 msgid "Custom FFmpeg Export"
-msgstr ""
+msgstr "Экспорте через FFmpeg"
 
 #: export/ExportFFmpegDialogs.h:373
 msgid "LTP"
-msgstr ""
+msgstr "LTP"
 
 #: export/ExportFFmpegDialogs.h:373
 msgid "Low Complexity"
@@ -7113,7 +7153,7 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.h:373
 msgid "Main profile"
-msgstr ""
+msgstr "Основной профиль"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "2-level"
@@ -7979,6 +8019,30 @@ msgstr "Импортируется %s"
 msgid "QuickTime files"
 msgstr "Файлы QuickTime"
 
+#: import/ImportQT.cpp:246
+msgid "Unable to start QuickTime extraction"
+msgstr ""
+
+#: import/ImportQT.cpp:256
+msgid "Unable to set QuickTime render quality"
+msgstr ""
+
+#: import/ImportQT.cpp:266
+msgid "Unable to set QuickTime discrete channels property"
+msgstr ""
+
+#: import/ImportQT.cpp:277
+msgid "Unable to get QuickTime sample size property"
+msgstr ""
+
+#: import/ImportQT.cpp:288
+msgid "Unable to retrieve stream description"
+msgstr ""
+
+#: import/ImportQT.cpp:347
+msgid "Unable to get fill buffer"
+msgstr ""
+
 #: import/ImportRaw.cpp:205
 msgid "Import Raw"
 msgstr "Импорт файла без заголовка"
@@ -8204,10 +8268,6 @@ msgstr "Эффекты"
 msgid "Enable"
 msgstr "Управление доступностью эффектов"
 
-#: prefs/EffectsPrefs.cpp:59
-msgid "Audio Unit effects"
-msgstr "Эффекты Audio Unit"
-
 #: prefs/EffectsPrefs.cpp:65
 msgid "LADSPA effects"
 msgstr "Эффекты LADSPA"
@@ -8220,24 +8280,37 @@ msgstr "Эффекты Nyquist"
 msgid "VAMP effects"
 msgstr "Эффекты VAMP"
 
-#: prefs/EffectsPrefs.cpp:83
-msgid "VST effects"
-msgstr "Эффекты VST"
-
 #: prefs/EffectsPrefs.cpp:87
 msgid "Restart Audacity to apply changes."
 msgstr "Изменения возымеют силу при следующем запуске Audacity."
 
-#: prefs/EffectsPrefs.cpp:92
-msgid "Mode"
-msgstr ""
+#: prefs/EffectsPrefs.cpp:80
+msgid "Audio Unit Effects"
+msgstr "Эффекты Audio Unit"
 
-#: prefs/EffectsPrefs.cpp:95
-msgid "Display VST effects in graphical mode"
+#: prefs/EffectsPrefs.cpp:82
+msgid "Enable Audio Unit effects"
 msgstr ""
 
 #: prefs/EffectsPrefs.cpp:101
 msgid "Display Audio Unit effects in graphical mode"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:89
+#: prefs/EffectsPrefs.cpp:106
+msgid "Rescan VST effects next time Audacity is started"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:98
+msgid "VST Effects"
+msgstr "Эффекты VST"
+
+#: prefs/EffectsPrefs.cpp:100
+msgid "Enable VST effects"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:95
+msgid "Display VST effects in graphical mode"
 msgstr ""
 
 #: prefs/GUIPrefs.cpp:49
@@ -8403,15 +8476,9 @@ msgstr "Клавиатурные комбинации"
 msgid "Category:"
 msgstr "Категория:"
 
-#: prefs/KeyConfigPrefs.cpp:115
-msgid "S&et"
-msgstr "У&становить"
-
-#: Tags.cpp:829
-#: Tags.cpp:1486
-#: prefs/KeyConfigPrefs.cpp:116
-msgid "&Clear"
-msgstr "О&чистить"
+#: prefs/KeyConfigPrefs.cpp:159
+msgid "Se&t"
+msgstr ""
 
 #: prefs/KeyConfigPrefs.cpp:120
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
@@ -8958,11 +9025,11 @@ msgid "Enable Automatic Volume recording."
 msgstr ""
 
 #: prefs/RecordingPrefs.cpp:138
-msgid "Best Peak Volume:"
+msgid "Target Peak:"
 msgstr ""
 
 #: prefs/RecordingPrefs.cpp:144
-msgid "Delta Peak Volume:"
+msgid "Within:"
 msgstr ""
 
 #: prefs/RecordingPrefs.cpp:154
@@ -9187,6 +9254,13 @@ msgid ""
 "[Only the control toolbar and the colors on the wavetrack are currently affected, even\n"
 "though the image file shows other icons too.]"
 msgstr ""
+"Возможность использования альтернативных стилей оформления является экспериментальной функцией.\n"
+"\n"
+"Чтобы посмотреть, как это работайте, нажмите кнопку «Сохранить кэш темы», а затем найдите и измените все изображения и цвета в файлах ImageCacheVxx.png при помощи какого-нибудь редактора вроде GIMP.\n"
+"\n"
+"Нажмите кнопку «Загрузить кэш темы», чтобы загрузить измененные изображения и цвета обратно в Audacity.\n"
+"\n"
+"Пока что возможно изменять только кнопки транспорта и цвета звуковой дорожки."
 
 #: prefs/ThemePrefs.cpp:96
 msgid ""
@@ -9198,13 +9272,13 @@ msgstr ""
 msgid ""
 "If 'Load Theme Cache At Startup' is checked, then the Theme Cache will be loaded\n"
 "when the program starts up."
-msgstr ""
+msgstr "Если параметр «Загружать кэш темы при запуске» включен, кэш темы будет загружаться при запуске программы."
 
 #: prefs/ThemePrefs.cpp:104
 msgid ""
 "Saving and loading individual theme files uses a separate file for each image, but is\n"
 "otherwise the same idea."
-msgstr ""
+msgstr "Сохранение и загрузка отдельных файлов тем подразумевает использование отдельного файла для каждого изображения, но в остальном идея та же."
 
 #. i18n-hint: && in here is an escape character to get a single & on screen,
 #. * so keep it as is
@@ -9318,11 +9392,11 @@ msgstr "Почистить запись голоса"
 
 #: toolbars/ControlToolBar.cpp:178
 msgid "Play (Shift for Loop Play)"
-msgstr ""
+msgstr "Воспроизвести (с Shift — циклически)"
 
 #: toolbars/ControlToolBar.cpp:192
 msgid "Record (Shift for Append Record)"
-msgstr ""
+msgstr "Записать (с Shift — для добавления в конец)"
 
 #: toolbars/ControlToolBar.cpp:540
 #: toolbars/ControlToolBar.cpp:869
@@ -9331,7 +9405,7 @@ msgstr "Ошибка при открытии звукового устройст
 
 #: toolbars/ControlToolBar.cpp:706
 msgid "Recording in CleanSpeech mode is not possible when a track, or more than one project, is already open."
-msgstr ""
+msgstr "Запись в режиме CleanSpeech невозможна, если уже открыта дорожка или больше одного проекта."
 
 #: toolbars/ControlToolBar.cpp:707
 msgid "Recording not permitted"
@@ -9711,6 +9785,12 @@ msgstr "Назад"
 msgid "Help on the Internet"
 msgstr "Справка в Интернете"
 
+#: Tags.cpp:829
+#: Tags.cpp:1486
+#: prefs/KeyConfigPrefs.cpp:116
+msgid "&Clear"
+msgstr "О&чистить"
+
 #: widgets/Grabber.cpp:62
 msgid "Grabber"
 msgstr ""
@@ -9735,6 +9815,14 @@ msgstr "Отключить мониторинг"
 msgid "Start Monitoring"
 msgstr "Включить мониторинг"
 
+#: widgets/Meter.cpp:418
+msgid "Stop Automatic Volume"
+msgstr ""
+
+#: widgets/Meter.cpp:420
+msgid "Start Automatic Volume"
+msgstr ""
+
 #: widgets/Meter.cpp:407
 msgid "Horizontal Stereo"
 msgstr "Горизонтальная ориентация"
@@ -9746,6 +9834,10 @@ msgstr "Вертикальная ориентация"
 #: widgets/Meter.cpp:425
 msgid "Preferences..."
 msgstr "Параметры..."
+
+#: widgets/Meter.cpp:1268
+msgid "Automatic Volume stopped as requested by user."
+msgstr ""
 
 #: widgets/Meter.cpp:1133
 msgid ""
@@ -10006,7 +10098,7 @@ msgstr ""
 
 #: widgets/TimeTextCtrl.cpp:1525
 msgid "centiseconds"
-msgstr ""
+msgstr "сотые секунды"
 
 #: widgets/Warning.cpp:64
 msgid "Don't show this warning again"
