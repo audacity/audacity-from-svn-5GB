@@ -1436,21 +1436,22 @@ bool VSTEffect::Load()
    mModule = bundleRef;
 
 #else
-   // Try to load the library
-   wxDynamicLibrary *lib = new wxDynamicLibrary(mPath);
-   if (!lib) {
-      return false;
-   }
-
-   // Bail if it wasn't successful
-   if (!lib->IsLoaded()) {
-      delete lib;
-      return false;
-   }
-
-   // Try to find the entry point, while suppressing error messages
    {
-      wxLogNull logNo;
+      wxLogNull nolog;
+
+      // Try to load the library
+      wxDynamicLibrary *lib = new wxDynamicLibrary(mPath);
+      if (!lib) {
+         return false;
+      }
+
+      // Bail if it wasn't successful
+      if (!lib->IsLoaded()) {
+         delete lib;
+         return false;
+      }
+
+      // Try to find the entry point, while suppressing error messages
       pluginMain = (vstPluginMain) lib->GetSymbol(wxT("VSTPluginMain"));
       if (pluginMain == NULL) {
          pluginMain = (vstPluginMain) lib->GetSymbol(wxT("main"));
@@ -1459,10 +1460,10 @@ bool VSTEffect::Load()
             return false;
          }
       }
-   }
 
-   // Save the library reference
-   mModule = lib;
+      // Save the library reference
+      mModule = lib;
+   }
 
 #endif
 
