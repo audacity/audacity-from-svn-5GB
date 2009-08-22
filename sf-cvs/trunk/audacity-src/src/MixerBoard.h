@@ -15,6 +15,7 @@
 #define __AUDACITY_MIXER_BOARD__
 
 #include <wx/frame.h>
+#include <wx/bmpbuttn.h>
 #include <wx/hashmap.h>
 #include <wx/image.h>
 #include <wx/panel.h>

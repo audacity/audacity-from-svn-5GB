@@ -30,6 +30,8 @@ class wxPoint;
 class wxTextCtrl;
 class wxButton;
 
+class Ruler;
+
 //
 // Predefined slider types (mStyle)
 //
