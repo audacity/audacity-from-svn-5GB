@@ -90,7 +90,10 @@ AC_SUBST( objects, [px_mixer.o] )
 #
 # Check which APIs are available
 #
-AC_CHECK_HEADER(linux/soundcard.h, have_oss=yes, have_oss=no)
+
+have_oss=no
+AC_CHECK_HEADERS([sys/soundcard.h linux/soundcard.h machine/soundcard.h], have_oss=yes)
+
 AC_CHECK_HEADER(alsa/asoundlib.h,  have_alsa=yes, have_alsa=no)
 AC_CHECK_HEADER(CoreAudio/CoreAudio.h, have_coreaudio=yes, have_coreaudio=no)
 

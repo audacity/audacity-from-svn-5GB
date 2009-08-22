@@ -3611,6 +3611,8 @@ objects=px_mixer.o
 #
 # Check which APIs are available
 #
+
+have_oss=no
 # On IRIX 5.3, sys/types and inttypes.h are conflicting.
 
 
@@ -3684,18 +3686,26 @@ fi
 done
 
 
-if test "${ac_cv_header_linux_soundcard_h+set}" = set; then
-  { $as_echo "$as_me:$LINENO: checking for linux/soundcard.h" >&5
-$as_echo_n "checking for linux/soundcard.h... " >&6; }
-if test "${ac_cv_header_linux_soundcard_h+set}" = set; then
+
+
+
+for ac_header in sys/soundcard.h linux/soundcard.h machine/soundcard.h
+do
+as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
+if { as_var=$as_ac_Header; eval "test \"\${$as_var+set}\" = set"; }; then
+  { $as_echo "$as_me:$LINENO: checking for $ac_header" >&5
+$as_echo_n "checking for $ac_header... " >&6; }
+if { as_var=$as_ac_Header; eval "test \"\${$as_var+set}\" = set"; }; then
   $as_echo_n "(cached) " >&6
 fi
-{ $as_echo "$as_me:$LINENO: result: $ac_cv_header_linux_soundcard_h" >&5
-$as_echo "$ac_cv_header_linux_soundcard_h" >&6; }
+ac_res=`eval 'as_val=${'$as_ac_Header'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
 else
   # Is the header compilable?
-{ $as_echo "$as_me:$LINENO: checking linux/soundcard.h usability" >&5
-$as_echo_n "checking linux/soundcard.h usability... " >&6; }
+{ $as_echo "$as_me:$LINENO: checking $ac_header usability" >&5
+$as_echo_n "checking $ac_header usability... " >&6; }
 cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -3703,7 +3713,7 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 $ac_includes_default
-#include <linux/soundcard.h>
+#include <$ac_header>
 _ACEOF
 rm -f conftest.$ac_objext
 if { (ac_try="$ac_compile"
@@ -3736,15 +3746,15 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 $as_echo "$ac_header_compiler" >&6; }
 
 # Is the header present?
-{ $as_echo "$as_me:$LINENO: checking linux/soundcard.h presence" >&5
-$as_echo_n "checking linux/soundcard.h presence... " >&6; }
+{ $as_echo "$as_me:$LINENO: checking $ac_header presence" >&5
+$as_echo_n "checking $ac_header presence... " >&6; }
 cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-#include <linux/soundcard.h>
+#include <$ac_header>
 _ACEOF
 if { (ac_try="$ac_cpp conftest.$ac_ext"
 case "(($ac_try" in
@@ -3778,25 +3788,25 @@ $as_echo "$ac_header_preproc" >&6; }
 # So?  What about this header?
 case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
   yes:no: )
-    { $as_echo "$as_me:$LINENO: WARNING: linux/soundcard.h: accepted by the compiler, rejected by the preprocessor!" >&5
-$as_echo "$as_me: WARNING: linux/soundcard.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
-    { $as_echo "$as_me:$LINENO: WARNING: linux/soundcard.h: proceeding with the compiler's result" >&5
-$as_echo "$as_me: WARNING: linux/soundcard.h: proceeding with the compiler's result" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: $ac_header: accepted by the compiler, rejected by the preprocessor!" >&5
+$as_echo "$as_me: WARNING: $ac_header: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: $ac_header: proceeding with the compiler's result" >&5
+$as_echo "$as_me: WARNING: $ac_header: proceeding with the compiler's result" >&2;}
     ac_header_preproc=yes
     ;;
   no:yes:* )
-    { $as_echo "$as_me:$LINENO: WARNING: linux/soundcard.h: present but cannot be compiled" >&5
-$as_echo "$as_me: WARNING: linux/soundcard.h: present but cannot be compiled" >&2;}
-    { $as_echo "$as_me:$LINENO: WARNING: linux/soundcard.h:     check for missing prerequisite headers?" >&5
-$as_echo "$as_me: WARNING: linux/soundcard.h:     check for missing prerequisite headers?" >&2;}
-    { $as_echo "$as_me:$LINENO: WARNING: linux/soundcard.h: see the Autoconf documentation" >&5
-$as_echo "$as_me: WARNING: linux/soundcard.h: see the Autoconf documentation" >&2;}
-    { $as_echo "$as_me:$LINENO: WARNING: linux/soundcard.h:     section \"Present But Cannot Be Compiled\"" >&5
-$as_echo "$as_me: WARNING: linux/soundcard.h:     section \"Present But Cannot Be Compiled\"" >&2;}
-    { $as_echo "$as_me:$LINENO: WARNING: linux/soundcard.h: proceeding with the preprocessor's result" >&5
-$as_echo "$as_me: WARNING: linux/soundcard.h: proceeding with the preprocessor's result" >&2;}
-    { $as_echo "$as_me:$LINENO: WARNING: linux/soundcard.h: in the future, the compiler will take precedence" >&5
-$as_echo "$as_me: WARNING: linux/soundcard.h: in the future, the compiler will take precedence" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: $ac_header: present but cannot be compiled" >&5
+$as_echo "$as_me: WARNING: $ac_header: present but cannot be compiled" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: $ac_header:     check for missing prerequisite headers?" >&5
+$as_echo "$as_me: WARNING: $ac_header:     check for missing prerequisite headers?" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: $ac_header: see the Autoconf documentation" >&5
+$as_echo "$as_me: WARNING: $ac_header: see the Autoconf documentation" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: $ac_header:     section \"Present But Cannot Be Compiled\"" >&5
+$as_echo "$as_me: WARNING: $ac_header:     section \"Present But Cannot Be Compiled\"" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: $ac_header: proceeding with the preprocessor's result" >&5
+$as_echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: $ac_header: in the future, the compiler will take precedence" >&5
+$as_echo "$as_me: WARNING: $ac_header: in the future, the compiler will take precedence" >&2;}
     ( cat <<\_ASBOX
 ## --------------------------------------- ##
 ## Report this to audacity.sourceforge.net ##
@@ -3805,22 +3815,29 @@ _ASBOX
      ) | sed "s/^/$as_me: WARNING:     /" >&2
     ;;
 esac
-{ $as_echo "$as_me:$LINENO: checking for linux/soundcard.h" >&5
-$as_echo_n "checking for linux/soundcard.h... " >&6; }
-if test "${ac_cv_header_linux_soundcard_h+set}" = set; then
+{ $as_echo "$as_me:$LINENO: checking for $ac_header" >&5
+$as_echo_n "checking for $ac_header... " >&6; }
+if { as_var=$as_ac_Header; eval "test \"\${$as_var+set}\" = set"; }; then
   $as_echo_n "(cached) " >&6
 else
-  ac_cv_header_linux_soundcard_h=$ac_header_preproc
+  eval "$as_ac_Header=\$ac_header_preproc"
 fi
-{ $as_echo "$as_me:$LINENO: result: $ac_cv_header_linux_soundcard_h" >&5
-$as_echo "$ac_cv_header_linux_soundcard_h" >&6; }
+ac_res=`eval 'as_val=${'$as_ac_Header'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
 
 fi
-if test "x$ac_cv_header_linux_soundcard_h" = x""yes; then
-  have_oss=yes
-else
-  have_oss=no
+as_val=`eval 'as_val=${'$as_ac_Header'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  cat >>confdefs.h <<_ACEOF
+#define `$as_echo "HAVE_$ac_header" | $as_tr_cpp` 1
+_ACEOF
+ have_oss=yes
 fi
+
+done
 
 
 if test "${ac_cv_header_alsa_asoundlib_h+set}" = set; then

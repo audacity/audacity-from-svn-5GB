@@ -36,14 +36,6 @@
  *
  */
 
-#if defined(__linux__)
-#include <linux/soundcard.h>
-#elif defined(__FreeBSD__)
-#include <sys/soundcard.h>
-#else
-#include <machine/soundcard.h> /* JH20010905 */
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -52,6 +44,16 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
+
+#if defined(HAVE_SYS_SOUNDCARD_H)
+# include <sys/soundcard.h>
+#elif defined(HAVE_LINUX_SOUNDCARD_H)
+# include <linux/soundcard.h>
+#elif defined(HAVE_MACHINE_SOUNDCARD_H)
+# include <machine/soundcard.h> /* JH20010905 */
+#else
+# error No sound card header file
+#endif
 
 #include "portaudio.h"
 #include "pa_unix_oss.h"
