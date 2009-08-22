@@ -154,8 +154,7 @@ void LabelTrack::ShiftLabelsOnClear(double b, double e)
          mLabels[i]->t  = mLabels[i]->t  - (e-b);
          mLabels[i]->t1 = mLabels[i]->t1 - (e-b);
       }else if (mLabels[i]->t >= b && mLabels[i]->t1 <= e){//deletion region encloses label
-         wxASSERT(i < mLabels.GetCount());
-         mLabels.RemoveAt(i);
+         DeleteLabel( i );
          i--;
       }else if (mLabels[i]->t >= b && mLabels[i]->t1 > e){//deletion region covers start
          mLabels[i]->t  = b;
@@ -175,8 +174,7 @@ void LabelTrack::ChangeLabelsOnClear(double b, double e)
 {
    for (size_t i=0;i<mLabels.GetCount();i++) {
       if (mLabels[i]->t >= b && mLabels[i]->t1 <= e){//deletion region encloses label
-         wxASSERT(i < mLabels.GetCount());
-         mLabels.RemoveAt(i);
+         DeleteLabel(i);
          i--;
       }else if (mLabels[i]->t < b && mLabels[i]->t1 > e){//label encloses deletion region
          mLabels[i]->t1 = mLabels[i]->t1 - (e-b);
@@ -1479,10 +1477,7 @@ bool LabelTrack::OnKeyDown(double & newSel0, double & newSel1, wxKeyEvent & even
             else
             {
                // ELSE no text in text box, so delete whole label.
-               delete mLabels[mSelIndex];
-               mLabels.RemoveAt(mSelIndex);
-               mSelIndex = -1;
-               mCurrentCursorPos = 1;
+               DeleteLabel( mSelIndex );
             }
             mInitialCursorPos = mCurrentCursorPos;
             updated = true;
@@ -1511,10 +1506,7 @@ bool LabelTrack::OnKeyDown(double & newSel0, double & newSel1, wxKeyEvent & even
             else
             {
                // delete whole label if no text in text box
-               delete mLabels[mSelIndex];
-               mLabels.RemoveAt(mSelIndex);
-               mSelIndex = -1;
-               mCurrentCursorPos = 1;
+               DeleteLabel( mSelIndex );
             }
             mInitialCursorPos = mCurrentCursorPos;
             updated = true;
@@ -2021,11 +2013,10 @@ bool LabelTrack::Cut(double t0, double t1, Track ** dest)
          mLabels[i]->t -= t0;
          mLabels[i]->t1 -= t0;
          ((LabelTrack *) (*dest))->mLabels.Add(mLabels[i]);
+         //Don't use DeleteLabel() since we've only moved it.
          mLabels.RemoveAt(i);
-         // If we've removed the selected label, then 
-         // better indicate that no label is selected.
-         if (i==mSelIndex)
-            mSelIndex=-1;
+         // JC: ALWAYS unselect, since RemoveAt renumbers labels.
+         mSelIndex=-1;
          len--;
          i--;
       }
@@ -2111,7 +2102,7 @@ bool LabelTrack::Silence(double t0, double t1)
 
    for (int i = 0; i < len; i++) {
       if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1) {
-         mLabels.RemoveAt(i);
+         DeleteLabel( i );
          len--;
          i--;
       }
@@ -2206,7 +2197,21 @@ int LabelTrack::AddLabel(double t, double t1, const wxString &title)
 void LabelTrack::DeleteLabel(int index)
 {
    wxASSERT((index < (int)mLabels.GetCount()));
+   delete mLabels[index];
    mLabels.RemoveAt(index);
+   // IF we've deleted the selected label
+   // THEN set no label selected.
+   if( mSelIndex== index )
+   {
+      mSelIndex = -1;
+      mCurrentCursorPos = 1;
+   }
+   // IF we removed a label before the selected label
+   // THEN the new selected label number is one less.
+   else if( index < mSelIndex )
+   {
+      mSelIndex--;
+   }
 }
 
 wxBitmap & LabelTrack::GetGlyph( int i)
@@ -2353,6 +2358,7 @@ void LabelTrack::SortLabels()
       if( j<i)
       {
          // Remove at i and insert at j.
+         // Don't use DeleteLabel() since just moving it.
          pTemp = mLabels[i];
          mLabels.RemoveAt( i );
          mLabels.Insert(pTemp, j);
