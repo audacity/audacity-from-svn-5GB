@@ -143,7 +143,7 @@ extern long ptrtoabs();
 #endif
 
 /* Linux on Pentium */
-#ifdef __linux__
+#if defined(__linux__) || defined(__GLIBC__)
 #include <endian.h>
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 #define XL_LITTLE_ENDIAN
