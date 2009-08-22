@@ -72,6 +72,8 @@ Upstream version: 0.15.1 (beta)
 libnyquist
 ----------
 Digital Audio scripting language, with our own library interface added to it
+kFreeBSD-nyquist.patch	Patch from Benjamin Drung to build nyquist on
+						kFreeBSD. Asked him to send it upstream 2009/08/22
 
 libogg
 ------

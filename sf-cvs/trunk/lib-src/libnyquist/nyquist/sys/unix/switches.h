@@ -76,7 +76,7 @@
   #define CPU_IS_BIG_ENDIAN 1
  #endif
 #else
- #ifdef __linux__
+ #if defined(__linux__) || defined(__GLIBC__)
   #include <endian.h>
   #if __BYTE_ORDER == __LITTLE_ENDIAN
    /* Target processor is little endian. */
