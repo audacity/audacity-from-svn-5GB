@@ -1946,7 +1946,10 @@ bool WaveTrack::SplitAt(double t)
          double val;
          t = LongSamplesToTime(TimeToLongSamples(t)); // put t on a sample
          val = c->GetEnvelope()->GetValue(t);
-         c->GetEnvelope()->Insert(t - c->GetOffset() - 1.0/c->GetRate(), val);  // frame end points
+         //make two envelope points to preserve the value.  
+         //handle the case where we split on the 1st sample (without this we hit an assert)
+         if(t != c->GetOffset())
+            c->GetEnvelope()->Insert(t - c->GetOffset() - 1.0/c->GetRate(), val);  // frame end points
          c->GetEnvelope()->Insert(t - c->GetOffset(), val);
          WaveClip* newClip = new WaveClip(*c, mDirManager);
          if (!c->Clear(t, c->GetEndTime()))
@@ -1959,7 +1962,11 @@ bool WaveTrack::SplitAt(double t)
             delete newClip;
             return false;
          }
-         sampleCount here = llrint(floor(((t - c->GetStartTime() - mOffset) * mRate) + 0.5));
+         
+         //mchinen 22.8.09 - This mOffset subtraction causes a bug for subsequent splits after a split new- 
+         //We should be wary of this, but it appears GetStartTime and mOffset are identical
+         //if WaveTrack::SetOffset is called (as in AudacityProject::OnSplitNew())
+         sampleCount here = llrint(floor(((t - c->GetStartTime()/* - mOffset*/) * mRate) + 0.5));
          newClip->Offset((double)here/(double)mRate);
          mClips.Append(newClip);
          return true;
