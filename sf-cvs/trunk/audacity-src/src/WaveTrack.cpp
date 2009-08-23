@@ -1462,7 +1462,6 @@ void WaveTrack::WriteXML(XMLWriter &xmlFile)
    xmlFile.WriteAttr(wxT("name"), mName);
    xmlFile.WriteAttr(wxT("channel"), mChannel);
    xmlFile.WriteAttr(wxT("linked"), mLinked);
-   xmlFile.WriteAttr(wxT("offset"), mOffset, 8);
    xmlFile.WriteAttr(wxT("mute"), mMute);
    xmlFile.WriteAttr(wxT("solo"), mSolo);
    xmlFile.WriteAttr(wxT("height"), this->GetActualHeight());
@@ -1963,10 +1962,8 @@ bool WaveTrack::SplitAt(double t)
             return false;
          }
          
-         //mchinen 22.8.09 - This mOffset subtraction causes a bug for subsequent splits after a split new- 
-         //We should be wary of this, but it appears GetStartTime and mOffset are identical
-         //if WaveTrack::SetOffset is called (as in AudacityProject::OnSplitNew())
-         sampleCount here = llrint(floor(((t - c->GetStartTime()/* - mOffset*/) * mRate) + 0.5));
+         //offset the new clip by the splitpoint (noting that it is already offset to c->GetStartTime())
+         sampleCount here = llrint(floor(((t - c->GetStartTime()) * mRate) + 0.5));
          newClip->Offset((double)here/(double)mRate);
          mClips.Append(newClip);
          return true;
