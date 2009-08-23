@@ -95,7 +95,8 @@ bool EffectFindClipping::Process()
 
    int count = 0;
 
-   TrackListOfKindIterator waves(Track::Wave, mTracks);
+   // JC: Only process selected tracks.
+   SelectedTrackListOfKindIterator waves(Track::Wave, mTracks);
    WaveTrack *t = (WaveTrack *) waves.First();
    while (t) {
       double trackStart = t->GetStartTime();
