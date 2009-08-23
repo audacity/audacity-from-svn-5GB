@@ -34,7 +34,9 @@
 // Work in progress, June-2008.
 //#define EXPERIMENTAL_THEMING
 #if IS_BETA
-#define EXPERIMENTAL_THEME_PREFS
+//August 2009 - Theming not locked down enough enough for a stable release.
+// we're doing betas which are leading up to an RC.
+//#define EXPERIMENTAL_THEME_PREFS
 #endif
 
 //Next line enables Mic monitoring at times when it was previously off.
