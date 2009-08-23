@@ -988,14 +988,18 @@ void Envelope::GetValues(double *buffer, int bufferLen,
 
    double tprev, vprev, tnext = 0, vnext, vstep = 0;
 
+   // JC: I believe small rounding errors are OK,
+   // and that the previous tests (with epsilon==0)
+   // were too stringent.
+   const double epsilon=0.0000000001; // a small value
    // in debug builds, do a spot of argument checking
-   if(t0 > mTrackLen)
+   if(t0 > (mTrackLen+epsilon))
    {
       wxString msg;
       msg = wxString::Format(wxT("t0 %.20f mTrackLen %.20f diff %.20f"), t0, mTrackLen, t0-mTrackLen);
       wxASSERT_MSG(t0 <= mTrackLen, msg);
    }
-   if(t0 < 0)
+   if(t0 < (-epsilon))
    {
       wxString msg;
       msg = wxString::Format(wxT("t0 %.20f"), t0);
