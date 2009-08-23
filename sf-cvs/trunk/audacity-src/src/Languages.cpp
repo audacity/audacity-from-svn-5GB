@@ -125,8 +125,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName[wxT("nb")] = wxT("Norsk");
    localLanguageName[wxT("pl")] = wxT("Polski");
    localLanguageName[wxT("pt")] = wxT("Portugues");
-//   localLanguageName[wxT("pt_BR")] = wxT("Portugues (Brazil)");
-//   only if we have to distinguish two sorts of portuguese
+   localLanguageName[wxT("pt_BR")] = wxT("Portugues (Brasil)");
    localLanguageName[wxT("ru")] = wxT("Russky");
    localLanguageName[wxT("sl")] = wxT("Slovenscina");
    localLanguageName[wxT("sv")] = wxT("Svenska");
