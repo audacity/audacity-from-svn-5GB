@@ -41,6 +41,10 @@
 #include "../ondemand/ODComputeSummaryTask.h"
 //temporarilly commented out till it is added to all projects
 //#include "../Profiler.h"
+//the minimum number of samples a file has to use the OD compute summary task
+//Otherwise, we use the older PCMAliasBlockFile method since it should be instant  enough
+//and the overhead of starting the thread might be slower.
+#define kMinimumODFileSampleSize 44100*30
 
 #ifndef SNDFILE_1
 #error Requires libsndfile 1.0 or higher
@@ -247,7 +251,7 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
       
       // lets use OD only if the file is longer than 30 seconds.  Otherwise, why wake up extra threads.
       //todo: make this a user pref.
-      bool useOD =fileTotalFrames>44100*30;
+      bool useOD =fileTotalFrames>kMinimumODFileSampleSize;
       
       for (sampleCount i = 0; i < fileTotalFrames; i += maxBlockSize) {
 	  

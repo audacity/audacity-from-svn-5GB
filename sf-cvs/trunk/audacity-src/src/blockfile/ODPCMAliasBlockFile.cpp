@@ -580,7 +580,7 @@ void *ODPCMAliasBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    for (i = 1; i < sumLen; i++) {
       if (summary64K[3*i] < min)
          min = summary64K[3*i];
-      else if (summary64K[3*i+1] > max)
+      if (summary64K[3*i+1] > max)
          max = summary64K[3*i+1];
       float r1 = (float)summary64K[3*i+2];
       sumsq += (r1*r1);
