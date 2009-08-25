@@ -75,44 +75,49 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
       SetIcon(ic);
    #endif
 
-   wxToolBar* pToolBar = this->CreateToolBar();
-   const int kHorizMargin = 8;
-   wxRadioButton* pRadioButton_BouncingBall = 
-      new wxRadioButton(pToolBar, kID_RadioButton_BouncingBall, _("Bouncing Ball"), wxPoint(kHorizMargin, 4),
-          wxDefaultSize, wxRB_GROUP);
-   // Reposition to center vertically. 
-   wxSize tbSize = pToolBar->GetSize();
-   wxSize btnSize = pRadioButton_BouncingBall->GetSize();
-   int top = (tbSize.GetHeight() - btnSize.GetHeight()) / 2;
-   pRadioButton_BouncingBall->Move(kHorizMargin, top);
-   pToolBar->AddControl(pRadioButton_BouncingBall);
+   wxPoint panelPos(0, 0);
+   wxSize panelSize = gSize;
 
-   int left = kHorizMargin + btnSize.GetWidth() + kHorizMargin; //vvv Doesn't actually work. Probably need sizers.
-   wxRadioButton* pRadioButton_Highlight = 
-      new wxRadioButton(pToolBar, kID_RadioButton_Highlight, _("Highlight"), wxPoint(left, top));
-   pToolBar->AddControl(pRadioButton_Highlight);
-   pRadioButton_Highlight->Enable(false); //vvvvv not working right in ported version, so disabled.
+   //vvvvv not yet working right in ported version, so choice is disabled.
+   //wxToolBar* pToolBar = this->CreateToolBar();
+   //const int kHorizMargin = 8;
+   //wxRadioButton* pRadioButton_BouncingBall = 
+   //   new wxRadioButton(pToolBar, kID_RadioButton_BouncingBall, _("Bouncing Ball"), wxPoint(kHorizMargin, 4),
+   //       wxDefaultSize, wxRB_GROUP);
+   //// Reposition to center vertically. 
+   //wxSize tbSize = pToolBar->GetSize();
+   //wxSize btnSize = pRadioButton_BouncingBall->GetSize();
+   //int top = (tbSize.GetHeight() - btnSize.GetHeight()) / 2;
+   //pRadioButton_BouncingBall->Move(kHorizMargin, top);
+   //pToolBar->AddControl(pRadioButton_BouncingBall);
+   //
+   //int left = kHorizMargin + btnSize.GetWidth() + kHorizMargin; //vvv Doesn't actually work. Probably need sizers.
+   //wxRadioButton* pRadioButton_Highlight = 
+   //   new wxRadioButton(pToolBar, kID_RadioButton_Highlight, _("Highlight"), wxPoint(left, top));
+   //pToolBar->AddControl(pRadioButton_Highlight);
+   //
+   //panelPos.x += tbSize.GetHeight();
+   //panelSize.y -= tbSize.GetHeight())
+   //
+   //#if defined(__WXMAC__)
+   //   wxColour face = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
+   //   pRadioButton_BouncingBall->SetBackgroundColour(face);
+   //   pRadioButton_Highlight->SetBackgroundColour(face);
+   //#endif
+   //
+   //pToolBar->Realize();
 
-   #if defined(__WXMAC__)
-      wxColour face = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-      pRadioButton_BouncingBall->SetBackgroundColour(face);
-      pRadioButton_Highlight->SetBackgroundColour(face);
-   #endif
+   mLyricsPanel = new Lyrics(this, -1, panelPos, panelSize);
 
-   pToolBar->Realize();
-
-   mLyricsPanel = 
-      new Lyrics(this, -1, 
-                  wxPoint(0, tbSize.GetHeight()), 
-                  wxSize(gSize.GetWidth(), gSize.GetHeight() - tbSize.GetHeight()));
-   switch (mLyricsPanel->GetLyricsStyle()) 
-   {
-      case Lyrics::kBouncingBallLyrics:
-         pRadioButton_BouncingBall->SetValue(true); break;
-      case Lyrics::kHighlightLyrics:
-      default:
-         pRadioButton_Highlight->SetValue(true); break;
-   }
+   //vvvvv Highlight style is broken in ported version.
+   //switch (mLyricsPanel->GetLyricsStyle()) 
+   //{
+   //   case Lyrics::kBouncingBallLyrics:
+   //      pRadioButton_BouncingBall->SetValue(true); break;
+   //   case Lyrics::kHighlightLyrics:
+   //   default:
+   //      pRadioButton_Highlight->SetValue(true); break;
+   //}
 }
 
 LyricsWindow::~LyricsWindow()
