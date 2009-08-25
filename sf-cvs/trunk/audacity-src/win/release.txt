@@ -116,13 +116,13 @@ either one, but example values are for Unicode_Release.
 	c. Change the version strings as necessary. 
 		These are current for Unicode_Release:
 	
-		* OutputBaseFilename=audacity-1.3.8-win-unicode
+		* OutputBaseFilename=audacity-win-unicode-1.3.9
 		
 		* AppName=Audacity 1.3 Beta (Unicode)
 			For stable releases, this should just be 
 			"Audacity (Unicode)"
 		
-		* AppVerName=Audacity 1.3.8 (Unicode)
+		* AppVerName=Audacity 1.3.9 (Unicode)
 		
 		* DefaultDirName={pf}\Audacity 1.3 Beta (Unicode)
 			For stable releases, this should just be 
@@ -132,7 +132,7 @@ either one, but example values are for Unicode_Release.
 		The result appears in audacity\win\Output.
 
 	e. Rename it as necessary, e.g., 
-		"audacity-1.3.8rc0.1-win-unicode.exe".
+		"audacity-win-unicode-1.3.9rc1.exe".
 
 
 5. To create the zip version, go to the installed version, 
