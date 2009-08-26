@@ -28,6 +28,7 @@ other settings.
 
 #include <wx/choice.h>
 #include <wx/intl.h>
+#include <wx/log.h>
 
 #include "portaudio.h"
 
@@ -93,6 +94,7 @@ void DevicePrefs::GetNamesAndLabels()
          if (mHostNames.Index(name) == wxNOT_FOUND) {
             mHostNames.Add(name);
             mHostLabels.Add(name);
+            mHostIndexes.Add(i);
          }
       }
    }
@@ -157,7 +159,7 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
 
 void DevicePrefs::OnHost(wxCommandEvent & e)
 {
-   int index = mHost->GetCurrentSelection();
+   int index = mHost->GetCurrentSelection(); /* the hostAPI index the user has selected */
    int nDevices = Pa_GetDeviceCount();
 
    if (nDevices == 0) {
@@ -172,47 +174,54 @@ void DevicePrefs::OnHost(wxCommandEvent & e)
    wxArrayString playnames;
    wxArrayString recordnames;
 
+   int devindex;  /* temp variable to hold the numeric ID of each device in turn */
+
    for (int i = 0; i < nDevices; i++) {
       const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
-      if (info->hostApi == index) {
+      if (info->hostApi == index) { /* if the device is for the current HostAPI */
          wxString name(info->name, wxConvLocal);
          wxString device = DeviceName(info);
-         int index;
+
 
          if (info->maxOutputChannels > 0) {
             playnames.Add(name);
-            index = mPlay->Append(name, (void *) info);
-            if (device == mPlayDevice) {
-               mPlay->SetSelection(index);
+            devindex = mPlay->Append(name, (void *) info);
+            if (device == mPlayDevice) {  /* if this is the default device, select it */
+               mPlay->SetSelection(devindex);
             }
          }
 
          if (info->maxInputChannels > 0) {
             recordnames.Add(name);
-            index = mRecord->Append(name, (void *) info);
+            devindex = mRecord->Append(name, (void *) info);
             if (device == mRecordDevice) {
-               mRecord->SetSelection(index);
+               mRecord->SetSelection(devindex);
             }
          }
       }
    }
-
+   
+   /* deal with not having any devices at all */
    if (mPlay->GetCount() == 0) {
       playnames.Add(_("No devices found"));
       mPlay->Append(playnames[0], (void *) NULL);
    }
-
    if (mRecord->GetCount() == 0) {
       recordnames.Add(_("No devices found"));
       mRecord->Append(recordnames[0], (void *) NULL);
    }
 
+   /* what if we have no device selected? we should choose the default on 
+    * this API, as defined by PortAudio. We then fall back to using 0 only if
+    * that fails */
    if (mPlay->GetCount() && mPlay->GetSelection() == wxNOT_FOUND) {
-      mPlay->SetSelection(0);
+      wxLogDebug(wxT("DevicePrefs::OnHost(): no play device selected"));
+      mPlay->SetStringSelection(GetDefaultPlayDevice(index));
    }
 
    if (mRecord->GetCount() && mRecord->GetSelection() == wxNOT_FOUND) {
-      mRecord->SetSelection(0);
+      wxLogDebug(wxT("DevicePrefs::OnHost(): no record device selected"));
+      mRecord->SetStringSelection(GetDefaultRecordDevice(index));
    }
 
    ShuttleGui S(this, eIsCreating);
@@ -284,6 +293,30 @@ void DevicePrefs::OnDevice(wxCommandEvent & e)
    ShuttleGui S(this, eIsCreating);
    S.SetSizeHints(mChannels, channelnames);
    Layout();
+}
+
+wxString DevicePrefs::GetDefaultPlayDevice(int index)
+{
+   const struct PaHostApiInfo *apiinfo = Pa_GetHostApiInfo(index);
+   // get info on API
+   wxLogDebug(wxT("GetDefaultPlayDevice(): HostAPI index %d, name %s"), index, wxString(apiinfo->name, wxConvLocal).c_str());
+   wxLogDebug(wxT("GetDefaultPlayDevice() default output %d"), apiinfo->defaultOutputDevice);
+   const PaDeviceInfo* devinfo = Pa_GetDeviceInfo(apiinfo->defaultOutputDevice);
+   wxString name(devinfo->name, wxConvLocal);
+   wxLogDebug(wxT("GetDefaultPlayDevice() default output device name %s"), name.c_str());
+   return name;
+}
+
+wxString DevicePrefs::GetDefaultRecordDevice(int index)
+{
+   const struct PaHostApiInfo *apiinfo;   /* info on this API */
+   apiinfo = Pa_GetHostApiInfo(index);   // get info on API
+   wxLogDebug(wxT("GetDefaultRecordDevice(): HostAPI index %d, name %s"), index, wxString(apiinfo->name, wxConvLocal).c_str());
+   wxLogDebug(wxT("GetDefaultRecordDevice() default input %d"), apiinfo->defaultInputDevice);
+   const PaDeviceInfo* devinfo = Pa_GetDeviceInfo(apiinfo->defaultInputDevice);
+   wxString name(devinfo->name, wxConvLocal);
+   wxLogDebug(wxT("GetDefaultRecordDevice() default input device name %s"), name.c_str());
+   return name;
 }
 
 bool DevicePrefs::Apply()
