@@ -50,11 +50,6 @@ class DevicePrefs:public PrefsPanel
    wxString GetDefaultRecordDevice(int index);
 
    wxArrayString mHostNames;
-   /** Holds the portaudio HostAPI indexes (PaHostApiIndex values) of the
-    * host APIs listed in mHostNames, because we may skip some and we need a
-    * way to get back to the Pa indexes from the list of labels the user sees
-    */
-   wxArrayInt mHostIndexes;
    wxArrayString mHostLabels;
 
    wxString mPlayDevice;
