@@ -94,7 +94,6 @@ void DevicePrefs::GetNamesAndLabels()
          if (mHostNames.Index(name) == wxNOT_FOUND) {
             mHostNames.Add(name);
             mHostLabels.Add(name);
-            mHostIndexes.Add(i);
          }
       }
    }
