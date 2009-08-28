@@ -710,8 +710,8 @@ void ControlToolBar::StopPlaying()
    SetPlay(false);
    SetRecord(false);
 
-   #ifdef AUTOMATIC_VOLUME
-      gAudioIO->AVDisable();
+   #ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
+      gAudioIO->AILADisable();
    #endif
 
    mPause->PopUp();
@@ -897,9 +897,9 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
             t->Add(newRecordingTracks[i]);
       }
 
-      //Automatic Volume Initialization
-      #ifdef AUTOMATIC_VOLUME
-         gAudioIO->AVInitialize();
+      //Automated Input Level Adjustment Initialization
+      #ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
+         gAudioIO->AILAInitialize();
       #endif
 
       int token = gAudioIO->StartStream(playbackTracks,

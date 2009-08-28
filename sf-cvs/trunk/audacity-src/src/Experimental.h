@@ -136,7 +136,7 @@ extern void AddPages(   AudacityProject * pProj, GuiFactory & Factory,  wxNotebo
 
 #if USE_PORTMIXER
    //Automatically tries to find an acceptable input volume
-   //#define AUTOMATIC_VOLUME
+   //#define AUTOMATED_INPUT_LEVEL_ADJUSTMENT
 #endif
 
 #endif

@@ -172,7 +172,7 @@ enum {
    OnDisableMeterID,
    OnMonitorID,
    OnHorizontalID,
-   OnAutomaticVolumeID,
+   OnAutomatedInputLevelAdjustmentID,
    OnVerticalID,
    OnMultiID,
    OnEqualizerID,
@@ -200,8 +200,8 @@ BEGIN_EVENT_TABLE(Meter, wxPanel)
    EVT_MENU(OnDBID, Meter::OnDB)
    EVT_MENU(OnClipID, Meter::OnClip)
    EVT_MENU(OnMonitorID, Meter::OnMonitor)
-#ifdef AUTOMATIC_VOLUME
-   EVT_MENU(OnAutomaticVolumeID, Meter::OnAutomaticVolume)
+#ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
+   EVT_MENU(OnAutomatedInputLevelAdjustmentID, Meter::OnAutomatedInputLevelAdjustment)
 #endif
    EVT_MENU(OnFloatID, Meter::OnFloat)
    EVT_MENU(OnPreferencesID, Meter::OnPreferences)
@@ -413,16 +413,16 @@ void Meter::OnMouse(wxMouseEvent &evt)
          else
             menu->Append(OnMonitorID, _("Start Monitoring"));
 
-         #ifdef AUTOMATIC_VOLUME
-            if (gAudioIO->AVIsActive())
-               menu->Append(OnAutomaticVolumeID, _("Stop Automatic Volume"));
+         #ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
+            if (gAudioIO->AILAIsActive())
+               menu->Append(OnAutomatedInputLevelAdjustmentID, _("Stop Automated Input Level Adjustment"));
             else
-               menu->Append(OnAutomaticVolumeID, _("Start Automatic Volume"));
+               menu->Append(OnAutomatedInputLevelAdjustmentID, _("Start Automated Input Level Adjustment"));
 
             bool AVActive;
-            gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &AVActive, false);
+            gPrefs->Read(wxT("/AudioIO/AutomatedInputLevelAdjustment"), &AVActive, false);
             if (!AVActive || !GetActiveProject()->GetControlToolBar()->IsRecordDown())
-               menu->Enable(OnAutomaticVolumeID, false);
+               menu->Enable(OnAutomatedInputLevelAdjustmentID, false);
          #endif
 
       }
@@ -694,8 +694,8 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
          }
 
          mBar[j].tailPeakCount = msg.tailPeakCount[j];
-#ifdef AUTOMATIC_VOLUME
-         if (mT > gAudioIO->AVGetLastDecisionTime()) {
+#ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
+         if (mT > gAudioIO->AILAGetLastDecisionTime()) {
             discarded = false;
             maxPeak = msg.peak[j] > maxPeak ? msg.peak[j] : maxPeak;
             printf("%f@%f ", msg.peak[j], mT);
@@ -709,9 +709,9 @@ void Meter::OnMeterUpdate(wxTimerEvent &evt)
    } // while
 
    if (numChanges > 0) {
-      #ifdef AUTOMATIC_VOLUME
-         if (gAudioIO->AVIsActive() && mIsInput && !discarded) {
-            gAudioIO->AVProcess(maxPeak);
+      #ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
+         if (gAudioIO->AILAIsActive() && mIsInput && !discarded) {
+            gAudioIO->AILAProcess(maxPeak);
             putchar('\n');
          }
       #endif
@@ -1259,16 +1259,16 @@ void Meter::OnMonitor(wxCommandEvent &evt)
    StartMonitoring();
 }
 
-#ifdef AUTOMATIC_VOLUME
-void Meter::OnAutomaticVolume(wxCommandEvent &evt)
+#ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
+void Meter::OnAutomatedInputLevelAdjustment(wxCommandEvent &evt)
 {
-   if (gAudioIO->AVIsActive()) {
-      gAudioIO->AVDisable();
+   if (gAudioIO->AILAIsActive()) {
+      gAudioIO->AILADisable();
       AudacityProject *p = GetActiveProject();
-      if (p) p->TP_DisplayStatusMessage(_("Automatic Volume stopped as requested by user."));
+      if (p) p->TP_DisplayStatusMessage(_("Automated Input Level Adjustment stopped as requested by user."));
    }
    else
-      gAudioIO->AVInitialize();
+      gAudioIO->AILAInitialize();
 }
 #endif
 
