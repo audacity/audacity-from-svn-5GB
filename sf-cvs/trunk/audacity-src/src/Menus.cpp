@@ -601,8 +601,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCheck(wxT("SoundActivation"), _("Sound Activated Recording (on/off)"), FN(OnToggleSoundActivated), 0);
    c->AddItem(wxT("SoundActivationLevel"), _("Sound Activation Level..."), FN(OnSoundActivated));
 
-#ifdef AUTOMATIC_VOLUME
-   c->AddCheck(wxT("AutomaticVolumeOnOff"), _("Automatic Volume (on/off)"), FN(OnToogleAutomaticVolume), 0);
+#ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
+   c->AddCheck(wxT("AutomatedInputLevelAdjustmentOnOff"), _("Automated Input Level Adjustment (on/off)"), FN(OnToogleAutomatedInputLevelAdjustment), 0);
 #endif
 
    if (!mCleanSpeechMode) {
@@ -1488,9 +1488,9 @@ void AudacityProject::ModifyToolbarMenus()
    bool active;
    gPrefs->Read(wxT("/AudioIO/SoundActivatedRecord"),&active, false);
    mCommandManager.Check(wxT("SoundActivation"), active);
-#ifdef AUTOMATIC_VOLUME
-   gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"),&active, false);
-   mCommandManager.Check(wxT("AutomaticVolumeOnOff"), active);
+#ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
+   gPrefs->Read(wxT("/AudioIO/AutomatedInputLevelAdjustment"),&active, false);
+   mCommandManager.Check(wxT("AutomatedInputLevelAdjustmentOnOff"), active);
 #endif
    gPrefs->Read(wxT("/AudioIO/Duplex"),&active, true);
    mCommandManager.Check(wxT("Duplex"), active);
@@ -1860,12 +1860,12 @@ void AudacityProject::OnToggleSWPlaythrough()
    ModifyToolbarMenus();
 }
 
-#ifdef AUTOMATIC_VOLUME
-void AudacityProject::OnToogleAutomaticVolume()
+#ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
+void AudacityProject::OnToogleAutomatedInputLevelAdjustment()
 {
    bool AVEnabled;
-   gPrefs->Read(wxT("/AudioIO/AutomaticVolumeRecord"), &AVEnabled, false);
-   gPrefs->Write(wxT("/AudioIO/AutomaticVolumeRecord"), !AVEnabled);
+   gPrefs->Read(wxT("/AudioIO/AutomatedInputLevelAdjustment"), &AVEnabled, false);
+   gPrefs->Write(wxT("/AudioIO/AutomatedInputLevelAdjustment"), !AVEnabled);
    ModifyToolbarMenus();
 }
 #endif

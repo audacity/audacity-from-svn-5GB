@@ -274,8 +274,8 @@ void OnSoundActivated();
 void OnToggleSoundActivated();
 void OnTogglePlayRecording();
 void OnToggleSWPlaythrough();
-#ifdef AUTOMATIC_VOLUME
-   void OnToogleAutomaticVolume();
+#ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
+   void OnToogleAutomatedInputLevelAdjustment();
 #endif
 
         // Tracks Menu
