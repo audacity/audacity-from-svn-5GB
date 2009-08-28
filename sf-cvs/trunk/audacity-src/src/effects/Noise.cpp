@@ -32,7 +32,8 @@
 
 bool EffectNoise::Init()
 {
-   return gPrefs->Read(wxT("/CsPresets/NoiseGen_Duration"), &mDuration, 1L);
+   gPrefs->Read(wxT("/CsPresets/NoiseGen_Duration"), &mDuration, 1L);
+   return true;
 }
 
 bool EffectNoise::PromptUser()
