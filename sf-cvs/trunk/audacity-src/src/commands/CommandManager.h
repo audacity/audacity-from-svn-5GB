@@ -102,6 +102,13 @@ class AUDACITY_DLL_API CommandManager: public XMLTagHandler
                  CommandFunctor *callback,
                  int checkmark = 0);
 
+   void AddCheck(const wxChar *name,
+                 const wxChar *label,
+                 CommandFunctor *callback,
+                 int checkmark,
+                 int flags,
+                 int mask);
+
    void AddItem(const wxChar *name,
                 const wxChar *label,
                 CommandFunctor *callback,

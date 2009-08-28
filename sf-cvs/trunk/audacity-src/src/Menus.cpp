@@ -521,7 +521,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
 
    c->AddCheck(wxT("ShowClipping"), _("&Show Clipping"), FN(OnShowClipping),
-               gPrefs->Read(wxT("/GUI/ShowClipping"), 0L));
+               gPrefs->Read(wxT("/GUI/ShowClipping"), 0L), AlwaysEnabledFlag, AlwaysEnabledFlag);
 
    c->AddSeparator();
 
@@ -542,20 +542,18 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginSubMenu(_("&Toolbars"));
 
-   c->AddCheck(wxT("ShowControlTB"), _("&Control Toolbar"), FN(OnShowControlToolBar), 0);
-   c->AddCheck(wxT("ShowDeviceTB"), _("&Device Toolbar"), FN(OnShowDeviceToolBar), 0);
-   c->AddCheck(wxT("ShowEditTB"), _("&Edit Toolbar"), FN(OnShowEditToolBar), 0);
-   c->AddCheck(wxT("ShowMeterTB"), _("&Meter Toolbar"), FN(OnShowMeterToolBar), 0);
-   c->AddCheck(wxT("ShowMixerTB"), _("Mi&xer Toolbar"), FN(OnShowMixerToolBar), 0);
-   c->AddCheck(wxT("ShowSelectionTB"), _("&Selection Toolbar"), FN(OnShowSelectionToolBar), 0);
-   c->AddCheck(wxT("ShowToolsTB"), _("T&ools Toolbar"), FN(OnShowToolsToolBar), 0);
-   c->AddCheck(wxT("ShowTranscriptionTB"), _("Transcri&ption Toolbar"), FN(OnShowTranscriptionToolBar), 0);
+   c->AddCheck(wxT("ShowControlTB"), _("&Control Toolbar"), FN(OnShowControlToolBar), 0, AlwaysEnabledFlag, AlwaysEnabledFlag);
+   c->AddCheck(wxT("ShowDeviceTB"), _("&Device Toolbar"), FN(OnShowDeviceToolBar), 0, AlwaysEnabledFlag, AlwaysEnabledFlag);
+   c->AddCheck(wxT("ShowEditTB"), _("&Edit Toolbar"), FN(OnShowEditToolBar), 0, AlwaysEnabledFlag, AlwaysEnabledFlag);
+   c->AddCheck(wxT("ShowMeterTB"), _("&Meter Toolbar"), FN(OnShowMeterToolBar), 0, AlwaysEnabledFlag, AlwaysEnabledFlag);
+   c->AddCheck(wxT("ShowMixerTB"), _("Mi&xer Toolbar"), FN(OnShowMixerToolBar), 0, AlwaysEnabledFlag, AlwaysEnabledFlag);
+   c->AddCheck(wxT("ShowSelectionTB"), _("&Selection Toolbar"), FN(OnShowSelectionToolBar), 0, AlwaysEnabledFlag, AlwaysEnabledFlag);
+   c->AddCheck(wxT("ShowToolsTB"), _("T&ools Toolbar"), FN(OnShowToolsToolBar), 0, AlwaysEnabledFlag, AlwaysEnabledFlag);
+   c->AddCheck(wxT("ShowTranscriptionTB"), _("Transcri&ption Toolbar"), FN(OnShowTranscriptionToolBar), 0, AlwaysEnabledFlag, AlwaysEnabledFlag);
 
    c->AddSeparator();
 
-   c->AddItem(wxT("ResetToolbars"), _("&Reset Toolbars"), FN(OnResetToolBars),
-              AudioIONotBusyFlag,
-              AudioIONotBusyFlag);
+   c->AddItem(wxT("ResetToolbars"), _("&Reset Toolbars"), FN(OnResetToolBars), 0, AlwaysEnabledFlag, AlwaysEnabledFlag);
 
    c->EndSubMenu();
 

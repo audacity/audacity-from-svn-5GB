@@ -451,6 +451,16 @@ void CommandManager::AddCheck(const wxChar *name,
    AddItem(name, label, callback, wxT(""), NoFlagsSpecifed, NoFlagsSpecifed, checkmark);
 }
 
+void CommandManager::AddCheck(const wxChar *name,
+                              const wxChar *label,
+                              CommandFunctor *callback,
+                              int checkmark,
+                              int flags,
+                              int mask)
+{
+   AddItem(name, label, callback, wxT(""), flags, mask, checkmark);
+}
+
 void CommandManager::AddItem(const wxChar *name,
                              const wxChar *label,
                              CommandFunctor *callback,
