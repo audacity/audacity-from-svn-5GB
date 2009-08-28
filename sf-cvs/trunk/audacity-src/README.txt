@@ -142,8 +142,6 @@ this version.
  * Effects and Analysis:
     * VST effects always remain in Effect menu even when rescanned 
        and no longer available. 
-    * Truncate Silence does not work if other tracks without silences
-       are present  
     * Nyquist effects, SoundTouch, SBSMS and Generators join separate 
        clips together.
     * Values appearing in Nyquist effects text boxes are not always 
