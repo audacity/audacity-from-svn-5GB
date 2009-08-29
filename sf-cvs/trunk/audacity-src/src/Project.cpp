@@ -3424,7 +3424,7 @@ void AudacityProject::SetStateTo(unsigned int n)
          pLyricsPanel->Add(pLabelTrack->GetLabel(i)->t,
                            pLabelTrack->GetLabel(i)->title);
       pLyricsPanel->Finish(pLabelTrack->GetEndTime());
-      pLyricsPanel->Update(0.0);
+      pLyricsPanel->Update(this->GetSel0());
    }
 #endif
 

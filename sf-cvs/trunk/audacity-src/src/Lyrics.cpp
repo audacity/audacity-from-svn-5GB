@@ -54,7 +54,7 @@ void HighlightTextCtrl::OnMouseEvent(wxMouseEvent& event)
       {
          Syllable* pCurSyl = mLyrics->GetSyllable(nNewSyl);
          AudacityProject* pProj = GetActiveProject();
-         pProj->mViewInfo.sel0 = pCurSyl->t;
+         pProj->SetSel0(pCurSyl->t);
 
          //vvv Should probably select to end as in AudacityProject::OnSelectCursorEnd, 
          // but better to generalize that in AudacityProject methods. 
@@ -473,7 +473,7 @@ void Lyrics::OnPaint(wxPaintEvent &evt)
    }
    else // (mLyricsStyle == kHighlightLyrics)
    {
-      //vvvvv causes flicker in ported version
+      //v causes flicker in ported version
       //    this->SetHighlightFont();
    }
 }

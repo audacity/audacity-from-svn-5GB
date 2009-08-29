@@ -79,6 +79,9 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
    wxSize panelSize = gSize;
 
    //vvvvv not yet working right in ported version, so choice is disabled.
+   // It seems when you select highlight style, the TrackPanel timer stops working, but 
+   // going back to bouncing ball style starts it up again (!!!), per breakpoints in TrackPanel::OnTimer().
+   //
    //wxToolBar* pToolBar = this->CreateToolBar();
    //const int kHorizMargin = 8;
    //wxRadioButton* pRadioButton_BouncingBall = 
@@ -97,7 +100,7 @@ LyricsWindow::LyricsWindow(AudacityProject *parent):
    //pToolBar->AddControl(pRadioButton_Highlight);
    //
    //panelPos.x += tbSize.GetHeight();
-   //panelSize.y -= tbSize.GetHeight())
+   //panelSize.y -= tbSize.GetHeight();
    //
    //#if defined(__WXMAC__)
    //   wxColour face = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);

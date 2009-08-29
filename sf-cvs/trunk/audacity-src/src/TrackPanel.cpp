@@ -820,7 +820,8 @@ void TrackPanel::OnTimer()
    AudacityProject *p = GetProject();
 
    #ifdef EXPERIMENTAL_LYRICS_WINDOW
-      if (p->GetAudioIOToken() > 0) 
+      if ((p->GetAudioIOToken() > 0) &&
+            gAudioIO->IsStreamActive(p->GetAudioIOToken()))
       {
          // Update lyrics display. 
          LyricsWindow* pLyricsWindow = p->GetLyricsWindow();
@@ -833,13 +834,16 @@ void TrackPanel::OnTimer()
    #endif
    #ifdef EXPERIMENTAL_MIXER_BOARD
       MixerBoard* pMixerBoard = this->GetMixerBoard();
-      if (pMixerBoard && (p->GetAudioIOToken() > 0))
+      if (pMixerBoard && 
+            (p->GetAudioIOToken() > 0) &&
+            gAudioIO->IsStreamActive(p->GetAudioIOToken()))
+      {
          pMixerBoard->UpdateMeters(gAudioIO->GetStreamTime(), 
                                     (p->mLastPlayMode == loopedPlay));
+      }
    #endif
 
-   // Each time the loop, check to see if we were playing or
-   // recording audio, but the stream has stopped.
+   // Check whether we were playing or recording, but the stream has stopped.
    if (p->GetAudioIOToken()>0 &&
          !gAudioIO->IsStreamActive(p->GetAudioIOToken())
          #ifdef EXPERIMENTAL_MIDI_OUT
@@ -848,6 +852,15 @@ void TrackPanel::OnTimer()
       ) 
    {
       p->GetControlToolBar()->OnStop(dummyEvent);
+      #ifdef EXPERIMENTAL_LYRICS_WINDOW
+         // Reset lyrics display. 
+         LyricsWindow* pLyricsWindow = p->GetLyricsWindow();
+         if (pLyricsWindow) 
+         {
+            Lyrics* pLyricsPanel = pLyricsWindow->GetLyricsPanel();
+            pLyricsPanel->Update(p->GetSel0());
+         }
+      #endif
       #ifdef EXPERIMENTAL_MIXER_BOARD
          if (pMixerBoard) 
             pMixerBoard->ResetMeters();
@@ -1700,6 +1713,16 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
    } 
  done:
    SelectionHandleDrag(event, t);
+   #ifdef EXPERIMENTAL_LYRICS_WINDOW
+      // Update lyrics display for new selection.
+      AudacityProject* pProj = GetActiveProject();
+      LyricsWindow* pLyricsWindow = pProj->GetLyricsWindow();
+      if (pLyricsWindow && pLyricsWindow->IsShown()) 
+      {
+         Lyrics* pLyricsPanel = pLyricsWindow->GetLyricsPanel();
+         pLyricsPanel->Update(pProj->GetSel0());
+      }
+   #endif
 }
 
 /// This function gets called when we're handling selection
