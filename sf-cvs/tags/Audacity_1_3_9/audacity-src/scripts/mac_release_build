@@ -1,0 +1,33 @@
+#!/bin/sh
+
+if [ -f mac_release_build ]
+then
+   echo 'You must execute this script from the base Audacity directory'
+   exit 1
+fi
+
+plugs='gverb_1216.so hard_limiter_1413.so sc4_1882.so'
+for plug in $plugs
+do
+   if [ ! -f plug-ins/$plug ]
+   then
+      echo "Missing plugin: $plug"
+      echo
+      echo "You must copy the following to the plug-ins directory before building:"
+      echo
+      echo $plugs
+      echo
+      exit 1
+   fi
+done
+
+#
+# Build it
+#
+cd mac
+xcodebuild -configuration 'Release Static'
+cd ..
+make -C locale
+
+scripts/mkdmg $1 $2
+mv *.dmg ..
