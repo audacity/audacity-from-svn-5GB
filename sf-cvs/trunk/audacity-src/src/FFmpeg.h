@@ -35,6 +35,7 @@ extern "C" {
    // knowing the value of EINVAL...see bottom of avcodec.h.  Not doing
    // so will produce positive error returns when they should be < 0.
    #include <errno.h>
+
    #include <libavcodec/avcodec.h>
    #include <libavformat/avformat.h>
    #include <libavutil/fifo.h>
@@ -72,6 +73,14 @@ wxString GetFFmpegVersion(wxWindow *parent);
 
 /* from here on in, this stuff only applies when ffmpeg is available */
 #if defined(USE_FFMPEG)
+
+/* This is a bit shortsighted (matches only 0.5 exactly), but i can't come up with anything smarter at the moment */
+#if LIBAVFORMAT_VERSION_MAJOR == 52 && LIBAVFORMAT_VERSION_MINOR == 31 && LIBAVCODEC_VERSION_MAJOR == 52 && LIBAVCODEC_VERSION_MINOR == 20
+#define FFMPEG_STABLE 1
+#else
+#define FFMPEG_STABLE 0
+#endif
+
 int ufile_fopen(ByteIOContext **s, const wxString & name, int flags);
 
 #if defined(__WXMSW__)
@@ -218,19 +227,22 @@ public:
    int               (*av_interleaved_write_frame)    (AVFormatContext *s, AVPacket *pkt);
    int               (*av_write_frame)                (AVFormatContext *s, AVPacket *pkt);
    void              (*av_init_packet)                (AVPacket *pkt);
-   void              (*av_free_packet)                (AVPacket *pkt);
-   //int               (*av_fifo_init)                  (AVFifoBuffer *f, int size);
-   AVFifoBuffer*     (*av_fifo_alloc)                 (unsigned int size);
+   int               (*av_fifo_generic_write)         (AVFifoBuffer *f, void *src, int size, int (*func)(void*, void*, int));   
    void              (*av_fifo_free)                  (AVFifoBuffer *f);
-//   int               (*av_fifo_read)                  (AVFifoBuffer *f, uint8_t *buf, int buf_size);
-   int               (*av_fifo_generic_read)          (AVFifoBuffer *f, uint8_t *buf, int buf_size, int (*func)(void*, void*, int));
    int               (*av_fifo_size)                  (AVFifoBuffer *f);
-   int               (*av_fifo_generic_write)         (AVFifoBuffer *f, void *src, int size, int (*func)(void*, void*, int));
-//   void              (*av_fifo_realloc)               (AVFifoBuffer *f, unsigned int size);
-   int               (*av_fifo_realloc2)              (AVFifoBuffer *f, unsigned int size);
    void*             (*av_malloc)                     (unsigned int size);
    void              (*av_freep)                      (void *ptr);
    int64_t           (*av_rescale_q)                  (int64_t a, AVRational bq, AVRational cq);
+#if !FFMPEG_STABLE
+   void              (*av_free_packet)                (AVPacket *pkt);
+   AVFifoBuffer*     (*av_fifo_alloc)                 (unsigned int size);
+   int               (*av_fifo_generic_read)          (AVFifoBuffer *f, uint8_t *buf, int buf_size, int (*func)(void*, void*, int));
+   int               (*av_fifo_realloc2)              (AVFifoBuffer *f, unsigned int size);
+#else
+   int               (*av_fifo_init)                  (AVFifoBuffer *f, int size);
+   int               (*av_fifo_read)                  (AVFifoBuffer *f, uint8_t *buf, int buf_size);
+   void              (*av_fifo_realloc)               (AVFifoBuffer *f, unsigned int size);
+#endif
 
    ///! Finds libav* libraries
    ///\return true if found, false if not found

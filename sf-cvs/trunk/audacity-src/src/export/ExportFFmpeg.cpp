@@ -147,8 +147,12 @@ private:
    AVStream        *	mEncAudioStream;			// the output audio stream (may remain NULL)
    AVCodecContext  *	mEncAudioCodecCtx;		// the encoder for the output audio stream
    uint8_t         *	mEncAudioEncodedBuf;		// buffer to hold frames encoded by the encoder
-   int			      mEncAudioEncodedBufSiz;		
+   int			          mEncAudioEncodedBufSiz;		
+#if FFMPEG_STABLE
+   AVFifoBuffer		    mEncAudioFifo;				// FIFO to write incoming audio samples into
+#else
    AVFifoBuffer		 *  mEncAudioFifo;				// FIFO to write incoming audio samples into
+#endif
    uint8_t         *	mEncAudioFifoOutBuf;		// buffer to read _out_ of the FIFO into
 
    wxString          mName;
@@ -227,6 +231,14 @@ bool ExportFFmpeg::CheckFileName(wxFileName &filename, int format)
 {
    bool result = true;
    int subFormat = AdjustFormatIndex(format);
+#if FFMPEG_STABLE
+   if (subFormat == FMT_AMRNB || subFormat == FMT_AMRWB)
+   {
+      wxMessageBox(_("Properly configured FFmpeg is required to proceed.\nYou can configure it at Preferences > Libraries.\n\nNote that AMR support is not available with our FFmpeg\ninstaller, but requires you compile FFmpeg yourself."), _("AMR support is not distributable"));
+      result = false;
+   }
+   else
+#endif
    if (!CheckFFmpegPresence())
    {
       result = false;
@@ -348,7 +360,7 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    switch (mSubFormat)
    {
    case FMT_M4A:
-      mEncAudioCodecCtx->bit_rate = 0;
+      mEncAudioCodecCtx->bit_rate = 98000;
       mEncAudioCodecCtx->bit_rate *= mChannels;
       mEncAudioCodecCtx->profile = FF_PROFILE_AAC_LOW;
       mEncAudioCodecCtx->cutoff = 0;
@@ -365,10 +377,12 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
       mSampleRate = 8000;
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AMRNBBitRate"), 12200);
       break;
-/*   case FMT_AMRWB:
+#if FFMPEG_STABLE
+   case FMT_AMRWB:
       mSampleRate = 16000;
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/AMRWBBitRate"), 23850);
-      break;*/
+      break;
+#endif
    case FMT_WMA2:
       mEncAudioCodecCtx->bit_rate = gPrefs->Read(wxT("/FileFormats/WMABitRate"), 198000);
       if (!CheckSampleRate(mSampleRate,ExportFFmpegWMAOptions::iWMASampleRates[0], ExportFFmpegWMAOptions::iWMASampleRates[4], &ExportFFmpegWMAOptions::iWMASampleRates[0]))
@@ -409,7 +423,11 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
 
    if (mEncAudioCodecCtx->global_quality >= 0)
    {
-      mEncAudioCodecCtx->bit_rate = 0;
+/* I'm not sure this is required, regardless of FFmpeg version
+#if FFMPEG_STABLE
+     mEncAudioCodecCtx->bit_rate = 0;
+#endif
+*/
       mEncAudioCodecCtx->flags |= CODEC_FLAG_QSCALE;
    }
    else mEncAudioCodecCtx->global_quality = -99999;
@@ -458,8 +476,11 @@ bool ExportFFmpeg::InitCodecs(AudacityProject *project)
    // The encoder may require a minimum number of raw audio samples for each encoding but we can't
    // guarantee we'll get this minimum each time an audio frame is decoded from the input file so 
    // we use a FIFO to store up incoming raw samples until we have enough for one call to the codec.
-   //FFmpegLibsInst->av_fifo_init(&mEncAudioFifo, 1024);
+#if FFMPEG_STABLE
+   FFmpegLibsInst->av_fifo_init(&mEncAudioFifo, 1024);
+#else
    mEncAudioFifo = FFmpegLibsInst->av_fifo_alloc(1024);
+#endif
 
    // Allocate a buffer to read OUT of the FIFO into. The FIFO maintains its own buffer internally.
    if ((mEncAudioFifoOutBuf = (uint8_t*)FFmpegLibsInst->av_malloc(2*MAX_AUDIO_PACKET_SIZE)) == NULL)
@@ -479,7 +500,11 @@ bool ExportFFmpeg::Finalize()
    for (;;)
    {
       AVPacket	pkt;
+#if FFMPEG_STABLE
+      int		nFifoBytes = FFmpegLibsInst->av_fifo_size(&mEncAudioFifo);	// any bytes left in audio FIFO?
+#else
       int		nFifoBytes = FFmpegLibsInst->av_fifo_size(mEncAudioFifo);	// any bytes left in audio FIFO?
+#endif
 
       nEncodedBytes = 0;
       int		nAudioFrameSizeOut = mEncAudioCodecCtx->frame_size * mEncAudioCodecCtx->channels * sizeof(int16_t);
@@ -516,7 +541,11 @@ bool ExportFFmpeg::Finalize()
                nFifoBytes, mEncAudioCodecCtx->frame_size);
 
             // Pull the bytes out from the FIFO and feed them to the encoder.
+#if FFMPEG_STABLE
+            if (FFmpegLibsInst->av_fifo_read(&mEncAudioFifo, mEncAudioFifoOutBuf, nFifoBytes) == 0)
+#else
             if (FFmpegLibsInst->av_fifo_generic_read(mEncAudioFifo, mEncAudioFifoOutBuf, nFifoBytes, NULL) == 0)
+#endif
             {
                if (mEncAudioCodecCtx->frame_size != 1)
                   nEncodedBytes = FFmpegLibsInst->avcodec_encode_audio(mEncAudioCodecCtx, mEncAudioEncodedBuf, mEncAudioEncodedBufSiz, (int16_t*)mEncAudioFifoOutBuf);
@@ -580,8 +609,12 @@ bool ExportFFmpeg::Finalize()
    if (mEncAudioFifoOutBuf != NULL)
       FFmpegLibsInst->av_free(mEncAudioFifoOutBuf);
 
+#if FFMPEG_STABLE
+   FFmpegLibsInst->av_fifo_free(&mEncAudioFifo);
+#else
    FFmpegLibsInst->av_fifo_free(mEncAudioFifo);
    mEncAudioFifo = NULL;
+#endif
    return true;
 }
 
@@ -596,15 +629,29 @@ bool ExportFFmpeg::EncodeAudioFrame(int16_t *pFrame, int frameSize)
 
    nBytesToWrite = frameSize;
    pRawSamples  = (uint8_t*)pFrame;
+#if FFMPEG_STABLE
+   FFmpegLibsInst->av_fifo_realloc(&mEncAudioFifo, FFmpegLibsInst->av_fifo_size(&mEncAudioFifo) + frameSize);
+#else
    FFmpegLibsInst->av_fifo_realloc2(mEncAudioFifo, FFmpegLibsInst->av_fifo_size(mEncAudioFifo) + frameSize);
+#endif
    // Put the raw audio samples into the FIFO.
+#if FFMPEG_STABLE
+   ret = FFmpegLibsInst->av_fifo_generic_write(&mEncAudioFifo, pRawSamples, nBytesToWrite,NULL);
+#else
    ret = FFmpegLibsInst->av_fifo_generic_write(mEncAudioFifo, pRawSamples, nBytesToWrite,NULL);
+#endif
    wxASSERT(ret == nBytesToWrite);
 
    // Read raw audio samples out of the FIFO in nAudioFrameSizeOut byte-sized groups to encode.
+#if FFMPEG_STABLE
+   while ((ret = FFmpegLibsInst->av_fifo_size(&mEncAudioFifo)) >= nAudioFrameSizeOut)
+   {
+      ret = FFmpegLibsInst->av_fifo_read(&mEncAudioFifo, mEncAudioFifoOutBuf, nAudioFrameSizeOut);
+#else
    while ((ret = FFmpegLibsInst->av_fifo_size(mEncAudioFifo)) >= nAudioFrameSizeOut)
    {
       ret = FFmpegLibsInst->av_fifo_generic_read(mEncAudioFifo, mEncAudioFifoOutBuf, nAudioFrameSizeOut, NULL);
+#endif
       FFmpegLibsInst->av_init_packet(&pkt);
 
       pkt.size = FFmpegLibsInst->avcodec_encode_audio(mEncAudioCodecCtx, 
@@ -838,12 +885,14 @@ bool ExportFFmpeg::DisplayOptions(wxWindow *parent, int format)
       od.ShowModal();
       return true;
    }
-/*   else if (mSubFormat == FMT_AMRWB)
+#if FFMPEG_STABLE
+   else if (mSubFormat == FMT_AMRWB)
    {
       ExportFFmpegAMRWBOptions od(parent);
       od.ShowModal();
       return true;
-   }*/
+   }
+#endif
    else if (mSubFormat == FMT_WMA2)
    {
       ExportFFmpegWMAOptions od(parent);
