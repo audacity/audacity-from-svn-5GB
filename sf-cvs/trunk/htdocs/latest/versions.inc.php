@@ -27,7 +27,7 @@ $win_exe_url = "audacity-win/audacity-win-".win_exe_version.".exe";
 $win_zip_url = "audacity-win-zip/audacity-win-".win_zip_version.".zip";
 $src_url = "http://audacity.googlecode.com/files/audacity-src-" .src_version.src_suffix;
 $ladspa_url = "http://audacity.googlecode.com/files/LADSPA_plugins-win-" .ladspa_version.".exe";
-$macosx_url = "audacity-macosx/audacity-macosx-ppc-".macosx_version.".dmg";
-$macosx_intel_url = "audacity-macosx-intel/audacity-macosx-intel-".macosx_intel_version.".dmg";
-$mac_classic_url = "audacity-mac/audacity-mac-".mac_classic_version.".sit";
+$macosx_url = "http://audacity.googlecode.com/files/audacity-macosx-ppc-" .macosx_version.".dmg";
+$macosx_intel_url = "http://audacity.googlecode.com/files/audacity-macosx-intel-" .macosx_intel_version.".dmg";
+$mac_classic_url = "http://audacity.googlecode.com/files/audacity-mac-". mac_classic_version.".sit";
 ?>
