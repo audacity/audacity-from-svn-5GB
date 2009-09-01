@@ -40,6 +40,71 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "September 01, 2009",
+  	"1.3.9-release",
+  _("Audacity 1.3.9 released, Google Summer of Code (GSoC) 2009 completed"),
+  _("
+<p>
+The Audacity Team is pleased to announce the release of
+<a href=\"/download\">Audacity 1.3.9 (Beta)</a> 
+for Windows, Mac and Linux/Unix. It contains many bug fixes 
+contributed by our two 
+<a href=\"http://google-opensource.blogspot.com/2009/08/wrapping-our-fifth-google-summer-of.html\">Google Summer of Code (GSoC) 2009</a> 
+students, and brings us much closer to the goal of a new Stable
+2.0 release. 
+</p>
+<p align=\"center\">
+	<a href=\"http://google-opensource.blogspot.com/2009/08/wrapping-our-fifth-google-summer-of.html\">
+	  <img src=\"http://audacityteam.org/wiki/images/6/68/GSoC2009.png\" alt=\"Google Summer of Code 2009\"></img>
+	</a>
+</p>
+<p>
+As well as bug fixing, the students' 
+<a href=\"http://wiki.audacityteam.org/index.php?title=GSoC_2009_Projects\">
+projects</a> involved work on experimental \"scripting\" and 
+\"pre-record level detection\" features that will appear in future 
+Audacity versions. We congratulate both students on successful 
+completion of their projects and thank everyone else involved in 
+mentoring, testing and administration.
+</p>        
+<p>
+<b> Future Beta Releases:</b> We will have one or two more Beta 
+releases in the very near future so as to get maximum possible
+feedback on code stability prior to 2.0 release. Please help us 
+by trying the new Beta releases and 
+<a href=\"http://audacity.sourceforge.net/contact/#feedback\">
+letting us know</a> of any problems you find. You can
+<a href=\"http://audacity.sourceforge.net/#announce\">
+subscribe</a> to receive news of these releases. Advanced users 
+can also help us greatly by downloading our 
+<a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">
+Nightly Builds</a> and testing our fixes as we make them.   
+</p>
+<p>
+<b>Bug Fixes in 1.3.9 include:</b>
+   <ul>
+          <li> VST effects support crashed or slowed Audacity</li>
+          <li> Failure to launch on some Windows XP machines</li>
+          <li> Crashes importing files via drag or Recent Files</li>  
+          <li> <i>(Mac OS X)</i>&nbsp; Files greater than 16-bit or 64000 Hz 
+                 did not import using QuickTime filter</li>  
+          <li> AAC exports silenced </li>
+          <li> Generating audio in existing track fitted project to window </li>
+          <li> View menu items/shortcuts disabled when playing/recording </li>
+          <li> Unwanted interactions between linked audio and label tracks</li>  
+          <li> Various other interface and effects bugs</li>
+   </ul>  
+</p>
+<p>See 
+<a href=\"http://audacity.sourceforge.net/download/features-1.3-a#details\">   
+New in Audacity 1.3.9</a> for more on 1.3.9 and the Beta series. <b>Note:</b> 
+This release does not support Windows 98 or ME, for which 1.3.7 is 
+<a href=\"http://audacity.sourceforge.net/download/beta_windows#recdown\">
+still available</a>. 
+</p>
+"));
+
+add_news_item(
   "July 30, 2009",
         "SourceForge_CCA_2009",
   _("SourceForge.net Community Choice Awards 2009"),

@@ -24,7 +24,72 @@
  </ul>
 ')?></p>
 
-<h3 id="details"><?=_("New in Audacity 1.3.8")?></h3>
+<h3 id="details"><?=_("New in Audacity 1.3.9")?></h3>
+
+<?=_("
+<dl>
+   <dt> Bug fixes for: </dt>
+      <dd>   
+            <ul>
+                   <li>Crash, slow launch or excessive CPU/memory use 
+                        arising from automatic VST support:</li>
+                        <ul>
+                           <li>VST instrument plug-ins should now be correctly ignored</li>
+                           <li>VST effects now scanned only at start of first session
+                                that detects them, then cached</li>
+                           <li>Effects are now not loaded or opened until needed</li>
+                           <li>New \"Effects\" tab in Preferences to enable/disable 
+                                VST effects and enable VST rescan on next launch</li>
+                        </ul>
+                    <li>Default View Mode now works</li>
+                    <li>Chains now always apply their stored parameters rather than 
+                         those last used in Effect menu</li>
+                    <li>Non-MP3 files imported via drag or Recent Files caused
+                         crash if filter in file open window set to MP3</li>
+                    <li>AAC exports (using the optional 
+                         <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">
+                         FFmpeg library</a>) silenced</li>
+                    <li>Generating audio always fitted the project in the window; 
+                         fit now done only if generating in new track</li>  
+                    <li>View menu items/shortcuts incorrectly disabled when playing
+                         or recording</li>
+                    <li>DTMF generator defaulted to zero duration on open</li>   	
+                    <li>Unwanted interactions between linked audio and label tracks</li>
+                    <li><i>(Windows XP)</i>&nbsp; Failure to launch on some machines due to
+                             \"incorrect configuration\" issue</li>
+                    <li><i>(Windows)</i>&nbsp; Crash importing a stereo file while a screen reader
+                             such as JAWS is running</li>
+                    <li><i>(Mac OS X)</i>&nbsp;:</li>
+                        <ul>
+                           <li>Audio Units effects applied to all tracks in project even
+                                if not selected</li>
+                           <li>QuickTime importer now handles files greater than 16-bit 
+                                or 64000 Hz</li>
+                        </ul>
+                    <li>Various other interface bugs</li>
+            </ul>  
+      </dd> 
+       
+   <dt>Improvements:</dt>
+      <dd>   
+            <ul>
+                    <li>Compressor: new option to compress based on peaks, improved
+                        attack and decay time support</li>
+                    <li>Mixer Board: improved design, more responsive meters and 
+                        now interacts fully with Track Panel in main window</li>
+            </ul>
+      </dd>
+</dl>
+
+<p>
+Please be aware of 
+<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.9#Known_Issues_at_Release\">
+Known Issues at Release</a> (also viewable in the included README.txt).
+</p>
+")?>
+
+
+<h3><?=_("New in Audacity 1.3.8")?></h3>
 
 <?=_("
 <dl>
@@ -101,7 +166,7 @@ Known Issues at Release</a> (also viewable in the included README.txt).
 ")?>
 
 
-<h3 id="details"><?=_("New in Audacity 1.3.7")?></h3>
+<h3><?=_("New in Audacity 1.3.7")?></h3>
 
 <dl>
 	<dt> Improvements and new features </dt>

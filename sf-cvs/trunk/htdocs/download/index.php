@@ -44,13 +44,13 @@
     </div>
     <div>
       <h3><a href="beta_windows"><img alt="Windows" src="../images/new_win.png">
-      <?=_("Windows")?></a><span class="downloads_smaller"><?=_("&nbsp;&nbsp;1.3.8")?></span></h3>
+      <?=_("Windows")?></a><span class="downloads_smaller"><?=_("&nbsp;&nbsp;1.3.9")?></span></h3>
   
       <h3><a href="beta_mac"><img alt="Mac" src="../images/mac.png">
-      <?=_("Mac OS X")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.8 (Universal Binary)")?></span></h3>
+      <?=_("Mac OS X")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.9 (Universal Binary)")?></span></h3>
   
       <h3><a href="beta_linux"><img alt="Linux" src="../images/unix.png">
-      <?=_("Linux/Unix")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.8 (in source code)")?></span></h3>
+      <?=_("Linux/Unix")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.9 (in source code)")?></span></h3>
   </div>
 </div>
 
