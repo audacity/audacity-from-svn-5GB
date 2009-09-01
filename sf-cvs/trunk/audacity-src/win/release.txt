@@ -137,6 +137,9 @@ either one, but example values are for Unicode_Release.
 
 5. To create the zip version, go to the installed version, 
 	e.g., "C:\Program Files\Audacity 1.3 Beta (Unicode)", 
-	and remove the unins*.* files, then zip and rename that folder.
+	remove the unins*.* files and the "help" folder, then 
+   zip the folder and rename it e.g.,
+   "audacity-win-unicode-1.3.9.zip"
+
 
 =======
