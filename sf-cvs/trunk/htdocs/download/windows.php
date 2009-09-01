@@ -32,9 +32,13 @@
     echo _("localized_downloads_windows");
   }
 ?>
+<h4><?=_("Plug-ins and Libraries")?></h4>
 <ul>
-  <li><p><?php printf(_('<a href="%s">LADSPA plugins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins.'), "".$ladspa_url, ladspa_version, ladspa_size)?></p></li>
+  <li><p><?php printf(_('<a href="%s">LADSPA plug-ins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins.'), "".$ladspa_url, ladspa_version, ladspa_size)?></p></li>
   <?php include "common.inc.php"; ?>
+
+<h4><?=_("Audacity Zip file")?></h4>
+<ul>
   <li><p><?php printf(_('Windows 98/ME/2000/XP/Vista: <a href="%s">Audacity %s zip file</a> (%.1lf MB)
   - If you cannot run the installer because of restricted permissions, download and unzip this file instead.'),
     "../latest/".$win_zip_url, win_zip_version, win_zip_size)?></p></li>

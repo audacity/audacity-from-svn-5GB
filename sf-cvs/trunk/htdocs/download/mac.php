@@ -2,7 +2,7 @@
 /*
  * Copyright 2004 Matt Brubeck
  * Richard Ash 2006
- * Gale Andrews 2008
+ * Gale Andrews 2009
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -17,8 +17,7 @@
 <p><?=$downloadTagline?></p>
 
 <h3><?=_("Recommended Download")?></h3>
-<a href="#sysreq">System Requirements</a>
-<?php include "recommended.inc.php" ?>
+<p><a href="#sysreq">System Requirements</a></p>
 <ul>
   <li><p><?php printf(_('For Mac OS X (<b>Intel</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../latest/".$macosx_intel_url, macosx_intel_version, macosx_intel_size)?></p></li>
   <li><p><?php printf(_('For Mac OS X (<b>PPC</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../latest/".$macosx_url, macosx_version, macosx_size)?></p></li>
@@ -36,10 +35,11 @@
 </p>
 
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
+
+<h4><?=_("Plug-ins and Libraries")?></h4>
 <ul>
-  <li><p><a href="http://ardour.org/files/releases/swh-plugins-0.4.15.dmg">LADSPA plugins installer</a> - over 90 plug-ins.</p></li>
+  <li><p><a href="http://ardour.org/files/releases/swh-plugins-0.4.15.dmg">LADSPA plug-ins installer</a> - over 90 plug-ins.</p></li>
 <?php include "common.inc.php"; ?>
-</ul>
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
 <ul>
