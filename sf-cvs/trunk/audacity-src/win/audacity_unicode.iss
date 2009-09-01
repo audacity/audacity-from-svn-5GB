@@ -3,7 +3,7 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=audacity-win-unicode-1.3.8
+OutputBaseFilename=audacity-win-unicode-1.3.9
 SetupIconFile=audacity.ico
 
 WizardImageFile=audacity_InnoWizardImage.bmp
@@ -13,7 +13,7 @@ SolidCompression=yes
 
 ; installer-related directives
 AppName=Audacity 1.3 Beta (Unicode)
-AppVerName=Audacity 1.3.8 (Unicode)
+AppVerName=Audacity 1.3.9 (Unicode)
 AppPublisher=Audacity Team
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
@@ -27,8 +27,8 @@ UninstallDisplayIcon="{app}\audacity.exe"
 ; No longer force them to accept the license, just display it.   LicenseFile=..\LICENSE.txt
 InfoBeforeFile=..\LICENSE.txt
 InfoAfterFile=..\README.txt
-; min versions: Win95, NT 4.0
-MinVersion=4.0,4.0
+; min versions: none, Windows 2000
+MinVersion=0,5.0
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -131,4 +131,5 @@ Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; Va
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
+
 
