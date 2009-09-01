@@ -20,7 +20,7 @@
 <h3><?=_('Quick Reference Guide')?></h3>
 <ul>
 	<li><a href="../onlinehelp-1.2/contents.htm"><?=_('Read the Audacity reference online.')?></a> <?=_('(You can also access this reference through the "Help" menu in the Audacity program.)')?></li>
-	<li><a href="../onlinehelp-1.2/reference.html"><?=_('Printable version of the Audacity reference.')?></a> <?=_('(This can be printed as a single page using the print function of your browser.)')?></li>
+	<li><a href="../onlinehelp-1.2/reference.html"><?=_('Printable version of the Audacity reference.')?></a> <?=_('(This can be printed in one step using the print function of your browser.)')?></li>
  </ul>
 
 <h3><?=_('Audacity User\'s Manual')?></h3>
@@ -40,7 +40,7 @@
 <div lang="fr">
   <h3>Aide en Français</h3>
   <ul>
-    <li><a href="../localhelp/fr/audacity-1.2-help.htb">Menu d'aide d'Audacity en français</a> (Remplacer le fichier qui porte comme nom, audacity-1.2-help.htb par celui qu'on vous propose. <a href="http://zonelibre.grics.qc.ca/libre/article.php3?id_article=100">Aide</a>)</li>
+    <li><a href="../localhelp/fr/audacity-1.2-help.htb">Menu d'aide d'Audacity en français</a> (Remplacer le fichier qui porte comme nom, audacity-1.2-help.htb par celui qu'on vous propose. <a href="http://zonelibre.grics.qc.ca/spip.php?article100">Aide</a>)</li>
     <li><a href="../localhelp/fr/audacity-fr-manuel-1.2.zip">Manuel d'Audacity en français</a> (zip, 700 ko.)
     <li><a href="../localhelp/fr/audacity-mode-d'emploi.pdf">Mode d'emploi en français</a> (PDF, 700 ko.  Ce fichier peut prendre un bon moment de télécharger.)</li>
  </ul>
