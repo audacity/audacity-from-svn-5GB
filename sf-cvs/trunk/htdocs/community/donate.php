@@ -103,7 +103,7 @@
    echo _('If you prefer to send a personal check or another form of payment, please write to our ')?>
    <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;"> 
 <?php
-   echo _('feedback e-mail address</a> and we\'ll get back to you.');?></p>
+   echo _('feedback e-mail address</a> telling us what country you are in and how you\'d like to pay.');?></p>
 
 
 <?php
