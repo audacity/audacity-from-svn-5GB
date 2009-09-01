@@ -23,9 +23,9 @@
 // Increment as appropriate every time you release a new version
 #define AUDACITY_VERSION   1
 #define AUDACITY_RELEASE   3
-#define AUDACITY_REVISION  9
+#define AUDACITY_REVISION  10
 #define AUDACITY_MODLEVEL  0
-#define AUDACITY_SUFFIX    wxT("") // wxT("-alpha-") __TDATE__ 
+#define AUDACITY_SUFFIX    wxT("-alpha-") __TDATE__ // wxT("")
 
 #define AUDACITY_MAKESTR( x ) #x
 #define AUDACITY_QUOTE( x ) AUDACITY_MAKESTR( x )
