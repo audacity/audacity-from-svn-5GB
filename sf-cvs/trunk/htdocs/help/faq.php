@@ -2,7 +2,7 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2005 Matt Brubeck
- * Copyright 2007 - 8 Gale Andrews, Vaughan Johnson
+ * Copyright 2007 - 9 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -209,7 +209,9 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
       array(
         "aup" => array(
           _("How do I open an Audacity project (AUP file) in another program?"),
-          _("<p>Audacity project files are saved in a special format that only Audacity can open.  To open your project in another program or burn it to CD, you must open the “project.aup” file in Audacity, and use the Export commands (in the File menu) to save it in a standard format like WAV or AIFF.</p>")
+          _("<p>Audacity project files are saved in a special format that only Audacity can open. To open your project in another program or <a href=\"faq?s=files&amp;i=burn-cd\">burn it to CD</a>, firstly open the .aup file if you have already saved one (if you saved it recently it will be in the File > Recent Files menu in Audacity). Then use the <b>Export</b> commands further down the File menu to save the audio in a standard format like WAV or AIFF.</p>
+<p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>   
+")
         ),
         "data-folder" => array(
           _("Why does Audacity create a folder full of .au files when I save a project?"),
