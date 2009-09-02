@@ -42,7 +42,7 @@ $siteNavItems = array(
       array($ind._("Mac"), "beta_mac"),
       array($ind._("Linux/Unix"), "beta_linux"),
       array($ind._("Source Code"), "beta_source"),
-      array(_("Plug-Ins"), "plugins"),
+      array(_("Plug-Ins and Libraries"), "plugins"),
       array(_("Obtain a CD"), "buy"),
       array(_("Vendors and Distributors of Audacity"), "bundlers"),
     )

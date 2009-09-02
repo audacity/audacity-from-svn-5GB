@@ -1,18 +1,20 @@
 <?php
 /*
- * Copyright 2004 - 8 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 9 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "plugins";
-  $pageTitle = _("Plug-Ins");
+  $pageTitle = _("Plug-Ins and Libraries");
   include "../include/header.inc.php";
 ?>
 
 <h2><?=$pageTitle?></h2>
-<p><?=_('You can download and install plug-ins to add extra effects to Audacity, or to add more audio generation and analysis capability. Plug-ins appear at the bottom of the "Effect", "Generate" or "Analyze" menus.  To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under "Program Files."  On Mac OS X, it is usually under "Applications."')?></p>
-<p><?=_('<b>Note:</b> You must restart Audacity to make newly added plug-ins appear in the menus.')?></p>   
+<p><?=_('You can download and install plug-ins or libraries to add extra functionality to Audacity. Plug-ins can give you extra effects, or more audio generation and analysis capability. Adding libraries can allow you to import or export additional audio formats.')?></p>
+
+<h3><?=_("Plug-In Installation")?></h3>
+<p><?=_('To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under "Program Files".  On Mac OS X, it is usually under "Applications". Restart Audacity, then the Plug-ins will appear underneath the divider in the "Effect", "Generate" or "Analyze" menus.')?></p>
 
 <h3><?=_("LADSPA Plug-Ins")?></h3>
 <p><?=_('Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity includes some sample LADSPA effects. Windows users can install an additional <a href="http://audacity.sourceforge.net/beta/ladspa/ladspa-0.4.15.exe">set of over 90 LADSPA plug-ins</a>. There is a similar set of LADSPA plug-ins for <a href="http://ardour.org/files/releases/swh-plugins-0.4.15.dmg">Mac</a>. More information and many LADSPA plug-ins for Linux can be found on the <a href="http://www.ladspa.org/">LADSPA web site</a>.')?></p>
@@ -30,6 +32,10 @@
 </ul>
 
 <p><?=_('The <a href="http://audacityteam.org/wiki/index.php?title=VST_Plug-ins">VST Plug-ins</a> page on our <a href="http://audacityteam.org/wiki/">Wiki<a/> lists a large number of VST plug-ins that have been reported to work well in Audacity.')?></p>
+
+<h3><?=_("Libraries")?></h3>
+<p><?=_('At present, the only library you can add to the Stable 1.2 version of Audacity is the <b>LAME MP3 encoding</b> library. This allows Audacity to export audio in the popular <a href="http://wiki.audacityteam.org/index.php?title=MP3">MP3</a> format. To install the LAME library, please read our <a href="../help/faq?s=install&i=lame-mp3">LAME FAQ</a>.')?></p>    
+<p><?=_('The <a href="../download/features-1.3-a">Beta 1.3</a> version of Audacity has experimental support for the <b>FFmpeg import/export</b> library. This allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href="http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg">FFmpeg FAQ.</a> The next 2.0 Stable version of Audacity is expected to support the FFmpeg library.</a>')?></p>
 
 <?php
   include "../include/footer.inc.php";
