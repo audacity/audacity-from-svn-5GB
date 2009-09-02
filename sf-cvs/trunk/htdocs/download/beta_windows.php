@@ -41,7 +41,7 @@
   <?php include "beta_common.inc.php"; ?>
 <ul>
   <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB)
-  - If you want a download without help files, or cannot run the installer because of restricted permissions, download and unzip this or the file below instead.'),
+  - If you want a download without help files, or cannot run the installer because of restricted permissions, download and unzip this or Windows 98/ME file below instead.'),
     "".$win_zip_unicode_url, win_zip_unicode_version, win_zip_unicode_size)?></p></li>
 
   <li><p>Windows 2000/XP/Vista: <?php echo _('<b>For advanced users</b>, <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries">Nightly Builds</a> are available for testing purposes.')?>
