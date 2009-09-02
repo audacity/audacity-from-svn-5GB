@@ -80,24 +80,26 @@
           sprintf(_('<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.
 <h3 id="win">Windows</h3>
 <ol>
-  <li>Go to the <a href="%s">LAME download page</a>.</li>
-  <li>Under "For Audacity on Windows", left-click on the link "%s" and save the zip folder to anywhere on your computer.</li>
-  <li>When you have finished downloading the ZIP folder, unzip it and save the file <b>lame_enc.dll</b> that it contains to anywhere on your computer.</li>
-  <li>The first time you use the "Export as MP3" command, Audacity will ask you where lame_enc.dll is saved.</li>
+  <li>Go to the <a href="http://lame.buanzo.com.ar/">LAME download page</a>.</li>
+  <li>Under "For Audacity on Windows", left-click the link "Lame v3.98.2 for Audacity on Windows.exe" and save the file anywhere on your computer. <b>Do not right-click the link to the .exe file.</b> </li> 
+  <li>Double-click <b>"Lame_v3.98.2_for_Audacity_on_Windows.exe"</b> to launch it (you can safely ignore any warnings that the "publisher could not be verified").</li> 
+  <li>Follow the "Setup" instructions to install LAME for Audacity. Do not change the offered destination location of "C:\Program Files\Lame for Audacity".</li>
+  <li>The first time you use the "Export as MP3" command, Audacity will ask for the location of <b>"lame_enc.dll"</b>. Navigate to "C:\Program Files\Lame for Audacity", select "lame_enc.dll", then click "Open" and "OK".</li>
+  <li>If you prefer the Zip option for the LAME download, save the zip file to anywhere on your computer, extract "lame_enc.dll" to any location, then show Audacity where to find it as in Step 5 above.</li>
   <li>In case of difficulty, please view our <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#Windows_Instructions">more detailed instructions</a> on the <a href="http://audacityteam.org/wiki/">Audacity Wiki</a>.</li>
 </ol>
 <h3 id="mac">Mac OS 9 or X</h3>
 <ol>
-  <li>Go to the <a href="%s">LAME download page</a>.</li>
-  <li>Click to download either "Lame Library v3.98.2 for Audacity on OSX.dmg" or "LameLib-Carbon.sit", according to your operating system.</li>
+  <li>Go to the <a href="http://lame.buanzo.com.ar/">LAME download page</a>.</li>
+  <li>Click to download either <b>"Lame Library v3.98.2 for Audacity on OSX.dmg"</b> or <b>"LameLib-Carbon.sit"</b>, according to your operating system.</li>
   <li>Double-click the .dmg to extract "Lame Library v3.98.2 for Audacity on OSX.pkg" to Finder, or use Stuffit to extract "LameLib" from the .sit (either of these may happen automatically).</li>
-  <li>Double-click the .pkg to install "libmp3lame.dylib" in /usr/local/lib/audacity, or save "LameLib" anywhere on your computer.</li>
-  <li>The first time you use the "Export as MP3" command, Audacity will ask you where libmp3lame.dylib or LameLib is saved.</li>
+  <li>Double-click the .pkg to install <b>"libmp3lame.dylib"</b> in /usr/local/lib/audacity, or save <b>"LameLib"</b> anywhere on your computer.</li>
+  <li>The first time you use the "Export as MP3" command, Audacity will ask for the location of "libmp3lame.dylib" or "LameLib". Navigate to that location, then open the file and click "OK".</li>
+  <li>In case of difficulty, please view our <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#Mac_Instructions">more detailed instructions</a> on the <a href="http://audacityteam.org/wiki/index.php">Audacity Wiki</a>.</li> 
 </ol>
 <h3 id="nix">Linux/Unix</h3>
-Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions">these instructions</a> on our <a href="http://audacityteam.org/wiki/">Wiki</a> to download and install a suitable LAME package from the internet.'), "http://lame.buanzo.com.ar/", "libmp3lame-win-3.98.2.zip", "http://lame.buanzo.com.ar/")
+Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions">these instructions</a> on our <a href="http://audacityteam.org/wiki/">Wiki</a> to download and install a suitable LAME package from the internet.'),  "http://lame.buanzo.com.ar/", "http://lame.buanzo.com.ar/")
         ),
-        // TODO: Connect/replace this with documentation on plug-ins page?
         "vst-enabler" => array(
           _("How do I install VST plug-ins?"),
           sprintf(_("<ol>
@@ -209,13 +211,13 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
       array(
         "aup" => array(
           _("How do I open an Audacity project (AUP file) in another program?"),
-          _("<p>Audacity project files are saved in a special format that only Audacity can open. To open your project in another program or <a href=\"faq?s=files&amp;i=burn-cd\">burn it to CD</a>, firstly open the .aup file if you have already saved one (if you saved it recently it will be in the File > Recent Files menu in Audacity). Then use the <b>Export</b> commands further down the File menu to save the audio in a standard format like WAV or AIFF.</p>
+          _("<p>Audacity project files are saved in a special format that only Audacity can open. To open your project in another program or <a href=\"faq?s=files&amp;i=burn-cd\">burn it to CD</a>, firstly open the .aup file in Audacity if you have already saved one (if you saved it recently it will be in the File > Recent Files menu). Then use the <b>Export</b> commands further down the File menu to save the audio in a standard format like WAV or AIFF.</p>
 <p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>   
 ")
         ),
         "data-folder" => array(
           _("Why does Audacity create a folder full of .au files when I save a project?"),
-          _("<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently.  When you save a project, Audacity stores all of the pieces in a folder with a name like “project_data.”</p>  <p>You do not need to open these files yourself.  Audacity will load them automatically when you open the “project.aup” file, which is saved in the same location as the “data” folder.</p>").
+          _("<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently. When you save an .aup project file, Audacity stores all the pieces in a _data folder that has the same name as the .aup file. For example, \"song.aup\" will open the pieces inside the \"song_data\" folder.</p>  <p><b>You should not touch the .au files yourself, or move or rename the _data folder</b>. Simply open the .aup file, then Audacity will load the .au files in the correct sequence automatically.</p> <p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>").
           "<p>"._("See also:").' <a href="faq?s=files&amp;i=aup">'._("How do I open an Audacity project (AUP file) in another program?")."</a></p>"
         ),
         "crash-recovery" => array(
