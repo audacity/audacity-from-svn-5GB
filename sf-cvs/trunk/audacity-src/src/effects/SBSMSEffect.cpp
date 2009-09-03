@@ -260,7 +260,7 @@ bool EffectSBSMS::Process()
                maxDuration = duration;
 
             TimeWarper *warper = NULL;
-            if (mCurT0 == mCurT1)
+            if (rateStart == rateEnd)
             {
                warper = new LinearTimeWarper(mCurT0, mCurT0,
                                              mCurT1, mCurT0+maxDuration);
