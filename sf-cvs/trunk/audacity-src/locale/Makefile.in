@@ -79,7 +79,7 @@ $(POTFILE):
 	  | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) \
 	  -o ../locale/$(POTFILE).template
 	cd ../locale && sed \
-	  -e 's/PACKAGE VERSION/Audacity 1.3.7/' \
+	  -e 's/PACKAGE VERSION/Audacity 1.3.10/' \
 	  -e 's/SOME DESCRIPTIVE TITLE/Audacity Strings for Translation/' \
 	  -e 's/YEAR-MO-DA HO:MI+ZONE/1999 and beyond/' \
 	  -e 's/THE PACKAGE.S COPYRIGHT HOLDER/Audacity Development Team/' \
