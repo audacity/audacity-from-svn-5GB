@@ -3552,10 +3552,10 @@ void AudacityProject::OnDisjoin()
       n = iter.Next();
    }
 
-   PushState(wxString::Format(_("Disjoined %.2f seconds at t=%.2f"),
+   PushState(wxString::Format(_("Detached %.2f seconds at t=%.2f"),
                               mViewInfo.sel1 - mViewInfo.sel0,
                               mViewInfo.sel0),
-             _("Disjoin"));
+             _("Detach"));
 
    RedrawProject();
 }
@@ -3744,7 +3744,7 @@ void AudacityProject::OnDisjoinLabels()
   
   EditByLabel( &WaveTrack::Disjoin );
   
-  PushState( _( "Disjoined labeled regions" ), _( "Disjoin Labels" ) );
+  PushState( _( "Detached labeled regions" ), _( "Detach Labels" ) );
 
   RedrawProject();
 }
