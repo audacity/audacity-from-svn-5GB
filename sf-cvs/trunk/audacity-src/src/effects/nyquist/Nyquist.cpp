@@ -594,9 +594,13 @@ bool EffectNyquist::ProcessOne()
 
    for (unsigned int j = 0; j < mControls.GetCount(); j++) {
       if (mControls[j].type == NYQ_CTRL_REAL) {
-         cmd += wxString::Format(wxT("(setf %s %f)\n"),
+         // We use Internat::ToString() rather than "%f" here because we
+         // always have to use the dot as decimal separator when giving
+         // numbers to Nyquist, whereas using "%f" will use the user's
+         // decimal separator which may be a comma in some countries.
+         cmd += wxString::Format(wxT("(setf %s %s)\n"),
                                  mControls[j].var.c_str(),
-                                 mControls[j].val);
+                                 Internat::ToString(mControls[j].val));
       }
       else if (mControls[j].type == NYQ_CTRL_INT || 
             mControls[j].type == NYQ_CTRL_CHOICE) {
