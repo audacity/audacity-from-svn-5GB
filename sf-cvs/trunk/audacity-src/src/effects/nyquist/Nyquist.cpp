@@ -528,6 +528,16 @@ bool EffectNyquist::Process()
          mProgressIn = 0.0;
          mProgressOut = 0.0;
 
+         // libnyquist breaks except in LC_NUMERIC=="C".
+         //
+         // Note that we must set the locale to "C" even before calling
+         // nyx_init() because otherwise some effects will not work!
+         //
+         // MB: setlocale is not thread-safe.  Should use uselocale()
+         //     if available, or fix libnyquist to be locale-independent.
+         char *prevlocale = setlocale(LC_NUMERIC, NULL);
+         setlocale(LC_NUMERIC, "C");
+
          nyx_init();
          nyx_set_os_callback(StaticOSCallback, (void *)this);
          nyx_capture_output(StaticOutputCallback, (void *)this);
@@ -537,6 +547,9 @@ bool EffectNyquist::Process()
          nyx_capture_output(NULL, (void *)NULL);
          nyx_set_os_callback(NULL, (void *)NULL);
          nyx_cleanup();
+
+         // Reset previous locale
+         setlocale(LC_NUMERIC, prevlocale);
 
          if (!success) {
             goto finish;
@@ -638,16 +651,7 @@ bool EffectNyquist::ProcessOne()
 		mCurBuffer[i] = NULL;
    }
 
-   // libnyquist breaks except in LC_NUMERIC=="C".
-   //
-   // MB: setlocale is not thread-safe.  Should use uselocale()
-   //     if available, or fix libnyquist to be locale-independent.
-   char *prevlocale = setlocale(LC_NUMERIC, NULL);
-   setlocale(LC_NUMERIC, "C");
-
    rval = nyx_eval_expression(cmd.mb_str());
-
-   setlocale(LC_NUMERIC, prevlocale);
 
    if (rval == nyx_string) {
       wxMessageBox(wxString(nyx_get_string(), wxConvISO8859_1), wxT("Nyquist"),
