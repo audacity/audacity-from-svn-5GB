@@ -41,8 +41,6 @@ public:
    void OnGetForegroundDB( wxCommandEvent &event );
    void OnGetBackgroundDB( wxCommandEvent &event );
 
-   wxButton * m_pButton_GetBackground;
-   wxButton * m_pButton_GetForeground;
    wxButton * m_pButton_UseCurrentF;
    wxButton * m_pButton_UseCurrentB;
    wxButton * m_pButton_GetURL;
@@ -60,7 +58,6 @@ public:
    double mT0;
    double mT1;
    double mProjectRate;
-   void SaveTimes(bool, double, double);
    double mStartTimeF;
    double mEndTimeF;
    double mStartTimeB;
@@ -72,14 +69,11 @@ private:
    void OnExport(wxCommandEvent &event);
    void OnForegroundStartT(wxCommandEvent & event);
    void OnForegroundEndT(wxCommandEvent & event);
-   void OnBackgroundStartT(wxCommandEvent & event);
-   void OnBackgroundEndT(wxCommandEvent & event);
    void OnUseSelectionF(wxCommandEvent & event);
    void OnUseSelectionB(wxCommandEvent & event);
    void results();
-   void OnOK( wxCommandEvent &event );
    void OnReset(wxCommandEvent & event);
-   void OnCloseWithoutReset(wxCommandEvent & event);
+   void OnClose(wxCommandEvent & event);
    void OnChar(wxKeyEvent &event);
 
    wxTextCtrl *mForegroundRMSText;
