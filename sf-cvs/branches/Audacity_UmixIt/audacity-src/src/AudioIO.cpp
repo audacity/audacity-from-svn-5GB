@@ -143,6 +143,7 @@ void DeinitAudioIO()
 
 AudioIO::AudioIO()
 {
+   mWantLatencyCorrection = true;
    mAudioThreadShouldCallFillBuffersOnce = false;
    mAudioThreadFillBuffersLoopRunning = false;
 #if USE_PORTAUDIO_V19
@@ -996,11 +997,12 @@ void AudioIO::StopStream()
       if( mCaptureTracks.GetCount() > 0 )
       {
          for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
-            {
-               delete mCaptureBuffers[i];
-               mCaptureTracks[i]->Flush();
+         {
+            delete mCaptureBuffers[i];
+            mCaptureTracks[i]->Flush();
+            if (mWantLatencyCorrection)
                mCaptureTracks[i]->Offset(mLastRecordingOffset);
-            }
+         }
          
          delete[] mCaptureBuffers;
       }

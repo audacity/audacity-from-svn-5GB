@@ -403,14 +403,16 @@ void AudacityProject::CreateMenusAndCommands()
 
 #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
    //
-   // Play Menu
+   // Transport Menu
    //
 
-   c->BeginMenu(_("&Play"));
+   c->BeginMenu(_("&Transport"));
    c->SetDefaultFlags(0, 0);
    // Start with "Do Not" versions because default for both is TRUE.
    c->AddItem("PlayAfterOpen", _("Do Not Play after File Open\tCtrl+Shift+O"),  FN(OnPlayAfterOpen));
    c->AddItem("PlayAfterRecord", _("Do Not Play after Record\tCtrl+Shift+R"),  FN(OnPlayAfterRecord));
+   c->AddSeparator();
+   c->AddItem("AppendRecording", _("Do Not Append Recording"),  FN(OnAppendRecording));
    c->EndMenu();
 #endif
 
@@ -3510,7 +3512,8 @@ void AudacityProject::OnBenchmark()
    }
 
 #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-   // Play menu
+   // Transport menu
+
    void AudacityProject::OnPlayAfterOpen()
    {
       m_bWantPlayAfterOpen = !m_bWantPlayAfterOpen;
@@ -3531,7 +3534,18 @@ void AudacityProject::OnBenchmark()
             _("Play after Record\tCtrl+Shift+R"));
    }
 
+   void AudacityProject::OnAppendRecording()
+   {
+      m_bWantAppendRecording = !m_bWantAppendRecording;
+      mCommandManager.Modify(
+         "AppendRecording", 
+         m_bWantAppendRecording ? 
+            _("Do Not Append Recording") : 
+            _("Append Recording"));
+   }
+
    // Help menu
+   
    #include "AudacityApp.h"
 
    void LinkToPathlistHTM(const wxString strHTMfilename) 
@@ -3565,7 +3579,7 @@ void AudacityProject::OnBenchmark()
    {
       LinkToPathlistHTM(FROMFILENAME("Audacity_Audiotouch-download.htm"));
    }
-#endif
+#endif // (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
 
 //
 

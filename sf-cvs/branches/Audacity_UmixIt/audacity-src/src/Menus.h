@@ -218,22 +218,25 @@ void OnBenchmark();
    void OnHowToCopyDisplay();
    void OnAboutBrand();
 #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-   // Play menu
  private:
-   bool m_bWantPlayAfterOpen;
- public:
-   bool m_bWantPlayAfterRecord;
-
+   // Transport menu
    void OnPlayAfterOpen();
    void OnPlayAfterRecord();
+   void OnAppendRecording();
 
    // Help menu
    void OnAboutBrand();
    //void OnDifferences();
    void OnGetAudiotouch();
-#endif
 
-       //
+ public:
+   bool m_bWantPlayAfterRecord;
+   bool m_bWantAppendRecording;
+ private:
+   bool m_bWantPlayAfterOpen;
+ public:
+
+#endif
 
 void OnSeparator();
 
