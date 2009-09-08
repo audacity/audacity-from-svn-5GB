@@ -134,6 +134,8 @@ class AudioIO {
    sampleFormat GetCaptureFormat() { return mCaptureFormat; }
    int GetNumCaptureChannels() { return mNumCaptureChannels; }
 
+   void SetWantLatencyCorrection(const bool bWant) { mWantLatencyCorrection = bWant; };
+
 private:
 
    bool StartPortAudioStream(double sampleRate,
@@ -181,6 +183,8 @@ private:
    bool                mNoModifyDevice;
 #endif
    double              mLastRecordingOffset;
+   bool                mWantLatencyCorrection;
+
    unsigned int        mNumCaptureChannels;
    unsigned int        mNumPlaybackChannels;
    sampleFormat        mCaptureFormat;

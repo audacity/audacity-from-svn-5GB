@@ -4576,20 +4576,19 @@ int TrackPanel::IdOfFormat( int format )
    return OnFloatID;// Compiler food.
 }
 
-/// Puts a check mark at a given position in a menu, clearing all other check marks.
+// Puts a check mark at a given position in a menu, clearing all other check marks.
 void TrackPanel::SetMenuCheck( wxMenu & menu, int newId )
 {
    wxMenuItemList & list = menu.GetMenuItems();
    wxMenuItem * item;
    int id;
 
-   for ( wxwxMenuItemListNode * node = list.GetFirst(); node; node = node->GetNext() )
+   for (wxwxMenuItemListNode* node = list.GetFirst(); node; node = node->GetNext())
    {
       item = node->GetData();
       id = item->GetId();
       menu.Check( id, id==newId );
    }
-
 }
 
 
