@@ -206,7 +206,7 @@
 	</script>
 	
 	<center>
-		<a href="http://audacity.sourceforge.net/contact/privacy#advertising"><font size="-2">Advertisements Policy</font></a>  
+		<a href="http://audacity.sourceforge.net/contact/privacy#advertising"><font size="-2"><?=_("Advertisements Policy")?></font></a>  
 	</center>
   </div>
 
