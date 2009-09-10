@@ -205,15 +205,17 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
                   *(mMixerBoard->mImageSoloDown), *(mMixerBoard->mImageSoloDisabled), 
                   true); // toggle button
    this->UpdateSolo();
+   bool bSoloNone = mProject->IsSoloNone();
+   mToggleButton_Solo->Show(!bSoloNone);
 
    
    // meter
-   ctrlPos.y += MUTE_SOLO_HEIGHT + kDoubleInset;
+   ctrlPos.y += (bSoloNone ? 0 : MUTE_SOLO_HEIGHT) + kDoubleInset;
    const int nMeterHeight = 
       nGainSliderHeight - 
       (MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH + kDoubleInset) -
       (PAN_HEIGHT + kDoubleInset) - 
-      (MUTE_SOLO_HEIGHT + MUTE_SOLO_HEIGHT + kDoubleInset);
+      (MUTE_SOLO_HEIGHT + (bSoloNone ? 0 : MUTE_SOLO_HEIGHT) + kDoubleInset);
    ctrlSize.Set(kRightSideStackWidth, nMeterHeight);
    mMeter = 
       new Meter(this, -1, // wxWindow* parent, wxWindowID id, 
@@ -223,9 +225,9 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
 
    #if wxUSE_TOOLTIPS
       mStaticText_TrackName->SetToolTip(mLeftTrack->GetName());
-      mToggleButton_Mute->SetToolTip(_T("Mute"));
-      mToggleButton_Solo->SetToolTip(_T("Solo"));
-      mMeter->SetToolTip(_T("Signal Level Meter"));
+      mToggleButton_Mute->SetToolTip(_("Mute"));
+      mToggleButton_Solo->SetToolTip(_("Solo"));
+      mMeter->SetToolTip(_("Signal Level Meter"));
    #endif // wxUSE_TOOLTIPS
 
    #ifdef __WXMAC__
@@ -245,7 +247,8 @@ void MixerTrackCluster::HandleResize() // For wxSizeEvents, update gain slider a
    
    this->SetSize(-1, newClusterHeight); 
 
-   // Change only the heights of mSlider_Gain and mMeter.
+   // Change only the heights of mSlider_Gain and mMeter. 
+   // But update shown status of mToggleButton_Solo, which affects top of mMeter.
    const int nGainSliderHeight = 
       newClusterHeight - 
       (kInset + // margin above mStaticText_TrackName
@@ -253,12 +256,20 @@ void MixerTrackCluster::HandleResize() // For wxSizeEvents, update gain slider a
       kQuadrupleInset; // margin below gain slider
    mSlider_Gain->SetSize(-1, nGainSliderHeight); 
 
-   const int nMeterHeight = 
-      nGainSliderHeight - 
-      (MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH + kDoubleInset) -
-      (PAN_HEIGHT + kDoubleInset) - 
-      (MUTE_SOLO_HEIGHT + MUTE_SOLO_HEIGHT + kDoubleInset);
-   mMeter->SetSize(-1, nMeterHeight);
+   bool bSoloNone = mProject->IsSoloNone();
+
+   mToggleButton_Solo->Show(!bSoloNone);
+
+   const int nRequiredHeightAboveMeter = 
+      MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH + kDoubleInset + 
+      PAN_HEIGHT + kDoubleInset + 
+      MUTE_SOLO_HEIGHT + (bSoloNone ? 0 : MUTE_SOLO_HEIGHT) + kDoubleInset;
+   const int nMeterY = 
+      kDoubleInset + // margin at top
+      TRACK_NAME_HEIGHT + kDoubleInset + 
+      nRequiredHeightAboveMeter;
+   const int nMeterHeight = nGainSliderHeight - nRequiredHeightAboveMeter;
+   mMeter->SetSize(-1, nMeterY, -1, nMeterHeight);
 }
 
 void MixerTrackCluster::HandleSliderGain(const bool bWantPushState /*= false*/)
@@ -520,7 +531,15 @@ void MixerTrackCluster::OnButton_Mute(wxCommandEvent& event)
    mToggleButton_Mute->SetAlternate(mLeftTrack->GetSolo());
 
    // Update the TrackPanel correspondingly. 
-   mProject->RefreshTPTrack(mLeftTrack);
+   if (mProject->IsSoloSimple())
+   {
+      // Have to refresh all tracks.
+      mMixerBoard->UpdateSolo();
+      mProject->RedrawProject();
+   }
+   else
+      // Update only the changed track. 
+      mProject->RefreshTPTrack(mLeftTrack);
 }
 
 void MixerTrackCluster::OnButton_Solo(wxCommandEvent& event)
@@ -528,11 +547,19 @@ void MixerTrackCluster::OnButton_Solo(wxCommandEvent& event)
    mProject->HandleTrackSolo(mLeftTrack, mToggleButton_Solo->WasShiftDown());
    
    bool bIsSolo = mLeftTrack->GetSolo();
-   mMixerBoard->IncrementSoloCount(bIsSolo ? 1 : -1);
    mToggleButton_Mute->SetAlternate(bIsSolo);
 
    // Update the TrackPanel correspondingly. 
-   mProject->RefreshTPTrack(mLeftTrack);
+   if (mProject->IsSoloSimple())
+   {
+      // Have to refresh all tracks.
+      mMixerBoard->UpdateMute();
+      mMixerBoard->UpdateSolo();
+      mProject->RedrawProject();
+   }
+   else
+      // Update only the changed track. 
+      mProject->RefreshTPTrack(mLeftTrack);
 }
 
 void MixerTrackCluster::OnSlider_Gain(wxCommandEvent& event)
@@ -553,7 +580,7 @@ void MixerTrackCluster::OnSlider_Pan(wxCommandEvent& event)
    //   // mSlider_Gain->GetValue() is in [-6,36]. wxSlider has min at top, so this is [-36dB,6dB]. 
    //   sliderValue = -sliderValue;
    //#endif
-   //wxString str = _T("Gain: ");
+   //wxString str = _("Gain: ");
    //if (sliderValue > 0) 
    //   str += "+";
    //str += wxString::Format("%d dB", sliderValue);
@@ -695,7 +722,6 @@ MixerBoard::MixerBoard(AudacityProject* pProject,
          pBoxSizer->SetSizeHints(this);
       */
 
-   mSoloCount = 0;
    mPrevT1 = 0.0;
    mTracks = mProject->GetTracks();
 }
@@ -761,10 +787,7 @@ void MixerBoard::UpdateTrackClusters()
                                        (WaveTrack*)pLeftTrack, (WaveTrack*)pRightTrack, 
                                        clusterPos, clusterSize);
             if (pMixerTrackCluster)
-            {
                mMixerTrackClusters.Add(pMixerTrackCluster);
-               this->IncrementSoloCount((int)(pLeftTrack->GetSolo()));
-            }
          }
          nClusterIndex++;
       }
@@ -775,8 +798,7 @@ void MixerBoard::UpdateTrackClusters()
    {
       // Added at least one MixerTrackCluster.
       this->UpdateWidth();
-      for (nClusterIndex = 0; nClusterIndex < mMixerTrackClusters.GetCount(); nClusterIndex++)
-         mMixerTrackClusters[nClusterIndex]->HandleResize();
+      this->ResizeTrackClusters();
    }
    else if (nClusterIndex < nClusterCount)
    {
@@ -907,12 +929,12 @@ wxBitmap* MixerBoard::GetMusicalInstrumentBitmap(const WaveTrack* pLeftTrack)
 
 bool MixerBoard::HasSolo() 
 {  
-   return (mSoloCount > 0); 
-}
-
-void MixerBoard::IncrementSoloCount(int nIncrement /*= 1*/) 
-{  
-   mSoloCount += nIncrement; 
+   TrackListIterator iterTracks(mTracks);
+   Track* pTrack;
+   for (pTrack = iterTracks.First(); pTrack; pTrack = iterTracks.Next()) 
+      if (pTrack->GetSolo()) 
+         return true;
+   return false;
 }
 
 void MixerBoard::RefreshTrackCluster(const WaveTrack* pLeftTrack, bool bEraseBackground /*= true*/)
@@ -927,6 +949,12 @@ void MixerBoard::RefreshTrackClusters(bool bEraseBackground /*= true*/)
 {
    for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
       mMixerTrackClusters[i]->Refresh(bEraseBackground);
+}
+
+void MixerBoard::ResizeTrackClusters()
+{
+   for (unsigned int nClusterIndex = 0; nClusterIndex < mMixerTrackClusters.GetCount(); nClusterIndex++)
+      mMixerTrackClusters[nClusterIndex]->HandleResize();
 }
 
 void MixerBoard::ResetMeters()
@@ -1278,8 +1306,7 @@ void MixerBoard::OnSize(wxSizeEvent &evt)
    // this->FitInside() doesn't work, and it doesn't happen automatically. Is wxScrolledWindow wrong?
    mScrolledWindow->SetSize(evt.GetSize());
    
-   for (unsigned int i = 0; i < mMixerTrackClusters.GetCount(); i++)
-      mMixerTrackClusters[i]->HandleResize();
+   this->ResizeTrackClusters();
    this->RefreshTrackClusters(true);
 }
 
@@ -1350,3 +1377,4 @@ void MixerBoardFrame::OnSize(wxSizeEvent &event)
 }
 
 #endif // EXPERIMENTAL_MIXER_BOARD
+

@@ -968,6 +968,10 @@ void AudacityProject::UpdatePrefs()
    if (mTrackPanel) {
       mTrackPanel->UpdatePrefs();
    }
+   #ifdef EXPERIMENTAL_MIXER_BOARD
+      if (mMixerBoard)
+         mMixerBoard->ResizeTrackClusters(); // in case prefs "/GUI/Solo" changed
+   #endif
 
    SetSnapTo(gPrefs->Read(wxT("/SnapTo"), 0L)!=0);
 
@@ -1004,7 +1008,6 @@ void AudacityProject::RedrawProject(const bool bForceWaveTracks /*= false*/)
       }
    }
    mTrackPanel->Refresh(false);
-   //v \todo MixerBoard calls this, but are there cases where this needs to refresh MixerBoard?
 }
 
 void AudacityProject::RefreshCursor()
@@ -4253,7 +4256,7 @@ void AudacityProject::HandleTrackMute(Track *t, const bool exclusive)
          i->SetMute(muted);   // and mute it as well
       }
 
-      if( IsSimpleSolo() )
+      if( IsSoloSimple() )
       {
          TrackListIterator iter(mTracks);
          Track *i = iter.First();
@@ -4284,7 +4287,7 @@ void AudacityProject::HandleTrackMute(Track *t, const bool exclusive)
 // alternate == true, which causes the opposite behavior.
 void AudacityProject::HandleTrackSolo(Track *t, const bool alternate)
 {
-   bool bSoloMultiple = !IsSimpleSolo() ^ alternate;
+   bool bSoloMultiple = !IsSoloSimple() ^ alternate;
 
    // Standard and Simple solo have opposite defaults:
    //   Standard - Behaves as individual buttons, shift=radio buttons
@@ -4317,20 +4320,20 @@ void AudacityProject::HandleTrackSolo(Track *t, const bool alternate)
          if( i==t )
          {
             i->SetSolo(!bWasSolo);
-            if( IsSimpleSolo() )
+            if( IsSoloSimple() )
                i->SetMute(false);
             if(t->GetLinked())
             {
                i = iter.Next();
                i->SetSolo(!bWasSolo);
-               if( IsSimpleSolo() )
+               if( IsSoloSimple() )
                   i->SetMute(false);
             }
          }
          else
          {
             i->SetSolo(false);
-            if( IsSimpleSolo() )
+            if( IsSoloSimple() )
                i->SetMute(!bWasSolo);
          }
          i = iter.Next();

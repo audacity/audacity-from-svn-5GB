@@ -389,7 +389,9 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    
    static bool GetCacheBlockFiles();
    
-   bool IsSimpleSolo() { return mSoloPref == wxT("Simple"); };
+ public:
+   bool IsSoloSimple() { return mSoloPref == wxT("Simple"); };
+   bool IsSoloNone() { return mSoloPref == wxT("None"); };
 
  private:
 
