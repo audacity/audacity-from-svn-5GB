@@ -10,7 +10,7 @@
 ;control tempo "Tempo [beats per minute]" int "30 - 300 beats/minute" 120 30 300
 ;control sig "Beats per measure [bar]" int "1 - 20 beats/measure" 4 1 20
 ;control measures "Number of measures [bars]" int "1 - 1000 bars" 16 1 1000
-;control click-track-dur "Optional click track duration [minutes seconds]" string "" ""  
+;control click-track-dur "Optional click track duration [minutes seconds]" string "Whole numbers only" ""  
 ;control ticklen "Individual click duration [milliseconds]" int "1 - 100 ms" 10 1 100
 ;control offset "Start time offset [seconds]" real "0 - 30 seconds" 0 0 30
 ;control click-type "Click sound" choice "ping,noise,tick" 0
@@ -20,6 +20,7 @@
 
 ; original clicktrack.ny by Dominic Mazzoni,
 ; modified by David R. Sky: 
+; string input verification added by Steve Daulton, 2009.
 ; added click pitch [user request] and sound types fields September 2007
 ; added optional total click track duration field [requested by Mike Mullins] 
 ; June 2009
@@ -53,7 +54,7 @@ Generates a click track at the selected tempo, beats per\nmeasure, and either nu
 
 'Beats per measure (bar)': For example, 3/4 time means one\nstrong click then two others to form one bar, repeated\ndepending on 'number of measures' or 'click track duration'.
 
-'Optional click track duration': if you enter a value into this\nfield [minutes seconds (separated by a space)] or [seconds],\nthe generated click track will be at or near this duration,\nbased on this rule: only when time gives an exact number\nof measures will this number of measures be generated,\notherwise one additional measure will be generated.
+'Optional click track duration': If you enter a value into this\nfield, either [minutes seconds] (separated by a space), or\n[seconds], the generated click track will be at or slightly\nlonger than this duration: the end of the track is extended\ninto a whole measure if the entered duration does not\nproduce this. Use whole numbers only.
 
 If you enter a value into this field, the 'number of measures'\nvalue will be ignored.
 
@@ -90,10 +91,21 @@ If you enter a value into this field, the 'number of measures'\nvalue will be ig
 0 1))
 
 
+; function to convert a string into a list
+(defun string-to-list (string)
+(read (make-string-input-stream (format nil "(~a)" string))))
+
+
+; convert minutes-seconds string to a list
+; for example, "4 30" becomes (4 30)
+(setf m-s (string-to-list click-track-dur)) 
+
+
 ; initialize blank error-msg
 (setf error-msg "")
 
 ; input values error checks
+
 ; tempo
 (setf error-msg (if 
 (= (check tempo 30 300) 0)
@@ -144,12 +156,59 @@ error-msg
 "Low MIDI pitch ~a outside valid range 18 to 116
 " low))))
 
+; validate string
+(if (not (null m-s)) ; don't test if not set
+   (if (= (length m-s) 1) ; if there is only one item
+      (setf error-msg (if 
+      (integerp (first m-s)) ; first is number
+   error-msg
+   (strcat error-msg (format nil 
+"If used, 'Optional click track duration' must be 
+entered as either one number [seconds], or two 
+numbers [minutes seconds] separated by a space.
+Use whole numbers only.
+"))))
+; else if there is more than one item
+   (setf error-msg (if (and
+      (<= (length m-s) 2) ; there are no more than 2 items and
+      (integerp (first m-s)) ; first is number
+      (integerp (second m-s))) ; second is number
+      error-msg
+      (strcat error-msg (format nil 
+"If used, 'Optional click track duration' must be 
+entered as either one number [seconds], or two 
+numbers [minutes seconds] separated by a space.
+Use whole numbers only.
+"))))))
+
+; optional click track length
+; one number entered
+(if (and (integerp (first m-s))(= (length m-s) 1))
+   (setf error-msg (if 
+   (= (check (first m-s) 0 3660) 0)
+   error-msg
+   (strcat error-msg (format nil 
+"~a seconds is outside valid range 0 to 3660"
+(first m-s))))))
+; two numbers entered
+(if (and 
+(integerp (first m-s))
+(integerp (second m-s))
+(= (length m-s) 2))
+   (setf error-msg (if (and
+   (= (check (first m-s) 0 60) 0)
+   (= (check (second m-s) 0 59) 0))
+   error-msg
+   (strcat error-msg (format nil 
+"~a is outside valid range 0 to [60 59]"
+m-s)))))
+
 
 (cond
 ; if error-msg is not blank, give error msg
 ((> (length error-msg) 0)
 (setf error-msg (strcat (format nil
-"Error - \n\nYou have entered at least one invalid value:
+"Error - \n\nYou have entered at least one invalid value:\n
 ") error-msg))) ; end error msg
 
 ; no error so generate click track
@@ -214,16 +273,6 @@ error-msg
                    (stretch-abs (* sig beatlen) (const 0.0))))
 
 
-; function to convert a string into a list
-(defun string-to-list (string)
-(read (make-string-input-stream (format nil "(~a)" string))))
-
-
-; convert minutes-seconds string to a list
-; for example, "4 30" becomes (4 30)
-(setf m-s (string-to-list click-track-dur)) 
-
-
 ; convert click-track-dur to number of measures,
 ; otherwise use user's measures value 
 (setf measures (if (null m-s)
@@ -266,8 +315,3 @@ result
 
 ) ; end t perform clicktrack.ny
 ) ; end 'master' cond
-
-; from previous commit:
-; arch-tag: 73fbc0e9-548b-4143-b8ac-13437b9154a7
-
-
