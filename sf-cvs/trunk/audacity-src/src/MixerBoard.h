@@ -193,10 +193,11 @@ public:
    wxBitmap* GetMusicalInstrumentBitmap(const WaveTrack* pLeftTrack);
 
    bool HasSolo();
-   void IncrementSoloCount(int nIncrement = 1);
 
    void RefreshTrackCluster(const WaveTrack* pLeftTrack, bool bEraseBackground = true);
    void RefreshTrackClusters(bool bEraseBackground = true);
+   void ResizeTrackClusters();
+
    void ResetMeters();
 
    void UpdateName(const WaveTrack* pLeftTrack);
@@ -240,7 +241,6 @@ private:
    MusicalInstrumentArray     mMusicalInstruments; 
    AudacityProject*           mProject;
    MixerBoardScrolledWindow*  mScrolledWindow; // Holds the MixerTrackClusters and handles scrolling.
-   unsigned int               mSoloCount;
    double                     mPrevT1;
    TrackList*                 mTracks;
 
@@ -271,3 +271,4 @@ public:
 #endif // __AUDACITY_MIXER_BOARD__
 
 #endif // EXPERIMENTAL_MIXER_BOARD
+

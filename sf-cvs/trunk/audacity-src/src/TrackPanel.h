@@ -392,7 +392,6 @@ private:
    int IdOfFormat( int format );
 
    // Accessors...
-   bool IsSimpleSolo(){ return mSoloPref==wxT("Simple");};
    bool HasSoloButton(){  return mSoloPref!=wxT("None");};
 
    //JKC: These two belong in the label track.
