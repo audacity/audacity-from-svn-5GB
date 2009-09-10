@@ -382,7 +382,7 @@ bool ODPCMAliasBlockFile::IsSummaryAvailable()
    return retval;
 }
 
-///Calls write summary, and makes sure it is only done once in a thread-safe fasion.
+///Calls write summary, and makes sure it is only done once in a thread-safe fashion.
 void ODPCMAliasBlockFile::DoWriteSummary()
 {
    mWriteSummaryMutex.Lock();
