@@ -1359,20 +1359,6 @@ wxUint32 AudacityProject::GetUpdateFlags()
          if (lt->IsTextSelected()) {
             flags |= CutCopyAvailableFlag;
          }
-
-         // See AudacityProject::OnUpdateUI() for an explanation
-         if (mInIdle) {
-            if (lt->IsTextClipSupported()) {
-               flags |= TextClipFlag;
-               mTextClipFlag = TextClipFlag;
-            }
-            else {
-               mTextClipFlag = 0;
-            }
-         }
-         else {
-            flags |= mTextClipFlag;
-         }
       }
       else if (t->GetKind() == Track::Wave) {
          flags |= WaveTracksExistFlag;
@@ -1421,6 +1407,9 @@ wxUint32 AudacityProject::GetUpdateFlags()
 
    if (GetZoom() > gMinZoom && (flags & TracksExistFlag))
       flags |= ZoomOutAvailableFlag;
+
+   if ((flags & LabelTracksExistFlag) && LabelTrack::IsTextClipSupported())
+      flags |= TextClipFlag;
 
    flags |= GetFocusedFrame();
 

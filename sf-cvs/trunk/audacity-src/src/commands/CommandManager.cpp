@@ -112,8 +112,8 @@ CommandManager.  It holds the callback for one command.
 CommandManager::CommandManager():
    mCurrentID(0),
    mHiddenID(0),
-   mCurrentMenu(NULL),
    mCurrentMenuName(COMMAND),
+   mCurrentMenu(NULL),
    mOpenMenu(NULL),
    mDefaultFlags(0),
    mDefaultMask(0)
