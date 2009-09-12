@@ -23,7 +23,8 @@ AC_DEFUN([AUDACITY_CHECKLIB_WIDGETEXTRA], [
    AX_CONFIG_DIR(["${srcdir}/lib-src/lib-widget-extra"])
    dnl having done that we get a pkg-config file we can use
    dnl add the directory with lib-widget-extra in to the pkg-config search path
-   export PKG_CONFIG_PATH="${srcdir}/lib-src/lib-widget-extra/:$PKG_CONFIG_PATH"
+   PKG_CONFIG_PATH="${srcdir}/lib-src/lib-widget-extra/:$PKG_CONFIG_PATH"
+   export PKG_CONFIG_PATH
    PKG_CHECK_MODULES(WIDGETEXTRA, libwidgetextra,
                      widgetextra_available="yes",
                      widgetextra_available="no")
@@ -53,7 +54,8 @@ AC_DEFUN([AUDACITY_CHECKLIB_PORTSMF], [
    fi
    dnl having done that we get a pkg-config file we can use
    dnl add the directory with portSMF in to the pkg-config search path
-   export PKG_CONFIG_PATH="${srcdir}/lib-src/portsmf/:$PKG_CONFIG_PATH"
+   PKG_CONFIG_PATH="${srcdir}/lib-src/portsmf/:$PKG_CONFIG_PATH"
+   export PKG_CONFIG_PATH
    PKG_CHECK_MODULES(PORTSMF, portSMF,
                      portsmf_available="yes",
                      portsmf_available="no")
