@@ -76,6 +76,7 @@ various graphing code, such as provided by FreqWindow and FilterPanel.
 #include "../AllThemeResources.h"
 #include "../WaveTrack.h"
 #include "float_cast.h"
+#include <vector>
 
 #include <wx/bitmap.h>
 #include <wx/button.h>
@@ -596,10 +597,44 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
 
       // now move the appropriate bit of the output back to the track
       // (this could be enhanced in the future to use the tails)
-      float *bigBuffer = new float[originalLen];
-      output->Get((samplePtr)bigBuffer, floatSample, offset, originalLen);
-      t->Set((samplePtr)bigBuffer, floatSample, start, originalLen);
-      delete[] bigBuffer;
+      double offsetT0 = t->LongSamplesToTime((sampleCount)offset);
+      double lenT = t->LongSamplesToTime(originalLen);
+      
+      //output has one waveclip for the total length, even though 
+      //t might have whitespace seperating multiple clips
+      //we want to maintain the original clip structure, so
+      //only paste the intersections of the new clip.
+      
+      //We have to clear the old audio which removes the clip, making the iterator invalid
+      //thus we do two passes with the first to collect start/end times.
+      std::vector<std::pair<double, double> > clipStartEndTimes;
+      for (WaveClipList::compatibility_iterator it=t->GetClipIterator(); it; it=it->GetNext())
+      {
+         WaveClip *clip;
+         double clipStartT;
+         double clipEndT;
+         
+         clip = it->GetData();
+         clipStartT = clip->GetStartTime();
+         clipEndT = clip->GetEndTime();
+         
+         //save them
+         clipStartEndTimes.push_back(std::pair<double,double>(clipStartT,clipEndT));
+      }
+      //now go thru and replace the old lips with new
+      for(unsigned int i=0;i<clipStartEndTimes.size();i++)
+      {
+         Track *toClipOutput;
+         //remove the old audio and get the new
+         t->Clear(clipStartEndTimes[i].first,clipStartEndTimes[i].second);
+         output->Copy(offsetT0+clipStartEndTimes[i].first,offsetT0+clipStartEndTimes[i].second, &toClipOutput);   
+         if(toClipOutput)
+         {
+            //put the processed audio in
+            t->Paste(clipStartEndTimes[i].first,toClipOutput);
+            delete toClipOutput;
+         }
+      }
    }
 
    delete[] buffer;
