@@ -16,11 +16,21 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSOUNDTOUCH], [
    fi
 
    dnl see if soundtouch is installed on the system
+   dnl Fustratingly, the name of the pkg-config file keeps being changed
+   dnl by upstream, despite the fact that they don't need to and shouldn't.
+   dnl as a result (given that 1.3.x and 1.4.0 seem to have idenditcal APIs)
+   dnl we have to check for two possible pkg-config files for the same package.
 
-   PKG_CHECK_MODULES(SOUNDTOUCH, soundtouch-1.0 >= 1.3.0,
+   dnl check for 1.4.x first
+   PKG_CHECK_MODULES(SOUNDTOUCH, soundtouch-1.4 >= 1.3.0,
                      soundtouch_available_system="yes",
                      soundtouch_available_system="no")
-
+   dnl if not there, check for 1.3.x
+   if test "x$soundtouch_available_system" = "xno" ; then
+      PKG_CHECK_MODULES(SOUNDTOUCH, soundtouch-1.0 >= 1.3.0,
+                     soundtouch_available_system="yes",
+                     soundtouch_available_system="no")
+   fi
 
    if test "x$soundtouch_available_system" = "xyes" ; then
       LIBSOUNDTOUCH_SYSTEM_AVAILABLE="yes"
