@@ -329,7 +329,16 @@ void QuitAudacity()
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <dlfcn.h>
+/* There is a conflict between the type names used in Glib >= 2.21 and those in
+ * wxGTK. This is an exceptionally hackish solution to the name conflict, but
+ * is comparable to that used by wxGTK upstream:
+ *   http://trac.wxwidgets.org/ticket/10883
+ * What we are doing is renaming Glib's GSocket to something else so we can
+ * use the name for our (well, wxGTK's) element
+ */
+#define GSocket GlibGSocket
 #include <gtk/gtk.h>
+#undef GSocket
 
 typedef struct _GnomeProgram GnomeProgram;
 typedef struct _GnomeModuleInfo GnomeModuleInfo;
