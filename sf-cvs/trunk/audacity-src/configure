@@ -644,7 +644,6 @@ JACK_LIBS
 JACK_CFLAGS
 GTK_LIBS
 GTK_CFLAGS
-PKG_CONFIG
 HAVE_GTK
 host_os
 host_vendor
@@ -654,6 +653,31 @@ build_os
 build_vendor
 build_cpu
 build
+TAGLIB_LIBS
+TAGLIB_CFLAGS
+PORTSMF_LIBS
+PORTSMF_CFLAGS
+AVFORMAT_LIBS
+AVFORMAT_CFLAGS
+AVCODEC_LIBS
+AVCODEC_CFLAGS
+LIBTWOLAME_LIBS
+LIBTWOLAME_CFLAGS
+VAMP_LIBS
+VAMP_CFLAGS
+SOUNDTOUCH_LIBS
+SOUNDTOUCH_CFLAGS
+SBSMS_LIBS
+SBSMS_CFLAGS
+LIBMAD_LIBS
+LIBMAD_CFLAGS
+SAMPLERATE_LIBS
+SAMPLERATE_CFLAGS
+SNDFILE_LIBS
+SNDFILE_CFLAGS
+WIDGETEXTRA_LIBS
+WIDGETEXTRA_CFLAGS
+PKG_CONFIG
 subdirs
 WX_CONFIG
 HAVE_VISIBILITY
@@ -734,6 +758,22 @@ enable_static
 enable_unicode
 enable_debug
 with_lib_preference
+with_libsndfile
+with_expat
+with_libsamplerate
+with_libresample
+with_libvorbis
+with_libmad
+with_libflac
+with_libid3tag
+with_sbsms
+with_soundtouch
+enable_nyquist
+with_libvamp
+with_libtwolame
+with_ffmpeg
+with_midi
+with_taglib
 enable_audiounits
 enable_ladspa
 enable_quicktime
@@ -752,6 +792,30 @@ CXXFLAGS
 CCC
 CXXCPP
 PKG_CONFIG
+WIDGETEXTRA_CFLAGS
+WIDGETEXTRA_LIBS
+SNDFILE_CFLAGS
+SNDFILE_LIBS
+SAMPLERATE_CFLAGS
+SAMPLERATE_LIBS
+LIBMAD_CFLAGS
+LIBMAD_LIBS
+SBSMS_CFLAGS
+SBSMS_LIBS
+SOUNDTOUCH_CFLAGS
+SOUNDTOUCH_LIBS
+VAMP_CFLAGS
+VAMP_LIBS
+LIBTWOLAME_CFLAGS
+LIBTWOLAME_LIBS
+AVCODEC_CFLAGS
+AVCODEC_LIBS
+AVFORMAT_CFLAGS
+AVFORMAT_LIBS
+PORTSMF_CFLAGS
+PORTSMF_LIBS
+TAGLIB_CFLAGS
+TAGLIB_LIBS
 GTK_CFLAGS
 GTK_LIBS
 JACK_CFLAGS
@@ -1390,6 +1454,7 @@ Optional Features:
   --enable-static         link wx statically [default=no]
   --enable-unicode        enable unicode support [default=yes]
   --enable-debug          enable debug support [default=no]
+  --enable-nyquist        enable Nyquist plug-in support [default=yes]
   --enable-audiounits     enable audio unit plug-in support (Mac OS X only)
                           [default=auto]
   --enable-ladspa         enable LADSPA plug-in support [default=yes]
@@ -1401,6 +1466,24 @@ Optional Packages:
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-lib-preference   whether to use local and/or system libraries, in
                           order of preference (default="system local")
+  --with-libsndfile       which libsndfile to use (required): [system,local]
+  --with-expat            which expat to use for XML file support:
+                          [system,local]
+  --with-libsamplerate    use libsamplerate instead of libresample for sample
+                          rate conversion. Do not use in conjunction with VST
+                          plug-in support!
+  --with-libresample      use libresample for sample rate conversion: [yes,no]
+  --with-libvorbis        use libvorbis for Ogg Vorbis support
+  --with-libmad           use libmad for mp2/3 decoding support
+  --with-libflac          use libFLAC for FLAC support
+  --with-libid3tag        use libid3tag for mp3 id3 tag support
+  --with-sbsms            use libsbsms for pitch and tempo changing
+  --with-soundtouch       use libSoundTouch for pitch and tempo changing
+  --with-libvamp          use libvamp for Vamp plug-in support [default=yes]
+  --with-libtwolame       use libtwolame for MP2 export support
+  --with-ffmpeg           use ffmpeg for import and export support
+  --with-midi             use portSMF for Midi support
+  --with-taglib           use TagLib for metadata support
   --with-portmixer        compile with PortMixer [default=yes]
 
 Some influential environment variables:
@@ -1415,6 +1498,49 @@ Some influential environment variables:
   CXXFLAGS    C++ compiler flags
   CXXCPP      C++ preprocessor
   PKG_CONFIG  path to pkg-config utility
+  WIDGETEXTRA_CFLAGS
+              C compiler flags for WIDGETEXTRA, overriding pkg-config
+  WIDGETEXTRA_LIBS
+              linker flags for WIDGETEXTRA, overriding pkg-config
+  SNDFILE_CFLAGS
+              C compiler flags for SNDFILE, overriding pkg-config
+  SNDFILE_LIBS
+              linker flags for SNDFILE, overriding pkg-config
+  SAMPLERATE_CFLAGS
+              C compiler flags for SAMPLERATE, overriding pkg-config
+  SAMPLERATE_LIBS
+              linker flags for SAMPLERATE, overriding pkg-config
+  LIBMAD_CFLAGS
+              C compiler flags for LIBMAD, overriding pkg-config
+  LIBMAD_LIBS linker flags for LIBMAD, overriding pkg-config
+  SBSMS_CFLAGS
+              C compiler flags for SBSMS, overriding pkg-config
+  SBSMS_LIBS  linker flags for SBSMS, overriding pkg-config
+  SOUNDTOUCH_CFLAGS
+              C compiler flags for SOUNDTOUCH, overriding pkg-config
+  SOUNDTOUCH_LIBS
+              linker flags for SOUNDTOUCH, overriding pkg-config
+  VAMP_CFLAGS C compiler flags for VAMP, overriding pkg-config
+  VAMP_LIBS   linker flags for VAMP, overriding pkg-config
+  LIBTWOLAME_CFLAGS
+              C compiler flags for LIBTWOLAME, overriding pkg-config
+  LIBTWOLAME_LIBS
+              linker flags for LIBTWOLAME, overriding pkg-config
+  AVCODEC_CFLAGS
+              C compiler flags for AVCODEC, overriding pkg-config
+  AVCODEC_LIBS
+              linker flags for AVCODEC, overriding pkg-config
+  AVFORMAT_CFLAGS
+              C compiler flags for AVFORMAT, overriding pkg-config
+  AVFORMAT_LIBS
+              linker flags for AVFORMAT, overriding pkg-config
+  PORTSMF_CFLAGS
+              C compiler flags for PORTSMF, overriding pkg-config
+  PORTSMF_LIBS
+              linker flags for PORTSMF, overriding pkg-config
+  TAGLIB_CFLAGS
+              C compiler flags for TAGLIB, overriding pkg-config
+  TAGLIB_LIBS linker flags for TAGLIB, overriding pkg-config
   GTK_CFLAGS  C compiler flags for GTK, overriding pkg-config
   GTK_LIBS    linker flags for GTK, overriding pkg-config
   JACK_CFLAGS C compiler flags for JACK, overriding pkg-config
@@ -5243,7 +5369,364 @@ subdirs="$subdirs "lib-src/FileDialog""
 LOCAL_LIBS="$LOCAL_LIBS FileDialog.a"
 CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/FileDialog"
 
-AUDACITY_CHECKLIB_WIDGETEXTRA
+
+
+if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
+	if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
+set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
+{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
+if test -n "$PKG_CONFIG"; then
+  { $as_echo "$as_me:$LINENO: result: $PKG_CONFIG" >&5
+$as_echo "$PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_path_PKG_CONFIG"; then
+  ac_pt_PKG_CONFIG=$PKG_CONFIG
+  # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  case $ac_pt_PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
+if test -n "$ac_pt_PKG_CONFIG"; then
+  { $as_echo "$as_me:$LINENO: result: $ac_pt_PKG_CONFIG" >&5
+$as_echo "$ac_pt_PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+  if test "x$ac_pt_PKG_CONFIG" = x; then
+    PKG_CONFIG=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ $as_echo "$as_me:$LINENO: WARNING: using cross tools not prefixed with host triplet" >&5
+$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    PKG_CONFIG=$ac_pt_PKG_CONFIG
+  fi
+else
+  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
+fi
+
+fi
+if test -n "$PKG_CONFIG"; then
+	_pkg_min_version=0.9.0
+	{ $as_echo "$as_me:$LINENO: checking pkg-config is at least version $_pkg_min_version" >&5
+$as_echo_n "checking pkg-config is at least version $_pkg_min_version... " >&6; }
+	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
+		{ $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	else
+		{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+		PKG_CONFIG=""
+	fi
+
+fi
+
+
+  # Remove --cache-file and --srcdir arguments so they do not pile up.
+  ax_sub_configure_args=
+  ax_prev=
+  eval "set x $ac_configure_args"
+  shift
+  for ax_arg
+  do
+    if test -n "$ax_prev"; then
+      ax_prev=
+      continue
+    fi
+    case $ax_arg in
+    -cache-file | --cache-file | --cache-fil | --cache-fi \
+    | --cache-f | --cache- | --cache | --cach | --cac | --ca | --c)
+      ax_prev=cache_file ;;
+    -cache-file=* | --cache-file=* | --cache-fil=* | --cache-fi=* \
+    | --cache-f=* | --cache-=* | --cache=* | --cach=* | --cac=* | --ca=* \
+    | --c=*)
+      ;;
+    --config-cache | -C)
+      ;;
+    -srcdir | --srcdir | --srcdi | --srcd | --src | --sr)
+      ax_prev=srcdir ;;
+    -srcdir=* | --srcdir=* | --srcdi=* | --srcd=* | --src=* | --sr=*)
+      ;;
+    -prefix | --prefix | --prefi | --pref | --pre | --pr | --p)
+      ax_prev=prefix ;;
+    -prefix=* | --prefix=* | --prefi=* | --pref=* | --pre=* | --pr=* | --p=*)
+      ;;
+    *)
+      case $ax_arg in
+      *\'*) ax_arg=`echo "$ax_arg" | sed "s/'/'\\\\\\\\''/g"` ;;
+      esac
+      ax_sub_configure_args="$ax_sub_configure_args '$ax_arg'" ;;
+    esac
+  done
+
+  # Always prepend --prefix to ensure using the same prefix
+  # in subdir configurations.
+  ax_arg="--prefix=$prefix"
+  case $ax_arg in
+  *\'*) ax_arg=`echo "$ax_arg" | sed "s/'/'\\\\\\\\''/g"` ;;
+  esac
+  ax_sub_configure_args="'$ax_arg' $ax_sub_configure_args"
+
+  # Pass --silent
+  if test "$silent" = yes; then
+    ax_sub_configure_args="--silent $ax_sub_configure_args"
+  fi
+
+  ax_popdir=`pwd`
+  { $as_echo "$as_me:$LINENO: Configuring sources in \"${srcdir}/lib-src/lib-widget-extra\"" >&5
+$as_echo "$as_me: Configuring sources in \"${srcdir}/lib-src/lib-widget-extra\"" >&6;}
+      { as_dir=""${srcdir}/lib-src/lib-widget-extra""
+  case $as_dir in #(
+  -*) as_dir=./$as_dir;;
+  esac
+  test -d "$as_dir" || { $as_mkdir_p && mkdir -p "$as_dir"; } || {
+    as_dirs=
+    while :; do
+      case $as_dir in #(
+      *\'*) as_qdir=`$as_echo "$as_dir" | sed "s/'/'\\\\\\\\''/g"`;; #'(
+      *) as_qdir=$as_dir;;
+      esac
+      as_dirs="'$as_qdir' $as_dirs"
+      as_dir=`$as_dirname -- "$as_dir" ||
+$as_expr X"$as_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$as_dir" : 'X\(//\)[^/]' \| \
+	 X"$as_dir" : 'X\(//\)$' \| \
+	 X"$as_dir" : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X"$as_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+      test -d "$as_dir" && break
+    done
+    test -z "$as_dirs" || eval "mkdir $as_dirs"
+  } || test -d "$as_dir" || { { $as_echo "$as_me:$LINENO: error: cannot create directory $as_dir" >&5
+$as_echo "$as_me: error: cannot create directory $as_dir" >&2;}
+   { (exit 1); exit 1; }; }; }
+      ac_builddir=.
+
+case ""${srcdir}/lib-src/lib-widget-extra"" in
+.) ac_dir_suffix= ac_top_builddir_sub=. ac_top_build_prefix= ;;
+*)
+  ac_dir_suffix=/`$as_echo ""${srcdir}/lib-src/lib-widget-extra"" | sed 's|^\.[\\/]||'`
+  # A ".." for each directory in $ac_dir_suffix.
+  ac_top_builddir_sub=`$as_echo "$ac_dir_suffix" | sed 's|/[^\\/]*|/..|g;s|/||'`
+  case $ac_top_builddir_sub in
+  "") ac_top_builddir_sub=. ac_top_build_prefix= ;;
+  *)  ac_top_build_prefix=$ac_top_builddir_sub/ ;;
+  esac ;;
+esac
+ac_abs_top_builddir=$ac_pwd
+ac_abs_builddir=$ac_pwd$ac_dir_suffix
+# for backward compatibility:
+ac_top_builddir=$ac_top_build_prefix
+
+case $srcdir in
+  .)  # We are building in place.
+    ac_srcdir=.
+    ac_top_srcdir=$ac_top_builddir_sub
+    ac_abs_top_srcdir=$ac_pwd ;;
+  [\\/]* | ?:[\\/]* )  # Absolute name.
+    ac_srcdir=$srcdir$ac_dir_suffix;
+    ac_top_srcdir=$srcdir
+    ac_abs_top_srcdir=$srcdir ;;
+  *) # Relative name.
+    ac_srcdir=$ac_top_build_prefix$srcdir$ac_dir_suffix
+    ac_top_srcdir=$ac_top_build_prefix$srcdir
+    ac_abs_top_srcdir=$ac_pwd/$srcdir ;;
+esac
+ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
+
+  cd ""${srcdir}/lib-src/lib-widget-extra""
+
+  # Check for guested configure; otherwise get Cygnus style configure.
+  if test -f "configure.gnu"; then
+    ax_sub_configure=$ac_srcdir/configure.gnu
+  elif test -f "$ac_srcdir/configure"; then
+    ax_sub_configure=$ac_srcdir/configure
+  elif test -f "$ac_srcdir/configure.in"; then
+    # This should be Cygnus configure.
+	ax_sub_configure=$ac_aux_dir/configure
+  else
+    { $as_echo "$as_me:$LINENO: WARNING: no configuration information is in \"${srcdir}/lib-src/lib-widget-extra\"" >&5
+$as_echo "$as_me: WARNING: no configuration information is in \"${srcdir}/lib-src/lib-widget-extra\"" >&2;}
+    ax_sub_configure=
+  fi
+
+  # The recursion is here.
+  if test -n "$ax_sub_configure"; then
+    # Make the cache file name correct relative to the subdirectory.
+    case $cache_file in
+    [\\/]* | ?:[\\/]* ) ax_sub_cache_file=$cache_file ;;
+    *) # Relative name.
+	ax_sub_cache_file=$ac_top_build_prefix$cache_file ;;
+    esac
+
+    { $as_echo "$as_me:$LINENO: running $SHELL $ax_sub_configure $ax_sub_configure_args --cache-file=$ax_sub_cache_file --srcdir=$ac_srcdir" >&5
+$as_echo "$as_me: running $SHELL $ax_sub_configure $ax_sub_configure_args --cache-file=$ax_sub_cache_file --srcdir=$ac_srcdir" >&6;}
+    # The eval makes quoting arguments work.
+    eval "\$SHELL \"\$ax_sub_configure\" $ax_sub_configure_args \
+	   --cache-file=\"\$ax_sub_cache_file\" --srcdir=\"\$ax_srcdir\""
+  fi
+
+  cd "$ax_popdir"
+  { $as_echo "$as_me:$LINENO: Done configuring in \"${srcdir}/lib-src/lib-widget-extra\"" >&5
+$as_echo "$as_me: Done configuring in \"${srcdir}/lib-src/lib-widget-extra\"" >&6;}
+
+         PKG_CONFIG_PATH="${srcdir}/lib-src/lib-widget-extra/:$PKG_CONFIG_PATH"
+   export PKG_CONFIG_PATH
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for WIDGETEXTRA" >&5
+$as_echo_n "checking for WIDGETEXTRA... " >&6; }
+
+if test -n "$WIDGETEXTRA_CFLAGS"; then
+    pkg_cv_WIDGETEXTRA_CFLAGS="$WIDGETEXTRA_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libwidgetextra\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libwidgetextra") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_WIDGETEXTRA_CFLAGS=`$PKG_CONFIG --cflags "libwidgetextra" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$WIDGETEXTRA_LIBS"; then
+    pkg_cv_WIDGETEXTRA_LIBS="$WIDGETEXTRA_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libwidgetextra\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libwidgetextra") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_WIDGETEXTRA_LIBS=`$PKG_CONFIG --libs "libwidgetextra" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        WIDGETEXTRA_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libwidgetextra" 2>&1`
+        else
+	        WIDGETEXTRA_PKG_ERRORS=`$PKG_CONFIG --print-errors "libwidgetextra" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$WIDGETEXTRA_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                widgetextra_available="no"
+elif test $pkg_failed = untried; then
+	widgetextra_available="no"
+else
+	WIDGETEXTRA_CFLAGS=$pkg_cv_WIDGETEXTRA_CFLAGS
+	WIDGETEXTRA_LIBS=$pkg_cv_WIDGETEXTRA_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	widgetextra_available="yes"
+fi
+
+   if test "x$widgetextra_available" != "xyes" ; then
+      { { $as_echo "$as_me:$LINENO: error: lib-widget-extra is required to build audacity. A copy is included in the audacity source distribution at lib-src/lib-widget-extra/." >&5
+$as_echo "$as_me: error: lib-widget-extra is required to build audacity. A copy is included in the audacity source distribution at lib-src/lib-widget-extra/." >&2;}
+   { (exit 1); exit 1; }; }
+   fi
+
 BUILD_LDFLAGS="$BUILD_LDFLAGS $WIDGETEXTRA_LIBS"
 CXXFLAGS="$CXXFLAGS $WIDGETEXTRA_CFLAGS"
 LIBSRC_BUILD="$LIBSRC_BUILD widgetextra"
@@ -5253,22 +5736,3166 @@ LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMP
 { $as_echo "$as_me:$LINENO: Determining what libraries are available in this tree and on the system" >&5
 $as_echo "$as_me: Determining what libraries are available in this tree and on the system" >&6;}
 
-AUDACITY_CHECKLIB_LIBSNDFILE
-AUDACITY_CHECKLIB_LIBEXPAT
-AUDACITY_CHECKLIB_LIBSAMPLERATE
-AUDACITY_CHECKLIB_LIBRESAMPLE
-AUDACITY_CHECKLIB_LIBVORBIS
-AUDACITY_CHECKLIB_LIBMAD
-AUDACITY_CHECKLIB_LIBFLAC
-AUDACITY_CHECKLIB_LIBID3TAG
-AUDACITY_CHECKLIB_LIBSBSMS
-AUDACITY_CHECKLIB_LIBSOUNDTOUCH
-AUDACITY_CHECKLIB_LIBNYQUIST
-AUDACITY_CHECKLIB_LIBVAMP
-AUDACITY_CHECKLIB_LIBTWOLAME
-AUDACITY_CHECKLIB_FFMPEG
-AUDACITY_CHECKLIB_PORTSMF
-AUDACITY_CHECKLIB_TAGLIB
+
+
+
+# Check whether --with-libsndfile was given.
+if test "${with_libsndfile+set}" = set; then
+  withval=$with_libsndfile; LIBSNDFILE_ARGUMENT=$withval
+else
+  LIBSNDFILE_ARGUMENT="unspecified"
+fi
+
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for SNDFILE" >&5
+$as_echo_n "checking for SNDFILE... " >&6; }
+
+if test -n "$SNDFILE_CFLAGS"; then
+    pkg_cv_SNDFILE_CFLAGS="$SNDFILE_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sndfile >= 1.0.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "sndfile >= 1.0.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_SNDFILE_CFLAGS=`$PKG_CONFIG --cflags "sndfile >= 1.0.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$SNDFILE_LIBS"; then
+    pkg_cv_SNDFILE_LIBS="$SNDFILE_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sndfile >= 1.0.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "sndfile >= 1.0.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_SNDFILE_LIBS=`$PKG_CONFIG --libs "sndfile >= 1.0.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        SNDFILE_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "sndfile >= 1.0.0" 2>&1`
+        else
+	        SNDFILE_PKG_ERRORS=`$PKG_CONFIG --print-errors "sndfile >= 1.0.0" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$SNDFILE_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                sndfile_available_system="no"
+elif test $pkg_failed = untried; then
+	sndfile_available_system="no"
+else
+	SNDFILE_CFLAGS=$pkg_cv_SNDFILE_CFLAGS
+	SNDFILE_LIBS=$pkg_cv_SNDFILE_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	sndfile_available_system="yes"
+fi
+
+   if test "x$sndfile_available_system" = "xyes" ; then
+      LIBSNDFILE_SYSTEM_AVAILABLE="yes"
+      LIBSNDFILE_SYSTEM_LIBS=$SNDFILE_LIBS
+      LIBSNDFILE_SYSTEM_CXXFLAGS=$SNDFILE_CFLAGS
+      { $as_echo "$as_me:$LINENO: Libsndfile libraries are available as system libraries" >&5
+$as_echo "$as_me: Libsndfile libraries are available as system libraries" >&6;}
+   else
+      LIBSNDFILE_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: Libsndfile libraries are NOT available as system libraries" >&5
+$as_echo "$as_me: Libsndfile libraries are NOT available as system libraries" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libsndfile/src/sndfile.h.in" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libsndfile/src/sndfile.h.in" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libsndfile/src/sndfile.h.in... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libsndfile/src/sndfile.h.in"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  libsndfile_found="yes"
+else
+  libsndfile_found="no"
+fi
+
+
+   if test "x$libsndfile_found" = "xyes" ; then
+      LIBSNDFILE_LOCAL_AVAILABLE="yes"
+      LIBSNDFILE_LOCAL_LIBS="libsndfile.a"
+      LIBSNDFILE_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libsndfile/src'
+      LIBSNDFILE_LOCAL_CONFIG_SUBDIRS="lib-src/libsndfile"
+      { $as_echo "$as_me:$LINENO: libsndfile libraries are available in this source tree" >&5
+$as_echo "$as_me: libsndfile libraries are available in this source tree" >&6;}
+
+
+            ac_configure_args="$ac_configure_args --disable-sqlite --disable-external-libs --disable-alsa"
+   else
+      LIBSNDFILE_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: libsndfile libraries are NOT available in this source tree" >&5
+$as_echo "$as_me: libsndfile libraries are NOT available in this source tree" >&6;}
+   fi
+
+
+
+
+
+# Check whether --with-expat was given.
+if test "${with_expat+set}" = set; then
+  withval=$with_expat; LIBEXPAT_ARGUMENT=$withval
+else
+  LIBEXPAT_ARGUMENT="unspecified"
+fi
+
+
+
+   { $as_echo "$as_me:$LINENO: checking for XML_ParserCreate in -lexpat" >&5
+$as_echo_n "checking for XML_ParserCreate in -lexpat... " >&6; }
+if test "${ac_cv_lib_expat_XML_ParserCreate+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lexpat  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char XML_ParserCreate ();
+int
+main ()
+{
+return XML_ParserCreate ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext && {
+	 test "$cross_compiling" = yes ||
+	 $as_test_x conftest$ac_exeext
+       }; then
+  ac_cv_lib_expat_XML_ParserCreate=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_expat_XML_ParserCreate=no
+fi
+
+rm -rf conftest.dSYM
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_lib_expat_XML_ParserCreate" >&5
+$as_echo "$ac_cv_lib_expat_XML_ParserCreate" >&6; }
+if test "x$ac_cv_lib_expat_XML_ParserCreate" = x""yes; then
+  libexpat_found="yes"
+else
+  libexpat_found="no"
+fi
+
+
+   expat_h_found="no"
+
+   if test "${ac_cv_header_expat_h+set}" = set; then
+  { $as_echo "$as_me:$LINENO: checking for expat.h" >&5
+$as_echo_n "checking for expat.h... " >&6; }
+if test "${ac_cv_header_expat_h+set}" = set; then
+  $as_echo_n "(cached) " >&6
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_header_expat_h" >&5
+$as_echo "$ac_cv_header_expat_h" >&6; }
+else
+  # Is the header compilable?
+{ $as_echo "$as_me:$LINENO: checking expat.h usability" >&5
+$as_echo_n "checking expat.h usability... " >&6; }
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <expat.h>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_header_compiler=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_header_compiler=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+{ $as_echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+$as_echo "$ac_header_compiler" >&6; }
+
+# Is the header present?
+{ $as_echo "$as_me:$LINENO: checking expat.h presence" >&5
+$as_echo_n "checking expat.h presence... " >&6; }
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <expat.h>
+_ACEOF
+if { (ac_try="$ac_cpp conftest.$ac_ext"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null && {
+	 test -z "$ac_cxx_preproc_warn_flag$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       }; then
+  ac_header_preproc=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+
+rm -f conftest.err conftest.$ac_ext
+{ $as_echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+$as_echo "$ac_header_preproc" >&6; }
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc:$ac_cxx_preproc_warn_flag in
+  yes:no: )
+    { $as_echo "$as_me:$LINENO: WARNING: expat.h: accepted by the compiler, rejected by the preprocessor!" >&5
+$as_echo "$as_me: WARNING: expat.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: expat.h: proceeding with the compiler's result" >&5
+$as_echo "$as_me: WARNING: expat.h: proceeding with the compiler's result" >&2;}
+    ac_header_preproc=yes
+    ;;
+  no:yes:* )
+    { $as_echo "$as_me:$LINENO: WARNING: expat.h: present but cannot be compiled" >&5
+$as_echo "$as_me: WARNING: expat.h: present but cannot be compiled" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: expat.h:     check for missing prerequisite headers?" >&5
+$as_echo "$as_me: WARNING: expat.h:     check for missing prerequisite headers?" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: expat.h: see the Autoconf documentation" >&5
+$as_echo "$as_me: WARNING: expat.h: see the Autoconf documentation" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: expat.h:     section \"Present But Cannot Be Compiled\"" >&5
+$as_echo "$as_me: WARNING: expat.h:     section \"Present But Cannot Be Compiled\"" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: expat.h: proceeding with the preprocessor's result" >&5
+$as_echo "$as_me: WARNING: expat.h: proceeding with the preprocessor's result" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: expat.h: in the future, the compiler will take precedence" >&5
+$as_echo "$as_me: WARNING: expat.h: in the future, the compiler will take precedence" >&2;}
+
+    ;;
+esac
+{ $as_echo "$as_me:$LINENO: checking for expat.h" >&5
+$as_echo_n "checking for expat.h... " >&6; }
+if test "${ac_cv_header_expat_h+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  ac_cv_header_expat_h=$ac_header_preproc
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_header_expat_h" >&5
+$as_echo "$ac_cv_header_expat_h" >&6; }
+
+fi
+if test "x$ac_cv_header_expat_h" = x""yes; then
+  expat_h_found="yes"
+else
+  expat_h_found="no"
+fi
+
+
+
+   if test "x$libexpat_found" = "xyes" && test "x$expat_h_found" = "xyes" ; then
+      LIBEXPAT_SYSTEM_AVAILABLE="yes"
+      LIBEXPAT_SYSTEM_LIBS="-lexpat"
+      LIBEXPAT_SYSTEM_CPPSYMBOLS="USE_SYSTEM_EXPAT"
+      { $as_echo "$as_me:$LINENO: Expat libraries are available as system libraries" >&5
+$as_echo "$as_me: Expat libraries are available as system libraries" >&6;}
+   else
+      LIBEXPAT_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: Expat libraries are NOT available as system libraries" >&5
+$as_echo "$as_me: Expat libraries are NOT available as system libraries" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/expat/xmlparse/xmlparse.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/expat/xmlparse/xmlparse.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/expat/xmlparse/xmlparse.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/expat/xmlparse/xmlparse.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  xmlparse_h_found="yes"
+else
+  xmlparse_h_found="no"
+fi
+
+
+   if test "x$xmlparse_h_found" = "xyes" ; then
+      LIBEXPAT_LOCAL_AVAILABLE="yes"
+      LIBEXPAT_LOCAL_LIBS="expat.a"
+      LIBEXPAT_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/expat'
+      LIBEXPAT_LOCAL_CPPSYMBOLS="USE_LOCAL_EXPAT"
+
+      { $as_echo "$as_me:$LINENO: Expat libraries are available in the local tree" >&5
+$as_echo "$as_me: Expat libraries are available in the local tree" >&6;}
+   else
+      LIBEXPAT_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: Expat libraries are NOT available in the local tree" >&5
+$as_echo "$as_me: Expat libraries are NOT available in the local tree" >&6;}
+   fi
+
+
+
+
+# Check whether --with-libsamplerate was given.
+if test "${with_libsamplerate+set}" = set; then
+  withval=$with_libsamplerate; LIBSAMPLERATE_ARGUMENT=$withval
+else
+  LIBSAMPLERATE_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_LIBSAMPLERATE 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for SAMPLERATE" >&5
+$as_echo_n "checking for SAMPLERATE... " >&6; }
+
+if test -n "$SAMPLERATE_CFLAGS"; then
+    pkg_cv_SAMPLERATE_CFLAGS="$SAMPLERATE_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"samplerate >= 0.1.2\"") >&5
+  ($PKG_CONFIG --exists --print-errors "samplerate >= 0.1.2") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_SAMPLERATE_CFLAGS=`$PKG_CONFIG --cflags "samplerate >= 0.1.2" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$SAMPLERATE_LIBS"; then
+    pkg_cv_SAMPLERATE_LIBS="$SAMPLERATE_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"samplerate >= 0.1.2\"") >&5
+  ($PKG_CONFIG --exists --print-errors "samplerate >= 0.1.2") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_SAMPLERATE_LIBS=`$PKG_CONFIG --libs "samplerate >= 0.1.2" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "samplerate >= 0.1.2" 2>&1`
+        else
+	        SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --print-errors "samplerate >= 0.1.2" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$SAMPLERATE_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                samplerate_available_system="no"
+elif test $pkg_failed = untried; then
+	samplerate_available_system="no"
+else
+	SAMPLERATE_CFLAGS=$pkg_cv_SAMPLERATE_CFLAGS
+	SAMPLERATE_LIBS=$pkg_cv_SAMPLERATE_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	samplerate_available_system="yes"
+fi
+
+   if test "x$samplerate_available_system" = "xyes" ; then
+      LIBSAMPLERATE_SYSTEM_AVAILABLE="yes"
+      LIBSAMPLERATE_SYSTEM_LIBS=$SAMPLERATE_LIBS
+      LIBSAMPLERATE_SYSTEM_CXXFLAGS=$SAMPLERATE_CFLAGS
+      LIBSAMPLERATE_SYSTEM_CPPSYMBOLS="USE_LIBSAMPLERATE"
+      { $as_echo "$as_me:$LINENO: Libsamplerate libraries are available as system libraries" >&5
+$as_echo "$as_me: Libsamplerate libraries are available as system libraries" >&6;}
+   else
+      LIBSAMPLERATE_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: Libsamplerate libraries are NOT available as system libraries" >&5
+$as_echo "$as_me: Libsamplerate libraries are NOT available as system libraries" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libsamplerate/src/samplerate.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libsamplerate/src/samplerate.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libsamplerate/src/samplerate.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libsamplerate/src/samplerate.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  samplerate_h_found="yes"
+else
+  samplerate_h_found="no"
+fi
+
+
+   if test "x$samplerate_h_found" = "xyes" ; then
+      LIBSAMPLERATE_LOCAL_AVAILABLE="yes"
+      LIBSAMPLERATE_LOCAL_LIBS="libsamplerate.a"
+      LIBSAMPLERATE_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libsamplerate/src'
+      LIBSAMPLERATE_LOCAL_CPPSYMBOLS="USE_LIBSAMPLERATE"
+
+      if test ! -f lib-src/libsamplerate/Makefile ; then
+         LIBSAMPLERATE_LOCAL_CONFIG_SUBDIRS="lib-src/libsamplerate"
+      fi
+      { $as_echo "$as_me:$LINENO: libsamplerate libraries are available in the local tree" >&5
+$as_echo "$as_me: libsamplerate libraries are available in the local tree" >&6;}
+   else
+      LIBSAMPLERATE_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: libsamplerate libraries are NOT available in the local tree" >&5
+$as_echo "$as_me: libsamplerate libraries are NOT available in the local tree" >&6;}
+   fi
+
+
+
+
+# Check whether --with-libresample was given.
+if test "${with_libresample+set}" = set; then
+  withval=$with_libresample; LIBRESAMPLE_ARGUMENT=$withval
+else
+  LIBRESAMPLE_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_LIBRESAMPLE 1
+_ACEOF
+
+   fi
+
+
+
+   LIBRESAMPLE_SYSTEM_AVAILABLE="no"
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libresample/include/libresample.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libresample/include/libresample.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libresample/include/libresample.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libresample/include/libresample.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  resample_h_found="yes"
+else
+  resample_h_found="no"
+fi
+
+
+   if test "x$resample_h_found" = "xyes" ; then
+      LIBRESAMPLE_LOCAL_AVAILABLE="yes"
+      LIBRESAMPLE_LOCAL_LIBS="libresample.a"
+      LIBRESAMPLE_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libresample/include'
+      LIBRESAMPLE_LOCAL_CPPSYMBOLS="USE_LIBRESAMPLE"
+
+      if test ! -f lib-src/libresample/Makefile ; then
+         LIBRESAMPLE_LOCAL_CONFIG_SUBDIRS="lib-src/libresample"
+      fi
+      { $as_echo "$as_me:$LINENO: libresample libraries are available in the local tree" >&5
+$as_echo "$as_me: libresample libraries are available in the local tree" >&6;}
+   else
+      LIBRESAMPLE_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: libresample libraries are NOT available in the local tree" >&5
+$as_echo "$as_me: libresample libraries are NOT available in the local tree" >&6;}
+   fi
+
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_LIBVORBIS 1
+_ACEOF
+
+   fi
+
+
+# Check whether --with-libvorbis was given.
+if test "${with_libvorbis+set}" = set; then
+  withval=$with_libvorbis; LIBVORBIS_ARGUMENT=$withval
+else
+  LIBVORBIS_ARGUMENT="unspecified"
+fi
+
+
+
+   { $as_echo "$as_me:$LINENO: checking for vorbis_bitrate_addblock in -lvorbisfile" >&5
+$as_echo_n "checking for vorbis_bitrate_addblock in -lvorbisfile... " >&6; }
+if test "${ac_cv_lib_vorbisfile_vorbis_bitrate_addblock+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lvorbisfile -lvorbis -logg $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char vorbis_bitrate_addblock ();
+int
+main ()
+{
+return vorbis_bitrate_addblock ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext && {
+	 test "$cross_compiling" = yes ||
+	 $as_test_x conftest$ac_exeext
+       }; then
+  ac_cv_lib_vorbisfile_vorbis_bitrate_addblock=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_vorbisfile_vorbis_bitrate_addblock=no
+fi
+
+rm -rf conftest.dSYM
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_lib_vorbisfile_vorbis_bitrate_addblock" >&5
+$as_echo "$ac_cv_lib_vorbisfile_vorbis_bitrate_addblock" >&6; }
+if test "x$ac_cv_lib_vorbisfile_vorbis_bitrate_addblock" = x""yes; then
+  lib_found="yes"
+else
+  lib_found="no"
+fi
+
+
+   if test "${ac_cv_header_vorbis_vorbisfile_h+set}" = set; then
+  { $as_echo "$as_me:$LINENO: checking for vorbis/vorbisfile.h" >&5
+$as_echo_n "checking for vorbis/vorbisfile.h... " >&6; }
+if test "${ac_cv_header_vorbis_vorbisfile_h+set}" = set; then
+  $as_echo_n "(cached) " >&6
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_header_vorbis_vorbisfile_h" >&5
+$as_echo "$ac_cv_header_vorbis_vorbisfile_h" >&6; }
+else
+  # Is the header compilable?
+{ $as_echo "$as_me:$LINENO: checking vorbis/vorbisfile.h usability" >&5
+$as_echo_n "checking vorbis/vorbisfile.h usability... " >&6; }
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <vorbis/vorbisfile.h>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_header_compiler=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_header_compiler=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+{ $as_echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+$as_echo "$ac_header_compiler" >&6; }
+
+# Is the header present?
+{ $as_echo "$as_me:$LINENO: checking vorbis/vorbisfile.h presence" >&5
+$as_echo_n "checking vorbis/vorbisfile.h presence... " >&6; }
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <vorbis/vorbisfile.h>
+_ACEOF
+if { (ac_try="$ac_cpp conftest.$ac_ext"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null && {
+	 test -z "$ac_cxx_preproc_warn_flag$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       }; then
+  ac_header_preproc=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+
+rm -f conftest.err conftest.$ac_ext
+{ $as_echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+$as_echo "$ac_header_preproc" >&6; }
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc:$ac_cxx_preproc_warn_flag in
+  yes:no: )
+    { $as_echo "$as_me:$LINENO: WARNING: vorbis/vorbisfile.h: accepted by the compiler, rejected by the preprocessor!" >&5
+$as_echo "$as_me: WARNING: vorbis/vorbisfile.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: vorbis/vorbisfile.h: proceeding with the compiler's result" >&5
+$as_echo "$as_me: WARNING: vorbis/vorbisfile.h: proceeding with the compiler's result" >&2;}
+    ac_header_preproc=yes
+    ;;
+  no:yes:* )
+    { $as_echo "$as_me:$LINENO: WARNING: vorbis/vorbisfile.h: present but cannot be compiled" >&5
+$as_echo "$as_me: WARNING: vorbis/vorbisfile.h: present but cannot be compiled" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: vorbis/vorbisfile.h:     check for missing prerequisite headers?" >&5
+$as_echo "$as_me: WARNING: vorbis/vorbisfile.h:     check for missing prerequisite headers?" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: vorbis/vorbisfile.h: see the Autoconf documentation" >&5
+$as_echo "$as_me: WARNING: vorbis/vorbisfile.h: see the Autoconf documentation" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: vorbis/vorbisfile.h:     section \"Present But Cannot Be Compiled\"" >&5
+$as_echo "$as_me: WARNING: vorbis/vorbisfile.h:     section \"Present But Cannot Be Compiled\"" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: vorbis/vorbisfile.h: proceeding with the preprocessor's result" >&5
+$as_echo "$as_me: WARNING: vorbis/vorbisfile.h: proceeding with the preprocessor's result" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: vorbis/vorbisfile.h: in the future, the compiler will take precedence" >&5
+$as_echo "$as_me: WARNING: vorbis/vorbisfile.h: in the future, the compiler will take precedence" >&2;}
+
+    ;;
+esac
+{ $as_echo "$as_me:$LINENO: checking for vorbis/vorbisfile.h" >&5
+$as_echo_n "checking for vorbis/vorbisfile.h... " >&6; }
+if test "${ac_cv_header_vorbis_vorbisfile_h+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  ac_cv_header_vorbis_vorbisfile_h=$ac_header_preproc
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_header_vorbis_vorbisfile_h" >&5
+$as_echo "$ac_cv_header_vorbis_vorbisfile_h" >&6; }
+
+fi
+if test "x$ac_cv_header_vorbis_vorbisfile_h" = x""yes; then
+  header_found="yes"
+else
+  header_found="no"
+fi
+
+
+
+   if test "x$lib_found" = "xyes" && test "x$header_found" = "xyes" ; then
+      LIBVORBIS_SYSTEM_AVAILABLE="yes"
+      LIBVORBIS_SYSTEM_LIBS="-lvorbisenc -lvorbisfile -lvorbis -logg"
+      LIBVORBIS_SYSTEM_CPPSYMBOLS="USE_LIBVORBIS"
+      { $as_echo "$as_me:$LINENO: Vorbis libraries are available as system libraries" >&5
+$as_echo "$as_me: Vorbis libraries are available as system libraries" >&6;}
+   else
+      LIBVORBIS_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: Vorbis libraries are NOT available as system libraries" >&5
+$as_echo "$as_me: Vorbis libraries are NOT available as system libraries" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libvorbis/include/vorbis/vorbisenc.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libvorbis/include/vorbis/vorbisenc.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libvorbis/include/vorbis/vorbisenc.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libvorbis/include/vorbis/vorbisenc.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  vorbisenc_h_available="yes"
+else
+  vorbisenc_h_available="no"
+fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libogg/include/ogg/ogg.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libogg/include/ogg/ogg.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libogg/include/ogg/ogg.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libogg/include/ogg/ogg.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  ogg_h_available="yes"
+else
+  ogg_h_available="no"
+fi
+
+
+   if test "x$vorbisenc_h_available" = "xyes" && test "x$ogg_h_available" = "xyes" ; then
+      LIBVORBIS_LOCAL_AVAILABLE="yes"
+
+      LIBVORBIS_LOCAL_LIBS="libvorbisenc.a libvorbisfile.a libvorbis.a libogg.a"
+
+      LIBVORBIS_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libogg/include'
+      LIBVORBIS_LOCAL_CXXFLAGS="$LIBVORBIS_LOCAL_CXXFLAGS -I\$(top_srcdir)/lib-src/libvorbis/include"
+
+      LIBVORBIS_LOCAL_CPPSYMBOLS="USE_LIBVORBIS"
+
+      LIBVORBIS_LOCAL_CONFIG_SUBDIRS="lib-src/libogg lib-src/libvorbis"
+      { $as_echo "$as_me:$LINENO: Vorbis libraries are available in this source tree" >&5
+$as_echo "$as_me: Vorbis libraries are available in this source tree" >&6;}
+   else
+      { $as_echo "$as_me:$LINENO: Vorbis libraries are NOT available in this source tree" >&5
+$as_echo "$as_me: Vorbis libraries are NOT available in this source tree" >&6;}
+   fi
+
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_LIBMAD 1
+_ACEOF
+
+   fi
+
+
+# Check whether --with-libmad was given.
+if test "${with_libmad+set}" = set; then
+  withval=$with_libmad; LIBMAD_ARGUMENT=$withval
+else
+  LIBMAD_ARGUMENT="unspecified"
+fi
+
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for LIBMAD" >&5
+$as_echo_n "checking for LIBMAD... " >&6; }
+
+if test -n "$LIBMAD_CFLAGS"; then
+    pkg_cv_LIBMAD_CFLAGS="$LIBMAD_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"mad >= 0.14.2b\"") >&5
+  ($PKG_CONFIG --exists --print-errors "mad >= 0.14.2b") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBMAD_CFLAGS=`$PKG_CONFIG --cflags "mad >= 0.14.2b" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$LIBMAD_LIBS"; then
+    pkg_cv_LIBMAD_LIBS="$LIBMAD_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"mad >= 0.14.2b\"") >&5
+  ($PKG_CONFIG --exists --print-errors "mad >= 0.14.2b") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBMAD_LIBS=`$PKG_CONFIG --libs "mad >= 0.14.2b" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        LIBMAD_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "mad >= 0.14.2b" 2>&1`
+        else
+	        LIBMAD_PKG_ERRORS=`$PKG_CONFIG --print-errors "mad >= 0.14.2b" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$LIBMAD_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                libmad_available_system="no"
+elif test $pkg_failed = untried; then
+	libmad_available_system="no"
+else
+	LIBMAD_CFLAGS=$pkg_cv_LIBMAD_CFLAGS
+	LIBMAD_LIBS=$pkg_cv_LIBMAD_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	libmad_available_system="yes"
+fi
+
+
+   { $as_echo "$as_me:$LINENO: checking for mad_decoder_init in -lmad" >&5
+$as_echo_n "checking for mad_decoder_init in -lmad... " >&6; }
+if test "${ac_cv_lib_mad_mad_decoder_init+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lmad  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char mad_decoder_init ();
+int
+main ()
+{
+return mad_decoder_init ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext && {
+	 test "$cross_compiling" = yes ||
+	 $as_test_x conftest$ac_exeext
+       }; then
+  ac_cv_lib_mad_mad_decoder_init=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_mad_mad_decoder_init=no
+fi
+
+rm -rf conftest.dSYM
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_lib_mad_mad_decoder_init" >&5
+$as_echo "$ac_cv_lib_mad_mad_decoder_init" >&6; }
+if test "x$ac_cv_lib_mad_mad_decoder_init" = x""yes; then
+  libmad_found="yes"
+else
+  libmad_found="no"
+fi
+
+
+   if test "x$libmad_available_system" = "xyes" && test "x$libmad_found" = "xno" ; then
+      { $as_echo "$as_me:$LINENO: WARNING: system installation of libmad found, but it is too old.  Upgrade to at least 0.14.2b to use with Audacity" >&5
+$as_echo "$as_me: WARNING: system installation of libmad found, but it is too old.  Upgrade to at least 0.14.2b to use with Audacity" >&2;}
+   fi
+
+   if test "x$libmad_available_system" = "xyes" ; then
+      LIBMAD_SYSTEM_AVAILABLE="yes"
+      LIBMAD_SYSTEM_LIBS="$LIBMAD_LIBS"
+	  LIBMAD_SYSTEM_CXXFLAGS="$LIBMAD_CFLAGS"
+      LIBMAD_SYSTEM_CPPSYMBOLS="USE_LIBMAD"
+      { $as_echo "$as_me:$LINENO: libmad libraries are available as system libraries" >&5
+$as_echo "$as_me: libmad libraries are available as system libraries" >&6;}
+   else
+      { $as_echo "$as_me:$LINENO: libmad libraries are NOT available as system libraries" >&5
+$as_echo "$as_me: libmad libraries are NOT available as system libraries" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libmad/frame.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libmad/frame.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libmad/frame.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libmad/frame.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  frame_h_found="yes"
+else
+  frame_h_found="no"
+fi
+
+
+   if test "x$frame_h_found" = "xyes" ; then
+      LIBMAD_LOCAL_AVAILABLE="yes"
+      LIBMAD_LOCAL_LIBS="libmad.a"
+      LIBMAD_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libmad'
+      LIBMAD_LOCAL_CPPSYMBOLS="USE_LIBMAD"
+      LIBMAD_LOCAL_CONFIG_SUBDIRS="lib-src/libmad"
+      { $as_echo "$as_me:$LINENO: libmad libraries are available in the local tree" >&5
+$as_echo "$as_me: libmad libraries are available in the local tree" >&6;}
+   else
+      LIBMAD_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: libmad libraries are NOT available in the local tree" >&5
+$as_echo "$as_me: libmad libraries are NOT available in the local tree" >&6;}
+   fi
+
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_LIBFLAC 1
+_ACEOF
+
+   fi
+
+
+# Check whether --with-libflac was given.
+if test "${with_libflac+set}" = set; then
+  withval=$with_libflac; LIBFLAC_ARGUMENT=$withval
+else
+  LIBFLAC_ARGUMENT="unspecified"
+fi
+
+
+
+   { $as_echo "$as_me:$LINENO: checking for FLAC__stream_decoder_new in -lFLAC" >&5
+$as_echo_n "checking for FLAC__stream_decoder_new in -lFLAC... " >&6; }
+if test "${ac_cv_lib_FLAC_FLAC__stream_decoder_new+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lFLAC -lFLAC++ -lFLAC $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char FLAC__stream_decoder_new ();
+int
+main ()
+{
+return FLAC__stream_decoder_new ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext && {
+	 test "$cross_compiling" = yes ||
+	 $as_test_x conftest$ac_exeext
+       }; then
+  ac_cv_lib_FLAC_FLAC__stream_decoder_new=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_FLAC_FLAC__stream_decoder_new=no
+fi
+
+rm -rf conftest.dSYM
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_lib_FLAC_FLAC__stream_decoder_new" >&5
+$as_echo "$ac_cv_lib_FLAC_FLAC__stream_decoder_new" >&6; }
+if test "x$ac_cv_lib_FLAC_FLAC__stream_decoder_new" = x""yes; then
+  lib_found="yes"
+else
+  lib_found="no"
+fi
+
+
+   if test "${ac_cv_header_FLAC_format_h+set}" = set; then
+  { $as_echo "$as_me:$LINENO: checking for FLAC/format.h" >&5
+$as_echo_n "checking for FLAC/format.h... " >&6; }
+if test "${ac_cv_header_FLAC_format_h+set}" = set; then
+  $as_echo_n "(cached) " >&6
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_header_FLAC_format_h" >&5
+$as_echo "$ac_cv_header_FLAC_format_h" >&6; }
+else
+  # Is the header compilable?
+{ $as_echo "$as_me:$LINENO: checking FLAC/format.h usability" >&5
+$as_echo_n "checking FLAC/format.h usability... " >&6; }
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <FLAC/format.h>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_header_compiler=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_header_compiler=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+{ $as_echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+$as_echo "$ac_header_compiler" >&6; }
+
+# Is the header present?
+{ $as_echo "$as_me:$LINENO: checking FLAC/format.h presence" >&5
+$as_echo_n "checking FLAC/format.h presence... " >&6; }
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <FLAC/format.h>
+_ACEOF
+if { (ac_try="$ac_cpp conftest.$ac_ext"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null && {
+	 test -z "$ac_cxx_preproc_warn_flag$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       }; then
+  ac_header_preproc=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+
+rm -f conftest.err conftest.$ac_ext
+{ $as_echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+$as_echo "$ac_header_preproc" >&6; }
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc:$ac_cxx_preproc_warn_flag in
+  yes:no: )
+    { $as_echo "$as_me:$LINENO: WARNING: FLAC/format.h: accepted by the compiler, rejected by the preprocessor!" >&5
+$as_echo "$as_me: WARNING: FLAC/format.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: FLAC/format.h: proceeding with the compiler's result" >&5
+$as_echo "$as_me: WARNING: FLAC/format.h: proceeding with the compiler's result" >&2;}
+    ac_header_preproc=yes
+    ;;
+  no:yes:* )
+    { $as_echo "$as_me:$LINENO: WARNING: FLAC/format.h: present but cannot be compiled" >&5
+$as_echo "$as_me: WARNING: FLAC/format.h: present but cannot be compiled" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: FLAC/format.h:     check for missing prerequisite headers?" >&5
+$as_echo "$as_me: WARNING: FLAC/format.h:     check for missing prerequisite headers?" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: FLAC/format.h: see the Autoconf documentation" >&5
+$as_echo "$as_me: WARNING: FLAC/format.h: see the Autoconf documentation" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: FLAC/format.h:     section \"Present But Cannot Be Compiled\"" >&5
+$as_echo "$as_me: WARNING: FLAC/format.h:     section \"Present But Cannot Be Compiled\"" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: FLAC/format.h: proceeding with the preprocessor's result" >&5
+$as_echo "$as_me: WARNING: FLAC/format.h: proceeding with the preprocessor's result" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: FLAC/format.h: in the future, the compiler will take precedence" >&5
+$as_echo "$as_me: WARNING: FLAC/format.h: in the future, the compiler will take precedence" >&2;}
+
+    ;;
+esac
+{ $as_echo "$as_me:$LINENO: checking for FLAC/format.h" >&5
+$as_echo_n "checking for FLAC/format.h... " >&6; }
+if test "${ac_cv_header_FLAC_format_h+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  ac_cv_header_FLAC_format_h=$ac_header_preproc
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_header_FLAC_format_h" >&5
+$as_echo "$ac_cv_header_FLAC_format_h" >&6; }
+
+fi
+if test "x$ac_cv_header_FLAC_format_h" = x""yes; then
+  header_found="yes"
+else
+  header_found="no"
+fi
+
+
+
+   if test "x$lib_found" = "xyes" && test "x$header_found" = "xyes" ; then
+      LIBFLAC_SYSTEM_AVAILABLE="yes"
+      LIBFLAC_SYSTEM_LIBS="-lFLAC++ -lFLAC"
+      LIBFLAC_SYSTEM_CPPSYMBOLS="USE_LIBFLAC"
+      { $as_echo "$as_me:$LINENO: FLAC libraries are available as system libraries" >&5
+$as_echo "$as_me: FLAC libraries are available as system libraries" >&6;}
+   else
+      LIBFLAC_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: FLAC/FLAC++ libraries are NOT available as system libraries" >&5
+$as_echo "$as_me: FLAC/FLAC++ libraries are NOT available as system libraries" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libflac/include/FLAC/format.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libflac/include/FLAC/format.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libflac/include/FLAC/format.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libflac/include/FLAC/format.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  flac_h_available="yes"
+else
+  flac_h_available="no"
+fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libflac/include/FLAC++/decoder.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libflac/include/FLAC++/decoder.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libflac/include/FLAC++/decoder.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libflac/include/FLAC++/decoder.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  flacpp_h_available="yes"
+else
+  flacpp_h_available="no"
+fi
+
+
+   if test "x$flac_h_available" = "xyes" && test "x$flacpp_h_available" = "xyes" ; then
+      LIBFLAC_LOCAL_AVAILABLE="yes"
+
+      LIBFLAC_LOCAL_LIBS="libFLAC++.a libFLAC.a"
+
+      LIBFLAC_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libflac/include'
+      LIBFLAC_LOCAL_CXXFLAGS="$LIBFLAC_LOCAL_CXXFLAGS -I\$(top_srcdir)/lib-src/libflac/include"
+
+      LIBFLAC_LOCAL_CPPSYMBOLS="USE_LIBFLAC"
+      LIBFLAC_LOCAL_CONFIG_SUBDIRS="lib-src/libflac"
+
+      { $as_echo "$as_me:$LINENO: FLAC libraries are available in this source tree" >&5
+$as_echo "$as_me: FLAC libraries are available in this source tree" >&6;}
+   else
+      { $as_echo "$as_me:$LINENO: FLAC libraries are NOT available in this source tree" >&5
+$as_echo "$as_me: FLAC libraries are NOT available in this source tree" >&6;}
+   fi
+
+
+
+
+# Check whether --with-libid3tag was given.
+if test "${with_libid3tag+set}" = set; then
+  withval=$with_libid3tag; LIBID3TAG_ARGUMENT=$withval
+else
+  LIBID3TAG_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_LIBID3TAG 1
+_ACEOF
+
+   fi
+
+
+   { $as_echo "$as_me:$LINENO: checking for id3_file_open in -lid3tag" >&5
+$as_echo_n "checking for id3_file_open in -lid3tag... " >&6; }
+if test "${ac_cv_lib_id3tag_id3_file_open+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lid3tag -lz $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char id3_file_open ();
+int
+main ()
+{
+return id3_file_open ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext && {
+	 test "$cross_compiling" = yes ||
+	 $as_test_x conftest$ac_exeext
+       }; then
+  ac_cv_lib_id3tag_id3_file_open=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_id3tag_id3_file_open=no
+fi
+
+rm -rf conftest.dSYM
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_lib_id3tag_id3_file_open" >&5
+$as_echo "$ac_cv_lib_id3tag_id3_file_open" >&6; }
+if test "x$ac_cv_lib_id3tag_id3_file_open" = x""yes; then
+  libid3tag_found="yes"
+else
+  libid3tag_found="no"
+fi
+
+
+   if test "${ac_cv_header_id3tag_h+set}" = set; then
+  { $as_echo "$as_me:$LINENO: checking for id3tag.h" >&5
+$as_echo_n "checking for id3tag.h... " >&6; }
+if test "${ac_cv_header_id3tag_h+set}" = set; then
+  $as_echo_n "(cached) " >&6
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_header_id3tag_h" >&5
+$as_echo "$ac_cv_header_id3tag_h" >&6; }
+else
+  # Is the header compilable?
+{ $as_echo "$as_me:$LINENO: checking id3tag.h usability" >&5
+$as_echo_n "checking id3tag.h usability... " >&6; }
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <id3tag.h>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_header_compiler=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_header_compiler=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+{ $as_echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+$as_echo "$ac_header_compiler" >&6; }
+
+# Is the header present?
+{ $as_echo "$as_me:$LINENO: checking id3tag.h presence" >&5
+$as_echo_n "checking id3tag.h presence... " >&6; }
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <id3tag.h>
+_ACEOF
+if { (ac_try="$ac_cpp conftest.$ac_ext"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_cpp conftest.$ac_ext") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null && {
+	 test -z "$ac_cxx_preproc_warn_flag$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       }; then
+  ac_header_preproc=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+
+rm -f conftest.err conftest.$ac_ext
+{ $as_echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+$as_echo "$ac_header_preproc" >&6; }
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc:$ac_cxx_preproc_warn_flag in
+  yes:no: )
+    { $as_echo "$as_me:$LINENO: WARNING: id3tag.h: accepted by the compiler, rejected by the preprocessor!" >&5
+$as_echo "$as_me: WARNING: id3tag.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: id3tag.h: proceeding with the compiler's result" >&5
+$as_echo "$as_me: WARNING: id3tag.h: proceeding with the compiler's result" >&2;}
+    ac_header_preproc=yes
+    ;;
+  no:yes:* )
+    { $as_echo "$as_me:$LINENO: WARNING: id3tag.h: present but cannot be compiled" >&5
+$as_echo "$as_me: WARNING: id3tag.h: present but cannot be compiled" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: id3tag.h:     check for missing prerequisite headers?" >&5
+$as_echo "$as_me: WARNING: id3tag.h:     check for missing prerequisite headers?" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: id3tag.h: see the Autoconf documentation" >&5
+$as_echo "$as_me: WARNING: id3tag.h: see the Autoconf documentation" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: id3tag.h:     section \"Present But Cannot Be Compiled\"" >&5
+$as_echo "$as_me: WARNING: id3tag.h:     section \"Present But Cannot Be Compiled\"" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: id3tag.h: proceeding with the preprocessor's result" >&5
+$as_echo "$as_me: WARNING: id3tag.h: proceeding with the preprocessor's result" >&2;}
+    { $as_echo "$as_me:$LINENO: WARNING: id3tag.h: in the future, the compiler will take precedence" >&5
+$as_echo "$as_me: WARNING: id3tag.h: in the future, the compiler will take precedence" >&2;}
+
+    ;;
+esac
+{ $as_echo "$as_me:$LINENO: checking for id3tag.h" >&5
+$as_echo_n "checking for id3tag.h... " >&6; }
+if test "${ac_cv_header_id3tag_h+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  ac_cv_header_id3tag_h=$ac_header_preproc
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_header_id3tag_h" >&5
+$as_echo "$ac_cv_header_id3tag_h" >&6; }
+
+fi
+if test "x$ac_cv_header_id3tag_h" = x""yes; then
+  id3tag_h_found="yes"
+else
+  id3tag_h_found="no"
+fi
+
+
+
+   if test "x$libid3tag_found" = "xyes" && test "x$id3tag_h_found" = "xyes" ; then
+      LIBID3TAG_SYSTEM_AVAILABLE="yes"
+      LIBID3TAG_SYSTEM_LIBS=-lid3tag
+      LIBID3TAG_SYSTEM_CPPSYMBOLS="USE_LIBID3TAG"
+      { $as_echo "$as_me:$LINENO: Libid3tag libraries are available as system libraries" >&5
+$as_echo "$as_me: Libid3tag libraries are available as system libraries" >&6;}
+   else
+      LIBID3TAG_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: Libid3tag libraries are NOT available as system libraries" >&5
+$as_echo "$as_me: Libid3tag libraries are NOT available as system libraries" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libid3tag/frame.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libid3tag/frame.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libid3tag/frame.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libid3tag/frame.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  frame_h_found="yes"
+else
+  frame_h_found="no"
+fi
+
+
+
+   if test "x$frame_h_found" = "xyes" ; then
+      LIBID3TAG_LOCAL_AVAILABLE="yes"
+      LIBID3TAG_LOCAL_LIBS="libid3tag.a"
+      LIBID3TAG_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libid3tag'
+      LIBID3TAG_LOCAL_CPPSYMBOLS="USE_LIBID3TAG"
+      LIBID3TAG_LOCAL_CONFIG_SUBDIRS="lib-src/libid3tag"
+      { $as_echo "$as_me:$LINENO: libid3tag libraries are available in the local tree" >&5
+$as_echo "$as_me: libid3tag libraries are available in the local tree" >&6;}
+   else
+      LIBID3TAG_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: libid3tag libraries are NOT available in the local tree" >&5
+$as_echo "$as_me: libid3tag libraries are NOT available in the local tree" >&6;}
+   fi
+
+
+
+# Check whether --with-sbsms was given.
+if test "${with_sbsms+set}" = set; then
+  withval=$with_sbsms; LIBSBSMS_ARGUMENT=$withval
+else
+  LIBSBSMS_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_SBSMS 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for SBSMS" >&5
+$as_echo_n "checking for SBSMS... " >&6; }
+
+if test -n "$SBSMS_CFLAGS"; then
+    pkg_cv_SBSMS_CFLAGS="$SBSMS_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sbsms >= 1.6.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "sbsms >= 1.6.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_SBSMS_CFLAGS=`$PKG_CONFIG --cflags "sbsms >= 1.6.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$SBSMS_LIBS"; then
+    pkg_cv_SBSMS_LIBS="$SBSMS_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sbsms >= 1.6.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "sbsms >= 1.6.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_SBSMS_LIBS=`$PKG_CONFIG --libs "sbsms >= 1.6.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        SBSMS_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "sbsms >= 1.6.0" 2>&1`
+        else
+	        SBSMS_PKG_ERRORS=`$PKG_CONFIG --print-errors "sbsms >= 1.6.0" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$SBSMS_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                sbsms_available_system="no"
+elif test $pkg_failed = untried; then
+	sbsms_available_system="no"
+else
+	SBSMS_CFLAGS=$pkg_cv_SBSMS_CFLAGS
+	SBSMS_LIBS=$pkg_cv_SBSMS_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	sbsms_available_system="yes"
+fi
+
+
+   if test "x$sbsms_available_system" = "xyes" ; then
+      LIBSBSMS_SYSTEM_AVAILABLE="yes"
+      LIBSBSMS_SYSTEM_LIBS=$SBSMS_LIBS
+      LIBSBSMS_SYSTEM_CXXFLAGS=$SBSMS_CFLAGS
+      LIBSBSMS_SYSTEM_CPPSYMBOLS="USE_SBSMS"
+      { $as_echo "$as_me:$LINENO: Libsbsms libraries are available as system libraries" >&5
+$as_echo "$as_me: Libsbsms libraries are available as system libraries" >&6;}
+   else
+      LIBSBSMS_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: Libsbsms libraries are NOT available as system libraries" >&5
+$as_echo "$as_me: Libsbsms libraries are NOT available as system libraries" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/sbsms/include/sbsms.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/sbsms/include/sbsms.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/sbsms/include/sbsms.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/sbsms/include/sbsms.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  sbsms_h_found="yes"
+else
+  sbsms_h_found="no"
+fi
+
+
+   if test "x$sbsms_h_found" = "xyes" ; then
+      LIBSBSMS_LOCAL_AVAILABLE="yes"
+      LIBSBSMS_LOCAL_LIBS="libsbsms.a"
+      LIBSBSMS_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/sbsms/include'
+      LIBSBSMS_LOCAL_CPPSYMBOLS="USE_SBSMS"
+
+	        LIBSBSMS_LOCAL_CONFIG_SUBDIRS="lib-src/sbsms"
+	  ac_configure_args="$ac_configure_args --disable-programs"
+
+      { $as_echo "$as_me:$LINENO: libsbsms libraries are available in the local tree" >&5
+$as_echo "$as_me: libsbsms libraries are available in the local tree" >&6;}
+   else
+      LIBSBSMS_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: libsbsms libraries are NOT available in the local tree" >&5
+$as_echo "$as_me: libsbsms libraries are NOT available in the local tree" >&6;}
+   fi
+
+
+
+
+# Check whether --with-soundtouch was given.
+if test "${with_soundtouch+set}" = set; then
+  withval=$with_soundtouch; LIBSOUNDTOUCH_ARGUMENT=$withval
+else
+  LIBSOUNDTOUCH_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_SOUNDTOUCH 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for SOUNDTOUCH" >&5
+$as_echo_n "checking for SOUNDTOUCH... " >&6; }
+
+if test -n "$SOUNDTOUCH_CFLAGS"; then
+    pkg_cv_SOUNDTOUCH_CFLAGS="$SOUNDTOUCH_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"soundtouch-1.4 >= 1.3.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "soundtouch-1.4 >= 1.3.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_SOUNDTOUCH_CFLAGS=`$PKG_CONFIG --cflags "soundtouch-1.4 >= 1.3.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$SOUNDTOUCH_LIBS"; then
+    pkg_cv_SOUNDTOUCH_LIBS="$SOUNDTOUCH_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"soundtouch-1.4 >= 1.3.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "soundtouch-1.4 >= 1.3.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_SOUNDTOUCH_LIBS=`$PKG_CONFIG --libs "soundtouch-1.4 >= 1.3.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        SOUNDTOUCH_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "soundtouch-1.4 >= 1.3.0" 2>&1`
+        else
+	        SOUNDTOUCH_PKG_ERRORS=`$PKG_CONFIG --print-errors "soundtouch-1.4 >= 1.3.0" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$SOUNDTOUCH_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                soundtouch_available_system="no"
+elif test $pkg_failed = untried; then
+	soundtouch_available_system="no"
+else
+	SOUNDTOUCH_CFLAGS=$pkg_cv_SOUNDTOUCH_CFLAGS
+	SOUNDTOUCH_LIBS=$pkg_cv_SOUNDTOUCH_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	soundtouch_available_system="yes"
+fi
+      if test "x$soundtouch_available_system" = "xno" ; then
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for SOUNDTOUCH" >&5
+$as_echo_n "checking for SOUNDTOUCH... " >&6; }
+
+if test -n "$SOUNDTOUCH_CFLAGS"; then
+    pkg_cv_SOUNDTOUCH_CFLAGS="$SOUNDTOUCH_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"soundtouch-1.0 >= 1.3.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "soundtouch-1.0 >= 1.3.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_SOUNDTOUCH_CFLAGS=`$PKG_CONFIG --cflags "soundtouch-1.0 >= 1.3.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$SOUNDTOUCH_LIBS"; then
+    pkg_cv_SOUNDTOUCH_LIBS="$SOUNDTOUCH_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"soundtouch-1.0 >= 1.3.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "soundtouch-1.0 >= 1.3.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_SOUNDTOUCH_LIBS=`$PKG_CONFIG --libs "soundtouch-1.0 >= 1.3.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        SOUNDTOUCH_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "soundtouch-1.0 >= 1.3.0" 2>&1`
+        else
+	        SOUNDTOUCH_PKG_ERRORS=`$PKG_CONFIG --print-errors "soundtouch-1.0 >= 1.3.0" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$SOUNDTOUCH_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                soundtouch_available_system="no"
+elif test $pkg_failed = untried; then
+	soundtouch_available_system="no"
+else
+	SOUNDTOUCH_CFLAGS=$pkg_cv_SOUNDTOUCH_CFLAGS
+	SOUNDTOUCH_LIBS=$pkg_cv_SOUNDTOUCH_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	soundtouch_available_system="yes"
+fi
+   fi
+
+   if test "x$soundtouch_available_system" = "xyes" ; then
+      LIBSOUNDTOUCH_SYSTEM_AVAILABLE="yes"
+      LIBSOUNDTOUCH_SYSTEM_LIBS=$SOUNDTOUCH_LIBS
+      LIBSOUNDTOUCH_SYSTEM_CXXFLAGS=$SOUNDTOUCH_CFLAGS
+      LIBSOUNDTOUCH_SYSTEM_CPPSYMBOLS="USE_SOUNDTOUCH"
+      { $as_echo "$as_me:$LINENO: Libsoundtouch libraries are available as system libraries" >&5
+$as_echo "$as_me: Libsoundtouch libraries are available as system libraries" >&6;}
+   else
+      LIBSOUNDTOUCH_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: Libsoundtouch libraries are NOT available as system libraries" >&5
+$as_echo "$as_me: Libsoundtouch libraries are NOT available as system libraries" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/soundtouch/include/SoundTouch.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/soundtouch/include/SoundTouch.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/soundtouch/include/SoundTouch.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/soundtouch/include/SoundTouch.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  soundtouch_h_found="yes"
+else
+  soundtouch_h_found="no"
+fi
+
+
+   if test "x$soundtouch_h_found" = "xyes" ; then
+      LIBSOUNDTOUCH_LOCAL_AVAILABLE="yes"
+      LIBSOUNDTOUCH_LOCAL_LIBS="libSoundTouch.a"
+      LIBSOUNDTOUCH_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/soundtouch/include'
+      LIBSOUNDTOUCH_LOCAL_CPPSYMBOLS="USE_SOUNDTOUCH"
+
+      if test ! -f lib-src/soundtouch/Makefile ; then
+         LIBSOUNDTOUCH_LOCAL_CONFIG_SUBDIRS="lib-src/soundtouch"
+      fi
+      { $as_echo "$as_me:$LINENO: libsoundtouch libraries are available in the local tree" >&5
+$as_echo "$as_me: libsoundtouch libraries are available in the local tree" >&6;}
+   else
+      LIBSOUNDTOUCH_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: libsoundtouch libraries are NOT available in the local tree" >&5
+$as_echo "$as_me: libsoundtouch libraries are NOT available in the local tree" >&6;}
+   fi
+
+
+
+   # Check whether --enable-nyquist was given.
+if test "${enable_nyquist+set}" = set; then
+  enableval=$enable_nyquist; LIBNYQUIST_ARGUMENT=$enableval
+else
+  LIBNYQUIST_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_NYQUIST 1
+_ACEOF
+
+   fi
+
+         LIBNYQUIST_SYSTEM_AVAILABLE="no"
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libnyquist/nyx.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libnyquist/nyx.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libnyquist/nyx.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libnyquist/nyx.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  nyx_h_found="yes"
+else
+  nyx_h_found="no"
+fi
+
+
+   if test "x$nyx_h_found" = "xyes" ; then
+      LIBNYQUIST_LOCAL_AVAILABLE="yes"
+      LIBNYQUIST_LOCAL_LIBS="libnyquist.a"
+      LIBNYQUIST_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libnyquist'
+      LIBNYQUIST_LOCAL_CPPSYMBOLS="USE_NYQUIST"
+      LIBNYQUIST_LOCAL_OPTOBJS="effects/nyquist/Nyquist.o"
+      LIBNYQUIST_LOCAL_OPTOBJS="$LIBNYQUIST_LOCAL_OPTOBJS effects/nyquist/LoadNyquist.o"
+
+      LIBNYQUIST_LOCAL_CONFIG_SUBDIRS="lib-src/libnyquist"
+
+      { $as_echo "$as_me:$LINENO: nyquist libraries are available in the local tree" >&5
+$as_echo "$as_me: nyquist libraries are available in the local tree" >&6;}
+   else
+      LIBNYQUIST_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: nyquist libraries are NOT available in the local tree" >&5
+$as_echo "$as_me: nyquist libraries are NOT available in the local tree" >&6;}
+   fi
+
+
+
+# Check whether --with-libvamp was given.
+if test "${with_libvamp+set}" = set; then
+  withval=$with_libvamp; LIBVAMP_ARGUMENT=$withval
+else
+  LIBVAMP_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_VAMP 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for VAMP" >&5
+$as_echo_n "checking for VAMP... " >&6; }
+
+if test -n "$VAMP_CFLAGS"; then
+    pkg_cv_VAMP_CFLAGS="$VAMP_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"vamp-hostsdk >= 2.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "vamp-hostsdk >= 2.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_VAMP_CFLAGS=`$PKG_CONFIG --cflags "vamp-hostsdk >= 2.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$VAMP_LIBS"; then
+    pkg_cv_VAMP_LIBS="$VAMP_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"vamp-hostsdk >= 2.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "vamp-hostsdk >= 2.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_VAMP_LIBS=`$PKG_CONFIG --libs "vamp-hostsdk >= 2.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        VAMP_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "vamp-hostsdk >= 2.0" 2>&1`
+        else
+	        VAMP_PKG_ERRORS=`$PKG_CONFIG --print-errors "vamp-hostsdk >= 2.0" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$VAMP_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                vamp_available_system="no"
+elif test $pkg_failed = untried; then
+	vamp_available_system="no"
+else
+	VAMP_CFLAGS=$pkg_cv_VAMP_CFLAGS
+	VAMP_LIBS=$pkg_cv_VAMP_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	vamp_available_system="yes"
+fi
+
+   if test "x$vamp_available_system" = "xyes" ; then
+      LIBVAMP_SYSTEM_AVAILABLE="yes"
+      LIBVAMP_SYSTEM_LIBS=$VAMP_LIBS
+      LIBVAMP_SYSTEM_CXXFLAGS=$VAMP_CFLAGS
+	        LIBVAMP_SYSTEM_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
+      LIBVAMP_SYSTEM_CPPSYMBOLS="USE_VAMP"
+      { $as_echo "$as_me:$LINENO: Vamp libraries are available as system libraries" >&5
+$as_echo "$as_me: Vamp libraries are available as system libraries" >&6;}
+   else
+      LIBVAMP_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: Vamp libraries are NOT available as system libraries" >&5
+$as_echo "$as_me: Vamp libraries are NOT available as system libraries" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/libvamp/vamp-hostsdk/PluginLoader.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libvamp/vamp-hostsdk/PluginLoader.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/libvamp/vamp-hostsdk/PluginLoader.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/libvamp/vamp-hostsdk/PluginLoader.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  vamp_h_found="yes"
+else
+  vamp_h_found="no"
+fi
+
+
+   if test "x$vamp_h_found" = "xyes" ; then
+      LIBVAMP_LOCAL_AVAILABLE="yes"
+	        LIBVAMP_LOCAL_BUILD="vamp-sdk"
+	        LIBVAMP_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libvamp'
+      LIBVAMP_LOCAL_LDFLAGS='-L$(top_builddir)/lib-src/libvamp/src -lvamp-hostsdk'
+	        LIBVAMP_LOCAL_OPTOBJS="effects/vamp/VampEffect.o effects/vamp/LoadVamp.o"
+	  	        LIBVAMP_LOCAL_CPPSYMBOLS="USE_VAMP"
+	        LIBVAMP_LOCAL_CONFIG_SUBDIRS="lib-src/libvamp"
+	  ac_configure_args="$ac_configure_args --disable-programs"
+
+      { $as_echo "$as_me:$LINENO: Vamp libraries are available in the local tree" >&5
+$as_echo "$as_me: Vamp libraries are available in the local tree" >&6;}
+   else
+      LIBVAMP_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: Vamp libraries are NOT available in the local tree" >&5
+$as_echo "$as_me: Vamp libraries are NOT available in the local tree" >&6;}
+   fi
+
+
+
+# Check whether --with-libtwolame was given.
+if test "${with_libtwolame+set}" = set; then
+  withval=$with_libtwolame; LIBTWOLAME_ARGUMENT=$withval
+else
+  LIBTWOLAME_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_LIBTWOLAME 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for LIBTWOLAME" >&5
+$as_echo_n "checking for LIBTWOLAME... " >&6; }
+
+if test -n "$LIBTWOLAME_CFLAGS"; then
+    pkg_cv_LIBTWOLAME_CFLAGS="$LIBTWOLAME_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"twolame >= 0.3.9\"") >&5
+  ($PKG_CONFIG --exists --print-errors "twolame >= 0.3.9") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBTWOLAME_CFLAGS=`$PKG_CONFIG --cflags "twolame >= 0.3.9" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$LIBTWOLAME_LIBS"; then
+    pkg_cv_LIBTWOLAME_LIBS="$LIBTWOLAME_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"twolame >= 0.3.9\"") >&5
+  ($PKG_CONFIG --exists --print-errors "twolame >= 0.3.9") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_LIBTWOLAME_LIBS=`$PKG_CONFIG --libs "twolame >= 0.3.9" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        LIBTWOLAME_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "twolame >= 0.3.9" 2>&1`
+        else
+	        LIBTWOLAME_PKG_ERRORS=`$PKG_CONFIG --print-errors "twolame >= 0.3.9" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$LIBTWOLAME_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                twolame_available_system="no"
+elif test $pkg_failed = untried; then
+	twolame_available_system="no"
+else
+	LIBTWOLAME_CFLAGS=$pkg_cv_LIBTWOLAME_CFLAGS
+	LIBTWOLAME_LIBS=$pkg_cv_LIBTWOLAME_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	twolame_available_system="yes"
+fi
+
+   if test "x$twolame_available_system" = "xyes" ; then
+      LIBTWOLAME_SYSTEM_AVAILABLE="yes"
+      LIBTWOLAME_SYSTEM_LIBS=$LIBTWOLAME_LIBS
+      LIBTWOLAME_SYSTEM_CXXFLAGS=$LIBTWOLAME_CFLAGS
+      LIBTWOLAME_SYSTEM_CPPSYMBOLS="USE_LIBTWOLAME"
+      { $as_echo "$as_me:$LINENO: Libtwolame library available as system library" >&5
+$as_echo "$as_me: Libtwolame library available as system library" >&6;}
+   else
+      LIBTWOLAME_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: Libtwolame library NOT available as system library" >&5
+$as_echo "$as_me: Libtwolame library NOT available as system library" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/twolame/libtwolame/twolame.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/twolame/libtwolame/twolame.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/twolame/libtwolame/twolame.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/twolame/libtwolame/twolame.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  twolame_h_found="yes"
+else
+  twolame_h_found="no"
+fi
+
+
+   if test "x$twolame_h_found" = "xyes" ; then
+      LIBTWOLAME_LOCAL_AVAILABLE="yes"
+      LIBTWOLAME_LOCAL_LIBS="libtwolame.a"
+      LIBTWOLAME_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/twolame/libtwolame'
+      LIBTWOLAME_LOCAL_CPPSYMBOLS="USE_LIBTWOLAME"
+
+	        LIBTWOLAME_LOCAL_CONFIG_SUBDIRS="lib-src/twolame"
+	  	  ac_configure_args="$ac_configure_args --disable-programs"
+
+      { $as_echo "$as_me:$LINENO: libtwolame library is available in the local tree" >&5
+$as_echo "$as_me: libtwolame library is available in the local tree" >&6;}
+   else
+      LIBTWOLAME_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: libtwolame library is NOT available in the local tree" >&5
+$as_echo "$as_me: libtwolame library is NOT available in the local tree" >&6;}
+   fi
+
+
+
+# Check whether --with-ffmpeg was given.
+if test "${with_ffmpeg+set}" = set; then
+  withval=$with_ffmpeg; FFMPEG_ARGUMENT=$withval
+else
+  FFMPEG_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_FFMPEG 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for AVCODEC" >&5
+$as_echo_n "checking for AVCODEC... " >&6; }
+
+if test -n "$AVCODEC_CFLAGS"; then
+    pkg_cv_AVCODEC_CFLAGS="$AVCODEC_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavcodec >= 51.53\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavcodec >= 51.53") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_AVCODEC_CFLAGS=`$PKG_CONFIG --cflags "libavcodec >= 51.53" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$AVCODEC_LIBS"; then
+    pkg_cv_AVCODEC_LIBS="$AVCODEC_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavcodec >= 51.53\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavcodec >= 51.53") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_AVCODEC_LIBS=`$PKG_CONFIG --libs "libavcodec >= 51.53" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        AVCODEC_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libavcodec >= 51.53" 2>&1`
+        else
+	        AVCODEC_PKG_ERRORS=`$PKG_CONFIG --print-errors "libavcodec >= 51.53" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$AVCODEC_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                avcodec_available_system="no"
+elif test $pkg_failed = untried; then
+	avcodec_available_system="no"
+else
+	AVCODEC_CFLAGS=$pkg_cv_AVCODEC_CFLAGS
+	AVCODEC_LIBS=$pkg_cv_AVCODEC_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	avcodec_available_system="yes"
+fi
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for AVFORMAT" >&5
+$as_echo_n "checking for AVFORMAT... " >&6; }
+
+if test -n "$AVFORMAT_CFLAGS"; then
+    pkg_cv_AVFORMAT_CFLAGS="$AVFORMAT_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavformat >= 52.12\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavformat >= 52.12") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_AVFORMAT_CFLAGS=`$PKG_CONFIG --cflags "libavformat >= 52.12" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$AVFORMAT_LIBS"; then
+    pkg_cv_AVFORMAT_LIBS="$AVFORMAT_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libavformat >= 52.12\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libavformat >= 52.12") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_AVFORMAT_LIBS=`$PKG_CONFIG --libs "libavformat >= 52.12" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        AVFORMAT_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libavformat >= 52.12" 2>&1`
+        else
+	        AVFORMAT_PKG_ERRORS=`$PKG_CONFIG --print-errors "libavformat >= 52.12" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$AVFORMAT_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                avformat_available_system="no"
+elif test $pkg_failed = untried; then
+	avformat_available_system="no"
+else
+	AVFORMAT_CFLAGS=$pkg_cv_AVFORMAT_CFLAGS
+	AVFORMAT_LIBS=$pkg_cv_AVFORMAT_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	avformat_available_system="yes"
+fi
+
+   FFMPEG_SYSTEM_AVAILABLE="no"
+   if test "x$avcodec_available_system" = "xyes" ; then
+      if test "x$avformat_available_system" = "xyes" ; then
+	     FFMPEG_SYSTEM_AVAILABLE="yes"
+         FFMPEG_SYSTEM_CXXFLAGS="$AVCODEC_CFLAGS $AVFORMAT_CFLAGS"
+         FFMPEG_SYSTEM_CPPSYMBOLS="USE_FFMPEG"
+		 		 		 FFMPEG_SYSTEM_OPTOBJS="import/ImportFFmpeg.o export/ExportFFmpeg.o \
+		 	export/ExportFFmpegDialogs.o"
+         { $as_echo "$as_me:$LINENO: FFmpeg library available as system library" >&5
+$as_echo "$as_me: FFmpeg library available as system library" >&6;}
+      fi
+   fi
+   if test "x$FFMPEG_SYSTEM_AVAILABLE" = "xno" ; then
+      { $as_echo "$as_me:$LINENO: FFmpeg library NOT available as system library" >&5
+$as_echo "$as_me: FFmpeg library NOT available as system library" >&6;}
+   fi
+
+         FFMPEG_LOCAL_AVAILABLE="no"
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/ffmpeg/libavcodec/avcodec.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/ffmpeg/libavcodec/avcodec.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/ffmpeg/libavcodec/avcodec.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/ffmpeg/libavcodec/avcodec.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  avcodec_h_found="yes"
+else
+  avcodec_h_found="no"
+fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/ffmpeg/libavformat/avformat.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/ffmpeg/libavformat/avformat.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/ffmpeg/libavformat/avformat.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/ffmpeg/libavformat/avformat.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  avformat_h_found="yes"
+else
+  avformat_h_found="no"
+fi
+
+
+   if test "x$avcodec_h_found" = "xyes" ; then
+      if test "x$avformat_h_found" = "xyes" ; then
+         FFMPEG_LOCAL_AVAILABLE="yes"
+         FFMPEG_LOCAL_LIBS=""
+         FFMPEG_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/ffmpeg'
+         FFMPEG_LOCAL_CPPSYMBOLS="USE_FFMPEG"
+                           FFMPEG_LOCAL_OPTOBJS="import/ImportFFmpeg.o export/ExportFFmpeg.o \
+            export/ExportFFmpegDialogs.o"
+         { $as_echo "$as_me:$LINENO: FFmpeg headers are available in the local tree" >&5
+$as_echo "$as_me: FFmpeg headers are available in the local tree" >&6;}
+      fi
+   fi
+   if test "x$FFMPEG_LOCAL_AVAILABLE" = "xno" ; then
+      { $as_echo "$as_me:$LINENO: ffmpeg library is NOT available in the local tree" >&5
+$as_echo "$as_me: ffmpeg library is NOT available in the local tree" >&6;}
+   fi
+
+
+
+
+# Check whether --with-midi was given.
+if test "${with_midi+set}" = set; then
+  withval=$with_midi; PORTSMF_ARGUMENT=$withval
+else
+  PORTSMF_ARGUMENT="unspecified"
+fi
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_MIDI 1
+_ACEOF
+
+   fi
+
+      if test -d ${srcdir}/lib-src/portsmf ; then
+
+  # Remove --cache-file and --srcdir arguments so they do not pile up.
+  ax_sub_configure_args=
+  ax_prev=
+  eval "set x $ac_configure_args"
+  shift
+  for ax_arg
+  do
+    if test -n "$ax_prev"; then
+      ax_prev=
+      continue
+    fi
+    case $ax_arg in
+    -cache-file | --cache-file | --cache-fil | --cache-fi \
+    | --cache-f | --cache- | --cache | --cach | --cac | --ca | --c)
+      ax_prev=cache_file ;;
+    -cache-file=* | --cache-file=* | --cache-fil=* | --cache-fi=* \
+    | --cache-f=* | --cache-=* | --cache=* | --cach=* | --cac=* | --ca=* \
+    | --c=*)
+      ;;
+    --config-cache | -C)
+      ;;
+    -srcdir | --srcdir | --srcdi | --srcd | --src | --sr)
+      ax_prev=srcdir ;;
+    -srcdir=* | --srcdir=* | --srcdi=* | --srcd=* | --src=* | --sr=*)
+      ;;
+    -prefix | --prefix | --prefi | --pref | --pre | --pr | --p)
+      ax_prev=prefix ;;
+    -prefix=* | --prefix=* | --prefi=* | --pref=* | --pre=* | --pr=* | --p=*)
+      ;;
+    *)
+      case $ax_arg in
+      *\'*) ax_arg=`echo "$ax_arg" | sed "s/'/'\\\\\\\\''/g"` ;;
+      esac
+      ax_sub_configure_args="$ax_sub_configure_args '$ax_arg'" ;;
+    esac
+  done
+
+  # Always prepend --prefix to ensure using the same prefix
+  # in subdir configurations.
+  ax_arg="--prefix=$prefix"
+  case $ax_arg in
+  *\'*) ax_arg=`echo "$ax_arg" | sed "s/'/'\\\\\\\\''/g"` ;;
+  esac
+  ax_sub_configure_args="'$ax_arg' $ax_sub_configure_args"
+
+  # Pass --silent
+  if test "$silent" = yes; then
+    ax_sub_configure_args="--silent $ax_sub_configure_args"
+  fi
+
+  ax_popdir=`pwd`
+  { $as_echo "$as_me:$LINENO: Configuring sources in \"${srcdir}/lib-src/portsmf\"" >&5
+$as_echo "$as_me: Configuring sources in \"${srcdir}/lib-src/portsmf\"" >&6;}
+      { as_dir=""${srcdir}/lib-src/portsmf""
+  case $as_dir in #(
+  -*) as_dir=./$as_dir;;
+  esac
+  test -d "$as_dir" || { $as_mkdir_p && mkdir -p "$as_dir"; } || {
+    as_dirs=
+    while :; do
+      case $as_dir in #(
+      *\'*) as_qdir=`$as_echo "$as_dir" | sed "s/'/'\\\\\\\\''/g"`;; #'(
+      *) as_qdir=$as_dir;;
+      esac
+      as_dirs="'$as_qdir' $as_dirs"
+      as_dir=`$as_dirname -- "$as_dir" ||
+$as_expr X"$as_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$as_dir" : 'X\(//\)[^/]' \| \
+	 X"$as_dir" : 'X\(//\)$' \| \
+	 X"$as_dir" : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X"$as_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)[^/].*/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+      test -d "$as_dir" && break
+    done
+    test -z "$as_dirs" || eval "mkdir $as_dirs"
+  } || test -d "$as_dir" || { { $as_echo "$as_me:$LINENO: error: cannot create directory $as_dir" >&5
+$as_echo "$as_me: error: cannot create directory $as_dir" >&2;}
+   { (exit 1); exit 1; }; }; }
+      ac_builddir=.
+
+case ""${srcdir}/lib-src/portsmf"" in
+.) ac_dir_suffix= ac_top_builddir_sub=. ac_top_build_prefix= ;;
+*)
+  ac_dir_suffix=/`$as_echo ""${srcdir}/lib-src/portsmf"" | sed 's|^\.[\\/]||'`
+  # A ".." for each directory in $ac_dir_suffix.
+  ac_top_builddir_sub=`$as_echo "$ac_dir_suffix" | sed 's|/[^\\/]*|/..|g;s|/||'`
+  case $ac_top_builddir_sub in
+  "") ac_top_builddir_sub=. ac_top_build_prefix= ;;
+  *)  ac_top_build_prefix=$ac_top_builddir_sub/ ;;
+  esac ;;
+esac
+ac_abs_top_builddir=$ac_pwd
+ac_abs_builddir=$ac_pwd$ac_dir_suffix
+# for backward compatibility:
+ac_top_builddir=$ac_top_build_prefix
+
+case $srcdir in
+  .)  # We are building in place.
+    ac_srcdir=.
+    ac_top_srcdir=$ac_top_builddir_sub
+    ac_abs_top_srcdir=$ac_pwd ;;
+  [\\/]* | ?:[\\/]* )  # Absolute name.
+    ac_srcdir=$srcdir$ac_dir_suffix;
+    ac_top_srcdir=$srcdir
+    ac_abs_top_srcdir=$srcdir ;;
+  *) # Relative name.
+    ac_srcdir=$ac_top_build_prefix$srcdir$ac_dir_suffix
+    ac_top_srcdir=$ac_top_build_prefix$srcdir
+    ac_abs_top_srcdir=$ac_pwd/$srcdir ;;
+esac
+ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
+
+  cd ""${srcdir}/lib-src/portsmf""
+
+  # Check for guested configure; otherwise get Cygnus style configure.
+  if test -f "configure.gnu"; then
+    ax_sub_configure=$ac_srcdir/configure.gnu
+  elif test -f "$ac_srcdir/configure"; then
+    ax_sub_configure=$ac_srcdir/configure
+  elif test -f "$ac_srcdir/configure.in"; then
+    # This should be Cygnus configure.
+	ax_sub_configure=$ac_aux_dir/configure
+  else
+    { $as_echo "$as_me:$LINENO: WARNING: no configuration information is in \"${srcdir}/lib-src/portsmf\"" >&5
+$as_echo "$as_me: WARNING: no configuration information is in \"${srcdir}/lib-src/portsmf\"" >&2;}
+    ax_sub_configure=
+  fi
+
+  # The recursion is here.
+  if test -n "$ax_sub_configure"; then
+    # Make the cache file name correct relative to the subdirectory.
+    case $cache_file in
+    [\\/]* | ?:[\\/]* ) ax_sub_cache_file=$cache_file ;;
+    *) # Relative name.
+	ax_sub_cache_file=$ac_top_build_prefix$cache_file ;;
+    esac
+
+    { $as_echo "$as_me:$LINENO: running $SHELL $ax_sub_configure $ax_sub_configure_args --cache-file=$ax_sub_cache_file --srcdir=$ac_srcdir" >&5
+$as_echo "$as_me: running $SHELL $ax_sub_configure $ax_sub_configure_args --cache-file=$ax_sub_cache_file --srcdir=$ac_srcdir" >&6;}
+    # The eval makes quoting arguments work.
+    eval "\$SHELL \"\$ax_sub_configure\" $ax_sub_configure_args \
+	   --cache-file=\"\$ax_sub_cache_file\" --srcdir=\"\$ax_srcdir\""
+  fi
+
+  cd "$ax_popdir"
+  { $as_echo "$as_me:$LINENO: Done configuring in \"${srcdir}/lib-src/portsmf\"" >&5
+$as_echo "$as_me: Done configuring in \"${srcdir}/lib-src/portsmf\"" >&6;}
+
+   fi
+         PKG_CONFIG_PATH="${srcdir}/lib-src/portsmf/:$PKG_CONFIG_PATH"
+   export PKG_CONFIG_PATH
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for PORTSMF" >&5
+$as_echo_n "checking for PORTSMF... " >&6; }
+
+if test -n "$PORTSMF_CFLAGS"; then
+    pkg_cv_PORTSMF_CFLAGS="$PORTSMF_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"portSMF\"") >&5
+  ($PKG_CONFIG --exists --print-errors "portSMF") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_PORTSMF_CFLAGS=`$PKG_CONFIG --cflags "portSMF" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$PORTSMF_LIBS"; then
+    pkg_cv_PORTSMF_LIBS="$PORTSMF_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"portSMF\"") >&5
+  ($PKG_CONFIG --exists --print-errors "portSMF") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_PORTSMF_LIBS=`$PKG_CONFIG --libs "portSMF" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        PORTSMF_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "portSMF" 2>&1`
+        else
+	        PORTSMF_PKG_ERRORS=`$PKG_CONFIG --print-errors "portSMF" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$PORTSMF_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                portsmf_available="no"
+elif test $pkg_failed = untried; then
+	portsmf_available="no"
+else
+	PORTSMF_CFLAGS=$pkg_cv_PORTSMF_CFLAGS
+	PORTSMF_LIBS=$pkg_cv_PORTSMF_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	portsmf_available="yes"
+fi
+
+   if test "x$portsmf_available" = "xyes" ; then
+      PORTSMF_LOCAL_AVAILABLE="yes"
+      PORTSMF_LOCAL_LDFLAGS=$PORTSMF_LIBS
+      PORTSMF_LOCAL_CXXFLAGS=$PORTSMF_CFLAGS
+      PORTSMF_LOCAL_CPPSYMBOLS="USE_MIDI"
+	        PORTSMF_LOCAL_OPTOBJS="NoteTrack.o import/ImportMIDI.o"
+	  	  PORTSMF_LOCAL_BUILD="portSMF"
+   else
+	  PORTSMF_LOCAL_AVAILABLE="no"
+   fi
+
+
+
+# Check whether --with-taglib was given.
+if test "${with_taglib+set}" = set; then
+  withval=$with_taglib; TAGLIB_ARGUMENT=$withval
+else
+  TAGLIB_ARGUMENT="unspecified"
+fi
+
+
+   if false ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_TAGLIB 1
+_ACEOF
+
+   fi
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for TAGLIB" >&5
+$as_echo_n "checking for TAGLIB... " >&6; }
+
+if test -n "$TAGLIB_CFLAGS"; then
+    pkg_cv_TAGLIB_CFLAGS="$TAGLIB_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"taglib >= 1.5\"") >&5
+  ($PKG_CONFIG --exists --print-errors "taglib >= 1.5") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_TAGLIB_CFLAGS=`$PKG_CONFIG --cflags "taglib >= 1.5" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$TAGLIB_LIBS"; then
+    pkg_cv_TAGLIB_LIBS="$TAGLIB_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"taglib >= 1.5\"") >&5
+  ($PKG_CONFIG --exists --print-errors "taglib >= 1.5") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_TAGLIB_LIBS=`$PKG_CONFIG --libs "taglib >= 1.5" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        TAGLIB_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "taglib >= 1.5" 2>&1`
+        else
+	        TAGLIB_PKG_ERRORS=`$PKG_CONFIG --print-errors "taglib >= 1.5" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$TAGLIB_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                taglib_available_system="no"
+elif test $pkg_failed = untried; then
+	taglib_available_system="no"
+else
+	TAGLIB_CFLAGS=$pkg_cv_TAGLIB_CFLAGS
+	TAGLIB_LIBS=$pkg_cv_TAGLIB_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	taglib_available_system="yes"
+fi
+
+   if test "x$taglib_available_system" = "xyes" ; then
+      TAGLIB_SYSTEM_AVAILABLE="yes"
+      TAGLIB_SYSTEM_LIBS=$TAGLIB_LIBS
+      TAGLIB_SYSTEM_CXXFLAGS=$TAGLIB_CFLAGS
+      TAGLIB_SYSTEM_CPPSYMBOLS="USE_TAGLIB"
+      { $as_echo "$as_me:$LINENO: TagLib library available as system library" >&5
+$as_echo "$as_me: TagLib library available as system library" >&6;}
+   else
+      TAGLIB_SYSTEM_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: TagLib library NOT available as system library" >&5
+$as_echo "$as_me: TagLib library NOT available as system library" >&6;}
+   fi
+
+
+   as_ac_File=`$as_echo "ac_cv_file_${srcdir}/lib-src/taglib/taglib/tag.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/taglib/taglib/tag.h" >&5
+$as_echo_n "checking for ${srcdir}/lib-src/taglib/taglib/tag.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "${srcdir}/lib-src/taglib/taglib/tag.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+  tag_h_found="yes"
+else
+  tag_h_found="no"
+fi
+
+
+   if test "x$tag_h_found" = "xyes" ; then
+      TAGLIB_LOCAL_AVAILABLE="yes"
+      TAGLIB_LOCAL_LIBS="taglib.a"
+      TAGLIB_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/taglib/taglib'
+      TAGLIB_LOCAL_CPPSYMBOLS="USE_TAGLIB"
+
+            TAGLIB_LOCAL_CONFIG_SUBDIRS="lib-src/taglib"
+
+      { $as_echo "$as_me:$LINENO: TagLib library is available in the local tree" >&5
+$as_echo "$as_me: TagLib library is available in the local tree" >&6;}
+   else
+      TAGLIB_LOCAL_AVAILABLE="no"
+      { $as_echo "$as_me:$LINENO: TagLib library is NOT available in the local tree" >&5
+$as_echo "$as_me: TagLib library is NOT available in the local tree" >&6;}
+   fi
+
 
 
 { $as_echo "$as_me:$LINENO: Figuring out what libraries to enable" >&5
@@ -5578,122 +9205,6 @@ _ACEOF
       EXTRAUNINSTALLTARGETS="$EXTRAUNINSTALLTARGETS uninstall-extra-data"
 
 
-
-
-if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
-	if test -n "$ac_tool_prefix"; then
-  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
-set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $PKG_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-PKG_CONFIG=$ac_cv_path_PKG_CONFIG
-if test -n "$PKG_CONFIG"; then
-  { $as_echo "$as_me:$LINENO: result: $PKG_CONFIG" >&5
-$as_echo "$PKG_CONFIG" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-fi
-if test -z "$ac_cv_path_PKG_CONFIG"; then
-  ac_pt_PKG_CONFIG=$PKG_CONFIG
-  # Extract the first word of "pkg-config", so it can be a program name with args.
-set dummy pkg-config; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $ac_pt_PKG_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
-if test -n "$ac_pt_PKG_CONFIG"; then
-  { $as_echo "$as_me:$LINENO: result: $ac_pt_PKG_CONFIG" >&5
-$as_echo "$ac_pt_PKG_CONFIG" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-  if test "x$ac_pt_PKG_CONFIG" = x; then
-    PKG_CONFIG=""
-  else
-    case $cross_compiling:$ac_tool_warned in
-yes:)
-{ $as_echo "$as_me:$LINENO: WARNING: using cross tools not prefixed with host triplet" >&5
-$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
-ac_tool_warned=yes ;;
-esac
-    PKG_CONFIG=$ac_pt_PKG_CONFIG
-  fi
-else
-  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
-fi
-
-fi
-if test -n "$PKG_CONFIG"; then
-	_pkg_min_version=0.9.0
-	{ $as_echo "$as_me:$LINENO: checking pkg-config is at least version $_pkg_min_version" >&5
-$as_echo_n "checking pkg-config is at least version $_pkg_min_version... " >&6; }
-	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
-		{ $as_echo "$as_me:$LINENO: result: yes" >&5
-$as_echo "yes" >&6; }
-	else
-		{ $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-		PKG_CONFIG=""
-	fi
-
-fi
 
 pkg_failed=no
 { $as_echo "$as_me:$LINENO: checking for GTK" >&5
@@ -6198,8 +9709,132 @@ _ACEOF
    ac_configure_args="$ac_configure_args --with-pa-include=../portaudio-v19/include"
 fi
 
-AC_C99_FUNC_LRINT
-AC_C99_FUNC_LRINTF
+{ $as_echo "$as_me:$LINENO: checking for lrint" >&5
+$as_echo_n "checking for lrint... " >&6; }
+if test "${ac_cv_c99_lrint+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#define		_ISOC9X_SOURCE	1
+#define 	_ISOC99_SOURCE	1
+#define		__USE_ISOC99	1
+#define 	__USE_ISOC9X	1
+#include	<math.h>
+int
+main ()
+{
+	int value = lrint (0.432) ;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_c99_lrint=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_c99_lrint=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_c99_lrint" >&5
+$as_echo "$ac_cv_c99_lrint" >&6; }
+if test "x$ac_cv_c99_lrint" = "xyes"; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_LRINT 1
+_ACEOF
+
+fi
+
+{ $as_echo "$as_me:$LINENO: checking for lrintf" >&5
+$as_echo_n "checking for lrintf... " >&6; }
+if test "${ac_cv_c99_lrintf+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#define		_ISOC9X_SOURCE	1
+#define 	_ISOC99_SOURCE	1
+#define		__USE_ISOC99	1
+#define 	__USE_ISOC9X	1
+#include	<math.h>
+int
+main ()
+{
+	int value = lrintf (0.432) ;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_c99_lrintf=yes
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_c99_lrintf=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ $as_echo "$as_me:$LINENO: result: $ac_cv_c99_lrintf" >&5
+$as_echo "$ac_cv_c99_lrintf" >&6; }
+if test "x$ac_cv_c99_lrintf" = "xyes"; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_LRINTF 1
+_ACEOF
+
+fi
+
 
 
 if [ "$use_ladspa" = "yes" ] ; then
