@@ -204,10 +204,12 @@ void DevicePrefs::OnHost(wxCommandEvent & e)
    if (mPlay->GetCount() == 0) {
       playnames.Add(_("No devices found"));
       mPlay->Append(playnames[0], (void *) NULL);
+      mPlay->SetSelection(0);
    }
    if (mRecord->GetCount() == 0) {
       recordnames.Add(_("No devices found"));
       mRecord->Append(recordnames[0], (void *) NULL);
+      mRecord->SetSelection(0);
    }
 
    /* what if we have no device selected? we should choose the default on 
@@ -296,8 +298,11 @@ void DevicePrefs::OnDevice(wxCommandEvent & e)
 
 wxString DevicePrefs::GetDefaultPlayDevice(int index)
 {
-   const struct PaHostApiInfo *apiinfo = Pa_GetHostApiInfo(index);
-   // get info on API
+   if (index < 0 || index >= Pa_GetHostApiCount()) {
+      return wxEmptyString;
+   }
+
+   const struct PaHostApiInfo *apiinfo = Pa_GetHostApiInfo(index);   // get info on API
    wxLogDebug(wxT("GetDefaultPlayDevice(): HostAPI index %d, name %s"), index, wxString(apiinfo->name, wxConvLocal).c_str());
    wxLogDebug(wxT("GetDefaultPlayDevice() default output %d"), apiinfo->defaultOutputDevice);
    const PaDeviceInfo* devinfo = Pa_GetDeviceInfo(apiinfo->defaultOutputDevice);
@@ -308,8 +313,11 @@ wxString DevicePrefs::GetDefaultPlayDevice(int index)
 
 wxString DevicePrefs::GetDefaultRecordDevice(int index)
 {
-   const struct PaHostApiInfo *apiinfo;   /* info on this API */
-   apiinfo = Pa_GetHostApiInfo(index);   // get info on API
+   if (index < 0 || index >= Pa_GetHostApiCount()) {
+      return wxEmptyString;
+   }
+
+   const struct PaHostApiInfo *apiinfo = Pa_GetHostApiInfo(index);   // get info on API
    wxLogDebug(wxT("GetDefaultRecordDevice(): HostAPI index %d, name %s"), index, wxString(apiinfo->name, wxConvLocal).c_str());
    wxLogDebug(wxT("GetDefaultRecordDevice() default input %d"), apiinfo->defaultInputDevice);
    const PaDeviceInfo* devinfo = Pa_GetDeviceInfo(apiinfo->defaultInputDevice);
