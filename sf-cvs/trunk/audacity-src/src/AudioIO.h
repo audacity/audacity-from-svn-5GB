@@ -320,6 +320,9 @@ private:
    void OutputEvent();
    void FillMidiBuffers();
    void GetNextEvent();
+   void AudacityMidiCallback();
+   double getCurrentTrackTime();
+   long calculateMidiTimeStamp(double time);
 #endif
 
    /** \brief Get the number of audio samples free in all of the playback
@@ -374,6 +377,19 @@ private:
    long                mCurrentMidiTime;
    long                mMidiLatency; // latency value for PortMidi
    long                mLastMidiTime; // timestamp of last midi message
+   double              mLastSystemTime; // last system time received
+   double              mLatencyBetweenSystemTimes;
+   long                mStartFrame;
+   long                mNumPauseFrames;
+
+   // TODO: Finish implementation of RequestMidiStop
+   bool                mRequestMidiStop;
+
+   // These two fields are used to synchronize MIDI with audio
+   // TODO: Finish implementing these fields
+   double              mAudioCallbackOutputTime;
+   long                mAudioCallbackSampleNumber;
+
    Alg_seq_ptr         mSeq;
    Alg_iterator_ptr    mIterator;
    Alg_event_ptr       mNextEvent; // the next event to play (or null)

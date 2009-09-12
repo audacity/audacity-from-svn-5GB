@@ -248,6 +248,12 @@ AudioIO::AudioIO()
    mMidiStream = NULL;
    mMidiStreamActive = false;
    mSendMidiState = false;
+
+   mIterator = new Alg_iterator(mSeq, true);
+   mIterator->begin(true);
+   mNextEvent = mIterator->next();
+
+   mAudioCallbackSampleNumber = 0;
 #endif
 
 #ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
@@ -2511,6 +2517,100 @@ void AudioIO::FillMidiBuffers()
    } // End of if( mSeq )
 #endif // OLD_CODE
 }
+
+void AudioIO::AudacityMidiCallback() {
+
+   // instrumentation to see if we are called often
+
+   // This calculation is taken from GetStreamTime, found in pa_asio.cpp
+   // asio systemTime is supposed to be measured according to the same
+   // clock as timeGetTime
+   double currentSystemTime = (double)timeGetTime() * .001; // get current system time
+
+   if(!mLastSystemTime) mLastSystemTime = currentSystemTime;
+   if(!mLatencyBetweenSystemTimes) mLatencyBetweenSystemTimes = 0;
+
+   mLatencyBetweenSystemTimes = max(mLatencyBetweenSystemTimes, currentSystemTime - mLastSystemTime);
+   mLastMidiTime = currentSystemTime;
+
+   if(mRequestMidiStop) {
+      /* TODO: Send all notes off */
+      mMidiStreamActive = false;
+      return;
+   }
+   if(mPaused || !mMidiStreamActive) { return; }
+
+   //look at next message
+   //assume next message from iterator is available
+   //(so create iterator & get/store first event before
+   //callback is called)
+
+   double t = getCurrentTrackTime();
+   while(mNextEvent != NULL && mNextEvent->time < t + 0.2) {
+      long ts = calculateMidiTimeStamp(mNextEvent->time);
+
+      /* TODO: Where is ts supposed to be used?
+       * send next message to portmidi with ts;
+       * mNextEvent = mIterator->next();
+       */
+      OutputEvent();
+      GetNextEvent();
+   }
+}
+
+double AudioIO::getCurrentTrackTime() {
+   //compare to code that scrolls cursor
+
+   // This calculation is taken from GetStreamTime, found in pa_asio.cpp
+   // asio systemTime is supposed to be measured according to the same
+   // clock as timeGetTime
+   double timeSinceBoot = (double)timeGetTime() * .001; // get time since boot
+
+   double outputTime;
+   long sampleNumber;
+   do {
+      outputTime = mAudioCallbackOutputTime;
+      sampleNumber = mAudioCallbackSampleNumber;
+   } while (outputTime != mAudioCallbackOutputTime);
+   double delta = timeSinceBoot - outputTime;
+
+   mStartFrame = mT0 * mRate;
+
+   // We add startFrame in case we're not starting at the beginning of the track
+   double trackTime = (sampleNumber + mStartFrame - mNumPauseFrames) / mRate;
+
+   // at outputTime, trackTime will be correct
+
+   trackTime += delta;
+   //now tracktime is adjusted from acot to now
+   return trackTime;
+}
+
+long AudioIO::calculateMidiTimeStamp(double eventTime) {
+   //assumptions: portmidi uses default time function which is "system time" - start time
+   double outputTime;
+   long sampleNumber;
+   do {
+      outputTime = mAudioCallbackOutputTime;
+      sampleNumber = mAudioCallbackSampleNumber;
+   } while (outputTime != mAudioCallbackOutputTime);
+
+   mStartFrame = mT0 * mRate;
+
+   double trackTime = mAudioCallbackSampleNumber + mStartFrame - mNumPauseFrames / mRate;
+   //at ot, tracktime will be correct
+   double delta = eventTime - trackTime;
+
+   outputTime += delta;  // at outputTime, it will be time for event
+   outputTime -= Pt_Time(); // get startTime from PortTime library
+
+   // now, outputTime is in PortMidi timestamp coordinates
+
+   long outputTimeMS = (outputTime * 1000) - 100; // convert to ms and subtract PortMidi latency
+   return outputTimeMS;
+}
+
+
 #endif
 
 // Automated Input Level Adjustment - Automatically tries to find an acceptable input volume
@@ -2712,6 +2812,13 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
    void *tempBuffer = alloca(framesPerBuffer*sizeof(float)*
                              MAX(numCaptureChannels,numPlaybackChannels));
    float *tempFloats = (float*)tempBuffer;
+
+   /* GSW: Save timeInfo in case MidiPlayback needs it */
+   gAudioIO->mAudioCallbackOutputTime = timeInfo->outputBufferDacTime;
+   gAudioIO->mAudioCallbackSampleNumber += framesPerBuffer;
+   if(gAudioIO->IsPaused())
+      gAudioIO->mNumPauseFrames += framesPerBuffer;
+
    unsigned int i;
    int t;
 
