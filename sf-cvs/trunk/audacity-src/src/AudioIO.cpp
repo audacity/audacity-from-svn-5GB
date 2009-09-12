@@ -2813,11 +2813,13 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
                              MAX(numCaptureChannels,numPlaybackChannels));
    float *tempFloats = (float*)tempBuffer;
 
+#ifdef EXPERIMENTAL_MIDI_OUT
    /* GSW: Save timeInfo in case MidiPlayback needs it */
    gAudioIO->mAudioCallbackOutputTime = timeInfo->outputBufferDacTime;
    gAudioIO->mAudioCallbackSampleNumber += framesPerBuffer;
    if(gAudioIO->IsPaused())
       gAudioIO->mNumPauseFrames += framesPerBuffer;
+#endif
 
    unsigned int i;
    int t;
