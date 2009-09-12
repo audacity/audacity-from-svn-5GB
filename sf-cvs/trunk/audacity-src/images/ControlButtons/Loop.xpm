@@ -1,5 +1,5 @@
 /* XPM */
-static char * Loop[] = {
+static const char  * Loop[] = {
 "16 16 6 1",
 " 	c None",
 ".	c #1B1B1B",
