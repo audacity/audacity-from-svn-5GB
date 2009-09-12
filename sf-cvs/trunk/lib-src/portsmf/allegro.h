@@ -528,10 +528,14 @@ public:
     // to delete the buffer (owner might want to reuse it), so the destructor
     // does nothing.
     virtual ~Serial_read_buffer() {  }
+#if defined(_WIN32)
 #pragma warning(disable: 546) // cast to int is OK, we only want low 7 bits
 #pragma warning(disable: 4311) // type cast pointer to long warning
+#endif
     void get_pad() { while (((long) ptr) & 7) ptr++; }
+#if defined(_WIN32)
 #pragma warning(default: 4311 546)
+#endif
     // Prepare to read n bytes from buf. The caller must manage buf: it is
     // valid until reading is finished, and it is caller's responsibility
     // to free buf when it is no longer needed.
@@ -582,18 +586,26 @@ typedef class Serial_write_buffer: public Serial_buffer {
         while ((*ptr++ = *s++)) assert(ptr < fence);
         // 4311 is type cast pointer to long warning
         // 4312 is type cast long to pointer warning
+#if defined(_WIN32)
 #pragma warning(disable: 4311 4312)
+#endif
         assert((char *)(((long) (ptr + 7)) & ~7) <= fence);
+#if defined(_WIN32)
 #pragma warning(default: 4311 4312)
+#endif
         pad(); }
     void set_int32(long v) { *((long *) ptr) = v; ptr += 4; }
     void set_double(double v) { *((double *) ptr) = v; ptr += 8; }
     void set_float(float v) { *((float *) ptr) = v; ptr += 4; }
     void set_char(char v) { *ptr++ = v; }
+#if defined(_WIN32)
 #pragma warning(disable: 546) // cast to int is OK, we only want low 7 bits
 #pragma warning(disable: 4311) // type cast pointer to long warning
+#endif
     void pad() { while (((long) ptr) & 7) set_char(0); }
+#if defined(_WIN32)
 #pragma warning(default: 4311 546)
+#endif
     void *to_heap(long *len) {
         *len = get_posn();
         char *newbuf = new char[*len];
