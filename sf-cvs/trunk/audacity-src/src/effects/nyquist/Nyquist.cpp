@@ -613,7 +613,7 @@ bool EffectNyquist::ProcessOne()
          // decimal separator which may be a comma in some countries.
          cmd += wxString::Format(wxT("(setf %s %s)\n"),
                                  mControls[j].var.c_str(),
-                                 Internat::ToString(mControls[j].val));
+                                 Internat::ToString(mControls[j].val).c_str());
       }
       else if (mControls[j].type == NYQ_CTRL_INT || 
             mControls[j].type == NYQ_CTRL_CHOICE) {
