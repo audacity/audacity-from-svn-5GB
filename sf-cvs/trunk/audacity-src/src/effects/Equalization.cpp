@@ -599,14 +599,17 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
       // (this could be enhanced in the future to use the tails)
       double offsetT0 = t->LongSamplesToTime((sampleCount)offset);
       double lenT = t->LongSamplesToTime(originalLen);
+      // 'start' is the sample offset in 't', the passed in track
+      // 'startT' is the equivalent time value
+      // 'output' starts at zero
+      double startT = t->LongSamplesToTime(start);
       
       //output has one waveclip for the total length, even though 
       //t might have whitespace seperating multiple clips
       //we want to maintain the original clip structure, so
       //only paste the intersections of the new clip.
       
-      //We have to clear the old audio which removes the clip, making the iterator invalid
-      //thus we do two passes with the first to collect start/end times.
+      //Find the bits of clips that need replacing
       std::vector<std::pair<double, double> > clipStartEndTimes;
       for (WaveClipList::compatibility_iterator it=t->GetClipIterator(); it; it=it->GetNext())
       {
@@ -617,17 +620,25 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
          clip = it->GetData();
          clipStartT = clip->GetStartTime();
          clipEndT = clip->GetEndTime();
+         if( clipEndT <= startT )
+            continue;   // clip is not within selection
+         if( clipStartT >= startT + lenT )
+            continue;   // clip is not within selection
+         if( clipStartT < startT )  // does selection cover the whole clip?
+            clipStartT = startT; // don't copy all the new clip
+         if( clipEndT > startT + lenT )  // does selection cover the whole clip?
+            clipEndT = startT + lenT; // don't copy all the new clip
          
          //save them
          clipStartEndTimes.push_back(std::pair<double,double>(clipStartT,clipEndT));
       }
-      //now go thru and replace the old lips with new
+      //now go thru and replace the old clips with new
       for(unsigned int i=0;i<clipStartEndTimes.size();i++)
       {
          Track *toClipOutput;
          //remove the old audio and get the new
          t->Clear(clipStartEndTimes[i].first,clipStartEndTimes[i].second);
-         output->Copy(offsetT0+clipStartEndTimes[i].first,offsetT0+clipStartEndTimes[i].second, &toClipOutput);   
+         output->Copy(clipStartEndTimes[i].first-startT+offsetT0,clipStartEndTimes[i].second-startT+offsetT0, &toClipOutput);   
          if(toClipOutput)
          {
             //put the processed audio in
