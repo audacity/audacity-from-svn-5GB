@@ -88,6 +88,7 @@ class SelectionBar:public ToolBar {
    double mStart, mEnd, mAudio;
    wxString mField[10];
 
+   TimeTextCtrl   *mLeftTime;
    TimeTextCtrl   *mRightTime;
    wxRadioButton  *mRightEndButton;
    wxRadioButton  *mRightLengthButton;
@@ -99,7 +100,6 @@ class SelectionBar:public ToolBar {
    wxWindow       *mRateText;
 
  public:
-   TimeTextCtrl   *mLeftTime;
 
    DECLARE_CLASS(SelectionBar);
    DECLARE_EVENT_TABLE();

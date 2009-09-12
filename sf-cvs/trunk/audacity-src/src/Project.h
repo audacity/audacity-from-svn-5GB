@@ -433,10 +433,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
    wxUint32 mLastFlags;
 
-   // see AudacityProject::OnUpdateUI() for explanation of next two
-   bool mInIdle;
-   wxUint32 mTextClipFlag;
-
    // Window elements
 
    wxTimer *mTimer;

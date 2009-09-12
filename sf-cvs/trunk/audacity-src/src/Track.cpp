@@ -1083,7 +1083,7 @@ double TrackList::GetMinOffset() const
 
    double len = node->t->GetOffset();
 
-   while (node = node->next) {
+   while ((node = node->next)) {
       double l = node->t->GetOffset();
       if (l < len) {
          len = l;
@@ -1102,7 +1102,7 @@ double TrackList::GetStartTime() const
 
    double min = node->t->GetStartTime();
 
-   while (node = node->next) {
+   while ((node = node->next)) {
       double l = node->t->GetStartTime();
       if (l < min) {
          min = l;
@@ -1121,7 +1121,7 @@ double TrackList::GetEndTime() const
 
    double max = node->t->GetEndTime();
 
-   while (node = node->next) {
+   while ((node = node->next)) {
       double l = node->t->GetEndTime();
       if (l > max) {
          max = l;

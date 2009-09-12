@@ -653,13 +653,12 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                  const wxSize & size)
    : wxFrame(parent, id, wxT("Audacity"), pos, size),
      mLastPlayMode(normalPlay),
+     mFreqWindow(NULL),
      mRate((double) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate())),
      mDefaultFormat((sampleFormat) gPrefs->
            Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample)),
      mSnapTo(0), 
      mDirty(false),
-     mInIdle(false),
-     mTextClipFlag(0),
      mTrackPanel(NULL),
      mTrackFactory(NULL),
      mAutoScrolling(false),
@@ -689,8 +688,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mWantSaveCompressed(false),
      mLastEffect(NULL),
      mLastEffectType(0),
-     mLastEffectDesc(_("Repeat Last Effect")),
-     mFreqWindow(NULL)
+     mLastEffectDesc(_("Repeat Last Effect"))
 {
    int widths[] = {-1, 130};
    mStatusBar = CreateStatusBar(2);
@@ -1647,19 +1645,7 @@ void AudacityProject::OnMenu(wxCommandEvent & event)
 
 void AudacityProject::OnUpdateUI(wxUpdateUIEvent & event)
 {
-   // As of wxGTK 2.8.9, there is a problem in the wxClipboard class that
-   // allows recursive event processing.  This problem has been corrected
-   // by wxWidgets changeset #45180.  However, this han't made it into a
-   // release yet, so we have to work around it.
-   //
-   // This is done by only checking the wxClipboard contents during an idle
-   // event, thus preventing possible recursion during other event processing.
-   //
-   mInIdle = true;
-
    UpdateMenus();
-
-   mInIdle = false;
 }
 
 void AudacityProject::OnActivate(wxActivateEvent & event)

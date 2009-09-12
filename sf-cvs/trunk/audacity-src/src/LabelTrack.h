@@ -129,7 +129,7 @@ class LabelTrack:public Track {
    bool CutSelectedText();
    bool CopySelectedText();
    bool PasteSelectedText(double sel0, double sel1);
-   bool IsTextClipSupported();
+   static bool IsTextClipSupported();
    
    // methods to set flags
    void SetDragXPos(const int d) { mDragXPos = d; };
