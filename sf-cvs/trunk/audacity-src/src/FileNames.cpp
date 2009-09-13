@@ -118,9 +118,22 @@ wxString FileNames::DataDir()
 
 wxString FileNames::HtmlHelpDir()
 {
-   // Use the Audacity.exe directory as a base (on Windows, others elsewhere)
+#if defined(__WXMAC__)
+   wxFileName exePath(PlatformCompatibility::GetExecutablePath());
+      // This removes (for instance) "Audacity.app/Contents/MacOSX"
+      exePath.RemoveLastDir();
+      exePath.RemoveLastDir();
+      exePath.RemoveLastDir();
+   
+   return wxFileName( exePath.GetPath()+wxT("/help/manual"), wxEmptyString ).GetFullPath();
+#else
+   //linux goes into /*prefix*/share/audacity/
+   //windows goes into the dir containing the .exe
    wxString exeDir = wxStandardPaths::Get().GetDataDir();
+   
+   //for mac this puts us within the .app: Audacity.app/Contents/SharedSupport/
    return wxFileName( exeDir+wxT("/help/manual"), wxEmptyString ).GetFullPath();
+#endif   
 }
 
 wxString FileNames::HtmlHelpIndexFile(bool quick)
