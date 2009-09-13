@@ -130,6 +130,7 @@ Ruler::Ruler()
    mMinorLabels = 0;
    mMinorMinorLabels = 0;
    mLengthOld = 0;
+   mLength = 0;
    mBits = NULL;
    mUserBits = NULL;
    mUserBitLen = 0;
