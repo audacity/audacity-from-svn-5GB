@@ -87,8 +87,14 @@ void RegisterVSTEffects()
 
    wxString path = pm.GetFirstPlugin(VSTPLUGINTYPE);
    while (!path.IsEmpty()) {
-      em.RegisterEffect(new VSTEffect(path));
-
+#if defined(__WXMAC__)
+      if (wxDirExists(path)) {
+#else
+      if (wxFileExists(path)) {
+#endif
+         em.RegisterEffect(new VSTEffect(path));
+      }
+      
       path = pm.GetNextPlugin(VSTPLUGINTYPE);
    }
 
