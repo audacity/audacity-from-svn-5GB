@@ -781,7 +781,7 @@ void Meter::HandleLayout()
       iconWidth = mIcon->GetWidth();
       iconHeight = mIcon->GetHeight();
       menuWidth = 17;
-      menuHeight = 11;
+      menuHeight = 14;
    }
    int width = mWidth;
    int height = mHeight;
