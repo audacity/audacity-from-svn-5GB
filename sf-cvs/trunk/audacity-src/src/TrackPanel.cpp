@@ -4464,7 +4464,7 @@ bool TrackPanel::HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMo
    }
 
    
-   if (event.RightDown()) {
+   if (event.RightUp()) {
       // popup menu for editing
       RefreshTrack(lTrack);
      
