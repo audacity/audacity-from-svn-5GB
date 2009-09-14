@@ -67,6 +67,7 @@
 BEGIN_EVENT_TABLE(PrefsDialog, wxDialog)
    EVT_BUTTON(wxID_OK, PrefsDialog::OnOK)
    EVT_BUTTON(wxID_CANCEL, PrefsDialog::OnCancel)
+   EVT_TREE_KEY_DOWN(wxID_ANY, PrefsDialog::OnTreeKeyDown) // Handles key events when tree has focus
 END_EVENT_TABLE()
 
 PrefsDialog::PrefsDialog(wxWindow * parent)
@@ -161,6 +162,14 @@ void PrefsDialog::OnCancel(wxCommandEvent & event)
    }
 
    EndModal(false);
+}
+
+void PrefsDialog::OnTreeKeyDown(wxTreeEvent & event)
+{
+   if(event.GetKeyCode() == WXK_RETURN)
+      OnOK(event);
+   else
+      event.Skip(); // Ensure standard behavior when enter is not pressed
 }
 
 void PrefsDialog::OnOK(wxCommandEvent & event)
