@@ -22,6 +22,7 @@
 #include <wx/scrolwin.h>
 #include <wx/statbmp.h>
 #include <wx/stattext.h>
+#include <wx/checkbox.h>
 
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
