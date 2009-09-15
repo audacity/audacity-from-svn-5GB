@@ -99,10 +99,11 @@ private:
    void OnPaint(wxPaintEvent& evt);
 
    void OnButton_MusicalInstrument(wxCommandEvent& event);
-   void OnButton_Mute(wxCommandEvent& event);
-   void OnButton_Solo(wxCommandEvent& event);
    void OnSlider_Gain(wxCommandEvent& event);
    void OnSlider_Pan(wxCommandEvent& event);
+   void OnButton_Mute(wxCommandEvent& event);
+   void OnButton_Solo(wxCommandEvent& event);
+   void OnCheckBox_PreFade(wxCommandEvent& event);
    //v void OnSliderScroll_Gain(wxScrollEvent& event);
 
 public:
@@ -120,6 +121,8 @@ private:
    AButton* mToggleButton_Solo;
    MixerTrackSlider* mSlider_Pan;
    MixerTrackSlider* mSlider_Gain;
+
+   wxCheckBox* mCheckBox_PreFade;
    Meter* mMeter;
 
 public:
