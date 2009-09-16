@@ -2,7 +2,7 @@ dnl add audacity / flac license?
 dnl
 dnl Please increment the serial number below whenever you alter this macro
 dnl for the benefit of automatic macro update systems
-# audacity_checklib_libflac.m4 serial 1
+# audacity_checklib_libflac.m4 serial 2
 
 AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
 
@@ -33,6 +33,8 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
       LIBFLAC_SYSTEM_AVAILABLE="yes"
       LIBFLAC_SYSTEM_LIBS="-lFLAC++ -lFLAC"
       LIBFLAC_SYSTEM_CPPSYMBOLS="USE_LIBFLAC"
+      # this file shouldn't be built at if no libflac is available
+      LIBFLAC_SYSTEM_OPTOBJS="ondemand/ODDecodeFlacTask.o"
       AC_MSG_NOTICE([FLAC libraries are available as system libraries])
    else
       LIBFLAC_SYSTEM_AVAILABLE="no"
@@ -58,6 +60,8 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
       LIBFLAC_LOCAL_CXXFLAGS="$LIBFLAC_LOCAL_CXXFLAGS -I\$(top_srcdir)/lib-src/libflac/include"
 
       LIBFLAC_LOCAL_CPPSYMBOLS="USE_LIBFLAC"
+      # this file shouldn't be built at if no libflac is available
+      LIBFLAC_LOCAL_OPTOBJS="ondemand/ODDecodeFlacTask.o"
       LIBFLAC_LOCAL_CONFIG_SUBDIRS="lib-src/libflac"
 	
       AC_MSG_NOTICE([FLAC libraries are available in this source tree])

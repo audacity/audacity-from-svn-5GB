@@ -194,7 +194,6 @@ OBJS = \
 	import/ImportRaw.o \
 	import/RawAudioGuess.o \
 	ondemand/ODComputeSummaryTask.o \
-	ondemand/ODDecodeFlacTask.o \
 	ondemand/ODDecodeTask.o \
 	ondemand/ODManager.o \
 	ondemand/ODTask.o \
