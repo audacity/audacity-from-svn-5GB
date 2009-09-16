@@ -7139,6 +7139,8 @@ fi
       LIBFLAC_SYSTEM_AVAILABLE="yes"
       LIBFLAC_SYSTEM_LIBS="-lFLAC++ -lFLAC"
       LIBFLAC_SYSTEM_CPPSYMBOLS="USE_LIBFLAC"
+      # this file shouldn't be built at if no libflac is available
+      LIBFLAC_SYSTEM_OPTOBJS="ondemand/ODDecodeFlacTask.o"
       { $as_echo "$as_me:$LINENO: FLAC libraries are available as system libraries" >&5
 $as_echo "$as_me: FLAC libraries are available as system libraries" >&6;}
    else
@@ -7215,6 +7217,8 @@ fi
       LIBFLAC_LOCAL_CXXFLAGS="$LIBFLAC_LOCAL_CXXFLAGS -I\$(top_srcdir)/lib-src/libflac/include"
 
       LIBFLAC_LOCAL_CPPSYMBOLS="USE_LIBFLAC"
+      # this file shouldn't be built at if no libflac is available
+      LIBFLAC_LOCAL_OPTOBJS="ondemand/ODDecodeFlacTask.o"
       LIBFLAC_LOCAL_CONFIG_SUBDIRS="lib-src/libflac"
 
       { $as_echo "$as_me:$LINENO: FLAC libraries are available in this source tree" >&5
