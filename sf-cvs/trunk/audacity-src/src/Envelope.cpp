@@ -1046,6 +1046,8 @@ void Envelope::BinarySearchForTime( int &Lo, int &Hi, double t ) const
 {
    Lo = 0;
    Hi = mEnv.Count() - 1;
+   // JC: Do we have a problem if the envelope only has one point??
+   wxASSERT( Hi > Lo );
    while (Hi > (Lo + 1)) {
       int mid = (Lo + Hi) / 2;
       if (t < mEnv[mid]->t)
@@ -1148,22 +1150,21 @@ void Envelope::GetValues(double *buffer, int bufferLen,
          {
             v = (vprev * (dt - to) + vnext * to) / dt;
             vstep = (vnext - vprev) * tstep / dt;
-            // An adjustment if logarithmic scale.
-            if( mDB )
-            {
-               v = pow(10.0, v);
-               vstep = pow( 10.0, vstep );
-            }
          }
          else
          {
             v = vnext;
-            // vstep is multiplicative for log scale, additive for linear.
-            vstep = mDB ? 1.0 : 0.0;
+            vstep = 0.0;
+         }
+
+         // An adjustment if logarithmic scale.
+         if( mDB )
+         {
+            v = pow(10.0, v);
+            vstep = pow( 10.0, vstep );
          }
 
          buffer[b] = v;
-
       } else {
          if (mDB){
             buffer[b] = buffer[b - 1] * vstep;
