@@ -908,7 +908,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
 
    memDC.SetPen(*wxBLACK_PEN);
    if( mParent->mFaderOrDraw[0]->GetValue() )
-      mEnvelope->Draw(memDC, mEnvRect, 0.0, mEnvRect.width, false, dBMin, dBMax);
+      mEnvelope->DrawPoints(memDC, mEnvRect, 0.0, mEnvRect.width, false, dBMin, dBMax);
 
    if( mParent->drawGrid )
    {
