@@ -1294,7 +1294,7 @@ void TrackArtist::DrawClipWaveform(WaveTrack *track,
 
    if (drawEnvelope) {
       DrawEnvelope(dc, mid, envValues, zoomMin, zoomMax, dB);
-      clip->GetEnvelope()->Draw(dc, r, h, pps, dB, zoomMin, zoomMax);
+      clip->GetEnvelope()->DrawPoints(dc, r, h, pps, dB, zoomMin, zoomMax);
    }
 
    delete[] envValues;
@@ -2535,7 +2535,7 @@ void TrackArtist::DrawTimeTrack(TimeTrack *track,
    track->Draw(dc, r, viewInfo->h, viewInfo->zoom);
    wxRect envRect = r;
    envRect.height -= 2;
-   track->GetEnvelope()->Draw(dc, envRect, viewInfo->h, viewInfo->zoom, 
+   track->GetEnvelope()->DrawPoints(dc, envRect, viewInfo->h, viewInfo->zoom, 
                false,0.0,1.0);
 }
 

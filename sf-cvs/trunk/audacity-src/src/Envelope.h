@@ -64,6 +64,7 @@ struct EnvPoint : public XMLTagHandler {
    }
 };
 
+// TODO: Become an array of EnvPoint rather than of pointers to.
 WX_DEFINE_ARRAY(EnvPoint *, EnvArray);
 
 class Envelope : public XMLTagHandler {
@@ -86,24 +87,19 @@ class Envelope : public XMLTagHandler {
    virtual bool Load(wxTextFile * in, DirManager * dirManager);
    virtual bool Save(wxTextFile * out, bool overwrite);
 #endif
-
    // Newfangled XML file I/O
    virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(XMLWriter &xmlFile);
 
-
-   // Event Handlers
-
-   void Draw(wxDC & dc, const wxRect & r, double h, double pps, bool dB,
+   void DrawPoints(wxDC & dc, const wxRect & r, double h, double pps, bool dB,
              float zoomMin=-1.0, float zoomMax=1.0);
 
+   // Event Handlers
    // Each ofthese returns true if parents needs to be redrawn
-
    bool MouseEvent(wxMouseEvent & event, wxRect & r,
                    double h, double pps, bool dB,
                    float zoomMin=-1.0, float zoomMax=1.0, float eMin=0., float eMax=2.);
-
    bool HandleMouseButtonDown( wxMouseEvent & event, wxRect & r,
                                double h, double pps, bool dB,
                                float zoomMin=-1.0, float zoomMax=1.0, float eMin=0., float eMax=2.);
@@ -113,7 +109,6 @@ class Envelope : public XMLTagHandler {
    bool HandleMouseButtonUp( wxMouseEvent & event, wxRect & r,
                              double h, double pps, bool dB,
                              float zoomMin=-1.0, float zoomMax=1.0);
-
    void GetEventParams( int &height, bool &upper, bool dB,
                         wxMouseEvent & event, wxRect & r,
                         float &zoomMin, float &zoomMax);
@@ -126,7 +121,6 @@ class Envelope : public XMLTagHandler {
    void RemoveUnneededPoints(double time = -1, double tolerence = 0.001);
 
    // Control
-
    void SetOffset(double newOffset);
    void SetTrackLen(double trackLen);
 
@@ -173,35 +167,52 @@ class Envelope : public XMLTagHandler {
                   double *bufferValue,
                   int bufferLen) const;
 
- private:
-
-   bool mMirror;
-
+private:
    double fromDB(double x) const;
    double toDB(double x);
+   EnvPoint *  AddPointAtEnd( double t, double val );
+   void MarkDragPointForDeletion();
+   float ValueOfPixel( int y, int height, bool upper, bool dB,
+                       float zoomMin, float zoomMax, float eMin=-10000. , float eMax=10000.);
+   void BinarySearchForTime( int &Lo, int &Hi, double t ) const;
+   double GetInterpolationStartValueAtPoint( int iPoint ) const;
+   void MoveDraggedPoint( wxMouseEvent & event, wxRect & r,
+                               double h, double pps, bool dB,
+                               float zoomMin, float zoomMax, float eMin, float eMax);
 
+   // Possibly inline functions:
+   // This function resets them integral memoizers (call whenever the Envelope changes)
+   void resetIntegralMemoizer() { lastIntegral_t0=0; lastIntegral_t1=0; lastIntegral_result=0; }
+
+   // The list of envelope control points.
    EnvArray mEnv;
+   bool mMirror;
+
    /** \brief The time at which the envelope starts, i.e. the start offset */
    double mOffset;
    /** \brief The length of the envelope, which is the same as the length of the
     * underlying track (normally) */
    double mTrackLen;
+
+   // TODO: mTrackEpsilon based on assumption of 200KHz.  Needs review if/when
+   // we support higher sample rates.
    /** \brief The shortest distance appart that points on an envelope can be
     * before being considered the same point */
    double mTrackEpsilon;
    double mDefaultValue;
 
-   int mDragPoint;
-   int mInitialX;
-   int mInitialY;
    /** \brief Number of pixels contour is from the true envelope. */
    int mContourOffset;
    double mInitialWhen;
    double mInitialVal;
+
+   // These are used in dragging.
+   int mDragPoint;
+   int mInitialX;
+   int mInitialY;
    bool mUpper;
    bool mIsDeleting;
    int mButton;
-
    bool mDB;
    bool mDirty;
 
@@ -209,11 +220,7 @@ class Envelope : public XMLTagHandler {
    double lastIntegral_t0;
    double lastIntegral_t1;
    double lastIntegral_result;
-   // and this function resets them (call whenever the Envelope changes)
-   void resetIntegralMemoizer() { lastIntegral_t0=0; lastIntegral_t1=0; lastIntegral_result=0; }
 
-   float ValueOfPixel( int y, int height, bool upper, bool dB,
-                       float zoomMin, float zoomMax, float eMin=-10000. );
 };
 
 #endif
