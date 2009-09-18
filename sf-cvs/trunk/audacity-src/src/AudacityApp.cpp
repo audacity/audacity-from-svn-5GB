@@ -712,7 +712,7 @@ bool AudacityApp::MRUOpen(wxString fileName) {
       }
       else {
          // File doesn't exist - remove file from history
-         wxMessageBox(wxString::Format(_("%s does not exist and could not be opened.\n\nIt has been removed from the history list."), 
+         wxMessageBox(wxString::Format(_("%s could not be found.\n\nIt has been removed from the list of recent files."), 
                       fileName.c_str()));
          return(false);
       }
