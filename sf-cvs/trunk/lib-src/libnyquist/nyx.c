@@ -74,6 +74,7 @@ LOCAL XLCONTEXT           nyx_cntxt;
 LOCAL int                 nyx_first_time = 1;
 LOCAL LVAL                nyx_obarray;
 LOCAL FLOTYPE             nyx_warp_stretch;
+LOCAL long                nyx_input_length = 0;
 
 /* Suspension node */
 typedef struct nyx_susp_struct {
@@ -509,6 +510,9 @@ void nyx_cleanup()
    nyx_output_cb = NULL;
    nyx_os_cb = NULL;
 
+   // Reset vars
+   nyx_input_length = 0;
+
 #if defined(NYX_MEMORY_STATS) && NYX_MEMORY_STATS
    printf("\nnyx_cleanup\n");
    xmem();
@@ -590,6 +594,7 @@ void nyx_set_audio_params(double rate, long len)
    setvalue(xlenter("*SOUND-SRATE*"), flo);
 
    /* Bind selection len to "len" global */
+   nyx_input_length = len;
    flo = cvflonum(len);
    setvalue(xlenter("LEN"), flo);
 
@@ -844,6 +849,8 @@ nyx_rval nyx_eval_expression(const char *expr_string)
 
    xlpop(); // unprotect expr
 
+   setvalue(xlenter("S"), NIL);
+
    gc();
 
 #if defined(NYX_MEMORY_STATS) && NYX_MEMORY_STATS
@@ -926,6 +933,18 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
       goto finish;
    }
 
+   if (nyx_input_length == 0) {
+      LVAL val = getvalue(xlenter("*AUDACITY-PLUGIN-RESULT-LENGTH*"));
+      if (val != s_unbound) {
+         if (ntype(val) == FLONUM) {
+            nyx_input_length = (long) getflonum(val);
+         }
+         else if (ntype(val) == FIXNUM) {
+            nyx_input_length = (long) getfixnum(val);
+         }
+      }
+   }
+
    for (ch = 0; ch < num_channels; ch++) {
       if (num_channels == 1) {
          snd = getsound(nyx_result);
@@ -935,7 +954,7 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
       }
       snds[ch] = snd;
       totals[ch] = 0;
-      lens[ch] = snd_length(snd, snd->stop);
+      lens[ch] = nyx_input_length;
    }
 
    while (result == 0) {
@@ -960,7 +979,7 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
          }
 
          result = callback((float *)buffer, ch,
-                           totals[ch], cnt, lens[ch], userdata);
+                           totals[ch], cnt, lens[ch] ? lens[ch] : cnt, userdata);
 
          if (result != 0) {
             result = -1;
