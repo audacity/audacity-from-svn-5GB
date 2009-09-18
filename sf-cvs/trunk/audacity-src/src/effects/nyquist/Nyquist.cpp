@@ -827,7 +827,7 @@ int EffectNyquist::GetCallback(float *buffer, int ch,
          mProgressIn = progress;
       }
 
-      if (TotalProgress(mProgressIn+mProgressTot)) {
+      if (TotalProgress(mProgressIn+mProgressOut+mProgressTot)) {
          return -1;
       }
    }
