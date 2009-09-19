@@ -4321,6 +4321,7 @@ void AudacityProject::OnImport()
    //sort selected files by OD status.  Load non OD first so user can edit asap.
    //first sort selectedFiles.
    selectedFiles.Sort(CompareNoCaseFileName);
+   ODManager::Pause();
    
    for (size_t ff = 0; ff < selectedFiles.GetCount(); ff++) {
       wxString fileName = selectedFiles[ff];
@@ -4332,6 +4333,7 @@ void AudacityProject::OnImport()
    }
 	
    HandleResize(); // Adjust scrollers for new track sizes.
+   ODManager::Resume();
 }
 
 void AudacityProject::OnImportLabels()
