@@ -20,6 +20,7 @@
 
 ODLock gODInitedMutex;
 bool gManagerCreated=false;
+bool gPause=false; //to be loaded in and used with Pause/Resume before ODMan init.
 /// a flag that is set if we have loaded some OD blockfiles from PCM.  
 bool sHasLoadedOD=false;
 
@@ -31,7 +32,7 @@ ODLock sLibSndFileMutex;
 DEFINE_EVENT_TYPE(EVT_ODTASK_UPDATE)
 
 //OD files are "greater than" non OD files, to produce a sort that has
-//OD Files at the end.
+//OD Files at the end
 int CompareODFileName(const wxString& first, const wxString& second)
 {
    bool firstIsOD = false;
@@ -94,7 +95,17 @@ int CompareODFirstFileName(const wxString& first, const wxString& second)
     else if(secondIsOD&&!firstIsOD)
       return 1;
    
+   //if they are both OD-files, or both non-OD-files, use a normal string comparison
+   //to get alphabetical sorting
    return first.Cmp(second);
+}
+
+//using this with wxStringArray::Sort will give you a list that 
+//is alphabetical, without depending on case.  If you use the
+//default sort, you will get strings with 'R' before 'a', because it is in caps.
+int CompareNoCaseFileName(const wxString& first, const wxString& second)
+{
+   return first.CmpNoCase(second);
 }
 
 void ODManager::LockLibSndFileMutex()
@@ -113,6 +124,7 @@ ODManager::ODManager()
 {
    mTerminate = false;
    mTerminated = false;
+   mPause= gPause;
 }
 
 //private constructor - delete with static method Quit()
@@ -250,6 +262,7 @@ void ODManager::Start()
 {   
    ODTaskThread* thread;
    bool tasksInArray;
+   bool paused;
    
    mNeedsDraw=0;
 
@@ -273,7 +286,11 @@ void ODManager::Start()
       mTasksMutex.Unlock();
       mCurrentThreadsMutex.Lock();
       
-      while( tasksInArray&& mCurrentThreads < mMaxThreads)
+      mPauseLock.Lock();
+      paused=mPause;
+      mPauseLock.Unlock();
+      
+      while(!paused && tasksInArray&& mCurrentThreads < mMaxThreads)
       {
          mCurrentThreads++;
          mCurrentThreadsMutex.Unlock();
@@ -301,6 +318,8 @@ void ODManager::Start()
       }
 
       mCurrentThreadsMutex.Unlock();
+      //TODO: use a conditon variable to block here instead of a sleep.  
+      //Also find out if the condition variable polls to quickly - we don't want that either.
       wxThread::Sleep(200);
 //wxSleep can't be called from non-main thread.
 //      ::wxMilliSleep(250);
@@ -333,6 +352,25 @@ void ODManager::Start()
    //wxLogDebug Not thread safe.
    //printf("ODManager thread terminating\n");
 
+}
+
+void ODManager::Pause(bool pause)
+{
+   if(IsInstanceCreated())
+   {
+      ODManager::Instance()->mPauseLock.Lock();
+      ODManager::Instance()->mPause = pause;
+      ODManager::Instance()->mPauseLock.Unlock();
+   }
+   else
+   {
+      gPause=pause;
+   }
+}
+
+void ODManager::Resume()
+{
+   Pause(false);
 }
 
 void ODManager::Quit()

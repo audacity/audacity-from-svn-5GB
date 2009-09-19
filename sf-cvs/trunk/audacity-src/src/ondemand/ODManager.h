@@ -44,7 +44,7 @@ DECLARE_EXPORTED_EVENT_TYPE(AUDACITY_DLL_API, EVT_ODTASK_UPDATE, -1)
 ///wxstring compare function for sorting filenames with od
 int CompareODFileName(const wxString& first, const wxString& second);
 int CompareODFirstFileName(const wxString& first, const wxString& second);
-
+int CompareNoCaseFileName(const wxString& first, const wxString& second);
 /// A singleton that manages currently running Tasks on an arbitrary 
 /// number of threads.
 class WaveTrack;
@@ -106,9 +106,13 @@ class ODManager
    ///Get Total Number of Tasks.
    int GetTotalNumTasks();
   
+   //Pause/unpause all OD Tasks.  Does not occur immediately.
+   static void Pause(bool pause = true);
+   static void Resume();
 
    static void LockLibSndFileMutex();
    static void UnlockLibSndFileMutex();
+
 
   
   protected:
@@ -134,6 +138,10 @@ class ODManager
    std::vector<ODTask*> mTasks;
    //mutex for above variable
    ODLock mTasksMutex;
+   
+   //global pause switch for OD
+   bool mPause;
+   ODLock mPauseLock;
 
    int mNeedsDraw;
    
