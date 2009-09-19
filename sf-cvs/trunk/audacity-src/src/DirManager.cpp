@@ -807,7 +807,11 @@ BlockFile *DirManager::CopyBlockFile(BlockFile *b)
 		//mchinen:July 13 2009 - not sure about this, but it needs to be added to the hash to be able to save if not locked.
 		//note that this shouldn't hurt blockFileHash's that already contain the filename, since it should just overwrite.
 		//but it's something to watch out for.
-		blockFileHash[b->GetFileName().GetName()]=b;
+      //
+      // LLL: Except for silent block files which have no filename.
+      if (!b->GetFileName().GetName().IsEmpty()) {
+         blockFileHash[b->GetFileName().GetName()]=b;
+      }
       return b;
    }
 
