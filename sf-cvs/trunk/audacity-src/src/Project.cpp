@@ -394,12 +394,17 @@ public:
       //sort by OD non OD.  load Non OD first so user can start editing asap.
       wxArrayString sortednames(filenames);
       
-      sortednames.Sort(CompareODFileName);
+      ODManager::Pause();
+      
+      sortednames.Sort(CompareNoCaseFileName);
       for (unsigned int i = 0; i < sortednames.GetCount(); i++) {
          
          mProject->Import(sortednames[i]);
       }
       mProject->HandleResize(); // Adjust scrollers for new track sizes.
+      
+      ODManager::Resume();
+      
       return true;
    }
 
@@ -2056,7 +2061,8 @@ void AudacityProject::OpenFiles(AudacityProject *proj)
    //sort selected files by OD status.  
    //For the open menu we load OD first so user can edit asap.
    //first sort selectedFiles.
-   selectedFiles.Sort(CompareODFirstFileName);
+   selectedFiles.Sort(CompareNoCaseFileName);
+   ODManager::Pause();
 
    for (size_t ff = 0; ff < selectedFiles.GetCount(); ff++) {
       wxString fileName = selectedFiles[ff];
@@ -2101,6 +2107,9 @@ void AudacityProject::OpenFiles(AudacityProject *proj)
       // and it's okay to open a new project inside this window.
       proj->OpenFile(fileName);
    }
+   
+   ODManager::Resume();
+
 }
 
 bool AudacityProject::WarnOfLegacyFile( )

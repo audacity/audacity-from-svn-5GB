@@ -4320,7 +4320,7 @@ void AudacityProject::OnImport()
    gPrefs->Write(wxT("/NewImportingSession"), true);
    //sort selected files by OD status.  Load non OD first so user can edit asap.
    //first sort selectedFiles.
-   selectedFiles.Sort(CompareODFileName);
+   selectedFiles.Sort(CompareNoCaseFileName);
    
    for (size_t ff = 0; ff < selectedFiles.GetCount(); ff++) {
       wxString fileName = selectedFiles[ff];
