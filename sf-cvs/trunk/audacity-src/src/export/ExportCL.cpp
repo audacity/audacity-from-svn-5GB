@@ -82,7 +82,7 @@ void ExportCLOptions::PopulateOrExchange(ShuttleGui & S)
          S.EndMultiColumn();
 
 
-         S.AddFixedText(_("Data will be piped to standard in. \"%f\" will be replaced with output filename selected."));
+         S.AddFixedText(_("Data will be piped to standard in. \"%f\" uses the file name in the export window."));
       }
       S.EndStatic();
    }
