@@ -934,7 +934,7 @@ int nyx_get_audio(nyx_audio_callback callback, void *userdata)
    }
 
    if (nyx_input_length == 0) {
-      LVAL val = getvalue(xlenter("*AUDACITY-PLUGIN-RESULT-LENGTH*"));
+      LVAL val = getvalue(xlenter("LEN"));
       if (val != s_unbound) {
          if (ntype(val) == FLONUM) {
             nyx_input_length = (long) getflonum(val);
