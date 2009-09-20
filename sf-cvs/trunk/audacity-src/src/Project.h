@@ -364,8 +364,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void PushState(wxString desc, wxString shortDesc,
                   bool consolidate = false);
 
-   FreqWindow *mFreqWindow;
-
  private:
 
    void ClearClipboard();
@@ -459,6 +457,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
       MixerBoardFrame* mMixerBoardFrame;
    #endif
 
+   FreqWindow *mFreqWindow;
 
  public:
    ToolManager *mToolManager;

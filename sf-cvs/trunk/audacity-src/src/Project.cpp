@@ -95,7 +95,6 @@ scroll information.  It also has some status flags.
 #include "AColor.h"
 #include "AudioIO.h"
 #include "Dependencies.h"
-#include "FreqWindow.h"
 #include "HistoryWindow.h"
 #ifdef EXPERIMENTAL_LYRICS_WINDOW
    #include "Lyrics.h"

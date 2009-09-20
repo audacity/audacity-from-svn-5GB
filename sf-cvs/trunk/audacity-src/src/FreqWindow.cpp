@@ -93,28 +93,6 @@ enum {
 #define FREQ_WINDOW_WIDTH 480
 #define FREQ_WINDOW_HEIGHT 330
 
-void InitFreqWindow(wxWindow * parent)
-{
-   AudacityProject* p = GetActiveProject();
-   if (!p)
-      return;
-
-   if(!p->mFreqWindow)
-   {
-      wxPoint where;
-
-      where.x = 150;
-      where.y = 150;
-
-      p->mFreqWindow = new FreqWindow(parent, -1, _("Frequency Analysis"), where);
-   }
-   wxCommandEvent dummy;
-   p->mFreqWindow->OnReplot(dummy);
-   p->mFreqWindow->Show(true);
-   p->mFreqWindow->Raise();
-   p->mFreqWindow->SetFocus();
-}
-
 // FreqWindow
 
 BEGIN_EVENT_TABLE(FreqWindow, wxDialog)
@@ -134,7 +112,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                            const wxString & title,
                            const wxPoint & pos):
   wxDialog(parent, id, title, pos, wxDefaultSize,
-     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX ),
+     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX),
   mData(NULL), mProcessed(NULL), mBitmap(NULL)
 {
    mMouseX = 0;
@@ -1270,9 +1248,7 @@ void FreqWindow::OnReplot(wxCommandEvent & WXUNUSED(event))
    if(dBRange < 90.)
       dBRange = 90.;
    GetAudio();
-   
-   if(p->mFreqWindow)
-      p->mFreqWindow->Plot();
+   Plot();
 }
 
 void FreqWindow::OnGridOnOff(wxCommandEvent & WXUNUSED(event))
@@ -1281,9 +1257,7 @@ void FreqWindow::OnGridOnOff(wxCommandEvent & WXUNUSED(event))
       mDrawGrid = true;
    else
       mDrawGrid = false;
-
-   if(p->mFreqWindow)
-      p->mFreqWindow->Plot();
+   Plot();
 }
 
 BEGIN_EVENT_TABLE(FreqPlot, wxWindow)
