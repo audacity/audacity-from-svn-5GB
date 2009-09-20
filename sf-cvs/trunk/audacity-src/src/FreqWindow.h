@@ -32,8 +32,6 @@ class FreqWindow;
 
 class TrackList;
 
-void InitFreqWindow(wxWindow * parent);
-
 class FreqWindow;
 
 class FreqPlot:public wxWindow {

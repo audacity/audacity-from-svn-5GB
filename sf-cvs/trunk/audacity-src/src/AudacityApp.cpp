@@ -68,7 +68,6 @@ It handles initialization and termination by subclassing wxApp.
 #include "effects/VST/VSTEffect.h"
 #include "FFmpeg.h"
 #include "GStreamerLoader.h"
-#include "FreqWindow.h"
 #include "Internat.h"
 #include "LangChoice.h"
 #include "Prefs.h"

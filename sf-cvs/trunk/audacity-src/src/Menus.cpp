@@ -71,7 +71,6 @@ simplifies construction of menu items.
 #endif
 #include "Internat.h"
 #include "FileFormats.h"
-#include "FreqWindow.h"
 #include "LoadModules.h"	
 #include "Prefs.h"
 #include "Printing.h"
@@ -4235,7 +4234,20 @@ void AudacityProject::OnHistory()
 
 void AudacityProject::OnPlotSpectrum()
 {
-   InitFreqWindow(NULL);
+   if (!mFreqWindow) {
+      wxPoint where;
+
+      where.x = 150;
+      where.y = 150;
+
+      mFreqWindow = new FreqWindow(this, -1, _("Frequency Analysis"), where);
+   }
+
+   wxCommandEvent dummy;
+   mFreqWindow->OnReplot(dummy);
+   mFreqWindow->Show(true);
+   mFreqWindow->Raise();
+   mFreqWindow->SetFocus();
 }
 
 void AudacityProject::OnContrast()
