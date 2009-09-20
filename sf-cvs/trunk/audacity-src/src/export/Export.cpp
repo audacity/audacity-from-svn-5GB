@@ -344,18 +344,25 @@ bool Exporter::Process(AudacityProject *project, bool selectedOnly, double t0, d
       return false;
    }
 
-   // Let user edit MetaData 
-   if (!(project->GetTags()->ShowEditDialog(project, _("Edit Metadata"), mProject->GetShowId3Dialog()))) {
-      return false;
-   }
-
    // Ask user for file name
    if (!GetFilename()) {
       return false;
    }
 
+   // Let user edit MetaData 
+   if (mPlugins[mFormat]->GetCanMetaData(mSubFormat)) {
+      if (!(project->GetTags()->ShowEditDialog(project, _("Edit Metadata"), mProject->GetShowId3Dialog()))) {
+         return false;
+      }
+   }
+
    // Check for down mixing
    if (!CheckMix()) {
+      return false;
+   }
+
+   // Ensure filename doesn't interfere with project files.
+   if (!CheckFilename()) {
       return false;
    }
 
@@ -483,12 +490,6 @@ bool Exporter::ExamineTracks()
    return true;
 }
 
-//
-// For safety, if the file already exists it stores the filename
-// the user wants in actualName, and returns a temporary file name.
-// The calling function should rename the file when it's successfully
-// exported.
-//
 bool Exporter::GetFilename()
 {
    mFormat = -1;
@@ -628,6 +629,17 @@ bool Exporter::GetFilename()
       break;
    }
 
+   return true;
+}
+
+//
+// For safety, if the file already exists it stores the filename
+// the user wants in actualName, and returns a temporary file name.
+// The calling function should rename the file when it's successfully
+// exported.
+//
+bool Exporter::CheckFilename()
+{
    //
    // Ensure that exporting a file by this name doesn't overwrite
    // one of the existing files in the project.  (If it would

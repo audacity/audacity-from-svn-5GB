@@ -148,6 +148,7 @@ private:
 
    bool ExamineTracks();
    bool GetFilename();
+   bool CheckFilename();
    bool CheckMix();
    bool ExportTracks();
 
