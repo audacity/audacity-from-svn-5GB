@@ -210,6 +210,9 @@ static bool RecoverAllProjects(AudacityProject** pproj)
       // the opened auto-save file is automatically deleted and a new one
       // is created.
       proj->OpenFile(files[i], false);
+
+      //fit project after recovery
+      proj->OnZoomFit();
    }
    
    return true;
