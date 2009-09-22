@@ -1477,6 +1477,13 @@ void WaveClip::Unlock()
       it->GetData()->Unlock();
 }
 
+void WaveClip::SetRate(int rate)
+{
+   mRate = rate;
+   UpdateEnvelopeTrackLen();
+   MarkChanged();
+}
+
 bool WaveClip::Resample(int rate, ProgressDialog *progress)
 {
    if (rate == mRate)

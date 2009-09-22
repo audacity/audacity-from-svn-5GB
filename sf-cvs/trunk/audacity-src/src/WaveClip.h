@@ -82,7 +82,7 @@ public:
    int GetRate() const { return mRate; }
    
    // Set rate without resampling. This will change the length of the clip
-   void SetRate(int rate) { mRate = rate; MarkChanged(); }
+   void SetRate(int rate);
    
    // Resample clip. This also will set the rate, but without changing
    // the length of the clip
