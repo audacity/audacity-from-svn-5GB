@@ -325,78 +325,84 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
                                     int *queueStart, int *queueLen,
                                     Resample *SRC)
 {
-   int trackRate = (int)(track->GetRate());
+   double trackRate = track->GetRate();
    double initialWarp = mRate / trackRate;
+   double tstep = 1.0 / trackRate;
    double t = *pos / trackRate;
    int sampleSize = SAMPLE_SIZE(floatSample);
-   int i, c;
 
    sampleCount out = 0;
 
-   // Find the last sample
-   sampleCount last = -1;
-   WaveClipList::compatibility_iterator it = track->GetClipIterator();
-   while (it) {
-      sampleCount end = it->GetData()->GetEndSample();
-      if (end > last) {
-         last = end;
-      }
-      it = it->GetNext();
-   }
-
-   sampleCount max = (sampleCount) (trackRate * mT1);
    /* time is floating point. Sample rate is integer. The number of samples
     * has to be integer, but the multiplication gives a float result, which we
     * round to get an integer result. TODO: is this always right or can it be
     * off by one sometimes? Can we not get this information directly from the
-    * clip (which must know) rather than convert the time? */
-   if (last > max)
-      last = max;
+    * clip (which must know) rather than convert the time?
+    *
+    * LLL:  Not at this time.  While WaveClips provide methods to retrieve the
+    *       start and end sample, they do the same float->sampleCount conversion
+    *       to calculate the position.
+    */
 
-   while(out < mMaxOut) {
+   // Find the last sample
+   sampleCount endPos;
+   double endTime = track->GetEndTime();
+   if (endTime > mT1) {
+      endPos = track->TimeToLongSamples(mT1);
+   }
+   else {
+      endPos = track->TimeToLongSamples(endTime);
+   }
+
+   while (out < mMaxOut) {
       if (*queueLen < mProcessLen) {
-         memmove(queue, &queue[*queueStart], (*queueLen)*sampleSize);
+         memmove(queue, &queue[*queueStart], (*queueLen) * sampleSize);
          *queueStart = 0;
 
          int getLen = mQueueMaxLen - *queueLen;
 
          // Constrain
-         if (*pos + getLen > last) {
-            getLen = last - *pos;
+         if (*pos + getLen > endPos) {
+            getLen = endPos - *pos;
          }
 
          // Nothing to do if past end of track
-         if (getLen <= 0) {
-            break;
+         if (getLen > 0) {
+            track->Get((samplePtr)&queue[*queueLen],
+                       floatSample,
+                       *pos,
+                       getLen);
+
+            track->GetEnvelopeValues(mEnvValues,
+                                     getLen,
+                                     (*pos) / trackRate,
+                                     tstep);
+
+            for (int i = 0; i < getLen; i++) {
+               queue[(*queueLen) + i] *= mEnvValues[i];
+            }
+
+            *queueLen += getLen;
+            *pos += getLen;
          }
-
-         track->Get((samplePtr)&queue[*queueLen], floatSample,
-                    *pos, getLen);
-
-         track->GetEnvelopeValues(mEnvValues, getLen, (*pos) / trackRate,
-                                  1.0 / trackRate);
-
-         for(i=0; i<getLen; i++)
-            queue[(*queueLen)+i] *= mEnvValues[i];
-         *queueLen += getLen;
-         *pos += getLen;
       }
-
-      sampleCount thisProcessLen = mProcessLen;
-      if (*queueLen < mProcessLen)
-         thisProcessLen = *queueLen;
 
       double factor = initialWarp;
       if (mTimeTrack) {
          double warpFactor = mTimeTrack->GetEnvelope()->GetValue(t);
-         warpFactor = (mTimeTrack->GetRangeLower() * (1 - warpFactor) +
-                       warpFactor * mTimeTrack->GetRangeUpper())/100.0;
+         warpFactor = (mTimeTrack->GetRangeLower() * (1.0 - warpFactor) +
+                       warpFactor * mTimeTrack->GetRangeUpper()) / 100.0;
 
          factor /= warpFactor;
       }
 
-      int input_used;
+      sampleCount thisProcessLen = mProcessLen;
       bool last = (*queueLen < mProcessLen);
+      if (last) {
+         thisProcessLen = *queueLen;
+      }
+
+      int input_used;
       int outgen = SRC->Process(factor,
                                 &queue[*queueStart],
                                 thisProcessLen,
@@ -405,26 +411,36 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
                                 &mFloatBuffer[out],
                                 mMaxOut - out);
 
-      if (outgen < 0)
+      if (outgen < 0) {
          return 0;
+      }
 
       *queueStart += input_used;
       *queueLen -= input_used;
       out += outgen;
       t += (input_used / trackRate);
 
-      if (last)
+      if (last) {
          break;
+      }
    }
 
-   for(c=0; c<mNumChannels; c++)
-      if (mApplyTrackGains)
+   for (int c = 0; c < mNumChannels; c++) {
+      if (mApplyTrackGains) {
          mGains[c] = track->GetChannelGain(c);
-      else
+      }
+      else {
          mGains[c] = 1.0;
+      }
+   }
 
-   MixBuffers(mNumChannels, channelFlags, mGains,
-              (samplePtr)mFloatBuffer, mTemp, out, mInterleaved);
+   MixBuffers(mNumChannels,
+              channelFlags,
+              mGains,
+              (samplePtr)mFloatBuffer,
+              mTemp,
+              out,
+              mInterleaved);
 
    return out;
 }
