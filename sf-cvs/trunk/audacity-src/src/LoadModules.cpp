@@ -101,7 +101,7 @@ void LoadModule(wxString fname)
       if (versionFn)
       {
          wxString moduleVersion = versionFn();
-         if (moduleVersion != AUDACITY_VERSION_STRING)
+         if (!moduleVersion.IsSameAs(AUDACITY_VERSION_STRING))
          {
             wxLogDebug(wxT("The module %s is designed to work with Audacity version %s; it will not be loaded."), fname.c_str(), moduleVersion.c_str());
             delete pDLL;
