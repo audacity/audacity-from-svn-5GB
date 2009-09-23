@@ -12,8 +12,10 @@ use warnings;
 use Time::HiRes qw( gettimeofday tv_interval );
 use List::Util qw( max );
 
-# Where should screenshots be saved?
-our $screenshotDir = "/home/dan/Temp";
+# Where should screenshots and exported tracks be saved?
+our $home = $ENV{HOME};
+our $screenshotDir = $home.'/pipetest/';
+our $effectTestDir = $home.'/pipetest/';
 
 # Variables for pipe names
 our $Name;
@@ -485,7 +487,6 @@ startUp();
 
 # Send some test commands
 
-our $effectTestDir = "/home/dan/Temp/ref";
 exportEffects($effectTestDir);
 testEffects($effectTestDir);
 
