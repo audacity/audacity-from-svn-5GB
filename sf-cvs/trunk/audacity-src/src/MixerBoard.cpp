@@ -90,7 +90,6 @@ enum {
    ID_SLIDER_GAIN,
    ID_TOGGLEBUTTON_MUTE, 
    ID_TOGGLEBUTTON_SOLO,
-   ID_CHECKBOX_PREFADE, 
 };
 
 BEGIN_EVENT_TABLE(MixerTrackCluster, wxPanel)
@@ -104,7 +103,6 @@ BEGIN_EVENT_TABLE(MixerTrackCluster, wxPanel)
    //v EVT_COMMAND_SCROLL(ID_SLIDER_GAIN, MixerTrackCluster::OnSliderScroll_Gain)
    EVT_COMMAND(ID_TOGGLEBUTTON_MUTE, wxEVT_COMMAND_BUTTON_CLICKED, MixerTrackCluster::OnButton_Mute)
    EVT_COMMAND(ID_TOGGLEBUTTON_SOLO, wxEVT_COMMAND_BUTTON_CLICKED, MixerTrackCluster::OnButton_Solo)
-   EVT_CHECKBOX(ID_CHECKBOX_PREFADE, MixerTrackCluster::OnCheckBox_PreFade) 
 END_EVENT_TABLE()
 
 MixerTrackCluster::MixerTrackCluster(wxWindow* parent, 
@@ -213,19 +211,11 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
    
    // meter
    ctrlPos.y += (bSoloNone ? 0 : MUTE_SOLO_HEIGHT) + kDoubleInset;
-   mCheckBox_PreFade = 
-      new wxCheckBox(this, ID_CHECKBOX_PREFADE, 
-                     _("Pre"), ctrlPos, wxDefaultSize);
-   mCheckBox_PreFade->SetValue(false);
-
-   ctrlSize = mCheckBox_PreFade->GetSize();
-   ctrlPos.y += ctrlSize.GetHeight();
    const int nMeterHeight = 
       nGainSliderHeight - 
       (MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH + kDoubleInset) -
       (PAN_HEIGHT + kDoubleInset) - 
-      (MUTE_SOLO_HEIGHT + (bSoloNone ? 0 : MUTE_SOLO_HEIGHT) + kDoubleInset) - 
-      ctrlSize.GetHeight();
+      (MUTE_SOLO_HEIGHT + (bSoloNone ? 0 : MUTE_SOLO_HEIGHT) + kDoubleInset);
    ctrlSize.Set(kRightSideStackWidth, nMeterHeight);
    mMeter = 
       new Meter(this, -1, // wxWindow* parent, wxWindowID id, 
@@ -237,7 +227,6 @@ MixerTrackCluster::MixerTrackCluster(wxWindow* parent,
       mStaticText_TrackName->SetToolTip(mLeftTrack->GetName());
       mToggleButton_Mute->SetToolTip(_("Mute"));
       mToggleButton_Solo->SetToolTip(_("Solo"));
-      mCheckBox_PreFade->SetToolTip(_("Show meter pre/post fade."));
       mMeter->SetToolTip(_("Signal Level Meter"));
    #endif // wxUSE_TOOLTIPS
 
@@ -271,12 +260,10 @@ void MixerTrackCluster::HandleResize() // For wxSizeEvents, update gain slider a
 
    mToggleButton_Solo->Show(!bSoloNone);
 
-   wxSize ctrlSize = mCheckBox_PreFade->GetSize();
    const int nRequiredHeightAboveMeter = 
       MUSICAL_INSTRUMENT_HEIGHT_AND_WIDTH + kDoubleInset + 
       PAN_HEIGHT + kDoubleInset + 
-      MUTE_SOLO_HEIGHT + (bSoloNone ? 0 : MUTE_SOLO_HEIGHT) + kDoubleInset + 
-      ctrlSize.GetHeight();
+      MUTE_SOLO_HEIGHT + (bSoloNone ? 0 : MUTE_SOLO_HEIGHT) + kDoubleInset;
    const int nMeterY = 
       kDoubleInset + // margin at top
       TRACK_NAME_HEIGHT + kDoubleInset + 
@@ -402,7 +389,7 @@ void MixerTrackCluster::UpdateMeter(const double t0, const double t1)
       else
       {
          // Mono: Start with raw values same as left. 
-         // To be modified by pre/post fade and channel pan/gain.
+         // To be modified by bWantPostFadeValues and channel pan/gain.
          maxRight[i] = maxLeft[i];
          rmsRight[i] = rmsLeft[i];
       }
@@ -411,8 +398,8 @@ void MixerTrackCluster::UpdateMeter(const double t0, const double t1)
       i++;
    }
 
-   // If we want post fade values, modify values by gain factor.
-   if (bSuccess && !mCheckBox_PreFade->GetValue())
+   bool bWantPostFadeValues = true; //v Turn this into a checkbox on MixerBoard?
+   if (bSuccess && bWantPostFadeValues)
    {
       for (i = 0; i < nFramesPerBuffer; i++)
       {
@@ -598,10 +585,6 @@ void MixerTrackCluster::OnButton_Solo(wxCommandEvent& event)
    else
       // Update only the changed track. 
       mProject->RefreshTPTrack(mLeftTrack);
-}
-
-void MixerTrackCluster::OnCheckBox_PreFade(wxCommandEvent& event)
-{
 }
 
 
