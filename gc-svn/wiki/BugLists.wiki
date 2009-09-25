@@ -1,0 +1,14 @@
+#summary Canned Issue Tracker Queries
+#labels Featured
+
+= Introduction =
+
+Here are some 'canned' issue tracker queries:
+
+  * [http://code.google.com/p/audacity/issues/list?can=2&q=&sort=-opsys+component&colspec=ID%20Opsys%20Priority%20Type%20Component%20Summary Issues by Platform]
+  * [http://code.google.com/p/audacity/issues/list?can=2&q=label%3ARegression Regressions]
+  * [http://code.google.com/p/audacity/issues/list?can=2&q=label%3AMoonPhaseBug+OR+label%3AHeisenBug&colspec=ID+Summary+Priority+Status+Type&cells=tiles HeisenBugs] Includes bugs that are hard to reproduce (moon phase bugs) with genuine Heisnbugs (bugs which change when you try to track them down).
+
+= Issue Tracker Status =
+
+Using Google's issue tracker is just an experiment at the moment.  The live tracker is our  [http://wiki.audacityteam.org/index.php?title=Release_Checklist Release Checklist wiki page].
