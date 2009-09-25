@@ -10,6 +10,87 @@ Here are some 'canned' issue tracker queries:
   * [http://code.google.com/p/audacity/issues/list?can=2&q=label%3ARegression Regressions] - Features that worked in an earlier version and are currently broken.
   * [http://code.google.com/p/audacity/issues/list?can=2&q=label%3AMoonPhaseBug+OR+label%3AHeisenBug&colspec=ID+Summary+Priority+Status+Type&cells=tiles HeisenBugs] - This includes bugs that are hard to reproduce (moon phase bugs) with the genuine Heisnbugs (bugs which change when you try to track them down).
 
+----
+
+= Issue Tracker Use =
+
+These are the different labels we use:
+
+==Type of bug==
+
+||Type-RepeatableBug || Bug which has a clear scenario for repeating it ||
+||Type-MoonPhaseBug || Bug which can't be reproduced reliably ||
+||Type-HeisenBug || Investigating such a bug (debugging) hides it. ||
+||Type-SummaryIssue || An issue used to co-ordinate sub-issues ||
+||Type-Enhancement || Request for enhancement ||
+||Type-Task || Work item that doesn't change the code or docs ||
+||Type-Review || Request for a source code review ||
+||Type-Other || Some other kind of issue ||
+
+==Priority of bug==
+
+||Priority-P1 || Blocks any release ||
+||Priority-P2 || Blocks a stable release ||
+||Priority-P3 || MUST be release noted ||
+||Priority-P4 || Need not be release noted ||
+||Priority-P5 || Just worth tracking ||
+
+==Operating System==
+||OpSys-All || Affects all operating systems ||
+||OpSys-Windows || Affects Windows users ||
+||OpSys-Windows7 || Affects Windows 7 users ||
+||OpSys-Vista || Affects Windows Vista users ||
+||OpSys-Linux || Affects Linux users ||
+||OpSys-OSX || Affects Mac OS X users ||
+||OpSys-Other || Affects some other operating system ||
+
+==Milestone==
+||Milestone-Expedited || We want this urgently ||
+||Milestone-Beta || Slated for next beta release ||
+||Milestone-Stable || Slated for next stable release ||
+||Milestone-GSoCStart || We want this done in time for next GSoC ||
+||Milestone-Other || No hurry on this ||
+
+==List==
+This helps us in creating custom lists from the issue tracker.
+
+||List-TopTwenty || The top active 'care abouts' ||
+||List-ReleaseNotes || Bugs for the release notes page ||
+||List-RecentFixes || Bugs for the recently fixed page ||
+||List-LearnFrom || Closed issues which we should learn from ||
+||List-ToxicSludge || Issues which clog up the works ||
+||List-Other || Issues not in a main 'List' category ||
+
+==Component==
+What part of Audacity has the problem.
+||Component-UI || Issue relates to program UI ||
+||Component-AudioIO || Issue relates to Audio playing and recording ||
+||Component-BuiltInFx || Issue relates to one or more built in effects ||
+||Component-Nyquist || Issue relates to Nyquist Lisp interpreter ||
+||Component-Formats || Issue relates to exporting/importing audio data ||
+||Component-LADSPA || Issue relates to LADSPA plug-ins ||
+||Component-VAMP || Issue relates to VAMP analysis plug-ins ||
+||Component-Installer || Issue relates to installer code ||
+||Component-Labels || Issue relates to Labels ||
+||Component-Envelopes || Issue relates to Envelopes ||
+||Component-Multiclip || Issue relates to MultiClip ||
+||Component-Scripts || Utility and installation scripts ||
+||Component-Docs || Issue relates to end-user documentation ||
+||Component-Other || Issue relates to some other component ||
+
+==Tags==
+Individual tags (these appear in green in the tracker).
+||Accessibility || Particularly Affects VI users ||
+||Security || Security risk to users ||
+||Performance || Performance issue ||
+||Usability || Affects program usability ||
+||Maintainability || Hinders future changes ||
+||Regression || This was working in an earlier version ||
+
+
+----
+
+
 = Issue Tracker Status =
 
 Using Google's issue tracker is just an experiment at the moment.  The live tracker is our  [http://wiki.audacityteam.org/index.php?title=Release_Checklist Release Checklist wiki page].  The real tracker has many more P3's and higher, and has links to e-mail threads.
