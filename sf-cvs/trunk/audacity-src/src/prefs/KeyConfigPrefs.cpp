@@ -129,7 +129,7 @@ void KeyConfigPrefs::PopulateOrExchange(ShuttleGui & S)
       S.StartHorizontalLay(wxALIGN_CENTRE, false);
       {
          S.Id(CategoryID);
-         mCat = S.AddChoice(_("Category:"),
+         mCat = S.AddChoice(_("C&ategory:"),
                             mCats[0],
                             &mCats);
       }
