@@ -57,7 +57,7 @@ for drawing different aspects of the label and its text box.
 #include "Project.h"
 #include "commands/CommandManager.h"
 
-#if defined(__WXGTK__)
+#if defined(__WXGTK__) & defined(HAVE_GTK)
 // As of wxGTK 2.8.9, there is a problem in the wxClipboard class that
 // allows recursive event processing.  This problem has been corrected
 // by wxWidgets 2.9+.  However, this han't made it into a release yet,
@@ -1058,7 +1058,7 @@ bool LabelTrack::CutSelectedText()
    
    // copy data onto clipboard
    if (wxTheClipboard->Open()) {
-#if defined(__WXGTK__)
+#if defined(__WXGTK__) && defined(HAVE_GTK)
       CaptureEvents capture;
 #endif
       wxTheClipboard->SetData(new wxTextDataObject(data));
@@ -1093,7 +1093,7 @@ bool LabelTrack::CopySelectedText()
 
    // copy the data on clipboard
    if (wxTheClipboard->Open()) {
-#if defined(__WXGTK__)
+#if defined(__WXGTK__) && defined(HAVE_GTK)
       CaptureEvents capture;
 #endif
       wxTheClipboard->SetData(new wxTextDataObject(data));
@@ -1118,7 +1118,7 @@ bool LabelTrack::PasteSelectedText(double sel0, double sel1)
    // if text data is available
    if (IsTextClipSupported()) {
       if (wxTheClipboard->Open()) {
-#if defined(__WXGTK__)
+#if defined(__WXGTK__) && HAVE_GTK
          CaptureEvents capture;
 #endif
          wxTextDataObject data;
@@ -1175,7 +1175,7 @@ bool LabelTrack::PasteSelectedText(double sel0, double sel1)
 /// @return true if the text data is available in the clipboard, false otherwise
 bool LabelTrack::IsTextClipSupported()
 {
-#if defined(__WXGTK__)
+#if defined(__WXGTK__) && defined(HAVE_GTK)
    CaptureEvents capture;
 #endif
 

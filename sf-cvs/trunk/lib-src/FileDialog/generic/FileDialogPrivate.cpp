@@ -4,7 +4,7 @@
 // Author:      Robert Roebling
 // Modified by: Leland Lucius
 // Created:     12/12/98
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.3 2009-07-02 22:11:18 vjohnson Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.4 2009-09-29 00:28:07 msmeyer Exp $
 // Copyright:   (c) Robert Roebling
 // Licence:     wxWindows licence
 //
@@ -1451,8 +1451,8 @@ void FileDialog::HandleAction( const wxString &fn )
       }
    }
    
-   wxCommandEvent event;
-   wxDialog::OnOK(event);
+   if (Validate() && TransferDataFromWindow())
+      EndModal(wxID_OK);
 }
 
 void FileDialog::OnListOk( wxCommandEvent &WXUNUSED(event) )
