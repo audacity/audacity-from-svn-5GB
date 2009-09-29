@@ -1,1 +1,5 @@
-#define HAVE_GTK @HAVE_GTK@
+#if @HAVE_GTK@
+#define HAVE_GTK 1
+#else
+#undef HAVE_GTK
+#endif
