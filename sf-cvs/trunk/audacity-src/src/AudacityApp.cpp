@@ -221,25 +221,8 @@ static wxFrame *gParentFrame = NULL;
 bool gInited = false;
 bool gIsQuitting = false;
 
-void SaveWindowSize()
-{
-   if(!gAudacityProjects.IsEmpty())
-   {
-      // BG: Save size of Window 0.
-      if (!gAudacityProjects[0]->IsIconized()) {
-         wxRect r = gAudacityProjects[0]->GetRect();
-         bool wndMaximized = gAudacityProjects[0]->IsMaximized();
-         gPrefs->Write(wxT("/Window/X"), r.GetX());
-         gPrefs->Write(wxT("/Window/Y"), r.GetY());
-         gPrefs->Write(wxT("/Window/Width"), r.GetWidth());
-         gPrefs->Write(wxT("/Window/Height"), r.GetHeight());
-         gPrefs->Write(wxT("/Window/Maximized"), wndMaximized);   
-      }
-   }
-}
-
 void QuitAudacity(bool bForce)
-{
+{                                          
    if (gIsQuitting)
       return;
 
@@ -250,7 +233,7 @@ void QuitAudacity(bool bForce)
    // BG: unless force is true
 
    // BG: Are there any projects open?
-	//-   if (!gAudacityProjects.IsEmpty())
+   //-   if (!gAudacityProjects.IsEmpty())
 /*start+*/
    if (gAudacityProjects.IsEmpty())
    {
@@ -258,10 +241,12 @@ void QuitAudacity(bool bForce)
       AudacityProject::DeleteClipboard();
 #endif
    }
-	else
+   else
 /*end+*/
-
    {
+      //This SaveWindowSize call was heavily modified to deal with iconized project windows
+      //efm5 28 September 2009
+      SaveWindowSize();
       while (gAudacityProjects.Count())
       {
          if (bForce)
@@ -314,8 +299,56 @@ void QuitAudacity(bool bForce)
 }
 
 void QuitAudacity()
-{
+{   
    QuitAudacity(false);
+}
+
+
+//Use this new static Boolean to determine if the project window
+//   location and size have already been written to preferences.
+//efm5 28 September 2009
+static bool windowRectAlreadySaved = FALSE;
+
+void SaveWindowSize()
+   //This code was heavily modified to deal with iconized project windows.
+   //efm5 28 September 2009
+{
+   if (windowRectAlreadySaved)
+   {
+      return;
+   }
+   bool validWindowForSaveWindowSize = FALSE;
+   AudacityProject * validProject = NULL;
+   size_t numProjects = gAudacityProjects.Count();
+   for (size_t i = 0; i < numProjects; i++)
+   {
+      if (!gAudacityProjects[i]->IsIconized()) {
+         validWindowForSaveWindowSize = TRUE;
+         validProject = gAudacityProjects[i];
+         i = numProjects;
+      }
+   }
+   if (validWindowForSaveWindowSize)
+   {
+      wxRect windowRect = validProject->GetRect();
+      bool wndMaximized = validProject->IsMaximized();
+      gPrefs->Write(wxT("/Window/X"), windowRect.GetX());
+      gPrefs->Write(wxT("/Window/Y"), windowRect.GetY());
+      gPrefs->Write(wxT("/Window/Width"), windowRect.GetWidth());
+      gPrefs->Write(wxT("/Window/Height"), windowRect.GetHeight());
+      gPrefs->Write(wxT("/Window/Maximized"), wndMaximized);
+   }
+   else
+   {
+      wxRect defWndRect;
+      GetDefaultWindowRect(&defWndRect);
+      gPrefs->Write(wxT("/Window/X"), defWndRect.GetX());
+      gPrefs->Write(wxT("/Window/Y"), defWndRect.GetY());
+      gPrefs->Write(wxT("/Window/Width"), defWndRect.GetWidth());
+      gPrefs->Write(wxT("/Window/Height"), defWndRect.GetHeight());
+      gPrefs->Write(wxT("/Window/Maximized"), FALSE);
+   }
+   windowRectAlreadySaved = TRUE;
 }
 
 #if defined(__WXGTK__) && defined(HAVE_GTK)
@@ -837,9 +870,9 @@ bool AudacityApp::OnInit()
 
    InitPreferences();
 
-	#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
-		this->AssociateFileTypes(); 
-	#endif
+   #if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
+      this->AssociateFileTypes(); 
+   #endif
 
    // TODO - read the number of files to store in history from preferences
    mRecentFiles = new FileHistory(/* number of files */);
@@ -1124,12 +1157,12 @@ bool AudacityApp::OnInit()
    }                            // if (argc>1)
 
 #else //__CYGWIN__
-	
+   
    // Cygwin command line parser (by Dave Fancella)
    if (argc > 1 && !didRecoverAnything) {
       int optionstart = 1;
       bool startAtOffset = false;
-		
+      
       // Scan command line arguments looking for trouble
       for (int option = 1; option < argc; option++) {
          if (!argv[option])
@@ -1141,14 +1174,14 @@ bool AudacityApp::OnInit()
             optionstart = option + 1;
          }
       }
-		
+      
       for (int option = optionstart; option < argc; option++) {
          if (!argv[option])
             continue;
          bool handled = false;
          bool openThisFile = false;
          wxString fileToOpen;
-			
+         
          if (!wxString(wxT("-help")).CmpNoCase(argv[option])) {
             PrintCommandLineHelp(); // print the help message out
             exit(0);
@@ -1178,10 +1211,10 @@ bool AudacityApp::OnInit()
             wxPrintf(_("Unknown command line option: %s\n"), argv[option]);
             exit(0);
          }
-			
+         
          if(handled)
             fileToOpen.Clear();
-			
+         
          if (!handled)
             fileToOpen = fileToOpen + wxT(" ") + argv[option];
          if(wxString(argv[option]).Lower().Contains(wxT(".aup")))
@@ -1735,11 +1768,11 @@ void AudacityApp::OnMenuExit(wxCommandEvent & event)
 
 //BG: On Windows, associate the aup file type with Audacity
 /* We do this in the Windows installer now, 
-	to avoid issues where user doesn't have admin privileges, but 
-	in case that didn't work, allow the user to decide at startup.
+   to avoid issues where user doesn't have admin privileges, but 
+   in case that didn't work, allow the user to decide at startup.
 
-	//v Should encapsulate this & allow access from Prefs, too, 
-	//		if people want to manually change associations.
+   //v Should encapsulate this & allow access from Prefs, too, 
+   //      if people want to manually change associations.
 */
 #if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
 void AudacityApp::AssociateFileTypes()
@@ -1752,7 +1785,7 @@ void AudacityApp::AssociateFileTypes()
       associateFileTypes.SetName(wxT("HKCU\\Software\\Classes\\.AUP"));
       bKeyExists = associateFileTypes.Exists();
    }
-   if (!bKeyExists) {	
+   if (!bKeyExists) {   
       // File types are not currently associated. 
       // Check pref in case user has already decided against it.
       bool bWantAssociateFiles = true;

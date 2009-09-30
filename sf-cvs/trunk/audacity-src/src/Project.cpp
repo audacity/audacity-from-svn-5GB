@@ -470,7 +470,6 @@ AudacityProject *CreateNewAudacityProject()
 {
    bool bMaximized;
    wxRect wndRect;
-
    GetNextWindowPlacement(&wndRect, &bMaximized);
 
    //Create and show a new project
@@ -544,15 +543,13 @@ void GetDefaultWindowRect(wxRect *defRect)
 // BG: Does not store X and Y in prefs. This is intentional.
 void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized)
 {
-   wxRect defWndRect;
    int inc = 25;
-
-   GetDefaultWindowRect(&defWndRect);
-
    *bMaximized = false;
+   wxRect defWndRect;
 
    if (gAudacityProjects.IsEmpty()) {
       //Read the values from the registry, or use the defaults
+      GetDefaultWindowRect(&defWndRect);
       nextRect->SetX(gPrefs->Read(wxT("/Window/X"), defWndRect.GetX()));
       nextRect->SetY(gPrefs->Read(wxT("/Window/Y"), defWndRect.GetY()));
       nextRect->SetWidth(gPrefs->Read(wxT("/Window/Width"), defWndRect.GetWidth()));
@@ -561,11 +558,33 @@ void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized)
       gPrefs->Read(wxT("/Window/Maximized"), bMaximized);
    }
    else {
-      //Base the values on the previous Window
-      *nextRect = gAudacityProjects[gAudacityProjects.GetCount()-1]->GetRect();
-
-      *bMaximized = gAudacityProjects[gAudacityProjects.GetCount()-1]->IsMaximized();
-
+   //This code was heavily modified to deal with iconized project windows
+   //efm5 28 September 2009
+      bool validWindowSize = FALSE;
+      AudacityProject * validProject = NULL;
+      size_t numProjects = gAudacityProjects.Count();
+      for (size_t i = 0; i < numProjects; i++)
+      {
+         if (!gAudacityProjects[i]->IsIconized()) {
+            validWindowSize = TRUE;
+            validProject = gAudacityProjects[i];
+            i = numProjects;
+         }
+      }
+      if (validWindowSize)
+      {
+         *nextRect = validProject->GetRect();
+         *bMaximized = validProject->IsMaximized();
+      }
+      else 
+      {
+         GetDefaultWindowRect(&defWndRect);
+         nextRect->SetX(gPrefs->Read(wxT("/Window/X"), defWndRect.GetX()));
+         nextRect->SetY(gPrefs->Read(wxT("/Window/Y"), defWndRect.GetY()));
+         nextRect->SetWidth(gPrefs->Read(wxT("/Window/Width"), defWndRect.GetWidth()));
+         nextRect->SetHeight(gPrefs->Read(wxT("/Window/Height"), defWndRect.GetHeight()));
+         gPrefs->Read(wxT("/Window/Maximized"), bMaximized);
+      }
       //Placement depends on the increments
       nextRect->x += inc;
       nextRect->y += inc;
@@ -1448,6 +1467,7 @@ void AudacityProject::HandleResize()
 
 void AudacityProject::OnIconize(wxIconizeEvent &event)
 {
+
    int VisibleProjectCount = 0;
 
    //JKC: On Iconizing we get called twice.  Don't know
@@ -1803,9 +1823,11 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    //
    // LL: Save before doing anything else to the window that might make
    //     its size change.
-   if (gAudacityProjects.GetCount() == 1) {
-      SaveWindowSize();
-   }
+   //This is to repair the potential situation in which Audacity opens with
+   //   the initial opening window invisible.
+      //This SaveWindowSize call was modified to deal with iconized project windows
+      //efm5 28 September 2009
+         SaveWindowSize();
 
    mLastFocusedWindow = NULL;
    mIsDeleting = true;
