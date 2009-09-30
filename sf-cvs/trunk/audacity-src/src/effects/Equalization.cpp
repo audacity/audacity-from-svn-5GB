@@ -2786,7 +2786,6 @@ void EqualizationDialog::OnDelete(wxCommandEvent &event)
 
 void EqualizationDialog::OnClear(wxCommandEvent &event)
 {
-   EnvelopeUpdated();
    mLogEnvelope->Flatten(0.);
    mLogEnvelope->SetTrackLen(1.0);
    mLinEnvelope->Flatten(0.);
@@ -2802,6 +2801,7 @@ void EqualizationDialog::OnClear(wxCommandEvent &event)
          m_EQVals[i] = 0.;
       }
    }
+   EnvelopeUpdated();
 }
 
 void EqualizationDialog::OnErase(wxEraseEvent &event)
