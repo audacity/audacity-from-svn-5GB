@@ -37,7 +37,7 @@
 	_(' ');
 ?>
 
-<div lang="fr">
+<div id="fr">
   <h3>Aide en Français</h3>
   <ul>
     <li><a href="../localhelp/fr/audacity-1.2-help.htb">Menu d'aide d'Audacity en français</a> (Remplacer le fichier qui porte comme nom, audacity-1.2-help.htb par celui qu'on vous propose. <a href="http://zonelibre.grics.qc.ca/spip.php?article100">Aide</a>)</li>
@@ -46,7 +46,7 @@
  </ul>
 </div>
 
-<div lang="de">
+<div id="de">
   <h3>Hilfe auf Deutsch</h3>
   <ul>
     <li><a href="../localhelp/de/audacity-1.2-help.htb">Deutsche Hilfedatei (htb)</a> (Ersetzen Sie audacity-1.2-help.htb im Audacity Installation-Heft mit diesem Download.)</li>
