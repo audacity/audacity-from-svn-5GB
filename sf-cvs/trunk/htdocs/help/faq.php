@@ -107,13 +107,14 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
 <li><p>Place the unzipped VST Enabler, along with your VST plug-ins, into the “Plug-ins” folder in the Audacity installation folder.  (On Mac OS X, this is usually in the Applications folder.  On Windows, it is usually under Program Files.)</li>
 <li><p>The next time you start Audacity, your VST effects will appear at the bottom of the “Effect” menu.</li>
 </ol>
+<p><b>Note:</b> Current Beta (1.3) versions of Audacity will display VST plug-ins automatically, without having to install the VST Enabler.</p>    
 <p>See also: <a href=\"faq?s=install&amp;i=vst-bugs\">Why do some VST plug-ins look wrong, or not work?</a></p>"), "http://audacityteam.org/vst/")
         ),
         "vst-bugs" => array(
           _("Why do some VST plug-ins look wrong, or not work?"),
-          _("<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not yet able to display custom interfaces for plug-ins.  Instead, it uses generic controls for all VST plug-ins.  Because of this, many plug-ins will look or act differently than they do in other programs.</p>
-<p>Other VST plug-ins may not work at all, because of bugs in the VST Enabler.  You can <a href=\"../contact/\">contact us</a> to report plug-ins that do not work.</p>
-<p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>")
+          _("<p>Stable (1.2) versions of Audacity require the <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> in order to display VST plug-ins. The Enabler can only display a generic, tabular interface for plug-ins, so they may look or act differently than they do in other programs, or not function at all.</p>
+<p>Current Beta (1.3) versions of Audacity will by default display VST effect plug-ins with their full interface, without the need of an Enabler. If you experience any problems with VST plug-ins in Audacity Beta, please read this <a href=\"http://forum.audacityteam.org/viewtopic.php?f=37&t=11534&p=45667#p45667\">Forum topic</a>. You may <a href=\"../contact#feedback\">contact us</a> to report any difficulties not covered in that topic.</p>                
+<p>Neither version of Audacity supports VST instrument (VSTi) plug-ins. </p>")
         ),
         "download-problems" => array(
           _("What should I do if I have problems downloading or installing Audacity?"),
