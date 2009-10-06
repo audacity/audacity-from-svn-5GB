@@ -55,4 +55,34 @@ void *ODTaskThread::Entry()
    return NULL;
 #endif
 }
+
+#ifdef __WXMAC__
+ODCondition::ODCondition(ODLock *lock)
+{
+   condition = (pthread_cond_t *) malloc (sizeof (pthread_cond_t));
+   pthread_cond_init(condition, NULL);
+   m_lock=lock;
+}
+ODCondition::~ODCondition()
+{
+   pthread_cond_destroy (condition); 
+   free(condition);
+}
+
+void ODCondition::Signal()
+{
+   pthread_cond_signal(condition);
+}
+   
+void ODCondition::Broadcast()
+{
+   pthread_cond_broadcast(condition);
+}
+void ODCondition::Wait()
+{
+   pthread_cond_wait(condition,m_lock->mutex);
+}
+   
+#endif
+
   

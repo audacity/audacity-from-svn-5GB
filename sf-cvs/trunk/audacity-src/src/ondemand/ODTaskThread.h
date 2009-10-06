@@ -104,9 +104,23 @@ class ODLock {
    }
   
 private:
+   friend class ODCondition; //needs friendship for wait()
    pthread_mutex_t *mutex ;
 };
 
+class ODCondition 
+{
+public:
+   ODCondition(ODLock *lock);
+   virtual ~ODCondition();
+   void Signal();
+   void Broadcast();
+   void Wait();
+   
+protected:
+   pthread_cond_t *condition;
+   ODLock* m_lock;
+};
 
 #else
 
@@ -137,6 +151,18 @@ public:
   virtual ~ODLock(){}   
 };
 
+class ODCondition : public wxCondition
+{
+public:
+   ODCondition(ODLock *lock):wxCondition(*lock){}
+   virtual ~ODCondition(){}
+   //these calls are implemented in wxCondition:
+   //void Signal();
+   //void Broadcast();
+   //void Wait();
+   
+protected:
+};
 
 #endif // __WXMAC__
 

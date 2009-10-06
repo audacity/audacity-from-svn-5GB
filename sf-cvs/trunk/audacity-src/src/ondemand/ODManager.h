@@ -160,6 +160,10 @@ class ODManager
    bool mTerminated;
    ODLock mTerminatedMutex;
    
+   //for the queue not empty comdition
+   ODLock         mQueueNotEmptyCondLock;
+   ODCondition*   mQueueNotEmptyCond;
+   
 #ifdef __WXMAC__
 
 // On Mac OS X, it's better not to use the wxThread class.
