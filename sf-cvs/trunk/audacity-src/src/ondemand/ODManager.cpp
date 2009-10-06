@@ -125,6 +125,10 @@ ODManager::ODManager()
    mTerminate = false;
    mTerminated = false;
    mPause= gPause;
+   
+   //must set up the queue condition
+   mQueueNotEmptyCond = new ODCondition(&mQueueNotEmptyCondLock);
+   
 }
 
 //private constructor - delete with static method Quit()
@@ -134,7 +138,8 @@ ODManager::~ODManager()
    //nothing else should be running on OD related threads at this point, so we don't lock.
    for(unsigned int i=0;i<mQueues.size();i++)
       delete mQueues[i];
-      
+
+   delete mQueueNotEmptyCond;
 }
 
 
@@ -145,6 +150,10 @@ void ODManager::AddTask(ODTask* task)
    mTasksMutex.Lock();
    mTasks.push_back(task);
    mTasksMutex.Unlock();
+   //signal the queue not empty condition.
+   mQueueNotEmptyCondLock.Lock();
+   mQueueNotEmptyCond->Signal();
+   mQueueNotEmptyCondLock.Unlock();
 }
 
 ///removes a task from the active task queue
@@ -318,20 +327,20 @@ void ODManager::Start()
       }
 
       mCurrentThreadsMutex.Unlock();
-      //TODO: use a conditon variable to block here instead of a sleep.  
-      //Also find out if the condition variable polls to quickly - we don't want that either.
-      wxThread::Sleep(200);
-//wxSleep can't be called from non-main thread.
-//      ::wxMilliSleep(250);
+      //use a conditon variable to block here instead of a sleep.  
+      //wxThread::Sleep(200);
+      mQueueNotEmptyCondLock.Lock();
+      if(tasksInArray<=0)
+         mQueueNotEmptyCond->Wait();
+      mQueueNotEmptyCondLock.Unlock();
       
-      //if there is some ODTask running, then there will be something in the queue.  If so then redraw to show progress
-      
+      //if there is some ODTask running, then there will be something in the queue.  If so then redraw to show progress      
       mQueuesMutex.Lock();
       mNeedsDraw += mQueues.size()>0?1:0;
       mQueuesMutex.Unlock();
 
       //redraw the current project only (ODTasks will send a redraw on complete even if the projects are in the background)
-      if(mNeedsDraw > 11)
+      if(mNeedsDraw )
       {
          mNeedsDraw=0;
          wxCommandEvent event( EVT_ODTASK_UPDATE );
@@ -386,6 +395,11 @@ void ODManager::Quit()
       {
          ODManager::Instance()->mTerminatedMutex.Unlock();
          wxThread::Sleep(200);
+         
+         //signal the queue not empty condition since the ODMan thread will wait on the queue condition
+         ODManager::Instance()->mQueueNotEmptyCondLock.Lock();
+         ODManager::Instance()->mQueueNotEmptyCond->Signal();
+         ODManager::Instance()->mQueueNotEmptyCondLock.Unlock();
          ODManager::Instance()->mTerminatedMutex.Lock();
       }
       ODManager::Instance()->mTerminatedMutex.Unlock();
