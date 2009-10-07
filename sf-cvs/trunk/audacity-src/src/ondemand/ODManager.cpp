@@ -128,9 +128,9 @@ ODManager::ODManager()
    
    //must set up the queue condition
    mQueueNotEmptyCond = new ODCondition(&mQueueNotEmptyCondLock);
-#ifndef __WX_MAC__
-   mQueueNotEmptyCondLock.Lock();
-#endif   
+//#ifndef __WX_MAC__
+//   mQueueNotEmptyCondLock.Lock();
+//#endif   
 }
 
 //private constructor - delete with static method Quit()
@@ -153,14 +153,24 @@ void ODManager::AddTask(ODTask* task)
    mTasks.push_back(task);
    mTasksMutex.Unlock();
    //signal the queue not empty condition.
-#ifdef __WX_MAC__
-   mQueueNotEmptyCondLock.Lock();
-#endif
-   mQueueNotEmptyCond->Signal();
+//#ifdef __WX_MAC__
+   
+   bool paused;
+   
+   mPauseLock.Lock();
+   paused=mPause;
+   mPauseLock.Unlock();
 
-#ifdef __WX_MAC__   
+   mQueueNotEmptyCondLock.Lock();
+//#endif
+   //don't signal if we are paused.
+   
+   if(!paused)
+      mQueueNotEmptyCond->Signal();
+
+//#ifdef __WX_MAC__   
    mQueueNotEmptyCondLock.Unlock();
-#endif
+//#endif
 }
 
 ///removes a task from the active task queue
@@ -338,19 +348,20 @@ void ODManager::Start()
       //wxThread::Sleep(200);
       //the behavior for wait is different in pthreads(mac) and wx (win/linux).
       //wait in wx locks 
-#ifdef __WX_MAC__
+//#ifdef __WX_MAC__
       mQueueNotEmptyCondLock.Lock();
-#endif
+//#endif
       if(tasksInArray<=0 || paused)
          mQueueNotEmptyCond->Wait();
-#ifdef __WX_MAC__
+//#ifdef __WX_MAC__
       mQueueNotEmptyCondLock.Unlock();
-#endif      
+//#endif      
       //if there is some ODTask running, then there will be something in the queue.  If so then redraw to show progress      
       mQueuesMutex.Lock();
       mNeedsDraw += mQueues.size()>0?1:0;
       mQueuesMutex.Unlock();
 
+//TODO:check with last draw time and only redraw if more than half a second has passed.
       //redraw the current project only (ODTasks will send a redraw on complete even if the projects are in the background)
       if(mNeedsDraw )
       {
@@ -384,7 +395,13 @@ void ODManager::Pause(bool pause)
       ODManager::Instance()->mPauseLock.Unlock();
       
       //we should check the queue again.
+//#ifdef __WX_MAC__
+         ODManager::Instance()->mQueueNotEmptyCondLock.Lock();
+//#endif
       ODManager::Instance()->mQueueNotEmptyCond->Signal();
+//#ifdef __WX_MAC__
+         ODManager::Instance()->mQueueNotEmptyCondLock.Unlock();
+//#endif         
    }
    else
    {
@@ -413,14 +430,14 @@ void ODManager::Quit()
          
          //signal the queue not empty condition since the ODMan thread will wait on the queue condition
 
-#ifdef __WX_MAC__
+//#ifdef __WX_MAC__
          ODManager::Instance()->mQueueNotEmptyCondLock.Lock();
-#endif
+//#endif
          ODManager::Instance()->mQueueNotEmptyCond->Signal();
          
-#ifdef __WX_MAC__
+//#ifdef __WX_MAC__
          ODManager::Instance()->mQueueNotEmptyCondLock.Unlock();
-#endif         
+//#endif         
          ODManager::Instance()->mTerminatedMutex.Lock();
       }
       ODManager::Instance()->mTerminatedMutex.Unlock();
