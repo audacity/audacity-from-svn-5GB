@@ -67,6 +67,9 @@ class ODManager
    ///Adds a wavetrack, creates a queue member. 
    void AddNewTask(ODTask* task, bool lockMutex=true);
    
+   ///Wakes the queue loop up by signalling its condition variable.
+   void SignalTaskQueueLoop();
+   
    ///removes a wavetrack and notifies its associated tasks to stop using its reference. 
    void RemoveWaveTrack(WaveTrack* track);
    
