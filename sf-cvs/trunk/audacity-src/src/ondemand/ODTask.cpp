@@ -165,6 +165,9 @@ void ODTask::DoSome(float amountWork)
          }
       }
       AudacityProject::AllProjectsDeleteUnlock();
+      //signal the od task queue loop to wake up so it can remove the tasks from the queue and the queue if it is empty.
+      ODManager::Instance()->SignalTaskQueueLoop();
+
 
 //      printf("%s %i complete\n", GetTaskName(),GetTaskNumber());
    }

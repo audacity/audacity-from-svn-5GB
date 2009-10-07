@@ -1539,6 +1539,10 @@ void AudacityProject::OnODTaskComplete(wxCommandEvent & event)
 {
   if(mTrackPanel)
       mTrackPanel->Refresh(false);
+ 
+   wxString msg;
+   msg.Printf(_("on-demand import complete."));
+   mStatusBar->SetStatusText(msg);
 }
 
 void AudacityProject::OnScroll(wxScrollEvent & event)
@@ -3736,10 +3740,10 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
          wxString msg;
          if(numTasks>1)
             msg.Printf(_("Import(s) complete. Running %d on-demand waveform calculations. Overall %2.0f%% complete."),
-              numTasks,ODManager::Instance()->GetOverallPercentComplete()*100.0/numTasks);       
+              numTasks,ODManager::Instance()->GetOverallPercentComplete()*100.0);       
          else
             msg.Printf(_("Import complete. Running an on-demand waveform calculation. %2.0f%% complete."),
-             ODManager::Instance()->GetOverallPercentComplete()*100.0/numTasks);    
+             ODManager::Instance()->GetOverallPercentComplete()*100.0);    
          mStatusBar->SetStatusText(msg);
       }
    }
