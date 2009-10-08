@@ -88,6 +88,9 @@ class Sequence: public XMLTagHandler {
    bool AppendAlias(wxString fullPath,
                     sampleCount start,
                     sampleCount len, int channel,bool useOD);
+
+   bool AppendCoded(wxString fName, sampleCount start,
+                            sampleCount len, int channel);
                     
    // Append a blockfile. The blockfile pointer is then "owned" by the
    // sequence. This function is used by the recording log crash recovery

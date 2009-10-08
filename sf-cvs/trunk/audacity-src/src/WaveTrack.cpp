@@ -1288,6 +1288,13 @@ bool WaveTrack::AppendAlias(wxString fName, sampleCount start,
    return GetLastOrCreateClip()->AppendAlias(fName, start, len, channel,useOD);
 }
 
+
+bool WaveTrack::AppendCoded(wxString fName, sampleCount start,
+                            sampleCount len, int channel)
+{
+   return GetLastOrCreateClip()->AppendCoded(fName, start, len, channel);
+}
+
 sampleCount WaveTrack::GetBestBlockSize(sampleCount s)
 {
    sampleCount bestBlockSize = GetMaxBlockSize();

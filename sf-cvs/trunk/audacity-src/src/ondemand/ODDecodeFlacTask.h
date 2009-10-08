@@ -39,6 +39,7 @@ class WaveTrack;
 class ODFileDecoder;
 
 class ODFlacDecoder;
+class ODFLACFile;
 
 /// A class representing a modular task to be used with the On-Demand structures.
 class ODDecodeFlacTask:public ODDecodeTask
@@ -47,9 +48,10 @@ class ODDecodeFlacTask:public ODDecodeTask
 
    /// Constructs an ODTask
    ODDecodeFlacTask(){}
-   virtual ~ODDecodeFlacTask(){};
+   virtual ~ODDecodeFlacTask();
    
-   virtual ODTask* Clone()=0;
+   
+   virtual ODTask* Clone();
    ///Creates an ODFileDecoder that decodes a file of filetype the subclass handles.
    virtual ODFileDecoder* CreateFileDecoder(const wxString & fileName);
  
@@ -76,6 +78,7 @@ class ODFLACFile : public FLAC::Decoder::File
    ODFlacDecoder *mDecoder;
    bool                  mWasError;
    wxArrayString         mComments;
+   
  protected:
    virtual FLAC__StreamDecoderWriteStatus write_callback(const FLAC__Frame *frame,
 							 const FLAC__int32 * const buffer[]);
@@ -90,9 +93,9 @@ class ODFlacDecoder:public ODFileDecoder
    friend class ODFLACFile;
 public:
    ///This should handle unicode converted to UTF-8 on mac/linux, but OD TODO:check on windows
-   ODFlacDecoder(const wxString & fileName):ODFileDecoder(fileName){}
-   virtual ~ODFlacDecoder(){}
-   
+   ODFlacDecoder(const wxString & fileName):ODFileDecoder(fileName){mFile=NULL;}
+   virtual ~ODFlacDecoder();
+      
    ///Decodes the samples for this blockfile from the real file into a float buffer.  
    ///This is file specific, so subclasses must implement this only.
    ///the buffer was defined like
@@ -100,15 +103,21 @@ public:
    ///this->ReadData(sampleData, floatSample, 0, mLen);
    ///This class should call ReadHeader() first, so it knows the length, and can prepare 
    ///the file object if it needs to. 
-   virtual void Decode(samplePtr data, sampleFormat format, sampleCount start, sampleCount len);
+   virtual void Decode(samplePtr & data, sampleFormat & format, sampleCount start, sampleCount len, unsigned int channel);
+
    
    ///Read header.  Subclasses must override.  Probably should save the info somewhere.
    ///Ideally called once per decoding of a file.  This complicates the task because 
    virtual bool ReadHeader();  
 
+   ///FLAC specific file (inherited from FLAC::Decoder::File)
+   ODFLACFile* GetFlacFile();
+
 private:
+   friend class FLACImportFileHandle;
 	sampleFormat          mFormat;
    ODFLACFile           *mFile;
+   ODLock         mFlacFileLock;//for mFile;
    wxFFile               mHandle;
    unsigned long         mSampleRate;
    unsigned long         mNumChannels;
@@ -118,7 +127,10 @@ private:
    bool                  mStreamInfoDone;
    int                   mUpdateResult;
    WaveTrack           **mChannels;
-
+   unsigned int          mTargetChannel;
+   unsigned int         mDecodeBufferWritePosition;
+   unsigned int         mDecodeBufferLen;
+   samplePtr            mDecodeBuffer;
 };
 
 #endif

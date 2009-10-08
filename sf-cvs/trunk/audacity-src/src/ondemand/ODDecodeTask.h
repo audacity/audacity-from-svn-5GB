@@ -64,7 +64,7 @@ class ODDecodeTask:public ODTask
    virtual int GetDecodeType(){return eODNone;}
    
    ///Creates an ODFileDecoder that decodes a file of filetype the subclass handles.
-   virtual ODFileDecoder* CreateFileDecoder(const char* fileName)=0;
+   virtual ODFileDecoder* CreateFileDecoder(const wxString & fileName)=0;
    
    ///there could be the ODBlockFiles of several FLACs in one track (after copy and pasting)
    ///so we keep a list of decoders that keep track of the file names, etc, and check the blocks against them.
@@ -114,12 +114,11 @@ public:
    
    ///Decodes the samples for this blockfile from the real file into a float buffer.  
    ///This is file specific, so subclasses must implement this only.
-   ///the buffer was defined like
-   ///samplePtr sampleData = NewSamples(mLen, floatSample);
-   ///this->ReadData(sampleData, floatSample, 0, mLen);
+   ///the buffer should be created by the ODFileDecoder implementing this method.
+   ///It should set the format parameter so that the client code can deal with it. 
    ///This class should call ReadHeader() first, so it knows the length, and can prepare 
    ///the file object if it needs to. 
-   virtual void Decode(samplePtr data, sampleFormat format, sampleCount start, sampleCount len)=0;
+   virtual void Decode(samplePtr & data, sampleFormat & format, sampleCount start, sampleCount len, unsigned int channel)=0;
    
    ///Read header.  Subclasses must override.  Probably should save the info somewhere.
    ///Ideally called once per decoding of a file.  This complicates the task because 

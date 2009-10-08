@@ -1074,6 +1074,18 @@ bool WaveClip::AppendAlias(wxString fName, sampleCount start,
    return result;
 }
 
+bool WaveClip::AppendCoded(wxString fName, sampleCount start,
+                            sampleCount len, int channel)
+{
+   bool result = mSequence->AppendCoded(fName, start, len, channel);
+   if (result)
+   {
+      UpdateEnvelopeTrackLen();
+      MarkChanged();
+   }
+   return result;
+}
+
 bool WaveClip::Flush()
 {
    //wxLogDebug(wxT("Flush!"));

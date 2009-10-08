@@ -240,7 +240,7 @@ ODFileDecoder* ODDecodeTask::GetOrCreateMatchingFileDecoder(ODDecodeBlockFile* b
    //otherwise, create and add one, and return it.
    if(!ret)
    {
-      ret=CreateFileDecoder(blockFile->GetFileName().GetFullPath().mb_str());
+      ret=CreateFileDecoder(blockFile->GetFileName().GetFullPath());
       mDecoders.push_back(ret);
    }
    return ret;

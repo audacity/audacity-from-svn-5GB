@@ -628,6 +628,23 @@ bool Sequence::AppendAlias(wxString fullPath,
    return true;
 }
 
+bool Sequence::AppendCoded(wxString fName, sampleCount start,
+                            sampleCount len, int channel)
+{
+   // Quick check to make sure that it doesn't overflow
+   if (((double)mNumSamples) + ((double)len) > wxLL(9223372036854775807))
+      return false;
+
+   SeqBlock *newBlock = new SeqBlock();
+
+   newBlock->start = mNumSamples;
+   newBlock->f = mDirManager->NewODDecodeBlockFile(fName, start, len, channel);
+   mBlock->Add(newBlock);
+   mNumSamples += newBlock->f->GetLength();
+
+   return true;
+}
+
 bool Sequence::AppendBlock(SeqBlock * b)
 {
    // Quick check to make sure that it doesn't overflow
