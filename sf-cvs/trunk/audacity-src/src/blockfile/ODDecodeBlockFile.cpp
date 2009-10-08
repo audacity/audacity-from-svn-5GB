@@ -38,20 +38,25 @@ char bheaderTag[bheaderTagLen + 1] = "AudacityBlockFile112";
 
 
    /// Create a disk file and write summary and sample data to it
-ODDecodeBlockFile::ODDecodeBlockFile(wxFileName baseFileName,wxFileName audioFileName,
-                   samplePtr sampleData, sampleCount sampleLen,
-                   sampleFormat format,
-                   bool allowDeferredWrite):
-   SimpleBlockFile(baseFileName,sampleData,sampleLen,format,allowDeferredWrite)
+ODDecodeBlockFile::ODDecodeBlockFile(wxFileName baseFileName,wxFileName audioFileName, sampleCount aliasStart,
+                     sampleCount aliasLen, int aliasChannel):
+   SimpleBlockFile(baseFileName,NULL,aliasLen,floatSample,true,true), //floatSample has no effect.  last two bools - bypass writing of blockfile and cache
+
+   mAliasStart(aliasStart),
+   mAliasChannel(aliasChannel)
 {
    mDataAvailable=false;
    mAudioFileName = audioFileName;
 }
    
 /// Create the memory structure to refer to the given block file
-ODDecodeBlockFile::ODDecodeBlockFile(wxFileName existingFile, wxFileName audioFileName, sampleCount len,
+ODDecodeBlockFile::ODDecodeBlockFile(wxFileName existingFile, wxFileName audioFileName, sampleCount aliasStart,
+                     sampleCount aliasLen, int aliasChannel,
                    float min, float max, float rms):
-   SimpleBlockFile(existingFile,len,min,max,rms)
+   SimpleBlockFile(existingFile,aliasLen,min,max,rms),
+   
+   mAliasStart(aliasStart),
+   mAliasChannel(aliasChannel)
 {
    mDataAvailable=false;
    mAudioFileName = audioFileName;
@@ -314,7 +319,7 @@ void ODDecodeBlockFile::WriteODDecodeBlockFile()
 
    // To build the summary data, call ReadData (implemented by the
    // derived classes) to get the sample data
-   samplePtr sampleData = NewSamples(mLen, floatSample);
+   samplePtr sampleData;// = NewSamples(mLen, floatSample);
    
    //use the decoder here.
    mDecoderMutex.Lock();
@@ -324,22 +329,23 @@ void ODDecodeBlockFile::WriteODDecodeBlockFile()
       mDecoderMutex.Unlock();
       return;
    }
-   mDecoder->Decode(sampleData, mFormat, mDecodeFileStart, mLen);
+   mDecoder->Decode(sampleData, mFormat, mDecodeFileStart, mLen, mAliasChannel);
    
    mDecoderMutex.Unlock();
-   this->ReadData(sampleData, floatSample, 0, mLen);
+//calc summary is done in WriteSimpleBlockFile
+//   this->ReadData(sampleData, floatSample, 0, mLen);
 
-   void *summaryData = CalcSummary(sampleData, mLen, floatSample);
+//   void *summaryData = CalcSummary(sampleData, mLen, floatSample);
   //OD TODO: use new write()                                          
 //   summaryFile.Write(summaryData, mSummaryInfo.totalSummaryBytes);
    WriteSimpleBlockFile(
     sampleData,
     mLen,
     mFormat,
-     summaryData);
+     NULL);//summaryData);
 
    DeleteSamples(sampleData);
-   delete [] (char *) summaryData;
+//   delete [] (char *) summaryData;
 
 
    mDataAvailableMutex.Lock();

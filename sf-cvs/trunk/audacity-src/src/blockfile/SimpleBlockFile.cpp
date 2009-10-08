@@ -104,14 +104,15 @@ wxUint32 SwapUintEndianess(wxUint32 in)
 SimpleBlockFile::SimpleBlockFile(wxFileName baseFileName,
                                  samplePtr sampleData, sampleCount sampleLen,
                                  sampleFormat format,
-                                 bool allowDeferredWrite /* = false */):
+                                 bool allowDeferredWrite /* = false */,
+                                 bool bypassCache /* = false */):
    BlockFile(wxFileName(baseFileName.GetFullPath() + wxT(".au")), sampleLen)
 {
    mCache.active = false;
    
    DEBUG_OUTPUT("SimpleBlockFile created based on sample data");
 
-   bool useCache = GetCache();
+   bool useCache = GetCache() && (!bypassCache);
 
    if (!(allowDeferredWrite && useCache))
       WriteSimpleBlockFile(sampleData, sampleLen, format, NULL);

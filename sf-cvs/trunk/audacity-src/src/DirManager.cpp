@@ -68,6 +68,7 @@
 #include "blockfile/SilentBlockFile.h"
 #include "blockfile/PCMAliasBlockFile.h"
 #include "blockfile/ODPCMAliasBlockFile.h"
+#include "blockfile/ODDecodeBlockFile.h"
 #include "DirManager.h"
 #include "Internat.h"
 #include "Project.h"
@@ -793,6 +794,23 @@ BlockFile *DirManager::NewODAliasBlockFile(
 
    blockFileHash[fileName.GetName()]=newBlockFile;
    aliasList.Add(aliasedFile);
+
+   return newBlockFile;
+}
+
+BlockFile *DirManager::NewODDecodeBlockFile(
+                                 wxString aliasedFile, sampleCount aliasStart,
+                                 sampleCount aliasLen, int aliasChannel)
+{
+   wxFileName fileName = MakeBlockFileName();
+
+   BlockFile *newBlockFile =
+       new ODDecodeBlockFile(fileName,
+                             aliasedFile, aliasStart, aliasLen, aliasChannel);
+
+   blockFileHash[fileName.GetName()]=newBlockFile;
+   aliasList.Add(aliasedFile); //OD TODO: check to see if we need to remove this when done decoding.
+                               //I don't immediately see a place where alias files remove when a file is closed.
 
    return newBlockFile;
 }

@@ -42,12 +42,11 @@ class ODDecodeBlockFile : public SimpleBlockFile
    // Constructor / Destructor
 
    /// Create a disk file and write summary and sample data to it
-   ODDecodeBlockFile(wxFileName baseFileName, wxFileName audioFileName,
-                   samplePtr sampleData, sampleCount sampleLen,
-                   sampleFormat format,
-                   bool allowDeferredWrite = false);
+   ODDecodeBlockFile(wxFileName baseFileName,wxFileName audioFileName, sampleCount aliasStart,
+                     sampleCount aliasLen, int aliasChannel);
    /// Create the memory structure to refer to the given block file
-   ODDecodeBlockFile(wxFileName existingFile, wxFileName audioFileName, sampleCount len,
+   ODDecodeBlockFile(wxFileName existingFile, wxFileName audioFileName, sampleCount aliasStart,
+                     sampleCount aliasLen, int aliasChannel,
                    float min, float max, float rms);
 
    virtual ~ODDecodeBlockFile();   
@@ -149,6 +148,9 @@ class ODDecodeBlockFile : public SimpleBlockFile
    
    sampleFormat mFormat;
    sampleCount mDecodeFileStart;
+   
+   sampleCount mAliasStart;//where in the encoded audio file this block corresponds to.
+   int         mAliasChannel;//The channel number in the encoded file..
 
 };
 

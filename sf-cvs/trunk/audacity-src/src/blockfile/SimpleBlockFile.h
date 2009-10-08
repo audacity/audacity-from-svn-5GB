@@ -51,7 +51,8 @@ class SimpleBlockFile : public BlockFile {
    SimpleBlockFile(wxFileName baseFileName,
                    samplePtr sampleData, sampleCount sampleLen,
                    sampleFormat format,
-                   bool allowDeferredWrite = false);
+                   bool allowDeferredWrite = false,
+                   bool bypassCache = false );
    /// Create the memory structure to refer to the given block file
    SimpleBlockFile(wxFileName existingFile, sampleCount len,
                    float min, float max, float rms);

@@ -63,6 +63,9 @@ class DirManager: public XMLTagHandler {
                                  
    BlockFile *NewODAliasBlockFile( wxString aliasedFile, sampleCount aliasStart,
                                  sampleCount aliasLen, int aliasChannel);
+                                 
+   BlockFile *NewODDecodeBlockFile( wxString aliasedFile, sampleCount aliasStart,
+                                 sampleCount aliasLen, int aliasChannel);
 
    // Adds one to the reference count of the block file,
    // UNLESS it is "locked", then it makes a new copy of
