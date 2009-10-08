@@ -27,12 +27,17 @@
   <li>Richard Ash, <?=_("documentation and support")?></li>
   <li>Christian Brochec, <?=_("documentation and support")?>, <?=_("French")?></li>
   <li>Arturo "Buanzo" Busleiman, <?=_("system administration")?></li>
+  <li>Michael Chinen, <?=_("developer")?></li>
+  <li>Steve Daulton, <?=_("documentation and support")?></li>
   <li>James Crook, <?=_("developer")?></li>
+  <li>Ruslan Ijbulatov, <?=_("developer")?></li>
   <li>Vaughan Johnson, <?=_("developer")?></li>
+  <li>Greg Kozikowski, <?=_("documentation and support")?></li>
   <li>Leland Lucius, <?=_("developer")?></li>
   <li>Dominic Mazzoni, <?=_("developer")?></li>
   <li>Markus Meyer, <?=_("developer")?></li>
   <li>Alexandre Prokoudine, <?=_("documentation and support")?></li>
+  <li>Peter Sampson, <?=_("documentation and support")?></li>
   <li>Martyn Shaw, <?=_("developer")?></li>
 </ul>
 
@@ -61,13 +66,16 @@
 <h3><?=_("Contributors")?></h3>
 <ul>
   <li>Lynn Allan, <?=_("developer")?></li>
+  <li>David Bailes, <?=_("accessibility advisor")?></li> 
   <li>William Bland, <?=_("developer")?></li>
   <li>Brian Gunlogson, <?=_("developer")?></li>
+  <li>Daniel Horgan, <?=_("developer")?></li>  
   <li>Arun Kishore, <?=_("developer")?></li>
   <li>Harvey Lubin, <?=_("graphic artist")?></li>
   <li>Greg Mekkes, <?=_("developer")?></li>
   <li>Abe Milde, <?=_("developer")?></li>
   <li>Paul Nasca, <?=_("developer")?></li>
+  <li>André Pinto, <?=_("developer")?></li>
   <li>Augustus Saunders, <?=_("developer")?></li>
   <li>Mike Underwood, <?=_("developer")?></li>
   <li>Jun Wan, <?=_("developer")?></li>
@@ -141,7 +149,9 @@
 <p><?=_("There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible.")?></p>
 <ul>
   <li>Dave Beydler</li>
+  <li>Brian Cameron</li> 
   <li>Jason Cohen</li>
+  <li>Benjamin Drung</li>
   <li>Dave Fancella</li>
   <li>Steve Harris</li>
   <li>Daniel James</li>
@@ -152,6 +162,7 @@
   <li>Jason Pepas</li>
   <li>Mark Phillips</li>
   <li>Jonathan Ryshpan</li>
+  <li>Michael Schwendt</li>
   <li>Patrick Shirkey</li>
   <li>David R. Sky</li>
   <li>Tuomas Suutari</li>
