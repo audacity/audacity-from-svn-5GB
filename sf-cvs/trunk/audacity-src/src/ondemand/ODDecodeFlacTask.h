@@ -54,7 +54,10 @@ class ODDecodeFlacTask:public ODDecodeTask
    virtual ODTask* Clone();
    ///Creates an ODFileDecoder that decodes a file of filetype the subclass handles.
    virtual ODFileDecoder* CreateFileDecoder(const wxString & fileName);
- 
+   
+   ///Lets other classes know that this class handles flac   
+   ///Subclasses should override to return respective type.
+   virtual int GetDecodeType(){return eODFLAC;}
 };
 
 
@@ -93,7 +96,7 @@ class ODFlacDecoder:public ODFileDecoder
    friend class ODFLACFile;
 public:
    ///This should handle unicode converted to UTF-8 on mac/linux, but OD TODO:check on windows
-   ODFlacDecoder(const wxString & fileName):ODFileDecoder(fileName){mFile=NULL;}
+   ODFlacDecoder(const wxString & fileName):ODFileDecoder(fileName),mSamplesDone(0){mFile=NULL;}
    virtual ~ODFlacDecoder();
       
    ///Decodes the samples for this blockfile from the real file into a float buffer.  
@@ -124,6 +127,7 @@ private:
    unsigned long         mBitsPerSample;
    FLAC__uint64          mNumSamples;
    FLAC__uint64          mSamplesDone;
+   sampleCount          mLastDecodeStartSample;
    bool                  mStreamInfoDone;
    int                   mUpdateResult;
    WaveTrack           **mChannels;

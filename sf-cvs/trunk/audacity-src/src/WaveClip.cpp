@@ -1075,9 +1075,9 @@ bool WaveClip::AppendAlias(wxString fName, sampleCount start,
 }
 
 bool WaveClip::AppendCoded(wxString fName, sampleCount start,
-                            sampleCount len, int channel)
+                            sampleCount len, int channel, int decodeType)
 {
-   bool result = mSequence->AppendCoded(fName, start, len, channel);
+   bool result = mSequence->AppendCoded(fName, start, len, channel, decodeType);
    if (result)
    {
       UpdateEnvelopeTrackLen();

@@ -109,8 +109,11 @@ public:
    ///This should handle unicode converted to UTF-8 on mac/linux, but OD TODO:check on windows
    ODFileDecoder(const wxString& fName);
    virtual ~ODFileDecoder();
-	
-	virtual bool Init(){return false;};
+   
+   ///Read header.  Subclasses must override.  Probably should save the info somewhere.
+   ///Ideally called once per decoding of a file.  This complicates the task because 
+   virtual bool ReadHeader()=0;  
+	virtual bool Init(){return ReadHeader();}
    
    ///Decodes the samples for this blockfile from the real file into a float buffer.  
    ///This is file specific, so subclasses must implement this only.
@@ -120,13 +123,17 @@ public:
    ///the file object if it needs to. 
    virtual void Decode(samplePtr & data, sampleFormat & format, sampleCount start, sampleCount len, unsigned int channel)=0;
    
-   ///Read header.  Subclasses must override.  Probably should save the info somewhere.
-   ///Ideally called once per decoding of a file.  This complicates the task because 
-   virtual bool ReadHeader()=0;  
-   
    wxString GetFileName(){return mFName;}
 
+   bool IsInitialized();
+
 protected:   
+   ///Derived classes should call this after they have parsed the header.
+   void MarkInitialized();
+   
+   bool     mInited;
+   ODLock   mInitedLock;
+   
    wxString  mFName;
 	
 	unsigned int mSampleRate;

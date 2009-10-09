@@ -96,22 +96,22 @@ void ODFLACFile::error_callback(FLAC__StreamDecoderErrorStatus status)
 {
    mWasError = true;
    
-   /*
+   
    switch (status)
    {
    case FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC:
-      wxPrintf(wxT("Flac Error: Lost sync\n"));
+      printf("Flac Error: Lost sync\n");
       break;
    case FLAC__STREAM_DECODER_ERROR_STATUS_FRAME_CRC_MISMATCH:
-      wxPrintf(wxT("Flac Error: Crc mismatch\n"));
+      printf("Flac Error: Crc mismatch\n");
       break;
    case FLAC__STREAM_DECODER_ERROR_STATUS_BAD_HEADER:
-      wxPrintf(wxT("Flac Error: Bad Header\n"));
+      printf("Flac Error: Bad Header\n");
       break;
    default:
-      wxPrintf(wxT("Flac Error: Unknown error code\n"));
+      printf("Flac Error: Unknown error code\n");
       break;
-   }*/
+   }
 }
 
 
@@ -120,11 +120,18 @@ FLAC__StreamDecoderWriteStatus ODFLACFile::write_callback(const FLAC__Frame *fra
 							  const FLAC__int32 * const buffer[])
 {
 
+   float testfdb;
+   float testfb;
+   int   testi;
    
-   for (unsigned int s=0; s<frame->header.blocksize && mDecoder->mDecodeBufferWritePosition+s<mDecoder->mDecodeBufferLen; s++) {
-      mDecoder->mDecodeBuffer[s+mDecoder->mDecodeBufferWritePosition]=buffer[mDecoder->mTargetChannel][s];
-   }
-   mDecoder->mDecodeBufferWritePosition+=frame->header.blocksize;
+   int bytesToCopy = frame->header.blocksize;
+   if(bytesToCopy>mDecoder->mDecodeBufferLen-mDecoder->mDecodeBufferWritePosition)
+      bytesToCopy=mDecoder->mDecodeBufferLen-mDecoder->mDecodeBufferWritePosition;
+      
+   //the decodeBuffer was allocated to be the same format as the flac buffer, so we can do a straight up memcpy.
+   memcpy(mDecoder->mDecodeBuffer+SAMPLE_SIZE(mDecoder->mFormat)*mDecoder->mDecodeBufferWritePosition,buffer[mDecoder->mTargetChannel],SAMPLE_SIZE(mDecoder->mFormat) * bytesToCopy);
+   
+   mDecoder->mDecodeBufferWritePosition+=bytesToCopy;
 /*      
    short *tmp=new short[frame->header.blocksize];
 
@@ -149,7 +156,9 @@ FLAC__StreamDecoderWriteStatus ODFLACFile::write_callback(const FLAC__Frame *fra
 */
 
    mDecoder->mSamplesDone += frame->header.blocksize;
-   return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
+   
+   return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
+//   return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
    
 //   mDecoder->mUpdateResult = mDecoder->mProgress->Update((wxULongLong_t) mDecoder->mSamplesDone, mDecoder->mNumSamples != 0 ? (wxULongLong_t)mDecoder->mNumSamples : 1);
 /*
@@ -176,10 +185,17 @@ void ODFlacDecoder::Decode(samplePtr & data, sampleFormat & format, sampleCount 
 
    //we need to lock this so the target stays fixed over the seek/write callback.
    mFlacFileLock.Lock();
-
+   
+   bool usingCache=mLastDecodeStartSample==start;
+   if(usingCache)
+   {
+      //we've just decoded this, so lets use a cache.  (often so for 
+   }
+   
+   
    mDecodeBufferWritePosition=0;
    mDecodeBufferLen = len;
-	//TODO: Do
+	
    data = NewSamples(len, mFormat);
    mDecodeBuffer=data;
    format = mFormat;
@@ -188,21 +204,18 @@ void ODFlacDecoder::Decode(samplePtr & data, sampleFormat & format, sampleCount 
    
    if(!mFile->seek_absolute(start))
    {
-   //TODO:Warn!
       mFlacFileLock.Unlock();
       return;
    }   
    
-   //read with call back until len is satisfied.
-   unsigned int flacDecoderBlocksize = mFile->get_blocksize();
-   
-   //we want to write TO the data parameter.
-   for(sampleCount samples = start;samples<start+len;samples+=flacDecoderBlocksize)
-   {
+   while(mDecodeBufferWritePosition<mDecodeBufferLen)
       mFile->process_single();
-   }
    
    mFlacFileLock.Unlock();
+   if(!usingCache)
+   {
+      mLastDecodeStartSample=start;
+   }
    //insert into blockfile and
    //calculate summary happen in ODDecodeBlockFile::WriteODDecodeBlockFile, where this method is also called.
 }
@@ -215,8 +228,10 @@ void ODFlacDecoder::Decode(samplePtr & data, sampleFormat & format, sampleCount 
 //this code is based on that function.
 bool ODFlacDecoder::ReadHeader()
 {
-   mFormat = (sampleFormat)
-      gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
+   mFormat = int16Sample;//start with the smallest and move up in the metadata_callback.
+                         //we want to use the native flac type for quick conversion.
+      /* (sampleFormat)
+      gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);*/
    if(mFile) 
       delete mFile;
    mFile = new ODFLACFile(this);
@@ -250,6 +265,8 @@ bool ODFlacDecoder::ReadHeader()
       // This probably is not a FLAC file at all
       return false;
    }
+   
+   MarkInitialized();
    return true;
 
 }  
@@ -273,7 +290,7 @@ ODFlacDecoder::~ODFlacDecoder(){
 ODFileDecoder* ODDecodeFlacTask::CreateFileDecoder(const wxString & fileName)
 {
 	// First check if it really is a FLAC file
-
+/*
    int cnt;
    wxFile binaryFile;
    if (!binaryFile.Open(fileName)) {
@@ -299,15 +316,17 @@ ODFileDecoder* ODDecodeFlacTask::CreateFileDecoder(const wxString & fileName)
    
    // Open the file for import
    ODFlacDecoder *decoder = new ODFlacDecoder(fileName);
-
-
+*/
+/*
    bool success = decoder->Init();
    if (!success) {
       delete decoder;
       return NULL;
    }
+*/
+   // Open the file for import
+   ODFlacDecoder *decoder = new ODFlacDecoder(fileName);
 
-   
    mDecoders.push_back(decoder);
    return decoder;
 

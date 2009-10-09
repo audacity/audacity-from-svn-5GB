@@ -40,6 +40,7 @@ void ODDecodeTask::DoSomeInternal()
    }
    
    ODDecodeBlockFile* bf;
+   ODFileDecoder* decoder;
    sampleCount blockStartSample;
    sampleCount blockEndSample;
    bool success =false;
@@ -54,8 +55,17 @@ void ODDecodeTask::DoSomeInternal()
       if(bf->RefCount()>=2)
       {
          //OD TODO: somehow pass the bf a reference to the decoder that manages it's file.
-         bf->SetODFileDecoder(GetOrCreateMatchingFileDecoder(bf));
+         //we need to ensure that the filename won't change or be moved.  We do this by calling LockRead(),
+         //which the dirmanager::EnsureSafeFilename also does.
+         bf->LockRead();
+         //Get the decoder.  If the file was moved, we need to create another one and init it.
+         decoder=GetOrCreateMatchingFileDecoder(bf);
+         if(!decoder->IsInitialized())
+            decoder->Init();
+         bf->SetODFileDecoder(decoder);
          bf->DoWriteBlockFile();
+         bf->UnlockRead();
+         
          success = true;
          blockStartSample = bf->GetStart();
          blockEndSample = blockStartSample + bf->GetLength();
@@ -240,8 +250,7 @@ ODFileDecoder* ODDecodeTask::GetOrCreateMatchingFileDecoder(ODDecodeBlockFile* b
    //otherwise, create and add one, and return it.
    if(!ret)
    {
-      ret=CreateFileDecoder(blockFile->GetFileName().GetFullPath());
-      mDecoders.push_back(ret);
+      ret=CreateFileDecoder(blockFile->GetAudioFileName().GetFullPath());
    }
    return ret;
 }
@@ -256,8 +265,27 @@ int ODDecodeTask::GetNumFileDecoders()
 ODFileDecoder::ODFileDecoder(const wxString & fName)
 {
 	mFName = fName;
+   mInited = false;
 }
 
 ODFileDecoder::~ODFileDecoder()
 {
 }
+
+bool ODFileDecoder::IsInitialized()
+{
+   bool ret;
+   mInitedLock.Lock();
+   ret = mInited;
+   mInitedLock.Unlock();   
+   return ret;
+}
+
+///Derived classes should call this after they have parsed the header.
+void ODFileDecoder::MarkInitialized()
+{
+   mInitedLock.Lock();
+   mInited=true;
+   mInitedLock.Unlock();   
+}
+
