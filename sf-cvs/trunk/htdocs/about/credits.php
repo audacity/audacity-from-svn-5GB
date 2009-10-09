@@ -28,8 +28,8 @@
   <li>Christian Brochec, <?=_("documentation and support")?>, <?=_("French")?></li>
   <li>Arturo "Buanzo" Busleiman, <?=_("system administration")?></li>
   <li>Michael Chinen, <?=_("developer")?></li>
-  <li>Steve Daulton, <?=_("documentation and support")?></li>
   <li>James Crook, <?=_("developer")?></li>
+  <li>Steve Daulton, <?=_("documentation and support")?></li>
   <li>Ruslan Ijbulatov, <?=_("developer")?></li>
   <li>Vaughan Johnson, <?=_("developer")?></li>
   <li>Greg Kozikowski, <?=_("documentation and support")?></li>
@@ -110,7 +110,7 @@
   <li>Ohkubo Kohei (ja)</li>
   <li>Šar&#8161;nas Gliebus (lt)</li>
   <li>Ilija Iliev (mk)</li>
-  <li><a href="http://folk.uio.no/kevinu">Kevin Brubeck Unhammer</a> (nb)</li>
+  <li><a href="http://unhammer.wordpress.com/">Kevin Brubeck Unhammer</a> (nb)</li>
   <li>Tino Meinen (nl)</li>
   <li>Tomasz Bandura (pl)</li>
   <li>Marek Mularczyk (pl)</li>
