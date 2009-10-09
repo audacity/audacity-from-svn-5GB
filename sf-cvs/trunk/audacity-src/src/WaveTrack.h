@@ -179,9 +179,11 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    bool AppendAlias(wxString fName, sampleCount start,
                     sampleCount len, int channel,bool useOD);
    
-   ///for use with On-Demand decoding of compressed files
+   ///for use with On-Demand decoding of compressed files.
+   ///decodeType should be an enum from ODDecodeTask that specifies what
+   ///Type of encoded file this is, such as eODFLAC
    bool AppendCoded(wxString fName, sampleCount start,
-                            sampleCount len, int channel);
+                            sampleCount len, int channel, int decodeType);
                     
    ///Deletes all clips' wavecaches.  Careful, This may not be threadsafe.
    void DeleteWaveCaches();

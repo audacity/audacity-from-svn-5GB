@@ -345,7 +345,7 @@ bool FLACImportFileHandle::Init()
    mDecoderTask=new ODDecodeFlacTask;
    
    ODFlacDecoder* odDecoder = (ODFlacDecoder*)mDecoderTask->CreateFileDecoder(mFilename);
-   if(odDecoder && !odDecoder->ReadHeader())
+   if(!odDecoder || !odDecoder->ReadHeader())
    {
       //delete the task only if it failed to read - otherwise the OD man takes care of it.
       delete mDecoderTask;
@@ -360,7 +360,7 @@ bool FLACImportFileHandle::Init()
    mNumSamples=odDecoder->mNumSamples;
    mBitsPerSample=odDecoder->mBitsPerSample;
    mFormat=odDecoder->mFormat;
-   mStreamInfoDone=odDecoder->mStreamInfoDone;
+   mStreamInfoDone=true;
 
    
    return true;
@@ -476,24 +476,21 @@ int FLACImportFileHandle::Import(TrackFactory *trackFactory,
    //add the task to the ODManager
    if(useOD)
    { 
-   sampleCount fileTotalFrames = mNumSamples;
-   sampleCount maxBlockSize = mChannels[0]->GetMaxBlockSize();
-   for (sampleCount i = 0; i < fileTotalFrames; i += maxBlockSize) {
-      sampleCount blockLen = maxBlockSize;
-      if (i + blockLen > fileTotalFrames)
-         blockLen = fileTotalFrames - i;
-      
-      for (c = 0; c < mNumChannels; c++)
-         mChannels[c]->AppendCoded(mFilename, i, blockLen, c);
-      
-      mUpdateResult = mProgress->Update(i, fileTotalFrames);
-      if (mUpdateResult != eProgressSuccess)
-         break;
-   }
+      sampleCount fileTotalFrames = mNumSamples;
+      sampleCount maxBlockSize = mChannels[0]->GetMaxBlockSize();
+      for (sampleCount i = 0; i < fileTotalFrames; i += maxBlockSize) {
+         sampleCount blockLen = maxBlockSize;
+         if (i + blockLen > fileTotalFrames)
+            blockLen = fileTotalFrames - i;
+         
+         for (c = 0; c < mNumChannels; c++)
+            mChannels[c]->AppendCoded(mFilename, i, blockLen, c,ODDecodeTask::eODFLAC);
+         
+         mUpdateResult = mProgress->Update(i, fileTotalFrames);
+         if (mUpdateResult != eProgressSuccess)
+            break;
+      }
    
-
-         ODDecodeFlacTask* mDecoderTask = new ODDecodeFlacTask;
-
       bool moreThanStereo = mNumChannels>2;
       for (c = 0; c < mNumChannels; c++)
       {

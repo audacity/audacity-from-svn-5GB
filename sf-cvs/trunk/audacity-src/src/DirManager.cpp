@@ -800,13 +800,13 @@ BlockFile *DirManager::NewODAliasBlockFile(
 
 BlockFile *DirManager::NewODDecodeBlockFile(
                                  wxString aliasedFile, sampleCount aliasStart,
-                                 sampleCount aliasLen, int aliasChannel)
+                                 sampleCount aliasLen, int aliasChannel, int decodeType)
 {
    wxFileName fileName = MakeBlockFileName();
 
    BlockFile *newBlockFile =
        new ODDecodeBlockFile(fileName,
-                             aliasedFile, aliasStart, aliasLen, aliasChannel);
+                             aliasedFile, aliasStart, aliasLen, aliasChannel, decodeType);
 
    blockFileHash[fileName.GetName()]=newBlockFile;
    aliasList.Add(aliasedFile); //OD TODO: check to see if we need to remove this when done decoding.
@@ -1159,6 +1159,19 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
          //ODBlocks access the aliased file on another thread, so we need to pause them before this continues.
          ab->LockRead();
       }
+      
+      //now for encoded OD blocks  (e.g. flac)
+      // don't worry, we don't rely on this cast unless ISDataAvailable is false
+      // which means that it still needs to access the file.
+      ODDecodeBlockFile *db = (ODDecodeBlockFile*)b;
+      if (!b->IsDataAvailable() && db->GetEncodedAudioFilename() == fName) {
+         needToRename = true;
+         //wxPrintf(_("Changing block %s\n"), b->GetFileName().GetFullName().c_str());
+         //ab->ChangeAliasedFile(renamedFile);
+         
+         //ODBlocks access the aliased file on another thread, so we need to pause them before this continues.
+         db->LockRead();
+      }
 
       it++;
    }
@@ -1178,10 +1191,15 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
          while(it != blockFileHash.end()) {
             BlockFile *b = it->second;
             AliasBlockFile *ab = (AliasBlockFile*)b;
+            ODDecodeBlockFile *db = (ODDecodeBlockFile*)b;
+
 
             if (b->IsAlias() && ab->GetAliasedFile() == fName)
             {
                ab->UnlockRead();
+            }
+            if (!b->IsDataAvailable() && db->GetEncodedAudioFilename() == fName) {
+               db->UnlockRead();
             }
             it++;
          }
@@ -1199,6 +1217,7 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
          while(it != blockFileHash.end()) {
             BlockFile *b = it->second;
             AliasBlockFile *ab = (AliasBlockFile*)b;
+            ODDecodeBlockFile *db = (ODDecodeBlockFile*)b;
 
             if (b->IsAlias() && ab->GetAliasedFile() == fName)
             {
@@ -1206,6 +1225,10 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
                ab->UnlockRead();
                wxPrintf(_("Changed block %s to new alias name\n"), b->GetFileName().GetFullName().c_str());
                
+            }
+            if (!b->IsDataAvailable() && db->GetEncodedAudioFilename() == fName) {
+               db->ChangeAudioFile(renamedFile);
+               db->UnlockRead();
             }
             it++;
          }

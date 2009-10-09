@@ -432,7 +432,7 @@ void ODPCMAliasBlockFile::WriteSummary()
       //however, this is going to be called from a non-main thread,
       //and wxLog calls are not thread safe.
       printf("Unable to write summary data to file: ");// %s",
-     printf("test..\n");
+      printf("test..\n");
       printf(" filename: %s\n",mFileNameChar);
       mFileNameMutex.Unlock();
       return;

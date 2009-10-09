@@ -114,7 +114,7 @@ SimpleBlockFile::SimpleBlockFile(wxFileName baseFileName,
 
    bool useCache = GetCache() && (!bypassCache);
 
-   if (!(allowDeferredWrite && useCache))
+   if (!(allowDeferredWrite && useCache) && !bypassCache)
       WriteSimpleBlockFile(sampleData, sampleLen, format, NULL);
       
    if (useCache) {

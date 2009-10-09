@@ -151,7 +151,7 @@ public:
                     sampleCount len, int channel,bool useOD);
                     
    bool AppendCoded(wxString fName, sampleCount start,
-                            sampleCount len, int channel);
+                            sampleCount len, int channel, int decodeType);
 
    /// This name is consistent with WaveTrack::Clear. It performs a "Cut"
    /// operation (but without putting the cutted audio to the clipboard)

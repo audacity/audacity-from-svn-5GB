@@ -629,7 +629,7 @@ bool Sequence::AppendAlias(wxString fullPath,
 }
 
 bool Sequence::AppendCoded(wxString fName, sampleCount start,
-                            sampleCount len, int channel)
+                            sampleCount len, int channel, int decodeType)
 {
    // Quick check to make sure that it doesn't overflow
    if (((double)mNumSamples) + ((double)len) > wxLL(9223372036854775807))
@@ -638,7 +638,7 @@ bool Sequence::AppendCoded(wxString fName, sampleCount start,
    SeqBlock *newBlock = new SeqBlock();
 
    newBlock->start = mNumSamples;
-   newBlock->f = mDirManager->NewODDecodeBlockFile(fName, start, len, channel);
+   newBlock->f = mDirManager->NewODDecodeBlockFile(fName, start, len, channel, decodeType);
    mBlock->Add(newBlock);
    mNumSamples += newBlock->f->GetLength();
 
