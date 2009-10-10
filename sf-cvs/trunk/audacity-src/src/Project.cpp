@@ -1541,11 +1541,7 @@ void AudacityProject::OnODTaskComplete(wxCommandEvent & event)
 {
   if(mTrackPanel)
       mTrackPanel->Refresh(false);
- 
-   wxString msg;
-   msg.Printf(_("on-demand import complete."));
-   mStatusBar->SetStatusText(msg);
-}
+ }
 
 void AudacityProject::OnScroll(wxScrollEvent & event)
 {
@@ -3740,12 +3736,28 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
       if(numTasks)
       {
          wxString msg;
-         if(numTasks>1)
+         float ratioComplete= ODManager::Instance()->GetOverallPercentComplete();
+
+         if(ratioComplete>=1.0f)
+         {
+            //if we are 100 percent complete and there is still a task in the queue, we should wake the ODManager
+            //so it can clear it.
+            //signal the od task queue loop to wake up so it can remove the tasks from the queue and the queue if it is empty.
+            ODManager::Instance()->SignalTaskQueueLoop();
+
+            
+            msg.Printf(_("On-demand import and waveform calculation complete."));
+            mStatusBar->SetStatusText(msg);
+
+         }
+         else if(numTasks>1)
             msg.Printf(_("Import(s) complete. Running %d on-demand waveform calculations. Overall %2.0f%% complete."),
-              numTasks,ODManager::Instance()->GetOverallPercentComplete()*100.0);       
+              numTasks,ratioComplete*100.0);       
          else
             msg.Printf(_("Import complete. Running an on-demand waveform calculation. %2.0f%% complete."),
-             ODManager::Instance()->GetOverallPercentComplete()*100.0);    
+             ratioComplete*100.0);    
+             
+
          mStatusBar->SetStatusText(msg);
       }
    }
