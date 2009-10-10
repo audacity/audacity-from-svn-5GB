@@ -14,6 +14,7 @@
 #include <wx/dialog.h>
 #include <wx/string.h>
 #include <wx/dynarray.h>   // sadly we are using wx dynamic arrays
+#include <wx/listctrl.h>
 
 #include "Export.h"
 #include "../Track.h"
@@ -165,6 +166,26 @@ private:
    DECLARE_EVENT_TABLE()
       
 };
+
+class SuccessDialog : public wxDialog
+{
+public:
+   SuccessDialog(wxWindow *parent, wxWindowID id, const wxString &title) : 
+      wxDialog(parent, id, title) {};
+   void OnKeyDown(wxListEvent& event); // dismisses dialog when <enter> is pressed with list control having focus
+   void OnItemActivated(wxListEvent& event); // dismisses dialog when <enter> is pressed with list item having focus
+private:
+   DECLARE_EVENT_TABLE()
+};
+
+class MouseEvtHandler : public wxEvtHandler
+{
+public:
+   void OnMouse(wxMouseEvent& event);
+private:
+   DECLARE_EVENT_TABLE()
+};
+
 
 /** \brief A private class used to store the information needed to do an
     * export.
