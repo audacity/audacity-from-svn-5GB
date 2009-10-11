@@ -220,7 +220,7 @@ BlockFile *ODPCMAliasBlockFile::Copy(wxFileName newFileName)
    BlockFile *newBlockFile;
    
    //mAliasedFile can change so we lock readdatamutex, which is responsible for it.
-   mReadDataMutex.Lock();
+   LockRead();
    //If the file has been written AND it has been saved, we create a PCM alias blockfile because for
    //all intents and purposes, it is the same.  
    //However, if it hasn't been saved yet, we shouldn't create one because the default behavior of the
@@ -243,7 +243,7 @@ BlockFile *ODPCMAliasBlockFile::Copy(wxFileName newFileName)
       //The client code will need to schedule this blockfile for OD summarizing if it is going to a new track.
    }
    
-   mReadDataMutex.Unlock();
+   UnlockRead();
    
    return newBlockFile;
 }
@@ -256,7 +256,7 @@ BlockFile *ODPCMAliasBlockFile::Copy(wxFileName newFileName)
 void ODPCMAliasBlockFile::SaveXML(XMLWriter &xmlFile)
 {
    //we lock this so that mAliasedFileName doesn't change.
-   mReadDataMutex.Lock();
+   LockRead();
    if(IsSummaryAvailable())
    {
       PCMAliasBlockFile::SaveXML(xmlFile);
@@ -267,11 +267,11 @@ void ODPCMAliasBlockFile::SaveXML(XMLWriter &xmlFile)
       xmlFile.StartTag(wxT("odpcmaliasblockfile"));
 
       //unlock to prevent deadlock and resume lock after.
-      mReadDataMutex.Unlock();
+      UnlockRead();
       mFileNameMutex.Lock();
       xmlFile.WriteAttr(wxT("summaryfile"), mFileName.GetFullName());
       mFileNameMutex.Unlock();
-      mReadDataMutex.Lock();
+      LockRead();
       
       xmlFile.WriteAttr(wxT("aliasfile"), mAliasedFileName.GetFullPath());
       xmlFile.WriteAttr(wxT("aliasstart"), mAliasStart);
@@ -281,7 +281,7 @@ void ODPCMAliasBlockFile::SaveXML(XMLWriter &xmlFile)
       xmlFile.EndTag(wxT("odpcmaliasblockfile"));
    }
    
-   mReadDataMutex.Unlock();
+   UnlockRead();
 }
 
 /// Constructs a ODPCMAliasBlockFile from the xml output of WriteXML.
@@ -599,13 +599,13 @@ int ODPCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
                                 sampleCount start, sampleCount len)
 {
 
-   mReadDataMutex.Lock();
+   LockRead();
 
    SF_INFO info;
 
    if(!mAliasedFileName.IsOk()){ // intentionally silenced 
       memset(data,0,SAMPLE_SIZE(format)*len);
-      mReadDataMutex.Unlock();
+      UnlockRead();
 
          return len;
    }
@@ -635,7 +635,7 @@ int ODPCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
 
       mSilentAliasLog=TRUE;
 
-      mReadDataMutex.Unlock();
+      UnlockRead();
       return len;
    }
 
@@ -682,7 +682,7 @@ int ODPCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
    sf_close(sf);
    ODManager::UnlockLibSndFileMutex();
    
-   mReadDataMutex.Unlock();
+   UnlockRead();
    return framesRead;
 }
 

@@ -2361,7 +2361,7 @@ void AudacityProject::OpenFile(wxString fileName, bool addtohistory)
             mTrackPanel->Refresh(true);
             this->PushState(_("Project checker repaired file"), _("Repair"));
    
-         }
+                            }
       }
    } else {
       mTracks->Clear(true);
@@ -3409,6 +3409,11 @@ void AudacityProject::PopState(TrackList * l)
       {
          //if the ODManager hasn't been initialized, there's no chance this track has OD blocks since this
          //is a "Redo" operation.
+         //TODO: update this to look like the update loop in OpenFile that handles general purpose ODTasks.
+         //BUT, it is too slow to go thru every blockfile and check the odtype, so maybe put a flag in wavetrack
+         //that gets unset on OD Completion, (and we could also update the drawing there too.)  The hard part is that 
+         //we would need to watch every possible way a OD Blockfile could get inserted into a wavetrack and change the 
+         //flag there.
          if(ODManager::IsInstanceCreated())
          {
             if(!odUsed)
