@@ -131,7 +131,7 @@ bool ODDecodeBlockFile::Read256(float *buffer, sampleCount start, sampleCount le
    }
    else
    {
-      //TODO: put some dummy value?  should we make a fake one?
+      //this should not be reached (client should check IsSummaryAvailable()==true before this.
       buffer = NULL;
       return true;
    }
@@ -146,7 +146,7 @@ bool ODDecodeBlockFile::Read64K(float *buffer, sampleCount start, sampleCount le
    }
    else
    {
-      //TODO: put some dummy value?  should we make a fake one?
+      //this should not be reached (client should check IsSummaryAvailable()==true before this.
       return true;
    }
 }
@@ -160,7 +160,7 @@ BlockFile *ODDecodeBlockFile::Copy(wxFileName newFileName)
    BlockFile *newBlockFile;
    
    //mAliasedFile can change so we lock readdatamutex, which is responsible for it.
-   mReadDataMutex.Lock();
+   LockRead();
    if(IsSummaryAvailable())
    {
       //create a simpleblockfile, because once it has the summary it is a simpleblockfile for all intents an purposes
@@ -175,9 +175,9 @@ BlockFile *ODDecodeBlockFile::Copy(wxFileName newFileName)
                                                    mMin, mMax, mRMS,IsSummaryAvailable());
       //The client code will need to schedule this blockfile for OD decoding if it is going to a new track.
       //It can do this by checking for IsDataAvailable()==false.
-  }
+   }
    
-   mReadDataMutex.Unlock();
+   UnlockRead();
    
    return newBlockFile;
 }
@@ -189,6 +189,7 @@ BlockFile *ODDecodeBlockFile::Copy(wxFileName newFileName)
 /// and this object reconstructed, it needs to avoid trying to open it as well as schedule itself for OD loading
 void ODDecodeBlockFile::SaveXML(XMLWriter &xmlFile)
 {
+   LockRead();
    if(IsSummaryAvailable())
    {
       SimpleBlockFile::SaveXML(xmlFile);
@@ -197,11 +198,11 @@ void ODDecodeBlockFile::SaveXML(XMLWriter &xmlFile)
    {
       xmlFile.StartTag(wxT("oddecodeblockfile"));
        //unlock to prevent deadlock and resume lock after.
-      mReadDataMutex.Unlock();
+      UnlockRead();
       mFileNameMutex.Lock();
       xmlFile.WriteAttr(wxT("summaryfile"), mFileName.GetFullName());
       mFileNameMutex.Unlock();
-      mReadDataMutex.Lock();
+      LockRead();
       xmlFile.WriteAttr(wxT("audiofile"), mAudioFileName.GetFullPath());
       xmlFile.WriteAttr(wxT("aliasstart"), mAliasStart);
       xmlFile.WriteAttr(wxT("aliaslen"), mLen);
@@ -210,6 +211,7 @@ void ODDecodeBlockFile::SaveXML(XMLWriter &xmlFile)
 
       xmlFile.EndTag(wxT("oddecodeblockfile"));
    }
+	UnlockRead();
 }
 
 /// Constructs a ODPCMAliasBlockFile from the xml output of WriteXML.
@@ -322,7 +324,6 @@ void ODDecodeBlockFile::WriteODDecodeBlockFile()
    if(!mDecoder)
    {
       mDecoderMutex.Unlock();
-      UnlockRead();
       return;
    }
    
@@ -526,17 +527,19 @@ void *ODDecodeBlockFile::CalcSummary(samplePtr buffer, sampleCount len,
 int ODDecodeBlockFile::ReadData(samplePtr data, sampleFormat format,
                                 sampleCount start, sampleCount len)
 {
-   
-   
+   int ret;
+   LockRead();
    if(IsSummaryAvailable())
-      return SimpleBlockFile::ReadData(data,format,start,len);
+      ret= SimpleBlockFile::ReadData(data,format,start,len);
    else
    {
       //we should do an ODRequest to start processing the data here, and wait till it finishes. and just do a SimpleBlockFIle
       //ReadData.
       ClearSamples(data, format, 0, len);
-      return len;
+      ret= len;
    }
+   UnlockRead();
+   return ret;
 }
 
 /// Read the summary of this alias block from disk.  Since the audio data
@@ -546,6 +549,7 @@ int ODDecodeBlockFile::ReadData(samplePtr data, sampleFormat format,
 ///              be at least mSummaryInfo.totalSummaryBytes long.
 bool ODDecodeBlockFile::ReadSummary(void *data)
 {
+   //I dont think we need to add a mutex here because only the main thread changes filenames and calls ReadSummarz
    if(IsSummaryAvailable())
       return SimpleBlockFile::ReadSummary(data);
    

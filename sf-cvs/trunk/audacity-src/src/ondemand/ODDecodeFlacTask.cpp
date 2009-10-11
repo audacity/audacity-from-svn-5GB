@@ -43,12 +43,8 @@ ODTask* ODDecodeFlacTask::Clone()
    ODDecodeFlacTask* clone = new ODDecodeFlacTask;
    clone->mDemandSample=GetDemandSample();
 
-   //TODO: do we need to add the decoders and blockfiles?  
-   //this can be tested when the track is copied and pasted.  I don't think we need to
-   //because the blockfiles are not copies, and the decoders are created from scratch 
-   //with CreateOrGetMatchingDecoder()
+   //the decoders and blockfiles should not be copied.  They are created as the task runs.
    return clone;
-   
 }
 
 
