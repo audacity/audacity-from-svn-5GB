@@ -40,6 +40,7 @@ Sequence.cpp.  Not yet sure why.
 #include "Sequence.h"
 
 #include "BlockFile.h"
+#include "ODDecodeBlockFile.h"
 #include "DirManager.h"
 
 #include "blockfile/SimpleBlockFile.h"
@@ -669,6 +670,19 @@ bool Sequence::AppendBlock(SeqBlock * b)
    // function gets called in an inner loop
 
    return true;
+}
+
+///gets an int with OD flags so that we can determine which ODTasks should be run on this track after save/open, etc.
+unsigned int Sequence::GetODFlags()
+{
+   unsigned int ret = 0;
+   for (unsigned int i = 0; i < mBlock->Count(); i++){
+      if(!mBlock->Item(i)->f->IsDataAvailable())
+         ret = ret|((ODDecodeBlockFile*)mBlock->Item(i)->f)->GetDecodeType();
+      else if(!mBlock->Item(i)->f->IsSummaryAvailable())
+         ret = ret|ODTask::eODPCMSummary;
+   }
+   return ret;
 }
 
 sampleCount Sequence::GetBestBlockSize(sampleCount start) const

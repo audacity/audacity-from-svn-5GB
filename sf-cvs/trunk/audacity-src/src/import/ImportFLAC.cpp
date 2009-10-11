@@ -484,7 +484,7 @@ int FLACImportFileHandle::Import(TrackFactory *trackFactory,
             blockLen = fileTotalFrames - i;
          
          for (c = 0; c < mNumChannels; c++)
-            mChannels[c]->AppendCoded(mFilename, i, blockLen, c,ODDecodeTask::eODFLAC);
+            mChannels[c]->AppendCoded(mFilename, i, blockLen, c,ODTask::eODFLAC);
          
          mUpdateResult = mProgress->Update(i, fileTotalFrames);
          if (mUpdateResult != eProgressSuccess)

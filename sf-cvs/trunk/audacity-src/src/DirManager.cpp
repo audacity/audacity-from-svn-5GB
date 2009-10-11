@@ -884,6 +884,11 @@ bool DirManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       //in the ODMan and check it later.
       ODManager::MarkLoadedODFlag();
    }
+   else if( !wxStricmp(tag, wxT("oddecodeblockfile")) )
+   {
+      pBlockFile = ODDecodeBlockFile::BuildFromXML(*this, attrs);
+      ODManager::MarkLoadedODFlag();
+   }
    else if( !wxStricmp(tag, wxT("blockfile")) ||
             !wxStricmp(tag, wxT("legacyblockfile")) ) {
       // Support Audacity version 1.1.1 project files

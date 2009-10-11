@@ -38,7 +38,14 @@ DECLARE_EXPORTED_EVENT_TYPE(AUDACITY_DLL_API, EVT_ODTASK_COMPLETE, -1)
 class ODTask
 {
  public:
-
+   enum {
+      eODNone     =  0x00000000,
+      eODFLAC     =  0x00000001,
+      eODMP3      =  0x00000002,
+      eODFFMPEG   =  0x00000004,
+      eODPCMSummary  = 0x00001000,
+      eODOTHER    =  0x10000000,
+   } ODTypeEnum;
    // Constructor / Destructor
 
    /// Constructs an ODTask
@@ -48,6 +55,10 @@ class ODTask
    
    //clones everything except information about the tracks.
    virtual ODTask* Clone()=0;
+   
+   ///Subclasses should override to return respective type.
+   virtual unsigned int GetODType(){return eODNone;}
+
    
 ///Do a modular part of the task.  For example, if the task is to load the entire file, load one BlockFile.
 ///Relies on DoSomeInternal(), which is the subclasses must implement.

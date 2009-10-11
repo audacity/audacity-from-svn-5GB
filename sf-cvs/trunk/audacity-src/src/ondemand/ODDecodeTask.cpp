@@ -144,7 +144,7 @@ void ODDecodeTask::Update()
             for(i=0; i<(int)blocks->GetCount(); i++)
             {
                //since we have more than one ODBlockFile, we will need type flags to cast.
-               if(!blocks->Item(i)->f->IsDataAvailable() && ((ODDecodeBlockFile*)blocks->Item(i)->f)->GetDecodeType()==this->GetDecodeType())
+               if(!blocks->Item(i)->f->IsDataAvailable() && ((ODDecodeBlockFile*)blocks->Item(i)->f)->GetDecodeType()==this->GetODType())
                {
                   blocks->Item(i)->f->Ref();
                   ((ODDecodeBlockFile*)blocks->Item(i)->f)->SetStart(blocks->Item(i)->start);
@@ -231,7 +231,7 @@ void ODDecodeTask::ODUpdate()
 
 ///there could be the ODBlockFiles of several FLACs in one track (after copy and pasting)
 ///so we keep a list of decoders that keep track of the file names, etc, and check the blocks against them.
-///Blocks that have IsDataAvailable()==false are blockfiles to be decoded.  if BlockFile::GetDecodeType()==ODDecodeTask::GetDecodeType() then
+///Blocks that have IsDataAvailable()==false are blockfiles to be decoded.  if BlockFile::GetDecodeType()==ODDecodeTask::GetODType() then
 ///this decoder should handle it.  Decoders are accessible with the methods below.  These aren't thread-safe and should only
 ///be called from the decoding thread.
 ODFileDecoder* ODDecodeTask::GetOrCreateMatchingFileDecoder(ODDecodeBlockFile* blockFile)

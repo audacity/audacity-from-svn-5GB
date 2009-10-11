@@ -39,7 +39,7 @@ char bheaderTag[bheaderTagLen + 1] = "AudacityBlockFile112";
 
    /// Create a disk file and write summary and sample data to it
 ODDecodeBlockFile::ODDecodeBlockFile(wxFileName baseFileName,wxFileName audioFileName, sampleCount aliasStart,
-                     sampleCount aliasLen, int aliasChannel, int decodeType):
+                     sampleCount aliasLen, int aliasChannel,unsigned int decodeType):
    SimpleBlockFile(baseFileName,NULL,aliasLen,floatSample,true,true), //floatSample has no effect.  last two bools - bypass writing of blockfile and cache
 
    mAliasStart(aliasStart),
@@ -52,15 +52,15 @@ ODDecodeBlockFile::ODDecodeBlockFile(wxFileName baseFileName,wxFileName audioFil
    
 /// Create the memory structure to refer to the given block file
 ODDecodeBlockFile::ODDecodeBlockFile(wxFileName existingFile, wxFileName audioFileName, sampleCount aliasStart,
-                     sampleCount aliasLen, int aliasChannel, int decodeType,
-                   float min, float max, float rms):
+                     sampleCount aliasLen, int aliasChannel, unsigned int decodeType,
+                   float min, float max, float rms, bool dataAvailable):
    SimpleBlockFile(existingFile,aliasLen,min,max,rms),
    
    mAliasStart(aliasStart),
    mAliasChannel(aliasChannel),
    mType(decodeType)
 {
-   mDataAvailable=false;
+   mDataAvailable=dataAvailable;
    mAudioFileName = audioFileName;
 }
 
@@ -168,15 +168,14 @@ BlockFile *ODDecodeBlockFile::Copy(wxFileName newFileName)
    }
    else
    {
-      //TODO:do the correct constructor thingthing for this one.
-      //Also, this one needs to be scheduled for loading as well ... what to do?
-      newBlockFile  = NULL; // new ODPCMAliasBlockFile(newFileName,
-                              //                     mAliasedFileName, mAliasStart,
-                                //                   mLen, mAliasChannel,
-                                  //                 mMin, mMax, mRMS);
-      //TODO:add to the ODManager Task list so this one loads itself.  It's wasteful to do this twice, but lets be simple and naieve
-      //just this once,.
-   }
+      //Summary File might exist in this case, but it probably (99.999% of the time) won't.
+      newBlockFile  = new ODDecodeBlockFile(newFileName,
+                                                   mAudioFileName, mAliasStart,
+                                                   mLen, mAliasChannel, mType,
+                                                   mMin, mMax, mRMS,IsSummaryAvailable());
+      //The client code will need to schedule this blockfile for OD decoding if it is going to a new track.
+      //It can do this by checking for IsDataAvailable()==false.
+  }
    
    mReadDataMutex.Unlock();
    
@@ -184,112 +183,104 @@ BlockFile *ODDecodeBlockFile::Copy(wxFileName newFileName)
 }
 
 
-/// Writes the xml as a PCMAliasBlockFile if we can (if we have a summary file)
+/// Writes the xml as a SimpleBlockFile if we can (if we have a summary file)
 /// Otherwise writes XML as a subset of attributes with 'odpcmaliasblockfile as the start tag.
 /// Most notably, the summaryfile attribute refers to a file that does not yet, so when the project file is read back in
 /// and this object reconstructed, it needs to avoid trying to open it as well as schedule itself for OD loading
 void ODDecodeBlockFile::SaveXML(XMLWriter &xmlFile)
 {
-/* TODO:
    if(IsSummaryAvailable())
    {
-      PCMAliasBlockFile::SaveXML(xmlFile);
+      SimpleBlockFile::SaveXML(xmlFile);
    }
    else
    {
-      xmlFile.StartTag(wxT("ODDecodeBlockFile"));
-
+      xmlFile.StartTag(wxT("oddecodeblockfile"));
+       //unlock to prevent deadlock and resume lock after.
+      mReadDataMutex.Unlock();
+      mFileNameMutex.Lock();
       xmlFile.WriteAttr(wxT("summaryfile"), mFileName.GetFullName());
-      xmlFile.WriteAttr(wxT("aliasfile"), mAliasedFileName.GetFullPath());
+      mFileNameMutex.Unlock();
+      mReadDataMutex.Lock();
+      xmlFile.WriteAttr(wxT("audiofile"), mAudioFileName.GetFullPath());
       xmlFile.WriteAttr(wxT("aliasstart"), mAliasStart);
       xmlFile.WriteAttr(wxT("aliaslen"), mLen);
       xmlFile.WriteAttr(wxT("aliaschannel"), mAliasChannel);
-      //these have not been computed yet.
-      //xmlFile.WriteAttr(wxT("min"), mMin);
-      //xmlFile.WriteAttr(wxT("max"), mMax);
-     // xmlFile.WriteAttr(wxT("rms"), mRMS);
+      xmlFile.WriteAttr(wxT("decodetype"), (size_t)mType);
 
-      xmlFile.EndTag(wxT("odpcmaliasblockfile"));
+      xmlFile.EndTag(wxT("oddecodeblockfile"));
    }
-*/
 }
 
 /// Constructs a ODPCMAliasBlockFile from the xml output of WriteXML.
 /// Also schedules the ODPCMAliasBlockFile for OD loading.
 BlockFile *ODDecodeBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
-{//TODO:
-//   wxFileName summaryFileName;
-//   wxFileName aliasFileName;
-//   sampleCount aliasStart=0, aliasLen=0;
-//   int aliasChannel=0;
-//   float min=0, max=0, rms=0;
-//   long nValue;
-//
-//
-//
-//   while(*attrs)
-//   {
-//      const wxChar *attr =  *attrs++;
-//      const wxChar *value = *attrs++;
-//      if (!value) 
-//         break;
-//
-//      const wxString strValue = value;
-//      if( !wxStricmp(attr, wxT("summaryfile")) )
-//      {
-//      
-//         // Can't use XMLValueChecker::IsGoodFileName here, but do part of its test.
-//         if (!XMLValueChecker::IsGoodFileString(strValue))
-//            return NULL;
-//
-//         #ifdef _WIN32
-//            if (strValue.Length() + 1 + dm.GetProjectDataDir().Length() > MAX_PATH)
-//               return NULL;
-//         #endif
-//
-//         dm.AssignFile(summaryFileName,value,FALSE);
-//      }
-//      else if( !wxStricmp(attr, wxT("aliasfile")) )
-//      {
-//         if (XMLValueChecker::IsGoodPathName(strValue))
-//            aliasFileName.Assign(strValue);
-//         else if (XMLValueChecker::IsGoodFileName(strValue, dm.GetProjectDataDir()))
-//            // Allow fallback of looking for the file name, located in the data directory.
-//            aliasFileName.Assign(dm.GetProjectDataDir(), strValue);
-//         else 
-//            return NULL;
-//      }
-//      else if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
-//      { // integer parameters
-//         if( !wxStricmp(attr, wxT("aliasstart")) )
-//            aliasStart = nValue;
-//         else if( !wxStricmp(attr, wxT("aliaslen")) )
-//            aliasLen = nValue;
-//         else if( !wxStricmp(attr, wxT("aliaschannel")) )
-//            aliasChannel = nValue;
-//            
-//         //The folowing attributes don't exist yet - not quite sure what to do with them yet.
-////         else if( !wxStricmp(attr, wxT("min")) )
-////            min = nValue;
-////         else if( !wxStricmp(attr, wxT("max")) )
-////            max = nValue;
-////         else if( !wxStricmp(attr, wxT("rms")) )
-////            rms = nValue;
-//      }
-//   }
-//
-//   //file doesn't exist, but IsGoodFileName Checks that it does - maybe we should have a different method to check for valid names?
-//   if ( /*!XMLValueChecker::IsGoodFileName(summaryFileName.GetFullName(), summaryFileName.GetPath(wxPATH_GET_VOLUME)) || */
-//         !XMLValueChecker::IsGoodFileName(aliasFileName.GetFullName(), aliasFileName.GetPath(wxPATH_GET_VOLUME)) || 
-//         (aliasLen <= 0) || (aliasLen < 0.0) || !XMLValueChecker::IsValidChannel(aliasChannel) || (rms < 0.0))
-//      return NULL;
-//
-//
-//   //TODO: schedule for OD Loading
-//   
-//   return new ODPCMAliasBlockFile(summaryFileName, aliasFileName,
-//                                aliasStart, aliasLen, aliasChannel);
-return NULL;
+{
+
+   wxFileName summaryFileName;
+   wxFileName audioFileName;
+   sampleCount aliasStart=0, aliasLen=0;
+   int aliasChannel=0;
+   long nValue;
+   unsigned int   decodeType=0;
+   float rms=0.0f;
+
+
+
+   while(*attrs)
+   {
+      const wxChar *attr =  *attrs++;
+      const wxChar *value = *attrs++;
+      if (!value) 
+         break;
+
+      const wxString strValue = value;
+      if( !wxStricmp(attr, wxT("summaryfile")) )
+      {
+      
+         // Can't use XMLValueChecker::IsGoodFileName here, but do part of its test.
+         if (!XMLValueChecker::IsGoodFileString(strValue))
+            return NULL;
+
+         #ifdef _WIN32
+            if (strValue.Length() + 1 + dm.GetProjectDataDir().Length() > MAX_PATH)
+               return NULL;
+         #endif
+
+         dm.AssignFile(summaryFileName,value,FALSE);
+      }
+      else if( !wxStricmp(attr, wxT("audiofile")) )
+      {
+         if (XMLValueChecker::IsGoodPathName(strValue))
+            audioFileName.Assign(strValue);
+         else if (XMLValueChecker::IsGoodFileName(strValue, dm.GetProjectDataDir()))
+            // Allow fallback of looking for the file name, located in the data directory.
+            audioFileName.Assign(dm.GetProjectDataDir(), strValue);
+         else 
+            return NULL;
+      }
+      else if (XMLValueChecker::IsGoodInt(strValue) && strValue.ToLong(&nValue)) 
+      { // integer parameters
+         if( !wxStricmp(attr, wxT("aliasstart")) )
+            aliasStart = nValue;
+         else if( !wxStricmp(attr, wxT("aliaslen")) )
+            aliasLen = nValue;
+         else if( !wxStricmp(attr, wxT("aliaschannel")) )
+            aliasChannel = nValue;
+         else if( !wxStricmp(attr, wxT("decodetype")) )
+            decodeType = nValue;
+      }
+   }
+
+   //file doesn't exist, but IsGoodFileName Checks that it does - maybe we should have a different method to check for valid names?
+   if ( /*!XMLValueChecker::IsGoodFileName(summaryFileName.GetFullName(), summaryFileName.GetPath(wxPATH_GET_VOLUME)) || */
+         !XMLValueChecker::IsGoodFileName(audioFileName.GetFullName(), audioFileName.GetPath(wxPATH_GET_VOLUME)) || 
+         (aliasLen <= 0) || (aliasLen < 0.0) || !XMLValueChecker::IsValidChannel(aliasChannel) || (rms < 0.0))
+      return NULL;
+   
+   return new ODDecodeBlockFile(summaryFileName, audioFileName,
+                                aliasStart, aliasLen, aliasChannel,decodeType);
+
 }
 
 

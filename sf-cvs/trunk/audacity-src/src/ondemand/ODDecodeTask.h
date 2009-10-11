@@ -40,13 +40,6 @@ class ODFileDecoder;
 class ODDecodeTask:public ODTask
 {
  public:
-   enum {
-      eODNone,
-      eODFLAC,
-      eODMP3,
-      eODOTHER
-   } ODDecodeTypeEnum;
-
    // Constructor / Destructor
 
    /// Constructs an ODTask
@@ -61,14 +54,14 @@ class ODDecodeTask:public ODTask
    virtual const wxChar* GetTip(){return _("Decoding Waveform");}
    
    ///Subclasses should override to return respective type.
-   virtual int GetDecodeType(){return eODNone;}
+   virtual unsigned int GetODType(){return eODNone;}
    
    ///Creates an ODFileDecoder that decodes a file of filetype the subclass handles.
    virtual ODFileDecoder* CreateFileDecoder(const wxString & fileName)=0;
    
    ///there could be the ODBlockFiles of several FLACs in one track (after copy and pasting)
    ///so we keep a list of decoders that keep track of the file names, etc, and check the blocks against them.
-   ///Blocks that have IsDataAvailable()==false are blockfiles to be decoded.  if BlockFile::GetDecodeType()==ODDecodeTask::GetDecodeType() then
+   ///Blocks that have IsDataAvailable()==false are blockfiles to be decoded.  if BlockFile::GetDecodeType()==ODDecodeTask::GetODType() then
    ///this decoder should handle it.  Decoders are accessible with the methods below.  These aren't thread-safe and should only
    ///be called from the decoding thread.
    virtual ODFileDecoder* GetOrCreateMatchingFileDecoder(ODDecodeBlockFile* blockFile);
