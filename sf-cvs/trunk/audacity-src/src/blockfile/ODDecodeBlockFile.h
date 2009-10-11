@@ -43,11 +43,11 @@ class ODDecodeBlockFile : public SimpleBlockFile
 
    /// Create a disk file and write summary and sample data to it
    ODDecodeBlockFile(wxFileName baseFileName,wxFileName audioFileName, sampleCount aliasStart,
-                     sampleCount aliasLen, int aliasChannel, int decodeType);
+                     sampleCount aliasLen, int aliasChannel, unsigned int decodeType);
    /// Create the memory structure to refer to the given block file
    ODDecodeBlockFile(wxFileName existingFile, wxFileName audioFileName, sampleCount aliasStart,
-                     sampleCount aliasLen, int aliasChannel, int decodeType,
-                   float min, float max, float rms);
+                     sampleCount aliasLen, int aliasChannel, unsigned int decodeType,
+                   float min, float max, float rms, bool dataAvailable);
 
    virtual ~ODDecodeBlockFile();   
    //checks to see if summary data has been computed and written to disk yet.  Thread safe.  Blocks if we are writing summary data.
@@ -109,8 +109,8 @@ class ODDecodeBlockFile : public SimpleBlockFile
    virtual bool ReadSummary(void *data);
    
    ///Returns the type of audiofile this blockfile is loaded from.
-   virtual int GetDecodeType(){return mType;}
-   virtual void SetDecodeType(int type){mType=type;}
+   virtual unsigned int GetDecodeType(){return mType;}
+   virtual void SetDecodeType(unsigned int type){mType=type;}
    
    ///sets the amount of samples the clip associated with this blockfile is offset in the wavetrack (non effecting)
    void SetClipOffset(sampleCount numSamples){mClipOffset= numSamples;}
@@ -152,7 +152,7 @@ class ODDecodeBlockFile : public SimpleBlockFile
    virtual void *CalcSummary(samplePtr buffer, sampleCount len,
                              sampleFormat format);
    //The on demand type.
-   int mType;
+   unsigned int mType;
    
    ///This lock is for the filename (string) of the blockfile that contains summary/audio data 
    ///after decoding

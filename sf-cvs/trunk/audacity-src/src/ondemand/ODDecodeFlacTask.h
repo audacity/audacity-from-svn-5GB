@@ -57,7 +57,7 @@ class ODDecodeFlacTask:public ODDecodeTask
    
    ///Lets other classes know that this class handles flac   
    ///Subclasses should override to return respective type.
-   virtual int GetDecodeType(){return eODFLAC;}
+   virtual unsigned int GetODType(){return eODFLAC;}
 };
 
 

@@ -277,10 +277,6 @@ void ODPCMAliasBlockFile::SaveXML(XMLWriter &xmlFile)
       xmlFile.WriteAttr(wxT("aliasstart"), mAliasStart);
       xmlFile.WriteAttr(wxT("aliaslen"), mLen);
       xmlFile.WriteAttr(wxT("aliaschannel"), mAliasChannel);
-      //these have not been computed yet.
-      //xmlFile.WriteAttr(wxT("min"), mMin);
-      //xmlFile.WriteAttr(wxT("max"), mMax);
-     // xmlFile.WriteAttr(wxT("rms"), mRMS);
 
       xmlFile.EndTag(wxT("odpcmaliasblockfile"));
    }
@@ -298,8 +294,6 @@ BlockFile *ODPCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attr
    int aliasChannel=0;
    float rms=0;
    long nValue;
-
-
 
    while(*attrs)
    {
@@ -341,14 +335,6 @@ BlockFile *ODPCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attr
             aliasLen = nValue;
          else if( !wxStricmp(attr, wxT("aliaschannel")) )
             aliasChannel = nValue;
-            
-         //The folowing attributes don't exist yet - not quite sure what to do with them yet.
-//         else if( !wxStricmp(attr, wxT("min")) )
-//            min = nValue;
-//         else if( !wxStricmp(attr, wxT("max")) )
-//            max = nValue;
-//         else if( !wxStricmp(attr, wxT("rms")) )
-//            rms = nValue;
       }
    }
 
@@ -357,7 +343,6 @@ BlockFile *ODPCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attr
          !XMLValueChecker::IsGoodFileName(aliasFileName.GetFullName(), aliasFileName.GetPath(wxPATH_GET_VOLUME)) || 
          (aliasLen <= 0) || (aliasLen < 0.0) || !XMLValueChecker::IsValidChannel(aliasChannel) || (rms < 0.0))
       return NULL;
-
    
    return new ODPCMAliasBlockFile(summaryFileName, aliasFileName,
                                 aliasStart, aliasLen, aliasChannel);

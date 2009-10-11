@@ -41,6 +41,9 @@ class ODComputeSummaryTask:public ODTask
    
    virtual ODTask* Clone();
    
+   ///Subclasses should override to return respective type.
+   virtual unsigned int GetODType(){return eODPCMSummary;}
+   
    ///Return the task name
    virtual const char* GetTaskName(){return "ODComputeSummaryTask";}
    

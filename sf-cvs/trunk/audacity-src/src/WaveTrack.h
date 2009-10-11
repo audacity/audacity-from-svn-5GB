@@ -184,6 +184,9 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    ///Type of encoded file this is, such as eODFLAC
    bool AppendCoded(wxString fName, sampleCount start,
                             sampleCount len, int channel, int decodeType);
+                            
+   ///gets an int with OD flags so that we can determine which ODTasks should be run on this track after save/open, etc.
+   unsigned int GetODFlags();
                     
    ///Deletes all clips' wavecaches.  Careful, This may not be threadsafe.
    void DeleteWaveCaches();

@@ -130,6 +130,7 @@ scroll information.  It also has some status flags.
 #include "ondemand/ODManager.h"
 #include "ondemand/ODTask.h"
 #include "ondemand/ODComputeSummaryTask.h"
+#include "ondemand/ODDecodeFlacTask.h"
 #include "LoadModules.h"
 
 #include "Theme.h"
@@ -2391,22 +2392,51 @@ void AudacityProject::OpenFile(wxString fileName, bool addtohistory)
       TrackListIterator triter(mTracks);         
       tr = triter.First();
       
-      ODComputeSummaryTask* computeTask;
-      bool odUsed = false;
+      std::vector<ODTask*> newTasks;
+      ODTask* newTask;
+      //std::vector<ODDecodeTask*> decodeTasks;
+      unsigned int createdODTasks=0;
       while (tr) {
-         if (tr->GetKind() == Track::Wave)
-         {
-            if(!odUsed)
-            {
-               computeTask=new ODComputeSummaryTask;
-               odUsed=true;
+         if (tr->GetKind() == Track::Wave) {
+            //check the track for blocks that need decoding.  
+            //There may be more than one type e.g. FLAC/FFMPEG/lame 
+            unsigned int odFlags;
+            odFlags=((WaveTrack*)tr)->GetODFlags();
+            
+            //add the track to the already created tasks that correspond to the od flags in the wavetrack.
+            for(unsigned int i=0;i<newTasks.size();i++) {
+               if(newTasks[i]->GetODType() & odFlags)
+                  newTasks[i]->AddWaveTrack((WaveTrack*)tr);
             }
-            computeTask->AddWaveTrack((WaveTrack*)tr);
+            
+            //create whatever new tasks we need to.
+            //we want at most one instance of each class for the project
+            while((odFlags|createdODTasks) != createdODTasks)
+            {
+               newTask=NULL;
+               if(!(createdODTasks&ODTask::eODFLAC) && odFlags & ODTask::eODFLAC) {
+                  newTask= new ODDecodeFlacTask;
+                  createdODTasks= createdODTasks | ODTask::eODFLAC;
+               }
+               else if(!(createdODTasks&ODTask::eODPCMSummary) && odFlags & ODTask::eODPCMSummary) {
+                  newTask=new ODComputeSummaryTask;
+                  createdODTasks= createdODTasks | ODTask::eODPCMSummary;
+               }
+               else {
+                  printf("unrecognized OD Flag in blockfile.\n");
+                  break;
+               }
+               if(newTask)
+               {
+                  newTask->AddWaveTrack((WaveTrack*)tr);
+                  newTasks.push_back(newTask);
+               }
+            }            
          }
          tr = triter.Next();
       }
-      if(odUsed)
-         ODManager::Instance()->AddNewTask(computeTask);
+      for(unsigned int i=0;i<newTasks.size();i++) 
+         ODManager::Instance()->AddNewTask(newTasks[i]);
          
          //release the flag.
       ODManager::UnmarkLoadedODFlag();

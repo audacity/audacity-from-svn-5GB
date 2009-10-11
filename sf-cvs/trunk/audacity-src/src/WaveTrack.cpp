@@ -1295,6 +1295,19 @@ bool WaveTrack::AppendCoded(wxString fName, sampleCount start,
    return GetLastOrCreateClip()->AppendCoded(fName, start, len, channel, decodeType);
 }
 
+///gets an int with OD flags so that we can determine which ODTasks should be run on this track after save/open, etc.
+unsigned int WaveTrack::GetODFlags()
+{
+   unsigned int ret = 0;
+   for (WaveClipList::compatibility_iterator it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip* clip = it->GetData();
+      ret = ret | clip->GetSequence()->GetODFlags();
+   }
+   return ret;
+}
+
+
 sampleCount WaveTrack::GetBestBlockSize(sampleCount s)
 {
    sampleCount bestBlockSize = GetMaxBlockSize();
