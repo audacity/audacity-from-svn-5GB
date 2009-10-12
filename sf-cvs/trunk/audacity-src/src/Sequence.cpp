@@ -40,7 +40,7 @@ Sequence.cpp.  Not yet sure why.
 #include "Sequence.h"
 
 #include "BlockFile.h"
-#include "ODDecodeBlockFile.h"
+#include "blockfile/ODDecodeBlockFile.h"
 #include "DirManager.h"
 
 #include "blockfile/SimpleBlockFile.h"
