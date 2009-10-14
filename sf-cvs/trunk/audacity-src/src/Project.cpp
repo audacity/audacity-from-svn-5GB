@@ -1293,9 +1293,9 @@ void AudacityProject::FixScrollbars()
    mViewInfo.screen = ((double) panelWidth) / mViewInfo.zoom;
    mViewInfo.total = mTracks->GetEndTime() + mViewInfo.screen / 4;
 
+   // Don't remove time from total that's still on the screen 
    if (mViewInfo.h > mViewInfo.total - mViewInfo.screen) {
-      mViewInfo.h = mViewInfo.total - mViewInfo.screen;
-      rescroll = true;
+      mViewInfo.total = mViewInfo.h + mViewInfo.screen;
    }
    if (mViewInfo.h < 0.0) {
       mViewInfo.h = 0.0;
@@ -3616,20 +3616,9 @@ void AudacityProject::SkipEnd(bool shift)
    if (!shift || mViewInfo.sel0 > mViewInfo.sel1)
       mViewInfo.sel0 = len;
 
-   //STM: Determine wisely where to position the viewport
-   // There are two conditions:
-   //
-   // (1) If the total width of the sample is larger than the viewport
-   //     is wide, sets the viewport so that the end of the sample will 
-   //     have about 5% empty space after it
-   // (2) If the total width of the sample is less than the viewport is
-   //     wide, set the viewport's left edge to be 0.
-
-   //Calculates viewstart: End of sample  - 95% of a screen width
-   double viewstart = len - mViewInfo.screen * .95;
-   viewstart = viewstart > 0 ? viewstart : 0.0;
-
-   TP_ScrollWindow(viewstart);
+   // Make sure the end of the track is visible
+   mTrackPanel->ScrollIntoView(len);
+   mTrackPanel->Refresh(false);
 }
 
 
