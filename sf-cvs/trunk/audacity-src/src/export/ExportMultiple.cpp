@@ -548,7 +548,14 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
          S.AddTitle(msg);
          S.SetStyle(wxLC_LIST | wxLC_SINGLE_SEL | wxLC_HRULES | wxSUNKEN_BORDER);
          wxListCtrl *l = S.AddListControl();
+         l->SetBackgroundStyle(wxBG_STYLE_COLOUR);
+#if defined (__WXGTK__)
+         // setting dlg.GetBackgroundColour does not work as expected in wxGTK
+         l->SetBackgroundColour(wxColour(wxT("wxNullColour")));
+#else
          l->SetBackgroundColour(dlg.GetBackgroundColour());
+#endif
+         l->Refresh();
          for (size_t i = 0; i < mExported.GetCount(); i++) {
             l->InsertItem(i, mExported[i]);
          }
