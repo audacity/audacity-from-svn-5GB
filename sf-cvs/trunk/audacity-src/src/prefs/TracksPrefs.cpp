@@ -103,7 +103,7 @@ void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
       S.TieCheckBox(_("&Select all audio in project, if none selected"),    
                     wxT("/GUI/SelectAllOnNone"),
                     true);
-	   S.TieCheckBox(_("Enable cut &lines"),
+	   S.TieCheckBox(_("Enable cu&t lines"),
                     wxT("/GUI/EnableCutLines"),
                     false);
       S.TieCheckBox(_("Enable &dragging of left and right selection edges"),
@@ -112,7 +112,7 @@ void TracksPrefs::PopulateOrExchange(ShuttleGui & S)
       S.TieCheckBox(_("\"Move track focus\" c&ycles repeatedly through tracks"), 
                     wxT("/GUI/CircularTrackNavigation"),
                     false);
-      S.TieCheckBox(_("Editing a &clip can move other clips"),
+      S.TieCheckBox(_("Editing a clip can &move other clips"),
                     wxT("/GUI/EditClipCanMove"),
                     true);
 

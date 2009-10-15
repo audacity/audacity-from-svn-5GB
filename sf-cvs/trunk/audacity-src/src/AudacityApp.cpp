@@ -244,8 +244,9 @@ void QuitAudacity(bool bForce)
    else
 /*end+*/
    {
-      //This SaveWindowSize call was heavily modified to deal with iconized project windows
-      //efm5 28 September 2009
+      // This SaveWindowSize call was heavily modified to deal with iconized project windows
+      // Ed Musgrove
+      // 28 September 2009
       SaveWindowSize();
       while (gAudacityProjects.Count())
       {
@@ -303,17 +304,12 @@ void QuitAudacity()
    QuitAudacity(false);
 }
 
-
-//Use this new static Boolean to determine if the project window
-//   location and size have already been written to preferences.
-//efm5 28 September 2009
-static bool windowRectAlreadySaved = FALSE;
-
 void SaveWindowSize()
-   //This code was heavily modified to deal with iconized project windows.
-   //efm5 28 September 2009
+   // This code was heavily modified to deal with iconized project windows.
+   // Ed Musgrove
+   // 28 September 2009
 {
-   if (windowRectAlreadySaved)
+   if (wxGetApp().GetWindowRectAlreadySaved())
    {
       return;
    }
@@ -348,7 +344,7 @@ void SaveWindowSize()
       gPrefs->Write(wxT("/Window/Height"), defWndRect.GetHeight());
       gPrefs->Write(wxT("/Window/Maximized"), FALSE);
    }
-   windowRectAlreadySaved = TRUE;
+   wxGetApp().SetWindowRectAlreadySaved(TRUE);
 }
 
 #if defined(__WXGTK__) && defined(HAVE_GTK)
@@ -1238,6 +1234,11 @@ bool AudacityApp::OnInit()
    gInited = true;
    
    ModuleManager::Dispatch(AppInitialized);
+
+   // initialize mWindowRectAlreadySaved
+   // Ed Musgrove
+   // 11 October 2009
+   mWindowRectAlreadySaved = FALSE;
 
    return TRUE;
 }

@@ -560,7 +560,7 @@ void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized)
    }
    else {
       //This code was heavily modified to deal with iconized project windows
-      //efm5 28 September 2009
+      //Ed Musgrove 28 September 2009
       bool validWindowSize = FALSE;
       AudacityProject * validProject = NULL;
       size_t numProjects = gAudacityProjects.Count();
@@ -1829,7 +1829,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    //This is to repair the potential situation in which Audacity opens with
    //     the initial opening window invisible.
    //This SaveWindowSize call was modified to deal with iconized project windows
-   //efm5 28 September 2009
+   //Ed Musgrove 28 September 2009
       SaveWindowSize();
 
    mLastFocusedWindow = NULL;
@@ -1947,7 +1947,11 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
          QuitAudacity();
       else {
 #if !defined(__WXMAC__)
-         CreateNewAudacityProject();
+      // we want to use this new Audacity project from which to gather preference data
+      // Ed Musgrove
+      // 11 October 2009
+      wxGetApp().SetWindowRectAlreadySaved(FALSE);
+      CreateNewAudacityProject();
 #endif
       }
    }

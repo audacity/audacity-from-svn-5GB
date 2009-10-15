@@ -164,6 +164,11 @@ class AudacityApp:public wxApp {
 
    FileHistory *GetRecentFiles() {return mRecentFiles;}
    void AddFileToHistory(const wxString & name);
+   // Use these to access the new mmWindowRectAlreadySaved Boolean .
+   // Ed Musgrove
+   // 11 October 2009
+   bool GetWindowRectAlreadySaved()const {return mWindowRectAlreadySaved;}
+   void SetWindowRectAlreadySaved(bool alreadySaved) {mWindowRectAlreadySaved = alreadySaved;}
 
    Importer *mImporter;
 
@@ -199,6 +204,11 @@ class AudacityApp:public wxApp {
 //      ....      depends on whether [AudacityDir]\presets can be written
    wxString mAppHomeDir;
    wxString mPresetsDir;
+   // Use this new Boolean to determine if the project window
+   //   location and size have already been written to preferences.
+   // Ed Musgrove
+   // 11 October 2009
+   bool mWindowRectAlreadySaved;
 
 #if defined(__WXMSW__)
    IPCServ *mIPCServ;
