@@ -53,18 +53,23 @@ WX_DEFINE_LIST(AboutDialogCreditItemsList);
 
 void AboutDialog::CreateCreditsList()
 {
-   // The Audacity 1.3.x and 1.4.x team: developers and support
+   // The Audacity 1.3.x and 2.0.x team: developers and support
    // These will be split into two separate categories
 
    AddCredit(wxT("Gale Andrews"), roleTeamSupport);
    AddCredit(wxT("Richard Ash"), roleTeamSupport);
    AddCredit(wxT("Christian Brochec"), roleTeamSupport);
+   AddCredit(wxT("Michael Chinen"), roleTeamDeveloper);
    AddCredit(wxT("James Crook"), roleTeamDeveloper);
+   AddCredit(wxT("Steve Daulton"), roleTeamSupport);
+   AddCredit(wxT("Ruslan Ijbulatov"), roleTeamDeveloper);
    AddCredit(wxT("Vaughan Johnson"), roleTeamDeveloper);
+   AddCredit(wxT("Greg Kozikowski"), roleTeamSupport);
    AddCredit(wxT("Leland Lucius"), roleTeamDeveloper);
    AddCredit(wxT("Dominic Mazzoni"), roleTeamDeveloper);
    AddCredit(wxT("Markus Meyer"), roleTeamDeveloper);
    AddCredit(wxT("Alexandre Prokoudine"), roleTeamSupport);
+   AddCredit(wxT("Peter Sampson"), roleTeamSupport);
    AddCredit(wxT("Martyn Shaw"), roleTeamDeveloper);
 
    // Emeritus: people who were "lead developers" or made an
@@ -81,15 +86,18 @@ void AboutDialog::CreateCreditsList()
    // All other contributors
    
    AddCredit(wxT("Lynn Allan"), roleContributor);
+   AddCredit(wxT("David Bailes"), roleContributor);
    AddCredit(wxT("William Bland"), roleContributor);
    AddCredit(wxT("Chris Cannam"), roleContributor);
    AddCredit(wxT("Brian Gunlogson"), roleContributor);
+   AddCredit(wxT("Daniel Horgan"), roleContributor);
    AddCredit(wxT("Arun Kishore"), roleContributor);
    AddCredit(wxT("Paul Livesey"), roleContributor);
    AddCredit(wxT("Harvey Lubin"), roleContributor);
    AddCredit(wxT("Greg Mekkes"), roleContributor);
    AddCredit(wxT("Abe Milde"), roleContributor);
    AddCredit(wxT("Paul Nasca"), roleContributor);
+   AddCredit(wxT("André Pinto"), roleContributor);
    AddCredit(wxT("Augustus Saunders"), roleContributor);
    AddCredit(wxT("Mike Underwood"), roleContributor);
    AddCredit(wxT("Jun Wan"), roleContributor);
@@ -98,18 +106,25 @@ void AboutDialog::CreateCreditsList()
    
    AddCredit(wxT("expat"), roleLibrary);
    AddCredit(wxT("FLAC"), roleLibrary);
+   AddCredit(wxT("iAVC"), roleLibrary);
    AddCredit(wxT("LAME"), roleLibrary);
    AddCredit(wxT("libmad"), roleLibrary);
    AddCredit(wxT("libsndfile"), roleLibrary);
    AddCredit(wxT("Nyquist"), roleLibrary);
    AddCredit(wxT("Ogg Vorbis"), roleLibrary);
    AddCredit(wxT("PortAudio"), roleLibrary);
+   AddCredit(wxT("portsmf"), roleLibrary);
    AddCredit(wxT("Resample"), roleLibrary);
+   AddCredit(wxT("sbsms"), roleLibrary);
    AddCredit(wxT("SoundTouch"), roleLibrary);
+   AddCredit(wxT("TwoLAME"), roleLibrary);
+   AddCredit(wxT("Vamp"), roleLibrary);
    AddCredit(wxT("wxWidgets"), roleLibrary);
 
    AddCredit(wxT("Dave Beydler"), roleThanks);
+   AddCredit(wxT("Brian Cameron"), roleThanks);
    AddCredit(wxT("Jason Cohen"), roleThanks);
+   AddCredit(wxT("Benjamin Drung"), roleThanks);
    AddCredit(wxT("Dave Fancella"), roleThanks);
    AddCredit(wxT("Steve Harris"), roleThanks);
    AddCredit(wxT("Daniel James"), roleThanks);
@@ -120,6 +135,7 @@ void AboutDialog::CreateCreditsList()
    AddCredit(wxT("Jason Pepas"), roleThanks);
    AddCredit(wxT("Mark Phillips"), roleThanks);
    AddCredit(wxT("Jonathan Ryshpan"), roleThanks);
+   AddCredit(wxT("Michael Schwendt"), roleThanks);
    AddCredit(wxT("Patrick Shirkey"), roleThanks);
    AddCredit(wxT("David R. Sky"), roleThanks);
    AddCredit(wxT("Tuomas Suutari"), roleThanks);
@@ -172,14 +188,14 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
    
 
    wxString par1Str = _(
-     "Audacity is a free program written by a team of volunteer <a href=\"http://audacity.sourceforge.net/community/developers\">developers</a> around the world. We are grateful to <a href=\"http://sourceforge.net\">SourceForge.net</a> for our project hosting. Audacity is available for Windows 98 and later, Mac OS X, Linux and other Unix-like operating systems. Older versions of Audacity are available for Mac OS 9.");
+     "Audacity is a free program written by a worldwide team of volunteer <a href=\"http://audacity.sourceforge.net/community/developers\">developers</a>. We thank <a href=\"http://sourceforge.net\">SourceForge.net</a> for our project hosting. Audacity is available for Windows 98 and later, Mac OS X, Linux and other Unix-like systems. For Windows 98/ME, use version 1.2.6 or 1.3.7 Beta; for Mac OS 9, version 1.0.0.");
 
    #if 1 // Is this beta or not?
    wxString par2Str = _(
-     "This is a Beta version of the program. It may contain bugs and unfinished features. We depend on your feedback: please send bug reports and feature requests to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>.");
+     "This is a Beta version of the program. It may contain bugs and unfinished features. We depend on your feedback: please send bug reports and feature requests to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help, use the Help menu in the program, view the tips and tricks on our <a href=\"http://wiki.audacityteam.org/index.php?title=Audacity_Wiki_Home_Page\">Wiki</a> or visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>.");
    #else
    wxString par2Str = _(
-     "This is a stable, completed release of the program. However, if you find a bug or have a suggestion for us, please write to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>.");
+     "This is a stable, completed release of the program. However, if you find a bug or have a suggestion for us, please write to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help, view the tips and tricks on our <a href=\"http://wiki.audacityteam.org/index.php?title=Audacity_Wiki_Home_Page\">Wiki</a> or visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>.");
    #endif
 
    wxString translatorCredits;
@@ -213,37 +229,37 @@ void AboutDialog::PopulateAudacityPage( ShuttleGui & S )
       wxT("<p><center><b>") +
 
       wxString::Format(_("Audacity %s Development Team"), versionStr.c_str()) +
-      wxT("</b><p><br>") +
+      wxT("</b><br>") +
       GetCreditsByRole(roleTeamDeveloper) +
       wxT("<p><br><b>") +
 
       wxString::Format(_("Audacity %s Support Team"), versionStr.c_str()) +
-      wxT("</b><p><br>") +
+      wxT("</b><br>") +
       GetCreditsByRole(roleTeamSupport) +
       wxT("<p><br><b>") +
 
       _("Emeritus Developers") +
-      wxT("</b><p><br>") +
+      wxT("</b><br>") +
       GetCreditsByRole(roleEmeritusDeveloper) +
       wxT("<p><br><b>") +
 
       _("Other Emeritus Team Members") +
-      wxT("</b><p><br>") +
+      wxT("</b><br>") +
       GetCreditsByRole(roleEmeritusSupport) +
       wxT("<p><br><b>") +
 
       _("Other Contributors") +
-      wxT("</b><p><br>") +
+      wxT("</b><br>") +
       GetCreditsByRole(roleContributor) +
       wxT("<p><br><b>") +
 
       _("Audacity is based on code from the following projects:") +
-      wxT("</b><p><br>") +
+      wxT("</b><br>") +
       GetCreditsByRole(roleLibrary) +
       wxT("<p><br><b>") +
 
       _("Special thanks:") +
-      wxT("</b><p><br>") +
+      wxT("</b><br>") +
       GetCreditsByRole(roleThanks) +
       wxT("<p><br></center>") +
 	  
