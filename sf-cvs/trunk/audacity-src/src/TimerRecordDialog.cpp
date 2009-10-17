@@ -44,7 +44,7 @@ enum { // control IDs
    ID_TIMETEXT_DURATION
 };
 
-const int kTimerInterval = 500; // every 500 ms => 2 updates per second   
+const int kTimerInterval = 50; // ms
 
 static double wxDateTime_to_AudacityTime(wxDateTime& dateTime)
 {
@@ -243,7 +243,7 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
       this->OnTimer(dummyTimerEvent);
 
       // Loop for progress display during recording.
-      while (bIsRecording && updateResult == eProgressSuccess) 
+      while (bIsRecording && (updateResult == eProgressSuccess)) 
       {
          wxMilliSleep(kTimerInterval);
          updateResult = progress.Update();
