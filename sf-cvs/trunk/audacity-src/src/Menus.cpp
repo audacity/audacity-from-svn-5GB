@@ -2931,7 +2931,7 @@ void AudacityProject::OnRedo()
 
 void AudacityProject::OnCut()
 {
-   TrackListIterator iter(mTracks);
+   TrackAndGroupIterator iter(mTracks);
    Track *n = iter.First();
    Track *dest;
 
@@ -3003,7 +3003,12 @@ void AudacityProject::OnCut()
             break;
          }
       }
-      n = iter.Next();
+      // Selected wave and label tracks may need group iteration
+      if (IsSticky() && n->GetSelected() &&
+            (n->GetKind() == Track::Wave || n->GetKind() == Track::Label))
+         n = iter.NextGroup();
+      else
+         n = iter.Next();
    }
 
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
