@@ -97,7 +97,7 @@ void AboutDialog::CreateCreditsList()
    AddCredit(wxT("Greg Mekkes"), roleContributor);
    AddCredit(wxT("Abe Milde"), roleContributor);
    AddCredit(wxT("Paul Nasca"), roleContributor);
-   AddCredit(wxT("André Pinto"), roleContributor);
+   AddCredit(wxT("Andr\u00e9 Pinto"), roleContributor);
    AddCredit(wxT("Augustus Saunders"), roleContributor);
    AddCredit(wxT("Mike Underwood"), roleContributor);
    AddCredit(wxT("Jun Wan"), roleContributor);
