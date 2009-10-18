@@ -308,6 +308,7 @@ WaveClip::WaveClip(DirManager *projDirManager, sampleFormat format, int rate)
    mAppendBuffer = NULL;
    mAppendBufferLen = 0;
    mDirty = 0;
+   mIsPlaceholder = false;
 }
 
 WaveClip::WaveClip(WaveClip& orig, DirManager *projDirManager)
@@ -339,6 +340,7 @@ WaveClip::WaveClip(WaveClip& orig, DirManager *projDirManager)
    mAppendBuffer = NULL;
    mAppendBufferLen = 0;
    mDirty = 0;
+   mIsPlaceholder = orig.GetIsPlaceholder();
 }
 
 WaveClip::~WaveClip()

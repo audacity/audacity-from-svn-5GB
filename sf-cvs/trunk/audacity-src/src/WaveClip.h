@@ -213,6 +213,10 @@ public:
    // Cache of values to colour pixels of Spectrogram - used by TrackArtist
    SpecPxCache    *mSpecPxCache;
 
+   // AWD, Oct 2009: for pasting whitespace at the end of selection
+   bool GetIsPlaceholder() { return mIsPlaceholder; };
+   void SetIsPlaceholder(bool val) { mIsPlaceholder = val; };
+
 protected:
    wxRect mDisplayRect;
 
@@ -239,6 +243,9 @@ protected:
    // Cut Lines are nothing more than ordinary wave clips, with the
    // offset relative to the start of the clip.
    WaveClipList mCutLines;
+
+   // AWD, Oct. 2009: for whitespace-at-end-of-selection pasting
+   bool mIsPlaceholder;
 };
 
 #endif

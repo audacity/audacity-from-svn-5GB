@@ -278,14 +278,14 @@ void LabelTrack::ShiftLabelsOnInsert(double length, double pt)
 {
    for (unsigned int i=0;i<mLabels.GetCount();i++){
       // label is after the insert point
-      if (mLabels[i]->t > pt) {
+      if (mLabels[i]->t >= pt) {
          mLabels[i]->t = mLabels[i]->t + length;
          mLabels[i]->t1 = mLabels[i]->t1 + length;
       // label is before the insert point
-      }else if (mLabels[i]->t1 < pt) {
+      }else if (mLabels[i]->t1 <= pt) {
          //nothing
       // insert point is inside the label
-      }else if (mLabels[i]->t < pt && mLabels[i]->t1 > pt){
+      }else{
          mLabels[i]->t1 = mLabels[i]->t1 + length;
       }
    }
@@ -2171,6 +2171,54 @@ bool LabelTrack::Paste(double t, Track * src)
       l->title = sl->mLabels[j]->title;
       mLabels.Insert(l, pos++);
       len++;
+   }
+
+   return true;
+}
+
+// This repeats the labels in a time interval a specified number of times.
+// Like Paste(), it does not shift existing labels over
+//  - It assumes that you've already called ShiftLabelsOnInsert(), because
+//  sometimes with linking enabled that's hard to avoid.
+//  - It assumes that you inserted the necessary extra time at t1, not t0.
+bool LabelTrack::Repeat(double t0, double t1, int n)
+{
+   // Sanity-check the arguments
+   if (n < 0 || t1 < t0) return false;
+
+   double tLen = t1 - t0;
+
+   for (unsigned int i = 0; i < mLabels.GetCount(); i++)
+   {
+      if (mLabels[i]->t >= t0 && mLabels[i]->t <= t1 &&
+            mLabels[i]->t1 >= t0 && mLabels[i]->t1 <= t1)
+      {
+         // Label is completely inside the selection; duplicate it in each
+         // repeat interval
+         unsigned int pos = i; // running label insertion position in mLabels
+
+         for (int j = 1; j <= n; j++)
+         {
+            LabelStruct *l = new LabelStruct();
+            l->t = mLabels[i]->t + j * tLen;
+            l->t1 = mLabels[i]->t1 + j * tLen;
+            l->title = mLabels[i]->title;
+
+            // Figure out where to insert
+            while (pos < mLabels.Count() && mLabels[pos]->t < l->t)
+               pos++;
+            mLabels.Insert(l, pos);
+         }
+      }
+      else if (mLabels[i]->t < t0 &&
+            mLabels[i]->t1 >= t0 && mLabels[i]->t1 <= t1)
+      {
+         // Label ends inside the selection; ShiftLabelsOnInsert() hasn't touched
+         // it, and we need to extend it through to the last repeat interval
+         mLabels[i]->t1 += n * tLen;
+      }
+      
+      // Other cases have already been handled by ShiftLabelsOnInsert()
    }
 
    return true;

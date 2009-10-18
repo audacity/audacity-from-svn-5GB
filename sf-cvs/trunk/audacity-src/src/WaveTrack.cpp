@@ -438,6 +438,25 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
          }
       }
    }
+   
+   // AWD, Oct 2009: If the selection ends in whitespace, create a placeholder
+   // clip representing that whitespace
+   if (newTrack->GetEndTime() + 1.0 / newTrack->GetRate() < t1 - t0)
+   {
+      WaveClip *placeholder = new WaveClip(mDirManager,
+            newTrack->GetSampleFormat(), newTrack->GetRate());
+      placeholder->SetIsPlaceholder(true);
+      if ( ! placeholder->InsertSilence(
+               0, (t1 - t0) - newTrack->GetEndTime()) )
+      {
+         delete placeholder;
+      }
+      else
+      {
+         placeholder->Offset(newTrack->GetEndTime());
+         newTrack->mClips.Append(placeholder);
+      }
+   }
 
    *dest = newTrack;
 
@@ -518,7 +537,10 @@ bool WaveTrack::ClearAndPaste(double t0, // Start of time to clear
 
    // If duration is 0, then it's just a plain paste
    if (dur == 0.0) {
-      return Paste(t0, src, tracks, relativeLabels);
+      if (useHandlePaste)
+         return HandlePaste(t0, src);
+      else
+         return Paste(t0, src, tracks, relativeLabels);
    }
 
    // If provided time warper was NULL, use a default one that does nothing
@@ -863,38 +885,74 @@ bool WaveTrack::HandleGroupPaste(double t0, Track *src, TrackList* tracks, bool 
       // the present track is in a project with groups but doesn't belong to any of them
       return HandlePaste(t0, src);
 
+   // False return from this function causes its changes to not be pushed to
+   // the undo stack.  So we paste into this track first, so any failure
+   // (usually from "clips can't move" mode) comes before other changes.
+   // Failures to paste to the group tracks should not cause this function to
+   // return false; the result might be OK with the user, and if not he can
+   // easily undo it
+   if (!HandlePaste(t0, src))
+   {
+      return false;
+   }
+
    for( ; t; t = it.Next() ) {
       if (t->GetKind() == Track::Wave) {
+         WaveTrack *wt = (WaveTrack *)t;
          if (t==this) {
-            //paste in the track
-            if ( !( ((WaveTrack *)t)->HandlePaste(t0, src)) ) return false;
+            // This track has already been pasted; if it's a stereo track skip
+            // over the other channel as well.
             if (t->GetLinked()) t=it.Next();
          }
          else {
             if (! (t->GetSelected()) ) {
                if ( sel_len > length )
-                  // if selection is bigger than the content to add then we need to clear the extra length in the group tracks
-                  ((WaveTrack*)t)->HandleClear(t0+length, t0+sel_len, false, false);
+                  // if selection is bigger than the content to add then we
+                  // need to clear the extra length in the group tracks
+                  wt->HandleClear(t0+length, t0+sel_len, false, false);
                else if (sel_len < length) {               
-                  // if selection is smaller than the content to add then we need to add extra silence in the group tracks
-                  TrackFactory *factory = p->GetTrackFactory();
-                  WaveTrack *tmp = factory->NewWaveTrack( ((WaveTrack*)t)->GetSampleFormat(), ((WaveTrack*)t)->GetRate());
-                  tmp->InsertSilence(0.0, length-sel_len);
-                  tmp->Flush();
-                  if ( !( ((WaveTrack *)t)->HandlePaste(t0+sel_len, tmp)) ) return false;
+                  // if selection is smaller than the content to add then we
+                  // need to add extra space in the group tracks. If the track
+                  // is empty at this point insert whitespace; otherwise,
+                  // silence
+                  if (wt->IsEmpty(t0+sel_len, t0+sel_len))
+                  {
+                     // Have to check if clips can move in this case
+                     bool clipsCanMove = true;
+                     gPrefs->Read(wxT("/GUI/EditClipCanMove"), &clipsCanMove);
+                     if (clipsCanMove)
+                     {
+                        Track *tmp = NULL;
+                        wt->Cut(t0 + sel_len,
+                              wt->GetEndTime()+1.0/wt->GetRate(), &tmp, false);
+                        wt->HandlePaste(t0 + length, tmp);
+                        delete tmp;
+                     }
+                  }
+                  else
+                  {
+                     TrackFactory *factory = p->GetTrackFactory();
+                     WaveTrack *tmp = factory->NewWaveTrack( wt->GetSampleFormat(), wt->GetRate());
+                     tmp->InsertSilence(0.0, length-sel_len);
+                     tmp->Flush();
+                     wt->HandlePaste(t0+sel_len, tmp);
+                  }
                }
             }
          }
       }
       else if (t->GetKind() == Track::Label) {
          LabelTrack *lt = (LabelTrack *)t;
-         if (relativeLabels && (sel_len != 0.0))
-            lt->ScaleLabels(info->sel0, info->sel1, length/sel_len);
-         else {
-            if ((length - sel_len) > 0.0)
-               lt->ShiftLabelsOnInsert(length-sel_len, t0);
-            else if ((length - sel_len) < 0.0)
-               lt->ShiftLabelsOnClear(info->sel0+length, info->sel1);
+         if (!t->GetSelected())
+         {
+            if (relativeLabels && (sel_len != 0.0))
+               lt->ScaleLabels(info->sel0, info->sel1, length/sel_len);
+            else {
+               if ((length - sel_len) > 0.0)
+                  lt->ShiftLabelsOnInsert(length-sel_len, t0);
+               else if ((length - sel_len) < 0.0)
+                  lt->ShiftLabelsOnClear(info->sel0+length, info->sel1);
+            }
          }
       }
    }
@@ -933,17 +991,21 @@ bool WaveTrack::HandlePaste(double t0, Track *src)
    //   the only behaviour which is different to what was done before, but it
    //   shouldn't confuse users too much.
    //
-   // - If multiple clips should be pasted, these are always pasted as single
-   //   clips, and the current clip is splitted, when necessary. This may seem
-   //   strange at first, but it probably is better than trying to auto-merge
-   //   anything. The user can still merge the clips by hand (which should be
-   //   a simple command reachable by a hotkey or single mouse click).
+   // - If multiple clips should be pasted, or a single clip that does not fill
+   // the duration of the pasted track, these are always pasted as single
+   // clips, and the current clip is splitted, when necessary. This may seem
+   // strange at first, but it probably is better than trying to auto-merge
+   // anything. The user can still merge the clips by hand (which should be a
+   // simple command reachable by a hotkey or single mouse click).
    //
 
    if (other->GetNumClips() == 0)
       return false;
 
    //printf("paste: we have at least one clip\n");
+   
+   bool singleClipMode = (other->GetNumClips() == 1 &&
+         other->GetStartTime() == 0.0);
 
    double insertDuration = other->GetEndTime();
    WaveClipList::compatibility_iterator it;
@@ -952,7 +1014,7 @@ bool WaveTrack::HandlePaste(double t0, Track *src)
    
    // Make room for the pasted data
    if (editClipCanMove) {
-      if (other->GetNumClips() > 1) {
+      if (!singleClipMode) {
          // We need to insert multiple clips, so split the current clip and
          // move everything to the right, then try to paste again
          if (!IsEmpty(t0, GetEndTime())) {
@@ -974,7 +1036,7 @@ bool WaveTrack::HandlePaste(double t0, Track *src)
       }
    }
 
-   if (other->GetNumClips() == 1)
+   if (singleClipMode)
    {
       // Single clip mode
       // printf("paste: checking for single clip mode!\n");
@@ -1054,11 +1116,15 @@ bool WaveTrack::HandlePaste(double t0, Track *src)
    {
       WaveClip* clip = it->GetData();
 
-      WaveClip* newClip = new WaveClip(*clip, mDirManager);
-      newClip->Resample(mRate);
-      newClip->Offset(t0);
-      newClip->MarkChanged();
-      mClips.Append(newClip);
+      // AWD Oct. 2009: Don't actually paste in placeholder clips
+      if (!clip->GetIsPlaceholder())
+      {
+         WaveClip* newClip = new WaveClip(*clip, mDirManager);
+         newClip->Resample(mRate);
+         newClip->Offset(t0);
+         newClip->MarkChanged();
+         mClips.Append(newClip);
+      }
    }
    return true;
 }
