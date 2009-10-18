@@ -60,11 +60,11 @@ void ProjectsPrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartRadioButtonGroup(wxT("/FileFormats/SaveProjectWithDependencies"), wxT("ask"));
       {
-         S.TieRadioButton(_("Always &copy all audio into project (safest)"),
+         S.TieRadioButton(_("&Always copy all audio into project (safest)"),
                           wxT("copy"));
-         S.TieRadioButton(_("&Do not copy any audio"),
+         S.TieRadioButton(_("Do &not copy any audio"),
                           wxT("never"));
-         S.TieRadioButton(_("&Ask user"),
+         S.TieRadioButton(_("As&k user"),
                           wxT("ask"));
       }
       S.EndRadioButtonGroup();
@@ -73,13 +73,13 @@ void ProjectsPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Auto save"));
    {
-      S.TieCheckBox(_("Auto save a copy of the project in a separate folder"),
+      S.TieCheckBox(_("Auto &save a copy of the project in a separate folder"),
                     wxT("/Directories/AutoSaveEnabled"),
                     true);
 
       S.StartThreeColumn();
       {
-         w = S.TieTextBox(_("Auto save interval:"),
+         w = S.TieTextBox(_("Auto save in&terval:"),
                           wxT("/Directories/AutoSaveMinutes"),
                           2.0,
                           9);

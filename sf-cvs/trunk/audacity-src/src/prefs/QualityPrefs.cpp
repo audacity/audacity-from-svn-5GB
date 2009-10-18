@@ -126,7 +126,7 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartMultiColumn(2);
       {
-         S.AddPrompt(_("Default Sample Rate:"));
+         S.AddPrompt(_("Default Sample &Rate:"));
 
          S.StartMultiColumn(2);
          {
@@ -151,7 +151,7 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
          }
          S.EndHorizontalLay();
 
-         S.TieChoice(_("Default Sample Format:"),
+         S.TieChoice(_("Default Sample &Format:"),
                      wxT("/SamplingRate/DefaultProjectSampleFormat"),
                      floatSample,
                      mSampleFormatNames,
@@ -168,14 +168,14 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
       {
          S.SetStretchyCol(2);
 
-         S.TieChoice(_("Sample Rate Converter:"),
+         S.TieChoice(_("Sample Rate Con&verter:"),
                      Resample::GetFastMethodKey(),
                      Resample::GetFastMethodDefault(),
                      mConverterNames,
                      mConverterLabels),
          S.SetSizeHints(mConverterNames);
 
-         S.TieChoice(_("Dither"),
+		 S.TieChoice(_("&Dither:"),
                      wxT("/Quality/DitherAlgorithm"),
                      Dither::none,
                      mDitherNames,
@@ -190,14 +190,14 @@ void QualityPrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartMultiColumn(2);
       {
-         S.TieChoice(_("Sample Rate Converter:"),
+         S.TieChoice(_("Sample Rate Conver&ter:"),
                      Resample::GetBestMethodKey(),
                      Resample::GetBestMethodDefault(),
                      mConverterNames,
                      mConverterLabels),
          S.SetSizeHints(mConverterNames);
 
-         S.TieChoice(_("Dither"),
+		 S.TieChoice(_("Dit&her:"),
                      wxT("/Quality/HQDitherAlgorithm"),
                      Dither::shaped,
                      mDitherNames,
