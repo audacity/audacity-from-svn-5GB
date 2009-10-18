@@ -3299,6 +3299,10 @@ void AudacityProject::OnPaste()
    bool advanceClipboard = true;
    double srcLength = c->GetEndTime();
 
+   // Keeps track of whether n would be the first WaveTrack in its group to
+   // receive data from the paste.
+   bool firstInGroup = true;
+
    while (n && c) {
       if (n->GetSelected()) {
          advanceClipboard = true;
@@ -3324,7 +3328,11 @@ void AudacityProject::OnPaste()
          if (!c){
             c = tmpC;
             while (n && (c->GetKind() != n->GetKind()) )
+            {
                n = iter.Next();
+               if (n && n->GetKind() == Track::Label)
+                  firstInGroup = true;
+            }
             if (!n) c = NULL;               
          }
          
@@ -3357,7 +3365,12 @@ void AudacityProject::OnPaste()
             ((WaveTrack *) c)->Lock();
 
          if (c->GetKind() == Track::Wave && n && n->GetKind() == Track::Wave)
-            pastedSomething = ((WaveTrack*)n)->ClearAndPaste(t0, t1, (WaveTrack*)c);
+         {
+            // If not the first in group we set useHandlePaste to true
+            pastedSomething = ((WaveTrack*)n)->ClearAndPaste(t0, t1,
+                  (WaveTrack*)c, true, true, NULL, false, !firstInGroup);
+            firstInGroup = !pastedSomething;
+         }
          else
             pastedSomething = n->Paste(t0, c);
                  
@@ -3372,12 +3385,23 @@ void AudacityProject::OnPaste()
                if (!((WaveTrack *) n)->IsEmpty(t0, t1)) {
                   ((WaveTrack *) n)->Clear(t0, t1);
                }
+
+               // firstInGroup should always be false here, unless pasting to
+               // the first channel failed
+               if (firstInGroup)
+               {
+                  pastedSomething = ((WaveTrack *)n)->Paste(t0, c);
+                  firstInGroup = !pastedSomething;
+               }
+               else
+               {
+                  pastedSomething = ((WaveTrack *)n)->HandlePaste(t0, c);
+               }
             }
             else {
-               ((WaveTrack *) n)->Clear(t0, t1);
+               n->Clear(t0, t1);
+               n->Paste(t0, c);
             }
-            
-            n->Paste(t0, c);
          }
          
          if (msClipProject != this && c->GetKind() == Track::Wave)
@@ -3390,6 +3414,8 @@ void AudacityProject::OnPaste()
       }
 
       n = iter.Next();
+      if (n && n->GetKind() == Track::Label)
+         firstInGroup = true;
    }
    
    // This block handles the cases where our clipboard is smaller

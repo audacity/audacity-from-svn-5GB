@@ -25,7 +25,9 @@
 #include "Repeat.h"
 #include "../ShuttleGui.h"
 #include "../WaveTrack.h"
+#include "../LabelTrack.h"
 #include "../widgets/TimeTextCtrl.h"
+#include "../Project.h"
 
 #include <wx/button.h>
 #include <wx/defs.h>
@@ -113,44 +115,55 @@ bool EffectRepeat::Process()
 
    int nTrack = 0;
    bool bGoodResult = true;
-	double maxDestLen = 0.0; // used to change selection to generated bit
+   double maxDestLen = 0.0; // used to change selection to generated bit
+   
+   // Is linking enabled?
+   AudacityProject *p = GetActiveProject();
+   bool isSticky = ( p && p->IsSticky());
 
    TrackListIterator iter(mOutputTracks);
-   // go to first wavetrack
-   Track* t;
-   for (t = iter.First(); t->GetKind() != Track::Wave; t = iter.Next());
-   if (!t)
-      return false;
 
    // we only do a "group change" in the first selected track of the group. 
    // Paste call does changes to the group tracks
    bool first = true;
 
-   for (; t && bGoodResult; t = iter.Next()) {
+   for (Track *t = iter.First(); t && bGoodResult; t = iter.Next()) {
       if (t->GetKind() == Track::Label)
+      {
+         // We repeat labels if linking is enabled and a WaveTrack before this
+         // has been repeated, or if the label track is selected
+         if (t->GetSelected() || (isSticky && !first))
+         {
+            LabelTrack* track = (LabelTrack*)t;
+
+            // If this track isn't selected, ShiftLabelsOnInsert() has
+            // already been called
+            if (t->GetSelected())
+               track->ShiftLabelsOnInsert((mT1 - mT0) * repeatCount, mT1);
+
+            if (!track->Repeat(mT0, mT1, repeatCount))
+            {
+               bGoodResult = false;
+               break;
+            }
+         }
          first = true;
-      else if (t->GetKind() == Track::Wave && t->GetSelected()) {
+      }
+      else if (t->GetKind() == Track::Wave && t->GetSelected())
+      {
          WaveTrack* track = (WaveTrack*)t;
 
-         double trackStart = track->GetStartTime();
-         double trackEnd = track->GetEndTime();
-         double t0 = mT0 < trackStart? trackStart: mT0;
-         double t1 = mT1 > trackEnd? trackEnd: mT1;
-
-         if (t1 <= t0)
-            continue;
-
-         sampleCount start = track->TimeToLongSamples(t0);
-         sampleCount end = track->TimeToLongSamples(t1);
+         sampleCount start = track->TimeToLongSamples(mT0);
+         sampleCount end = track->TimeToLongSamples(mT1);
          sampleCount len = (sampleCount)(end - start);
          double tLen = track->LongSamplesToTime(len);
-         double tc = t0 + tLen;
+         double tc = mT0 + tLen;
 
          if (len <= 0)
             continue;
 
          Track *dest;
-         track->Copy(t0, t1, &dest);
+         track->Copy(mT0, mT1, &dest);
          for(int j=0; j<repeatCount; j++)
          {
             if (first) {
@@ -182,7 +195,6 @@ bool EffectRepeat::Process()
    if (bGoodResult)
    {
       // Select the new bits + original bit
-//      mT0 = mT1;
 	   mT1 = maxDestLen;
    }
 
