@@ -53,35 +53,46 @@ void EffectsPrefs::PopulateOrExchange(ShuttleGui & S)
 {
    S.SetBorder(2);
 
-   S.StartStatic(_("Enable"));
+   S.StartStatic(_("Enable Effects"));
    {
+
+#if USE_AUDIO_UNITS
+      S.TieCheckBox(_("Audio Unit"),
+                    wxT("/AudioUnits/Enable"),
+                    true);
+#endif
+
 #if USE_LADSPA
-      S.TieCheckBox(_("LADSPA effects"),
+      S.TieCheckBox(_("&LADSPA"),
                     wxT("/Ladspa/Enable"),
                     true);
 #endif
 
 #if USE_NYQUIST
-      S.TieCheckBox(_("Nyquist effects"),
+      S.TieCheckBox(_("N&yquist"),
                     wxT("/Nyquist/Enable"),
                     true);
 #endif
 
 #if USE_VAMP
-      S.TieCheckBox(_("VAMP effects"),
+      S.TieCheckBox(_("&VAMP"),
                     wxT("/VAMP/Enable"),
                     true);
 #endif
-      S.AddFixedText(_("Restart Audacity to apply changes."));
+
+#if USE_VST
+      S.TieCheckBox(_("V&ST"),
+                    wxT("/VST/Enable"),
+                    true);
+#endif
+
+	  S.AddFixedText(_("Restart Audacity to apply changes."));
    }
    S.EndStatic();
 
 #if USE_AUDIO_UNITS
    S.StartStatic(_("Audio Unit Effects"));
    {
-      S.TieCheckBox(_("Enable Audio Unit effects"),
-                    wxT("/AudioUnits/Enable"),
-                    true);
       S.TieCheckBox(_("Display Audio Unit effects in graphical mode"), 
                     wxT("/AudioUnits/GUI"),
                     true);
@@ -97,13 +108,10 @@ void EffectsPrefs::PopulateOrExchange(ShuttleGui & S)
 #if USE_VST
    S.StartStatic(_("VST Effects"));
    {
-      S.TieCheckBox(_("Enable VST effects"),
-                    wxT("/VST/Enable"),
-                    true);
-      S.TieCheckBox(_("Display VST effects in graphical mode"), 
+      S.TieCheckBox(_("&Display VST effects in graphical mode"), 
                     wxT("/VST/GUI"),
                     true);
-      S.TieCheckBox(_("Rescan VST effects next time Audacity is started"), 
+      S.TieCheckBox(_("&Rescan VST effects next time Audacity is started"), 
                     wxT("/VST/Rescan"),
                     false);
    }
