@@ -52,21 +52,21 @@ void WarningsPrefs::PopulateOrExchange(ShuttleGui & S)
 {
    S.SetBorder(2);
 
-   S.StartStatic(_("Show Warnings/Prompts"));
+   S.StartStatic(_("Show Warnings/Prompts for"));
    {
-      S.TieCheckBox(_("When saving &projects"),
+      S.TieCheckBox(_("Saving &projects"),
                     wxT("/Warnings/FirstProjectSave"),
                     true);
-      S.TieCheckBox(_("When saving &empty project"),    
+      S.TieCheckBox(_("Saving &empty project"),    
                     wxT("/GUI/EmptyCanBeDirty"),
                     true);
-      S.TieCheckBox(_("When &disk space is getting low"),
+      S.TieCheckBox(_("&Low disk space at program start up"),
                     wxT("/Warnings/DiskSpaceWarning"),
                     true);
-      S.TieCheckBox(_("When mixing down to &stereo during export"),
+      S.TieCheckBox(_("Mixing down to &stereo during export"),
                     wxT("/Warnings/MixStereo"),
                     true);
-      S.TieCheckBox(_("When mixing down to &mono during export"),
+      S.TieCheckBox(_("Mixing down to &mono during export"),
                     wxT("/Warnings/MixMono"),
                     true);
    }
