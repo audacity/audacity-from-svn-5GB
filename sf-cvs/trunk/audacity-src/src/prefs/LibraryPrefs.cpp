@@ -121,13 +121,13 @@ void LibraryPrefs::PopulateOrExchange(ShuttleGui & S)
                            true,
                            wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL);
          S.Id(ID_FFMPEG_FIND_BUTTON);
-         wxButton *bfnd = S.AddButton(_("&Locate..."), 
+         wxButton *bfnd = S.AddButton(_("Loca&te..."), 
                                       wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL);
          S.AddVariableText(_("FFmpeg Library:"),
                            true,
                            wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL);
          S.Id(ID_FFMPEG_DOWN_BUTTON);
-         wxButton *bdwn = S.AddButton(_("&Download"),
+         wxButton *bdwn = S.AddButton(_("&Dow&nload"),
                                       wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL);
 #if !defined(USE_FFMPEG)
          bdwn->Enable(FALSE);

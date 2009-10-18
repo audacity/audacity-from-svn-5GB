@@ -110,7 +110,7 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
       S.StartMultiColumn(2);
       {
          S.Id(HostID);
-         mHost = S.TieChoice(_("Host") + wxString(wxT(":")),
+         mHost = S.TieChoice(_("&Host") + wxString(wxT(":")),
                              wxT("/AudioIO/Host"), 
                              wxT(""),
                              mHostNames,
@@ -129,7 +129,7 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
       S.StartMultiColumn(2);
       {
          S.Id(PlayID);
-         mPlay = S.AddChoice(_("Device") + wxString(wxT(":")),
+         mPlay = S.AddChoice(_("&Device") + wxString(wxT(":")),
                              wxEmptyString,
                              &empty);
       }
@@ -142,12 +142,12 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
       S.StartMultiColumn(2);
       {
          S.Id(RecordID);
-         mRecord = S.AddChoice(_("Device") + wxString(wxT(":")),
+         mRecord = S.AddChoice(_("De&vice") + wxString(wxT(":")),
                                wxEmptyString,
                                &empty);
 
          S.Id(ChannelsID);
-         mChannels = S.AddChoice(_("Channels") + wxString(wxT(":")),
+         mChannels = S.AddChoice(_("Cha&nnels") + wxString(wxT(":")),
                                  wxEmptyString,
                                  &empty);
       }

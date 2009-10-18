@@ -70,7 +70,7 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
                     wxT("/AudioIO/Playthrough"),
                     false);
 #endif
-      S.TieCheckBox(_("&Software Playthrough: Play new track while recording or monitoring"),
+      S.TieCheckBox(_("&Software Playthrough: Listen while recording or monitoring new track"),
                     wxT("/AudioIO/SWPlaythrough"),
                     false);
 #if !defined(__WXMAC__)
@@ -85,14 +85,14 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
       {
          // only show the following controls if we use Portaudio v19, because
          // for Portaudio v18 we always use default buffer sizes
-         w = S.TieTextBox(_("Audio to buffer:"),
+         w = S.TieTextBox(_("Audio to &buffer:"),
                           wxT("/AudioIO/LatencyDuration"),
                           DEFAULT_LATENCY_DURATION,
                           9);
          S.AddUnits(_("milliseconds (higher = more latency)"));
          w->SetName(w->GetName() + wxT(" ") + _("milliseconds (higher = more latency)"));
 
-         w = S.TieTextBox(_("Latency correction:"),
+         w = S.TieTextBox(_("L&atency correction:"),
                           wxT("/AudioIO/LatencyCorrection"),
                           DEFAULT_LATENCY_CORRECTION,
                           9);
@@ -105,7 +105,7 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Sound Activated Recording"));
    {
-      S.TieCheckBox(_("Sound Activated Recording"),
+      S.TieCheckBox(_("Sound Activated &Recording"),
                     wxT("/AudioIO/SoundActivatedRecord"),
                     false);
 
@@ -114,7 +114,7 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
          S.SetStretchyCol(1);
 
          int dBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
-         S.TieSlider(_("Sound Activation Level (dB):"),
+         S.TieSlider(_("Sound Activation Le&vel (dB):"),
                      wxT("/AudioIO/SilenceLevel"),
                      -50,
                      0,

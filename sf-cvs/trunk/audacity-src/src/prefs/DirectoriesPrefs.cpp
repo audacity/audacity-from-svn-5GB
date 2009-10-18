@@ -86,12 +86,12 @@ void DirectoriesPrefs::PopulateOrExchange(ShuttleGui & S)
          S.SetStretchyCol(1);
 
          S.Id(TempDirID);
-         mTempDir = S.TieTextBox(_("Location:"),
+         mTempDir = S.TieTextBox(_("&Location:"),
                                  wxT("/Directories/TempDir"),
                                  wxT(""),
                                  30);
          S.Id(ChooseButtonID);
-         S.AddButton(_("Choose..."));
+         S.AddButton(_("C&hoose..."));
 
          S.AddFixedText(_("Free Space:"));
          mFreeSpace = S.AddVariableText(wxT(""));
@@ -102,13 +102,13 @@ void DirectoriesPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Audio cache"));
    {
-      S.TieCheckBox(_("Play and/or record using RAM (useful for slow drives)"),
+      S.TieCheckBox(_("Play and/or record using &RAM (useful for slow drives)"),
                     wxT("/Directories/CacheBlockFiles"),
                     false);
 
       S.StartTwoColumn();
       {
-         S.TieTextBox(_("Minimum Free Memory (MB):"),
+         S.TieTextBox(_("Mi&nimum Free Memory (MB):"),
                       wxT("/Directories/CacheLowMem"),
                       16,
                       9);

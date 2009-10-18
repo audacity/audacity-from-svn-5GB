@@ -83,14 +83,14 @@ void SpectrumPrefs::PopulateOrExchange(ShuttleGui & S)
    {
       S.StartMultiColumn(2);
       {
-         S.TieChoice(_("Window size") + wxString(wxT(":")),
+         S.TieChoice(_("Window &size") + wxString(wxT(":")),
                      wxT("/Spectrum/FFTSize"), 
                      256,
                      mSizeChoices,
                      mSizeCodes);
          S.SetSizeHints(mSizeChoices);
 
-         S.TieChoice(_("Window type") + wxString(wxT(":")),
+         S.TieChoice(_("Window &type") + wxString(wxT(":")),
                      wxT("/Spectrum/WindowType"), 
                      3,
                      mTypeChoices,
@@ -131,38 +131,38 @@ void SpectrumPrefs::PopulateOrExchange(ShuttleGui & S)
       S.StartTwoColumn();
       {
          mMinFreq =
-            S.TieTextBox(_("Minimum Frequency (Hz):"),
+            S.TieTextBox(_("Mi&nimum Frequency (Hz):"),
                          wxT("/Spectrum/MinFreq"),
                          0,
                          12);
 
          mMaxFreq =
-            S.TieTextBox(_("Maximum Frequency (Hz):"),
+            S.TieTextBox(_("Ma&ximum Frequency (Hz):"),
                          wxT("/Spectrum/MaxFreq"),
                          8000,
                          12);
 
          mGain =
-            S.TieTextBox(_("Gain (dB):"),
+            S.TieTextBox(_("&Gain (dB):"),
                          wxT("/Spectrum/Gain"),
                          20,
                          8);
 
          mRange =
-            S.TieTextBox(_("Range (dB):"),
+            S.TieTextBox(_("&Range (dB):"),
                          wxT("/Spectrum/Range"),
                          80,
                          8);
 
          mFrequencyGain =
-            S.TieTextBox(_("Frequency gain: (dB/dec)"),
+			 S.TieTextBox(_("Frequency g&ain (dB/dec):"),
                     wxT("/Spectrum/FrequencyGain"),
                     0,
                     4);
       }
       S.EndTwoColumn();
 
-      S.TieCheckBox(_("Show the spectrum using &grayscale colors"),
+      S.TieCheckBox(_("S&how the spectrum using grayscale colors"),
                     wxT("/Spectrum/Grayscale"),
                     false);
 

@@ -13,7 +13,7 @@
 *******************************************************************//**
 
 \class GUIPrefs
-\brief A PrefsPanel for general GUI prefernces.
+\brief A PrefsPanel for general GUI preferences.
 
 *//*******************************************************************/
 
@@ -93,10 +93,10 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Display"));
    {
-      S.TieCheckBox(_("Er&gonomic order of audio I/O buttons"),
+      S.TieCheckBox(_("&Ergonomic order of audio I/O buttons"),
                     wxT("/GUI/ErgonomicTransportButtons"),
                     true);
-      S.TieCheckBox(_("Show '&How to get Help' message at program start up"),
+      S.TieCheckBox(_("S&how 'How to get Help' message at program start up"),
                     wxT("/GUI/ShowSplashScreen"),
                     true);
 
@@ -104,21 +104,21 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
 
       S.StartMultiColumn(2);
       {
-         S.TieChoice(_("Meter/Waveform dB range:"),
+         S.TieChoice(_("Meter/Waveform dB &range:"),
                      wxT("/GUI/EnvdBRange"),
                      wxT("60"),
                      mRangeChoices,
                      mRangeCodes);
          S.SetSizeHints(mRangeChoices);
 
-         S.TieChoice(_("Language:"),
+         S.TieChoice(_("&Language:"),
                      wxT("/Locale/Language"),
                      wxT("en"),
                      mLangNames,
                      mLangCodes);
          S.SetSizeHints(mLangNames);
 
-         S.TieChoice(_("Location of Manual:"),
+         S.TieChoice(_("Location of &Manual:"),
                      wxT("/GUI/Help"),
                      wxT("Local"),
                      mHtmlHelpChoices,
@@ -131,7 +131,7 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Behaviors"));
    {
-      S.TieCheckBox(_("Cl&osing last window quits Audacity"),
+      S.TieCheckBox(_("Closing last window &quits Audacity"),
                     wxT("/GUI/QuitOnClose"),
                     bQuitOnCloseDefault);
       S.TieCheckBox(_("&Beep on completion of longer activities"),
@@ -142,7 +142,7 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
 
    S.StartStatic(_("Modes"));
    {
-      S.TieCheckBox(_("Cl&eanSpeech Mode (Customized GUI)"), 
+      S.TieCheckBox(_("Clea&nSpeech Mode (Customized GUI)"), 
                     wxT("/Batch/CleanSpeechMode"),
                     false);
 #ifdef __WXDEBUG__
