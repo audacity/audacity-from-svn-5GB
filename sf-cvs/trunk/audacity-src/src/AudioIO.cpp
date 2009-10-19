@@ -259,6 +259,8 @@ AudioIO::AudioIO()
 #ifdef AUTOMATED_INPUT_LEVEL_ADJUSTMENT
    mAILAActive = false;
 #endif
+   mSilentBuf = NULL;
+   mLastSilentBufSize = 0;
 
    mStreamToken = 0;
    mStopStreamCount = 0;
@@ -350,6 +352,9 @@ AudioIO::~AudioIO()
       (Kill is the not-graceful way.) */
    wxYield();
    mThread->Delete();
+   
+   if(mSilentBuf) 
+      DeleteSamples(mSilentBuf);
 
    delete [] mTempFloats;
    delete mThread;
@@ -2071,6 +2076,23 @@ void AudioIO::FillBuffers()
                   mPlaybackMixers[i]->Process(lrint(deltat * mRate));
                samplePtr warpedSamples = mPlaybackMixers[i]->GetBuffer();
                mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
+               //if looping and processed is less than the full chunk/block/buffer that gets pulled from
+               //other longer tracks, then we still need to advance the ring buffers or
+               //we'll trip up on ourselves when we start them back up again.
+               //if not looping we never start them up again, so its okay to not do anything
+               if(processed < lrint(deltat * mRate) && mPlayLooped)
+               {
+                  if(mLastSilentBufSize < lrint(deltat * mRate))
+                  {
+                     //delete old if necessary
+                     if(mSilentBuf) 
+                        DeleteSamples(mSilentBuf);
+                     mLastSilentBufSize=lrint(deltat * mRate);
+                     mSilentBuf = NewSamples(mLastSilentBufSize, floatSample);
+                     ClearSamples(mSilentBuf, floatSample, 0, mLastSilentBufSize);
+                  }
+                  mPlaybackBuffers[i]->Put(mSilentBuf, floatSample, lrint(deltat * mRate) - processed);                  
+               }
             }
 
             // msmeyer: If playing looped, check if we are at the end of the buffer
