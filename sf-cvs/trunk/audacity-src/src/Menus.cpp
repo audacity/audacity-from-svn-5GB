@@ -330,7 +330,18 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
                       AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag);
 
-   c->AddItem(wxT("Undo"), _("&Undo"), FN(OnUndo), wxT("Ctrl+Z"),
+   wxString undoStr = _("");
+   UndoManager *undoMgr = GetUndoManager();
+   if(undoMgr->UndoAvailable())
+   {
+      wxString undoDescription = _("");
+      unsigned int state = undoMgr->GetCurrentState();
+      undoMgr->GetShortDescription(state, &undoDescription);
+      undoStr = _("&Undo " + undoDescription);
+   }
+   else
+      undoStr = _("Can't Undo");
+   c->AddItem(wxT("Undo"), undoStr, FN(OnUndo), wxT("Ctrl+Z"),
               AudioIONotBusyFlag | UndoAvailableFlag,
               AudioIONotBusyFlag | UndoAvailableFlag);
 
@@ -342,7 +353,17 @@ void AudacityProject::CreateMenusAndCommands()
       wxT("Ctrl+Shift+Z");
 #endif
 
-   c->AddItem(wxT("Redo"), _("&Redo"), FN(OnRedo), key,
+   wxString redoStr = _("");
+   if(undoMgr->RedoAvailable())
+   {
+      wxString redoDescription = _("");
+      unsigned int state = undoMgr->GetCurrentState();
+      undoMgr->GetShortDescription(state + 1, &redoDescription); // redo state is current state + 1
+      redoStr = _("&Redo " + redoDescription);
+   }
+   else
+      redoStr = _("Can't Redo");
+   c->AddItem(wxT("Redo"), redoStr, FN(OnRedo), key,
               AudioIONotBusyFlag | RedoAvailableFlag,
               AudioIONotBusyFlag | RedoAvailableFlag);
 
