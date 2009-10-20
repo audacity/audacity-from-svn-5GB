@@ -174,7 +174,7 @@ int ExportOGG::Export(AudacityProject *project,
    TrackList *tracks = project->GetTracks();
    double    quality = (gPrefs->Read(wxT("/FileFormats/OggExportQuality"), 50)/(float)100.0);
 
-   wxLogNull logNo;            // temporarily disable wxWindows error messages 
+   wxLogNull logNo;            // temporarily disable wxWidgets error messages 
    int updateResult = eProgressSuccess;
    int       eos = 0;
 

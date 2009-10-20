@@ -215,7 +215,7 @@ int ExportMP2::Export(AudacityProject *project,
    double rate = project->GetRate();
    TrackList *tracks = project->GetTracks();
 
-   wxLogNull logNo;             /* temporarily disable wxWindows error messages */
+   wxLogNull logNo;             /* temporarily disable wxWidgets error messages */
 
    twolame_options *encodeOptions;
    encodeOptions = twolame_init();

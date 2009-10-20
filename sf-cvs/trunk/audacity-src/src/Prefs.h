@@ -7,7 +7,7 @@
   Dominic Mazzoni
   Markus Meyer
 
-  Audacity uses wxWindows' wxFileConfig class to handle preferences.
+  Audacity uses wxWidgets' wxFileConfig class to handle preferences.
   In Audacity versions prior to 1.3.1, it used wxConfig, which would
   store the prefs in a platform-dependent way (e.g. in the registry
   on Windows). Now it always stores the settings in a configuration file

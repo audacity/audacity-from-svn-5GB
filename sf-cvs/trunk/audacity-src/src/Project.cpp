@@ -1849,7 +1849,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       DeleteClipboard();
 
    // JKC: For Win98 and Linux do not detach the menu bar.
-   // We want wxWindows to clean it up for us.
+   // We want wxWidgets to clean it up for us.
    // TODO: Is there a Mac issue here??
    // SetMenuBar(NULL);
 

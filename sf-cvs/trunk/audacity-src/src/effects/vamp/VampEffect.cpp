@@ -334,7 +334,7 @@ VampEffectDialog::VampEffectDialog(VampEffect *effect,
    mParameters = plugin->getParameterDescriptors();
 
 #ifdef __WXMSW__
-   // On Windows, for some reason, wxWindows calls OnTextCtrl during creation
+   // On Windows, for some reason, wxWidgets calls OnTextCtrl during creation
    // of the text control, and VampEffectDialog::OnTextCtrl calls HandleText, 
    // which assumes all the fields have been initialized. 
    // This can give us a bad pointer crash, so manipulate inSlider to 

@@ -239,7 +239,7 @@ private:
 // has border, selection markers, play marker.
 // Once TrackPanel uses wxSizers, we will derive it from some 
 // wxWindow and the GetSize and SetSize functions
-// will then be wxWindows functions instead.
+// will then be wxWidgets functions instead.
 class AUDACITY_DLL_API AdornedRulerPanel : public wxPanel
 {
 public:

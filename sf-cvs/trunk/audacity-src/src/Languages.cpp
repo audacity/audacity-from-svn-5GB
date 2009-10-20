@@ -17,10 +17,10 @@
   language names (like "Español", "Français", and "Português").
   We use our own list of translations of language names (i.e.
   "Français" instead of "French") but we fallback on the language
-  name in wxWindows if we don't have it listed.
+  name in wxWidgets if we don't have it listed.
 
   This code is designed to work well with all of the current
-  languages, but adapt to any language that wxWindows supports.
+  languages, but adapt to any language that wxWidgets supports.
   Other languages will only be supported if they're added to
   the database using wxLocale::AddLanguage.
 

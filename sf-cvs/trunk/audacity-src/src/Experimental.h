@@ -118,7 +118,7 @@
 
    // A long term plan is to use dso's and dlls for Audacity extensions
    // These are 'WX' plug ins that manage their own displays using
-   // wxWindows.
+   // wxWidgets.
    //#define EXPERIMENTAL_WX_PLUG_INS
 #endif
 

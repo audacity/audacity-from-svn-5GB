@@ -16,7 +16,7 @@
   UnusableImportPlugin, ImportPluginList and UnusableImportPluginList.
 
   Since this is part of libaudacity, it must not use any GUI parts
-  of wxWindows.
+  of wxWidgets.
 
 *//****************************************************************//**
 

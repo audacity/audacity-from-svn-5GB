@@ -225,7 +225,7 @@ int ExportFLAC::Export(AudacityProject *project,
    double    rate    = project->GetRate();
    TrackList *tracks = project->GetTracks();
    
-   wxLogNull logNo;            // temporarily disable wxWindows error messages 
+   wxLogNull logNo;            // temporarily disable wxWidgets error messages 
    int updateResult = eProgressSuccess;
 
    int levelPref;
