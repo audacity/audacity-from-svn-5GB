@@ -708,6 +708,21 @@ bool WaveTrack::SplitDelete(double t0, double t1)
    return HandleClear(t0, t1, addCutLines, split);
 }
 
+WaveClip* WaveTrack::RemoveAndReturnClip(WaveClip* clip)
+{
+   wxWaveClipListNode* node = mClips.Find(clip);
+   WaveClip* clipReturn = node->GetData();
+   mClips.DeleteNode(node);
+   return clipReturn;
+}
+
+void WaveTrack::AddClip(WaveClip* clip)
+{
+   // Uncomment the following line after we correct the problem of zero-length clips
+   //if (CanInsertClip(clip))
+      mClips.Append(clip);
+}
+
 bool WaveTrack::HandleGroupClear(double t0, double t1, bool addCutLines, bool split, TrackList* tracks)
 {
    // get tracks

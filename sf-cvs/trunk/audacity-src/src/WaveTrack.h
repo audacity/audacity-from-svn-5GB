@@ -306,6 +306,12 @@ class AUDACITY_DLL_API WaveTrack: public Track {
    void MoveClipToTrack(int clipIndex, WaveTrack* dest);
    void MoveClipToTrack(WaveClip *clip, WaveTrack* dest);
    
+   // Remove the clip from the track and return a pointer to it.
+   WaveClip* RemoveAndReturnClip(WaveClip* clip);
+   
+   // Append a clip to the track
+   void AddClip(WaveClip* clip);
+   
    // Merge two clips, that is append data from clip2 to clip1,
    // then remove clip2 from track.
    // clipidx1 and clipidx2 are indices into the clip list.
