@@ -6419,7 +6419,7 @@ void TrackPanel::OnFormatChange(wxCommandEvent & event)
    Refresh(false);
 }
 
-/// Converts a format enumeration to a wxWindows menu item Id.
+/// Converts a format enumeration to a wxWidgets menu item Id.
 int TrackPanel::IdOfFormat( int format )
 {
    switch (format) {
@@ -6476,7 +6476,7 @@ void TrackPanel::OnRateChange(wxCommandEvent & event)
    Refresh(false);
 }
 
-/// Converts a sampling rate to a wxWindows menu item id
+/// Converts a sampling rate to a wxWidgets menu item id
 int TrackPanel::IdOfRate( int rate )
 {
    for(int i=0;i<nRates;i++) {

@@ -10,7 +10,7 @@
   their scrolling.
 
   Audacity is free software.
-  This file is licensed under the wxWindows license, see License.txt
+  This file is licensed under the wxWidgets license, see License.txt
 
 **********************************************************************/
 

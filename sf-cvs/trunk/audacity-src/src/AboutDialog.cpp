@@ -417,7 +417,7 @@ void AboutDialog::PopulateInformationPage( ShuttleGui & S )
          _("Audio playback and recording"), wxString(wxT("v19")));
 
    informationStr += wxT("<tr><td>");  // start new row
-   // wxWindows version:
+   // wxWidgets version:
    informationStr += wxVERSION_STRING;
    informationStr += wxT("</td><td/><td>");
    /* unicode or not? */

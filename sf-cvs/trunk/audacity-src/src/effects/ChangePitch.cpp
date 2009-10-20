@@ -714,7 +714,7 @@ void ChangePitchDialog::OnPreview(wxCommandEvent &event)
 
 // helper fns
 
-// NOTE: wxWindows ref (C:\wxWindows_2.4.0\docs\htmlhelp) says 
+// NOTE: wxWidgets ref (C:\wxWidgets_2.4.0\docs\htmlhelp) says 
 // wxRadioButton::SetSelection "does not cause a 
 // wxEVT_COMMAND_RadioButton_SELECTED event to get emitted", but it 
 // calls SetFocus, which sure as heck DOES select the radio button.

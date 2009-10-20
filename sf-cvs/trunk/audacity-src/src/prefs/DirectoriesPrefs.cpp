@@ -180,7 +180,7 @@ bool DirectoriesPrefs::Validate()
       }
 
       if (!tempDir.Mkdir(0755, wxPATH_MKDIR_FULL)) {
-         /* wxWindows throws up a decent looking dialog */
+         /* wxWidgets throws up a decent looking dialog */
          return false;
       }
    }

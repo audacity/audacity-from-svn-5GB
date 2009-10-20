@@ -619,7 +619,7 @@ int CommandManager::NextIdentifier(int ID)
 {
    ID++;
 
-   //Skip the reserved identifiers used by wxWindows
+   //Skip the reserved identifiers used by wxWidgets
    if((ID >= wxID_LOWEST) && (ID <= wxID_HIGHEST))
       ID = wxID_HIGHEST+1;
 

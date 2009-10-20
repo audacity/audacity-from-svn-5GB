@@ -969,7 +969,7 @@ bool AudacityApp::OnInit()
    LoadModules(*mCmdHandler);
 
    // Locale
-   // wxWindows 2.3 has a much nicer wxLocale API.  We can make this code much
+   // wxWidgets 2.3 has a much nicer wxLocale API.  We can make this code much
    // better once we move to wx 2.3/2.4.
 
    wxString lang = gPrefs->Read(wxT("/Locale/Language"), wxT(""));
@@ -1277,7 +1277,7 @@ bool AudacityApp::InitCleanSpeech()
    wxString presetsDefaultLoc =
       wxFileName(userdatadir, wxT("presets")).GetFullPath();
 
-   // Stop wxWindows from printing its own error messages (not used ... does this really do anything?)
+   // Stop wxWidgets from printing its own error messages (not used ... does this really do anything?)
    wxLogNull logNo;
    
    // Try temp dir that was stored in prefs first
@@ -1326,7 +1326,7 @@ bool AudacityApp::InitTempDir()
       tempFromPrefs = wxT("");
    #endif
 
-   // Stop wxWindows from printing its own error messages
+   // Stop wxWidgets from printing its own error messages
 
    wxLogNull logNo;
 
