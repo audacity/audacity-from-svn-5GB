@@ -49,6 +49,9 @@ void CommandHandler::OnReceiveCommand(AppCommandEvent &event)
 
    // Done with the command so delete it.
    delete cmd;
+
+   // Redraw the project
+   mCurrentContext->proj->RedrawProject();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
