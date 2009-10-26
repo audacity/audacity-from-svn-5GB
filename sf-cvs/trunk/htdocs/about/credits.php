@@ -44,7 +44,6 @@
 <h3><?=_("Technical Leadership Council")?></h3>
 <ul>
   <li><a href="http://dominic-mazzoni.com/">Dominic Mazzoni</a> - originator of Audacity</li>
-  <li><a href="http://claimid.com/mbrubeck">Matt Brubeck</a> - major early contributor</li>
   <li>Richard Ash</li>
   <li>James Crook</li>
   <li>Vaughan Johnson</li>
@@ -55,7 +54,7 @@
 
 <h3><?=_("Emeritus: distinguished Audacity team members, not currently active")?></h3>
 <ul>
-  <li><a href="http://claimid.com/mbrubeck">Matt Brubeck</a>, <?=_("developer")?></li>
+  <li><a href="http://limpet.net/mbrubeck/">Matt Brubeck</a>, <?=_("developer")?></li>
   <li><a href="http://www.cs.cmu.edu/~rbd">Roger Dannenberg</a>, <?=_("developer")?></li>
   <li><a href="http://www.reverberate.org/">Joshua Haberman</a>, <?=_("developer")?></li>
   <li>Monty Montgomery, <?=_("developer")?></li>
