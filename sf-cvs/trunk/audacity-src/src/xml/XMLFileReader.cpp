@@ -98,6 +98,8 @@ void XMLFileReader::startElement(void *userData, const char *name,
       XMLTagHandler  **newHandler = new XMLTagHandler*[This->mMaxDepth*2];
       for(int i=0; i<This->mMaxDepth; i++)
          newHandler[i] = This->mHandler[i];
+      delete[] This->mHandler;
+      This->mHandler = newHandler;
       This->mMaxDepth *= 2;
    }
 
