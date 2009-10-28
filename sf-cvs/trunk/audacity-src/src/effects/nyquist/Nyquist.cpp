@@ -1049,22 +1049,48 @@ void NyquistDialog::OnSlider(wxCommandEvent & /* event */)
       wxASSERT(slider && text);
       
       int val = slider->GetValue();
-      ctrl->val = (val / (double)ctrl->ticks)*
+
+      double newVal = (val / (double)ctrl->ticks)*
          (ctrl->high - ctrl->low) + ctrl->low;
-      
+
+      // Determine precision for displayed number
+      int precision = ctrl->high - ctrl->low < 1 ? 3 :
+                      ctrl->high - ctrl->low < 10 ? 2 :
+                      ctrl->high - ctrl->low < 100 ? 1 :
+                      0;
+
+      // If the value is at least one tick different from the current value
+      // change it (this prevents changes from manually entered values unless
+      // the slider actually moved)
+      if (fabs(newVal - ctrl->val) >= (1 / (double)ctrl->ticks) *
+                                      (ctrl->high - ctrl->low) && 
+          fabs(newVal - ctrl->val) >= pow(0.1, precision) / 2 )
+      {
+         // First round to the appropriate precision
+         newVal *= pow(10.0, precision);
+         newVal = floor(newVal + 0.5);
+         newVal /= pow(10.0, precision);
+
+         ctrl->val = newVal;
+      }
+
       wxString valStr;
       if (ctrl->type == NYQ_CTRL_REAL) {
-         if (ctrl->high - ctrl->low < 1) {
-            valStr = Internat::ToDisplayString(ctrl->val, 3);
+         // If this is a user-typed value, allow unlimited precision
+         if (ctrl->val != newVal)
+         {
+            valStr = Internat::ToDisplayString(ctrl->val);
          }
-         else if (ctrl->high - ctrl->low < 10) {
-            valStr = Internat::ToDisplayString(ctrl->val, 2);
-         }
-         else if (ctrl->high - ctrl->low < 100) {
-            valStr = Internat::ToDisplayString(ctrl->val, 1);
-         }
-         else {
-            valStr.Printf(wxT("%d"), (int)floor(ctrl->val + 0.5));
+         else
+         {
+            if (precision == 0)
+            {
+               valStr.Printf(wxT("%d"), (int)floor(ctrl->val + 0.5));
+            }
+            else
+            {
+               valStr = Internat::ToDisplayString(ctrl->val, precision);
+            }
          }
       }
       else if (ctrl->type == NYQ_CTRL_INT) {
