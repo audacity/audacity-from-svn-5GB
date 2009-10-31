@@ -57,96 +57,7 @@ for drawing different aspects of the label and its text box.
 #include "Project.h"
 #include "commands/CommandManager.h"
 
-#if defined(__WXGTK__) & defined(HAVE_GTK)
-// As of wxGTK 2.8.9, there is a problem in the wxClipboard class that
-// allows recursive event processing.  This problem has been corrected
-// by wxWidgets 2.9+.  However, this han't made it into a release yet,
-// so we have to work around it.
-//
-// This is done by pulling/merging in some code from wx29 and creating
-// the following class to capture events while accessing the clipboard
-// to prevent the asynchronous clipboard access from causing recursive
-// event processing.
-
-#include <wx/app.h>
-#include <wx/dynarray.h>
-
-#include <gtk/gtk.h>
-
-extern GtkWidget *wxGetRootWindow();
-
-static void main_do_event(GdkEvent *event, wxArrayPtrVoid *queue)
-{
-   switch (event->type)
-   {
-      case GDK_NOTHING:
-         // Ignore it
-      break;
-
-      case GDK_SELECTION_REQUEST:
-      case GDK_SELECTION_NOTIFY:
-      case GDK_SELECTION_CLEAR:
-#if GTK_CHECK_VERSION(2,6,0)
-      case GDK_OWNER_CHANGE:
-#endif
-         // process it now
-         gtk_main_do_event(event);
-      break;
-
-      default:
-         // process it later (but make a copy; the caller will free the event pointer)
-         queue->Add(gdk_event_copy(event));
-      break;
-   }
-
-   // don't allow idle callbacks while we're active
-   wxTheApp->SuspendIdleCallback();
-
-   return;
-}
-
-class CaptureEvents
-{
- public:
-   CaptureEvents()
-   {
-#if wxUSE_LOG
-      // disable log flushing from here because a call to wxYield() shouldn't
-      // normally result in message boxes popping up &c
-      wxLog::Suspend();
-#endif
-
-      // temporarily replace the global GDK event handler with our function
-      gdk_event_handler_set((GdkEventFunc)main_do_event, &queue, NULL);
-
-      // temporarily suspend idle callbacks
-      wxTheApp->SuspendIdleCallback();
-   }
-
-   virtual ~CaptureEvents()
-   {
-      gdk_event_handler_set((GdkEventFunc)gtk_main_do_event, NULL, NULL);
-   
-      // put all unprocessed GDK events back in the queue
-      GdkDisplay* disp = gtk_widget_get_display(wxGetRootWindow());
-      size_t cnt = queue.GetCount();
-      for (size_t i = 0; i < cnt; i++) {
-         GdkEvent* event = (GdkEvent*)queue[i];
-         // NOTE: gdk_display_put_event makes a copy of the event passed to it
-         gdk_display_put_event(disp, event);
-         gdk_event_free(event);
-      }
-
-#if wxUSE_LOG
-      // let the logs be flashed again
-      wxLog::Resume();
-#endif
-   }
-
- private:
-   wxArrayPtrVoid queue;
-};
-#endif
+#include "CaptureEvents.h"
 
 wxFont LabelTrack::msFont;
 
@@ -2251,12 +2162,42 @@ bool LabelTrack::Silence(double t0, double t1)
    int len = mLabels.Count();
 
    for (int i = 0; i < len; i++) {
-      if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1) {
+      // If the label "surrounds" the selection, split it around the selection
+      if (mLabels[i]->t < t0 && t1 < mLabels[i]->t1)
+      {
+         LabelStruct *l = new LabelStruct();
+         l->t = t1;
+         l->t1 = mLabels[i]->t1;
+         l->title = mLabels[i]->title;
+
+         mLabels[i]->t1 = t0;
+
+         // This might not be the right place to insert, but we sort at the end
+         ++i;
+         mLabels.Insert(l, i);
+      }
+
+      // If label begins in the selection, move the beginning to selection end
+      if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1)
+      {
+         mLabels[i]->t = t1;
+      }
+      // If label ends in the selection, move the end to selection beginning
+      if (t0 <= mLabels[i]->t1 && mLabels[i]->t1 <= t1)
+      {
+         mLabels[i]->t1 = t0;
+      }
+
+      // Delete labels that were totally selected
+      if (mLabels[i]->t1 < mLabels[i]->t)
+      {
          DeleteLabel( i );
          len--;
          i--;
       }
    }
+
+   SortLabels();
 
    return true;
 }
@@ -2537,6 +2478,25 @@ void LabelTrack::SortLabels()
          }
       }
    }
+}
+
+wxString LabelTrack::GetTextOfLabels(double t0, double t1)
+{
+   bool firstLabel = true;
+   wxString retVal;
+
+   for (unsigned int i=0; i < mLabels.GetCount(); ++i)
+   {
+      if (mLabels[i]->t >= t0 && mLabels[i]->t1 <= t1)
+      {
+         if (!firstLabel)
+            retVal += '\t';
+         firstLabel = false;
+         retVal += mLabels[i]->title;
+      }
+   }
+
+   return retVal;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

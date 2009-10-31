@@ -75,11 +75,11 @@ class LabelTrack:public Track {
    friend class LabelStruct;
 
  public:
-	bool IsGoodLabelCharacter(int keyCode, wxChar charCode);
-	bool IsGoodLabelFirstCharacter(int keyCode, wxChar charCode);
+   bool IsGoodLabelCharacter(int keyCode, wxChar charCode);
+   bool IsGoodLabelFirstCharacter(int keyCode, wxChar charCode);
    bool IsTextSelected();
 
-	void CreateCustomGlyphs();
+   void CreateCustomGlyphs();
    LabelTrack(DirManager * projDirManager);
    LabelTrack(const LabelTrack &orig);
 
@@ -174,6 +174,9 @@ class LabelTrack:public Track {
    void ChangeLabelsOnReverse(double b, double e);
    void ScaleLabels(double b, double e, double change);
    double AdjustTimeStampOnScale(double t, double b, double e, double change);
+   
+   // Returns tab-separated text of all labels completely within given region
+   wxString GetTextOfLabels(double t0, double t1);
 
  public:
    void SortLabels();
