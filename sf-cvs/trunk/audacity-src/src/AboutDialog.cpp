@@ -157,7 +157,8 @@ IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
 AboutDialog::AboutDialog(wxWindow * parent)
    :  wxDialog(parent, -1, _("About Audacity..."),
-               wxDefaultPosition, wxDefaultSize)
+               wxDefaultPosition, wxDefaultSize,
+               wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
    this->SetBackgroundColour(theTheme.Colour( clrAboutBoxBackground ));
    icon = NULL;
