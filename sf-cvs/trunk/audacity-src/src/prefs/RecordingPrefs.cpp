@@ -66,7 +66,7 @@ void RecordingPrefs::PopulateOrExchange(ShuttleGui & S)
                     wxT("/AudioIO/Duplex"),
                     true);
 #if defined(__WXMAC__)
-      S.TieCheckBox(_("&Hardware Playthrough: Play new track while recording it"),
+      S.TieCheckBox(_("&Hardware Playthrough: Listen while recording or monitoring new track"),
                     wxT("/AudioIO/Playthrough"),
                     false);
 #endif
