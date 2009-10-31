@@ -776,6 +776,45 @@ void TrackPanel::SelectTracksByLabel( LabelTrack *lt )
    }
 }
 
+/// Set selection length to the length of a track -- but if linking is turned
+/// on, use the largest possible selection in the group.  And if it's a stereo
+/// track, do the same for the stereo channels.
+void TrackPanel::SelectTrackLength(Track *t)
+{
+   AudacityProject *p = GetActiveProject();
+   TrackGroupIterator it(mTracks);
+   Track *t1 = it.First(t);
+   double minOffset = t->GetOffset();
+   double maxEnd = t->GetEndTime();
+
+   // If we have a group and linking is on, check the group tracks
+   if (p->IsSticky() && t1 != NULL)
+   {
+      for ( ; t1; t1 = it.Next())
+      {
+         if (t1->GetOffset() < minOffset)
+            minOffset = t1->GetOffset();
+         if (t1->GetEndTime() > maxEnd)
+            maxEnd = t1->GetEndTime();
+      }
+   }
+   else
+   {
+      // Otherwise, check for a stereo pair
+      t1 = t->GetLink();
+      if (t1)
+      {
+         if (t1->GetOffset() < minOffset)
+            minOffset = t1->GetOffset();
+         if (t1->GetEndTime() > maxEnd)
+            maxEnd = t1->GetEndTime();
+      }
+   }
+
+   mViewInfo->sel0 = minOffset;
+   mViewInfo->sel1 = maxEnd;
+}
+
 void TrackPanel::GetTracksUsableArea(int *width, int *height) const
 {
    GetSize(width, height);
@@ -1684,9 +1723,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       mTracks->Select(mCapturedTrack);
 
       // Default behavior: select whole track
-      mViewInfo->sel0 = mCapturedTrack->GetOffset();
-      mViewInfo->sel1 = mCapturedTrack->GetEndTime();
-      
+      SelectTrackLength(mCapturedTrack);
       
       // Special case: if we're over a clip in a WaveTrack,
       // select just that clip
@@ -3726,17 +3763,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    SelectNone();
    mTracks->Select(t);
    SetFocusedTrack(t);
-   Track *t1 = t->GetLink();
-   if(t1)
-   {
-      mViewInfo->sel0 = wxMin(t->GetOffset(), t1->GetOffset());
-      mViewInfo->sel1 = wxMax(t->GetEndTime(), t1->GetEndTime());
-   }
-   else
-   {
-      mViewInfo->sel0 = t->GetOffset();
-      mViewInfo->sel1 = t->GetEndTime();
-   }
+   SelectTrackLength(t);
 
    this->Refresh(false);  
    #ifdef EXPERIMENTAL_MIXER_BOARD

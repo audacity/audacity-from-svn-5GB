@@ -81,6 +81,7 @@ enum
    NoteTracksExistFlag    = 0x00800000,  //gsw
    NoteTracksSelectedFlag = 0x01000000,  //gsw
    HaveRecentFiles        = 0x02000000,
+   LinkingDisabledFlag    = 0x04000000,  //awd
 
    NoFlagsSpecifed        = 0xffffffff
 };

@@ -252,6 +252,7 @@ class TrackPanel:public wxPanel {
    void ExtendSelection(int mouseXCoordinate, int trackLeftEdge,
                         Track *pTrack);
    void SelectTracksByLabel( LabelTrack *t );
+   void SelectTrackLength(Track *t);
 
 
    // AS: Cursor handling

@@ -154,6 +154,8 @@ scroll information.  It also has some status flags.
 #include "commands/Command.h"
 #include "commands/CommandType.h"
 
+#include "CaptureEvents.h"
+
 using std::cout;
 
 TrackList *AudacityProject::msClipboard = new TrackList();
@@ -2306,6 +2308,39 @@ void AudacityProject::OpenFile(wxString fileName, bool addtohistory)
       while (t) {
          if (t->GetErrorOpening())
             err = true;
+
+         // Sanity checks for linked tracks; unsetting the linked property
+         // doesn't fix the problem, but it likely leaves us with orphaned
+         // blockfiles instead of much worse problems.
+         if (t->GetLinked())
+         {
+            Track *l = t->GetLink();
+            if (l)
+            {
+               // A linked track's partner should never itself be linked
+               if (l->GetLinked())
+               {
+                  err = true;
+                  t->SetLinked(false);
+               }
+               
+               // Channels should be left and right
+               if ( !(  (t->GetChannel() == Track::LeftChannel &&
+                           l->GetChannel() == Track::RightChannel) ||
+                        (t->GetChannel() == Track::RightChannel &&
+                           l->GetChannel() == Track::LeftChannel) ) )
+               {
+                  err = true;
+                  t->SetLinked(false);
+               }
+            }
+            else
+            {
+               err = true;
+               t->SetLinked(false);
+            }
+         }
+
          mLastSavedTracks->Add(t->Duplicate());
          t = iter.Next();
       }
@@ -3801,7 +3836,7 @@ void AudacityProject::GetRegionsByLabel( Regions &regions )
    
    //determine labelled regions
    for( n = iter.First(); n; n = iter.Next() )
-      if( n->GetKind() == Track::Label )
+      if( n->GetKind() == Track::Label && n->GetSelected() )
       {
          LabelTrack *lt = ( LabelTrack* )n;
          for( int i = 0; i < lt->GetNumLabels(); i++ ) 
@@ -3843,7 +3878,10 @@ void AudacityProject::GetRegionsByLabel( Regions &regions )
 //Executes the edit function on all selected wave tracks with
 //regions specified by selected labels
 //If No tracks selected, function is applied on all tracks
-void AudacityProject::EditByLabel( WaveTrack::EditFunction action )
+//If the function deletes audio, groupIteration should probably be set to true,
+// so it won't delete too many times.
+void AudacityProject::EditByLabel( WaveTrack::EditFunction action,
+                                   bool groupIteration )
 { 
    Regions regions;
    
@@ -3851,7 +3889,7 @@ void AudacityProject::EditByLabel( WaveTrack::EditFunction action )
    if( regions.GetCount() == 0 )
       return;
 
-   TrackListIterator iter( mTracks );
+   TrackAndGroupIterator iter( mTracks );
    Track *n;
    bool allTracks = true;
 
@@ -3867,13 +3905,27 @@ void AudacityProject::EditByLabel( WaveTrack::EditFunction action )
    //Apply action on wavetracks starting from
    //labeled regions in the end. This is to correctly perform
    //actions like 'Delete' which collapse the track area.
-   for( n = iter.First(); n; n = iter.Next() )
+   n = iter.First();
+   while (n)
+   {
       if( n->GetKind() == Track::Wave && ( allTracks || n->GetSelected() ) )
       {
          WaveTrack *wt = ( WaveTrack* )n;
          for( int i = ( int )regions.GetCount() - 1; i >= 0; i-- )
             ( wt->*action )( regions.Item( i )->start, regions.Item( i )->end );
+
+         // Tracks operated on may need group iteration
+         if (IsSticky() && groupIteration)
+            n = iter.NextGroup();
+         else
+            n = iter.Next();
       }
+      else
+      {
+         // Tracks not operated on need normal iteration
+         n = iter.Next();
+      }
+   }
 
    //delete label regions
    for( unsigned int i = 0; i < regions.GetCount(); i++ )
@@ -3883,7 +3935,9 @@ void AudacityProject::EditByLabel( WaveTrack::EditFunction action )
 //Executes the edit function on all selected wave tracks with
 //regions specified by selected labels
 //If No tracks selected, function is applied on all tracks
-//functions copy the edited regions to clipboard, possibly in multiple tracks
+//Functions copy the edited regions to clipboard, possibly in multiple tracks
+//This probably should not be called if *action() changes the timeline, because
+// the copy needs to happen by track, and the timeline change by group.
 void AudacityProject::EditClipboardByLabel( WaveTrack::EditDestFunction action )
 { 
    Regions regions;
@@ -4400,6 +4454,48 @@ void AudacityProject::HandleTrackSolo(Track *t, const bool alternate)
          }
          i = iter.Next();
       }
+   }
+}
+
+wxString AudacityProject::AllLabelsText(TrackList *l, double t0, double t1,
+                                        bool selectedOnly /* = false */)
+{
+   bool firstLabelTrack = true;
+   wxString retVal;
+   TrackListOfKindIterator iter(Track::Label, l);
+   // Clipboard functions don't do newline magic, so here's a lame workaround
+   wxString newline;
+#if defined(__WXMSW__)
+   newline = wxT("\r\n");  // On Windows systems this should be \x0d\x0a
+#else
+   newline = wxT("\n");    // This is \x0a most places, \x0d on old Macs
+#endif
+   
+   for (Track *t = iter.First(); t; t = iter.Next())
+   {
+      if (!selectedOnly || t->GetSelected())
+      {
+         if (!firstLabelTrack)
+            retVal += newline;
+         retVal += ((LabelTrack *)t)->GetTextOfLabels(t0, t1);
+         firstLabelTrack = false;
+      }
+   }
+
+   return retVal;
+}
+
+void AudacityProject::CopyLabelTracksText()
+{
+   wxString text = AllLabelsText(mTracks, mViewInfo.sel0, mViewInfo.sel1, true);
+
+   if (wxTheClipboard->Open())
+   {
+#if defined(__WXGTK__) && defined(HAVE_GTK)
+      CaptureEvents capture;
+#endif
+      wxTheClipboard->SetData(new wxTextDataObject(text));
+      wxTheClipboard->Close();
    }
 }
 

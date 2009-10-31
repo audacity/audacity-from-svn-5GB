@@ -1503,6 +1503,7 @@
 		ED3D7FF00DF73889000F43E3 /* EffectCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED3D7FEC0DF73889000F43E3 /* EffectCategory.cpp */; };
 		ED3D7FF10DF73889000F43E3 /* EffectManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED3D7FEE0DF73889000F43E3 /* EffectManager.cpp */; };
 		EDD94EDB103CB520000873F1 /* ImportExportCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EDD94ED9103CB520000873F1 /* ImportExportCommands.cpp */; };
+		EEFF576E109AB4E20032EDFE /* CaptureEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EEFF576C109AB4E10032EDFE /* CaptureEvents.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -3490,6 +3491,8 @@
 		ED3D7FEF0DF73889000F43E3 /* EffectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectManager.h; sourceTree = "<group>"; };
 		EDD94ED9103CB520000873F1 /* ImportExportCommands.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportExportCommands.cpp; sourceTree = "<group>"; };
 		EDD94EDA103CB520000873F1 /* ImportExportCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportExportCommands.h; sourceTree = "<group>"; };
+		EEFF576C109AB4E10032EDFE /* CaptureEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CaptureEvents.cpp; path = ../src/CaptureEvents.cpp; sourceTree = SOURCE_ROOT; };
+		EEFF576D109AB4E20032EDFE /* CaptureEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CaptureEvents.h; path = ../src/CaptureEvents.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -4667,6 +4670,8 @@
 				284B27900FC66863005EAC96 /* ImportExportPrefs.cpp */,
 				284B27910FC66863005EAC96 /* ImportExportPrefs.h */,
 				1790B0C109883BFD008A330A /* KeyConfigPrefs.cpp */,
+				EEFF576C109AB4E10032EDFE /* CaptureEvents.cpp */,
+				EEFF576D109AB4E20032EDFE /* CaptureEvents.h */,
 				1790B0C209883BFD008A330A /* KeyConfigPrefs.h */,
 				284B27920FC66863005EAC96 /* LibraryPrefs.cpp */,
 				284B27930FC66863005EAC96 /* LibraryPrefs.h */,
@@ -8474,6 +8479,7 @@
 				28DE72AF10388583007E18EC /* SetTrackInfoCommand.cpp in Sources */,
 				28DE72B2103885AA007E18EC /* TimeWarper.cpp in Sources */,
 				EDD94EDB103CB520000873F1 /* ImportExportCommands.cpp in Sources */,
+				EEFF576E109AB4E20032EDFE /* CaptureEvents.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
