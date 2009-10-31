@@ -488,6 +488,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\CaptureEvents.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\CaptureEvents.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\configwin.h"
 				>
 			</File>
