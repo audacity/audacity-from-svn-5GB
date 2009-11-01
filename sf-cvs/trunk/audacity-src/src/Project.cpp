@@ -80,6 +80,7 @@ scroll information.  It also has some status flags.
 #include <wx/textfile.h>
 #include <wx/timer.h>
 #include <wx/generic/filedlgg.h>
+#include <wx/display.h>
 
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
 
@@ -473,7 +474,8 @@ AudacityProject *CreateNewAudacityProject()
 {
    bool bMaximized;
    wxRect wndRect;
-   GetNextWindowPlacement(&wndRect, &bMaximized);
+   bool bIconized;
+   GetNextWindowPlacement(&wndRect, &bMaximized, &bIconized);
 
    //Create and show a new project
    AudacityProject *p = new AudacityProject(NULL, -1,
@@ -482,8 +484,13 @@ AudacityProject *CreateNewAudacityProject()
 
    gAudacityProjects.Add(p);
    
-   if(bMaximized)
+   if(bMaximized) {
       p->Maximize(true);
+   }
+   else if (bIconized) {
+      // if the user close down and iconized state we could start back up and iconized state
+      // p->Iconize(TRUE);
+   }
 
    //Initialise the Listener
    gAudioIO->SetListener(p);
@@ -540,29 +547,128 @@ void GetDefaultWindowRect(wxRect *defRect)
 #ifdef __WXMSW__
    defRect->height += 40;
 #endif
+#ifdef __WXMAC__
+   defRect->height += 55;
+#endif
 }
 
 // BG: Calculate where to place the next window (could be the first window)
 // BG: Does not store X and Y in prefs. This is intentional.
-void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized)
+void GetNextWindowPlacement(wxRect *nextRect, bool *pMaximized, bool *pIconized)
 {
+   // This code was heavily modified to deal with iconized 
+   // and maximized project windows
+   // Ed Musgrove
+   // 28 September 2009 -- 21 October 2009
    int inc = 25;
-   *bMaximized = false;
-   wxRect defWndRect;
+   *pMaximized = FALSE;
+   *pIconized = FALSE;
+   wxRect defaultWindowRect;
+   GetDefaultWindowRect(&defaultWindowRect);
 
    if (gAudacityProjects.IsEmpty()) {
       //Read the values from the registry, or use the defaults
-      GetDefaultWindowRect(&defWndRect);
-      nextRect->SetX(gPrefs->Read(wxT("/Window/X"), defWndRect.GetX()));
-      nextRect->SetY(gPrefs->Read(wxT("/Window/Y"), defWndRect.GetY()));
-      nextRect->SetWidth(gPrefs->Read(wxT("/Window/Width"), defWndRect.GetWidth()));
-      nextRect->SetHeight(gPrefs->Read(wxT("/Window/Height"), defWndRect.GetHeight()));
-
-      gPrefs->Read(wxT("/Window/Maximized"), bMaximized);
+      // In version 1.3 and above, using the registry has been replaced
+      //    by a configuration file -- audacity.cfg. Different OSes store
+      //    this file in different locations.
+      gPrefs->Read(wxT("/Window/Maximized"), pMaximized);
+      gPrefs->Read(wxT("/Window/Iconized"), pIconized);
+      if (pMaximized || pIconized) {
+         nextRect->SetX(gPrefs->Read(wxT("/Window/Normal_X"), defaultWindowRect.GetX()));
+         nextRect->SetY(gPrefs->Read(wxT("/Window/Normal_Y"), defaultWindowRect.GetY()));
+         nextRect->SetWidth(gPrefs->Read(wxT("/Window/Normal_Width"), defaultWindowRect.GetWidth()));
+         nextRect->SetHeight(gPrefs->Read(wxT("/Window/Normal_Height"), defaultWindowRect.GetHeight()));
+      }
+      else {
+         nextRect->SetX(gPrefs->Read(wxT("/Window/X"), defaultWindowRect.GetX()));
+         nextRect->SetY(gPrefs->Read(wxT("/Window/Y"), defaultWindowRect.GetY()));
+         nextRect->SetWidth(gPrefs->Read(wxT("/Window/Width"), defaultWindowRect.GetWidth()));
+         nextRect->SetHeight(gPrefs->Read(wxT("/Window/Height"), defaultWindowRect.GetHeight()));
+      }
+      // define a rectangular region of the window's title bar and determine if any portion 
+      //    of it is in the desktopand is  therefor available to be dragged by the use
+      //    this will insure that the new window is always accessible to the user
+      wxDisplay display;
+      wxRect targetTitleRect(nextRect->GetLeftTop(), nextRect->GetBottomRight());
+      targetTitleRect.x += 15;   // ignore title bar icon region
+      targetTitleRect.width -= 100; // ignore min max & close icons
+      if (targetTitleRect.width <  150) targetTitleRect.width = 165;
+      targetTitleRect.height = 15; //  fifteen pixels of display to grab a hold of
+      int targetTop = targetTitleRect.GetTop();
+      int targetBottom = targetTitleRect.GetBottom();
+      int targetLeft = targetTitleRect.GetLeft();
+      int targetRight = targetTitleRect.GetRight();
+      bool isAccessible =  FALSE;
+      if (targetLeft < 0) {
+         if (targetTop < 0) {// --
+            for (int i =  targetLeft; i < targetRight; i++) {
+               for (int j = targetTop; j < targetBottom; j++) {
+                  bool goodI =  FALSE;
+                  bool goodJ =  FALSE;
+                  int monitor = display.GetFromPoint(wxPoint(i, j));
+                  if (monitor != wxNOT_FOUND) {
+                     isAccessible = TRUE;
+                     break;
+                  }
+               }
+               if (isAccessible) break;
+            }
+         }
+         else { // -+
+            for (int i =  targetLeft; i < targetRight; i++) {
+               for (int j = targetTop; j < targetBottom; j++) {
+                  bool goodI =  FALSE;
+                  bool goodJ =  FALSE;
+                  int monitor = display.GetFromPoint(wxPoint(i, j));
+                  if (monitor != wxNOT_FOUND) {
+                     isAccessible = TRUE;
+                     break;
+                  }
+               }
+               if (isAccessible) break;
+            }
+         }
+      }
+      else {
+         if (targetTop < 0) { //+-
+            for (int i =  targetLeft; i < targetRight; i++) {
+               for (int j = targetTop; j < targetBottom; j--) {
+                  bool goodI =  FALSE;
+                  bool goodJ =  FALSE;
+                  int monitor = display.GetFromPoint(wxPoint(i, j));
+                  if (monitor != wxNOT_FOUND) {
+                     isAccessible = TRUE;
+                     break;
+                  }
+               }
+               if (isAccessible) break;
+            }
+         }
+         else { // ++
+            for (int i =  targetLeft; i < targetRight; i++) {
+               for (int j = targetTop; j < targetBottom; j++) {
+                  bool goodI =  FALSE;
+                  bool goodJ =  FALSE;
+                  int monitor = display.GetFromPoint(wxPoint(i, j));
+                  if (monitor != wxNOT_FOUND) {
+                     isAccessible = TRUE;
+                     break;
+                  }
+               }
+               if (isAccessible) break;
+            }
+         }
+      }
+      if (!isAccessible) {
+         // the default values are guaranteed to be on the main monitor
+         //    completely visible and accessible
+         nextRect->SetX(defaultWindowRect.GetX());
+         nextRect->SetY(defaultWindowRect.GetY());
+         nextRect->SetWidth(defaultWindowRect.GetWidth());
+         nextRect->SetHeight(defaultWindowRect.GetHeight());
+      }
    }
    else {
-      //This code was heavily modified to deal with iconized project windows
-      //Ed Musgrove 28 September 2009
       bool validWindowSize = FALSE;
       AudacityProject * validProject = NULL;
       size_t numProjects = gAudacityProjects.Count();
@@ -578,58 +684,58 @@ void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized)
       if (validWindowSize)
       {
          *nextRect = validProject->GetRect();
-         *bMaximized = validProject->IsMaximized();
+         *pMaximized = validProject->IsMaximized();
+         *pIconized = validProject->IsIconized();
       }
       else 
       {
-          GetDefaultWindowRect(&defWndRect);
-          nextRect->SetX(gPrefs->Read(wxT("/Window/X"), defWndRect.GetX()));
-          nextRect->SetY(gPrefs->Read(wxT("/Window/Y"), defWndRect.GetY()));
-          nextRect->SetWidth(gPrefs->Read(wxT("/Window/Width"), defWndRect.GetWidth()));
-          nextRect->SetHeight(gPrefs->Read(wxT("/Window/Height"), defWndRect.GetHeight()));
-          gPrefs->Read(wxT("/Window/Maximized"), bMaximized);
+          nextRect->SetX(gPrefs->Read(wxT("/Window/Normal_X"), defaultWindowRect.GetX()));
+          nextRect->SetY(gPrefs->Read(wxT("/Window/Normal_Y"), defaultWindowRect.GetY()));
+          nextRect->SetWidth(gPrefs->Read(wxT("/Window/Normal_Width"), defaultWindowRect.GetWidth()));
+          nextRect->SetHeight(gPrefs->Read(wxT("/Window/Normal_Height"), defaultWindowRect.GetHeight()));
+          gPrefs->Read(wxT("/Window/Maximized"), pMaximized);
+          gPrefs->Read(wxT("/Window/Iconized"), pIconized);
       }
 
       //Placement depends on the increments
-      nextRect->x += inc;
-      nextRect->y += inc;
+      nextRect->SetX(nextRect->GetX() + inc);
+      //nextRect->x += inc;
+      nextRect->SetY(nextRect->GetY() + inc);
+      //nextRect->y += inc;
    }
 
    //Make sure that the Window will be completely visible
-
    //Get the size of the screen
    wxRect screenRect = wxGetClientDisplayRect();
 
-   //First check if we need to reset the increments
-
-   //Have we hit the bottom of the screen?
-   if (nextRect->GetBottom() > screenRect.GetBottom()) {
-      //Recalculate the position on the screen
-      nextRect->x = defWndRect.x + gAudacityOffsetInc;
-      nextRect->y = defWndRect.y;
-
-      //Increment Offset increment
-      gAudacityOffsetInc += inc;
+   // We do not want to reset the increments unless the top left corner of the new window
+   //    gets too near the bottom right hand corner of the screen -- also, make sure the 
+   //    window fits on the screen
+   // Ed Musgrove
+   // 16 October 2009
+         //Have we hit the right side of the screen?
+   wxPoint bottomRight = nextRect->GetBottomRight();
+   if (bottomRight.x > screenRect.GetRight()) {
+      int newWidth = screenRect.GetWidth() - nextRect->GetLeft();
+      if (newWidth < defaultWindowRect.GetWidth()) {
+         // try to use as much of the user's preferred Project window state as possible
+         nextRect->SetX(gPrefs->Read(wxT("/Window/X"), defaultWindowRect.GetX()));
+         nextRect->SetY(gPrefs->Read(wxT("/Window/Y"), defaultWindowRect.GetY()));
+         nextRect->SetWidth(gPrefs->Read(wxT("/Window/Width"), defaultWindowRect.GetWidth()));
+      }
+      else {
+         nextRect->SetWidth(newWidth);
+      }
    }
-
-   //Have we hit the right side of the screen?
-   if (nextRect->GetRight() > screenRect.GetRight()) {
-      //Reset Offset increments
-      gAudacityOffsetInc = 0;
-
-      //Recalculate the position on the screen
-      nextRect->x = defWndRect.x;
-      nextRect->y = defWndRect.y;
-      //No need to compute the offset, just use the default
-   }
-
-   //Next check if the screen is too small for the default Audacity width and height
-   //Uses both comparisons from above
-   if ((nextRect->GetRight() > screenRect.GetRight()) ||
-      (nextRect->GetBottom() > screenRect.GetBottom())) {
-      //Resize the Audacity window to fit in the screen
-      nextRect->width = screenRect.width-nextRect->x;
-      nextRect->height = screenRect.height-nextRect->y;
+      //Have we hit the bottom of the screen?
+   if (bottomRight.y > screenRect.GetBottom()) {
+      nextRect->y  -= inc;
+      //we will need to test again since we have moved the window down
+      bottomRight = nextRect->GetBottomRight();
+      if (bottomRight.y > screenRect.GetBottom()) {
+         int newheight = screenRect.GetHeight() - nextRect->GetBottom();
+         nextRect->SetBottom(screenRect.GetBottom());
+      }
    }
 }
 
@@ -652,28 +758,29 @@ enum {
 
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
-    EVT_MENU_OPEN(AudacityProject::OnMenuEvent)
-    EVT_MENU_CLOSE(AudacityProject::OnMenuEvent)
-    EVT_MENU(wxID_ANY, AudacityProject::OnMenu)
-    EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
-    EVT_CLOSE(AudacityProject::OnCloseWindow)
-    EVT_SIZE(AudacityProject::OnSize)
-    EVT_ACTIVATE(AudacityProject::OnActivate)
-    EVT_COMMAND_SCROLL_LINEUP(HSBarID, AudacityProject::OnScrollLeftButton)
-    EVT_COMMAND_SCROLL_LINEDOWN(HSBarID, AudacityProject::OnScrollRightButton)
-    EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
-    EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
-    EVT_TIMER(AudacityProjectTimerID, AudacityProject::OnTimer)
-    // Fires for menu with ID #1...first menu defined
-    EVT_UPDATE_UI(1, AudacityProject::OnUpdateUI)
-    EVT_ICONIZE(AudacityProject::OnIconize)
-    EVT_COMMAND(wxID_ANY, EVT_OPEN_AUDIO_FILE, AudacityProject::OnOpenAudioFile)
-    EVT_COMMAND(wxID_ANY, EVT_TOOLBAR_UPDATED, AudacityProject::OnToolBarUpdate)
-    EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEYBOARD, AudacityProject::OnCaptureKeyboard)
-    EVT_COMMAND(wxID_ANY, EVT_RELEASE_KEYBOARD, AudacityProject::OnReleaseKeyboard)
-    //mchinen:multithreaded calls - may not be threadsafe with CommandEvent: may have to change.
-    EVT_COMMAND(wxID_ANY, EVT_ODTASK_UPDATE, AudacityProject::OnODTaskUpdate)
-    EVT_COMMAND(wxID_ANY, EVT_ODTASK_COMPLETE, AudacityProject::OnODTaskComplete)
+   EVT_MENU_OPEN(AudacityProject::OnMenuEvent)
+   EVT_MENU_CLOSE(AudacityProject::OnMenuEvent)
+   EVT_MENU(wxID_ANY, AudacityProject::OnMenu)
+   EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
+   EVT_CLOSE(AudacityProject::OnCloseWindow)
+   EVT_SIZE(AudacityProject::OnSize)
+   EVT_MOVE(AudacityProject::OnMove)
+   EVT_ACTIVATE(AudacityProject::OnActivate)
+   EVT_COMMAND_SCROLL_LINEUP(HSBarID, AudacityProject::OnScrollLeftButton)
+   EVT_COMMAND_SCROLL_LINEDOWN(HSBarID, AudacityProject::OnScrollRightButton)
+   EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
+   EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
+   EVT_TIMER(AudacityProjectTimerID, AudacityProject::OnTimer)
+   // Fires for menu with ID #1...first menu defined
+   EVT_UPDATE_UI(1, AudacityProject::OnUpdateUI)
+   EVT_ICONIZE(AudacityProject::OnIconize)
+   EVT_COMMAND(wxID_ANY, EVT_OPEN_AUDIO_FILE, AudacityProject::OnOpenAudioFile)
+   EVT_COMMAND(wxID_ANY, EVT_TOOLBAR_UPDATED, AudacityProject::OnToolBarUpdate)
+   EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEYBOARD, AudacityProject::OnCaptureKeyboard)
+   EVT_COMMAND(wxID_ANY, EVT_RELEASE_KEYBOARD, AudacityProject::OnReleaseKeyboard)
+   //mchinen:multithreaded calls - may not be threadsafe with CommandEvent: may have to change.
+   EVT_COMMAND(wxID_ANY, EVT_ODTASK_UPDATE, AudacityProject::OnODTaskUpdate)
+   EVT_COMMAND(wxID_ANY, EVT_ODTASK_COMPLETE, AudacityProject::OnODTaskComplete)
 END_EVENT_TABLE()
 
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
@@ -983,6 +1090,15 @@ void AudacityProject::UpdatePrefsVariables()
 
    gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), &mRate, AudioIO::GetOptimalSupportedSampleRate());
    mDefaultFormat = (sampleFormat) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
+   // remember the "normalized" window size and location
+   // Ed Musgrove
+   // 19 October 2009
+   wxRect normalRect;
+   gPrefs->Read(wxT("/Window/Normal_X"), &normalRect.x);
+   gPrefs->Read(wxT("/Window/Normal_Y"), &normalRect.y);
+   gPrefs->Read(wxT("/Window/Normal_Width"), &normalRect.width);
+   gPrefs->Read(wxT("/Window/Normal_Height"), &normalRect.height);
+   SetNormalizedWindowState(normalRect);
 }
 
 void AudacityProject::UpdatePrefs()
@@ -1493,10 +1609,26 @@ void AudacityProject::OnIconize(wxIconizeEvent &event)
    event.Skip();
 }
 
+void AudacityProject::OnMove(wxMoveEvent & event)
+{
+   // remember where the window is for .cfg
+   // Ed Musgrove
+   // 19 October 2009
+   wxRect rect(this->GetRect());
+   if (!this->IsMaximized() && !this->IsIconized())
+      SetNormalizedWindowState(rect);
+   event.Skip();
+}
+
 void AudacityProject::OnSize(wxSizeEvent & event)
 {
    HandleResize();
-
+   // remember where the window is for .cfg
+   // Ed Musgrove
+   // 19 October 2009
+   wxRect rect(this->GetRect());
+   if (!this->IsMaximized() && !this->IsIconized())
+      SetNormalizedWindowState(rect);
    event.Skip();
 }
 
@@ -1831,7 +1963,8 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    //This is to repair the potential situation in which Audacity opens with
    //     the initial opening window invisible.
    //This SaveWindowSize call was modified to deal with iconized project windows
-   //Ed Musgrove 28 September 2009
+   // Ed Musgrove
+   // 28 September 2009
       SaveWindowSize();
 
    mLastFocusedWindow = NULL;
