@@ -84,7 +84,7 @@ void RefreshCursorForAllProjects();
 AUDACITY_DLL_API void CloseAllProjects();
 
 void GetDefaultWindowRect(wxRect *defRect);
-void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized);
+void GetNextWindowPlacement(wxRect *nextRect, bool *pMaximized, bool *pIconized);
 
 WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 
@@ -145,7 +145,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    
    void SetSel0(double);        //Added by STM 
    void SetSel1(double);        //Added by STM 
-
 
    bool Clipboard() { return msClipLen > 0.0; }
 
@@ -216,6 +215,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void OnMouseEvent(wxMouseEvent & event);
    void OnIconize(wxIconizeEvent &event);
    void OnSize(wxSizeEvent & event);
+   void OnMove(wxMoveEvent & event);
    void OnScroll(wxScrollEvent & event);
    void OnCloseWindow(wxCloseEvent & event);
    void OnTimer(wxTimerEvent & event);
@@ -261,7 +261,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    // Type of solo (standard or simple) follows the set preference, unless
    // alternate == true, which causes the opposite behavior.
    void HandleTrackSolo(Track *t, const bool alternate);
-
 
    // Snap To
 
@@ -321,8 +320,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    #ifdef EXPERIMENTAL_MIXER_BOARD
       MixerBoard* GetMixerBoard() { return mMixerBoard; };
    #endif
-
- public:
 
    // SelectionBar callback methods
 
@@ -473,7 +470,14 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    wxString mHelpPref;
    wxString mSoloPref;
 
+   // public accessors for the private data
+   // Ed Musgrove
+   // 19 October 2009
+   void SetNormalizedWindowState(wxRect & pSizeAndLocation) {  mNormalizedWindowState = pSizeAndLocation;   }
+   wxRect GetNormalizedWindowState() const { return mNormalizedWindowState;   }
+
  private:
+
    int  mAudioIOToken;
 
    bool mIsDeleting;
@@ -516,7 +520,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    // Dependencies have been imported and a warning should be shown on save
    bool mImportedDependencies;
 
-
    bool mWantSaveCompressed;
    wxArrayString mStrOtherNamesArray; // used to make sure compressed file names are unique
    
@@ -525,10 +528,14 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    int mLastEffectType;
    wxString mLastEffectDesc;
 
- private:
-
    // The screenshot class needs to access internals
    friend class ScreenshotCommand;
+
+   //Maximized project windows store their "normal"
+   // size and location in this wxRect
+   // Ed Musgrove
+   // 19 October 2009
+   wxRect mNormalizedWindowState;
 
  public:
     DECLARE_EVENT_TABLE()
