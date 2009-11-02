@@ -1918,6 +1918,9 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       SetAudioIOToken(0);
       RedrawProject();
    }
+   else if (gAudioIO->IsMonitoring()) {
+      gAudioIO->StopStream();
+   }
 
    // These two lines test for an 'empty' project.
    // of course it could still have a history at this stage.
