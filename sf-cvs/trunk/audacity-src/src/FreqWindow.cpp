@@ -994,6 +994,9 @@ void FreqWindow::Recalc()
    else
       wss = 1.0;
 
+   //add progress dialog
+   ProgressDialog *mProgress = new ProgressDialog(_("FreqWindow"),_("Drawing Spectrum"));
+
    int start = 0;
    int windows = 0;
    while (start + mWindowSize <= mDataLen) {
@@ -1080,6 +1083,12 @@ void FreqWindow::Recalc()
 
       start += half;
       windows++;
+      // only update the progress dialogue infrequently to reduce it's overhead
+      // If we do it every time, it spends as much time updating X11 as doing
+      // the calculations. 10 seems a reasonable compromise on Linux that
+      // doesn't make it unresponsive, but avoids the slowdown.
+      if ((windows % 10) == 0)
+         mProgress->Update(1 - static_cast<float>(mDataLen - start) / mDataLen);
    }
 
    switch (alg) {
@@ -1195,6 +1204,7 @@ void FreqWindow::Recalc()
 
    DrawPlot();
    mFreqPlot->Refresh(true);
+   delete mProgress;
 }
 
 void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
