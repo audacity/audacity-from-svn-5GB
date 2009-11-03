@@ -250,7 +250,7 @@ Track *TrackListIterator::First(TrackList * val)
    return NULL;
 }
 
-Track *TrackListIterator::Last()
+Track *TrackListIterator::Last(bool skiplinked)
 {
    if (l == NULL) {
       return NULL;
@@ -258,6 +258,12 @@ Track *TrackListIterator::Last()
 
    cur = l->tail;
 
+   // With skiplinked set, we won't return the second channel of a linked pair
+   if (skiplinked && cur && cur->t && cur->t->GetLink() && !cur->t->GetLinked())
+   {
+      cur = cur->prev;
+   }
+   
    if (cur) {
       return cur->t;
    }
@@ -292,6 +298,17 @@ Track *TrackListIterator::Next(bool SkipLinked)
    }
 
    return NULL;
+}
+
+Track *TrackListIterator::Prev(bool skiplinked)
+{
+   if (cur)
+      cur = cur->prev;
+
+   if (skiplinked && cur && cur->prev && cur->prev->t->GetLinked())
+      cur = cur->prev;
+
+   return cur ? cur->t : NULL;
 }
 
 Track *TrackListIterator::RemoveCurrent(bool deletetrack)
@@ -331,28 +348,36 @@ Track *TrackListIterator::ReplaceCurrent(Track *t)
    return p;
 }
 
-// TrackListOfKindIterator
-TrackListOfKindIterator::TrackListOfKindIterator(int kind, TrackList * val)
-:  TrackListIterator(val)
+//
+// TrackListCondIterator (base class for iterators that iterate over all tracks
+// that meet a condition)
+//
+
+Track *TrackListCondIterator::StartWith(Track *val)
 {
-   this->kind = kind;
+   Track *t = TrackListIterator::StartWith(val);
+
+   if (t && !this->Condition(t))
+      return NULL;
+
+   return t;
 }
 
-Track *TrackListOfKindIterator::First(TrackList * val)
+Track *TrackListCondIterator::First(TrackList *val)
 {
    Track *t = TrackListIterator::First(val);
 
-   while (t && (kind != Track::All && t->GetKind() != kind)) {
+   while (t && !this->Condition(t)) {
       t = TrackListIterator::Next();
    }
 
    return t;
 }
 
-Track *TrackListOfKindIterator::Next(bool skiplinked)
+Track *TrackListCondIterator::Next(bool skiplinked)
 {
    while (Track *t = TrackListIterator::Next(skiplinked)) {
-      if (t->GetKind() == kind || kind == Track::All) {
+      if (this->Condition(t)) {
          return t;
       }
    }
@@ -360,27 +385,45 @@ Track *TrackListOfKindIterator::Next(bool skiplinked)
    return NULL;
 }
 
-//SelectedTrackListOfKindIterator
-Track *SelectedTrackListOfKindIterator::First(TrackList * val)
+Track *TrackListCondIterator::Prev(bool skiplinked)
 {
-   Track *t = TrackListOfKindIterator::First(val);
+   while (Track *t = TrackListIterator::Prev(skiplinked))
+   {
+      if (this->Condition(t)) {
+         return t;
+      }
+   }
 
-   while (t && !t->GetSelected()) {
-      t = TrackListOfKindIterator::Next();
+   return NULL;
+}
+
+Track *TrackListCondIterator::Last(bool skiplinked)
+{
+   Track *t = TrackListIterator::Last(skiplinked);
+
+   while (t && !this->Condition(t)) {
+      t = TrackListIterator::Prev(skiplinked);
    }
 
    return t;
 }
 
-Track *SelectedTrackListOfKindIterator::Next(bool skiplinked)
+// TrackListOfKindIterator
+TrackListOfKindIterator::TrackListOfKindIterator(int kind, TrackList * val)
+:  TrackListCondIterator(val)
 {
-   while (Track *t = TrackListOfKindIterator::Next(skiplinked)) {
-      if (t->GetSelected()) {
-         return t;
-      }
-   }
+   this->kind = kind;
+}
 
-   return NULL;
+bool TrackListOfKindIterator::Condition(Track *t)
+{
+   return kind == Track::All || t->GetKind() == kind;
+}
+
+//SelectedTrackListOfKindIterator
+bool SelectedTrackListOfKindIterator::Condition(Track *t)
+{
+   return TrackListOfKindIterator::Condition(t) && t->GetSelected();
 }
 
 // VisibleTrackIterator
@@ -388,38 +431,17 @@ Track *SelectedTrackListOfKindIterator::Next(bool skiplinked)
 // Based on TrackListIterator returns only the currently visible tracks.
 //
 VisibleTrackIterator::VisibleTrackIterator(AudacityProject *project)
-:  TrackListIterator(project->GetTracks())
+:  TrackListCondIterator(project->GetTracks())
 {
    mProject = project;
    mPanelRect.SetTop(mProject->mViewInfo.vpos);
    mPanelRect.SetSize(mProject->GetTPTracksUsableArea());
 }
 
-Track *VisibleTrackIterator::First()
+bool VisibleTrackIterator::Condition(Track *t)
 {
-   Track *t = mProject->GetFirstVisible();
-   if (!t) {
-      return NULL;
-   }
-
-   TrackListIterator::StartWith(t);
-
-   return t;
-}
-
-Track *VisibleTrackIterator::Next(bool skiplinked)
-{
-   Track *t = TrackListIterator::Next(skiplinked);
-   if (!t) {
-      return NULL;
-   }
-
    wxRect r(0, t->GetY(), 1, t->GetHeight());
-   if (r.Intersects(mPanelRect)) {
-      return t;
-   }
-
-   return NULL;
+   return r.Intersects(mPanelRect);
 }
 
 // TrackGroupIterator
@@ -473,6 +495,34 @@ Track *TrackGroupIterator::Next(bool skiplinked)
    // Found the end of the group, so signal for next iteration
    if (t->GetKind() == Track::Label) {
       mEndOfGroup = true;
+   }
+
+   return t;
+}
+
+Track *TrackGroupIterator::Prev(bool skiplinked)
+{
+   // AWD: currently grouping as it works here allows only one label track per
+   // group, but this should change
+
+   Track *t = TrackListIterator::Prev(skiplinked);
+
+   if (!t || t->GetKind() != Track::Wave) {
+      return NULL;
+   }
+
+   return t;
+}
+
+Track *TrackGroupIterator::Last(bool skiplinked)
+{
+   if (!cur)
+      return NULL;
+
+   Track *t = cur->t;
+
+   while (!mEndOfGroup) {
+      t = Next(skiplinked);
    }
 
    return t;

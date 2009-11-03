@@ -198,7 +198,8 @@ class AUDACITY_DLL_API TrackListIterator
    virtual Track *First(TrackList * val = NULL);
    virtual Track *StartWith(Track * val);
    virtual Track *Next(bool skiplinked = false);
-   virtual Track *Last();
+   virtual Track *Prev(bool skiplinked = false);
+   virtual Track *Last(bool skiplinked = false);
 
    Track *ReplaceCurrent(Track *t);                // returns original
    Track *RemoveCurrent(bool deletetrack = false); // returns next
@@ -208,20 +209,37 @@ class AUDACITY_DLL_API TrackListIterator
    TrackListNode *cur;
 };
 
+class AUDACITY_DLL_API TrackListCondIterator: public TrackListIterator
+{
+   public:
+      TrackListCondIterator(TrackList *val = NULL)
+         :  TrackListIterator(val) {};
+      virtual ~TrackListCondIterator() {};
+
+      // Iteration functions
+      Track *First(TrackList *val = NULL);
+      Track *StartWith(Track *val);
+      Track *Next(bool skiplinked = false);
+      Track *Prev(bool skiplinked = false);
+      Track *Last(bool skiplinked = false);
+
+   protected:
+      virtual bool Condition(Track *t) = 0;
+};
+
 //
 // TrackListOfKindIterator
 //
 // Based on TrackListIterator and returns only tracks of the specified type.
 //
-class AUDACITY_DLL_API TrackListOfKindIterator: public TrackListIterator
+class AUDACITY_DLL_API TrackListOfKindIterator: public TrackListCondIterator
 {
  public:
    TrackListOfKindIterator(int kind, TrackList * val = NULL);
    virtual ~TrackListOfKindIterator() {};
 
-   // Iterate functions
-   Track *First(TrackList * val = NULL);
-   Track *Next(bool skiplinked = false);
+ protected:
+   virtual bool Condition(Track *t);
 
  private:
    int kind;
@@ -236,14 +254,10 @@ class AUDACITY_DLL_API SelectedTrackListOfKindIterator: public TrackListOfKindIt
 {
  public:
     SelectedTrackListOfKindIterator(int kind, TrackList * val = NULL) : TrackListOfKindIterator(kind, val) {};
-	virtual ~SelectedTrackListOfKindIterator() {};
+   virtual ~SelectedTrackListOfKindIterator() {};
 
-   // Iterate functions
-   Track *First(TrackList * val = NULL);
-   Track *Next(bool skiplinked = false);
-
- private:
-   int kind;
+ protected:
+   bool Condition(Track *t);
 };
 
 //
@@ -251,15 +265,14 @@ class AUDACITY_DLL_API SelectedTrackListOfKindIterator: public TrackListOfKindIt
 //
 // Based on TrackListIterator returns only the currently visible tracks.
 //
-class AUDACITY_DLL_API VisibleTrackIterator: public TrackListIterator
+class AUDACITY_DLL_API VisibleTrackIterator: public TrackListCondIterator
 {
  public:
    VisibleTrackIterator(AudacityProject *project);
    virtual ~VisibleTrackIterator() {};
 
-   // Iterate functions
-   Track *First();
-   Track *Next(bool skiplinked = false);
+ protected:
+   bool Condition(Track *t);
 
  private:
    AudacityProject *mProject;
@@ -281,6 +294,8 @@ class AUDACITY_DLL_API TrackGroupIterator: public TrackListIterator
    // Iterate functions
    Track *First(Track *member);
    Track *Next(bool skiplinked = false);
+   Track *Prev(bool skiplinked = false);
+   Track *Last(bool skiplinked = false);
 
  private:
    bool mEndOfGroup;

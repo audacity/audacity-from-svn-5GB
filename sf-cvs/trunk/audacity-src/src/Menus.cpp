@@ -3481,41 +3481,9 @@ void AudacityProject::OnPaste()
    // selected tracks.
    if ( n && !c )
    {
-      bool foundSrcTrack = false;
-      c = clipIter.Last();
-
-      // First, we find the last audio track. This is the track 
-      // we'll be pasting into the excess selected tracks.
-      if (c->GetKind() != Track::Wave){
-         Track *last = c;
-         Track *prev = NULL;
-         c = clipIter.First();
-         Track *first = c;
-
-         // LL:  There is an endless loop here if you paste only non-wave track
-         //      data, like midi data.  Not sure exactly what this is supposed
-         //      to do in that case, but it seems that it's making an assumption
-         //      that only wave data can be pasted.
-         while (!foundSrcTrack){
-            prev = c;
-            c = clipIter.Next();
-            if (c == last){
-               if (prev->GetKind()==Track::Wave) {
-                  c = prev;
-                  foundSrcTrack=true;
-               }else{
-                  last = prev;
-                  if (last == first){
-                     c = NULL;
-                     break;
-                  }
-                  c = clipIter.First();
-               }
-            }
-         }
-      }
+      TrackListOfKindIterator clipWaveIter(Track::Wave, msClipboard);
+      c = clipWaveIter.Last();
       
-      // We've found our source track, now we paste it in.
       while (n){
          if (n->GetSelected() && n->GetKind()==Track::Wave){
             if (c && c->GetKind() == Track::Wave){
