@@ -2139,17 +2139,19 @@ bool LabelTrack::Clear(double t0, double t1)
 {
    AudacityProject *p = GetActiveProject();   
    if (p && p->IsSticky()){
-      Track* t = NULL;
-      if (mNode) {
-         TrackListNode* n = mNode->prev;
-         if (n)
-            t = n->t;
+      TrackGroupIterator grpIter(p->GetTracks());
+      Track *t = grpIter.First(this);
+      // If this track is part of a group, find a Wave track in the group and do
+      // the clear from there to ensure proper group behavior
+      while (t) {
+         if (t->GetKind() == Track::Wave) {
+            return t->Clear(t0, t1);
+         }
+         t = grpIter.Next();
       }
-      // if it is part of a group
-      if (t && t->GetKind() != Track::Time && t->GetKind() != Track::Label)
-         t->Clear(t0, t1);
-      else
-         ShiftLabelsOnClear(t0, t1);
+
+      // Fallback: shift labels in this track
+      ShiftLabelsOnClear(t0, t1);
    }
    else
       ChangeLabelsOnClear(t0, t1);
