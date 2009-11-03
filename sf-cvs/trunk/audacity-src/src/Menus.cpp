@@ -412,7 +412,7 @@ void AudacityProject::CreateMenusAndCommands()
               AudioIONotBusyFlag | LabelsSelectedFlag | TimeSelectedFlag | LinkingDisabledFlag,
               AudioIONotBusyFlag | LabelsSelectedFlag | TimeSelectedFlag | LinkingDisabledFlag);
    c->AddItem(wxT("SplitDeleteLabels"), _("Sp&lit Delete"), FN(OnSplitDeleteLabels), wxT("Shift+Alt+K"));
-   c->AddItem(wxT("SilenceLabels"), _("Sile&nce"), FN(OnSilenceLabels), wxT("Alt+L"));
+   c->AddItem(wxT("SilenceLabels"), _("Silence &Audio"), FN(OnSilenceLabels), wxT("Alt+L"));
 
    c->AddSeparator();
 
@@ -3698,7 +3698,7 @@ void AudacityProject::OnCutLabels()
      return;
 
   // Set the system clipboard
-  CopyLabelTracksText();
+  CopyLabelTracksText(true);
  
   // Because of grouping the copy may need to operate on different tracks than
   // the clear, so we do these actions separately.
@@ -3724,7 +3724,7 @@ void AudacityProject::OnSplitCutLabels()
      return;
 
   // Set the system clipboard
-  CopyLabelTracksText();
+  CopyLabelTracksText(true);
 
   EditClipboardByLabel( &WaveTrack::SplitCut );
   
@@ -3742,7 +3742,7 @@ void AudacityProject::OnCopyLabels()
      return;
 
   // Set the system clipboard
-  CopyLabelTracksText();
+  CopyLabelTracksText(true);
 
   EditClipboardByLabel( &WaveTrack::Copy );
   

@@ -2309,7 +2309,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
          PositionToTime(event.m_x, GetLeftOffset());
       bool clickedInSelection =
          (wt->GetSelected() &&
-          clickTime >= mViewInfo->sel0 &&
+          clickTime > mViewInfo->sel0 &&
           clickTime < mViewInfo->sel1);
 
       if (clickedInSelection) {
@@ -2319,53 +2319,34 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
 
          mCapturedClipIsSelection = true;
 
-         TrackGroupIterator iter(mTracks);
-         Track *t;
-         if (GetProject()->IsSticky() && (t = iter.First(wt))) {
-            while (t) {
-               if (t->GetKind() == Track::Wave) {
-                  WaveTrack *wt = (WaveTrack *)t;
-                  WaveClipList::compatibility_iterator it;
-                  for (it = wt->GetClipIterator(); it; it = it->GetNext()) {
-                     WaveClip *clip = it->GetData();
-                     double clip0 = clip->GetStartTime();
-                     double clip1 = clip->GetEndTime();
-                     
-                     if (clip0 <= mViewInfo->sel1 &&
-                         clip1 >= mViewInfo->sel0) {
-                        mCapturedClipArray.Add(TrackClip(wt, clip));
-                     }
+         TrackAndGroupIterator iter(mTracks);
+         Track *t = iter.First();
+
+         while (t) // must iterate t in all possible branches
+         {
+            if (t->GetSelected()) {
+               // If this track is in a group, move all clips in the group that
+               // overlap the selection region
+               TrackGroupIterator gIter(mTracks);
+               Track *gt = gIter.First(t);
+               if (GetProject()->IsSticky() && gt) {
+                  while (gt) {
+                     AddClipsToCaptured(gt, true);
+                     gt = gIter.Next();
                   }
+
+                  // iteration for t: we're done with this group.
+                  t = iter.NextGroup();
                }
                else {
-                  mCapturedClipArray.Add(TrackClip(t, NULL));
+                  AddClipsToCaptured(t, true);
+                  
+                  // iteration for t
+                  t = iter.Next();
                }
-               t = iter.Next();
             }
-         }
-         else {
-            TrackListIterator iter(mTracks);
-            Track *t = iter.First();
-            while (t) {
-               if (t->GetSelected()) {
-                  if (t->GetKind() == Track::Wave) {
-                     WaveTrack *wt = (WaveTrack *)t;
-                     WaveClipList::compatibility_iterator it;
-                     for (it = wt->GetClipIterator(); it; it = it->GetNext()) {
-                        WaveClip *clip = it->GetData();
-                        double clip0 = clip->GetStartTime();
-                        double clip1 = clip->GetEndTime();
-                        
-                        if (clip0 <= mViewInfo->sel1 &&
-                            clip1 >= mViewInfo->sel0) {
-                           mCapturedClipArray.Add(TrackClip(wt, clip));
-                        }
-                     }
-                  }
-                  else {
-                     mCapturedClipArray.Add(TrackClip(t, NULL));
-                  }
-               }
+            else {
+               // iteration for t
                t = iter.Next();
             }
          }
@@ -2375,26 +2356,15 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
          TrackGroupIterator iter(mTracks);
          Track *t;
          if (GetProject()->IsSticky() && (t = iter.First(wt))) {
+            // Captured clip is in a group -- move all group tracks
             while (t) {
-               if (t->GetKind() == Track::Wave) {
-                  WaveTrack *wt = (WaveTrack *)t;
-                  WaveClipList::compatibility_iterator it;
-                  for (it = wt->GetClipIterator(); it; it = it->GetNext()) {
-                     WaveClip *clip = it->GetData();
-                     mCapturedClipArray.Add(TrackClip(wt, clip));
-                  }
-               }
-               else {
-                  mCapturedClipArray.Add(TrackClip(t, NULL));
-               }
+               AddClipsToCaptured(t, false);
                t = iter.Next();
             }
          }
          else {
             // Only add mCapturedClip, and possibly its stereo partner,
             // to the list of clips to move.
-
-            mCapturedClipIsSelection = false;
 
             mCapturedClipArray.Add(TrackClip(wt, mCapturedClip));
 
@@ -2438,6 +2408,35 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
    }
 
    mMouseCapture = IsSliding;
+}
+
+// Helper for the above, adds a track's clips to mCapturedClipArray (eliminates
+// duplication of this logic)
+void TrackPanel::AddClipsToCaptured(Track *t, bool withinSelection)
+{
+   if (t->GetKind() == Track::Wave)
+   {
+      WaveClipList::compatibility_iterator it =
+         ((WaveTrack *)t)->GetClipIterator();
+      while (it)
+      {
+         WaveClip *clip = it->GetData();
+         if (!withinSelection || (
+                  // Overlap of the selection must be at least one sample
+                  clip->GetStartTime()+1.0/clip->GetRate() <= mViewInfo->sel1 &&
+                  clip->GetEndTime()-1.0/clip->GetRate() >= mViewInfo->sel0) )
+         {
+            mCapturedClipArray.Add(TrackClip(t, clip));
+         }
+         it = it->GetNext();
+      }
+   }
+   else
+   {
+      // This handles label tracks rather heavy-handedly -- it would be nice to
+      // treat individual labels like clips
+      mCapturedClipArray.Add(TrackClip(t, NULL));
+   }
 }
 
 /// Slide tracks horizontally, or slide clips horizontally or vertically

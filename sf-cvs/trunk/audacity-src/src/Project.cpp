@@ -4100,6 +4100,7 @@ void AudacityProject::EditClipboardByLabel( WaveTrack::EditDestFunction action )
    //labeled regions in the end. This is to correctly perform
    //actions like 'Cut' which collapse the track area.
    for( n = iter.First(); n; n = iter.Next() )
+   {
       if( n->GetKind() == Track::Wave && ( allTracks || n->GetSelected() ) )
       {
          WaveTrack *wt = ( WaveTrack* )n;
@@ -4118,17 +4119,25 @@ void AudacityProject::EditClipboardByLabel( WaveTrack::EditDestFunction action )
                   merged = ( WaveTrack* )dest;
                else
                {
-                  //since we are doing this from the end, next region
-                  //has to go in the beginning
-                  merged->Paste( merged->GetStartTime(), dest );
+                  // Paste to the beginning; unless this is the first region,
+                  // offset the track to account for time between the regions
+                  if (i < regions.GetCount() - 1) {
+                     merged->Offset(
+                           regions.Item(i+1)->start - regions.Item(i)->end);
+                  }
+
+                  merged->Paste( 0.0 , dest );
                   delete dest;
                }
-               msClipLen += ( regions.Item( i )->end - regions.Item( i )->start );
             }
          }
          if( merged )
             msClipboard->Add( merged );
       }
+   }
+
+   msClipLen =
+      regions.Item(regions.GetCount() - 1)->end - regions.Item(0)->start;
 
    //delete label regions
    for( unsigned int i = 0; i < regions.GetCount(); i++ )
@@ -4621,9 +4630,12 @@ wxString AudacityProject::AllLabelsText(TrackList *l, double t0, double t1,
    return retVal;
 }
 
-void AudacityProject::CopyLabelTracksText()
+void AudacityProject::CopyLabelTracksText(bool clear)
 {
-   wxString text = AllLabelsText(mTracks, mViewInfo.sel0, mViewInfo.sel1, true);
+   wxString text;
+
+   if (!clear)
+      text = AllLabelsText(mTracks, mViewInfo.sel0, mViewInfo.sel1, true);
 
    if (wxTheClipboard->Open())
    {

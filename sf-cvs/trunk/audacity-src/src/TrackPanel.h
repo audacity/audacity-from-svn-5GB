@@ -274,6 +274,7 @@ class TrackPanel:public wxPanel {
    void HandleSlide(wxMouseEvent & event);
    void StartSlide(wxMouseEvent &event);
    void DoSlide(wxMouseEvent &event);
+   void AddClipsToCaptured(Track *t, bool withinSelection);
 
    // AS: Handle zooming into tracks
    void HandleZoom(wxMouseEvent & event);
