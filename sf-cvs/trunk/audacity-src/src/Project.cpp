@@ -4476,7 +4476,11 @@ bool AudacityProject::GetSnapTo()
 
 bool AudacityProject::IsSticky()
 {
-   return (GetStickyFlag() && (mLastFlags & LabelTracksExistFlag));  
+#ifdef EXPERIMENTAL_LINKING
+   return (GetStickyFlag() && (mLastFlags & LabelTracksExistFlag));
+#else
+   return false;
+#endif
 }
 
 void AudacityProject::HandleTrackMute(Track *t, const bool exclusive)

@@ -146,10 +146,12 @@ void EditToolBar::Populate()
 
    AddSeparator();
 
+#ifdef EXPERIMENTAL_LINKING
    AddButton(bmpLinkTracks, bmpLinkTracksDisabled, ETBLinkID,
       _("Link Tracks"), true);
    
    AddSeparator();
+#endif
    
    AddButton(bmpZoomIn, bmpZoomInDisabled, ETBZoomInID,
       _("Zoom In"));
@@ -168,7 +170,9 @@ void EditToolBar::Populate()
    mButtons[ETBZoomFitID]->SetEnabled(false);
    mButtons[ETBPasteID]->SetEnabled(false);
    
+#ifdef EXPERIMENTAL_LINKING
    mButtons[ETBLinkID]->PushDown();
+#endif
 
    RegenerateTooltips();
 }
@@ -194,7 +198,9 @@ void EditToolBar::RegenerateTooltips()
    mButtons[ETBSilenceID]->SetToolTip(_("Silence"));
    mButtons[ETBUndoID]->SetToolTip(_("Undo"));
    mButtons[ETBRedoID]->SetToolTip(_("Redo"));
+#ifdef EXPERIMENTAL_LINKING
    mButtons[ETBLinkID]->SetToolTip(_("Link Tracks"));
+#endif
    mButtons[ETBZoomInID]->SetToolTip(_("Zoom In"));
    mButtons[ETBZoomOutID]->SetToolTip(_("Zoom Out"));
    mButtons[ETBZoomSelID]->SetToolTip(_("Fit Selection"));
@@ -232,6 +238,7 @@ void EditToolBar::OnButton(wxCommandEvent &event)
       case ETBRedoID:
          if (!busy) p->OnRedo();
          break;
+#ifdef EXPERIMENTAL_LINKING
       case ETBLinkID:
          if (!busy){
             p->OnStickyLabel();
@@ -242,6 +249,7 @@ void EditToolBar::OnButton(wxCommandEvent &event)
             p->ModifyToolbarMenus();
          }
          return;//avoiding the call to SetButton()
+#endif
       case ETBZoomInID:
          p->OnZoomIn();
          break;
@@ -303,10 +311,12 @@ void EditToolBar::EnableDisableButtons()
 
    mButtons[ETBPasteID]->SetEnabled(p->Clipboard());
    
+#ifdef EXPERIMENTAL_LINKING
    if (p->GetStickyFlag())
       mButtons[ETBLinkID]->PushDown();
    else
       mButtons[ETBLinkID]->PopUp();
+#endif
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

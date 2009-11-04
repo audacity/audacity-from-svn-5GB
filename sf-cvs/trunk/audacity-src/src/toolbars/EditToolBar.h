@@ -36,7 +36,9 @@ enum {
    ETBUndoID,
    ETBRedoID,
 
+#ifdef EXPERIMENTAL_LINKING
    ETBLinkID,
+#endif
 
    ETBZoomInID,
    ETBZoomOutID,
