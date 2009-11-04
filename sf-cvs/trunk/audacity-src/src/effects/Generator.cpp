@@ -77,7 +77,7 @@ bool Generator::Process()
                SetTimeWarper(new StepTimeWarper(mT1, mDuration-mT1));
                bGoodResult = track->ClearAndPaste(mT0, mT1, tmp, true,
                      false, mOutputTracks,
-                     false, first, GetTimeWarper());
+                     false, !first, GetTimeWarper());
                if (first) {
                   first = false;
                }
