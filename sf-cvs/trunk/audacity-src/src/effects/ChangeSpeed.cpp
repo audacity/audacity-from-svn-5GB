@@ -248,20 +248,12 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 
    // Take the output track and insert it in place of the original
    // sample data
+	double newLength = outputTrack->GetEndTime(); 
 	if (bLoopSuccess) {
-
-      double mT1Dashed = mT0 + (mT1 - mT0)/(m_PercentChange/100.0 + 1.0);
-      SetTimeWarper(new LinearTimeWarper(mT0, mT0, mT1, mT1Dashed ));
+      SetTimeWarper(new LinearTimeWarper(mT0, mT0, mT1, newLength ));
       track->ClearAndPaste(mCurT0, mCurT1, outputTrack, true, false, mOutputTracks, true, first, GetTimeWarper());
-
-      /*
-      if (first)
-      {
-         first = false;
-      }*/
 	}
 
-	double newLength = outputTrack->GetEndTime(); 
 	if (newLength > m_maxNewLength) 
 		m_maxNewLength = newLength; 
 
