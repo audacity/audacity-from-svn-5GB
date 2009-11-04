@@ -163,6 +163,7 @@ class AUDACITY_DLL_API EffectNyquist:public Effect
    WaveTrack         *mCurTrack[2];
    sampleCount       mCurStart[2];
    sampleCount       mCurLen;
+   bool              mFirstInGroup;
    double            mOutputTime;
    int               mCount;
    double            mProgressIn;

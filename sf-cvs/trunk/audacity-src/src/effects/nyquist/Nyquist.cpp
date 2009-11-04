@@ -488,8 +488,11 @@ bool EffectNyquist::Process()
       mProgress->Hide();
    }
 
-   this->CopyInputTracks(); // Set up mOutputTracks.
-   TrackListIterator iter(mOutputTracks);
+   // We must copy all the tracks, because Paste needs label tracks to ensure
+   // correct group behavior when the timeline is affected; then we just want
+   // to operate on the selected wave tracks
+   this->CopyInputTracks(Track::All);
+   SelectedTrackListOfKindIterator iter(Track::Wave, mOutputTracks);
    mCurTrack[0] = (WaveTrack *) iter.First();
    mOutputTime = mT1 - mT0;
    mCount = 0;
@@ -503,6 +506,10 @@ bool EffectNyquist::Process()
    mCont = false;
 
    mDebugOutput = "";
+
+   // Keep track of whether the current track is first selected in its group
+   mFirstInGroup = true;
+   Track *gtLast = NULL;
 
    while (mCurTrack[0]) {
       mCurNumChannels = 1;
@@ -520,6 +527,12 @@ bool EffectNyquist::Process()
             }
             mCurStart[1] = mCurTrack[1]->TimeToLongSamples(mT0);
          }
+
+         // Check whether we're in the same group as the last selected track
+         TrackGroupIterator gIter(mOutputTracks);
+         Track *gt = gIter.First(mCurTrack[0]);
+         mFirstInGroup = !gtLast || (gtLast != gt);
+         gtLast = gt;
 
          mCurStart[0] = mCurTrack[0]->TimeToLongSamples(mT0);
          sampleCount end = mCurTrack[0]->TimeToLongSamples(mT1);
@@ -762,7 +775,11 @@ bool EffectNyquist::ProcessOne()
          out = mOutputTrack[0];
       }
 
-      mCurTrack[i]->ClearAndPaste(mT0, mT1, out, false, false);
+      // If this track is not first in its group we set useHandlePaste
+      mCurTrack[i]->ClearAndPaste(mT0, mT1, out, false, false,
+                                  NULL, false, !mFirstInGroup);
+      // Only the first channel can be first in its group
+      mFirstInGroup = false;
    }
 
    for (i = 0; i < outChannels; i++) {
