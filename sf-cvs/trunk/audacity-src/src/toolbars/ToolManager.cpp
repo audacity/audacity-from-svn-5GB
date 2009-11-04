@@ -584,6 +584,7 @@ void ToolManager::ReadConfig()
             bar->Create( mBotDock );
          }
 
+#ifdef EXPERIMENTAL_LINKING
          // Set the width
          if( width[ ndx ] >= bar->GetSize().x )
          {
@@ -591,7 +592,24 @@ void ToolManager::ReadConfig()
             bar->SetSize( sz );
             bar->Layout();
          }
-
+#else
+         // note that this section is here because if you had been using linking and now you aren't,
+         // the space for the extra button is stored in audacity.cfg, and so you get an extra space
+         // in the EditToolbar.
+         // It is needed so that the meterToolbar size gets preserved.
+         // Longer-term we should find a better fix for this.
+         wxString thisBar = bar->GetSection();
+         if( thisBar != wxT("Edit"))
+         {
+            // Set the width
+            if( width[ ndx ] >= bar->GetSize().x )
+            {
+               wxSize sz( width[ ndx ], bar->GetSize().y );
+               bar->SetSize( sz );
+               bar->Layout();
+            }
+         }
+#endif
          // Is order within range and unoccupied?
          if( ( ord >= 0 ) &&
              ( ord < ToolBarCount ) &&

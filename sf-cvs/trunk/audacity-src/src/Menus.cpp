@@ -709,9 +709,11 @@ void AudacityProject::CreateMenusAndCommands()
 
       c->AddSeparator();
 
+#ifdef EXPERIMENTAL_LINKING
       c->AddCheck(wxT("StickyLabels"), _("&Link Audio and Label Tracks"), FN(OnStickyLabel), 0);
 
       c->AddSeparator();
+#endif
 
       c->AddItem(wxT("AddLabel"), _("Add Label At &Selection"), FN(OnAddLabel), wxT("Ctrl+B"),
                  AlwaysEnabledFlag,
