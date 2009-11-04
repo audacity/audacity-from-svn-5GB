@@ -307,6 +307,7 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
          
          if (mFormat == int16Sample)
             block = sf_readf_short(mFile, (short *)srcbuffer, block);
+         //import 24 bit int as float and have the append function convert it.  This is how PCMAliasBlockFile works too.
          else
             block = sf_readf_float(mFile, (float *)srcbuffer, block);
          
@@ -323,7 +324,7 @@ int PCMImportFileHandle::Import(TrackFactory *trackFactory,
                         ((float *)srcbuffer)[mInfo.channels*j+c];
                }
                
-               channels[c]->Append(buffer, mFormat, block);
+               channels[c]->Append(buffer, (mFormat == int16Sample)?int16Sample:floatSample, block);
             }
             framescompleted += block;
          }
