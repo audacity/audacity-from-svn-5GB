@@ -197,6 +197,7 @@ void OnCut();
 void OnSplitCut();
 void OnCopy();
 void OnPaste();
+void OnPasteNewLabel();
 void OnPasteOver();
 void OnTrim();
 

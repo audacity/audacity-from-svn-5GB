@@ -384,15 +384,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    
    static bool GetCacheBlockFiles();
    
-   // Given a track list and selection boundaries, returns a string
-   // representation of all the labels
-   wxString AllLabelsText(TrackList *l, double t0, double t1,
-                          bool selectedOnly = false);
-
-   // Copies the text of each selected label to the system clipboard (set clear
-   // to act as if no label tracks are selected)
-   void CopyLabelTracksText(bool clear = false);
-
  public:
    bool IsSoloSimple() { return mSoloPref == wxT("Simple"); };
    bool IsSoloNone() { return mSoloPref == wxT("None"); };

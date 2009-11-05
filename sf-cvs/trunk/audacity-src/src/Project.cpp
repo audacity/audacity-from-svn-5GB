@@ -4121,7 +4121,7 @@ void AudacityProject::EditClipboardByLabel( WaveTrack::EditDestFunction action )
                {
                   // Paste to the beginning; unless this is the first region,
                   // offset the track to account for time between the regions
-                  if (i < regions.GetCount() - 1) {
+                  if (i < (int)regions.GetCount() - 1) {
                      merged->Offset(
                            regions.Item(i+1)->start - regions.Item(i)->end);
                   }
@@ -4603,51 +4603,6 @@ void AudacityProject::HandleTrackSolo(Track *t, const bool alternate)
          }
          i = iter.Next();
       }
-   }
-}
-
-wxString AudacityProject::AllLabelsText(TrackList *l, double t0, double t1,
-                                        bool selectedOnly /* = false */)
-{
-   bool firstLabelTrack = true;
-   wxString retVal;
-   TrackListOfKindIterator iter(Track::Label, l);
-   // Clipboard functions don't do newline magic, so here's a lame workaround
-   wxString newline;
-#if defined(__WXMSW__)
-   newline = wxT("\r\n");  // On Windows systems this should be \x0d\x0a
-#else
-   newline = wxT("\n");    // This is \x0a most places, \x0d on old Macs
-#endif
-   
-   for (Track *t = iter.First(); t; t = iter.Next())
-   {
-      if (!selectedOnly || t->GetSelected())
-      {
-         if (!firstLabelTrack)
-            retVal += newline;
-         retVal += ((LabelTrack *)t)->GetTextOfLabels(t0, t1);
-         firstLabelTrack = false;
-      }
-   }
-
-   return retVal;
-}
-
-void AudacityProject::CopyLabelTracksText(bool clear)
-{
-   wxString text;
-
-   if (!clear)
-      text = AllLabelsText(mTracks, mViewInfo.sel0, mViewInfo.sel1, true);
-
-   if (wxTheClipboard->Open())
-   {
-#if defined(__WXGTK__) && defined(HAVE_GTK)
-      CaptureEvents capture;
-#endif
-      wxTheClipboard->SetData(new wxTextDataObject(text));
-      wxTheClipboard->Close();
    }
 }
 
