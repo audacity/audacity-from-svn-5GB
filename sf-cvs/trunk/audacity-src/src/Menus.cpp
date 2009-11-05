@@ -362,6 +362,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("Paste"), _("&Paste"), FN(OnPaste), wxT("Ctrl+V"),
               AudioIONotBusyFlag | ClipboardFlag,
               AudioIONotBusyFlag | ClipboardFlag);
+   c->AddItem(wxT("PasteNewLabel"), _("Paste Te&xt to New Label"), FN(OnPasteNewLabel), wxT("Ctrl+Alt+V"),
+              AudioIONotBusyFlag, AudioIONotBusyFlag);
    c->AddItem(wxT("Trim"), _("Tri&m"), FN(OnTrim), wxT("Ctrl+T"));
 
    c->AddSeparator();
@@ -2995,9 +2997,6 @@ void AudacityProject::OnCut()
       n = iter.Next();
    }
 
-   // Set the system clipboard
-   CopyLabelTracksText();
-
    n = iter.First();
    while (n) {
       if (n->GetSelected()) {
@@ -3046,9 +3045,6 @@ void AudacityProject::OnSplitCut()
    TrackListIterator iter(mTracks);
    Track *n = iter.First();
    Track *dest;
-
-   // Set the system clipboard
-   CopyLabelTracksText();
 
    ClearClipboard();
    n = iter.First();
@@ -3121,16 +3117,13 @@ void AudacityProject::OnCopy()
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
    msClipProject = this;
 
-   // Set system clipboard
-   CopyLabelTracksText();
-   
    //Make sure the menus/toolbar states get updated
    mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnPaste()
 {
-   // Handle text pastes first
+   // Handle text pastes (into active labels) first
    TrackListOfKindIterator iterlt(Track::Label, mTracks);
 
    LabelTrack *lt = (LabelTrack *) iterlt.First();
@@ -3158,82 +3151,6 @@ void AudacityProject::OnPaste()
 
          // Find the next one
          lt = (LabelTrack *) iterlt.Next();
-      }
-   }
-
-   // If there are no tracks on the clipboard, or if the external clipboard has
-   // been set more recently than the internal one (that is, if the external
-   // clipboard's text doesn't match the internal clipboard's label text), then
-   // we try to create a label in all selected label tracks with the clipboard
-   // text
-   wxString sysCbText;
-
-   {
-#if defined(__WXGTK__) && HAVE_GTK
-      CaptureEvents capture;
-#endif
-
-      if (wxTheClipboard->IsSupported(wxDF_TEXT))
-      {
-         if (wxTheClipboard->Open())
-         {
-            wxTextDataObject data;
-            wxTheClipboard->GetData(data);
-            wxTheClipboard->Close();
-            sysCbText = data.GetText();
-         }
-      }
-   }
-
-   if (msClipboard->GetCount() == 0 ||
-         sysCbText != AllLabelsText(msClipboard, 0.0, msClipLen))
-   {
-      LabelTrack *plt = NULL;
-      bool pasted = false;
-
-      // Paste new labels into all selected label tracks
-      lt = (LabelTrack *) iterlt.First();
-      while (lt) {
-         if (lt->GetSelected()) {
-            // Ensure that the last pasted label gets unselected.  This will
-            // leave only one "active" label when we're done.
-            if (plt) {
-               plt->Unselect();
-            }
-
-            // Add a new label
-            lt->AddLabel(mViewInfo.sel0, mViewInfo.sel1);
-
-            // Now paste the text into it
-            if (lt->PasteSelectedText(mViewInfo.sel0, mViewInfo.sel1)) {
-
-               // Remember that we pasted something
-               pasted = true;
-
-               // Make sure caret is in view
-               int x;
-               if (lt->CalcCursorX(this, &x)) {
-                  mTrackPanel->ScrollIntoView(x);
-               }
-            }
-
-            // Remember this track so we can unselect the new label if its
-            // not the last one pasted
-            plt = lt;
-         }
-
-         // Find the next one
-         lt = (LabelTrack *) iterlt.Next();
-      }
-
-      // If we pasted into any tracks we're done
-      if (pasted) {
-         PushState(_("Pasted from the clipboard"), _("Paste"));
-
-         // Redraw everyting (is that necessary???)
-         RedrawProject();
-
-         return;
       }
    }
 
@@ -3537,6 +3454,76 @@ void AudacityProject::OnPaste()
    }
 }
 
+// Creates a new label in each selected label track with text from the system
+// clipboard
+void AudacityProject::OnPasteNewLabel()
+{
+   bool pastedSomething = false;
+
+   SelectedTrackListOfKindIterator iter(Track::Label, mTracks);
+   Track *t = iter.First();
+   if (!t)
+   {
+      // If there are no selected label tracks, try to choose the first label
+      // track after some other selected track
+      TrackListIterator iter1(mTracks);
+      for (Track *t1 = iter1.First(); t1; t1 = iter1.Next()) {
+         if (t1->GetSelected()) {
+            // Look for a label track
+            while ((t1 = iter1.Next())) {
+               if (t1->GetKind() == Track::Label) {
+                  t = t1;
+                  break;
+               }
+            }
+            if (t) break;
+         }
+      }
+
+      // If no match found, add one
+      if (!t) {
+         t = new LabelTrack(mDirManager);
+         mTracks->Add(t);
+      }
+
+      // Select this track so the loop picks it up
+      t->SetSelected(true);
+   }
+
+   LabelTrack *plt = NULL; // the previous track
+   for (Track *t = iter.First(); t; t = iter.Next())
+   {
+      LabelTrack *lt = (LabelTrack *)t;
+
+      // Unselect the last label, so we'll have just one active label when
+      // we're done
+      if (plt)
+         plt->Unselect();
+
+      // Add a new label, paste into it
+      lt->AddLabel(mViewInfo.sel0, mViewInfo.sel1);
+      if (lt->PasteSelectedText(mViewInfo.sel0, mViewInfo.sel1))
+         pastedSomething = true;
+
+      // Set previous track
+      plt = lt;
+   }
+
+   // plt should point to the last label track pasted to -- ensure it's visible
+   // and set focus
+   if (plt) {
+      mTrackPanel->EnsureVisible(plt);
+      mTrackPanel->SetFocus();
+   }
+
+   if (pastedSomething) {
+      PushState(_("Pasted from the clipboard"), _("Paste Text to New Label"));
+
+      // Is this necessary? (carried over from former logic in OnPaste())
+      RedrawProject();
+   }
+}
+
 void AudacityProject::OnPasteOver()
 {
    if(msClipLen>0.0)
@@ -3699,9 +3686,6 @@ void AudacityProject::OnCutLabels()
   if( mViewInfo.sel0 >= mViewInfo.sel1 )
      return;
 
-  // Set the system clipboard
-  CopyLabelTracksText(true);
- 
   // Because of grouping the copy may need to operate on different tracks than
   // the clear, so we do these actions separately.
   EditClipboardByLabel( &WaveTrack::Copy );
@@ -3725,9 +3709,6 @@ void AudacityProject::OnSplitCutLabels()
   if( mViewInfo.sel0 >= mViewInfo.sel1 )
      return;
 
-  // Set the system clipboard
-  CopyLabelTracksText(true);
-
   EditClipboardByLabel( &WaveTrack::SplitCut );
   
   msClipProject = this;
@@ -3742,9 +3723,6 @@ void AudacityProject::OnCopyLabels()
 {
   if( mViewInfo.sel0 >= mViewInfo.sel1 )
      return;
-
-  // Set the system clipboard
-  CopyLabelTracksText(true);
 
   EditClipboardByLabel( &WaveTrack::Copy );
   
