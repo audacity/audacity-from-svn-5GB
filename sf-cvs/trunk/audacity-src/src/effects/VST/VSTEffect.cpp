@@ -1612,6 +1612,11 @@ void VSTEffect::Scan()
    size_t cnt = files.GetCount();
    wxString longest;
 
+   // JKC: Let's not show the progress dialog if there are no 
+   // files to test.
+   if( cnt <= 0 )
+      return;
+
    for (size_t i = 0; i < cnt; i++) {
       if (files[i].Length() > longest.Length()) {
          longest = files[i];
@@ -1640,6 +1645,8 @@ void VSTEffect::Scan()
       }
 
       argv[2] = file.c_str();
+      // ToDo: do we need a try--catch around this in case a bad plug-in 
+      // fails? (JKC Nov09)
       wxExecute((wxChar **) argv, wxEXEC_SYNC | wxEXEC_NODISABLE, NULL);
    }
 
