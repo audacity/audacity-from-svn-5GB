@@ -532,12 +532,12 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    int startY = (int)rint((threshold*(1.0/ratio-1.0))*mEnvRect.height/rangeDB);
 
    // Yellow line for threshold
-   memDC.SetPen(wxPen(wxColour(220, 220, 0), 1, wxSOLID));
+/*   memDC.SetPen(wxPen(wxColour(220, 220, 0), 1, wxSOLID));
    AColor::Line(memDC,
                 mEnvRect.x,
                 mEnvRect.y + mEnvRect.height - kneeY,
                 mEnvRect.x + mEnvRect.width - 1,
-                mEnvRect.y + mEnvRect.height - kneeY);
+                mEnvRect.y + mEnvRect.height - kneeY);*/
 
    // Was: Nice dark red line for the compression diagram
 //   memDC.SetPen(wxPen(wxColour(180, 40, 40), 3, wxSOLID));
