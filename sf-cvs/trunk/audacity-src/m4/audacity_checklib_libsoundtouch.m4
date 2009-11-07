@@ -54,10 +54,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSOUNDTOUCH], [
       LIBSOUNDTOUCH_LOCAL_LIBS="libSoundTouch.a"
       LIBSOUNDTOUCH_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/soundtouch/include'
       LIBSOUNDTOUCH_LOCAL_CPPSYMBOLS="USE_SOUNDTOUCH"
-
-      if test ! -f lib-src/soundtouch/Makefile ; then
-         LIBSOUNDTOUCH_LOCAL_CONFIG_SUBDIRS="lib-src/soundtouch"
-      fi
+      LIBSOUNDTOUCH_LOCAL_CONFIG_SUBDIRS="lib-src/soundtouch"
       AC_MSG_NOTICE([libsoundtouch libraries are available in the local tree])
    else
       LIBSOUNDTOUCH_LOCAL_AVAILABLE="no"
