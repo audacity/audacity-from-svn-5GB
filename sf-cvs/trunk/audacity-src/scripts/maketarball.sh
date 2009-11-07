@@ -294,20 +294,22 @@ else
 	reconf=1
 fi
 
+# these are the arguments we will pass to configure when it is run
+configargs="--enable-maintainer-mode --with-libsndfile=local --with-lib-preference=\"local system\""
+
 if [[ x"$reconf" = x1 ]] ; then
 	echo "Your Makefiles are out of date or missing. (Re)running configure to"
 	echo "create up-to-date Makefiles before building tarballs..."
-	echo "\t./configure --enable-maintainer-mode --with-libsndfile=local"
+	echo "   ./configure ${configargs}"
 fi
 
 # if we are in silent mode, then redirect the output of configure
 if [ $mode -eq 1 ]; then
-	configargs="";
+	$SHELL -c "./configure ${configargs}"
 else
-	configargs="2>/dev/null > /dev/null";
+	$SHELL -c "./configure ${configargs}" > /dev/null 2>&1
 fi
-# actually run configure
-	./configure --enable-maintainer-mode --with-libsndfile=local ${configargs};
+echo -n "Getting program version... "
 
 # find version number from C header file
 major_version=`awk '/^#define+ AUDACITY_VERSION / {print $3}' src/Audacity.h`
@@ -316,7 +318,8 @@ micro_version=`awk '/^#define+ AUDACITY_REVISION / {print $3}' src/Audacity.h`
 version_suffix=`awk '/^#define+ AUDACITY_SUFFIX / {split($0,subs,"\""); print(subs[2]) }' src/Audacity.h`
 
 version="${major_version}.${minor_version}.${micro_version}${version_suffix}"
-echo "version set to ${version}"
+echo "${version}"
+# completes previous echo -n call
 
 # capture some directory information, we'll want it later
 sourcedir="$(pwd)"	# where the sources are
