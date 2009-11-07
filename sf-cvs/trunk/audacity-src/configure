@@ -7865,10 +7865,7 @@ fi
       LIBSOUNDTOUCH_LOCAL_LIBS="libSoundTouch.a"
       LIBSOUNDTOUCH_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/soundtouch/include'
       LIBSOUNDTOUCH_LOCAL_CPPSYMBOLS="USE_SOUNDTOUCH"
-
-      if test ! -f lib-src/soundtouch/Makefile ; then
-         LIBSOUNDTOUCH_LOCAL_CONFIG_SUBDIRS="lib-src/soundtouch"
-      fi
+      LIBSOUNDTOUCH_LOCAL_CONFIG_SUBDIRS="lib-src/soundtouch"
       { $as_echo "$as_me:$LINENO: libsoundtouch libraries are available in the local tree" >&5
 $as_echo "$as_me: libsoundtouch libraries are available in the local tree" >&6;}
    else
