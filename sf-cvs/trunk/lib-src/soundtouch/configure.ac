@@ -1,6 +1,6 @@
 dnl SoundTouch configure.ac, by David W. Durham
 dnl
-dnl $Id: configure.ac,v 1.8 2009-01-18 00:29:04 richardash1981 Exp $
+dnl $Id: configure.ac,v 1.9 2009-11-07 12:17:03 richardash1981 Exp $
 dnl
 dnl This file is part of SoundTouch, an audio processing library for pitch/time adjustments
 dnl 
@@ -21,6 +21,7 @@ dnl Place - Suite 330, Boston, MA  02111-1307, USA
 
 AC_INIT(SoundTouch, 1.3.1, [http://www.surina.net/soundtouch])
 AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_MACRO_DIR([config/m4])
 AM_CONFIG_HEADER([include/soundtouch_config.h])
 AM_INIT_AUTOMAKE([-Wall foreign])
 

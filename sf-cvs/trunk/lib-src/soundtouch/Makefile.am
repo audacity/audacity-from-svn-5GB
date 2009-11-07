@@ -1,6 +1,6 @@
 ## Process this file with automake to create Makefile.in
 ##
-## $Id: Makefile.am,v 1.4 2009-01-18 00:29:04 richardash1981 Exp $
+## $Id: Makefile.am,v 1.5 2009-11-07 12:17:03 richardash1981 Exp $
 ##
 ## Copyright (C) 2003 - David W. Durham
 ## 
@@ -66,5 +66,5 @@ dist-hook:
 
 
 # flag to aclocal where to find m4 macros for tests
-ACLOCAL_AMFLAGS = -I config
+ACLOCAL_AMFLAGS = -I config/m4
 
