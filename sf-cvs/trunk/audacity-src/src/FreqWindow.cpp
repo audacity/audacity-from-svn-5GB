@@ -378,6 +378,7 @@ void FreqWindow::GetAudio()
    int selcount = 0;
    int i;
    bool warning = false;
+   wxLogMessage(wxT("Entering FreqWindow::GetAudio()"));
    TrackListIterator iter(p->GetTracks());
    Track *t = iter.First();
    while (t) {
@@ -430,8 +431,11 @@ void FreqWindow::GetAudio()
       wxString msg;
       msg.Printf(_("Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."),
                           (mDataLen / mRate));
+      wxLogMessage(wxT("About to show length warning message"));
       wxMessageBox(msg);
+      wxLogMessage(wxT("Length warning message done"));
    }
+   wxLogMessage(wxT("Leaving FreqWindow::GetAudio()"));
 }
 
 void FreqWindow::OnSize(wxSizeEvent & event)
@@ -920,6 +924,7 @@ void FreqWindow::OnCloseButton(wxCommandEvent & WXUNUSED(event))
 
 void FreqWindow::Plot()
 {
+   wxLogMessage(wxT("Starting FreqWindow::Plot()"));
    if (mData) {
       delete[]mData;
       mData = NULL;
@@ -934,6 +939,7 @@ void FreqWindow::Plot()
 
    wxSizeEvent dummy;
    OnSize( dummy );
+   wxLogMessage(wxT("Leaving FreqWindow::Plot()"));
 }
 
 void FreqWindow::Recalc()
@@ -953,7 +959,6 @@ void FreqWindow::Recalc()
    long windowSize = 0;
    (mSizeChoice->GetStringSelection()).ToLong(&windowSize);
 
-   wxLogMessage(wxT("Collected control settings in FreqWindow::Recalc()"));
    int f = NumWindowFuncs();
 
    if (!(windowSize >= 32 && windowSize <= 65536 &&
@@ -969,7 +974,6 @@ void FreqWindow::Recalc()
       return;
    }
 
-   wxLogMessage(wxT("About to allocate a load of memory in FreqWindow::Recalc()"));
    mProcessed = new float[mWindowSize];
 
    int i;
@@ -983,7 +987,6 @@ void FreqWindow::Recalc()
    float *out2 = new float[mWindowSize];
    float *win = new float[mWindowSize];
 
-   wxLogMessage(wxT("OK, memory done, doing Window function in FreqWindow::Recalc()"));
    // initialize the window
    for(int i=0; i<mWindowSize; i++)
       win[i] = 1.0;
@@ -998,7 +1001,7 @@ void FreqWindow::Recalc()
    else
       wss = 1.0;
 
-   //add progress dialog
+   //Progress dialog over FFT operation
    wxLogMessage(wxT("Starting progress dialogue in FreqWindow::Recalc()"));
    ProgressDialog *mProgress = new ProgressDialog(_("FreqWindow"),_("Drawing Spectrum"));
 
