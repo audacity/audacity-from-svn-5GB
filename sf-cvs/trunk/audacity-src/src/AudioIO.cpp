@@ -277,6 +277,10 @@ AudioIO::AudioIO()
    mUpdateMeters = false;
    mUpdatingMeters = false;
 
+   mCachedPlaybackIndex = -1;
+   mCachedCaptureIndex = -1;
+   mCachedBestRateIn = 0.0;
+
    PaError err = Pa_Initialize();
 
    if (err != paNoError) {
@@ -451,7 +455,19 @@ void AudioIO::HandleDeviceChange()
    // This should not happen, but it would screw things up if it did.
    if (IsStreamActive())
       return;
-   // this function only does something (at the moment) for portmixer.
+
+   // get the selected record and playback devices
+   int playDeviceNum = getPlayDevIndex();
+   int recDeviceNum = getRecordDevIndex();
+
+   // cache playback/capture rates
+   mCachedPlaybackRates = GetSupportedPlaybackRates(playDeviceNum);
+   mCachedCaptureRates = GetSupportedCaptureRates(recDeviceNum);
+   mCachedSampleRates = GetSupportedSampleRates(playDeviceNum, recDeviceNum);
+   mCachedPlaybackIndex = playDeviceNum;
+   mCachedCaptureIndex = recDeviceNum;
+   mCachedBestRateIn = 0.0;
+
 #if defined(USE_PORTMIXER)
 
    // if we have a PortMixer object, close it down
@@ -468,24 +484,19 @@ void AudioIO::HandleDeviceChange()
       mPortMixer = NULL;
    }
 
-   // get the selected record and playback devices
-   int playDeviceNum = getPlayDevIndex();
-   int recDeviceNum = getRecordDevIndex();
-
-   wxArrayLong supportedSampleRates = GetSupportedSampleRates(playDeviceNum, recDeviceNum);
    // that might have given us no rates whatsoever, so we have to guess an
    // answer to do the next bit
-   int numrates = supportedSampleRates.GetCount();
+   int numrates = mCachedSampleRates.GetCount();
    int highestSampleRate;
    if (numrates > 0)
    {
-      highestSampleRate = supportedSampleRates[numrates - 1];
+      highestSampleRate = mCachedSampleRates[numrates - 1];
    }
    else
    {  // we don't actually have any rates that work for Rec and Play. Guess one
       // to use for messing with the mixer, which doesn't actually do either
       highestSampleRate = 44100;
-      // supportedSampleRates is still empty, but it's not used again, so
+      // mCachedSampleRates is still empty, but it's not used again, so
       // can ignore
    }
    mEmulateMixerInputVol = true;
@@ -1431,15 +1442,23 @@ double AudioIO::GetStreamTime()
 
 wxArrayLong AudioIO::GetSupportedPlaybackRates(int devIndex, double rate)
 {
+   if (devIndex == -1)
+   {  // weren't given a device index, get the prefs / default one
+      devIndex = getPlayDevIndex();
+   }
+
+   // Check if we can use the cached rates
+   if (mCachedPlaybackIndex != -1 && devIndex == mCachedPlaybackIndex
+         && rate == 0.0)
+   {
+      return mCachedPlaybackRates;
+   }
+
    wxArrayLong supported;
    int irate = (int)rate;
    const PaDeviceInfo* devInfo = NULL;
    int i;
 
-   if (devIndex == -1)
-   {  // weren't given a device index, get the prefs / default one
-      devIndex = getPlayDevIndex();
-   }
    wxLogDebug(wxT("Getting supported playback rates for device %d"), devIndex);
    devInfo = Pa_GetDeviceInfo(devIndex);
    
@@ -1480,15 +1499,23 @@ wxArrayLong AudioIO::GetSupportedPlaybackRates(int devIndex, double rate)
 
 wxArrayLong AudioIO::GetSupportedCaptureRates(int devIndex, double rate)
 {
+   if (devIndex == -1)
+   {  // not given a device, look up in prefs / default
+      devIndex = getRecordDevIndex();
+   }
+
+   // Check if we can use the cached rates
+   if (mCachedCaptureIndex != -1 && devIndex == mCachedCaptureIndex
+         && rate == 0.0)
+   {
+      return mCachedCaptureRates;
+   }
+
    wxArrayLong supported;
    int irate = (int)rate;
    const PaDeviceInfo* devInfo = NULL;
    int i;
 
-   if (devIndex == -1)
-   {  // not given a device, look up in prefs / default
-      devIndex = getRecordDevIndex();
-   }
    wxLogDebug(wxT("Getting supported capture rates for device %d"), devIndex);
    devInfo = Pa_GetDeviceInfo(devIndex);
 
@@ -1534,6 +1561,23 @@ wxArrayLong AudioIO::GetSupportedCaptureRates(int devIndex, double rate)
 
 wxArrayLong AudioIO::GetSupportedSampleRates(int playDevice, int recDevice, double rate)
 {
+   // Not given device indices, look up prefs
+   if (playDevice == -1) {
+      playDevice = getPlayDevIndex();
+   }
+   if (recDevice == -1) {
+      recDevice = getRecordDevIndex();
+   }
+
+   // Check if we can use the cached rates
+   if (mCachedPlaybackIndex != -1 && mCachedCaptureIndex != -1 && 
+         playDevice == mCachedPlaybackIndex &&
+         recDevice == mCachedCaptureIndex &&
+         rate == 0.0)
+   {
+      return mCachedSampleRates;
+   }
+
    wxArrayLong playback = GetSupportedPlaybackRates(playDevice, rate);
    wxArrayLong capture = GetSupportedCaptureRates(recDevice, rate);
    int i;
@@ -1581,6 +1625,15 @@ int AudioIO::GetOptimalSupportedSampleRate()
 
 double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
 {
+   // Check if we can use the cached value
+   if (mCachedBestRateIn != 0.0 && mCachedBestRateIn == sampleRate) {
+      return mCachedBestRateOut;
+   }
+
+   // In order to cache the value, all early returns should instead set retval
+   // and jump to finished
+   double retval;
+
    wxArrayLong rates;
    if (capturing) wxLogDebug(wxT("AudioIO::GetBestRate() for capture"));
    if (playing) wxLogDebug(wxT("AudioIO::GetBestRate() for playback"));
@@ -1594,16 +1647,7 @@ double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
    }
    else {   // we assume capturing and playing - the alternative would be a 
             // bit odd
-      wxArrayLong playrates = GetSupportedPlaybackRates(-1, sampleRate);
-      wxArrayLong caprates = GetSupportedCaptureRates(-1, sampleRate);
-      int i;
-      for (i = 0; i < (int)caprates.GetCount(); i++)  // for each capture rate
-         {
-         if (playrates.Index(caprates[i]) != wxNOT_FOUND)
-            rates.Add(caprates[i]);
-         // if the capture rate is also a playback rate, then add to
-         // list of rates available
-         }
+      rates = GetSupportedSampleRates(-1, sampleRate);
    }
    /* rem rates is the array of hardware-supported sample rates (in the current
     * configuration), sampleRate is the Project Rate (desired sample rate) */
@@ -1611,7 +1655,8 @@ double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
    
    if (rates.Index(rate) != wxNOT_FOUND) {
       wxLogDebug(wxT("GetBestRate() Returning %.0ld Hz"), rate);
-      return rate;
+      retval = rate;
+      goto finished;
       /* the easy case - the suggested rate (project rate) is in the list, and
        * we can just accept that and send back to the caller. This should be
        * the case for most users most of the time (all of the time on
@@ -1629,7 +1674,8 @@ double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
    if (rates.IsEmpty()) {
       /* we're stuck - there are no supported rates with this hardware. Error */
       wxLogDebug(wxT("GetBestRate() Error - no supported sample rates"));
-      return 0;
+      retval = 0.0;
+      goto finished;
    }
    int i;
    for (i = 0; i < (int)rates.GetCount(); i++)  // for each supported rate
@@ -1637,12 +1683,19 @@ double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
          if (rates[i] > rate) {
             // supported rate is greater than requested rate
             wxLogDebug(wxT("GetBestRate() Returning next higher rate - %.0ld Hz"), rates[i]);
-            return rates[i];
+            retval = rates[i];
+            goto finished;
          }
          }
 
    wxLogDebug(wxT("GetBestRate() Returning highest rate - %.0ld Hz"), rates[rates.GetCount() - 1]);
-   return rates[rates.GetCount() - 1]; // the highest available rate
+   retval = rates[rates.GetCount() - 1]; // the highest available rate
+   goto finished;
+
+finished:
+   mCachedBestRateIn = sampleRate;
+   mCachedBestRateOut = retval;
+   return retval;
 }      
 
 
