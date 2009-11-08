@@ -85,6 +85,7 @@ AUDACITY_DLL_API void CloseAllProjects();
 
 void GetDefaultWindowRect(wxRect *defRect);
 void GetNextWindowPlacement(wxRect *nextRect, bool *pMaximized, bool *pIconized);
+bool IsWindowAccessible(wxRect *requestedRect);
 
 WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 
@@ -383,7 +384,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void DeleteCurrentAutoSaveFile();
    
    static bool GetCacheBlockFiles();
-   
+
  public:
    bool IsSoloSimple() { return mSoloPref == wxT("Simple"); };
    bool IsSoloNone() { return mSoloPref == wxT("None"); };
@@ -462,9 +463,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    wxString mHelpPref;
    wxString mSoloPref;
 
-   // public accessors for the private data
-   // Ed Musgrove
-   // 19 October 2009
    void SetNormalizedWindowState(wxRect & pSizeAndLocation) {  mNormalizedWindowState = pSizeAndLocation;   }
    wxRect GetNormalizedWindowState() const { return mNormalizedWindowState;   }
 
@@ -523,10 +521,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    // The screenshot class needs to access internals
    friend class ScreenshotCommand;
 
-   //Maximized project windows store their "normal"
-   // size and location in this wxRect
-   // Ed Musgrove
-   // 19 October 2009
    wxRect mNormalizedWindowState;
 
  public:
