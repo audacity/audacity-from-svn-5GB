@@ -429,9 +429,11 @@ void TranscriptionToolBar::OnSpeedSlider(wxCommandEvent& event)
    mPlaySpeed = (mPlaySpeedSlider->Get()) * 100;
 
    // If IO is busy, abort immediately
-   if (gAudioIO->IsBusy()) {
-      OnPlaySpeed(event);
-   }
+   // AWD: This is disabled to work around a hang on Linux when PulseAudio is
+   // used.  If we figure that one out we can re-enable this code.
+   //if (gAudioIO->IsBusy()) {
+   //   OnPlaySpeed(event);
+   //}
 }
 
 void TranscriptionToolBar::OnStartOn(wxCommandEvent &event)
