@@ -1098,7 +1098,7 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
    float sumsq = float(0.0);
    unsigned int b = block0;
    int jcount = 0;
-   int blockStatus;
+   int blockStatus = 1;
 
    while (srcX < s1) {
       // Get more samples
