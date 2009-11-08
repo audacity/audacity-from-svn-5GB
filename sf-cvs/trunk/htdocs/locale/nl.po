@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-09 22:01+0000\n"
-"PO-Revision-Date: 2009-09-30 19:40+0100\n"
+"POT-Creation-Date: 2009-10-18 07:43+0000\n"
+"PO-Revision-Date: 2009-11-08 17:32+0100\n"
 "Last-Translator: Thomas De Rocker <thomasderocker@yahoo.com>\n"
 "Language-Team: Nederlands\n"
 "MIME-Version: 1.0\n"
@@ -134,7 +134,7 @@ msgstr "Kenmerken"
 
 #: about/features.php:13
 msgid "This is a list of features in Audacity, the free audio editor.  For more information on how to use these features, go to the <a href=\"../help/\">help pages</a>."
-msgstr "Dit is een lijst van mogelijkheden die Audacity, de vrije audio editor, biedt. Voor meer informatie over hoe u deze mogelijkheden kunt benutten, gaat u naar de <a href=\"../help/\">help pagina's</a>."
+msgstr "Dit is een lijst van mogelijkheden die Audacity, de vrije audio editor, biedt. Voor meer informatie over hoe u deze mogelijkheden kunt benutten, gaat u naar de <a href=\"../help/\">help-pagina's</a>."
 
 #: about/features.php:15
 msgid ""
@@ -271,7 +271,7 @@ msgstr ""
 "<h3>Plugins</h3>\n"
 "<ul>\n"
 "  <li>Nieuwe effecten toevoegen met <a href=\"http://www.ladspa.org/\">LADSPA plugins</a>.</li>\n"
-"  <li>Bij Audacity worden enkele sample plugins bijgeleverd door <a href=\"http://plugin.org.uk/\">Steve Harris</a>.</li>\n"
+"  <li>Bij Audacity worden enkele sample plug-ins bijgeleverd door <a href=\"http://plugin.org.uk/\">Steve Harris</a>.</li>\n"
 "  <li>Laad VST plugins voor Windows en Mac, met de optionele <a href=\"http://audacityteam.org/vst/\">VST Enabler</a>.</li>\n"
 "  <li>Schrijf nieuwe effecten met de ingebouwde <a href=\"../help/nyquist\">Nyquist</a>programmeertaal</li>\n"
 "</ul>."
@@ -287,7 +287,7 @@ msgstr ""
 "<h3>Analyseren</h3>\n"
 "<ul>\n"
 "  <li>Spectrogram modus voor het visualiseren van frequenties.</li>\n"
-"  <li>“Plot Spectrum” opdracht voor een gedetailleerde frequentie-analyse.</li>\n"
+"  <li>“Plot Spectrum”-opdracht voor een gedetailleerde frequentie-analyse.</li>\n"
 "</ul>"
 
 #: about/features.php:85
@@ -332,8 +332,11 @@ msgstr "Audacity Teamleden"
 #: about/credits.php:26
 #: about/credits.php:27
 #: about/credits.php:28
+#: about/credits.php:32
 #: about/credits.php:35
-#: about/credits.php:58
+#: about/credits.php:39
+#: about/credits.php:40
+#: about/credits.php:63
 msgid "documentation and support"
 msgstr "documentatie en ondersteuning"
 
@@ -347,71 +350,81 @@ msgstr "systeemadministratie"
 
 #: about/credits.php:30
 #: about/credits.php:31
-#: about/credits.php:32
 #: about/credits.php:33
 #: about/credits.php:34
 #: about/credits.php:36
-#: about/credits.php:53
-#: about/credits.php:54
-#: about/credits.php:55
-#: about/credits.php:56
-#: about/credits.php:57
-#: about/credits.php:63
-#: about/credits.php:64
-#: about/credits.php:65
-#: about/credits.php:66
+#: about/credits.php:37
+#: about/credits.php:38
+#: about/credits.php:41
+#: about/credits.php:58
+#: about/credits.php:59
+#: about/credits.php:60
+#: about/credits.php:61
+#: about/credits.php:62
 #: about/credits.php:68
-#: about/credits.php:69
 #: about/credits.php:70
 #: about/credits.php:71
 #: about/credits.php:72
 #: about/credits.php:73
 #: about/credits.php:74
 #: about/credits.php:75
+#: about/credits.php:77
+#: about/credits.php:78
+#: about/credits.php:79
+#: about/credits.php:80
+#: about/credits.php:81
+#: about/credits.php:82
+#: about/credits.php:83
+#: about/credits.php:84
+#: about/credits.php:85
 msgid "developer"
 msgstr "ontwikkelaar"
 
-#: about/credits.php:39
+#: about/credits.php:44
 msgid "Technical Leadership Council"
 msgstr "Technical Leadership Council"
 
-#: about/credits.php:51
+#: about/credits.php:56
 msgid "Emeritus: distinguished Audacity team members, not currently active"
 msgstr "Emeritus: onderscheiden Audacity-teamleden, op dit moment niet actief"
 
-#: about/credits.php:61
+#: about/credits.php:66
 msgid "Contributors"
 msgstr "Bijdragen van:"
 
-#: about/credits.php:67
+#: about/credits.php:69
+msgid "accessibility advisor"
+msgstr "toegankelijkheidsadviseur"
+
+#: about/credits.php:76
 msgid "graphic artist"
 msgstr "grafische artiest"
 
-#: about/credits.php:78
+#: about/credits.php:88
 #: main.inc.php:69
 #: community/index.php:25
 #: community/translation.php:9
 msgid "Translators"
 msgstr "Vertalers"
 
-#: about/credits.php:125
+#: about/credits.php:135
 #: download/plugins.php:36
 msgid "Libraries"
 msgstr "Bibliotheken"
 
-#: about/credits.php:126
+#: about/credits.php:136
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity is gebaseerd op broncode van de volgende projecten:"
 
-#: about/credits.php:140
+#: about/credits.php:156
 msgid "Thanks"
 msgstr "Bedankt"
 
-#: about/credits.php:141
+#: about/credits.php:157
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "Wij willen nog vele andere organisaties en mensen bedanken. Velen hebben broncode aangeleverd, voor patches gezorgd, feedback en geld gegeven, en tijd besteed aan het project. Weer anderen hebben ons gewoon het gereedschap aangereikt waardoor het hele project mogelijk is gemaakt."
 
-#: about/credits.php:164
+#: about/credits.php:183
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Laat ons weten als wij iemand vergeten zijn!)"
 
@@ -430,7 +443,7 @@ msgstr "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is een d
 
 #: about/links.php:17
 msgid "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company for construction industry professionals."
-msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a> is een research bedrijf voor professionals uit de bouwwereld."
+msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a> is een researchbedrijf voor professionals uit de bouwwereld."
 
 #: about/links.php:18
 msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides janitorial services for businesses and individuals in the Seattle, WA metro area."
@@ -833,7 +846,7 @@ msgstr "Nieuwe mogelijkheden in 1.3"
 #: main.inc.php:45
 #: download/plugins.php:9
 msgid "Plug-Ins and Libraries"
-msgstr "Plug-ins en bibliotheken"
+msgstr "Plugins en bibliotheken"
 
 #: main.inc.php:46
 msgid "Obtain a CD"
@@ -1738,11 +1751,11 @@ msgstr "Verschillende modellen van elektrische gitaren met ingebouwde usb-poort,
 
 #: download/bundlers.php:249
 msgid "Ultra-slim 25-Key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition."
-msgstr "Ultradun 25-key USB/MIDI controller toetsenbord met interne audio-interface, meer dan 100 software-plugins en Ableton Live Lite 4 BEHRINGER Edition."
+msgstr "Ultradun 25-key USB/MIDI controller toetsenbord met interne audio-interface, meer dan 100 softwareplugins en Ableton Live Lite 4 BEHRINGER Edition."
 
 #: download/bundlers.php:260
 msgid "25-, 49- or 61-key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition."
-msgstr "25-, 49 of 61-key USB/MIDI controller toetsenbord met interne audio-interface, meer dan 100 software-plugins en Ableton Live Lite 4 BEHRINGER Edition."
+msgstr "25-, 49 of 61-key USB/MIDI controller toetsenbord met interne audio-interface, meer dan 100 softwareplugins en Ableton Live Lite 4 BEHRINGER Edition."
 
 #: download/bundlers.php:269
 msgid "Virtual guitar amplifier with tube simulation and 24-bit effects."
@@ -2234,7 +2247,7 @@ msgstr ""
 "                   <li>Crash, traag starten of buitensporig processor-/geheugengebruik \n"
 "                        voortkomend uit automatische VST-ondersteuning:</li>\n"
 "                        <ul>\n"
-"                           <li>VST instrument plug-ins worden nu op een correcte manier genegeerd</li>\n"
+"                           <li>VST instrument plugins worden nu op een correcte manier genegeerd</li>\n"
 "                           <li>VST-effecten worden nu slechts bij de start van de eerste sessie die ze\n"
 "                                detecteert gescand, daarna gecached</li>\n"
 "                           <li>Effecten worden nu pas geladen of geopend op het moment dat ze nodig zijn</li>\n"
@@ -2780,7 +2793,7 @@ msgstr "Labelsporen zijn Audacity's manier om markeringen en annotaties binnen p
 
 #: download/features-1.3-e.php:21
 msgid "To create a label, start by selecting some audio."
-msgstr "Om een label te creëren, begin ermee wat audio te selecteren."
+msgstr "Begin met het selecteren van wat audio om een label aan te maken"
 
 #: download/features-1.3-e.php:27
 msgid "Select 'Add Label At Selection' from the Tracks menu."
@@ -3090,7 +3103,7 @@ msgstr "(Helaas hebben wij geen financiën meer voor nieuwe versies van Audacity
 #: download/beta_windows.php:38
 #: download/windows.php:35
 msgid "Plug-ins and Libraries"
-msgstr "Plug-ins en bibliotheken"
+msgstr "Plugins en bibliotheken"
 
 #: download/mac.php:46
 msgid "Audacity 1.2 requires Mac OS X 10.1 or later."
@@ -3120,60 +3133,60 @@ msgstr "De <a href=\"http://wxwidgets.org\">wxWidgets</a>-bibliotheek is <b>vere
 
 #: download/nyquistplugins.php:10
 msgid "Download Nyquist Plug-Ins"
-msgstr "Download Nyquist Plugins"
+msgstr "Nyquist plugins downloaden"
 
 #. i18n-hint: Sorry, the actual plug-in descriptions are not translatable yet.
 #: download/nyquistplugins.php:15
 msgid "<p>These are optional plug-in effects for the Audacity sound editor.  They are written in the <a href=\"../help/nyquist\">Nyquist programming language</a>.  For installation instructions, see the main <a href=\"plugins\">plug-ins page</a>.</p>"
-msgstr "<p>Dit zijn optionele plugins voor de Audacity geluidseditor. Ze werden geschreven in de <a href=\"../help/nyquist\">Nyquist-programmeertaal</a>. Voor installatie-instructies, zie de hoofd-<a href=\"plugins\">plugins-pagina</a>.</p>"
+msgstr "<p>Dit zijn optionele plugins voor de Audacity geluidseditor. Ze werden geschreven in de <a href=\"../help/nyquist\">Nyquist-programmeertaal</a>. Voor installatie-instructies, zie de hoofd-<a href=\"plugins\">plugin-pagina</a>.</p>"
 
 #: download/plugins.php:14
 msgid "You can download and install plug-ins or libraries to add extra functionality to Audacity. Plug-ins can give you extra effects, or more audio generation and analysis capability. Adding libraries can allow you to import or export additional audio formats."
-msgstr "U kan plug-ins downloaden en installeren om extra functies aan Audacity toe te voegen. Plug-ins kunnen u extra effecten of meer mogelijkheden voor audio-generering en -analyse geven. Door bibliotheken toe te voegen kan u bijkomende audioformaten impoteren en exporteren."
+msgstr "U kan plugins downloaden en installeren om extra functies aan Audacity toe te voegen. Plugins kunnen u extra effecten of meer mogelijkheden voor audio-generering en -analyse geven. Door bibliotheken toe te voegen kan u bijkomende audioformaten impoteren en exporteren."
 
 #: download/plugins.php:16
 msgid "Plug-In Installation"
-msgstr "Plug-in installatie"
+msgstr "Plugin installatie"
 
 #: download/plugins.php:17
 msgid "To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under \"Program Files\".  On Mac OS X, it is usually under \"Applications\". Restart Audacity, then the Plug-ins will appear underneath the divider in the \"Effect\", \"Generate\" or \"Analyze\" menus."
-msgstr "Plaats nieuwe plug-ins in de <b>plug-ins</b>-map in de Audacity installatiemap om ze te installeren. Op Windows-computers is dit over het algemeen onder \"Program Files\". Op Mac OS X is dit normaal gezien onder \"Applications\". Herstart Audacity, en daarna zullen de plug-ins verschijnen onder het deelmenu in de menu's \"Effecten\", \"Genereren\" of \"Analyseren\"."
+msgstr "Plaats nieuwe plugins in de <b>plugins</b>-map in de Audacity installatiemap om ze te installeren. Op Windows-computers is dit over het algemeen onder \"Program Files\". Op Mac OS X is dit normaal gezien onder \"Applications\". Herstart Audacity, en daarna zullen de plug-ins verschijnen onder het deelmenu in de menu's \"Effecten\", \"Genereren\" of \"Analyseren\"."
 
 #: download/plugins.php:19
 msgid "LADSPA Plug-Ins"
-msgstr "LADSPA Plugins"
+msgstr "LADSPA plugins"
 
 #: download/plugins.php:20
 msgid "Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity includes some sample LADSPA effects. Windows users can install an additional <a href=\"http://audacity.sourceforge.net/beta/ladspa/ladspa-0.4.15.exe\">set of over 90 LADSPA plug-ins</a>. There is a similar set of LADSPA plug-ins for <a href=\"http://ardour.org/files/releases/swh-plugins-0.4.15.dmg\">Mac</a>. More information and many LADSPA plug-ins for Linux can be found on the <a href=\"http://www.ladspa.org/\">LADSPA web site</a>."
-msgstr "Audacity heeft ingebouwde ondersteuning voor LADSPA-plugins. Deze plugins worden meestal gemaakt voor Linux, maar sommigen zijn ook beschikbaar voor andere besturingssystemen. Audacity bevat een aantal voorbeeld-LADSPA-effecten. Windows-gebruikers kunnen een aanvullende <a href=\"http://audacity.sourceforge.net/beta/ladspa/ladspa-0.4.15.exe\">set van meer dan 90 LADSPA-plugins</a> installeren. Er is een gelijkaardige set van LADSPA-plugins voor <a href=\"http://ardour.org/files/releases/swh-plugins-0.4.15.dmg\">Mac</a>. Meer informatie en vele LADSPA-plugins voor linux kunnen teruggevonden worden op de <a href=\"http://www.ladspa.org/\">LADSPA-website</a>."
+msgstr "Audacity heeft ingebouwde ondersteuning voor LADSPA-plugins. Deze plugins worden meestal gemaakt voor Linux, maar sommigen zijn ook beschikbaar voor andere besturingssystemen. Audacity bevat een aantal voorbeeld-LADSPA-effecten. Windows-gebruikers kunnen een aanvullende <a href=\"http://audacity.sourceforge.net/beta/ladspa/ladspa-0.4.15.exe\">set van meer dan 90 LADSPA-plug-ins</a> installeren. Er is een gelijkaardige set van LADSPA-plugins voor <a href=\"http://ardour.org/files/releases/swh-plugins-0.4.15.dmg\">Mac</a>. Meer informatie en vele LADSPA-plugins voor linux kunnen teruggevonden worden op de <a href=\"http://www.ladspa.org/\">LADSPA-website</a>."
 
 #: download/plugins.php:22
 msgid "Nyquist Plug-Ins"
-msgstr "Nyquist Plugins"
+msgstr "Nyquist plugins"
 
 #: download/plugins.php:23
 msgid "Audacity has built-in support for Nyquist effects on all operating systems. You can download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or create your own using the <a href=\"../help/nyquist\">Nyquist programming language</a>. Nyquist code can be tested using \"Nyquist Prompt\" under the Effect menu, or code for Nyquist plug-ins that generate audio can be quickly tested with <a href=\"http://audacity.sourceforge.net/nyquist/generate.zip\">Nyquist Generate Prompt</a>."
-msgstr "Audacity heeft een ingebouwde ondersteuning voor op elk platform te gebruiken Nyquist-effecten.  U kunt extra <a href=\"nyquistplugins\">Nyquist-plugins</a> downloaden, of uw eigen plugins creëren met de <a href=\"../help/nyquist\">Nyquist-programmeertaal</a>. Nyquist-code kan getest worden door \"Nyquist Prompt\" onder het Effect-menu te gebruiken. Code voor Nyquist-plugins die audio genereren, kunnen snel getest worden met <a href=\"http://audacity.sourceforge.net/nyquist/generate.zip\">Nyquist Generate Prompt</a>."
+msgstr "Audacity heeft een ingebouwde ondersteuning voor op elk platform te gebruiken Nyquist-effecten.  U kunt extra <a href=\"nyquistplugins\">Nyquist-plugins</a> downloaden, of uw eigen plugins aanmaken met de <a href=\"../help/nyquist\">Nyquist-programmeertaal</a>. Nyquist-code kan getest worden door \"Nyquist Prompt\" onder het Effect-menu te gebruiken. Code voor Nyquist-plugins die audio genereren, kunnen snel getest worden met <a href=\"http://audacity.sourceforge.net/nyquist/generate.zip\">Nyquist Generate Prompt</a>."
 
 #: download/plugins.php:25
 msgid "VST Plug-Ins"
-msgstr "VST Plugins"
+msgstr "VST plugins"
 
 #: download/plugins.php:26
 msgid "Audacity can load VST effects on Windows and Mac using the optional <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  VST effects can be found on many plug-in sites such as:"
-msgstr "Audacity kan VST-effecten laden op Windows and Mac door de optionele <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a> te gebruiken. VST-effecten kunnen teruggevonden worden op vele plugin-sites zoals:"
+msgstr "Audacity kan VST-effecten laden op Windows en Mac door de optionele <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a> te gebruiken. VST-effecten kunnen teruggevonden worden op vele plugin-sites zoals:"
 
 #: download/plugins.php:34
 msgid "The <a href=\"http://audacityteam.org/wiki/index.php?title=VST_Plug-ins\">VST Plug-ins</a> page on our <a href=\"http://audacityteam.org/wiki/\">Wiki<a/> lists a large number of VST plug-ins that have been reported to work well in Audacity."
-msgstr "De <a href=\"http://audacityteam.org/wiki/index.php?title=VST_Plug-ins\">VST-plugins</a>-pagina op onze <a href=\"http://audacityteam.org/wiki/\">Wiki<a/> geeft een lijst van een groot aantal VST-plugins waarvan gerapporteerd werd dat ze goed in Audacity werken."
+msgstr "De <a href=\"http://audacityteam.org/wiki/index.php?title=VST_Plug-ins\">VST-plug-ins</a>-pagina op onze <a href=\"http://audacityteam.org/wiki/\">Wiki<a/> geeft een lijst van een groot aantal VST-plug-ins waarvan gerapporteerd werd dat ze goed in Audacity werken."
 
 #: download/plugins.php:37
 msgid "At present, the only library you can add to the Stable 1.2 version of Audacity is the <b>LAME MP3 encoding</b> library. This allows Audacity to export audio in the popular <a href=\"http://wiki.audacityteam.org/index.php?title=MP3\">MP3</a> format. To install the LAME library, please read our <a href=\"../help/faq?s=install&i=lame-mp3\">LAME FAQ</a>."
 msgstr "Momenteel is de enige bibliotheek die u kunt toevoegen aan de stabiele 1.2-versie van Audacity de <b>LAME MP3-coderings</b>bibliotheek. Dit laat Audacity toe om audio te exporteren naar het populaire <a href=\"http://wiki.audacityteam.org/index.php?title=MP3\">mp3</a>-formaat. Om de LAME-bibliotheek te installeren, gelieve onze <a href=\"../help/faq?s=install&i=lame-mp3\">LAME veelgestelde vragen</a> te lezen."
 
 #: download/plugins.php:38
-msgid "The <a href=\"../download/features-1.3-a\">Beta 1.3</a> version of Audacity has experimental support for the <b>FFmpeg import/export</b> library. This allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg FAQ.</a> The next 2.0 Stable version of Audacity is expected to support the FFmpeg library.</a>"
-msgstr "De <a href=\"../download/features-1.3-a\">bèta 1.3</a>-versie van Audacity heeft experimentele ondersteuning voor de <b>FFmpeg import/export</b>-bibliotheek. Dit laat Audacity toe om veel extra audioformaten te importeren en te exporteren, zoals AC3, AMR(NB), M4A en WMA, en om audio te importeren van videobestanden. Om de FFmpeg-bibliotheek te installeren, lees dan onze <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg FAQ.</a>Er wordt verwacht dat de volgende 2.0 stabiele versie van Audacity de FFmpeg-bibliotheek ondersteunt.</a>"
+msgid "In addition to supporting LAME, the <a href=\"../download/features-1.3-a\">Beta 1.3</a> version of Audacity has experimental support for the <b>FFmpeg import/export</b> library. This allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg FAQ.</a> The next 2.0 Stable version of Audacity is expected to support the FFmpeg library.</a>"
+msgstr "Naast het ondersteunen van LAME heeft de <a href=\"../download/features-1.3-a\">bèta 1.3</a>-versie van Audacity experimentele ondersteuning voor de <b>FFmpeg import/export</b>-bibliotheek. Dit laat Audacity toe om veel extra audioformaten te importeren en te exporteren, zoals AC3, AMR(NB), M4A en WMA, en om audio te importeren van videobestanden. Om de FFmpeg-bibliotheek te installeren, lees onze <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg FAQ.</a>Er wordt verwacht dat de volgende 2.0 stabiele versie van Audacity de FFmpeg-bibliotheek ondersteunt.</a>"
 
 #: download/recommended.inc.php:10
 msgid "Click the appropriate link below, which takes you to the SourceForge download page - don't \"save link as..\" or \"save target as..\". The SourceForge download should start automatically. If it does not, click the links in the black panel marked \"direct link\" or \"mirror\". <b>Only these links and the automatic download are authorized versions of Audacity</b>. Disable any automatic download managers if the download is incorrect."
@@ -3458,7 +3471,7 @@ msgstr "localized_downloads_windows"
 #: download/windows.php:37
 #, php-format
 msgid "<a href=\"%s\">LADSPA plug-ins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins."
-msgstr "<a href=\"%s\">LADSPA plug-ins %s installer</a> (.exe-bestand, %.1lf MB) - meer dan 90 plugins."
+msgstr "<a href=\"%s\">LADSPA plugins %s installer</a> (.exe-bestand, %.1lf MB) - meer dan 90 plugins."
 
 #: download/beta_windows.php:43
 #, php-format
@@ -3711,7 +3724,7 @@ msgstr ""
 
 #: help/faq.php:76
 msgid "<div id=\"install\">Installation and Plug-Ins</div>"
-msgstr "<div id=\"install\">Installatie en Plugins</div>"
+msgstr "<div id=\"install\">Installatie en plugins</div>"
 
 #: help/faq.php:79
 msgid "How do I download and install the LAME MP3 encoder?"
@@ -3778,6 +3791,7 @@ msgid ""
 "<li><p>Place the unzipped VST Enabler, along with your VST plug-ins, into the “Plug-ins” folder in the Audacity installation folder.  (On Mac OS X, this is usually in the Applications folder.  On Windows, it is usually under Program Files.)</li>\n"
 "<li><p>The next time you start Audacity, your VST effects will appear at the bottom of the “Effect” menu.</li>\n"
 "</ol>\n"
+"<p><b>Note:</b> Current Beta (1.3) versions of Audacity will display VST plug-ins automatically, without having to install the VST Enabler.</p>    \n"
 "<p>See also: <a href=\"faq?s=install&amp;i=vst-bugs\">Why do some VST plug-ins look wrong, or not work?</a></p>"
 msgstr ""
 "<ol>\n"
@@ -3785,47 +3799,48 @@ msgstr ""
 "<li><p>Dan plaatst u de uitgepakte VST Enabler samen met uw VST plugins in de installatiemap van Audacity.  (Op Mac OS X is dit meestal de Applicatiemap.  Bij Windows is het meestal de map Program Files.)</li>\n"
 "<li><p>De volgende keer dat u Audacity opstart, verschijnen uw VST-effecten onderaan het menu “Effect”.</li>\n"
 "</ol>\n"
+"<p><b>Opmerking:</b> de huidige bètaversies (1.3) van Audacity zullen VST-plugins automatisch weergeven, zonder de VST Enabler te moeten installeren.</p>    \n"
 "<p>Zie ook: <a href=\"faq?s=install&amp;i=vst-bugs\">Waarom zien sommige VST-plugins er vreemd uit of werken ze niet?</a></p>"
 
-#: help/faq.php:113
+#: help/faq.php:114
 msgid "Why do some VST plug-ins look wrong, or not work?"
 msgstr "Waarom zien sommig VST-plugins er vreemd uit of werken ze niet?"
 
-#: help/faq.php:114
+#: help/faq.php:115
 msgid ""
-"<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not yet able to display custom interfaces for plug-ins.  Instead, it uses generic controls for all VST plug-ins.  Because of this, many plug-ins will look or act differently than they do in other programs.</p>\n"
-"<p>Other VST plug-ins may not work at all, because of bugs in the VST Enabler.  You can <a href=\"../contact/\">contact us</a> to report plug-ins that do not work.</p>\n"
-"<p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>"
+"<p>Stable (1.2) versions of Audacity require the <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> in order to display VST plug-ins. The Enabler can only display a generic, tabular interface for plug-ins, so they may look or act differently than they do in other programs, or not function at all.</p>\n"
+"<p>Current Beta (1.3) versions of Audacity will by default display VST effect plug-ins with their full interface, without the need of an Enabler. If you experience any problems with VST plug-ins in Audacity Beta, please read this <a href=\"http://forum.audacityteam.org/viewtopic.php?f=37&t=11534&p=45667#p45667\">Forum topic</a>. You may <a href=\"../contact#feedback\">contact us</a> to report any difficulties not covered in that topic.</p>                \n"
+"<p>Neither version of Audacity supports VST instrument (VSTi) plug-ins. </p>"
 msgstr ""
-"<p>De <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> kan nog geen aangepaste bedieningspanelen tonen voor plugins. In plaats daarvan gebruikt het algemene knoppen voor alle VST plugins. Om deze reden zien veel plugins er anders uit of gedragen zij zich anders dan in andere programma's.</p>\n"
-"<p>Andere VST-plugins werken misschien helemaal niet, door programmeerfouten in de VST Enabler.  U kunt <a href\"../contact/\">ons contacteren</a> om plugins te melden die niet werken.</p>  \n"
-"<p>Ook ondersteunt Audacity geen VST instrument (VSTi) plugins.</p>"
+"<p>Stabiele (1.2) versies van Audacity hebben de <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> nodig om VST-plugins te kunnen weergeven. De Enabler kan alleen een generieke, tabulaire interface weergeven voor plugins, dus het is mogelijk dat ze anders weergegeven worden dan in andere programma's, of helemaal niet functioneren.</p>\n"
+"<p>De huidige bèta-versies (1.3) van Audacity zullen VST-effect-plugins standaard weergeven met hun volledige interface, zonder dat een Enabler nodig is. Als u problemen heeft met VST-plugins in Audacity bèta, gelieve deze <a href=\"http://forum.audacityteam.org/viewtopic.php?f=37&t=11534&p=45667#p45667\">forum-topic</a> te lezen. U kan ons <a href=\"../contact#feedback\">contacteren</a> om moeilijkheden te rapporteren die niet behandeld worden in dat topic.</p>                \n"
+"<p>Geen enkele versie van Audacity ondersteunt VST-instrument (VSTi) plugins. </p>"
 
-#: help/faq.php:119
+#: help/faq.php:120
 msgid "What should I do if I have problems downloading or installing Audacity?"
 msgstr "Wat moet ik doen als ik problemen heb met het downloaden of installeren van Audacity?"
 
-#: help/faq.php:120
+#: help/faq.php:121
 msgid "<p>If you can't download Audacity, or if the downloaded setup file is corrupt, try downloading it from our <a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">alternate servers</a>.</p>"
 msgstr "<p>Als u Audacity niet kunt downloaden of als het installatiebestand beschadigd is, probeert u het te downloaden van onze <a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">alternatieve servers</a>.</p>"
 
-#: help/faq.php:125
+#: help/faq.php:126
 msgid "<div id=\"record\">Recording</div>"
 msgstr "<div id=\"record\">Opnemen</div>"
 
-#: help/faq.php:128
+#: help/faq.php:129
 msgid "How can I record in stereo?"
 msgstr "Hoe kan ik in stereo opnemen?"
 
-#: help/faq.php:129
+#: help/faq.php:130
 msgid "<p>To record in stereo, open the Audacity preferences.  In the “Audio I/O” section, change the number of recording channels from 1 (mono) to 2 (stereo).</p>"
 msgstr "<p>Om in stereo op te nemen opent u Voorkeuren... van Audacity (in het menu Bewerken).  Onder “Audio I/O”, verandert u het aantal opnamekanalen van 1 (mono) in 2 (stereo).</p>"
 
-#: help/faq.php:132
+#: help/faq.php:133
 msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
 msgstr "Hoe neem ik op van vinylplaten, cassettebandjes of minidiscs?"
 
-#: help/faq.php:133
+#: help/faq.php:134
 msgid ""
 "<p>First, set Audacity to <a href=\"faq?s=recording&amp;i=stereo\">record in stereo</a>.</p>\n"
 "<p>Next, plug one end of a stereo cable into the “Line Out” or “Headphone” connector on your tape deck, minidisc player, or stereo system.  Plug the other end into your computer’s “Line In” connector.  If you do not have a cable that fits both of these connectors, you can find one at an electronics store.</p>\n"
@@ -3853,23 +3868,23 @@ msgstr ""
 "</ul>\n"
 "<p>Zie ook: <a href=\"faq?s=files&amp;i=split\">Hoe een lange opname te splitsen in meerdere bestanden</a>.</p>"
 
-#: help/faq.php:145
-#: help/faq.php:221
-#: help/faq.php:286
+#: help/faq.php:146
+#: help/faq.php:222
+#: help/faq.php:287
 msgid "See also:"
 msgstr "Zie ook:"
 
-#: help/faq.php:145
-#: help/faq.php:260
-#: help/faq.php:286
+#: help/faq.php:146
+#: help/faq.php:261
+#: help/faq.php:287
 msgid "How do I save my recording on an audio CD?"
 msgstr "Hoe brand ik mijn opnames op een audio-cd?"
 
-#: help/faq.php:148
+#: help/faq.php:149
 msgid "Why doesn't the Mixer Toolbar input selector work properly, for example on Windows Vista?"
 msgstr "Waarom werkt de input-selector van de Mixer-toolbar niet naar behoren, bijvoorbeeld bij Windows Vista?"
 
-#: help/faq.php:149
+#: help/faq.php:150
 msgid ""
 "<p>The Input selector may be greyed-out, lacking the expected choices, or apparently not recording from the indicated source.</p>\n"
 "<p>The cause varies by operating system and sound card driver. For example, on Windows Vista, you must use the \"Recording Device\" menu in the Audio I/O tab of Preferences to select input sources. For more help, see the <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixer Toolbar Issues</a> page on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>\n"
@@ -3877,11 +3892,11 @@ msgstr ""
 "<p>De Input-selector kan in het grijs staan, de verwachte keuzes mankeren, of schijnbaar niet opnemen van de aangeduide bron.</p>\n"
 "<p>De redenen van deze problemen variëren per besturingssysteem en geluidskaart-driver. Bij Windows Vista moet u bijvoorbeeld het \"Opname-Apparaat\"-menu gebruiken in de Audio Invoer/Uitvoer-tab van Voorkeuren om invoerbronnen te selecteren. Voor meer hulp, zie de <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixerwerkbalk-problemen</a>-pagina op de <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>\n"
 
-#: help/faq.php:154
+#: help/faq.php:155
 msgid "Why can’t I hear what I’m recording?"
 msgstr "Waarom kan ik niet horen wat ik opneem?"
 
-#: help/faq.php:155
+#: help/faq.php:156
 msgid ""
 "<h3>Windows and Linux</h3>\n"
 "<p>To monitor your recording, open your computer's volume control panel.  Turn up the playback volume and turn off the “mute” checkbox for your recording source (usually “microphone” or “line in”).</p>\n"
@@ -3899,11 +3914,11 @@ msgstr ""
 "<h3>Monitoring tijdens opnemen via een microfoon</h3>\n"
 "<p>Gebruik altijd een koptelefoon wanneer u luistert terwijl u opneemt via een microfoon, om te vermijden dat de playthrough van de opname opgenomen wordt in de opname zelf.</p>\n"
 
-#: help/faq.php:165
+#: help/faq.php:166
 msgid "Can I play a track while recording a new one on top of it?"
 msgstr "Kan ik een spoor afspelen terwijl ik er een nieuw spoor overheen opneem?"
 
-#: help/faq.php:166
+#: help/faq.php:167
 msgid ""
 "<p>This is called multi-track recording.  It makes it possible to record harmonies with yourself, or add new instruments or vocals to an existing recording.  To do this in Audacity, follow these instructions:</p>\n"
 "<ol>\n"
@@ -3935,11 +3950,11 @@ msgstr ""
 "\t</ul>\n"
 "</p>"
 
-#: help/faq.php:182
+#: help/faq.php:183
 msgid "Why isn’t my new track in sync with the previous ones?"
 msgstr "Waarom loopt mijn nieuwe spoor niet synchroon met het vorige?"
 
-#: help/faq.php:183
+#: help/faq.php:184
 msgid ""
 "<p>When you make a <a href=\"faq?s=recording&amp;i=multi-track\">multi-track recording</a>, there is an unpredictable delay between playback and recording.  Audacity tries to correct for this automatically, but this doesn't yet work on all computers.</p>\n"
 "<p>If a new track is not synchronized with the others, you can zoom in and use the Time Shift tool to drag it to the correct location.</p>"
@@ -3947,11 +3962,11 @@ msgstr ""
 "<p>Als u een <a href=\"faq?s=recording&amp;i=multi-track\">meersporenopname</a> maakt, is er een onvoorspelbare vertraging tussen afspelen en opnemen. Audacity probeert dit automatisch voor u te corrigeren, maar dit werkt nog niet op alle pc's.</p>\n"
 "<p>Als een nieuw spoor niet gesynchroniseerd wordt met de andere, kunt u inzoomen en het gereedschap Tijd verschuiven gebruiken om het naar de juiste locatie te slepen.</p>"
 
-#: help/faq.php:187
+#: help/faq.php:188
 msgid "Can Audacity record RealAudio or other streaming audio?"
 msgstr "Kan Audacity RealAudio of andere streaming audio opnemen?"
 
-#: help/faq.php:188
+#: help/faq.php:189
 msgid ""
 "<h3>Windows and Linux</h3>\n"
 "<p>With most Windows and Linux audio devices, it is possible to record whatever sound the computer is currently playing, including internet radio streams.</p>\n"
@@ -3967,11 +3982,11 @@ msgstr ""
 "<h3 id=\"mac\">Mac OS X</h3>\n"
 "<p>Mac OS X-gebruikers kunnen streaming audio opnemen door een programma te gebruiken zoals <a href=\"http://www.cycling74.com/products/soundflower\">Soundflower</a> (gratis, open source), <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> of <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
 
-#: help/faq.php:197
+#: help/faq.php:198
 msgid "Can I set Audacity to record at a certain time?"
 msgstr "Kan ik Audacity instellen zodat de opname op een bepaald moment start?"
 
-#: help/faq.php:198
+#: help/faq.php:199
 msgid ""
 "<p>Sorry, Audacity does not yet support scheduled recording.  We may add this feature to a future version of the program.</p>\n"
 "<p>You can make Audacity <b>stop</b> recording after a certain time limit, by following these steps:</p>\n"
@@ -3991,16 +4006,16 @@ msgstr ""
 "  <li>Start de opname.  Audacity stopt de opname automatisch als het einde van het geselecteerde gebied bereikt is.</li>\n"
 "</ol>"
 
-#: help/faq.php:210
+#: help/faq.php:211
 msgid "<div id=\"opensave\">Opening and Saving Files</div>"
 msgstr "<div id=\"opensave\">Bestanden Openen en Opslaan</div>"
 
-#: help/faq.php:213
-#: help/faq.php:221
+#: help/faq.php:214
+#: help/faq.php:222
 msgid "How do I open an Audacity project (AUP file) in another program?"
 msgstr "Hoe open ik een Audacity project (AUP-bestand) in een ander programma?"
 
-#: help/faq.php:214
+#: help/faq.php:215
 msgid ""
 "<p>Audacity project files are saved in a special format that only Audacity can open. To open your project in another program or <a href=\"faq?s=files&amp;i=burn-cd\">burn it to CD</a>, firstly open the .aup file in Audacity if you have already saved one (if you saved it recently it will be in the File > Recent Files menu). Then use the <b>Export</b> commands further down the File menu to save the audio in a standard format like WAV or AIFF.</p>\n"
 "<p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>   \n"
@@ -4008,22 +4023,22 @@ msgstr ""
 "<p>Audacity projectbestanden worden opgeslagen in een speciaal formaat dat alleen Audacity kan openen. Om uw project te openen in een ander programma of het <a·href=\"faq?s=files&amp;i=burn-cd\">op een cd te branden</a>, opent u in de eerste plaats het .aup-bestand in Audacity als u er al een opgeslagen hebt (als u het recent opgeslagen hebt zal het aanwezig zijn in het menu Bestand > Recente bestanden). Gebruik vervolgens de <b>exporteren</b>-commando's verderop in het menu Bestand om de audio in een standaardformaat als WAV of AIFF op te slaan.</p>\n"
 "<p>Voor meer informatie over het werken met Audacity-projecten, zie onze <a·href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">tips voor bestandsbeheer</a> op de Audacity <a href=\"http://wiki.audacityteam.org/index.php\">wiki</a>.</p>   \n"
 
-#: help/faq.php:219
+#: help/faq.php:220
 msgid "Why does Audacity create a folder full of .au files when I save a project?"
 msgstr "Waarom maakt Audacity een map aan die vol zit met .au-bestanden als ik een project opsla?"
 
-#: help/faq.php:220
+#: help/faq.php:221
 msgid "<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently. When you save an .aup project file, Audacity stores all the pieces in a _data folder that has the same name as the .aup file. For example, \"song.aup\" will open the pieces inside the \"song_data\" folder.</p>  <p><b>You should not touch the .au files yourself, or move or rename the _data folder</b>. Simply open the .aup file, then Audacity will load the .au files in the correct sequence automatically.</p> <p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>"
 msgstr "<p>Audacity splitst lange nummers in kleine stukjes, zodat het deze efficiënter kan bewerken. Wanneer u een .aup-projectbestand opent, slaat Audacity alle stukken op in een _data-map die dezelfde naam als het .aup-bestand heeft. Bijvoorbeeld, \"song.aup\" opent de stukken in de \"song_data\"-map.</p> <p><b>Het is best om van de .au-bestanden te blijven en de _data-map niet te verplaatsen of te hernoemen</b>. Open het .aup-bestand, dan laadt Audacity de .au-bestanden automatisch in de juiste volgorde.</p> <p>Om meer te leren over het werken met Audacity-projecten, zie onze <a href=\"http://wiki .audacityteam.org/index.php?title=File_Management_Tips\">tips voor bestandsbeheer</a> op de Audacity <a href=\"http://wiki.audacityteam.org/index.php\">wiki</a>.</p>"
 
-#: help/faq.php:224
+#: help/faq.php:225
 msgid "Audacity crashed!  Can I recover any unsaved data?"
 msgstr "Audacity is vastgelopen! Kan ik niet-opgeslagen gegevens terughalen?"
 
 #. i18n-hint: Sorry, these links are in English only.  If you would
 #. like to make more information available, please create a page on
 #. the wiki for now.
-#: help/faq.php:228
+#: help/faq.php:229
 msgid ""
 "<p>You may be able to recover your project automatically with the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> page for more information.</p>\n"
 "<p>Please note the .au files need to be numbered consecutively when input to the Crash Recovery Utility or errors will occur in the program. If this problem occurs you can open Audacity's temporary folder in your system File Manager (e.g., Windows Explorer) and try resorting the .au files by time modified and then batch renaming them using a numeric sequence whilst they are sorted by time modified. An arrangement looking something like this should work:</p>\n"
@@ -4045,11 +4060,11 @@ msgstr ""
 "</ul>\n"
 "<p>Indien uw bestandsbeheerder geen passend gereedschap voor naamswijziging heeft, kan u gratis tools verkrijgen op het Internet.</p>\n"
 
-#: help/faq.php:240
+#: help/faq.php:241
 msgid "Can Audacity import file formats like WMA, AAC, FLAC, etc.?"
 msgstr "Kan Audacity formaten als WMA, AAC, FLAC, enz. importeren?"
 
-#: help/faq.php:241
+#: help/faq.php:242
 msgid ""
 "<p>Audacity <b>cannot</b> import or export files in <b>WMA, AAC, RealAudio, Shorten (SHN)</b>, or most other proprietary formats, or any kind of Digital Rights Management (DRM) protected file, including many purchased online such as on iTunes or Napster. Because of licensing and patent restrictions, we are not allowed to add these formats to Audacity.  Future versions of Audacity might be able to support these formats using codecs installed in your operating system.</p>\n"
 "<p>Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>FLAC</b>.  We hope to support these formats in future versions of Audacity.</p>\n"
@@ -4063,19 +4078,19 @@ msgstr ""
 "<p>Voor meer detalis over ondersteunde formaten, zie de <a href=\"../about/features\">lijst met functies</a>.</p>\n"
 "<p>Zie ook: <a href=\"faq?s=files&amp;i=midi\">Waarom kan ik geen MIDI-bestanden afspelen?</a></p>\n"
 
-#: help/faq.php:249
+#: help/faq.php:250
 msgid "Why can’t I play MIDI files?"
 msgstr "Waarom kan ik geen MIDI-bestanden afspelen?"
 
-#: help/faq.php:250
+#: help/faq.php:251
 msgid "<p>Sorry, Audacity cannot play, edit, or convert MIDI files.  It can only display them visually (for comparison with recorded sounds).  We might add MIDI editing to a future version of Audacity, but for now Audacity is focused on sampled audio (like WAV files).</p>"
 msgstr "<p>Sorry, Audacity kan geen MIDI-bestanden afspelen, bewerken of converteren.  Het programma kan ze alleen op het scherm tonen (om ze te vergelijken met opgenomen geluiden). Wellicht wordt het bewerken van MIDI-bestanden in de toekomst mogelijk met Audacity, maar op dit moment concentreert Audacity zich uitsluitend op audio-opnames (zoals bijvoorbeeld WAV-bestanden).</p>"
 
-#: help/faq.php:253
+#: help/faq.php:254
 msgid "How do I import a track from an audio CD?"
 msgstr "Hoe importeer ik een spoor van een audio-cd?"
 
-#: help/faq.php:254
+#: help/faq.php:255
 msgid ""
 "<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>\n"
 "<p>On Mac OS X computers, CD tracks appear in Finder as AIFF files so can be imported directly into Audacity. For more help on importing audio from CD tracks on both Windows and OS X, see our Wiki help page on <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How_to_import_CDs</a>.</p>\n"
@@ -4085,11 +4100,11 @@ msgstr ""
 "<p>Op Mac OS X computers verschijnen cd-tracks in Finder als AIFF-bestanden die direct in Audacity kunnen geïmporteerd worden. Voor meer hulp bij het importeren van audio van cd-tracks bij Windows en OS X, zie onze Wiki helppagina op <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">hoe cd's te importeren</a>.</p>\n"
 "<p>Zie ook: <a href=\"faq?s=files&amp;i=burn-cd\">hoe brand ik mijn opname op een audio-cd?</a></p>\n"
 
-#: help/faq.php:261
+#: help/faq.php:262
 msgid "After making a recording or editing a file in Audacity, follow these steps to save your work on an audio CD:"
 msgstr "Volg deze stappen om uw werk te branden op een audio-cd, nadat u een opname heeft gemaakt of een bestand in Audacity heeft bewerkt:"
 
-#: help/faq.php:262
+#: help/faq.php:263
 msgid ""
 "<ol>\n"
 "  <li>Use the “Export as WAV” or “Export as AIFF” command to save your Audacity recording in a sound file.</li>\n"
@@ -4119,11 +4134,11 @@ msgstr ""
 "<p>Voor handige tips in verband met het branden van cd's met Windows Media Player en iTunes, en hulp bij het branden van langere \"data\"-cd's, zie <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_burn_CDs\">Hoe cd's te branden</a> op de Audacity Wiki.</p>\n"
 "<p>Zie ook: <a href=\"faq?s=files&amp;i=split\">Hoe kan ik een opname splitsen in meerdere tracks?</a></p>"
 
-#: help/faq.php:277
+#: help/faq.php:278
 msgid "How can I split a long recording into multiple files or CD tracks?"
 msgstr "Hoe kan ik een lange opname splitsen in meerdere bestanden of cd-sporen?"
 
-#: help/faq.php:278
+#: help/faq.php:279
 msgid ""
 "<p>Follow these steps to create a separate file for each song or segment of a long recording.  This is particularly useful if you are creating a CD, since each file will appear as a separate track on the CD.</p>\n"
 "<ol>\n"
@@ -4141,23 +4156,23 @@ msgstr ""
 "  <li>Als u klaar bent, kiest u “Meervoudig exporteren” in het menu Bestand.  Als u de knop \"Exporteren\" aanklikt, slaat Audacity elk lied op als een apart bestand, met het formaat en de locatie die u daarvoor kiest.</li>\n"
 "</ol>"
 
-#: help/faq.php:285
+#: help/faq.php:286
 msgid "A detailed, illustrated tutorial explaining this process is available on the "
 msgstr "Een gedetailleerde, geïllustreerde tutorial die dit proces omschrijft, is beschikbaar op de "
 
-#: help/faq.php:285
+#: help/faq.php:286
 msgid " page on the Audacity Wiki."
 msgstr "-pagina op de Audacity Wiki"
 
-#: help/faq.php:291
+#: help/faq.php:292
 msgid "<div id=\"editing\">Editing</div>"
 msgstr "<div id=\"editing\">Bewerken</div>"
 
-#: help/faq.php:294
+#: help/faq.php:295
 msgid "Why can’t I use the effects or other menu items?"
 msgstr "Waarom kan ik de effecten of de andere menu-items niet gebruiken?"
 
-#: help/faq.php:295
+#: help/faq.php:296
 msgid ""
 "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>\n"
 "<p>Also, many menu items are disabled while playing, recording, or pausing a track. To enable them, press the yellow <b>Stop</b> button.</p>"
@@ -4165,11 +4180,11 @@ msgstr ""
 "<p>Sommige menu-items staan in grijs of zijn uitgeschakeld tot ze klaar zijn om gebruikt teworden. Voordat u een effect selecteert, moet u de audio selecteren die u wilt veranderen. Om audio te selecteren, doet u het volgende: klik en sleep met het Selectie-gereedschap om het te markeren, of kies het \"Selecteer alles\"-commando via het Bewerken-menu.</p>\n"
 "<p>Veel menu-items zijn ook uitgeschakeld tijdens het afspelen, opnemen of pauzeren van een track. Om ze te activeren drukt u op de gele <b>Stop</b>-knop.</p>"
 
-#: help/faq.php:299
+#: help/faq.php:300
 msgid "How do I combine two files into one longer file?"
 msgstr "Hoe combineer ik twee bestanden tot één lang bestand?"
 
-#: help/faq.php:300
+#: help/faq.php:301
 msgid ""
 "<p>Follow these steps to splice two files together:</p>\n"
 "<ol>\n"
@@ -4193,19 +4208,19 @@ msgstr ""
 "</ol>\n"
 "<p>U kan op de <b>Afspelen</b>-knop klikken om het resultaat te horen en de Exporteren-commando's (in Bestand-menu) gebruiken om het op te slaan als een geluidsbestand.</p>"
 
-#: help/faq.php:312
+#: help/faq.php:313
 msgid "How do I mix two tracks together?"
 msgstr "Hoe meng ik twee sporen tot één?"
 
-#: help/faq.php:313
+#: help/faq.php:314
 msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the <b>Play</b> button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
 msgstr "<p>Om twee bestanden te mixen, importeert u ze beide in Audacity.  Ze verschijnen dan als aparte sporen, en worden gemixt als u op de knop <b>Afspelen</b> drukt. U kunt de functie Tijd verschuiven gebruiken om ze te verplaatsen om ze op verschillende momenten te laten beginnen, of de andere bewerkingsfuncties gebruiken om elk van de sporen te wijzigen.</p>"
 
-#: help/faq.php:316
+#: help/faq.php:317
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
 msgstr "Kan ik de zangstem verwijderen uit een opname om een karaoke-spoor te maken?"
 
-#: help/faq.php:317
+#: help/faq.php:318
 msgid ""
 "<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals are exactly the same on both stereo channels, you can remove them by “subtracting” one channel from the other.  This works for many studio recordings, where the vocal track is mixed exactly in the center.</p>\n"
 "<p>To do this in Audacity:</p>\n"
@@ -4231,15 +4246,15 @@ msgstr ""
 "<p>Druk op de <b>Afspelen</b>-knop om het resultaat te horen. Indien u geluk hebt, zal de stem verdwenen zijn, terwijl de meeste andere instrumenten niet aangetast zijn, net zoals een karaoke track. U kan de Exporteren-commando's gebruiken in het Bestandsmenu om de resultaten op te slaan.</p>\n"
 "<p>Indien de stemmen niet exact hetzelfde zijn op beide stereokanalen, zijn er een aantal andere technieken en optionele plugins die u kan proberen. Zie onze <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Vocal_Removal</a> Wiki-pagina voor meer details.</p>\n"
 
-#: help/faq.php:347
+#: help/faq.php:348
 msgid "Other frequently asked questions..."
 msgstr "Andere veelgestelde vragen ..."
 
-#: help/faq.php:351
+#: help/faq.php:352
 msgid "Frequently Asked Questions"
 msgstr "Veelgestelde vragen"
 
-#: help/faq.php:355
+#: help/faq.php:356
 msgid "These are some of the most common questions about Audacity.  If your question isn’t answered here, see the <a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">contact us</a> for help."
 msgstr "Dit zijn enkele van de meest voorkomende vragen over Audacity. Als uw vraag hier niet beantwoord wordt, kan u kijken in de <a href=\"documentation\">documentatie</a> of ons <a href=\"../contact/\">contacteren</a> voor hulp."
 
@@ -4261,7 +4276,7 @@ msgstr "Programmeren in Nyquist"
 #: help/nyquist3.php:10
 #: help/nyquist3.php:19
 msgid "Creating Nyquist Plug-ins"
-msgstr "Nyquist-plugins creëren"
+msgstr "Nyquist-plugins aanmaken"
 
 #: help/nyquist.php:24
 msgid "Beginning with version 1.1.1, Audacity allows you to use the Nyquist programming language to write your own plug-in effects for Audacity.  Unlike VST and LADSPA plug-ins, Nyquist plug-ins can be written using an ordinary text editor and don't need to be compiled."
@@ -4511,7 +4526,7 @@ msgstr "Synthetiseren"
 
 #: help/nyquist2.php:29
 msgid "The following functions all create new sounds.  You can use them to create \"generate\" plug-in effects, or you can combine these synthesized sounds with selected audio to produce interesting effects."
-msgstr "De volgende instructies creëren allemaal nieuwe geluiden. U kan ze gebruiken om \"Genereren\"-plugin-effecten te creëren, of u kan deze gesynthetiseerde geluiden combineren met geselecteerde audio om interessante effecten te produceren."
+msgstr "De volgende instructies creëren allemaal nieuwe geluiden. U kan ze gebruiken om \"Genereren\"-plugin-effecten aan te maken, of u kan deze gesynthetiseerde geluiden combineren met geselecteerde audio om interessante effecten te produceren."
 
 #: help/nyquist2.php:33
 msgid "Generates white noise"
@@ -5873,7 +5888,7 @@ msgstr ""
 "\n"
 "\t<dt> Effects </dt>\n"
 "\t      <dd>   <ul>\n"
-"                           <li>New Vocal Remover plug-in, improvements for Generate effects.</li>\n"
+"                           <li>New Vocal Remover plugin, improvements for Generate effects.</li>\n"
 "             </dd>   </ul>\n"
 "       </dt>\n"
 "\n"
@@ -6191,7 +6206,7 @@ msgstr ""
 "<ul>\n"
 "\t<li>New Welcome Screen with introduction to Audacity.</li>\n"
 "\t<li>New 'Mix and Render to New Track' command.</li>\n"
-"\t<li>Support for VAMP audio analysis plug-ins.</li>\n"
+"\t<li>Support for VAMP audio analysis plugins.</li>\n"
 "\t<li>More keyboard shortcuts and navigation.</li>\n"
 "\t<li>Reworked solo/mute handling.</li>\n"
 "\t<li>New preference: Select all audio in project, if none selected (on by default).</li>\n"
@@ -6688,6 +6703,25 @@ msgstr "Audacity gebruikt een open XML bestandsformaat om interoperabiliteit aan
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "Meer documentatie over het bestandsformaat van Audacity is in de maak."
 
+#~ msgid ""
+#~ "<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not "
+#~ "yet able to display custom interfaces for plug-ins.  Instead, it uses "
+#~ "generic controls for all VST plug-ins.  Because of this, many plug-ins "
+#~ "will look or act differently than they do in other programs.</p>\n"
+#~ "<p>Other VST plug-ins may not work at all, because of bugs in the VST "
+#~ "Enabler.  You can <a href=\"../contact/\">contact us</a> to report plug-"
+#~ "ins that do not work.</p>\n"
+#~ "<p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>"
+#~ msgstr ""
+#~ "<p>De <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> kan nog "
+#~ "geen aangepaste bedieningspanelen tonen voor plugins. In plaats daarvan "
+#~ "gebruikt het algemene knoppen voor alle VST plugins. Om deze reden zien "
+#~ "veel plugins er anders uit of gedragen zij zich anders dan in andere "
+#~ "programma's.</p>\n"
+#~ "<p>Andere VST-plugins werken misschien helemaal niet, door "
+#~ "programmeerfouten in de VST Enabler.  U kunt <a href\"../contact/\">ons "
+#~ "contacteren</a> om plugins te melden die niet werken.</p>  \n"
+#~ "<p>Ook ondersteunt Audacity geen VST instrument (VSTi) plugins.</p>"
 #~ msgid "feedback e-mail address</a> and we'll get back to you."
 #~ msgstr "feedback e-mailadres</a> en we zullen u antwoorden."
 #~ msgid ""
