@@ -198,8 +198,8 @@ class AUDACITY_DLL_API AudioIO {
     * You may also specify a rate for which to check in addition to the
     * standard rates.
     */
-   static wxArrayLong GetSupportedPlaybackRates(int DevIndex = -1,
-                                                double rate = 0.0);
+   wxArrayLong GetSupportedPlaybackRates(int DevIndex = -1,
+                                         double rate = 0.0);
 
    /** \brief Get a list of sample rates the input (recording) device
     * supports.
@@ -213,8 +213,8 @@ class AUDACITY_DLL_API AudioIO {
     * You may also specify a rate for which to check in addition to the
     * standard rates.
     */
-   static wxArrayLong GetSupportedCaptureRates(int devIndex = -1,
-                                               double rate = 0.0);
+   wxArrayLong GetSupportedCaptureRates(int devIndex = -1,
+                                        double rate = 0.0);
 
    /** \brief Get a list of sample rates the current input/output device
     * combination supports.
@@ -230,9 +230,9 @@ class AUDACITY_DLL_API AudioIO {
     * You may also specify a rate for which to check in addition to the
     * standard rates.
     */
-   static wxArrayLong GetSupportedSampleRates(int playDevice = -1,
-                                              int recDevice = -1,
-                                              double rate = 0.0);
+   wxArrayLong GetSupportedSampleRates(int playDevice = -1,
+                                       int recDevice = -1,
+                                       double rate = 0.0);
 
    /** \brief Get a supported sample rate which can be used a an optimal
     * default.
@@ -242,7 +242,7 @@ class AUDACITY_DLL_API AudioIO {
     * for project rates if one cannot be retrieved from the preferences.
     * So all in all not that useful or important really
     */
-   static int GetOptimalSupportedSampleRate();
+   int GetOptimalSupportedSampleRate();
 
    /** \brief The time the stream has been playing for
     *
@@ -500,6 +500,15 @@ private:
    friend void DeinitAudioIO();
 
    TimeTrack *mTimeTrack;
+
+   // For cacheing supported sample rates
+   int mCachedPlaybackIndex;
+   wxArrayLong mCachedPlaybackRates;
+   int mCachedCaptureIndex;
+   wxArrayLong mCachedCaptureRates;
+   wxArrayLong mCachedSampleRates;
+   double mCachedBestRateIn;
+   double mCachedBestRateOut;
 
    /** brief The function which is called from PortAudio's callback thread
     * context to collect and deliver audio for / from the sound device.
