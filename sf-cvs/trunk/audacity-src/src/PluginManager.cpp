@@ -60,44 +60,56 @@ PluginManager & PluginManager::Get(bool refresh)
 
 void PluginManager::Open()
 {
+   // Writes out any pending changes and
+   // sets mConfig == NULL.
    Close();
 
    wxFileName name(FileNames::PluginsCache());
-   wxFile file;
 
    if (!::wxFileExists(FileNames::PluginsCache())) {
+      wxFile file;
       file.Create(FileNames::PluginsCache());
       file.Close();
    }
 
    wxFileInputStream stream(FileNames::PluginsCache());
 
+   // mConfig is NULL because of the PlugInManager::Close() earlier.
+   // create it and fill it from the stream.
    mConfig = new wxFileConfig(stream);
-
-   file.Close();
 }
 
 void PluginManager::Close()
 {
-   if (mConfig && IsDirty()) {
+   // IF already closed THEN nothing to do.
+   if( mConfig == NULL )
+      return;
 
+   // JKC: There is no recovery action here if writing the
+   // config out fails (e.g. due to write protected media).
+   // I guess we can live with that for now.
+   // This function will still close the config and
+   // delete it, without updating the file.
+   if( IsDirty()) 
+   {
       wxFile file(FileNames::PluginsCache(), wxFile::write);
-      if (!file.IsOpened()) {
+      if (file.IsOpened()) 
+      {
+         // Might fail to open...
          wxLogDebug(wxT("Couldn't open plugins cache for write"));
-         return;
       }
-
-      wxFileOutputStream stream(file);
-
-      SetDirty(!mConfig->Save(stream));
-
-      file.Close();
+      else 
+      {
+         wxFileOutputStream stream(file);
+         // Save() might return false.
+         mConfig->Save(stream);
+         file.Close();
+      }
    }
 
-   if (mConfig && !IsDirty()) {
-      delete mConfig;
-      mConfig = NULL;
-   }
+   SetDirty( false );
+   delete mConfig;
+   mConfig = NULL;
 }
 
 bool PluginManager::IsDirty()
