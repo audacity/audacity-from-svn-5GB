@@ -101,6 +101,13 @@ AudioIO *gAudioIO;
 
 // static
 int AudioIO::mNextStreamToken = 0;
+int AudioIO::mCachedPlaybackIndex = -1;
+wxArrayLong AudioIO::mCachedPlaybackRates;
+int AudioIO::mCachedCaptureIndex = -1;
+wxArrayLong AudioIO::mCachedCaptureRates;
+wxArrayLong AudioIO::mCachedSampleRates;
+double AudioIO::mCachedBestRateIn = 0.0;
+double AudioIO::mCachedBestRateOut;
 
 const int AudioIO::StandardRates[] = {
    8000,
@@ -276,10 +283,6 @@ AudioIO::AudioIO()
    mListener = NULL;
    mUpdateMeters = false;
    mUpdatingMeters = false;
-
-   mCachedPlaybackIndex = -1;
-   mCachedCaptureIndex = -1;
-   mCachedBestRateIn = 0.0;
 
    PaError err = Pa_Initialize();
 
