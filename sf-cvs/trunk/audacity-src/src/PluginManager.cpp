@@ -93,7 +93,7 @@ void PluginManager::Close()
    if( IsDirty()) 
    {
       wxFile file(FileNames::PluginsCache(), wxFile::write);
-      if (file.IsOpened()) 
+      if (!file.IsOpened()) 
       {
          // Might fail to open...
          wxLogDebug(wxT("Couldn't open plugins cache for write"));
