@@ -596,9 +596,11 @@ bool BatchCommands::ApplyChain(const wxString & filename)
 
    if (!res)
    {
-      // Chain failed or was cancelled; revert to the previous state
-      UndoManager *um = proj->GetUndoManager();
-      proj->SetStateTo(um->GetCurrentState());
+      if(proj) {
+         // Chain failed or was cancelled; revert to the previous state
+         UndoManager *um = proj->GetUndoManager();
+         proj->SetStateTo(um->GetCurrentState());
+      }
       return false;
    }
 
