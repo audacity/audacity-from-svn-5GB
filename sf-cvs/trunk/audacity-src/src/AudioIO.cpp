@@ -1645,12 +1645,12 @@ double AudioIO::GetBestRate(bool capturing, bool playing, double sampleRate)
    if (capturing && !playing) {
       rates = GetSupportedCaptureRates(-1, sampleRate);
    }
-   if (playing && !capturing) {
+   else if (playing && !capturing) {
       rates = GetSupportedPlaybackRates(-1, sampleRate);
    }
    else {   // we assume capturing and playing - the alternative would be a 
             // bit odd
-      rates = GetSupportedSampleRates(-1, sampleRate);
+      rates = GetSupportedSampleRates(-1, -1, sampleRate);
    }
    /* rem rates is the array of hardware-supported sample rates (in the current
     * configuration), sampleRate is the Project Rate (desired sample rate) */
