@@ -305,7 +305,13 @@ bool EffectTruncSilence::Process()
                // Include the cross-fade samples in the count to make the loop logic easier
                keep += rampInFrames;
                truncIndex -= rampInFrames;
-
+               if(truncIndex < 0) {
+                  // This happens when we have silence overlapping a block boundary
+                  keep += truncIndex;
+                  if(keep < 0)
+                     keep = 0;
+                  truncIndex = 0;
+               }
                // back up for cross-fade
                sampleCount curOffset = i - keep;
 
@@ -315,10 +321,6 @@ bool EffectTruncSilence::Process()
                   if(keep < mBlendFrameCount)
                      keep = mBlendFrameCount;
                   curOffset = 0;
-               }
-               if(truncIndex < 0) {
-                  // This should never happen, but just in case...
-                  truncIndex = 0;
                }
 
                for (tndx = 0; tndx < tcount; tndx++) {
@@ -358,23 +360,41 @@ bool EffectTruncSilence::Process()
       }
 
       // If currently in a silent section, retain samples for the next pass
-      if(ignoringFrames) {
-         keep = consecutiveSilentFrames - truncInitialAllowedSilentSamples;
-         if(keep > (truncLongestAllowedSilentSamples+mBlendFrameCount))
-            keep = truncLongestAllowedSilentSamples+mBlendFrameCount;
-         for (tndx = 0; tndx < tcount; tndx++) {
-            for(fr = 0; fr < truncInitialAllowedSilentSamples; fr++) {
-               buffer[tndx][fr] = buffer[tndx][truncIndex-truncInitialAllowedSilentSamples+fr];
+      if(consecutiveSilentFrames > mBlendFrameCount) {
+         if (ignoringFrames == true) {
+            // Retain only what we need for truncating the silence
+            keep = consecutiveSilentFrames-truncInitialAllowedSilentSamples;
+            if(keep > (truncLongestAllowedSilentSamples+mBlendFrameCount))
+               keep = truncLongestAllowedSilentSamples+mBlendFrameCount;
+            for (tndx = 0; tndx < tcount; tndx++) {
+               // Cross fade the cut point
+               for(fr = 0; fr < mBlendFrameCount; fr++) {
+                  buffer[tndx][fr] = ((mBlendFrameCount-fr)*buffer[tndx][truncIndex-mBlendFrameCount+fr]
+                                   + fr*buffer[tndx][i-keep+fr]) / mBlendFrameCount;
+               }
+               for( ; fr < keep; fr++) {
+                  buffer[tndx][fr] = buffer[tndx][i-keep+fr];
+               }
             }
-            for(fr = 0; fr < keep; fr++) {
-               buffer[tndx][truncInitialAllowedSilentSamples+fr] = buffer[tndx][i-keep+fr];
+            // Update the output index, less what we are retaining for next time
+            outTrackOffset += truncIndex - mBlendFrameCount;
+            // Append the following buffer to the existing data
+            i = keep;
+            truncIndex = mBlendFrameCount;
+         } else {
+            // Retain the silent samples for the next buffer
+            keep = consecutiveSilentFrames;
+            for (tndx = 0; tndx < tcount; tndx++) {
+               for(fr=0 ; fr < keep; fr++) {
+                  buffer[tndx][fr] = buffer[tndx][i-keep+fr];
+               }
             }
+            // Update the output index, less what we are retaining for next time
+            outTrackOffset += truncIndex - keep;
+            // Append the following buffer to the existing data
+            i = keep;
+            truncIndex = keep;
          }
-         // Update the output index, less what we are retaining for next time
-         outTrackOffset += truncIndex - truncInitialAllowedSilentSamples;
-         // Append the following buffer to the existing data
-         i = consecutiveSilentFrames = truncInitialAllowedSilentSamples + keep;
-         truncIndex = truncInitialAllowedSilentSamples;
       } else {
          // Maintain output index
          outTrackOffset += truncIndex;
