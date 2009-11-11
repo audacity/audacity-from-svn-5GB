@@ -2498,16 +2498,20 @@ void AudacityProject::OpenFile(wxString fileName, bool addtohistory)
             while((odFlags|createdODTasks) != createdODTasks)
             {
                newTask=NULL;
+#ifdef EXPERIMENTAL_OD_FLAC
                if(!(createdODTasks&ODTask::eODFLAC) && odFlags & ODTask::eODFLAC) {
                   newTask= new ODDecodeFlacTask;
                   createdODTasks= createdODTasks | ODTask::eODFLAC;
                }
-               else if(!(createdODTasks&ODTask::eODPCMSummary) && odFlags & ODTask::eODPCMSummary) {
+               else 
+#endif
+               if(!(createdODTasks&ODTask::eODPCMSummary) && odFlags & ODTask::eODPCMSummary) {
                   newTask=new ODComputeSummaryTask;
                   createdODTasks= createdODTasks | ODTask::eODPCMSummary;
                }
                else {
                   printf("unrecognized OD Flag in blockfile.\n");
+                  //TODO:ODTODO: display to user.  This can happen when we build audacity on a system that doesnt have libFLAC
                   break;
                }
                if(newTask)
