@@ -290,7 +290,6 @@ wxAccStatus TrackPanelAx::GetName( int childId, wxString* name )
 
       if( t == NULL )
       {
-         *name = _( "Track Accessible out of sync" );
          return wxACC_FAIL;
       }
       else
