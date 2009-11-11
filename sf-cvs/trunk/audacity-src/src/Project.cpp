@@ -1024,12 +1024,6 @@ void AudacityProject::UpdatePrefsVariables()
 
    gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), &mRate, AudioIO::GetOptimalSupportedSampleRate());
    mDefaultFormat = (sampleFormat) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
-   wxRect normalRect;
-   gPrefs->Read(wxT("/Window/Normal_X"), &normalRect.x);
-   gPrefs->Read(wxT("/Window/Normal_Y"), &normalRect.y);
-   gPrefs->Read(wxT("/Window/Normal_Width"), &normalRect.width);
-   gPrefs->Read(wxT("/Window/Normal_Height"), &normalRect.height);
-   SetNormalizedWindowState(normalRect);
 }
 
 void AudacityProject::UpdatePrefs()
@@ -1542,18 +1536,16 @@ void AudacityProject::OnIconize(wxIconizeEvent &event)
 
 void AudacityProject::OnMove(wxMoveEvent & event)
 {
-   wxRect rect(this->GetRect());
    if (!this->IsMaximized() && !this->IsIconized())
-      SetNormalizedWindowState(rect);
+      SetNormalizedWindowState(this->GetRect());
    event.Skip();
 }
 
 void AudacityProject::OnSize(wxSizeEvent & event)
 {
    HandleResize();
-   wxRect rect(this->GetRect());
    if (!this->IsMaximized() && !this->IsIconized())
-      SetNormalizedWindowState(rect);
+      SetNormalizedWindowState(this->GetRect());
    event.Skip();
 }
 

@@ -463,7 +463,7 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    wxString mHelpPref;
    wxString mSoloPref;
 
-   void SetNormalizedWindowState(wxRect & pSizeAndLocation) {  mNormalizedWindowState = pSizeAndLocation;   }
+   void SetNormalizedWindowState(wxRect pSizeAndLocation) {  mNormalizedWindowState = pSizeAndLocation;   }
    wxRect GetNormalizedWindowState() const { return mNormalizedWindowState;   }
 
  private:
