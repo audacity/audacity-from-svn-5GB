@@ -873,6 +873,25 @@ bool AudacityApp::OnInit()
    wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
 #endif
 
+//MERGE:
+//Everything now uses Audacity name for preferences.
+//(Audacity and CleanSpeech the same program and use
+//the same preferences file).
+//
+// LL: Moved here from InitPreferences() to ensure VST effect
+//     discovery writes configuration to the correct directory
+//     on OSX with case-sensitive file systems.
+#ifdef AUDACITY_NAME
+   wxString appName = wxT(AUDACITY_NAME);
+   wxString vendorName = wxT(AUDACITY_NAME);
+#else
+   wxString vendorName = wxT("Audacity");
+   wxString appName = wxT("Audacity");
+#endif
+
+   wxTheApp->SetVendorName(vendorName);
+   wxTheApp->SetAppName(appName);
+
 #ifdef USE_VST // if no VST support, answer is always no
    // Have we been started to check a plugin?
    if (argc == 3 && wxStrcmp(argv[1], VSTCMDKEY) == 0) {
