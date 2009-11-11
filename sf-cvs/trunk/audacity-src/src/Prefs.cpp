@@ -137,20 +137,7 @@ void CopyEntriesRecursive(wxString path, wxConfigBase *src, wxConfigBase *dst)
 
 void InitPreferences()
 {
-//MERGE:
-//Everything now uses Audacity name for preferences.
-//(Audacity and CleanSpeech the same program and use
-//the same preferences file).
-#ifdef AUDACITY_NAME
-   wxString appName = wxT(AUDACITY_NAME);
-   wxString vendorName = wxT(AUDACITY_NAME);
-#else
-   wxString vendorName = wxT("Audacity");
-   wxString appName = wxT("Audacity");
-#endif
-
-   wxTheApp->SetVendorName(vendorName);
-   wxTheApp->SetAppName(appName);
+   wxString appName = wxTheApp->GetAppName();
 
    wxFileName configFileName(FileNames::DataDir(), wxT("audacity.cfg"));
 
