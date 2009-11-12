@@ -78,6 +78,12 @@
 
 #include "prefs/PrefsDialog.h"
 #include "ondemand/ODManager.h"
+
+#if defined(__WXMAC__)
+#include <mach/mach.h>
+#include <mach/vm_statistics.h>
+#endif
+
 // Static class variables
 
 int DirManager::numDirManagers = 0;
@@ -1646,7 +1652,7 @@ void DirManager::FillBlockfilesCache()
    while (i != blockFileHash.end())
    {
       BlockFile *b = i->second;
-      if (b->GetNeedFillCache() && (wxGetFreeMemory() > lowMem)) {
+      if (b->GetNeedFillCache() && (GetFreeMemory() > lowMem)) {
          b->FillCache();
       }
 
@@ -1692,6 +1698,27 @@ void DirManager::WriteCacheToDisk()
    }
 }
 
+wxMemorySize GetFreeMemory()
+{
+   wxMemorySize avail;
+
+#if defined(__WXMAC__)
+   mach_port_t port = mach_host_self();
+   mach_msg_type_number_t cnt = HOST_VM_INFO_COUNT;
+   vm_statistics_data_t	stats;
+   vm_size_t pagesize = 0;
+   
+   memset(&stats, 0, sizeof(stats));
+
+   host_page_size(port, &pagesize);
+   host_statistics(port, HOST_VM_INFO, (host_info_t) &stats, &cnt);
+   avail = stats.free_count * pagesize;
+#else
+   avail = wxGetFreeMemory();
+#endif
+
+   return avail;
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
