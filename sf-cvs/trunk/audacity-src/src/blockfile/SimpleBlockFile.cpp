@@ -74,6 +74,10 @@ to get its definition, rather than rolling our own.
 #include "sndfile.h"
 #include "../Internat.h"
 
+#if defined(__WXMAC__)
+#include <sys/sysctl.h>
+#endif
+
 //#define DEBUG_OUTPUT(s) printf("[SimpleBlockFile] %s\n", s)
 #define DEBUG_OUTPUT(s)
 
@@ -598,8 +602,19 @@ bool SimpleBlockFile::GetCache()
       lowMem = 16;
    }
    lowMem <<= 20;
-    
-   return cacheBlockFiles && (wxGetFreeMemory() > lowMem);
+
+   wxMemorySize avail;
+
+#if defined(__WXMAC__)
+   uint64_t mem = 0;
+   size_t len = sizeof(uint64_t);
+   sysctlbyname("hw.memsize", &mem, &len, NULL, 0);
+   avail = mem;
+#else
+   avail = wxGetFreeMemory();
+#endif
+
+   return cacheBlockFiles && (avail > lowMem);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
