@@ -28,6 +28,8 @@ class SequenceTest;
 WX_DECLARE_HASH_MAP(int, int, wxIntegerHash, wxIntegerEqual, DirHash);
 WX_DECLARE_HASH_MAP(wxString,BlockFile *,wxStringHash,wxStringEqual,BlockHash);
 
+wxMemorySize GetFreeMemory();
+
 class DirManager: public XMLTagHandler {
  public:
 
