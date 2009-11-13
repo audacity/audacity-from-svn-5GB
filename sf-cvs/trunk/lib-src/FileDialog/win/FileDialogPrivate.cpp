@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.17 2009-07-02 22:11:19 vjohnson Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.18 2009-11-13 05:21:43 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -221,7 +221,9 @@ FileDialogHookFunction(HWND      hDlg,
                                            CB_GETCURSEL,
                                            0,
                                            0);
+            EnableWindow(hwndDialog, FALSE);
             me->ClickButton(index);
+            EnableWindow(hwndDialog, TRUE);
             SetFocus(w);
          }
          else if (CDN_SELCHANGE == (pNotifyCode->hdr).code)
