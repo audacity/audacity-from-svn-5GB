@@ -611,6 +611,7 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
       
       //Find the bits of clips that need replacing
       std::vector<std::pair<double, double> > clipStartEndTimes;
+      std::vector<std::pair<double, double> > clipRealStartEndTimes; //the above may be truncated due to a clip being partially selected
       for (WaveClipList::compatibility_iterator it=t->GetClipIterator(); it; it=it->GetNext())
       {
          WaveClip *clip;
@@ -624,6 +625,10 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
             continue;   // clip is not within selection
          if( clipStartT >= startT + lenT )
             continue;   // clip is not within selection
+            
+         //save the actual clip start/end so that we can rejoin them after we paste.
+         clipRealStartEndTimes.push_back(std::pair<double,double>(clipStartT,clipEndT));            
+            
          if( clipStartT < startT )  // does selection cover the whole clip?
             clipStartT = startT; // don't copy all the new clip
          if( clipEndT > startT + lenT )  // does selection cover the whole clip?
@@ -643,6 +648,13 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
          {
             //put the processed audio in
             t->Paste(clipStartEndTimes[i].first,toClipOutput);
+            //if the clip was only partially selected, the Paste will have created a split line.  Join is needed to take care of this
+            //This is not true when the selection is fully contained within one clip (second half of conditional)
+            if( (clipRealStartEndTimes[i].first  != clipStartEndTimes[i].first || 
+                 clipRealStartEndTimes[i].second != clipStartEndTimes[i].second) &&
+                 !(clipRealStartEndTimes[i].first <= startT &&  
+                 clipRealStartEndTimes[i].second >= startT+lenT) )
+               t->Join(clipRealStartEndTimes[i].first,clipRealStartEndTimes[i].second);
             delete toClipOutput;
          }
       }
