@@ -768,7 +768,7 @@ wxAccStatus GridAx::GetRole(int childId, wxAccRole *role)
       *role = wxROLE_SYSTEM_TABLE;
    }
    else {
-      *role = wxROLE_SYSTEM_CELL;
+      *role = wxROLE_SYSTEM_TEXT;
    }
 
    return wxACC_OK;
