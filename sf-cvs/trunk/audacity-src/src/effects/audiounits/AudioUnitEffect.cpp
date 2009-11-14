@@ -71,6 +71,9 @@ class AudioUnitDialog : public wxDialog
                    AudioUnit unit,
                    AudioUnitCarbonView carbonView,
                    Effect *effect);
+   virtual ~AudioUnitDialog();
+
+   void RemoveHandler();
 
    void OnOK(wxCommandEvent &event);
    void OnCancel(wxCommandEvent &event);
@@ -82,7 +85,8 @@ class AudioUnitDialog : public wxDialog
    wxBoxSizer           *mMainSizer;
    Effect               *mEffect;
 
-   EventHandlerRef       mEventHandlerRef;
+   EventHandlerRef       mHandlerRef;
+   EventHandlerUPP       mHandlerUPP;
 
    DECLARE_EVENT_TABLE()
 };
@@ -723,6 +727,28 @@ void AudioUnitGUIControl::OnMouse(wxMouseEvent &event)
 // AudioUnitDialog methods
 //
 
+// Event handler to capture the window close event
+static const EventTypeSpec eventList[] =
+{
+   {kEventClassWindow, kEventWindowClose},
+};
+
+static pascal OSStatus EventHandler(EventHandlerCallRef handler, EventRef event, void *data)
+{
+   OSStatus result = eventNotHandledErr;
+
+   AudioUnitDialog *dlg = (AudioUnitDialog *)data;
+
+   if (GetEventClass(event) == kEventClassWindow && GetEventKind(event) == kEventWindowClose) {
+      dlg->RemoveHandler();
+      dlg->Close();
+      result = noErr;
+   }
+
+   return result;
+}
+
+
 void EventListener(void *inUserData, AudioUnitCarbonView inView, 
                    const AudioUnitParameter *inParameter,
                    AudioUnitCarbonViewEventID inEvent, 
@@ -747,7 +773,9 @@ AudioUnitDialog::AudioUnitDialog(wxWindow *parent, wxWindowID id,
                                  AudioUnitCarbonView carbonView,
                                  Effect *effect):
    mUnit(unit),
-   mEffect(effect)
+   mEffect(effect),
+   mHandlerUPP(NULL),
+   mHandlerRef(NULL)
 {
    long style = wxDEFAULT_DIALOG_STYLE;
    
@@ -860,20 +888,41 @@ AudioUnitDialog::AudioUnitDialog(wxWindow *parent, wxWindowID id,
    mMainSizer->Fit(this);
    mMainSizer->SetSizeHints(this);
 
-  #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
-
-   // Nothing more to to...
-
-  #else
-
-   //
-   // Remove the wx event handler (because it interferes with the
-   // event handlers that other GUIs install)
-   //
-
+   // Some VST effects do not work unless the default handler is removed since
+   // it captures many of the events that the plugins need.  But, it must be
+   // done last since proper window sizing will not occur otherwise.
    ::RemoveEventHandler((EventHandlerRef)MacGetEventHandler());
 
-  #endif
+   // Install a bare minimum handler so we can capture the window close event.  If
+   // it's not captured, we will crash at Audacity termination since the window
+   // is still on the wxWidgets toplevel window lists, but it's already gone.
+   mHandlerUPP = NewEventHandlerUPP(EventHandler);
+   InstallWindowEventHandler(windowRef,
+                             mHandlerUPP,
+                             GetEventTypeCount(eventList),
+                             eventList,
+                             this,
+                             &mHandlerRef);
+
+}
+
+AudioUnitDialog::~AudioUnitDialog()
+{
+   RemoveHandler();
+}
+
+void AudioUnitDialog::RemoveHandler()
+{
+   if (mHandlerRef) {
+      ::RemoveEventHandler(mHandlerRef);
+      mHandlerRef = NULL;
+      MacInstallTopLevelWindowEventHandler();
+   }
+
+   if (mHandlerUPP) {
+      DisposeEventHandlerUPP(mHandlerUPP);
+      mHandlerUPP = NULL;
+   }
 }
 
 void AudioUnitDialog::OnOK(wxCommandEvent &event)
