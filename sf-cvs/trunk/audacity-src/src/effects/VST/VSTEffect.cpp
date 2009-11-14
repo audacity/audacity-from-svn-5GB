@@ -34,6 +34,7 @@
 #include <wx/utils.h>
 
 #if defined(__WXMAC__)
+#include <dlfcn.h>
 #include <wx/mac/private.h>
 #else
 #include <wx/dynlib.h>
@@ -116,6 +117,8 @@ class VSTEffectDialog:public wxDialog, XMLTagHandler
                    AEffect *aeffect);
    virtual ~VSTEffectDialog();
 
+   void RemoveHandler();
+
    void OnIdle(wxIdleEvent & evt);
 
    void OnProgram(wxCommandEvent & evt);
@@ -127,6 +130,7 @@ class VSTEffectDialog:public wxDialog, XMLTagHandler
 
    void OnOk(wxCommandEvent & evt);
    void OnCancel(wxCommandEvent & evt);
+   void OnClose(wxCloseEvent & evt);
    void OnPreview(wxCommandEvent & evt);
 
  private:
@@ -157,6 +161,11 @@ class VSTEffectDialog:public wxDialog, XMLTagHandler
    bool mInChunk;
    wxString mChunk;
 
+#if defined(__WXMAC__)
+   EventHandlerUPP mHandlerUPP;
+   EventHandlerRef mHandlerRef;
+#endif
+
    DECLARE_EVENT_TABLE()
 };
 
@@ -182,6 +191,31 @@ BEGIN_EVENT_TABLE(VSTEffectDialog, wxDialog)
    EVT_SLIDER(wxID_ANY, VSTEffectDialog::OnSlider)
 END_EVENT_TABLE()
 
+#if defined(__WXMAC__)
+
+// Event handler to capture the window close event
+static const EventTypeSpec eventList[] =
+{
+   {kEventClassWindow, kEventWindowClose},
+};
+
+static pascal OSStatus EventHandler(EventHandlerCallRef handler, EventRef event, void *data)
+{
+   OSStatus result = eventNotHandledErr;
+
+   VSTEffectDialog *dlg = (VSTEffectDialog *)data;
+
+   if (GetEventClass(event) == kEventClassWindow && GetEventKind(event) == kEventWindowClose) {
+      dlg->RemoveHandler();
+      dlg->Close();
+      result = noErr;
+   }
+
+   return result;
+}
+
+#endif
+
 VSTEffectDialog::VSTEffectDialog(wxWindow *parent,
                                        const wxString & title,
                                        VSTEffect *effect,
@@ -194,6 +228,10 @@ VSTEffectDialog::VSTEffectDialog(wxWindow *parent,
    mSliders = NULL;
    mDisplays = NULL;
    mLabels = NULL;
+#if defined(__WXMAC__)
+   mHandlerUPP = NULL;
+   mHandlerRef = NULL;
+#endif
 
    // Determine if the VST editor is supposed to be used or not
    mGui = (gPrefs->Read(wxT("/VST/GUI"), (long) true) != 0) &&
@@ -210,6 +248,8 @@ VSTEffectDialog::VSTEffectDialog(wxWindow *parent,
 
 VSTEffectDialog::~VSTEffectDialog()
 {
+   RemoveHandler();
+   
    if (mNames) {
       delete [] mNames;	
    }
@@ -225,6 +265,22 @@ VSTEffectDialog::~VSTEffectDialog()
    if (mLabels) {
       delete [] mLabels;
    }
+}
+
+void VSTEffectDialog::RemoveHandler()
+{
+#if defined(__WXMAC__)
+   if (mHandlerRef) {
+      ::RemoveEventHandler(mHandlerRef);
+      mHandlerRef = NULL;
+      MacInstallTopLevelWindowEventHandler();
+   }
+
+   if (mHandlerUPP) {
+      DisposeEventHandlerUPP(mHandlerUPP);
+      mHandlerUPP = NULL;
+   }
+#endif
 }
 
 void VSTEffectDialog::BuildFancy()
@@ -278,9 +334,22 @@ void VSTEffectDialog::BuildFancy()
 #if defined(__WXMAC__)
    HIViewPlaceInSuperviewAt(subview, pos.x, pos.y);
 
-   // LL:  Some VST effects do not work unless this is done.  But, it must be
-   //      done last since proper window sizing will not occur otherwise.
+   // Some VST effects do not work unless the default handler is removed since
+   // it captures many of the events that the plugins need.  But, it must be
+   // done last since proper window sizing will not occur otherwise.
    ::RemoveEventHandler((EventHandlerRef)MacGetEventHandler());
+
+   // Install a bare minimum handler so we can capture the window close event.  If
+   // it's not captured, we will crash at Audacity termination since the window
+   // is still on the wxWidgets toplevel window lists, but it's already gone.
+   mHandlerUPP = NewEventHandlerUPP(EventHandler);
+   InstallWindowEventHandler(win,
+                             mHandlerUPP,
+                             GetEventTypeCount(eventList),
+                             eventList,
+                             this,
+                             &mHandlerRef);
+
 #elif defined(__WXMSW__)
    w->SetPosition(pos);
    w->SetSize(si->GetSize());
@@ -620,6 +689,11 @@ void VSTEffectDialog::OnSave(wxCommandEvent & evt)
 
    // Close the file
    xmlFile.Close();
+}
+
+void VSTEffectDialog::OnClose(wxCloseEvent & evt)
+{
+   EndModal(false);
 }
 
 void VSTEffectDialog::OnPreview(wxCommandEvent & evt)
@@ -1197,7 +1271,10 @@ bool VSTEffect::PromptUser()
    dlog.CentreOnParent();
    dlog.ShowModal();
 
-   return dlog.GetReturnCode() != 0;
+   bool ret = dlog.GetReturnCode() != 0;
+
+   dlog.Destroy();
+   return ret;
 }
 
 bool VSTEffect::Process()
@@ -1390,6 +1467,9 @@ bool VSTEffect::Load()
    mAEffect = NULL;
 
 #if defined(__WXMAC__)
+   // Start clean
+   mBundleRef = NULL;
+
    // Don't really know what this should be initialize to
    mResource = -1;
 
@@ -1417,31 +1497,58 @@ bool VSTEffect::Load()
       return false;
    }
 
-   // Try to locate the new plugin entry point
-   pluginMain = (vstPluginMain)
-      CFBundleGetFunctionPointerForName(bundleRef,
-                                        CFSTR("VSTPluginMain"));
-
-   // If not found, try finding the old entry point
-   if (pluginMain == NULL) {
-      pluginMain = (vstPluginMain)
-         CFBundleGetFunctionPointerForName(bundleRef,
-                                           CFSTR("main_macho"));
-   }
-
-   // Must not be a VST plugin
-   if (pluginMain == NULL) {
+   // Retrieve a reference to the executable
+   CFURLRef exeRef = CFBundleCopyExecutableURL(bundleRef);
+   if (exeRef == NULL) {
       CFRelease(bundleRef);
       return false;
    }
 
+   // Convert back to path
+   UInt8 exePath[PATH_MAX];
+   success = CFURLGetFileSystemRepresentation(exeRef, true, exePath, sizeof(exePath));
+
+   // Done with the executable reference
+   CFRelease(exeRef);
+
+   // Bail if we couldn't resolve the executable path
+   if (success == FALSE) {
+      CFRelease(bundleRef);
+      return false;
+   }
+
+   // Attempt to open it
+   mModule = dlopen((char *) exePath, RTLD_NOW | RTLD_LOCAL);
+   if (mModule == NULL) {
+      CFRelease(bundleRef);
+      return false;
+   }
+
+   // Try to locate the new plugin entry point
+   pluginMain = (vstPluginMain) dlsym(mModule, "VSTPluginMain");
+
+   // If not found, try finding the old entry point
+   if (pluginMain == NULL) {
+      pluginMain = (vstPluginMain) dlsym(mModule, "main_macho");
+   }
+
+   // Must not be a VST plugin
+   if (pluginMain == NULL) {
+      dlclose(mModule);
+      mModule = NULL;
+      CFRelease(bundleRef);
+      return false;
+   }
+
+   // Need to keep the bundle reference around so we can map the
+   // resources.
+   mBundleRef = bundleRef;
+
    // Open the resource map ... some plugins (like GRM Tools) need this.
    mResource = (int) CFBundleOpenBundleResourceMap(bundleRef);
 
-   // Save the bundle reference
-   mModule = bundleRef;
-
 #else
+
    {
       wxLogNull nolog;
 
@@ -1517,10 +1624,16 @@ void VSTEffect::Unload()
    if (mModule) {
 #if defined(__WXMAC__)
       if (mResource != -1) {
-         CFBundleCloseBundleResourceMap((CFBundleRef) mModule, mResource);
+         CFBundleCloseBundleResourceMap((CFBundleRef) mBundleRef, mResource);
+         mResource = -1;
       }
 
-      CFRelease((CFBundleRef) mModule);
+      if (mBundleRef != NULL) {
+         CFRelease((CFBundleRef) mBundleRef);
+         mBundleRef = NULL;
+      }
+
+      dlclose(mModule);
 #else
       delete (wxDynamicLibrary *) mModule;
 #endif

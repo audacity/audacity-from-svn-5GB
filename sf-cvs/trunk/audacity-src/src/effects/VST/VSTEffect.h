@@ -94,6 +94,8 @@ class VSTEffect:public Effect
 
    wxString mPath;
 #if defined(__WXMAC__)
+   // Cheating a little ... type is really CFBundle
+   void *mBundleRef;
    // Cheating a little ... type is really CFBundleRefNum
    int mResource;
 #endif
