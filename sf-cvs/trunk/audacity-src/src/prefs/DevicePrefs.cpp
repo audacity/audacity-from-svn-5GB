@@ -158,7 +158,23 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
 
 void DevicePrefs::OnHost(wxCommandEvent & e)
 {
-   int index = mHost->GetCurrentSelection(); /* the hostAPI index the user has selected */
+   // Find the index for the host API selected
+   int index = -1;
+   wxString apiName = mHostNames[mHost->GetCurrentSelection()];
+   int nHosts = Pa_GetHostApiCount();
+   for (int i = 0; i < nHosts; ++i) {
+      wxString name(Pa_GetHostApiInfo(i)->name, wxConvLocal);
+      if (name == apiName) {
+         index = i;
+         break;
+      }
+   }
+   // We should always find the host!
+   if (index < 0) {
+      wxLogDebug(wxT("DevicePrefs::OnHost(): API index not found"));
+      return;
+   }
+
    int nDevices = Pa_GetDeviceCount();
 
    if (nDevices == 0) {
@@ -218,11 +234,19 @@ void DevicePrefs::OnHost(wxCommandEvent & e)
    if (mPlay->GetCount() && mPlay->GetSelection() == wxNOT_FOUND) {
       wxLogDebug(wxT("DevicePrefs::OnHost(): no play device selected"));
       mPlay->SetStringSelection(GetDefaultPlayDevice(index));
+
+      if (mPlay->GetSelection() == wxNOT_FOUND) {
+         mPlay->SetSelection(0);
+      }
    }
 
    if (mRecord->GetCount() && mRecord->GetSelection() == wxNOT_FOUND) {
       wxLogDebug(wxT("DevicePrefs::OnHost(): no record device selected"));
       mRecord->SetStringSelection(GetDefaultRecordDevice(index));
+
+      if (mPlay->GetSelection() == wxNOT_FOUND) {
+         mPlay->SetSelection(0);
+      }
    }
 
    ShuttleGui S(this, eIsCreating);
