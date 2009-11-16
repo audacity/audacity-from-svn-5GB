@@ -209,6 +209,58 @@ void DeviceToolBar::RegenerateTooltips()
 
 void DeviceToolBar::OnChoice(wxCommandEvent &event)
 {
+   wxString oldInput = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
+   wxString newInput = mInput->GetString(mInput->GetSelection());
+   wxString oldOutput = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
+   wxString newOutput = mOutput->GetString(mOutput->GetSelection());
+   int oldInIndex = -1, newInIndex = -1, oldOutIndex = -1, newOutIndex = -1;
+   int nDevices = Pa_GetDeviceCount();
+
+   // Find device indices for input and output
+   for (int i = 0; i < nDevices; ++i)
+   {
+      const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
+      wxString name = DeviceName(info);
+
+      if (name == oldInput) oldInIndex = i;
+      if (name == newInput) newInIndex = i;
+      if (name == oldOutput) oldOutIndex = i;
+      if (name == newOutput) newOutIndex = i;
+   }
+
+   // This shouldn't happen for new choices (it's OK for old ones)
+   if (newInIndex < 0 || newOutIndex < 0)
+   {
+      wxLogDebug(wxT("DeviceToolBar::OnChoice(): couldn't find device indices"));
+      return;
+   }
+
+   const PaDeviceInfo *inInfo = Pa_GetDeviceInfo(newInIndex);
+   const PaDeviceInfo *outInfo = Pa_GetDeviceInfo(newOutIndex);
+   if (oldInIndex != newInIndex)
+   {
+      // We changed input; be sure the output device has the same API
+      if (inInfo->hostApi != outInfo->hostApi) {
+         // Set output device to default for the API
+         const PaHostApiInfo *apiInfo = Pa_GetHostApiInfo(inInfo->hostApi);
+         outInfo = Pa_GetDeviceInfo(apiInfo->defaultOutputDevice);
+         mOutput->SetStringSelection(DeviceName(outInfo));
+      }
+   }
+   else if (oldOutIndex != newOutIndex)
+   {
+      // We changed output; be sure the input device has the same API
+      if (outInfo->hostApi != inInfo->hostApi) {
+         // Set input device to default for the API
+         const PaHostApiInfo *apiInfo = Pa_GetHostApiInfo(outInfo->hostApi);
+         inInfo = Pa_GetDeviceInfo(apiInfo->defaultInputDevice);
+         mInput->SetStringSelection(DeviceName(inInfo));
+      }
+   }
+
+   gPrefs->Write(wxT("/AudioIO/Host"),
+         wxString(Pa_GetHostApiInfo(inInfo->hostApi)->name, wxConvLocal));
+
    gPrefs->Write(wxT("/AudioIO/RecordingDevice"),
                  mInput->GetString(mInput->GetSelection()));
 
