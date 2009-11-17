@@ -2,7 +2,7 @@
 ;version 3
 ;type process
 ;categories "http://lv2plug.in/ns/lv2core#SpectralPlugin"
-;name "Vocoder"
+;name "Vocoder..."
 ;action "Processing Vocoder..."
 ;info "by Edgar-RFT and David R. Sky\nReleased under terms of the GNU General Public License version 2\nNote: Vocoder works only on * stereo * tracks. Setting channel processing\nto '1 (right channel)' processes only the right channel of your stereo track."
 
