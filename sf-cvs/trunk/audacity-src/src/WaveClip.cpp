@@ -411,6 +411,24 @@ sampleCount WaveClip::GetEndSample() const
    return GetStartSample() + mSequence->GetNumSamples();
 }
 
+bool WaveClip::WithinClip(double t) const
+{
+   sampleCount ts = (sampleCount)floor(t * mRate + 0.5);
+   return ts > GetStartSample() && ts < GetEndSample() + mAppendBufferLen;
+}
+
+bool WaveClip::BeforeClip(double t) const
+{
+   sampleCount ts = (sampleCount)floor(t * mRate + 0.5);
+   return ts <= GetStartSample();
+}
+
+bool WaveClip::AfterClip(double t) const
+{
+   sampleCount ts = (sampleCount)floor(t * mRate + 0.5);
+   return ts >= GetEndSample() + mAppendBufferLen;
+}
+
 ///Delete the wave cache - force redraw.  Thread-safe
 void WaveClip::DeleteWaveCache()
 {

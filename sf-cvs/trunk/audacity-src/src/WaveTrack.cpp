@@ -562,16 +562,15 @@ bool WaveTrack::ClearAndPaste(double t0, // Start of time to clear
       double st;
 
       clip = ic->GetData();
-      st = LongSamplesToTime(TimeToLongSamples(clip->GetStartTime()));
 
-      // Remember split line
-      if (st >= t0 && st <= t1) {
+      // Remember clip boundaries as locations to split
+      st = LongSamplesToTime(TimeToLongSamples(clip->GetStartTime()));
+      if (st >= t0 && st <= t1 && splits.Index(st) == wxNOT_FOUND) {
          splits.Add(st);
       }
 
-      // Also remember the end of the clip
       st = LongSamplesToTime(TimeToLongSamples(clip->GetEndTime()));
-      if (st >= t0 && st <= t1) {
+      if (st >= t0 && st <= t1 && splits.Index(st) == wxNOT_FOUND) {
          splits.Add(st);
       }
 
@@ -774,9 +773,8 @@ bool WaveTrack::HandleClear(double t0, double t1,
       {
          WaveClip *clip = it->GetData();
          
-         if (t1 > clip->GetStartTime() && t0 < clip->GetEndTime() &&
-             (t0 + 1.0/mRate < clip->GetStartTime() ||
-              t1 - 1.0/mRate > clip->GetEndTime()))
+         if (!clip->BeforeClip(t1) && !clip->AfterClip(t0) &&
+               (clip->BeforeClip(t0) || clip->AfterClip(t1)))
          {
             addCutLines = false;
             break;
@@ -788,12 +786,12 @@ bool WaveTrack::HandleClear(double t0, double t1,
    {
       WaveClip *clip = it->GetData();
 
-      if (t0 <= clip->GetStartTime() && t1 >= clip->GetEndTime())
+      if (clip->BeforeClip(t0) && clip->AfterClip(t1))
       {
          // Whole clip must be deleted - remember this
          clipsToDelete.Append(clip);
       } else
-      if (t1 > clip->GetStartTime() && t0 < clip->GetEndTime())
+      if (!clip->BeforeClip(t1) && !clip->AfterClip(t0))
       {
          // Clip data is affected by command
          if (addCutLines)
@@ -805,12 +803,12 @@ bool WaveTrack::HandleClear(double t0, double t1,
             if (split) {
                // Three cases:
 
-               if (t0 <= clip->GetStartTime()) {
+               if (clip->BeforeClip(t0)) {
                   // Delete from the left edge
                   clip->Clear(clip->GetStartTime(), t1);
                   clip->Offset(t1-clip->GetStartTime());
                } else
-               if (t1 >= clip->GetEndTime()) {
+               if (clip->AfterClip(t1)) {
                   // Delete to right edge
                   clip->Clear(t0, clip->GetEndTime());
                } else
@@ -830,7 +828,7 @@ bool WaveTrack::HandleClear(double t0, double t1,
                   clipsToDelete.Append(clip);
                }
             }
-            else {
+            else { // (We are not doing a split cut)
                /* We are going to delete part of the clip here. The clip may
                 * have envelope points, and we need to ensure that the envelope
                 * outside of the cleared region is not affected. This means
@@ -840,13 +838,13 @@ bool WaveTrack::HandleClear(double t0, double t1,
                // clip->Clear keeps points < t0 and >= t1 via Envelope::CollapseRegion
                if (clip->GetEnvelope()->GetNumberOfPoints() > 0) {   // don't insert env pts if none exist
                   double val;
-                  if (t0 > clip->GetStartTime())
-                     {  // start of clip is before start of region to clear
+                  if (clip->WithinClip(t0))
+                     {  // start of region within clip
                      val = clip->GetEnvelope()->GetValue(t0);
                      clip->GetEnvelope()->Insert(t0 - clip->GetOffset() - 1.0/clip->GetRate(), val);
                      }
-                  if (t1 < clip->GetEndTime())
-                     {  // end of clip is after end of region
+                  if (clip->WithinClip(t1))
+                     {  // end of region within clip
                      val = clip->GetEnvelope()->GetValue(t1);
                      clip->GetEnvelope()->Insert(t1 - clip->GetOffset(), val);
                      }
@@ -1062,14 +1060,9 @@ bool WaveTrack::HandlePaste(double t0, Track *src)
       {
          WaveClip *clip = it->GetData();
 
-         // The 1.0/mRate is the time for one sample - kind of a fudge factor,
-         // because an overlap of less than a sample should not trigger
-         // traditional behaviour.
-
          if (editClipCanMove)
          {
-            if (t0+src->GetEndTime()-1.0/mRate > clip->GetStartTime() &&
-                t0 < clip->GetEndTime() - 1.0/mRate)
+            if (clip->WithinClip(t0))
             {
                //printf("t0=%.6f: inside clip is %.6f ... %.6f\n",
                //       t0, clip->GetStartTime(), clip->GetEndTime());
@@ -1078,7 +1071,9 @@ bool WaveTrack::HandlePaste(double t0, Track *src)
             }
          } else
          {
-            if (t0 >= clip->GetStartTime() && t0 < clip->GetEndTime())
+            // If clips are immovable we also allow prepending to clips
+            if (clip->WithinClip(t0) ||
+                  TimeToLongSamples(t0) == clip->GetStartSample())
             {
                insideClip = clip;
                break;
@@ -2041,14 +2036,15 @@ bool WaveTrack::SplitAt(double t)
    for (WaveClipList::compatibility_iterator it=GetClipIterator(); it; it=it->GetNext())
    {
       WaveClip* c = it->GetData();
-      if (t > c->GetStartTime() && t < c->GetEndTime())
+
+      if (c->WithinClip(t))
       {
          double val;
          t = LongSamplesToTime(TimeToLongSamples(t)); // put t on a sample
          val = c->GetEnvelope()->GetValue(t);
          //make two envelope points to preserve the value.  
          //handle the case where we split on the 1st sample (without this we hit an assert)
-         if(t != c->GetOffset())
+         if(t - 1.0/c->GetRate() >= c->GetOffset())
             c->GetEnvelope()->Insert(t - c->GetOffset() - 1.0/c->GetRate(), val);  // frame end points
          c->GetEnvelope()->Insert(t - c->GetOffset(), val);
          WaveClip* newClip = new WaveClip(*c, mDirManager);
