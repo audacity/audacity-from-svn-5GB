@@ -97,6 +97,13 @@ public:
    sampleCount GetEndSample() const;
    sampleCount GetNumSamples() const { return mSequence->GetNumSamples(); }
 
+   // One and only one of the following is true for a given t (unless the clip
+   // has zero length -- then BeforeClip() and AfterClip() can both be true).
+   // Within() is true if the time is substantially within the clip
+   bool WithinClip(double t) const;
+   bool BeforeClip(double t) const;
+   bool AfterClip(double t) const;
+
    bool GetSamples(samplePtr buffer, sampleFormat format,
                    sampleCount start, sampleCount len) const;
    bool SetSamples(samplePtr buffer, sampleFormat format,
