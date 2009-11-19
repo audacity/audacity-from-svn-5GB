@@ -1,5 +1,5 @@
 /*
- * $Id: pa_linux_alsa.c,v 1.13 2009-07-01 19:27:59 richardash1981 Exp $
+ * $Id: pa_linux_alsa.c,v 1.14 2009-11-19 22:19:04 aldimond Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * ALSA implementation by Joshua Haberman and Arve Knudsen
@@ -1185,6 +1185,7 @@ static PaError PaAlsaStreamComponent_Initialize( PaAlsaStreamComponent *self, Pa
     PA_ENSURE( AlsaOpen( &alsaApi->baseHostApiRep, params, streamDir, &self->pcm ) );
 
     snd_pcm_info_alloca( &pcmInfo );
+    snd_pcm_info(self->pcm, pcmInfo);
     self->card = snd_pcm_info_get_card( pcmInfo );
     self->nfds = snd_pcm_poll_descriptors_count( self->pcm );
     hostSampleFormat = PaUtil_SelectClosestAvailableFormat( GetAvailableFormats( self->pcm ), userSampleFormat );
