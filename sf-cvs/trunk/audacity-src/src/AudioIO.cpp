@@ -544,6 +544,16 @@ void AudioIO::HandleDeviceChange()
                          highestSampleRate, paFramesPerBufferUnspecified,
                          paClipOff | paDitherOff,
                          audacityAudioCallback, NULL);
+   
+   if (!error) {
+      // Try portmixer for this stream
+      mPortMixer = Px_OpenMixer(stream, 0);
+      if (!mPortMixer) {
+         Pa_CloseStream(stream);
+         error = true;
+      }
+   }
+
    // if that failed, try just for record
    if( error ) {
       error = Pa_OpenStream(&stream,
@@ -551,18 +561,19 @@ void AudioIO::HandleDeviceChange()
                             highestSampleRate, paFramesPerBufferUnspecified,
                             paClipOff | paDitherOff,
                             audacityAudioCallback, NULL);
+
+      if (!error) {
+         mPortMixer = Px_OpenMixer(stream, 0);
+         if (!mPortMixer) {
+            Pa_CloseStream(stream);
+            error = true;
+         }
+      }
    }
 
    // if it's still not working, give up
    if( error )
       return;
-   // set up portmixer on the open portaudio stream
-   mPortMixer = Px_OpenMixer(stream, 0);
-
-   if (!mPortMixer) {
-      Pa_CloseStream(stream);
-      return;
-   }
 
    // Determine mixer capabilities - if it doesn't support either
    // input or output, we emulate them (by multiplying this value
