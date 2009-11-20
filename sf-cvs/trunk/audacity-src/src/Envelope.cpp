@@ -364,7 +364,7 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
 
    int clip_y = event.m_y - r.y;
    if(clip_y < 0) clip_y = 0; //keeps point in rect r, even if mouse isn't
-   if(clip_y > r.height) clip_y = r.height;
+   if(clip_y > r.GetBottom()) clip_y = r.GetBottom();
 
    double tleft = h - mOffset;
    double tright = tleft + (r.width / pps);

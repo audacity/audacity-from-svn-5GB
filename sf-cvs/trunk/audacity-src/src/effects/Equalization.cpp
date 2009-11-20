@@ -939,12 +939,14 @@ void EqualizationPanel::OnMouseEvent(wxMouseEvent & event)
       CaptureMouse();
    }
 
-   if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mEnvRect.width, false,
-                             dBMin, dBMax, dBMin, dBMax))
-   {
-      mParent->EnvelopeUpdated();
-      RecalcRequired = true;
-      Refresh(false);
+   if (mEnvRect.Contains(event.GetPosition())) {
+      if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mEnvRect.width, false,
+               dBMin, dBMax, dBMin, dBMax))
+      {
+         mParent->EnvelopeUpdated();
+         RecalcRequired = true;
+         Refresh(false);
+      }
    }
 
    if (event.ButtonUp() && HasCapture())
