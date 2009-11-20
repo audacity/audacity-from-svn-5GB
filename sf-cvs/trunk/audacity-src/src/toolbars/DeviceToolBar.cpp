@@ -241,20 +241,28 @@ void DeviceToolBar::OnChoice(wxCommandEvent &event)
    {
       // We changed input; be sure the output device has the same API
       if (inInfo->hostApi != outInfo->hostApi) {
-         // Set output device to default for the API
-         const PaHostApiInfo *apiInfo = Pa_GetHostApiInfo(inInfo->hostApi);
-         outInfo = Pa_GetDeviceInfo(apiInfo->defaultOutputDevice);
-         mOutput->SetStringSelection(DeviceName(outInfo));
+         // First try setting the same device as the input
+         if (!mOutput->SetStringSelection(DeviceName(inInfo)))
+         {
+            // Not found; set output device to default for the API
+            const PaHostApiInfo *apiInfo = Pa_GetHostApiInfo(inInfo->hostApi);
+            outInfo = Pa_GetDeviceInfo(apiInfo->defaultOutputDevice);
+            mOutput->SetStringSelection(DeviceName(outInfo));
+         }
       }
    }
    else if (oldOutIndex != newOutIndex)
    {
       // We changed output; be sure the input device has the same API
       if (outInfo->hostApi != inInfo->hostApi) {
-         // Set input device to default for the API
-         const PaHostApiInfo *apiInfo = Pa_GetHostApiInfo(outInfo->hostApi);
-         inInfo = Pa_GetDeviceInfo(apiInfo->defaultInputDevice);
-         mInput->SetStringSelection(DeviceName(inInfo));
+         // First try setting the same device as the output
+         if (!mInput->SetStringSelection(DeviceName(outInfo)))
+         {
+            // Not found; set input device to default for the API
+            const PaHostApiInfo *apiInfo = Pa_GetHostApiInfo(outInfo->hostApi);
+            inInfo = Pa_GetDeviceInfo(apiInfo->defaultInputDevice);
+            mInput->SetStringSelection(DeviceName(inInfo));
+         }
       }
    }
 
