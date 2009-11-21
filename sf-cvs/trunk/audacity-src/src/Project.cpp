@@ -131,7 +131,9 @@ scroll information.  It also has some status flags.
 #include "ondemand/ODManager.h"
 #include "ondemand/ODTask.h"
 #include "ondemand/ODComputeSummaryTask.h"
+#ifdef EXPERIMENTAL_OD_FLAC
 #include "ondemand/ODDecodeFlacTask.h"
+#endif
 #include "LoadModules.h"
 
 #include "Theme.h"
