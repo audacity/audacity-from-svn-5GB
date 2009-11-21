@@ -331,8 +331,7 @@ AudioIO::AudioIO()
 #else
    mEmulateMixerOutputVol = true;
    mMixerOutputVol = 1.0;
-   mEmulateMixerInputVol = true;
-   mMixerInputVol = 1.0;
+   mInputMixerWorks = false;
 #endif
 }
 
@@ -371,7 +370,6 @@ void AudioIO::SetMixer(int recordDevice, float recordVolume,
                        float playbackVolume)
 {
    mMixerOutputVol = playbackVolume;
-   mMixerInputVol = recordVolume;
 
 #if defined(USE_PORTMIXER)
    PxMixer *mixer = mPortMixer;
@@ -405,10 +403,10 @@ void AudioIO::GetMixer(int *recordDevice, float *recordVolume,
    {
       *recordDevice = Px_GetCurrentInputSource(mixer);
 
-      if (mEmulateMixerInputVol)
-         *recordVolume = mMixerInputVol;
-      else
+      if (mInputMixerWorks)
          *recordVolume = Px_GetInputVolume(mixer);
+      else
+         *recordVolume = 1.0f;
 
       if (mEmulateMixerOutputVol)
          *playbackVolume = mMixerOutputVol;
@@ -421,8 +419,13 @@ void AudioIO::GetMixer(int *recordDevice, float *recordVolume,
 #endif
 
    *recordDevice = 0;
-   *recordVolume = mMixerInputVol;
+   *recordVolume = 1.0f;
    *playbackVolume = mMixerOutputVol;
+}
+
+bool AudioIO::InputMixerWorks()
+{
+   return mInputMixerWorks;
 }
 
 wxArrayString AudioIO::GetInputSourceNames()
@@ -502,9 +505,8 @@ void AudioIO::HandleDeviceChange()
       // mCachedSampleRates is still empty, but it's not used again, so
       // can ignore
    }
-   mEmulateMixerInputVol = true;
+   mInputMixerWorks = false;
    mEmulateMixerOutputVol = true;
-   mMixerInputVol = 1.0;
    mMixerOutputVol = 1.0;
 
    int error;
@@ -575,9 +577,9 @@ void AudioIO::HandleDeviceChange()
    if( error )
       return;
 
-   // Determine mixer capabilities - if it doesn't support either
-   // input or output, we emulate them (by multiplying this value
-   // by all incoming/outgoing samples)
+   // Determine mixer capabilities - if it doesn't support control of output
+   // signal level, we emulate it (by multiplying this value by all outgoing
+   // samples)
 
    mMixerOutputVol = Px_GetPCMOutputVolume(mPortMixer);
    mEmulateMixerOutputVol = false;
@@ -590,26 +592,25 @@ void AudioIO::HandleDeviceChange()
       mEmulateMixerOutputVol = true;
    Px_SetPCMOutputVolume(mPortMixer, mMixerOutputVol);
 
-   mMixerInputVol = Px_GetInputVolume(mPortMixer);
-   mEmulateMixerInputVol = false;
+   float inputVol = Px_GetInputVolume(mPortMixer);
+   mInputMixerWorks = true;   // assume it works unless proved wrong
    Px_SetInputVolume(mPortMixer, 0.0);
    if (Px_GetInputVolume(mPortMixer) > 0.1)
-      mEmulateMixerInputVol = true;
+      mInputMixerWorks = false;  // can't set to zero
    Px_SetInputVolume(mPortMixer, 0.2f);
    if (Px_GetInputVolume(mPortMixer) < 0.1 ||
        Px_GetInputVolume(mPortMixer) > 0.3)
-      mEmulateMixerInputVol = true;
-   Px_SetInputVolume(mPortMixer, mMixerInputVol);
+      mInputMixerWorks = false;  // can't set level accurately
+   Px_SetInputVolume(mPortMixer, inputVol);
 
    Pa_CloseStream(stream);
 
    #if 0
    printf("PortMixer: Output: %s Input: %s\n",
           mEmulateMixerOutputVol? "emulated": "native",
-          mEmulateMixerInputVol? "emulated": "native");
+          mInputMixerWorks? "hardware": "no control");
    #endif
 
-   mMixerInputVol = 1.0;
    mMixerOutputVol = 1.0;
 
 #endif   // USE_PORTMIXER
@@ -2971,13 +2972,9 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
                       0, framesPerBuffer * numPlaybackChannels);
 
          if (inputBuffer && gAudioIO->mSoftwarePlaythrough) {
-            float gain = 1.0;
-            if (gAudioIO->mEmulateMixerInputVol)
-               gain = gAudioIO->mMixerInputVol;
-
             DoSoftwarePlaythrough(inputBuffer, gAudioIO->mCaptureFormat,
                                   numCaptureChannels,
-                                  (float *)outputBuffer, (int)framesPerBuffer, gain);
+                                  (float *)outputBuffer, (int)framesPerBuffer, 1.0f);
          }
       }
 
@@ -3000,13 +2997,9 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
             outputFloats[i] = 0.0;
 
          if (inputBuffer && gAudioIO->mSoftwarePlaythrough) {
-            float gain = 1.0;
-            if (gAudioIO->mEmulateMixerInputVol)
-               gain = gAudioIO->mMixerInputVol;
-
             DoSoftwarePlaythrough(inputBuffer, gAudioIO->mCaptureFormat,
                                   numCaptureChannels,
-                                  (float *)outputBuffer, (int)framesPerBuffer, gain);
+                                  (float *)outputBuffer, (int)framesPerBuffer, 1.0f);
          }
 
          if (gAudioIO->mSeek)
@@ -3151,11 +3144,6 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
             wxPrintf(wxT("lost %d samples\n"), (int)(framesPerBuffer - len));
          }
 
-         float gain = 1.0;
-         
-         if (gAudioIO->mEmulateMixerInputVol)
-            gain = gAudioIO->mMixerInputVol;
-
          if (len > 0) {
             for( t = 0; t < numCaptureChannels; t++) {
                
@@ -3170,7 +3158,7 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
                   float *inputFloats = (float *)inputBuffer;
                   for( i = 0; i < len; i++)
                      tempFloats[i] =
-                        inputFloats[numCaptureChannels*i+t] * gain;
+                        inputFloats[numCaptureChannels*i+t];
                } break;
                case int24Sample:
                   // We should never get here. Audacity's int24Sample format
@@ -3183,7 +3171,7 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
                   short *inputShorts = (short *)inputBuffer;
                   short *tempShorts = (short *)tempBuffer;
                   for( i = 0; i < len; i++) {
-                     float tmp = inputShorts[numCaptureChannels*i+t] * gain;
+                     float tmp = inputShorts[numCaptureChannels*i+t];
                      if (tmp > 32767)
                         tmp = 32767;
                      if (tmp < -32768)
@@ -3260,13 +3248,9 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
             outputFloats[i] = 0.0;
          
          if (inputBuffer && gAudioIO->mSoftwarePlaythrough) {
-            float gain = 1.0;
-            if (gAudioIO->mEmulateMixerInputVol)
-               gain = gAudioIO->mMixerInputVol;
-            
             DoSoftwarePlaythrough(inputBuffer, gAudioIO->mCaptureFormat,
                                   numCaptureChannels,
-                                  (float *)outputBuffer, (int)framesPerBuffer, gain);
+                                  (float *)outputBuffer, (int)framesPerBuffer, 1.0f);
          }
       }
    }

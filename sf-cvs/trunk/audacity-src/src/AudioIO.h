@@ -159,13 +159,20 @@ class AUDACITY_DLL_API AudioIO {
    /* Mixer services are always available.  If no stream is running, these
     * methods use whatever device is specified by the preferences.  If a
     * stream *is* running, naturally they manipulate the mixer associated
-    * with that stream.  If no mixer is available, they are emulated
-    * (a gain is applied to input and output samples).
+    * with that stream.  If no mixer is available, output is emulated and 
+    * input is stuck at 1.0f (a gain is applied to output samples).
     */
    void SetMixer(int inputSource, float inputVolume,
                  float playbackVolume);
    void GetMixer(int *inputSource, float *inputVolume,
                  float *playbackVolume);
+   /** @brief Find out if the input hardware level control is available
+    *
+    * Checks the mInputMixerWorks variable, which is set up in
+    * AudioIO::HandleDeviceChange(). External people care, because we want to
+    * disable the UI if it doesn't work.
+    */
+   bool InputMixerWorks();
    /** \brief Get the list of inputs to the current mixer device
     *
     * Returns an array of strings giving the names of the inputs to the 
@@ -481,9 +488,15 @@ private:
    #endif /* USE_PORTMIXER */
 
    bool                mEmulateMixerOutputVol;
-   bool                mEmulateMixerInputVol;
+   /** @brief Can we control the hardware input level?
+    *
+    * This flag is set to true if using portmixer to control the 
+    * input volume seems to be working (and so we offer the user the control),
+    * and to false (locking the control out) otherwise. This avoids stupid
+    * scaled clipping problems when trying to do software emulated input volume
+    * control */
+   bool                mInputMixerWorks;
    float               mMixerOutputVol;
-   float               mMixerInputVol;
 
    bool                mPlayLooped;
    double              mCutPreviewGapStart;
