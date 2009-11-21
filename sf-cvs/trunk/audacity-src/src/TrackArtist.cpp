@@ -950,7 +950,8 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, const wxRect &r,
       
       xpos[s] = xx;
 
-      tt = buffer[s] * clip->GetEnvelope()->GetValueAtX(xx + r.x, r, h, pps);
+      // t0 + clip->GetOffset() is 'h' (the absolute time of the left edge) for 'r'.
+      tt = buffer[s] * clip->GetEnvelope()->GetValueAtX(xx + r.x, r, t0 + clip->GetOffset(), pps);
       if (mShowClipping && (tt <= -MAX_AUDIO || tt >= MAX_AUDIO)) {
          clipped[clipcnt++] = xx;
       }
