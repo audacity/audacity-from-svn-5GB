@@ -1075,6 +1075,10 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,int* bl,
    sampleCount s0 = where[0];
    sampleCount s1 = where[len];
 
+   // None of the samples asked for are in range. Abandon.
+   if (s0 >= mNumSamples)
+      return false;
+
    int divisor;
    if (samplesPerPixel >= 65536)
       divisor = 65536;
