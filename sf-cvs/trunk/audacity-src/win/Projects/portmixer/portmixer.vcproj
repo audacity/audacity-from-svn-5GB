@@ -347,6 +347,14 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\..\lib-src\portmixer\src\px_win_endpoint.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\lib-src\portmixer\src\px_win_endpoint.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\lib-src\portmixer\src\px_win_wmme.c"
 				>
 			</File>

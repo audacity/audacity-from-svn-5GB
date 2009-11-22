@@ -2,9 +2,9 @@
 #define PX_WIN_COMMON_H
 /*
  * PortMixer
- * Windows Common Header
+ * Windows Common Header for Vista/7
  *
- * Copyright (c) 2002, 2006
+ * Copyright (c) 2002, 2009
  *
  * Written by Dominic Mazzoni
  *        and Leland Lucius
@@ -43,32 +43,11 @@ extern "C"
 {
 #endif /* __cplusplus */
 
-typedef struct PxCtrl
+typedef struct PxEPInfo
 {
-   char  *name;
-   DWORD lineID;
-   DWORD controlID;
-} PxCtrl;
-
-typedef struct PxInfo
-{
-   HMIXEROBJ   hInputMixer;
-   char        *inName;
-   int         numInputs;
-   PxCtrl      *src;
-
-   HMIXEROBJ   hOutputMixer;
-   char        *outName;
-   int         numOutputs;
-   PxCtrl      *dst;
-
-   DWORD       muxID;
-   DWORD       speakerID;
-   DWORD       waveID;
-} PxInfo;
-
-int open_mixers(px_mixer *Px, UINT deviceIn, UINT deviceOut);
-int open_ep_mixers(px_mixer *Px, UINT deviceIn, UINT deviceOut);
+   IAudioEndpointVolume *inputEP;
+   IAudioEndpointVolume *outputEP;
+} PxEPInfo;
 
 #ifdef __cplusplus
 }

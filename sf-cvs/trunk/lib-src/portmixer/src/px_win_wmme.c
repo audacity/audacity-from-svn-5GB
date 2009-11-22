@@ -55,22 +55,21 @@ int OpenMixer_Win_MME(px_mixer *Px, int index)
 
    hWaveIn = PaWinMME_GetStreamInputHandle(Px->pa_stream, 0);
    hWaveOut = PaWinMME_GetStreamOutputHandle(Px->pa_stream, 0);
-
    if (hWaveIn) {
-      res = mixerGetID((HMIXEROBJ) hWaveIn,
-                       &deviceIn,
-                       MIXER_OBJECTF_HWAVEIN);
+      res = waveInGetID(hWaveIn, &deviceIn);
       if (res != MMSYSERR_NOERROR) {
          return FALSE;
       }
    }
 
    if (hWaveOut) {
-      res = mixerGetID((HMIXEROBJ) hWaveOut,
-                       &deviceOut,
-                       MIXER_OBJECTF_HWAVEOUT);
+      res = waveOutGetID(hWaveOut, &deviceOut);
       if (res != MMSYSERR_NOERROR) {
          return FALSE;
+      }
+
+      if (deviceOut == WAVE_MAPPER) {
+         deviceOut = 0;
       }
    }
 

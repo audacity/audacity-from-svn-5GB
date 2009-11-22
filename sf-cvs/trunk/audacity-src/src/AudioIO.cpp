@@ -521,7 +521,7 @@ void AudioIO::HandleDeviceChange()
    playbackParameters.device = playDeviceNum;
    playbackParameters.sampleFormat = paFloat32;
    playbackParameters.hostApiSpecificStreamInfo = NULL;
-   playbackParameters.channelCount = 2;
+   playbackParameters.channelCount = 1;
    if (Pa_GetDeviceInfo(playDeviceNum))
       playbackParameters.suggestedLatency =
          Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
@@ -533,7 +533,7 @@ void AudioIO::HandleDeviceChange()
    captureParameters.device = recDeviceNum;
    captureParameters.sampleFormat = paFloat32;;
    captureParameters.hostApiSpecificStreamInfo = NULL;
-   captureParameters.channelCount = 2;
+   captureParameters.channelCount = 1;
    if (Pa_GetDeviceInfo(recDeviceNum))
       captureParameters.suggestedLatency =
          Pa_GetDeviceInfo(recDeviceNum)->defaultLowInputLatency;
@@ -1486,7 +1486,7 @@ wxArrayLong AudioIO::GetSupportedPlaybackRates(int devIndex, double rate)
    PaStreamParameters pars;
 
    pars.device = devIndex;
-   pars.channelCount = 2;
+   pars.channelCount = 1;
    pars.sampleFormat = paFloat32;
    pars.suggestedLatency = devInfo->defaultHighOutputLatency;
    pars.hostApiSpecificStreamInfo = NULL;
@@ -1965,7 +1965,7 @@ wxString AudioIO::GetDeviceInfo()
       playbackParameters.device = playDeviceNum;
       playbackParameters.sampleFormat = paFloat32;
       playbackParameters.hostApiSpecificStreamInfo = NULL;
-      playbackParameters.channelCount = 2;
+      playbackParameters.channelCount = 1;
       if (Pa_GetDeviceInfo(playDeviceNum)){
          playbackParameters.suggestedLatency =
             Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
@@ -1979,7 +1979,7 @@ wxString AudioIO::GetDeviceInfo()
       captureParameters.device = recDeviceNum;
       captureParameters.sampleFormat = paFloat32;;
       captureParameters.hostApiSpecificStreamInfo = NULL;
-      captureParameters.channelCount = 2;
+      captureParameters.channelCount = 1;
       if (Pa_GetDeviceInfo(recDeviceNum)){
          captureParameters.suggestedLatency =
             Pa_GetDeviceInfo(recDeviceNum)->defaultLowInputLatency;
