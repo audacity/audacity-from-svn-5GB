@@ -135,13 +135,7 @@ int OpenMixer_Win_DirectSound(px_mixer *Px, int index)
          if (FAILED(hr)) {
             break;
          }
-
-         hr = mixerGetID((HMIXEROBJ) desc.WaveDeviceId,
-                         &deviceIn,
-                         MIXER_OBJECTF_WAVEIN);
-         if (hr != MMSYSERR_NOERROR) {
-           break;
-         }
+         deviceIn = desc.WaveDeviceId;
       }
    
       if (guidOut) {
@@ -158,13 +152,7 @@ int OpenMixer_Win_DirectSound(px_mixer *Px, int index)
          if (FAILED(hr)) {
             break;
          }
-
-         hr = mixerGetID((HMIXEROBJ) desc.WaveDeviceId,
-                         &deviceOut,
-                         MIXER_OBJECTF_WAVEOUT);
-         if (hr != MMSYSERR_NOERROR) {
-           break;
-         }
+         deviceOut = desc.WaveDeviceId;
       }
 
       if (open_mixers(Px, deviceIn, deviceOut))

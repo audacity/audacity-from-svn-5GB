@@ -37,6 +37,7 @@
  */
 
 #include <windows.h>
+#include <tchar.h>
 
 #include "portaudio.h"
 
@@ -71,8 +72,26 @@ int open_mixers(px_mixer *Px, UINT deviceIn, UINT deviceOut)
 {
    PxInfo*info;
    MMRESULT res;
+   OSVERSIONINFO verInfo;
 
-   if (deviceIn == UINT_MAX && deviceOut == UINT_MAX) {
+   memset(&verInfo, 0, sizeof(verInfo));
+   verInfo.dwOSVersionInfoSize = sizeof(verInfo);
+   GetVersionEx(&verInfo);
+   if (verInfo.dwMajorVersion >= 6) {
+      return open_ep_mixers(Px, deviceIn, deviceOut);
+   }
+
+   res = mixerGetID((HMIXEROBJ) (deviceIn == WAVE_MAPPER ? 0 : deviceIn),
+                    &deviceIn,
+                    MIXER_OBJECTF_WAVEIN);
+   if (res != MMSYSERR_NOERROR) {
+      return FALSE;
+   }
+
+   res = mixerGetID((HMIXEROBJ) (deviceOut == WAVE_MAPPER ? 0 : deviceOut),
+                    &deviceOut,
+                    MIXER_OBJECTF_WAVEIN);
+   if (res != MMSYSERR_NOERROR) {
       return FALSE;
    }
 
