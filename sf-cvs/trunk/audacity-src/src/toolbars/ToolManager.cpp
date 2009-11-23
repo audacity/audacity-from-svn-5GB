@@ -146,7 +146,7 @@ class ToolFrame:public wxFrame
       if( bar->IsResizable() )
       {
          // Calc the minimum size of the frame
-         mMinSize = bar->GetBestSize() + ( GetSize() - bar->GetSize() );
+         mMinSize = bar->GetMinSize() + ( GetSize() - bar->GetSize() );
       }
    }
 
