@@ -254,12 +254,28 @@ void MixerToolBar::UpdateControls()
 
    // This causes weird GUI behavior and isn't really essential.
    // We could enable it again later.
-   //if (inputSource != mInputSourceChoice->GetSelection())
-   //    mInputSourceChoice->SetSelection(inputSource);
+   //
+   // LL: Re-enabled to keep the Audacity source in sync with
+   //     the operating systems if the latter is changed outsize
+   //     of Audacity.
+   if (inputSource != mInputSourceChoice->GetSelection()) {
+       mInputSourceChoice->SetSelection(inputSource);
+#if defined(__WXMSW__)
+      // LL:  Hack to reset volume to reported level after the input
+      //      source is changed outside of Audacity.  Not sure why
+      //      the input comes in as if it were at a volume of 1.0,
+      //      but this will put it back to where it should be.  This
+      //      should be removed in the future...once the problem is
+      //      fully understood.
+      gAudioIO->SetMixer(inputSource, 1.0, playbackVolume);
+      gAudioIO->SetMixer(inputSource, inputVolume, playbackVolume);
+#endif
+   }
 
    if (mOutputSlider->Get() != playbackVolume) {
       mOutputSlider->Set(playbackVolume);
    }
+
    if (mInputSlider->Get() != inputVolume) {
       mInputSlider->Set(inputVolume);
    }
