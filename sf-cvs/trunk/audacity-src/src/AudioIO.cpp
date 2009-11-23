@@ -2903,6 +2903,14 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
                              MAX(numCaptureChannels,numPlaybackChannels));
    float *tempFloats = (float*)tempBuffer;
 
+   // output meter may need samples untouched by volume emulation
+   float *outputMeterFloats;
+   outputMeterFloats =
+      (outputBuffer && gAudioIO->mEmulateMixerOutputVol &&
+                       gAudioIO->mMixerOutputVol != 1.0) ?
+         (float *)alloca(framesPerBuffer*numPlaybackChannels * sizeof(float)) :
+         (float *)outputBuffer;
+
 #ifdef EXPERIMENTAL_MIDI_OUT
    /* GSW: Save timeInfo in case MidiPlayback needs it */
    gAudioIO->mAudioCallbackOutputTime = timeInfo->outputBufferDacTime;
@@ -3002,6 +3010,13 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
                                   (float *)outputBuffer, (int)framesPerBuffer, 1.0f);
          }
 
+         // Copy the results to outputMeterFloats if necessary
+         if (outputMeterFloats != outputFloats) {
+            for (i = 0; i < framesPerBuffer*numPlaybackChannels; ++i) {
+               outputMeterFloats[i] = outputFloats[i];
+            }
+         }
+
          if (gAudioIO->mSeek)
          {
             // Pause audio thread and wait for it to finish
@@ -3090,6 +3105,13 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
                 vt->GetChannel() == Track::MonoChannel)
             {
                float gain = vt->GetChannelGain(0);
+
+               // Output volume emulation: possibly copy meter samples, then
+               // apply volume, then copy to the output buffer
+               if (outputMeterFloats != outputFloats)
+                  for (i = 0; i < len; ++i)
+                     outputMeterFloats[numPlaybackChannels*i] +=
+                        gain*tempFloats[i];
                
                if (gAudioIO->mEmulateMixerOutputVol)
                   gain *= gAudioIO->mMixerOutputVol;
@@ -3103,6 +3125,12 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
             {
                float gain = vt->GetChannelGain(1);
                
+               // Output volume emulation (as above)
+               if (outputMeterFloats != outputFloats)
+                  for (i = 0; i < len; ++i)
+                     outputMeterFloats[numPlaybackChannels*i+1] +=
+                        gain*tempFloats[i];
+
                if (gAudioIO->mEmulateMixerOutputVol)
                   gain *= gAudioIO->mMixerOutputVol;
                
@@ -3121,6 +3149,19 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
                outputFloats[i] = 1.0;
             else if (f < -1.0)
                outputFloats[i] = -1.0;
+         }
+
+         // Same for meter output
+         if (outputMeterFloats != outputFloats)
+         {
+            for (i = 0; i < framesPerBuffer*numPlaybackChannels; ++i)
+            {
+               float f = outputMeterFloats[i];
+               if (f > 1.0)
+                  outputMeterFloats[i] = 1.0;
+               else if (f < -1.0)
+                  outputMeterFloats[i] = -1.0;
+            }
          }
       }
 
@@ -3252,12 +3293,20 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
                                   numCaptureChannels,
                                   (float *)outputBuffer, (int)framesPerBuffer, 1.0f);
          }
+
+         // Copy the results to outputMeterFloats if necessary
+         if (outputMeterFloats != outputFloats) {
+            for (i = 0; i < framesPerBuffer*numPlaybackChannels; ++i) {
+               outputMeterFloats[i] = outputFloats[i];
+            }
+         }
       }
+
    }
    /* Send data to playback VU meter if applicable */
    if (gAudioIO->mOutputMeter && 
       !gAudioIO->mOutputMeter->IsMeterDisabled() &&
-      outputBuffer) {
+      outputMeterFloats) {
       // Get here if playback meter is live 
       /* It's critical that we don't update the meters while StopStream is
        * trying to stop PortAudio, otherwise it can lead to a freeze.  We use
@@ -3272,7 +3321,7 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
       if (gAudioIO->mUpdateMeters) {
          gAudioIO->mOutputMeter->UpdateDisplay(numPlaybackChannels,
                                                framesPerBuffer,
-                                               (float *)outputBuffer);
+                                               outputMeterFloats);
       }
       gAudioIO->mUpdatingMeters = false;
    }  // end playback VU meter update
