@@ -3696,7 +3696,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
       return;
 
    // LL: Check title bar for popup
-   if (isleft &&PopupFunc(t, r, event.m_x, event.m_y))
+   if (isleft && PopupFunc(t, r, event.m_x, event.m_y))
       return;
 
    // MM: Check minimize buttons on WaveTracks. Must be before
@@ -6816,13 +6816,18 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label, bool link,
    }
 
    VisibleTrackIterator iter(GetProject());
-
    for (Track * t = iter.First(); t; t = iter.Next()) {
       r.y = t->GetY() - mViewInfo->vpos + kTopInset;
       r.height = t->GetHeight();
 
-      if (link && t->GetLinked()) {
-         r.height += t->GetLink()->GetHeight();
+      if (link && t->GetLink()) {
+         Track *l = t->GetLink();
+         int h = l->GetHeight();
+         if (!t->GetLinked()) {
+            t = l;
+            r.y = t->GetY() - mViewInfo->vpos + kTopInset;;
+         }
+         r.height += h;
       }
 
       //Determine whether the mouse is inside 
