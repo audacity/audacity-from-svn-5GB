@@ -950,6 +950,7 @@ void Envelope::GetPoints(double *bufferWhen,
  */
 int Envelope::Insert(double when, double value)
 {
+#if defined(__WXDEBUG__)
    // in debug builds, do a spot of argument checking
    if(when > mTrackLen)
    {
@@ -960,9 +961,10 @@ int Envelope::Insert(double when, double value)
    if(when < 0)
    {
       wxString msg;
-      msg = wxString::Format(wxT("when %.20f mTrackLen %.20f"), when);
+      msg = wxString::Format(wxT("when %.20f mTrackLen %.20f"), when, mTrackLen);
       wxASSERT_MSG(when >= 0, msg);
    }
+#endif
 
    int len = mEnv.Count();
 
@@ -1091,6 +1093,7 @@ void Envelope::GetValues(double *buffer, int bufferLen,
    // and that the previous tests (with epsilon==0)
    // were too stringent.
 
+#if defined(__WXDEBUG__)
    // in debug builds, do a spot of argument checking
    if(t0 > (mTrackLen+mTrackEpsilon))
    {
@@ -1098,12 +1101,14 @@ void Envelope::GetValues(double *buffer, int bufferLen,
       msg = wxString::Format(wxT("t0 %.20f mTrackLen %.20f diff %.20f"), t0, mTrackLen, t0-mTrackLen);
       wxASSERT_MSG(t0 <= mTrackLen, msg);
    }
+
    if(t0 < (-mTrackEpsilon))
    {
       wxString msg;
       msg = wxString::Format(wxT("t0 %.20f"), t0);
       wxASSERT_MSG(t0 >= 0, msg);
    }
+#endif
 
    for (int b = 0; b < bufferLen; b++) {
 
