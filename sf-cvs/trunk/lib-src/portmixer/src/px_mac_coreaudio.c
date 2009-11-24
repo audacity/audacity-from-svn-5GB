@@ -94,7 +94,8 @@ int OpenMixer_Mac_CoreAudio(px_mixer *Px, int index)
                                     &outSize,
                                     NULL);
    if (err) {
-      return cleanup(Px);
+      /* No input sources available.  Input device may still be usable. */
+      return TRUE;
    }
 
    info->numsrcs  = outSize / sizeof(UInt32);
