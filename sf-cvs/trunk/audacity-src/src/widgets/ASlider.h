@@ -132,6 +132,9 @@ class LWSlider
    bool ShowDialog();
    bool ShowDialog(wxPoint pos);
 
+   void SetEnabled(bool enabled);
+   bool GetEnabled();
+
  private:
 
    void FormatPopWin();
@@ -214,6 +217,7 @@ class LWSlider
 
    wxString mName;
 
+   bool mEnabled;
 };
 
 class ASlider :public wxPanel
@@ -256,6 +260,10 @@ class ASlider :public wxPanel
    void OnKillFocus(wxFocusEvent & event);
 
    void RecreateTipWin();
+
+   // Overrides of the wxWindow functions with the same semantics
+   bool Enable(bool enable = true);
+   bool IsEnabled() const;
 
  private:
    LWSlider *mLWSlider;

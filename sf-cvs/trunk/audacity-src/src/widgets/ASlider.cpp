@@ -87,10 +87,12 @@ of an LWSlider or ASlider.
 #include "../AllThemeResources.h"
 
 //#include "../../images/SliderThumb.xpm"
-//#include "../../images/SliderThumbAlpha.xpm"
 
+#include "../../images/SliderThumbAlpha.xpm"
+#include "../../images/SliderThumbDisabled.xpm"
 #include "../../images/SliderThumb_Vertical.xpm"
-
+#include "../../images/SliderThumb_VerticalAlpha.xpm"
+#include "../../images/SliderThumb_VerticalDisabled.xpm"
 
 #if defined __WXMSW__
 const int sliderFontSize = 10;
@@ -425,6 +427,7 @@ void LWSlider::Init(wxWindow * parent,
                     float speed, 
                     int orientation /* = wxHORIZONTAL */) // wxHORIZONTAL or wxVERTICAL. wxVERTICAL is currently only for DB_SLIDER. 
 {
+   mEnabled = true;
    mName = name;
    mStyle = style;
    mOrientation = orientation;
@@ -446,19 +449,6 @@ void LWSlider::Init(wxWindow * parent,
    mBitmap = NULL;
    mScrollLine = 1.0f;
    mScrollPage = 5.0f;
-
-   // Get the Thumb bitmap.  Generic version for now...
-   if (mOrientation == wxHORIZONTAL)
-      mThumbBitmap = &theTheme.Bitmap( bmpSliderThumb );
-   else
-   //vvv \todo Convert this to an image in AllThemeResources, as bmpSliderThumb. Make an alpha also, as for horizontal slider thumb?
-   {
-      wxImage thumbImage(wxBitmap(SliderThumb_Vertical).ConvertToImage());
-      mThumbBitmap = new wxBitmap(thumbImage);
-   }
-
-   //   mThumbBitmap = new wxBitmap( SliderThumb );
-   //   mThumbBitmap->SetMask( new wxMask( wxBitmap( SliderThumbAlpha ), *wxBLACK ) );
 
    mpRuler = NULL; // Do this and Move() before Draw().
    Move(pos);
@@ -605,6 +595,42 @@ void LWSlider::OnSize( wxSizeEvent & event )
 
 void LWSlider::Draw()
 {
+   //
+   // Get the thumb slider bitmap
+   //
+
+   if (mEnabled && mOrientation == wxHORIZONTAL)
+      mThumbBitmap = &theTheme.Bitmap( bmpSliderThumb );
+   //vvv \todo Convert this to an image in AllThemeResources, as bmpSliderThumb. Make an alpha also, as for horizontal slider thumb?
+   else if (mOrientation == wxHORIZONTAL)
+   {
+      wxImage thumbImage(wxBitmap(SliderThumbDisabled).ConvertToImage());
+      mThumbBitmap = new wxBitmap(thumbImage);
+      mThumbBitmap->SetMask(new wxMask(wxBitmap(SliderThumbAlpha), *wxBLACK));
+   }
+   else if (mEnabled)
+   {
+      wxImage thumbImage(wxBitmap(SliderThumb_Vertical).ConvertToImage());
+      mThumbBitmap = new wxBitmap(thumbImage);
+      mThumbBitmap->SetMask(
+            new wxMask(wxBitmap(SliderThumb_VerticalAlpha), *wxBLACK));
+   }
+   else
+   {
+      wxImage thumbImage(wxBitmap(
+               SliderThumb_VerticalDisabled).ConvertToImage());
+      mThumbBitmap = new wxBitmap(thumbImage);
+      mThumbBitmap->SetMask(
+            new wxMask(wxBitmap(SliderThumb_VerticalAlpha), *wxBLACK));
+   }
+
+   //   mThumbBitmap = new wxBitmap( SliderThumb );
+   //   mThumbBitmap->SetMask( new wxMask( wxBitmap( SliderThumbAlpha ), *wxBLACK ) );
+
+   //
+   // Now the background bitmap
+   //
+
    if( mBitmap )
    {
       delete mBitmap;
@@ -652,7 +678,11 @@ void LWSlider::Draw()
    dc->Clear();
 
    // Draw the line along which the thumb moves.
-   AColor::Dark(dc, false);
+   if (mEnabled)
+      AColor::Dark(dc, false);
+   else
+      AColor::Medium(dc, false);
+
    if (mOrientation == wxHORIZONTAL)
       AColor::Line(*dc, mLeftX, mCenterY+1, mRightX+2, mCenterY+1);
    else //vvvvv if (mStyle != DB_SLIDER) // Let the ruler do it for vertical DB_SLIDER.
@@ -771,7 +801,11 @@ void LWSlider::Draw()
             else
                AColor::Line(*dc, mCenterX-tickLength, mTopY+p, mCenterX-1, mTopY+p); // ticks at left
 
-            AColor::Dark(dc, false);
+            if (mEnabled)
+               AColor::Dark(dc, false);
+            else
+               AColor::Medium(dc, false);
+
             if (mOrientation == wxHORIZONTAL)
                AColor::Line(*dc, mLeftX+p+1, mCenterY-tickLength+1, mLeftX+p+1, mCenterY-1); // ticks above
             else
@@ -890,6 +924,10 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       GetActiveProject()->TP_DisplayStatusMessage(wxT(""));
       Refresh();
    }
+
+   // Events other than mouse-overs are ignored when we are disabled
+   if (!mEnabled)
+      return;
 
    float prevValue = mCurrentValue;
 
@@ -1021,71 +1059,74 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
 
 void LWSlider::OnKeyEvent(wxKeyEvent & event)
 {
-   switch( event.GetKeyCode() )
+   if (mEnabled)
    {
-      case WXK_RIGHT:
-      case WXK_UP:
-         Increase( mScrollLine );
-         SendUpdate( mCurrentValue );
-      break;
-
-      case WXK_LEFT:
-      case WXK_DOWN:
-         Decrease( mScrollLine );
-         SendUpdate( mCurrentValue );
-      break;
-
-      case WXK_PAGEUP:
-#if !wxCHECK_VERSION(2,7,0)
-      case WXK_PRIOR:
-#endif
-         Increase( mScrollPage );
-         SendUpdate( mCurrentValue );
-      break;
-
-      case WXK_PAGEDOWN:
-#if !wxCHECK_VERSION(2,7,0)
-      case WXK_NEXT:
-#endif
-         Decrease( mScrollPage );
-         SendUpdate( mCurrentValue );
-      break;
-
-      case WXK_HOME:
-         SendUpdate( mMinValue );
-      break;
-
-      case WXK_END:
-         SendUpdate( mMaxValue );
-      break;
-
-      case WXK_TAB:
+      switch( event.GetKeyCode() )
       {
-        wxNavigationKeyEvent nevent;
-        nevent.SetWindowChange( event.ControlDown() );
-        nevent.SetDirection( !event.ShiftDown() );
-        nevent.SetEventObject( mParent );
-        nevent.SetCurrentFocus( mParent );
-        mParent->GetParent()->ProcessEvent( nevent );
-      }
-      break;
+         case WXK_RIGHT:
+         case WXK_UP:
+            Increase( mScrollLine );
+            SendUpdate( mCurrentValue );
+            break;
 
-      case WXK_RETURN:
-      case WXK_NUMPAD_ENTER:
-      {
-         wxTopLevelWindow *tlw = wxDynamicCast(wxGetTopLevelParent(mParent), wxTopLevelWindow);
-         wxWindow *def = tlw->GetDefaultItem();
-         if (def && def->IsEnabled()) {
-            wxCommandEvent cevent(wxEVT_COMMAND_BUTTON_CLICKED,
-                                  def->GetId());
-            mParent->ProcessEvent(cevent);
-         }
-      }
+         case WXK_LEFT:
+         case WXK_DOWN:
+            Decrease( mScrollLine );
+            SendUpdate( mCurrentValue );
+            break;
 
-      default:
-         // Allow it to propagate
-         event.Skip();
-      break;
+         case WXK_PAGEUP:
+#if !wxCHECK_VERSION(2,7,0)
+         case WXK_PRIOR:
+#endif
+            Increase( mScrollPage );
+            SendUpdate( mCurrentValue );
+            break;
+
+         case WXK_PAGEDOWN:
+#if !wxCHECK_VERSION(2,7,0)
+         case WXK_NEXT:
+#endif
+            Decrease( mScrollPage );
+            SendUpdate( mCurrentValue );
+            break;
+
+         case WXK_HOME:
+            SendUpdate( mMinValue );
+            break;
+
+         case WXK_END:
+            SendUpdate( mMaxValue );
+            break;
+
+         case WXK_TAB:
+            {
+               wxNavigationKeyEvent nevent;
+               nevent.SetWindowChange( event.ControlDown() );
+               nevent.SetDirection( !event.ShiftDown() );
+               nevent.SetEventObject( mParent );
+               nevent.SetCurrentFocus( mParent );
+               mParent->GetParent()->ProcessEvent( nevent );
+            }
+            break;
+
+         case WXK_RETURN:
+         case WXK_NUMPAD_ENTER:
+            {
+               wxTopLevelWindow *tlw = wxDynamicCast(wxGetTopLevelParent(mParent), wxTopLevelWindow);
+               wxWindow *def = tlw->GetDefaultItem();
+               if (def && def->IsEnabled()) {
+                  wxCommandEvent cevent(wxEVT_COMMAND_BUTTON_CLICKED,
+                        def->GetId());
+                  mParent->ProcessEvent(cevent);
+               }
+            }
+
+         default:
+            // Allow it to propagate
+            event.Skip();
+            break;
+      }
    }
 
    event.Skip();
@@ -1273,6 +1314,18 @@ void LWSlider::Refresh()
       mParent->Refresh(false);
 }
 
+bool LWSlider::GetEnabled()
+{
+   return mEnabled;
+}
+
+void LWSlider::SetEnabled(bool enabled)
+{
+   mEnabled = enabled;
+   Draw();
+   Refresh();
+}
+
 //
 // ASlider
 //
@@ -1446,6 +1499,20 @@ bool ASlider::ShowDialog(wxPoint pos)
 void ASlider::SetSpeed(float speed)
 {
    mLWSlider->SetSpeed(speed);
+}
+
+bool ASlider::Enable(bool enable)
+{
+   if (mLWSlider->GetEnabled() == enable)
+      return false;
+   
+   mLWSlider->SetEnabled(enable);
+   return true;
+}
+
+bool ASlider::IsEnabled() const
+{
+   return mLWSlider->GetEnabled();
 }
 
 #if wxUSE_ACCESSIBILITY
