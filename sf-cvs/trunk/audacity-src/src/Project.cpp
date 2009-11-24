@@ -1987,6 +1987,12 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
          gActiveProject = NULL;
       }
    }
+
+   // Since we're going to be destroyed, make sure we're not to 
+   // receive audio notifications anymore.
+   if (gAudioIO->GetListener() == this) {
+      gAudioIO->SetListener(gActiveProject);
+   }
    
    if (gAudacityProjects.IsEmpty() && !gIsQuitting) {
 

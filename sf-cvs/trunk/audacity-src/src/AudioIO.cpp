@@ -2283,6 +2283,9 @@ void AudioIO::FillBuffers()
 
 void AudioIO::SetListener(AudioIOListener* listener)
 {
+   if (IsBusy())
+      return;
+
    mListener = listener;
 }
 
