@@ -17,6 +17,7 @@ class wxImage;
 class wxSize;
 class wxPoint;
 class wxChoice;
+class wxStaticBitmap;
 
 class ASlider;
 
@@ -56,6 +57,7 @@ class MixerToolBar:public ToolBar {
 
    wxBitmap *mPlayBitmap;
    wxBitmap *mRecordBitmap;
+   wxStaticBitmap *mRecordSB;
 
    ASlider *mInputSlider;
    ASlider *mOutputSlider;
