@@ -215,6 +215,27 @@ void InitAudioIO()
 {
    gAudioIO = new AudioIO();
    gAudioIO->mThread->Run();
+
+   // Make sure device prefs are initialized
+   if (gPrefs->Read(wxT("AudioIO/RecordingDevice"), wxT("")) == wxT("")) {
+      int i = AudioIO::getRecordDevIndex();
+      const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
+      if (info) {
+         gPrefs->Write(wxT("/AudioIO/RecordingDevice"), DeviceName(info));
+         gPrefs->Write(wxT("/AudioIO/Host"),
+               wxString(Pa_GetHostApiInfo(info->hostApi)->name, wxConvLocal));
+      }
+   }
+
+   if (gPrefs->Read(wxT("AudioIO/PlaybackDevice"), wxT("")) == wxT("")) {
+      int i = AudioIO::getPlayDevIndex();
+      const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
+      if (info) {
+         gPrefs->Write(wxT("/AudioIO/PlaybackDevice"), DeviceName(info));
+         gPrefs->Write(wxT("/AudioIO/Host"),
+               wxString(Pa_GetHostApiInfo(info->hostApi)->name, wxConvLocal));
+      }
+   }
 }
 
 void DeinitAudioIO()
@@ -564,6 +585,23 @@ void AudioIO::HandleDeviceChange()
                             paClipOff | paDitherOff,
                             audacityAudioCallback, NULL);
 
+      if (!error) {
+         mPortMixer = Px_OpenMixer(stream, 0);
+         if (!mPortMixer) {
+            Pa_CloseStream(stream);
+            error = true;
+         }
+      }
+   }
+
+   // finally, try just for playback
+   if ( error ) {
+      error = Pa_OpenStream(&stream,
+                            NULL, &playbackParameters,
+                            highestSampleRate, paFramesPerBufferUnspecified,
+                            paClipOff | paDitherOff,
+                            audacityAudioCallback, NULL);
+      
       if (!error) {
          mPortMixer = Px_OpenMixer(stream, 0);
          if (!mPortMixer) {
