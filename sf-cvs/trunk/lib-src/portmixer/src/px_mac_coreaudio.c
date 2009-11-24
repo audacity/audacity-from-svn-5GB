@@ -81,13 +81,9 @@ int OpenMixer_Mac_CoreAudio(px_mixer *Px, int index)
    info->output = PaMacCore_GetStreamOutputDevice(Px->pa_stream);
 
    if (info->input == kAudioDeviceUnknown) {
-      outSize = sizeof(AudioDeviceID);
-      err = AudioHardwareGetProperty(kAudioHardwarePropertyDefaultInputDevice,
-                                     &outSize,
-                                     &info->input);
-      if (err) {
-         return cleanup(Px);
-      }
+      /* This probably means it was an output-only stream;
+       * the rest of this fn needs a good input device */
+      return TRUE;
    }
 
    outSize = sizeof(UInt32);

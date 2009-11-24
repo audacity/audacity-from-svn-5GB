@@ -546,7 +546,8 @@ static void set_master_volume(px_mixer *Px, PxVolume volume)
    set_volume_indexed(dev, generic_lookup(dev, "Master"), volume);
 
    /* Ensure pending events are handled...otherwise, they build up */
-   snd_mixer_handle_events(info->capture.handle);
+   if (dev->handle)
+      snd_mixer_handle_events(dev->handle);
 
    return;
 }
@@ -579,7 +580,8 @@ static void set_pcm_output_volume(px_mixer *Px, PxVolume volume)
    set_volume_indexed(dev, generic_lookup(dev, "PCM"), volume);
 
    /* Ensure pending events are handled...otherwise, they build up */
-   snd_mixer_handle_events(info->capture.handle);
+   if (dev->handle)
+      snd_mixer_handle_events(dev->handle);
 
    return;
 }
@@ -716,7 +718,7 @@ static PxVolume get_input_volume(px_mixer *Px)
    long vol;
    PxVolume volume = 0.0;
 
-   if (info->capture.source < 0) {
+   if (info->capture.source < 0 || info->capture.numselems < 1) {
       return volume;
    }
 
@@ -742,7 +744,7 @@ static void set_input_volume(px_mixer *Px, PxVolume volume)
    long max;
    long vol;
 
-   if (info->capture.source < 0) {
+   if (info->capture.source < 0 || info->capture.numselems < 1) {
       return;
    }
 
