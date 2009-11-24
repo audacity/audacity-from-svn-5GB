@@ -80,6 +80,7 @@ class AUDACITY_DLL_API AudioIO {
    AudioIO();
    ~AudioIO();
 
+   AudioIOListener* GetListener() { return mListener; }
    void SetListener(AudioIOListener* listener);
    
    /** \brief Start up Portaudio for capture and recording as needed for
