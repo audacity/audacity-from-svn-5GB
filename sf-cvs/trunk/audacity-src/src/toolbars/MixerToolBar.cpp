@@ -94,9 +94,10 @@ void MixerToolBar::Populate()
 
    mRecordBitmap = new wxBitmap(theTheme.Bitmap(bmpMic));
 
-   Add(new wxStaticBitmap(this,
+   mRecordSB = new wxStaticBitmap(this,
                           wxID_ANY, 
-                          *mRecordBitmap), 0, wxALIGN_CENTER);
+                          *mRecordBitmap);
+   Add(mRecordSB, 0, wxALIGN_CENTER);
 
    mInputSlider = new ASlider(this, wxID_ANY, _("Input Volume"),
                               wxDefaultPosition, wxSize(130, 25));
@@ -147,6 +148,10 @@ void MixerToolBar::Populate()
 
    // Show or hide the control based on input sources
    mInputSourceChoice->Show( inputSources.GetCount() != 0 );
+
+   // Show or hide the input slider based on whether it works
+   mInputSlider->Show(gAudioIO->InputMixerWorks());
+   mRecordSB->Show(gAudioIO->InputMixerWorks());
 
    UpdateControls();
 
@@ -221,6 +226,10 @@ void MixerToolBar::UpdatePrefs()
 
    // Show or hide the control based on input sources
    mInputSourceChoice->Show( inputSources.GetCount() != 0 );
+   
+   // Show or hide the input slider based on whether it works
+   mInputSlider->Show(gAudioIO->InputMixerWorks());
+   mRecordSB->Show(gAudioIO->InputMixerWorks());
 
    // Layout the toolbar
    Layout();
