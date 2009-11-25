@@ -141,7 +141,7 @@ improvements, plus some bug fixes. Highlights include:
           for Spectrograms</li>
       <li>Record more than 16 channels (hardware/drivers permitting)</li>  
       <li>New \"Mixer Board\" view with per-track VU meters</li> 
-      <li>AMR NB export support via the optional 
+      <li>AMR NB import and export support on all platforms via the optional 
           <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">
           FFmpeg library</a></li>
       <li>32-bit float data over 0 dB handled without clipping</li>
