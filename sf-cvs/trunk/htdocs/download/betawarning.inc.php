@@ -8,7 +8,7 @@
 ?>
 
 <h3><?=_('Beta version')?></h3>
-<a href="#sysreq">System Requirements</a> &nbsp; <a href="#recdown">Download</a>
+<a href="#sysreq"><?=_('System Requirements')?></a> &nbsp; <a href="#recdown"><?=_('Download')?></a>
 <p>
 <?=_('Audacity 1.3 Beta is our new, not quite finished, development version which will be the basis of our next "stable" version.')?></p>
 

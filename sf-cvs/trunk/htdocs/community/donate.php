@@ -63,7 +63,7 @@
 
 
 <h2>
-  <?= ('Purchase from the <a href="http://audacitystore.com/">Audacity Store</a>')?>
+  <?=_('Purchase from the <a href="http://audacitystore.com/">Audacity Store</a>')?>
 </h2>
 <p>
   <?=_('You are invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features 
@@ -78,7 +78,7 @@
 </p>
 
 
-<h2 id="donate"><?= ('Make a Donation')?></h2>
+<h2 id="donate"><?=_('Make a Donation')?></h2>
 <p id="paypal"><?=_('Alternatively, click the button below to donate securely by Paypal. You can send any amount, using either your credit card or your Paypal account:')?></p>
 
 <!-- Begin Paypal button Form --> 
