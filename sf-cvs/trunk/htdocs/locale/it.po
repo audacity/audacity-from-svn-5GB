@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity_website\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-18 07:43+0000\n"
-"PO-Revision-Date: 2009-11-19 05:33+0100\n"
+"POT-Creation-Date: 2009-11-08 21:28+0000\n"
+"PO-Revision-Date: 2009-11-24 14:19+0100\n"
 "Last-Translator: Carmelo Battaglia <battaglia.carmelo@fastwebnet.it>\n"
 "Language-Team: italiano <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgid "Audacity&reg; is free, open source software for recording and editing sou
 msgstr "Audacity&reg; è un software libero, open source per registrare e modificare l'audio.  È disponibile per Mac OS X, Microsoft Windows, GNU/Linux, e altri sistemi operativi. <a href=\"about/\">Imparate di più su Audacity...</a> Controllate anche il nostro <a href=\"http://audacityteam.org/wiki/\">Wiki</a> e il nostro <a href=\"http://audacityteam.org/forum/\">Forum</a> per avere maggiori informazioni."
 
 #: index.php:57
-msgid "The latest release of Audacity is <a href=\"/download\">1.3.9 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
+msgid "The latest release of Audacity is <a href=\"/download\">1.3.9 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into different languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
 msgstr "L'ultima versione di Audacity è la <a href=\"/download\">1.3.9 (Beta)</a>. Poiché la versione è in fase di sviluppo e non è ancora disponibile con una documentazione completa o con traduzioni in altre lingue, se ne raccomanda l'utilizzo solo agli utenti esperti. Vedere <a href=\"/download/features-1.3-a\">Nuove funzionalità in 1.3</a> per avere maggiori informazioni sulle versioni 1.3.x Beta."
 
 #: index.php:59
@@ -304,130 +304,6 @@ msgstr ""
 "  <li>Disponibile per Mac OS X, Windows, e GNU/Linux.</li>\n"
 "</ul>"
 
-#: about/credits.php:10
-#: main.inc.php:27
-msgid "Credits"
-msgstr "Crediti"
-
-#: about/credits.php:15
-msgid ""
-"These are some of the people who have <a href=\"../community/\">contributed</a> to the free Audacity audio editor.</p>  \n"
-"</p>If you have questions or feedback about Audacity, please see the <a href=\"../contact/\">contact page</a>."
-msgstr ""
-"<p>Queste sono alcune delle persone che hanno <a href=\"../community/\">contribuito</a> ad Audacity. </p>  \n"
-"Se avete domande o avete bisogno di informazioni su Audacity, visitate la <a href=\"../contact/\">pagina dei contatti</a>."
-
-#: about/credits.php:18
-msgid "History"
-msgstr "Storia"
-
-#: about/credits.php:20
-msgid "Audacity was started by Dominic Mazzoni and Roger Dannenberg in the fall of 1999 at Carnegie Mellon University.  It was released as open-source software at SourceForge.net in May of 2000."
-msgstr "Audacity è stato iniziato da Dominic Mazzoni e Roger Dannenberg nell'autunno del 1999 presso la Carnegie Mellon University.  È stato rilasciato come software open-source a SourceForge.net maggio del 2000."
-
-#: about/credits.php:24
-msgid "Audacity Team Members"
-msgstr "Componenti dell'Audacity Team"
-
-#: about/credits.php:26
-#: about/credits.php:27
-#: about/credits.php:28
-#: about/credits.php:32
-#: about/credits.php:35
-#: about/credits.php:39
-#: about/credits.php:40
-#: about/credits.php:63
-msgid "documentation and support"
-msgstr "documentazione e supporto"
-
-#: about/credits.php:28
-msgid "French"
-msgstr "Italiano"
-
-#: about/credits.php:29
-msgid "system administration"
-msgstr "sistema di gestione"
-
-#: about/credits.php:30
-#: about/credits.php:31
-#: about/credits.php:33
-#: about/credits.php:34
-#: about/credits.php:36
-#: about/credits.php:37
-#: about/credits.php:38
-#: about/credits.php:41
-#: about/credits.php:58
-#: about/credits.php:59
-#: about/credits.php:60
-#: about/credits.php:61
-#: about/credits.php:62
-#: about/credits.php:68
-#: about/credits.php:70
-#: about/credits.php:71
-#: about/credits.php:72
-#: about/credits.php:73
-#: about/credits.php:74
-#: about/credits.php:75
-#: about/credits.php:77
-#: about/credits.php:78
-#: about/credits.php:79
-#: about/credits.php:80
-#: about/credits.php:81
-#: about/credits.php:82
-#: about/credits.php:83
-#: about/credits.php:84
-#: about/credits.php:85
-msgid "developer"
-msgstr "sviluppatore"
-
-#: about/credits.php:44
-msgid "Technical Leadership Council"
-msgstr "Technical Leadership Council"
-
-#: about/credits.php:56
-msgid "Emeritus: distinguished Audacity team members, not currently active"
-msgstr "Emerito: importante componente dell'Audacity Team, non attualmente attivo"
-
-#: about/credits.php:66
-msgid "Contributors"
-msgstr "Collaboratori"
-
-#: about/credits.php:69
-msgid "accessibility advisor"
-msgstr "consulente accessibilità"
-
-#: about/credits.php:76
-msgid "graphic artist"
-msgstr "artista grafico"
-
-#: about/credits.php:88
-#: main.inc.php:69
-#: community/index.php:25
-#: community/translation.php:9
-msgid "Translators"
-msgstr "Traduttori"
-
-#: about/credits.php:135
-#: download/plugins.php:36
-msgid "Libraries"
-msgstr "Librerie"
-
-#: about/credits.php:136
-msgid "Audacity is based on code from the following projects:"
-msgstr "Audacity è basato su un codice sorgente proventiente dai seguenti progetti:"
-
-#: about/credits.php:156
-msgid "Thanks"
-msgstr "Ringraziamenti"
-
-#: about/credits.php:157
-msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
-msgstr "Esistono molte altre persone e organizzazioni che vorremmo ringraziare. Molti di loro hanno contribuito al progetto con codice, patch, suggerimenti, denaro, tempo o altro. Altri più semplicemente hanno creato strumenti che hanno reso possibile tutto ciò."
-
-#: about/credits.php:183
-msgid "(Let us know if we're forgetting anyone!)"
-msgstr "(Fateci sapere se abbiamo dimenticato qualcuno!)"
-
 #: about/links.php:9
 #: main.inc.php:28
 msgid "Links"
@@ -540,7 +416,7 @@ msgstr ""
 "\n"
 "<p>Software libero non vuol dire solo gratuito (come &quot;birra gratuita&quot;).  È <b>libero nel senso di libertà</b> (come &quot;libertà di parola&quot;).  Il software libero offre la libertà di usare un programma, di studiare come funziona, di migliorarlo e di condividerlo con altri.  Per avere maggiori informazioni, dovete visitare il sito della <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
 "\n"
-"<p>I programmi come Audacity sono anche denominati <b> software open source</b>, perché il loro codice sorgente è disponibile per chiunque voglia studiarlo o usarlo.  Ci sono migliaia di altri programmi liberi e open source, tra cui il web browser <a href=\"http://www.mozilla.com/\">Firefox</a>, la suite per ufficio <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> e tutti i sistemi operativi basati su Linux come<a href=\"http://www.ubuntulinux.org/\">Ubuntu</a>.</p>\n"
+"<p>I programmi come Audacity sono anche denominati <b> software open source</b>, perché il loro codice sorgente è disponibile per chiunque voglia studiarlo o usarlo.  Ci sono migliaia di altri programmi liberi e open source, tra cui il web browser <a href=\"http://www.mozilla.com/\">Firefox</a>, la suite per ufficio <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> e tutti i sistemi operativi basati su Linux come <a href=\"http://www.ubuntulinux.org/\">Ubuntu</a>.</p>\n"
 "\n"
 "<p>Accogliamo con favore le <a href=\"../community/donate\">donazioni</a> a sostegno dello sviluppo di Audacity. Chiunque può <a href=\"http://audacityteam.org/wiki/index.php?title=Contribute\">contribuire</a> ad Audacity aiutandoci con la <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">documentazione</a>, le <a href=\"../community/translation\">traduzioni</a>, il <a href=\"http://audacityteam.org/forum/index.php\">supporto</a> utente e per <a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">provare<a/> l'ultima versione del codice.</p>"
 
@@ -786,6 +662,130 @@ msgstr "Effetto Cambia tempo"
 msgid "Recording with Audacity"
 msgstr "Registrare con Audacity"
 
+#: about/credits.php:10
+#: main.inc.php:27
+msgid "Credits"
+msgstr "Crediti"
+
+#: about/credits.php:15
+msgid ""
+"These are some of the people who have <a href=\"../community/\">contributed</a> to the free Audacity audio editor.</p>  \n"
+"</p>If you have questions or feedback about Audacity, please see the <a href=\"../contact/\">contact page</a>."
+msgstr ""
+"<p>Queste sono alcune delle persone che hanno <a href=\"../community/\">contribuito</a> ad Audacity. </p>  \n"
+"Se avete domande o avete bisogno di informazioni su Audacity, visitate la <a href=\"../contact/\">pagina dei contatti</a>."
+
+#: about/credits.php:18
+msgid "History"
+msgstr "Storia"
+
+#: about/credits.php:20
+msgid "Audacity was started by Dominic Mazzoni and Roger Dannenberg in the fall of 1999 at Carnegie Mellon University.  It was released as open-source software at SourceForge.net in May of 2000."
+msgstr "Audacity è stato iniziato da Dominic Mazzoni e Roger Dannenberg nell'autunno del 1999 presso la Carnegie Mellon University.  È stato rilasciato come software open-source a SourceForge.net maggio del 2000."
+
+#: about/credits.php:24
+msgid "Audacity Team Members"
+msgstr "Componenti dell'Audacity Team"
+
+#: about/credits.php:26
+#: about/credits.php:27
+#: about/credits.php:28
+#: about/credits.php:32
+#: about/credits.php:35
+#: about/credits.php:39
+#: about/credits.php:40
+#: about/credits.php:62
+msgid "documentation and support"
+msgstr "documentazione e supporto"
+
+#: about/credits.php:28
+msgid "French"
+msgstr "Italiano"
+
+#: about/credits.php:29
+msgid "system administration"
+msgstr "sistema di gestione"
+
+#: about/credits.php:30
+#: about/credits.php:31
+#: about/credits.php:33
+#: about/credits.php:34
+#: about/credits.php:36
+#: about/credits.php:37
+#: about/credits.php:38
+#: about/credits.php:41
+#: about/credits.php:57
+#: about/credits.php:58
+#: about/credits.php:59
+#: about/credits.php:60
+#: about/credits.php:61
+#: about/credits.php:67
+#: about/credits.php:69
+#: about/credits.php:70
+#: about/credits.php:71
+#: about/credits.php:72
+#: about/credits.php:73
+#: about/credits.php:74
+#: about/credits.php:76
+#: about/credits.php:77
+#: about/credits.php:78
+#: about/credits.php:79
+#: about/credits.php:80
+#: about/credits.php:81
+#: about/credits.php:82
+#: about/credits.php:83
+#: about/credits.php:84
+msgid "developer"
+msgstr "sviluppatore"
+
+#: about/credits.php:44
+msgid "Technical Leadership Council"
+msgstr "Technical Leadership Council"
+
+#: about/credits.php:55
+msgid "Emeritus: distinguished Audacity team members, not currently active"
+msgstr "Emerito: importante componente dell'Audacity Team, non attualmente attivo"
+
+#: about/credits.php:65
+msgid "Contributors"
+msgstr "Collaboratori"
+
+#: about/credits.php:68
+msgid "accessibility advisor"
+msgstr "consulente accessibilità"
+
+#: about/credits.php:75
+msgid "graphic artist"
+msgstr "artista grafico"
+
+#: about/credits.php:87
+#: main.inc.php:69
+#: community/index.php:25
+#: community/translation.php:9
+msgid "Translators"
+msgstr "Traduttori"
+
+#: about/credits.php:134
+#: download/plugins.php:36
+msgid "Libraries"
+msgstr "Librerie"
+
+#: about/credits.php:135
+msgid "Audacity is based on code from the following projects:"
+msgstr "Audacity è basato su un codice sorgente proventiente dai seguenti progetti:"
+
+#: about/credits.php:155
+msgid "Thanks"
+msgstr "Ringraziamenti"
+
+#: about/credits.php:156
+msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
+msgstr "Esistono molte altre persone e organizzazioni che vorremmo ringraziare. Molti di loro hanno contribuito al progetto con codice, patch, suggerimenti, denaro, tempo o altro. Altri più semplicemente hanno creato strumenti che hanno reso possibile tutto ciò."
+
+#: about/credits.php:182
+msgid "(Let us know if we're forgetting anyone!)"
+msgstr "(Fateci sapere se abbiamo dimenticato qualcuno!)"
+
 #: main.inc.php:20
 msgid "Home"
 msgstr "Home"
@@ -888,7 +888,7 @@ msgstr "Nyquist"
 #: contact/index.php:12
 #: contact/main.inc.php:11
 msgid "Contact Us"
-msgstr "Contattateci"
+msgstr "Contattatii"
 
 #: main.inc.php:61
 #: community/developers.php:18
@@ -1200,7 +1200,7 @@ msgstr "Essere un Beta Tester"
 
 #: community/users.php:33
 msgid "In addition to the latest stable version of Audacity, we usually have beta versions available.  These versions usually contain new features that haven't been fully tested. If you want to help out, "
-msgstr "Oltre all'ultima versione stabile di Audacity, di solito rendiamo disponibili delle versioni beta.  Queste versioni in genere contengono delle nuove funzionalità che non sono state completamente provate. Se volete potete aiutarci,"
+msgstr "Oltre all'ultima versione stabile di Audacity, di solito rendiamo disponibili delle versioni beta.  Queste versioni in genere contengono delle nuove funzionalità che non sono state completamente provate. Se volete potete aiutarci, "
 
 #: community/users.php:33
 msgid "download"
@@ -1212,7 +1212,7 @@ msgstr " la versione Beta e utilizzandola."
 
 #: community/users.php:33
 msgid "Let us know"
-msgstr "Fateci sapere"
+msgstr "Fateci sapere "
 
 #: community/users.php:33
 msgid " what you like and don't like, and how you think it should be improved.  Tell us if you find any <em>regressions</em> - things that used to work but don't work anymore."
@@ -1365,15 +1365,15 @@ msgid ""
 "<p><b>Note:</b> In line with our <a href=\"../contact/privacy#lists\">Privacy Policy</a>, these are public lists - messages are seen by all list subscribers, and posted on several web sites where the messages are archived.</p>"
 msgstr ""
 "Queste liste sono per la discussione sull'editor audio Audacity.  </p>\n"
-"<p><b>Nota:</b> In linea con la nostra<a href=\"../contact/privacy#lists\">Politica sulla Privacy</a>, queste sono liste pubbliche - i messaggi sono visti da tutti gli iscritti alla lista, e pubblicati su vari siti web in cui i messaggi vengono archiviatil.</p>"
+"<p><b>Nota:</b> In linea con la nostra <a href=\"../contact/privacy#lists\">Politica sulla Privacy</a>, queste sono liste pubbliche - i messaggi sono visti da tutti gli iscritti alla lista, e pubblicati su vari siti web in cui i messaggi vengono archiviatil.</p>"
 
 #: contact/lists.php:26
 msgid "Discuss Audacity with other <a href=\"../community/users\">users</a> and developers."
-msgstr "Discutete di Audacity con altri<a href=\"../community/users\">utenti</a> e sviluppatori."
+msgstr "Discutete di Audacity con altri <a href=\"../community/users\">utenti</a> e sviluppatori."
 
 #: contact/lists.php:32
 msgid "For  <a href=\"../community/developers\">developers</a> working with the Audacity source code and documentation, and others interested in following our development process, or learning about compiling or developing our code."
-msgstr "Per gli <a href=\"../community/developers\">sviluppatori che</a> lavorano con il codice sorgente e la documentazione di Audacity, e gli altri interessati a seguire il nostro processo di sviluppo, o a imparare come compilare o sviluppare il nostro codice."
+msgstr "Per gli <a href=\"../community/developers\">sviluppatori</a> che lavorano con il codice sorgente e la documentazione di Audacity, e gli altri interessati a seguire il nostro processo di sviluppo, o a imparare come compilare o sviluppare il nostro codice."
 
 #: contact/lists.php:34
 msgid "Developers may also subscribe to automated notifications of <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-cvs\">latest source code changes</a> and <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-bugs\">bugs</a> reported to our <a href=\"http://limpet.net/audacity/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">Bugzilla</a> database. However, <a href=\"http://audacityteam.org/wiki/index.php?title=Release_Checklist\">Release Checklist</a> on the <a href=\"http://audacityteam.org/wiki/\">Wiki</a> is now used for internal bug tracking."
@@ -1518,7 +1518,7 @@ msgid ""
 "<p><b>Your e-mail address will always be truncated in published archives for your privacy, and the Audacity developers will not share your address with anyone.</b>  However, we <b>cannot</b> prevent other subscribers from seeing or publishing your messages. Therefore we recommend you avoid putting contact details such as street addresses or telephone numbers in your e-mails.</p>\n"
 "<p>If you have any questions about this policy or are not comfortable writing to a public mailing list, please send a private e-mail to our <a href=\"&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x64;&#111;&#x6d;&#105;&#x6e;&#x69;&#x63;&#64;&#97;&#x75;&#100;&#x61;&#99;&#105;&#116;&#121;&#x74;&#x65;&#97;&#109;&#x2e;&#x6f;&#x72;&#x67;&#x3f;&#115;&#x75;&#98;&#106;&#101;&#99;&#116;&#x3d;&#x4d;&#97;&#x69;&#108;&#105;&#110;&#x67;&#x20;&#76;&#x69;&#115;&#x74;&#115;\">lead developer</a>.</p>"
 msgstr ""
-"<p>(Questo vale per le liste <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">sviluppatori di Audacity</a>, <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-users\">utenti di Audacity</a> e per le altre nostre <a href=\"../contact/lists\">liste di discussione</a>.)</p>\n"
+"<p>(Questo vale per le liste <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">sviluppatori di Audacity</a>, <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-users\">utenti di Audacity</a> e per le altre nostre <a href=\"../contact/lists\">liste di discussione</a>).</p>\n"
 "\n"
 "<p>Queste sono delle mailing list pubbliche. Quando inviate un messaggio a uno di questi indirizzi, questo verrà trasmesso a tutti gli iscritti nella lista, incluso quella degli sviluppatori e delle altre.  SourceForge e altri siti web possono pubblicare gli archivi di queste liste.</p>\n"
 "<p><b>I vostri indirizzi e-mail saranno sempre troncati negli archivi pubblicati per la vostra privacy, e gli sviluppatori di Audacity non condivideranno i vostri indirizzi con nessuno.</b>  Tuttavia,<b>non possiamo</b> impedire che altri iscritti vedano o pubblichino i vostri messaggi. Perciò vi consigliamo di evitare di inserire dati di contatto come indirizzi stradali o numeri di telefono nelle vostre e-mail.</p>\n"
@@ -1650,7 +1650,7 @@ msgstr "Audacity è scaricabile gratuitamente, ma i venditori sono inoltre liber
 
 #: download/bundlers.php:18
 msgid "Some vendors, <a href=\"http://umixit.com/aboutus.html\">Umixit</a>, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, and <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href=\"#others\">custom versions</a>. The UmixIt custom version adds a mixer board interface and karaoke window. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Audiotouch is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Many of these improvements will be incorporated in future versions of Audacity."
-msgstr "Alcuni venditori, <a href=\"http://umixit.com/aboutus.html\">Umixit</a>, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, e <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, hanno ulteriormente supportato Audacity sponsorizzando delle<a href=\"#others\">versioni personalizzate</a>. La versione personalizzata UmixIt aggiunge una interfaccia mixer e una finestra karaoke. La versione ThinkLabs è stata personalizzata per stetoscopi digitali cardiologici. Audacity_Audiotouch è personalizzato per l'integrazione con Audiotouch, per facilitarne l'uso da parte degli studenti che necessitano di numerose registrazioni. Molti di questi miglioramenti saranno incorporati nelle future versioni di Audacity."
+msgstr "Alcuni venditori, <a href=\"http://umixit.com/aboutus.html\">Umixit</a>, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, e <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, hanno ulteriormente supportato Audacity sponsorizzando delle <a href=\"#others\">versioni personalizzate</a>. La versione personalizzata UmixIt aggiunge una interfaccia mixer e una finestra karaoke. La versione ThinkLabs è stata personalizzata per stetoscopi digitali cardiologici. Audacity_Audiotouch è personalizzato per l'integrazione con Audiotouch, per facilitarne l'uso da parte degli studenti che necessitano di numerose registrazioni. Molti di questi miglioramenti saranno incorporati nelle future versioni di Audacity."
 
 #: download/bundlers.php:21
 msgid "To be considered for addition to this list, please first review our <a href=\"../about/license\">License, and Advice for Vendors and Distributors</a> page. If you are distributing Audacity under those terms "
@@ -3718,7 +3718,7 @@ msgstr "<p>Audacity funziona con molti programmi screen-reader, ma alcune funzio
 
 #: help/faq.php:69
 msgid "What does “time remaining” mean?  Does Audacity expire?"
-msgstr "Cosa significa l'indicazione\"tempo restante\"? Audacity scadrà?"
+msgstr "Cosa significa l'indicazione \"tempo restante\"? Audacity scadrà?"
 
 #: help/faq.php:70
 msgid ""
@@ -6076,7 +6076,7 @@ msgstr ""
 "\t\t<li>Visionate la <a href=\"http://groups.google.com/group/google-summer-of-code-announce/web/guide-to-the-gsoc-web-app-for-student-applicants\">documentazione per la domanda</a>.\n"
 "\t\t\tInoltre controllate le <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html\">GSoC FAQ</a>,\n"
 "\t\t\tspecialmente <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_student_apply\">'Come fare la domanda'</a>.</li>\n"
-"\t\t<li>Accertatevi di essere<a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_eligibility\">idonei</a>.</li>\n"
+"\t\t<li>Accertatevi di essere <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_eligibility\">idonei</a>.</li>\n"
 "\t\t<li>Nel Wiki Audacity, controllate la <a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Ideas\">pagina Idee per progetti</a>.</li>\n"
 "\t\t<li>Se trovate una idea interessante, o ne avete una vostra, controllate le <a href=\"http://www.audacityteam.org/wiki/index.php?title=Writing_GSoC_Proposals\">Writing GSoC Proposals</a>.</li>\n"
 "\t\t<li>Poi <a href=\"mailto:summerofcode@audacityteam.org\">inviateci una e-mail</a>. È molto meglio discutere del progetto con noi prima di fare la domanda.</li>\n"
