@@ -13,7 +13,7 @@
 
 <h2><?=$pageTitle?></h2>
 
-<p><a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses. The <a href="http://www.ohloh.net/projects/59/analyses/latest">Code tab</a> on the Ohloh site shows the progress of code development.</p>
+<p><?=_{'<a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses. The <a href="http://www.ohloh.net/projects/59/analyses/latest">Code tab</a> on the Ohloh site shows the progress of code development.")?></p>
 
 <h3><?=_('Mailing Lists')?></h3>
 <p><?=_('Join the <a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel">audacity-devel</a> mailing list to discuss current and future development, or to get help building and modifying the Audacity source code.')?></p>
