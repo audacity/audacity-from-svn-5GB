@@ -128,7 +128,7 @@ Known Issues at Release</a> (also viewable in the included README.txt).
                         <li>Improved support for non-mmap ALSA devices such as PulseAudio</li> 
                         <li>32-bit float data over 0 dB now handled without clipping</li>
                         <li>\"Stop\" option when importing preserves already imported data</li>
-                        <li>AMR NB export now supported if the optional 
+                        <li>AMR NB import and export now supported on all platforms if the optional 
                             <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">
                             FFmpeg library</a> is installed</li>
                         <li>Faster waveform drawing and better response in multi-track 
@@ -167,8 +167,12 @@ Known Issues at Release</a> (also viewable in the included README.txt).
 
 
 <h3><?=_("New in Audacity 1.3.7")?></h3>
-
-<dl>
+<?php
+   // i18n-hint: The following are new features in
+   // old versions of Audacity, which have never been
+   // translated up to now. Feel free to translate 
+   // them as a low priority.  
+echo _('<dl>
 	<dt> Improvements and new features </dt>
 	      <dd>   <ul>   
                       <li>F11 Full Screen mode</li>
@@ -244,12 +248,15 @@ Known Issues at Release</a> (also viewable in the included README.txt).
 
 <p>
 Please see the included README.txt for full details of changes, and for issues known at time of Release.
-</p>
-
+</p>');?>
 
 <h3><?=_("New in Audacity 1.3.6")?></h3>
-
-<dl>
+<?php
+   // i18n-hint: The following are new features in
+   // old versions of Audacity, which have never been
+   // translated up to now. Feel free to translate 
+   // them as a low priority.  
+echo _('<dl>
 	<dt> Major new capabilities </dt>
          <dd>   <ul>
                       <li><b>FFmpeg support</b> (downloadable separately) permits import and
@@ -281,12 +288,15 @@ Please see the included README.txt for full details of changes, and for issues k
                        <li>Several bug fixes</li>
          </ul>  </dd>         
    </dt>
-</dl>
-
+</dl>');?>
 
 <h3><?=_("New in Audacity 1.3.5")?></h3>
-
-<dl>
+<?php
+   // i18n-hint: The following are new features in
+   // old versions of Audacity, which have never been
+   // translated up to now. Feel free to translate 
+   // them as a low priority.  
+echo _('<dl>
 	<dt> Recording / Playback </dt>
 	      <dd>   <ul>
                            <li>Several bugs fixed so that latency correction should be better, 
@@ -350,11 +360,15 @@ Please see the included README.txt for full details of changes, and for issues k
                            <li>Several stability improvements.</li> 
              </dd>   </ul>
        </dt>
-</dl>
-
+</dl>');?>
 
 <h3><?=_("New in Audacity 1.3.4")?></h3>
-<dl>
+<?php
+   // i18n-hint: The following are new features in
+   // old versions of Audacity, which have never been
+   // translated up to now. Feel free to translate 
+   // them as a low priority.  
+echo _('<dl>
   <dt></dt>
   <dd>
     <!-- indent cheat -->
@@ -363,7 +377,7 @@ Please see the included README.txt for full details of changes, and for issues k
       <dd>New Welcome Screen with introduction to Audacity.</dd>
       <dd>Enhanced Windows Shell integration, so Audacity shows up in lots of
           Windows places such as "Open With".</dd>
-      <dd>New keyboard command: 'Mix and Render to New Track' (bound to Ctrl+Shift+M).</dd>
+      <dd>New keyboard command: "Mix and Render to New Track" (bound to Ctrl+Shift+M).</dd>
       <dd>New keyboard shortcut: "Shift-A" starts playback when stopped,
           or performs "Stop and Select" when playing.</dd>
       <dd>Added support for VAMP audio analysis plug-ins.</dd>
@@ -371,7 +385,7 @@ Please see the included README.txt for full details of changes, and for issues k
 
       <dt> Interface </dt>
       <dd>Keyboard shortcuts for making short/long jumps along the timeline.</dd>
-      <dd>Added 'Snap To' in the Selection Bar.</dd>
+      <dd>Added "Snap To" in the Selection Bar.</dd>
       <dd>Made keyboard navigation easier when multiple menu items with the same first letter exist.</dd>
       <dd>Enhanced interface for label editing.</dd>
       <dd>Layout of OK/Cancel buttons consistency improved.</dd>
@@ -411,7 +425,7 @@ Please see the included README.txt for full details of changes, and for issues k
           <li>Preview works correctly.</li>
         </ul>
       </dd>
-      <dd>'Merge' command appears in Undo history.</dd>
+      <dd>"Merge" command appears in Undo history.</dd>
       <dd>Clipping detected more reliably.</dd>
       <dd>Nyquist plug-ins reviewed and enhanced.</dd>
       <dd>Better (and more) progress bars.</dd>
@@ -427,10 +441,15 @@ Please see the included README.txt for full details of changes, and for issues k
       </dt>
     </dl>
   </dd>
-</dl>
+</dl>');?>
 
 <h3 id="olderdetails"><?=_("New features in Audacity 1.3.3")?></h3>
-<dl>
+<?php
+   // i18n-hint: The following are new features in
+   // old versions of Audacity, which have never been
+   // translated up to now. Feel free to translate 
+   // them as a low priority.  
+echo _('<dl>
   <dt></dt>
   <dd>
     <!-- indent cheat -->
@@ -485,7 +504,7 @@ Please see the included README.txt for full details of changes, and for issues k
       <dd> Numerous stability improvements </dd>
     </dl>
   </dd>
-</dl>
+</dl>');?>
 
 <h3><?=_("New features in Audacity 1.3.1 and 1.3.2")?></h3>
 
