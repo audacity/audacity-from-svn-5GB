@@ -3,7 +3,7 @@ Copyright 2007-2009, Vaughan Johnson
 22 October 2007
 
 ========================================================================
-This version is currently accurate for Audacity version 1.3.8.
+This version is currently accurate for Audacity version 1.3.10.
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 See also "http://audacityteam.org/wiki/index.php?title=Developing_On_Windows".
@@ -16,10 +16,19 @@ in the MSVC project configurations Release (for Windows 98/ME) and
 Unicode_Release (for 2000/XP/Vista). These instructions apply for 
 either one, but example values are for Unicode_Release. 
 
-1. Build the release executable. 
+1. Remove the old manual and make sure you can rebuild a new one
+
+	Make sure you have python installed and on your path.
+	Delete audacity\help\manual if it exists.
+	The manual should be built in audacity\help\manual by the main Solution (step 2 below).
+	(If you have disabled the 'Help' project during testing you will have to build it seperatly).
+	(If you just want to get the manual, go to audacity\scripts\mw2html_audacity, run wiki2htm and wait for it to complete.)
+
+
+2. Build the release executable. 
 
 	a. Make sure you have got a current source version from CVS.
-	
+
 	b. Make sure to turn off ASIO support (see compile.txt) if you are 
 		creating the installer for public release. 
 		We cannot publicly post a build that supports ASIO, for 
@@ -31,14 +40,14 @@ either one, but example values are for Unicode_Release.
 	d. It's a good idea to not only do a Build > Clean Solution
 		beforehand, but to also delete the directory 
 		(e.g., audacity\win\unicode_release).
-	
+
 	e. Make sure to build the "locale" project, either 
 		separately or as part of Build > Batch Build. You will need
 		msgfmt.zip in your PATH for that. Get it from
 		http://audacity.sourceforge.net/files/msgfmt.zip
 
 
-2. Copy other necessities to release build folder.
+3. Copy other necessities to release build folder.
 
 	a. We are still keeping some of the LADSPA plug-ins in the 
 		Audacity installer, even though we are now offering a 
@@ -72,9 +81,11 @@ either one, but example values are for Unicode_Release.
       http://www.audacity.homerow.net/index.php?dir=windows
 
       and download "locales-2.8.10-msw.zip". Extract the contents 
-      into the "Languages" folder as above, then go to the newly 
-      added "gl_ES" and "zh_CN" folders in turn, and copy the 
-      "wxstd.mo" files from each into the "gl" and zh" folders 
+      into the "Languages" folder as above (note that 7-zip does (most of?) what
+      you want, the standard XP extractor doesn't (or I can't make it).
+      You want each wxstd.mo file in the appropriate language directory/folder).
+      Then go to the newly added "gl_ES" and "zh_CN" folders in turn,
+      and copy the "wxstd.mo" files from each into the "gl" and zh" folders 
       respectively. Then delete the "gl_ES" and "zh_CN" folders.
 
    e. Also in 1.3.8, it became apparent after release that VC9 Express
@@ -94,15 +105,6 @@ either one, but example values are for Unicode_Release.
       4. The *.iss scripts (see Step 4 below) will pick up the 
          replacement manifest and DLLs from 
          C:\Program Files\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT . 
-
-
-3. Get the manual
-
-	Make sure you have python installed and on your path.
-	Delete audacity\help\manual if it exists.
-	Go to audacity\scripts\mw2html_audacity.
-	Run wiki2htm and wait for it to complete.
-	The manual should have been built in audacity\help\manual.
 
 4. Build the Installer.
 
