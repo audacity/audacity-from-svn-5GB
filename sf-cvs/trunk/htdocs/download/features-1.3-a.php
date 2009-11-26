@@ -221,9 +221,14 @@ echo _('<dl>
                      <li>Restored support for multi-channel recording devices that
                           can record more than two channels using Audacity</li>
                 </ul>
-         </dd>
+         </dd>');?>
 
-         <dd>Platform-specific Bug Fixes:
+<?php
+   // i18n-hint: The following are new features in
+   // old versions of Audacity, which have never been
+   // translated up to now. Feel free to translate 
+   // them as a low priority.  
+echo _('<dd>Platform-specific Bug Fixes:
                 <ul>
                      <li><i>Windows Vista:</i> fixed crash opening Preferences with no sound
                           devices enabled and connected </li>
