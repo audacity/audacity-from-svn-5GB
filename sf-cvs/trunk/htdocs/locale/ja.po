@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity website translation 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-02 08:09+0000\n"
-"PO-Revision-Date: 2009-09-05 19:07+0900\n"
+"POT-Creation-Date: 2009-11-26 21:00+0000\n"
+"PO-Revision-Date: 2009-11-28 10:17+0900\n"
 "Last-Translator: Atsushi YOSHIDA <ayoshida.pub@gmail.com>\n"
 "Language-Team: kuzunet <kuzu@mpd.biglobe.ne.jp>\n"
 "MIME-Version: 1.0\n"
@@ -65,8 +65,8 @@ msgid "Audacity&reg; is free, open source software for recording and editing sou
 msgstr "Audacity&reg; はフリーでオープンソースのレコーディングおよびサウンド編集ソフトウエアです。Mac OS X、 Microsoft Windows、 GNU/Linuxおよびその他のオペレーティングシステムに対応しています。<a href=\"about/\">Audacityについて...</a>  また<a href=\"http://audacityteam.org/wiki/\">Wiki</a> あるいは <a href=\"http://audacityteam.org/forum/\">Forum</a> もご覧ください。"
 
 #: index.php:57
-msgid "The latest release of Audacity is <a href=\"/download\">1.3.9 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
-msgstr "Audacityの最新バージョンは <a href=\"/download\">1.3.9 (Beta)</a>です。このバージョンはまだ開発進行中で、ドキュメントや他言語へ翻訳もまだ完全ではありませんので、上級ユーザ向けです。 1.3.x Betaシリーズのより詳しい情報は<a href=\"/download/features-1.3-a\">Audacity 1.3の新機能</a> をご覧ください。"
+msgid "The latest release of Audacity is <a href=\"/download\">1.3.9 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into different languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
+msgstr "Audacityの最新バージョンは <a href=\"/download\">1.3.9 (Beta)</a>です。このバージョンはまだ開発進行中で、ドキュメントや他言語へ翻訳もまだ完全ではありませんので、上級ユーザ向けです。 1.3.x Betaシリーズのより詳しい情報は<a href=\"/download/features-1.3-a\">1.3での新機能</a> をご覧ください。"
 
 #: index.php:59
 msgid "For all users, <a href=\"/download\">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have Audacity 1.2.6 and 1.3.9 installed on the same machine."
@@ -269,7 +269,7 @@ msgstr ""
 "<ul>\n"
 "  <li><a href=\"http://www.ladspa.org/\">LADSPA プラグイン</a>をエフェクトに新しく追加することができます。</li>\n"
 "  <li>Audacityは、<a href=\"http://plugin.org.uk/\">Steve Harris</a>によるいくつかのサンプルプラグインを含んでいます。</li>\n"
-"  <li>Windows用、Mac用では、<a href=\"http://audacityteam.org/vst/\">VST Enabler</a>を用いることによって、VSTプラグインを読み込むことができます。</li>\n"
+"  <li>Windows用、Mac用では、<a href=\"http://audacityteam.org/vst/\">VST イネーブラー</a>を用いることによって、VSTプラグインを読み込むことができます。</li>\n"
 "  <li>内蔵のプログラミング言語 <a href=\"../help/nyquist\">Nyquist</a> を使って、新しいエフェクトを書くことができます。</li>\n"
 "</ul>"
 
@@ -300,117 +300,6 @@ msgstr ""
 "  <li><a href=\"license\">GNU General Public License (GPL)</a>に基づいたライセンス。</li>\n"
 "  <li>Mac OS X、Windows、GNU/Linux上で動作します。</li>\n"
 "</ul>"
-
-#: about/credits.php:10
-#: main.inc.php:27
-msgid "Credits"
-msgstr "提供"
-
-#: about/credits.php:15
-msgid ""
-"These are some of the people who have <a href=\"../community/\">contributed</a> to the free Audacity audio editor.</p>  \n"
-"</p>If you have questions or feedback about Audacity, please see the <a href=\"../contact/\">contact page</a>."
-msgstr ""
-"フリーのオーディオエディタであるAudacityに<a href=\"../community/\">貢献してきた</a>人たちが何人もいます。</p>  \n"
-"</p>もしあなたがAudacityに関して疑問点やフィードバックをお持ちでしたら、どうぞ、<a href=\"../contact/\">連絡ページ</a>をご覧ください。"
-
-#: about/credits.php:18
-msgid "History"
-msgstr "履歴"
-
-#: about/credits.php:20
-msgid "Audacity was started by Dominic Mazzoni and Roger Dannenberg in the fall of 1999 at Carnegie Mellon University.  It was released as open-source software at SourceForge.net in May of 2000."
-msgstr "Audacityは1999年の秋にカーネギーメロン大学のDominic MazzoniおよびRoger Dannenbergにより開発されました。 2000年5月にはSourceForge.netにオープンソースソフトウェアとして公開されました。"
-
-#: about/credits.php:24
-msgid "Audacity Team Members"
-msgstr "Audacityチーム"
-
-#: about/credits.php:26
-#: about/credits.php:27
-#: about/credits.php:28
-#: about/credits.php:35
-#: about/credits.php:58
-msgid "documentation and support"
-msgstr "ドキュメンテーションとサポート"
-
-#: about/credits.php:28
-msgid "French"
-msgstr "フランス語"
-
-#: about/credits.php:29
-msgid "system administration"
-msgstr "システム管理"
-
-#: about/credits.php:30
-#: about/credits.php:31
-#: about/credits.php:32
-#: about/credits.php:33
-#: about/credits.php:34
-#: about/credits.php:36
-#: about/credits.php:53
-#: about/credits.php:54
-#: about/credits.php:55
-#: about/credits.php:56
-#: about/credits.php:57
-#: about/credits.php:63
-#: about/credits.php:64
-#: about/credits.php:65
-#: about/credits.php:66
-#: about/credits.php:68
-#: about/credits.php:69
-#: about/credits.php:70
-#: about/credits.php:71
-#: about/credits.php:72
-#: about/credits.php:73
-#: about/credits.php:74
-#: about/credits.php:75
-msgid "developer"
-msgstr "開発者"
-
-#: about/credits.php:39
-msgid "Technical Leadership Council"
-msgstr "技術リーダーシップカウンシル"
-
-#: about/credits.php:51
-msgid "Emeritus: distinguished Audacity team members, not currently active"
-msgstr "名誉チームメンバー：顕著な功績のあったAudacityチームメンバー。現在は活動休止中"
-
-#: about/credits.php:61
-msgid "Contributors"
-msgstr "貢献者"
-
-#: about/credits.php:67
-msgid "graphic artist"
-msgstr "グラフィックアーティスト"
-
-#: about/credits.php:78
-#: main.inc.php:69
-#: community/index.php:25
-#: community/translation.php:9
-msgid "Translators"
-msgstr "翻訳者"
-
-#: about/credits.php:125
-#: download/plugins.php:36
-msgid "Libraries"
-msgstr "ライブラリ"
-
-#: about/credits.php:126
-msgid "Audacity is based on code from the following projects:"
-msgstr "Audacityは下記のプロジェクトのソースコードを用いています。"
-
-#: about/credits.php:140
-msgid "Thanks"
-msgstr "感謝"
-
-#: about/credits.php:141
-msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
-msgstr "他にも私たちが感謝したい人々や組織が多くあります。これらの多くはコードやパッチやフィードバックやお金や時間やその他諸々の点においてプロジェクトに貢献してきました。ほかにも、これらの作業全体を可能にするツールを作っていただいた人もいます。"
-
-#: about/credits.php:164
-msgid "(Let us know if we're forgetting anyone!)"
-msgstr "(もし誰か忘れている人がいたら私たちに知らせてください！)"
 
 #: about/links.php:9
 #: main.inc.php:28
@@ -771,6 +660,134 @@ msgstr "テンポチェンジエフェクト"
 msgid "Recording with Audacity"
 msgstr "Audacityでレコーディング"
 
+#: about/credits.php:10
+#: main.inc.php:27
+msgid "Credits"
+msgstr "提供"
+
+#: about/credits.php:15
+msgid ""
+"These are some of the people who have <a href=\"../community/\">contributed</a> to the free Audacity audio editor.</p>  \n"
+"</p>If you have questions or feedback about Audacity, please see the <a href=\"../contact/\">contact page</a>."
+msgstr ""
+"フリーのオーディオエディタであるAudacityに<a href=\"../community/\">貢献してきた</a>人たちが何人もいます。</p>  \n"
+"</p>もしあなたがAudacityに関して疑問点やフィードバックをお持ちでしたら、どうぞ、<a href=\"../contact/\">連絡ページ</a>をご覧ください。"
+
+#: about/credits.php:18
+msgid "History"
+msgstr "履歴"
+
+#: about/credits.php:20
+msgid "Audacity was started by Dominic Mazzoni and Roger Dannenberg in the fall of 1999 at Carnegie Mellon University.  It was released as open-source software at SourceForge.net in May of 2000."
+msgstr "Audacityは1999年の秋にカーネギーメロン大学のDominic MazzoniおよびRoger Dannenbergにより開発されました。 2000年5月にはSourceForge.netにオープンソースソフトウェアとして公開されました。"
+
+#: about/credits.php:22
+msgid "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, that is, excluding the code libraries Audacity uses. The <a href=\"http://www.ohloh.net/projects/audacity/contributors\">Contributors tab</a> on the Ohloh site shows the contributions of each developer."
+msgstr "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> はAudacity開発に関する定量的な解析を提供しています。 本サイトの各ページの末尾にあるOhloh &quot;ロゴ&quot; は最新の解析結果サマリーを表示しています。Audacityに関するOhlohページは、Audacityが使っているコードライブラリを除いたAudacity特有の開発分だけ表示するように設定してあります。 Ohlohサイトの <a href=\"http://www.ohloh.net/projects/audacity/contributors\">Contributors tab</a> にそれぞれの開発者の貢献が記載されています。"
+
+#: about/credits.php:24
+msgid "Audacity Team Members"
+msgstr "Audacityチーム"
+
+#: about/credits.php:26
+#: about/credits.php:27
+#: about/credits.php:28
+#: about/credits.php:32
+#: about/credits.php:35
+#: about/credits.php:39
+#: about/credits.php:40
+#: about/credits.php:62
+msgid "documentation and support"
+msgstr "ドキュメンテーションとサポート"
+
+#: about/credits.php:28
+msgid "French"
+msgstr "フランス語"
+
+#: about/credits.php:29
+msgid "system administration"
+msgstr "システム管理"
+
+#: about/credits.php:30
+#: about/credits.php:31
+#: about/credits.php:33
+#: about/credits.php:34
+#: about/credits.php:36
+#: about/credits.php:37
+#: about/credits.php:38
+#: about/credits.php:41
+#: about/credits.php:57
+#: about/credits.php:58
+#: about/credits.php:59
+#: about/credits.php:60
+#: about/credits.php:61
+#: about/credits.php:67
+#: about/credits.php:69
+#: about/credits.php:70
+#: about/credits.php:71
+#: about/credits.php:72
+#: about/credits.php:73
+#: about/credits.php:74
+#: about/credits.php:76
+#: about/credits.php:77
+#: about/credits.php:78
+#: about/credits.php:79
+#: about/credits.php:80
+#: about/credits.php:81
+#: about/credits.php:82
+#: about/credits.php:83
+#: about/credits.php:84
+msgid "developer"
+msgstr "開発者"
+
+#: about/credits.php:44
+msgid "Technical Leadership Council"
+msgstr "技術リーダーシップカウンシル"
+
+#: about/credits.php:55
+msgid "Emeritus: distinguished Audacity team members, not currently active"
+msgstr "名誉チームメンバー：顕著な功績のあったAudacityチームメンバー。現在は活動休止中"
+
+#: about/credits.php:65
+msgid "Contributors"
+msgstr "貢献者"
+
+#: about/credits.php:68
+msgid "accessibility advisor"
+msgstr "アクセシビリティアドバイザ"
+
+#: about/credits.php:75
+msgid "graphic artist"
+msgstr "グラフィックアーティスト"
+
+#: about/credits.php:87
+#: main.inc.php:69
+#: community/index.php:25
+#: community/translation.php:9
+msgid "Translators"
+msgstr "翻訳者"
+
+#: about/credits.php:134
+#: download/plugins.php:36
+msgid "Libraries"
+msgstr "ライブラリ"
+
+#: about/credits.php:135
+msgid "Audacity is based on code from the following projects:"
+msgstr "Audacityは下記のプロジェクトのソースコードを用いています。"
+
+#: about/credits.php:155
+msgid "Thanks"
+msgstr "感謝"
+
+#: about/credits.php:156
+msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
+msgstr "他にも私たちが感謝したい人々や組織が多くあります。これらの多くはコードやパッチやフィードバックやお金や時間やその他諸々の点においてプロジェクトに貢献してきました。ほかにも、これらの作業全体を可能にするツールを作っていただいた人もいます。"
+
+#: about/credits.php:182
+msgid "(Let us know if we're forgetting anyone!)"
+msgstr "(もし誰か忘れている人がいたら私たちに知らせてください！)"
+
 #: main.inc.php:20
 msgid "Home"
 msgstr "ホーム"
@@ -780,6 +797,7 @@ msgid "About"
 msgstr "概要"
 
 #: main.inc.php:31
+#: download/betawarning.inc.php:11
 #: download/index.php:10
 #: download/main.inc.php:11
 msgid "Download"
@@ -998,6 +1016,10 @@ msgstr ""
 "  そしてどうすれば改良できるか私たちにフィードバックをいただく、またAudacityを他の人に知らせていただくことも歓迎です。\n"
 "  Audacityをサポートいただき、ありがとうございます。"
 
+#: community/donate.php:66
+msgid "Purchase from the <a href=\"http://audacitystore.com/\">Audacity Store</a>"
+msgstr "<a href=\"http://audacitystore.com/\">Audacityストア</a>でのショッピング"
+
 #: community/donate.php:69
 msgid ""
 "You are invited to try out the new <a href=\"http://audacitystore.com/\">Audacity Store</a>, which features \n"
@@ -1011,6 +1033,10 @@ msgstr ""
 #: include/header.inc.php:78
 msgid "Audacity Store"
 msgstr "Audacityストア"
+
+#: community/donate.php:81
+msgid "Make a Donation"
+msgstr "寄付について"
 
 #: community/donate.php:82
 msgid "Alternatively, click the button below to donate securely by Paypal. You can send any amount, using either your credit card or your Paypal account:"
@@ -1027,6 +1053,10 @@ msgstr "もしパーソナルチェックまたは他の方法による送金を
 #: community/donate.php:106
 msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
 msgstr "フィードバックe-mailアドレス</a>にお住まいの国をご希望の支払方法をお知らせください。 "
+
+#: community/developers.php:16
+msgid "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses. The <a href=\"http://www.ohloh.net/projects/59/analyses/latest\">Code tab</a> on the Ohloh site shows the progress of code development."
+msgstr "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> はAudacity開発に関する定量的な解析を提供しています。 本サイトの各ページの末尾にあるOhloh &quot;ロゴ&quot; は最新の解析結果サマリーを表示しています。Audacityに関するOhlohページは、Audacityが使っているコードライブラリを除いてAudacity特有の開発分だけ表示するように設定してあります。 Ohlohサイトの <a href=\"http://www.ohloh.net/projects/59/analyses/latest\">Code tab</a> にコード開発の進捗が表示されています。"
 
 #: community/developers.php:19
 msgid "Join the <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a> mailing list to discuss current and future development, or to get help building and modifying the Audacity source code."
@@ -1465,6 +1495,7 @@ msgid "to learn about the Audacity source code and contribute to making Audacity
 msgstr "Audacityのソースコードについて学習し、Audacityをもっと良くするために貢献しましょう！"
 
 #: contact/privacy.php:22
+#: include/header.inc.php:209
 msgid "Advertisements Policy"
 msgstr "広告ポリシー"
 
@@ -1574,6 +1605,7 @@ msgstr "<b>上級ユーサー向け</b>に, <a href=\"http://wiki.audacityteam.o
 #: download/beta_mac.php:49
 #: download/beta_linux.php:36
 #: download/beta_source.php:40
+#: download/betawarning.inc.php:11
 #: download/linux.php:31
 #: download/mac.php:44
 #: download/source.php:29
@@ -2334,7 +2366,7 @@ msgid ""
 "                        <li>Improved support for non-mmap ALSA devices such as PulseAudio</li> \n"
 "                        <li>32-bit float data over 0 dB now handled without clipping</li>\n"
 "                        <li>\"Stop\" option when importing preserves already imported data</li>\n"
-"                        <li>AMR NB export now supported if the optional \n"
+"                        <li>AMR NB import and export now supported on all platforms if the optional \n"
 "                            <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">\n"
 "                            FFmpeg library</a> is installed</li>\n"
 "                        <li>Faster waveform drawing and better response in multi-track \n"
@@ -2385,7 +2417,7 @@ msgstr ""
 "                        <li>Spectrum表示が237.8秒のオーディオまで表示可能になりました。\n"
 "                            また改善された表示のプロジェクト別ウインドウ機能および \n"
 "                            Spectrogramsの設定項目も追加されました。</li> \n"
-"                        <li>コントラスト解析ツールはモデルレスで使いやすくなりました</li>\n"
+"                        <li>コントラスト解析ツールはモードレスで使いやすくなりました</li>\n"
 "                 </ul>\n"
 "          </dd>\n"
 "\n"
@@ -2404,7 +2436,7 @@ msgstr ""
 "          <dd> その他:\n"
 "                 <ul>\n"
 "                        <li>16チャンネル以上の録音が可能になりました(ハードウェア制限に依存)</li>\n"
-"                        <li>Improved support for PulseAudioなどの非mmap ALSAデバイスのサポートを改善</li> \n"
+"                        <li>PulseAudioなどの非mmap ALSAデバイスのサポートを改善</li> \n"
 "                        <li>0 dBを超える32ビット浮動小数点データをクリッピングなしに処理できます</li>\n"
 "                        <li>既存データを取り込む際の\"中止\"オプション</li>\n"
 "                        <li>AMR NB書き出しがサポートされました。これには \n"
@@ -2445,88 +2477,773 @@ msgstr ""
 msgid "New in Audacity 1.3.7"
 msgstr "Audacity 1.3.7の新機能"
 
-#: download/features-1.3-a.php:250
+# 翻訳せず
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:175
+msgid ""
+"<dl>\n"
+"\t<dt> Improvements and new features </dt>\n"
+"\t      <dd>   <ul>   \n"
+"                      <li>F11 Full Screen mode</li>\n"
+"                      <li>High-quality \"Sliding Time Scale/Pitch Shift\" effect</li>\n"
+"                      <li>\"Audio Contrast Analyzer\" for testing audio on the\n"
+"                           internet for\n"
+"                           <a href=\"http://www.eramp.com/WCAG_2_audio_contrast_tool_help.htm\">\n"
+"                           WCAG2 accessibility compliance</a></li>\n"
+"                      <li>On Windows, sound devices can now be opened using the more\n"
+"                           efficient DirectSound API</li>\n"
+"                      <li>As a first step towards improving latency correction, a fixed\n"
+"                           rather than variable correction is now applied, customizable\n"
+"                           in Preferences                    \n"
+"                      <li>Numerous minor interface improvements such as Metadata\n"
+"                           Editor navigation, new \"hh:mm:ss + hundredths\" selection format\n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"\t<dt> Numerous usability and stability fixes </dt>\n"
+"\t      <dd> Cross-platform Bug Fixes:\n"
+"                <ul>\n"
+"                     <li>Muting/soloing caused incorrect channel results in exported\n"
+"                          stereo files</li>\n"
+"                     <li>Nyquist effects: pasted unmodified audio into the result,\n"
+"                          no progress bar, truncation of processed audio on\n"
+"                          cancel</li> \n"
+"                     <li>Noise Removal: pasted unmodified audio into the result, \n"
+"                          unwanted filtering tail</li>\n"
+"                     <li>Uncompressed exports:</li>\n"
+"                            <ul>\n"
+"                                  <li>Export as WAV could be corrupted if\n"
+"                                       overwriting to same file</li>\n"
+"                                  <li>Export multiple to uncompressed\n"
+"                                       formats only produced 16-bit WAV</li>\n"
+"                            </ul> \n"
+"                     <li>Compressed exports:</li>\n"
+"                            <ul>\n"
+"                                  <li>MP3 exports now produce correct bit rate\n"
+"                                       mode, quality and length, with improved \n"
+"                                       metadata visibility in player applications \n"
+"                                       (Windows users will require the\n"
+"                                       <a href=\"http://lame.buanzo.com.ar/\">\n"
+"                                       latest version of the LAME encoder</a>) \n"
+"                                  <li>WMA exports containing metadata are now correct</li> \n"
+"                            </ul>\n"
+"                     <li>Restored support for multi-channel recording devices that\n"
+"                          can record more than two channels using Audacity</li>\n"
+"                </ul>\n"
+"         </dd>"
+msgstr ""
+"<dl>\n"
+"\t<dt> Improvements and new features </dt>\n"
+"\t      <dd>   <ul>   \n"
+"                      <li>F11 Full Screen mode</li>\n"
+"                      <li>High-quality \"Sliding Time Scale/Pitch Shift\" effect</li>\n"
+"                      <li>\"Audio Contrast Analyzer\" for testing audio on the\n"
+"                           internet for\n"
+"                           <a href=\"http://www.eramp.com/WCAG_2_audio_contrast_tool_help.htm\">\n"
+"                           WCAG2 accessibility compliance</a></li>\n"
+"                      <li>On Windows, sound devices can now be opened using the more\n"
+"                           efficient DirectSound API</li>\n"
+"                      <li>As a first step towards improving latency correction, a fixed\n"
+"                           rather than variable correction is now applied, customizable\n"
+"                           in Preferences                    \n"
+"                      <li>Numerous minor interface improvements such as Metadata\n"
+"                           Editor navigation, new \"hh:mm:ss + hundredths\" selection format\n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"\t<dt> Numerous usability and stability fixes </dt>\n"
+"\t      <dd> Cross-platform Bug Fixes:\n"
+"                <ul>\n"
+"                     <li>Muting/soloing caused incorrect channel results in exported\n"
+"                          stereo files</li>\n"
+"                     <li>Nyquist effects: pasted unmodified audio into the result,\n"
+"                          no progress bar, truncation of processed audio on\n"
+"                          cancel</li> \n"
+"                     <li>Noise Removal: pasted unmodified audio into the result, \n"
+"                          unwanted filtering tail</li>\n"
+"                     <li>Uncompressed exports:</li>\n"
+"                            <ul>\n"
+"                                  <li>Export as WAV could be corrupted if\n"
+"                                       overwriting to same file</li>\n"
+"                                  <li>Export multiple to uncompressed\n"
+"                                       formats only produced 16-bit WAV</li>\n"
+"                            </ul> \n"
+"                     <li>Compressed exports:</li>\n"
+"                            <ul>\n"
+"                                  <li>MP3 exports now produce correct bit rate\n"
+"                                       mode, quality and length, with improved \n"
+"                                       metadata visibility in player applications \n"
+"                                       (Windows users will require the\n"
+"                                       <a href=\"http://lame.buanzo.com.ar/\">\n"
+"                                       latest version of the LAME encoder</a>) \n"
+"                                  <li>WMA exports containing metadata are now correct</li> \n"
+"                            </ul>\n"
+"                     <li>Restored support for multi-channel recording devices that\n"
+"                          can record more than two channels using Audacity</li>\n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"         <dd>Platform-specific Bug Fixes:\n"
+"                <ul>\n"
+"                     <li><i>Windows Vista:</i> fixed crash opening Preferences with no sound\n"
+"                          devices enabled and connected </li>\n"
+"                     <li><i>Mac OS X and Linux:</i></li>\n"
+"                         <ul>      \n"
+"                                <li>fixes for spurious clipping, label typing, no shortcuts after\n"
+"                                     running effects</li>                           \n"
+"                                <li>project rate now always changes to respect that of first \n"
+"                                   imported file</li>\n"
+"                         </ul>\n"
+"                     <li><i>Mac OS X only:</i></li>\n"
+"                         <ul>\n"
+"                                <li>fixes for inactive or corrupted menus, hidden dialogues, \n"
+"                                     portable settings not detected, and inability to set \n"
+"                                     independent Command and Control shortcuts</li>\n"
+"                                <li>FFmpeg installer now available</li>\n"
+"                         </ul> \n"
+"                </ul>\n"
+"         </dd>    \n"
+"   </dt>    \n"
+"</dl>\n"
+"\n"
+"<p>\n"
+"Please see the included README.txt for full details of changes, and for issues known at time of Release.\n"
+"</p>"
+
+# 翻訳せず
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:231
+msgid ""
+"<dd>Platform-specific Bug Fixes:\n"
+"                <ul>\n"
+"                     <li><i>Windows Vista:</i> fixed crash opening Preferences with no sound\n"
+"                          devices enabled and connected </li>\n"
+"                     <li><i>Mac OS X and Linux:</i></li>\n"
+"                         <ul>      \n"
+"                                <li>fixes for spurious clipping, label typing, no shortcuts after\n"
+"                                     running effects</li>                           \n"
+"                                <li>project rate now always changes to respect that of first \n"
+"                                   imported file</li>\n"
+"                         </ul>\n"
+"                     <li><i>Mac OS X only:</i></li>\n"
+"                         <ul>\n"
+"                                <li>fixes for inactive or corrupted menus, hidden dialogues, \n"
+"                                     portable settings not detected, and inability to set \n"
+"                                     independent Command and Control shortcuts</li>\n"
+"                                <li>FFmpeg installer now available</li>\n"
+"                         </ul> \n"
+"                </ul>\n"
+"         </dd>    \n"
+"   </dt>    \n"
+"</dl>\n"
+"\n"
+"<p>\n"
+"Please see the included README.txt for full details of changes, and for issues known at time of Release.\n"
+"</p>"
+msgstr ""
+"<dd>Platform-specific Bug Fixes:\n"
+"                <ul>\n"
+"                     <li><i>Windows Vista:</i> fixed crash opening Preferences with no sound\n"
+"                          devices enabled and connected </li>\n"
+"                     <li><i>Mac OS X and Linux:</i></li>\n"
+"                         <ul>      \n"
+"                                <li>fixes for spurious clipping, label typing, no shortcuts after\n"
+"                                     running effects</li>                           \n"
+"                                <li>project rate now always changes to respect that of first \n"
+"                                   imported file</li>\n"
+"                         </ul>\n"
+"                     <li><i>Mac OS X only:</i></li>\n"
+"                         <ul>\n"
+"                                <li>fixes for inactive or corrupted menus, hidden dialogues, \n"
+"                                     portable settings not detected, and inability to set \n"
+"                                     independent Command and Control shortcuts</li>\n"
+"                                <li>FFmpeg installer now available</li>\n"
+"                         </ul> \n"
+"                </ul>\n"
+"         </dd>    \n"
+"   </dt>    \n"
+"</dl>\n"
+"\n"
+"<p>\n"
+"Please see the included README.txt for full details of changes, and for issues known at time of Release.\n"
+"</p>"
+
+#: download/features-1.3-a.php:258
 msgid "New in Audacity 1.3.6"
 msgstr "Audacity 1.3.6の新機能"
 
-#: download/features-1.3-a.php:287
+# 翻訳せず
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:264
+msgid ""
+"<dl>\n"
+"\t<dt> Major new capabilities </dt>\n"
+"         <dd>   <ul>\n"
+"                      <li><b>FFmpeg support</b> (downloadable separately) permits import and\n"
+"                             export of a much wider range of file formats, including WMA, \n"
+"                             M4A and AC3, plus import of audio from video files</li>\n"
+"                      <li><b>On-demand loading</b> of uncompressed files eliminates the \n"
+"                             wait before files can be played or edited</li> \n"
+"                      <li><b>Linked audio and label tracks</b> allow labels to move with\n"
+"                             their corresponding audio when cutting, pasting or changing\n"
+"                             speed or tempo</li>\n"
+"         </ul>   </dd>\n"
+"   </dt>\n"
+"\n"
+"   <dt> Other features </dt>\n"
+"         <dd>   <ul>\n"
+"                       <li>Hierarchical plug-in grouping for built-in plug-ins</li>\n"
+"                       <li>Sound activated recording</li>\n"
+"                       <li>Ability to save smaller, compressed project files</li>\n"
+"                       <li>MIDI files can now be imported, cut-and-paste edited, then exported</li>\n"
+"         </ul>   </dd>      \n"
+"   </dt>\n"
+"\n"
+"   <dt> Miscellaneous </dt>\n"
+"         <dd>   <ul>\n"
+"                       <li>Transport menu for easy access to frequently used\n"
+"                           recording/playback commands and preferences</li>       \n"
+"                       <li>Default View Mode Preference to choose Waveform, \n"
+"                           Spectrum or Pitch view</li>\n"
+"                       <li>Several bug fixes</li>\n"
+"         </ul>  </dd>         \n"
+"   </dt>\n"
+"</dl>"
+msgstr ""
+"<dl>\n"
+"\t<dt> Major new capabilities </dt>\n"
+"         <dd>   <ul>\n"
+"                      <li><b>FFmpeg support</b> (downloadable separately) permits import and\n"
+"                             export of a much wider range of file formats, including WMA, \n"
+"                             M4A and AC3, plus import of audio from video files</li>\n"
+"                      <li><b>On-demand loading</b> of uncompressed files eliminates the \n"
+"                             wait before files can be played or edited</li> \n"
+"                      <li><b>Linked audio and label tracks</b> allow labels to move with\n"
+"                             their corresponding audio when cutting, pasting or changing\n"
+"                             speed or tempo</li>\n"
+"         </ul>   </dd>\n"
+"   </dt>\n"
+"\n"
+"   <dt> Other features </dt>\n"
+"         <dd>   <ul>\n"
+"                       <li>Hierarchical plug-in grouping for built-in plug-ins</li>\n"
+"                       <li>Sound activated recording</li>\n"
+"                       <li>Ability to save smaller, compressed project files</li>\n"
+"                       <li>MIDI files can now be imported, cut-and-paste edited, then exported</li>\n"
+"         </ul>   </dd>      \n"
+"   </dt>\n"
+"\n"
+"   <dt> Miscellaneous </dt>\n"
+"         <dd>   <ul>\n"
+"                       <li>Transport menu for easy access to frequently used\n"
+"                           recording/playback commands and preferences</li>       \n"
+"                       <li>Default View Mode Preference to choose Waveform, \n"
+"                           Spectrum or Pitch view</li>\n"
+"                       <li>Several bug fixes</li>\n"
+"         </ul>  </dd>         \n"
+"   </dt>\n"
+"</dl>"
+
+#: download/features-1.3-a.php:298
 msgid "New in Audacity 1.3.5"
 msgstr "Audacity 1.3.5の新機能"
 
-#: download/features-1.3-a.php:356
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:304
+msgid ""
+"<dl>\n"
+"\t<dt> Recording / Playback </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Several bugs fixed so that latency correction should be better, \n"
+"                               and more devices work correctly.</li>\n"
+"                           <li>Problems with invalid sample rates under Linux should be much rarer.</li>\n"
+"                           <li>Newer version of Portaudio library.</li>\n"
+"                           <li>New feature to record onto the end of an existing track\n"
+"                               (hold Shift while clicking Record).</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Import / Export </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Updated versions of Libogg, Libvorbis, Libflac, Libsndfile and Twolame\n"
+"                               libraries.\n"
+"                           <li>Handling of unsupported file formats more informative.</li>\n"
+"                           <li>Handling of file names with slashes on OS X improved.</li>\n"
+"                           <li>New dialog allows replacement of illegal file name characters on all platforms.</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Interface </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Improved scaling and layout for rulers and VU meters.</li>\n"
+"                           <li>Envelope fixes/improvements including full control of undo/redo.</li>\n"
+"                           <li>New keyboard shortcuts and improved menu navigation.</li>\n"
+"                           <li>Preferences:</li>\n"
+"                               <ul>\n"
+"                                    <li>More intuitive tab arrangement.</li> \n"
+"                                    <li>New options for mute/solo and Metadata Editor behavior.</li> \n"
+"                                    <li>Language can now be changed without restart.</li>\n"
+"                               </ul>\n"
+"\t\t\t      <li>Expanded Build Information tab.</li>\n"
+"           </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Effects </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>New Vocal Remover plug-in, improvements for Generate effects.</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Compilation </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Fixes when building Audacity with libraries disabled.</li>\n"
+"                           <li>Improvements to make Mac and Solaris builds easier.</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Security </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Full fix for issue CVE-2007-6061 on systems where temporary directories\n"
+"                                can be changed by other users (thanks to Michael Schwendt).</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\n"
+"\t<dt> Miscellaneous </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Updated translations for many locales.</li>\n"
+"                           <li>Several stability improvements.</li> \n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"</dl>"
+msgstr ""
+"<dl>\n"
+"\t<dt> 録音/再生</dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>遅延補正の改善し、より多くのデバイスで正しく動くようにいくつかのバグを修正。</li>\n"
+"                           <li>Linuxでの不正サンプリング周波数の問題発生がより稀になっています。</li>\n"
+"                           <li>Portaudioライブラリの新バージョン</li>\n"
+"                           <li>既存のトラックの後ろに録音する機能\n"
+"                               （Shiftを押しながら録音をクリック）</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> 取り込み/書き出し </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Libogg、Libvorbis、 Libflac、 Libsndfile およびTwolameライブラリ\n"
+"                               の更新版\n"
+"                           <li>非対応ファイル形式の取り扱いに対してより親切な情報提供</li>\n"
+"                           <li>OS X版でスラッシュ記号を含むファイル名取り扱いの改善</li>\n"
+"                           <li>不正文字を含むファイル名を置き換える新しいダイアログのサポート（全プラットフォーム）</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> インタフェース</dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>ルーラーとVUメータの目盛りと配置の改善</li>\n"
+"                           <li>アンドゥと繰り返しを含むエンベロープ修正/改善</li>\n"
+"                           <li>新規のキーボードショートカットとメニューナビゲーションの改善</li>\n"
+"                           <li>設定:</li>\n"
+"                               <ul>\n"
+"                                    <li>より直感的なタブの配置</li> \n"
+"                                    <li>Mute/soloとメタデータエディタの動きに新オプション追加</li> \n"
+"                                    <li>再起動なしで言語の変更が可能になりました。</li>\n"
+"                               </ul>\n"
+"\t\t\t      <li>ビルド情報タブの拡張</li>\n"
+"           </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> エフェクト </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>ボーカル消去プラグインの追加、生成エフェクトの改善</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> コンパイル </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>ライブラリ不活性でのビルドでの修正</li>\n"
+"                           <li>MacおよびSolarisビルドが容易になりました。</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> セキュリティ </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>他ユーザーがテンポラリディレクトリを変更できるというissue CVE-2007-6061の完全な修正\n"
+"                                （Michael Schwendt氏に感謝します）</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\n"
+"\t<dt> その他 </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>多くのロケールでの翻訳の更新</li>\n"
+"                           <li>いくつかの安定性の向上</li> \n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"</dl>"
+
+#: download/features-1.3-a.php:370
 msgid "New in Audacity 1.3.4"
 msgstr "Audacity 1.3.4の新機能"
 
-#: download/features-1.3-a.php:432
+# 翻訳せず
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:376
+msgid ""
+"<dl>\n"
+"  <dt></dt>\n"
+"  <dd>\n"
+"    <!-- indent cheat -->\n"
+"    <dl>\n"
+"      <dt> New features </dt>\n"
+"      <dd>New Welcome Screen with introduction to Audacity.</dd>\n"
+"      <dd>Enhanced Windows Shell integration, so Audacity shows up in lots of\n"
+"          Windows places such as \"Open With\".</dd>\n"
+"      <dd>New keyboard command: \"Mix and Render to New Track\" (bound to Ctrl+Shift+M).</dd>\n"
+"      <dd>New keyboard shortcut: \"Shift-A\" starts playback when stopped,\n"
+"          or performs \"Stop and Select\" when playing.</dd>\n"
+"      <dd>Added support for VAMP audio analysis plug-ins.</dd>\n"
+"      <dd>Solo button solos only one track at a time, and a track cannot be both mute and solo.</dd>\n"
+"\n"
+"      <dt> Interface </dt>\n"
+"      <dd>Keyboard shortcuts for making short/long jumps along the timeline.</dd>\n"
+"      <dd>Added \"Snap To\" in the Selection Bar.</dd>\n"
+"      <dd>Made keyboard navigation easier when multiple menu items with the same first letter exist.</dd>\n"
+"      <dd>Enhanced interface for label editing.</dd>\n"
+"      <dd>Layout of OK/Cancel buttons consistency improved.</dd>\n"
+"      <dd>\n"
+"        Preferences:\n"
+"        <ul>\n"
+"          <li>\"Select all audio in project, if none selected\" (on by default).</li>\n"
+"          <li>\"Beep on completion of longer activities\" (system bell, not main output).</li>\n"
+"          <li>Other preferences cleaned up and explanations improved.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>Envelopes: Many fixes when copying / pasting / repeating.</dd>\n"
+"      <dd>Many translation updates.</dd>\n"
+"      <dd>Track height fixed in several cases.</dd>\n"
+"      <dd>CleanSpeech mode switching without closing and re-opening fixed.</dd>\n"
+"\n"
+"      <dt> Opening/Saving Formats </dt>\n"
+"      <dd>Metadata editor added for OGG, FLAC and WAV/AIFF exports, and general improvements.</dd>\n"
+"      <dd>Metadata import improved.</dd>\n"
+"      <dd>Muted tracks are no longer audible in the exported mix.</dd>\n"
+"\n"
+"      <dt> Effects </dt>\n"
+"      <dd>Truncate Silence: support for multiple and stereo tracks.</dd>\n"
+"      <dd>\n"
+"        Dtmf Generator:\n"
+"        <ul>\n"
+"          <li>Added support for keypad letters.</li>\n"
+"          <li>Added an amplitude control.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>Compressor: variable decay time added.</dd>\n"
+"      <dd>\n"
+"        Equalization:\n"
+"        <ul>\n"
+"          <li>Clicks at start / end prevented.</li>\n"
+"          <li>Improvements to saved curves being found.</li>\n"
+"          <li>Preview works correctly.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>\"Merge\" command appears in Undo history.</dd>\n"
+"      <dd>Clipping detected more reliably.</dd>\n"
+"      <dd>Nyquist plug-ins reviewed and enhanced.</dd>\n"
+"      <dd>Better (and more) progress bars.</dd>\n"
+"      <dd>Canceling effect always restores previous audio.</dd>\n"
+"      <dd>Several improvement to effects in batch mode.</dd>\n"
+"\n"
+"      <dt> Recording/Playback </dt>\n"
+"      <dd>Improvements to latency correction.</dd>\n"
+"      <dd>Updated version of portaudio-v19 library.</dd>\n"
+"\n"
+"      <dt>\n"
+"        Note that Help is no longer built in, but accessible on the Web via links in Audacity.\n"
+"      </dt>\n"
+"    </dl>\n"
+"  </dd>\n"
+"</dl>"
+msgstr ""
+"<dl>\n"
+"  <dt></dt>\n"
+"  <dd>\n"
+"    <!-- indent cheat -->\n"
+"    <dl>\n"
+"      <dt> New features </dt>\n"
+"      <dd>New Welcome Screen with introduction to Audacity.</dd>\n"
+"      <dd>Enhanced Windows Shell integration, so Audacity shows up in lots of\n"
+"          Windows places such as \"Open With\".</dd>\n"
+"      <dd>New keyboard command: \"Mix and Render to New Track\" (bound to Ctrl+Shift+M).</dd>\n"
+"      <dd>New keyboard shortcut: \"Shift-A\" starts playback when stopped,\n"
+"          or performs \"Stop and Select\" when playing.</dd>\n"
+"      <dd>Added support for VAMP audio analysis plug-ins.</dd>\n"
+"      <dd>Solo button solos only one track at a time, and a track cannot be both mute and solo.</dd>\n"
+"\n"
+"      <dt> Interface </dt>\n"
+"      <dd>Keyboard shortcuts for making short/long jumps along the timeline.</dd>\n"
+"      <dd>Added \"Snap To\" in the Selection Bar.</dd>\n"
+"      <dd>Made keyboard navigation easier when multiple menu items with the same first letter exist.</dd>\n"
+"      <dd>Enhanced interface for label editing.</dd>\n"
+"      <dd>Layout of OK/Cancel buttons consistency improved.</dd>\n"
+"      <dd>\n"
+"        Preferences:\n"
+"        <ul>\n"
+"          <li>\"Select all audio in project, if none selected\" (on by default).</li>\n"
+"          <li>\"Beep on completion of longer activities\" (system bell, not main output).</li>\n"
+"          <li>Other preferences cleaned up and explanations improved.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>Envelopes: Many fixes when copying / pasting / repeating.</dd>\n"
+"      <dd>Many translation updates.</dd>\n"
+"      <dd>Track height fixed in several cases.</dd>\n"
+"      <dd>CleanSpeech mode switching without closing and re-opening fixed.</dd>\n"
+"\n"
+"      <dt> Opening/Saving Formats </dt>\n"
+"      <dd>Metadata editor added for OGG, FLAC and WAV/AIFF exports, and general improvements.</dd>\n"
+"      <dd>Metadata import improved.</dd>\n"
+"      <dd>Muted tracks are no longer audible in the exported mix.</dd>\n"
+"\n"
+"      <dt> Effects </dt>\n"
+"      <dd>Truncate Silence: support for multiple and stereo tracks.</dd>\n"
+"      <dd>\n"
+"        Dtmf Generator:\n"
+"        <ul>\n"
+"          <li>Added support for keypad letters.</li>\n"
+"          <li>Added an amplitude control.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>Compressor: variable decay time added.</dd>\n"
+"      <dd>\n"
+"        Equalization:\n"
+"        <ul>\n"
+"          <li>Clicks at start / end prevented.</li>\n"
+"          <li>Improvements to saved curves being found.</li>\n"
+"          <li>Preview works correctly.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>\"Merge\" command appears in Undo history.</dd>\n"
+"      <dd>Clipping detected more reliably.</dd>\n"
+"      <dd>Nyquist plug-ins reviewed and enhanced.</dd>\n"
+"      <dd>Better (and more) progress bars.</dd>\n"
+"      <dd>Canceling effect always restores previous audio.</dd>\n"
+"      <dd>Several improvement to effects in batch mode.</dd>\n"
+"\n"
+"      <dt> Recording/Playback </dt>\n"
+"      <dd>Improvements to latency correction.</dd>\n"
+"      <dd>Updated version of portaudio-v19 library.</dd>\n"
+"\n"
+"      <dt>\n"
+"        Note that Help is no longer built in, but accessible on the Web via links in Audacity.\n"
+"      </dt>\n"
+"    </dl>\n"
+"  </dd>\n"
+"</dl>"
+
+#: download/features-1.3-a.php:451
 msgid "New features in Audacity 1.3.3"
 msgstr "Audacity 1.3.3の新機能"
 
-#: download/features-1.3-a.php:490
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:457
+msgid ""
+"<dl>\n"
+"  <dt></dt>\n"
+"  <dd>\n"
+"    <!-- indent cheat -->\n"
+"    <dl>\n"
+"      <dt> Opening/saving formats </dt>\n"
+"      <dd>\n"
+"        Import\n"
+"        <ul>\n"
+"          <li>Import of audio from QuickTime (mov, aac, m4a) files now supported on OS X.</li>\n"
+"          <li>Broadcast Wave Format (BWF) wave files can now be imported.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>\n"
+"        Export\n"
+"        <ul>\n"
+"          <li>Metadata can be added to OGG files.</li>\n"
+"          <li>Improved Export option selection.</li>\n"
+"          <li>Additional export options added to MP3 and FLAC file formats.</li>\n"
+"          <li>Command line exporter now supported on Windows and OS X.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dt> Effects </dt>\n"
+"      <dd>\n"
+"        EQ effect\n"
+"        <ul>\n"
+"          <li>Responsiveness improved.</li>\n"
+"          <li>Several enhancements added.</li>\n"
+"          <li>Batch support added.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd> New Auto Duck effect </dd>\n"
+"      <dd> Added previewing to AudioUnit effects. </dd>\n"
+"      <dd> Much improved Noise Removal effect </dd>\n"
+"      <dd> Effects previewing can now be canceled. </dd>\n"
+"      <dd> New DTMF Tone Generator effect </dd>\n"
+"      <dd> Additional options available in Noise effect. </dd>\n"
+"      <dd> Improved the Tone Generation effects. </dd>\n"
+"      <dt> Other features </dt>\n"
+"      <dd> New built-in screen capture utility </dd>\n"
+"      <dd> Major speed improvement in Spectrogram rendering </dd>\n"
+"      <dd> Increased support for drag and drop on OS X. </dd>\n"
+"      <dd> Support added for building against wxWidgets 2.8.x. </dd>\n"
+"      <dd> Can now open multiple Audacity Projects at once from Explorer on Windows. </dd>\n"
+"      <dd> Improved main window sliders. </dd>\n"
+"      <dd> New support for snapping while selecting and sliding </dd>\n"
+"      <dd> Improved track focus handling and visual feedback. </dd>\n"
+"      <dd> Speed improvements and handling of resizing/zooming in tracks </dd>\n"
+"      <dd> Spectrum view can now be zoomed. </dd>\n"
+"      <dd> New internal file cache to improve handling of project files over networks </dd>\n"
+"      <dt> Also </dt>\n"
+"      <dd> Many improvements to language specific translations </dd>\n"
+"      <dd> Numerous stability improvements </dd>\n"
+"    </dl>\n"
+"  </dd>\n"
+"</dl>"
+msgstr ""
+"<dl>\n"
+"<dt></dt>\n"
+"<dd>\n"
+"<!-- indent cheat -->\n"
+"<dl>\n"
+"<dt> 開く/保存形式 </dt>\n"
+"<dd> 取り込み\n"
+"<ul>\n"
+"<li>OS XでのQuickTime (mov, aac, m4a)ファイル取り込みがサポートされました。</li>\n"
+"<li>Broadcast Wave Format (BWF)ファイルの取り込みが可能になりました。</li>\n"
+"</ul>\n"
+"</dd>\n"
+"<dd>\n"
+" 書き出し\n"
+"<ul>\n"
+"<li>OGGファイルにメタデータを付加できます。</li>\n"
+"<li>書き出しオプション選択の改善</li>\n"
+"<li>MP3およびFLACファイル形式に加えてさらなる書き出しオプション</li>\n"
+"<li>WindowsおよびOS Xでコマンドラインエキスポーターがサポートされました。</li>\n"
+"</ul>\n"
+"</dd>\n"
+"<dt> 効果 </dt>\n"
+"<dd>\n"
+" EQ効果\n"
+"<ul>\n"
+"<li>応答性の改善</li>\n"
+"<li>いくつかの向上が追加</li>\n"
+"<li>バッチサポートの追加</li>\n"
+"</ul>\n"
+"</dd>\n"
+"<dd> 新しいAuto Duck効果 </dd>\n"
+"<dd> AudioUnit効果のプレビューの追加 </dd>\n"
+"<dd> ノイズ除去効果の大きな改善</dd>\n"
+"<dd> 効果のプレビューをキャンセル可能になりました。</dd>\n"
+"<dd> DTMFトーン発生機能追加 </dd>\n"
+"<dd> ノイズ効果に追加のオプション</dd>\n"
+"<dd> トーン発生効果の改善 </dd>\n"
+"<dt> その他の機能 </dt>\n"
+"<dd> ビルトインのスクリーンコピー機能 </dd>\n"
+"<dd> スペクトル解析の処理速度大幅改善 </dd>\n"
+"<dd> OS Xでのドラッグ・ドロップ機能の改善 </dd>\n"
+"<dd> wxWidgets 2.8.xに対してのビルドのサポート </dd>\n"
+"<dd> Windows Explorerで複数のAudacityプロジェクトを同時にオープンできるようになりました。 </dd>\n"
+"<dd> メインウインドウのスライダー改善 </dd>\n"
+"<dd> 選択してスライド中にスナップできるようになりました。</dd>\n"
+"<dd> トラックフォーカスの扱い方と見え方の改善 </dd>\n"
+"<dd> トラックのリサイズとズームの処理速度改善 </dd>\n"
+"<dd> スペクトル表示がズーム可能になりました。 </dd>\n"
+"<dd> 内部ファイルキャッシュにより、プロジェクトファイルをネットワーク経由で取り扱う際の速度向上 </dd>\n"
+"<dt> さらに </dt>\n"
+"<dd> 他言語への翻訳の改善 </dd>\n"
+"<dd> 多くの安定性の改善</dd>\n"
+"</dl>\n"
+"</dd>\n"
+"</dl>"
+
+#: download/features-1.3-a.php:514
 msgid "New features in Audacity 1.3.1 and 1.3.2"
 msgstr "Audacity 1.3.1および1.3.2での新機能"
 
-#: download/features-1.3-a.php:493
+#: download/features-1.3-a.php:517
 #: download/features-1.3-i.php:70
 msgid "Improved Toolbar Docking"
 msgstr "改良されたツールバードッキング"
 
-#: download/features-1.3-a.php:494
+#: download/features-1.3-a.php:518
 msgid "Track focus for improved keyboard navigation"
 msgstr "改善されたキーボード操作によるトラックのフォーカス"
 
-#: download/features-1.3-a.php:495
+#: download/features-1.3-a.php:519
 #: download/features-1.3-i.php:77
 #: download/features-1.3-k.php:36
 msgid "Repair and Equalization effects"
 msgstr "修復とイコライゼーション効果"
 
-#: download/features-1.3-a.php:496
+#: download/features-1.3-a.php:520
 #: download/features-1.3-j.php:71
 #: download/features-1.3-l.php:46
 msgid "Timer Recording"
 msgstr "タイマー録音"
 
-#: download/features-1.3-a.php:497
+#: download/features-1.3-a.php:521
 #: download/features-1.3-d.php:56
 #: download/features-1.3-k.php:43
 msgid "Project saving and recovery"
 msgstr "プロジェクトの保存と回復"
 
-#: download/features-1.3-a.php:498
+#: download/features-1.3-a.php:522
 #: download/features-1.3-f.php:40
 #: download/features-1.3-l.php:53
 msgid "Selection Bar"
 msgstr "選択バー"
 
-#: download/features-1.3-a.php:499
+#: download/features-1.3-a.php:523
 #: download/features-1.3-b.php:50
 #: download/features-1.3-d.php:63
 msgid "Mac OS X features"
 msgstr "Mac OS X機能"
 
-#: download/features-1.3-a.php:502
+#: download/features-1.3-a.php:526
 msgid "New features in Audacity 1.3.0"
 msgstr "Audacity 1.3.0の新機能"
 
-#: download/features-1.3-a.php:505
+#: download/features-1.3-a.php:529
 #: download/features-1.3-c.php:259
 #: download/features-1.3-f.php:47
 msgid "Collapse/Expand Tracks"
 msgstr "トラックの縮小/展開"
 
-#: download/features-1.3-a.php:506
+#: download/features-1.3-a.php:530
 #: download/features-1.3-b.php:56
 #: download/features-1.3-e.php:67
 msgid "Multiple clips per track"
 msgstr "１つのトラックに複数クリップ"
 
-#: download/features-1.3-a.php:507
+#: download/features-1.3-a.php:531
 #: download/features-1.3-c.php:266
 #: download/features-1.3-g.php:54
 msgid "Improved Label Tracks"
 msgstr "改善されたトラックのラベル機能"
 
-#: download/features-1.3-a.php:508
+#: download/features-1.3-a.php:532
 #: download/features-1.3-e.php:74
 msgid "Other features"
 msgstr "その他の機能"
@@ -3159,7 +3876,7 @@ msgstr "VSTプラグイン"
 
 #: download/plugins.php:26
 msgid "Audacity can load VST effects on Windows and Mac using the optional <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  VST effects can be found on many plug-in sites such as:"
-msgstr "AudacityはWindowsおよびMacにおいて、オプションの<a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>を使うことでVSTエフェクトを使うことができます。   VSTエフェクトは多くのプラグイン・サイトで入手することがえきます。たとえば:"
+msgstr "AudacityはWindowsおよびMacにおいて、オプションの<a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST イネーブラー</a>を使うことでVSTエフェクトを使うことができます。   VSTエフェクトは多くのプラグイン・サイトで入手することがえきます。たとえば:"
 
 #: download/plugins.php:34
 msgid "The <a href=\"http://audacityteam.org/wiki/index.php?title=VST_Plug-ins\">VST Plug-ins</a> page on our <a href=\"http://audacityteam.org/wiki/\">Wiki<a/> lists a large number of VST plug-ins that have been reported to work well in Audacity."
@@ -3170,8 +3887,8 @@ msgid "At present, the only library you can add to the Stable 1.2 version of Aud
 msgstr "現時点で安定なバージョン1.2のAudacityに追加できるライブラリは<b>LAME MP3 エンコーディング</b>ライブラリのみです。これはAudacityで <a href=\"http://wiki.audacityteam.org/index.php?title=MP3\">MP3</a> フォーマットによる書き出しを可能にするものです。LAMEライブラリのインストール方法に関しては<a href=\"../help/faq?s=install&i=lame-mp3\">LAME FAQ</a>をご覧ください。"
 
 #: download/plugins.php:38
-msgid "The <a href=\"../download/features-1.3-a\">Beta 1.3</a> version of Audacity has experimental support for the <b>FFmpeg import/export</b> library. This allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg FAQ.</a> The next 2.0 Stable version of Audacity is expected to support the FFmpeg library.</a>"
-msgstr "Audacity の<a href=\"../download/features-1.3-a\">Beta 1.3</a> バージョンは実験的に <b>FFmpeg import/export</b> ライブラリをサポートしています。これはAudacityがAC3, AMR(NB), M4A and WMAなどのフォーマットにて取り込みと書き出したりビデオファイルからオーディオを取り込めるようにするものです。FFmpeg ライブラリのインストール方法に関しては <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg FAQ</a>をご覧ください。 次の安定バージョンである2.0にはFFmpegライブラリが含まれる予定です。</a>"
+msgid "In addition to supporting LAME, the <a href=\"../download/features-1.3-a\">Beta 1.3</a> version of Audacity has experimental support for the <b>FFmpeg import/export</b> library. This allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg FAQ.</a> The next 2.0 Stable version of Audacity is expected to support the FFmpeg library.</a>"
+msgstr "Audacity の<a href=\"../download/features-1.3-a\">Beta 1.3</a> バージョンは、LAMEサポートに加えて、実験的に <b>FFmpeg import/export</b> ライブラリをサポートしています。これはAudacityがAC3, AMR(NB), M4A and WMAなどのフォーマットにて取り込みと書き出したりビデオファイルからオーディオを取り込めるようにするものです。FFmpeg ライブラリのインストール方法に関しては <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg FAQ</a>をご覧ください。 次の安定バージョンである2.0にはFFmpegライブラリが含まれる予定です。</a>"
 
 #: download/recommended.inc.php:10
 msgid "Click the appropriate link below, which takes you to the SourceForge download page - don't \"save link as..\" or \"save target as..\". The SourceForge download should start automatically. If it does not, click the links in the black panel marked \"direct link\" or \"mirror\". <b>Only these links and the automatic download are authorized versions of Audacity</b>. Disable any automatic download managers if the download is incorrect."
@@ -3775,6 +4492,7 @@ msgid ""
 "<li><p>Place the unzipped VST Enabler, along with your VST plug-ins, into the “Plug-ins” folder in the Audacity installation folder.  (On Mac OS X, this is usually in the Applications folder.  On Windows, it is usually under Program Files.)</li>\n"
 "<li><p>The next time you start Audacity, your VST effects will appear at the bottom of the “Effect” menu.</li>\n"
 "</ol>\n"
+"<p><b>Note:</b> Current Beta (1.3) versions of Audacity will display VST plug-ins automatically, without having to install the VST Enabler.</p>    \n"
 "<p>See also: <a href=\"faq?s=install&amp;i=vst-bugs\">Why do some VST plug-ins look wrong, or not work?</a></p>"
 msgstr ""
 "<ol>\n"
@@ -3782,47 +4500,47 @@ msgstr ""
 "<li><p>解凍したVSTイネーブラーを、VSTプラグインと同様に、Audacityをインストールしたフォルダ内の「Plug-ins」 フォルダの中に置いてください。(Mac OS X の場合、通常はApplicationsフォルダ内、Windowsの場合、通常はProgram Files内にインストールされています。)</li>\n"
 "<li><p>あなたがAudacityを次回起動したときに、VSTエフェクトが「エフェクト」メニューの下の方に現れるでしょう。</li>\n"
 "</ol>\n"
+"<p><b>Note:</b> 現状のベータ(1.3)バージョンではVSTイネーブラーをインストールしなくてもVSTプラグインを自動的に表示します。 </p>    \n"
 "<p>こちらも参考にしてください。： <a href=\"faq?s=install&amp;i=vst-bugs\">なぜいくつかのVSTプラグインは誤って表示されるのですか、又は、正常に動作しないのですか？</a></p>"
 
-#: help/faq.php:113
+#: help/faq.php:114
 msgid "Why do some VST plug-ins look wrong, or not work?"
 msgstr "なぜいくつかのVSTプラグインは誤って表示されるのですか、又は、正常に動作しないのですか？"
 
-#: help/faq.php:114
+#: help/faq.php:115
 msgid ""
-"<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not yet able to display custom interfaces for plug-ins.  Instead, it uses generic controls for all VST plug-ins.  Because of this, many plug-ins will look or act differently than they do in other programs.</p>\n"
-"<p>Other VST plug-ins may not work at all, because of bugs in the VST Enabler.  You can <a href=\"../contact/\">contact us</a> to report plug-ins that do not work.</p>\n"
-"<p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>"
+"<p>Stable (1.2) versions of Audacity require the <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> in order to display VST plug-ins. The Enabler can only display a generic, tabular interface for plug-ins, so they may look or act differently than they do in other programs, or not function at all.</p>\n"
+"<p>Current Beta (1.3) versions of Audacity will by default display VST effect plug-ins with their full interface, without the need of an Enabler. If you experience any problems with VST plug-ins in Audacity Beta, please read this <a href=\"http://forum.audacityteam.org/viewtopic.php?f=37&t=11534&p=45667#p45667\">Forum topic</a>. You may <a href=\"../contact#feedback\">contact us</a> to report any difficulties not covered in that topic.</p>                \n"
+"<p>Neither version of Audacity supports VST instrument (VSTi) plug-ins. </p>"
 msgstr ""
-"<p><a href=\"faq?s=install&amp;i=vst-enabler\">VSTイネーブラー</a>は、まだカスタムインターフェイスを表示することができません。その代わりに、すべてのVSTプラグインで一般的なコントロールを使っています。このため、多くのプラグインで、他のプログラムとは異なる表示をしたり異なる動作をしたりすることがあります。</p>\n"
-"<p>VSTイネーブラーにバグにより一部のVSTプラグインは全く動作しないこともあります。全く動作しないVSTプラグインを報告するために、<a href\"../contact/\">私たちと連絡をとる</a>ことができます(英語)。</p>  \n"
-"<p>また、Audacityは、VSTインストゥルメント(VSTi) プラグインをサポートしておりません。</p>"
+"<p>Audacityの安定バージョン (1.2)でVSTプラグインを表示するには<a href=\"faq?s=install&amp;i=vst-enabler\">VST イネーブラー</a> が必要になります。このEnablerは汎用タブ形式でのみ表示可能なので、他のプログラム中で動かした場合と異なる動きや見え方になったり、まったく動作しないこともあります<p>現状のベータ (1.3) バージョンではEnablerなしにVSTプラグインをフルインタフェースで表示できる機能がデフォルトで入っています。もしベータ版AudacityにてVSTプラグインで問題が発生した場合は、 <a href=\"http://forum.audacityteam.org/viewtopic.php?f=37&t=11534&p=45667#p45667\">Forum topic</a>をお読みください。 ここに書かれていないような問題を報告するには、こちらに<a href=\"../contact#feedback\">ご連絡ください</a> </p>                \n"
+"<p>なおAudacityではVSTインストゥルメント (VSTi) プラグインはサポートされていません。 </p>"
 
-#: help/faq.php:119
+#: help/faq.php:120
 msgid "What should I do if I have problems downloading or installing Audacity?"
 msgstr "Audacityをダウンロードしたりインストールしたりできないのですが、私はどうすべきでしょうか？"
 
-#: help/faq.php:120
+#: help/faq.php:121
 msgid "<p>If you can't download Audacity, or if the downloaded setup file is corrupt, try downloading it from our <a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">alternate servers</a>.</p>"
 msgstr "<p>もしあなたがAudacityをダウンロードできないのでしたら、又は、ダウンロードしたセットアップファイルが正しく動かないのでしたら、私たちの<a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">オルタネートサーバー</a>からそれをダウンロードすることを試してください。</p>"
 
-#: help/faq.php:125
+#: help/faq.php:126
 msgid "<div id=\"record\">Recording</div>"
 msgstr "<div id=\"record\">レコーディング</div>"
 
-#: help/faq.php:128
+#: help/faq.php:129
 msgid "How can I record in stereo?"
 msgstr "どのようにステレオで録音するのですか？"
 
-#: help/faq.php:129
+#: help/faq.php:130
 msgid "<p>To record in stereo, open the Audacity preferences.  In the “Audio I/O” section, change the number of recording channels from 1 (mono) to 2 (stereo).</p>"
 msgstr "<p>ステレオで録音するには、 Audacity preferencesを開きます。「Audio I/O」セクションの中で, 録音チャンネル数を1(モノラル)から2(ステレオ)に変更してください。</p>"
 
-#: help/faq.php:132
+#: help/faq.php:133
 msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
 msgstr "どのようにしてレコードやカセットテープやミニディスクの音を録音するのですか？"
 
-#: help/faq.php:133
+#: help/faq.php:134
 msgid ""
 "<p>First, set Audacity to <a href=\"faq?s=recording&amp;i=stereo\">record in stereo</a>.</p>\n"
 "<p>Next, plug one end of a stereo cable into the “Line Out” or “Headphone” connector on your tape deck, minidisc player, or stereo system.  Plug the other end into your computer’s “Line In” connector.  If you do not have a cable that fits both of these connectors, you can find one at an electronics store.</p>\n"
@@ -3850,23 +4568,23 @@ msgstr ""
 "</ul>\n"
 "<p>参考: <a href=\"faq?s=files&amp;i=split\">長時間録音を複数ファイルに分割する方法</a>.</p>"
 
-#: help/faq.php:145
-#: help/faq.php:221
-#: help/faq.php:286
+#: help/faq.php:146
+#: help/faq.php:222
+#: help/faq.php:287
 msgid "See also:"
 msgstr "こちらもご覧ください："
 
-#: help/faq.php:145
-#: help/faq.php:260
-#: help/faq.php:286
+#: help/faq.php:146
+#: help/faq.php:261
+#: help/faq.php:287
 msgid "How do I save my recording on an audio CD?"
 msgstr "どのようにして録音したものをCDに保存するのですか？"
 
-#: help/faq.php:148
+#: help/faq.php:149
 msgid "Why doesn't the Mixer Toolbar input selector work properly, for example on Windows Vista?"
 msgstr "たとえばWindows Vistaではどうしてミキサーツールバー入力セレクターが正しく動作しないのでしょう？"
 
-#: help/faq.php:149
+#: help/faq.php:150
 msgid ""
 "<p>The Input selector may be greyed-out, lacking the expected choices, or apparently not recording from the indicated source.</p>\n"
 "<p>The cause varies by operating system and sound card driver. For example, on Windows Vista, you must use the \"Recording Device\" menu in the Audio I/O tab of Preferences to select input sources. For more help, see the <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixer Toolbar Issues</a> page on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>\n"
@@ -3874,11 +4592,11 @@ msgstr ""
 "<p>入力セレクタがグレーになり選択肢が不足するか明らかに目的のソースからのレコーディングができなくなるかも知れません。</p>\n"
 "<p>その原因はオペレーティングシステムおよびサウンドカードドライバにより異なります。たとえばWindows Vistaでは設定のオーディオI/Oタブの中の \"Recording Device\"メニューを使う必要があります。より詳しいヘルプは<a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a> の中の<a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">ミキサーツールバーの問題</a>をご覧ください。</p>\n"
 
-#: help/faq.php:154
+#: help/faq.php:155
 msgid "Why can’t I hear what I’m recording?"
 msgstr "なぜ私は、現在録音している音を聞くことができないのですか？"
 
-#: help/faq.php:155
+#: help/faq.php:156
 msgid ""
 "<h3>Windows and Linux</h3>\n"
 "<p>To monitor your recording, open your computer's volume control panel.  Turn up the playback volume and turn off the “mute” checkbox for your recording source (usually “microphone” or “line in”).</p>\n"
@@ -3896,11 +4614,11 @@ msgstr ""
 "<h3>マイクロフォンによる録音時のモニターについて</h3>\n"
 "<p>マイクロフォンから録音している場合は、スルー再生の音がマイクロフォンに拾われて録音されるのを防ぐために常にヘッドフォンを使用してください。</p>\n"
 
-#: help/faq.php:165
+#: help/faq.php:166
 msgid "Can I play a track while recording a new one on top of it?"
 msgstr "新しいトラックを録音しているときに、トラックを再生することはできますか？"
 
-#: help/faq.php:166
+#: help/faq.php:167
 msgid ""
 "<p>This is called multi-track recording.  It makes it possible to record harmonies with yourself, or add new instruments or vocals to an existing recording.  To do this in Audacity, follow these instructions:</p>\n"
 "<ol>\n"
@@ -3932,11 +4650,11 @@ msgstr ""
 "\t</ul>\n"
 "</p>"
 
-#: help/faq.php:182
+#: help/faq.php:183
 msgid "Why isn’t my new track in sync with the previous ones?"
 msgstr "なぜ新しいトラックは、もともとあるトラックと同期しないのですか？"
 
-#: help/faq.php:183
+#: help/faq.php:184
 msgid ""
 "<p>When you make a <a href=\"faq?s=recording&amp;i=multi-track\">multi-track recording</a>, there is an unpredictable delay between playback and recording.  Audacity tries to correct for this automatically, but this doesn't yet work on all computers.</p>\n"
 "<p>If a new track is not synchronized with the others, you can zoom in and use the Time Shift tool to drag it to the correct location.</p>"
@@ -3944,11 +4662,11 @@ msgstr ""
 "<p>あなたが<a href=\"faq?s=recording&amp;i=multi-track\">マルチトラックレコーディング</a>を行っているとき、再生と録音の間でわずかな遅延があります。 Audacityはこれを自動的に修正しようとしますが、すべてのコンピュータ上でこれが正しく機能するわけではありません。</p>\n"
 "<p>もし新しいトラックが他のトラックと同期していないのでしたら、拡大表示をして、タイムシフトツールを使って手動で正しい位置に移動することができます。</p>"
 
-#: help/faq.php:187
+#: help/faq.php:188
 msgid "Can Audacity record RealAudio or other streaming audio?"
 msgstr "AudacityでRealAudioや他のストリーミングオーディオを録音することはできますか？"
 
-#: help/faq.php:188
+#: help/faq.php:189
 msgid ""
 "<h3>Windows and Linux</h3>\n"
 "<p>With most Windows and Linux audio devices, it is possible to record whatever sound the computer is currently playing, including internet radio streams.</p>\n"
@@ -3964,11 +4682,11 @@ msgstr ""
 "<h3 id=\"mac\">Mac OS X</h3>\n"
 "<p>Mac OS X のユーザーは<a href=\"http://www.cycling74.com/products/soundflower\">Soundflower</a> (free, open source), <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>などのプログラムを使用することでストリーミングオーディオを録音することができます。</p>\n"
 
-#: help/faq.php:197
+#: help/faq.php:198
 msgid "Can I set Audacity to record at a certain time?"
 msgstr "Audacityで予約された時刻に録音することはできますか？"
 
-#: help/faq.php:198
+#: help/faq.php:199
 msgid ""
 "<p>Sorry, Audacity does not yet support scheduled recording.  We may add this feature to a future version of the program.</p>\n"
 "<p>You can make Audacity <b>stop</b> recording after a certain time limit, by following these steps:</p>\n"
@@ -3988,16 +4706,16 @@ msgstr ""
 "  <li>録音を開始します。Audacityは選択範囲の最後に達したとき自動的に録音を停止するでしょう。</li>\n"
 "</ol>"
 
-#: help/faq.php:210
+#: help/faq.php:211
 msgid "<div id=\"opensave\">Opening and Saving Files</div>"
 msgstr "<div id=\"opensave\">ファイルのオープンと保存</div>"
 
-#: help/faq.php:213
-#: help/faq.php:221
+#: help/faq.php:214
+#: help/faq.php:222
 msgid "How do I open an Audacity project (AUP file) in another program?"
 msgstr "どのようにして私はAudacityプロジェクト(AUPファイル)を他のプログラムで開くことができますか？"
 
-#: help/faq.php:214
+#: help/faq.php:215
 msgid ""
 "<p>Audacity project files are saved in a special format that only Audacity can open. To open your project in another program or <a href=\"faq?s=files&amp;i=burn-cd\">burn it to CD</a>, firstly open the .aup file in Audacity if you have already saved one (if you saved it recently it will be in the File > Recent Files menu). Then use the <b>Export</b> commands further down the File menu to save the audio in a standard format like WAV or AIFF.</p>\n"
 "<p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>   \n"
@@ -4005,22 +4723,22 @@ msgstr ""
 "<p>AudacityプロジェクトはAudacityだけが開くことが出来る特別な形式のプロジェクトファイルとして保存されます。 保存されたプロジェクトを別のプログラムで開いたり、<a href=\"faq?s=files&amp;i=burn-cd\">CDに焼く</a>場合は、まず .aupファイルをAudacityで開きます。(最近保存されたものであればファイル > 最近のファイルで開くことができます)  次に ファイルメニューの中の<b>書き出し</b> コマンドを使い、オーディオを標準フォーマットたとえばWAVやAIFF形式で保存します。</p>\n"
 "<p>より詳しい情報についてはAudacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>の中の<a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> をご覧ください。</p>   \n"
 
-#: help/faq.php:219
+#: help/faq.php:220
 msgid "Why does Audacity create a folder full of .au files when I save a project?"
 msgstr "なぜAudacityは、プロジェクトを保存したときに、.auファイルの入ったフォルダを生成するのですか？"
 
-#: help/faq.php:220
+#: help/faq.php:221
 msgid "<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently. When you save an .aup project file, Audacity stores all the pieces in a _data folder that has the same name as the .aup file. For example, \"song.aup\" will open the pieces inside the \"song_data\" folder.</p>  <p><b>You should not touch the .au files yourself, or move or rename the _data folder</b>. Simply open the .aup file, then Audacity will load the .au files in the correct sequence automatically.</p> <p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>"
 msgstr "<p>Audacityは長いトラックを複数の小さな部分に分けることができ、より効率的に編集することができます。.aupプロジェクトファイルを保存する際に、Audacityはすべての部分を .aupファイルと同じ名前で_dataフォルダに保存します。 たとえば\"song.aup\" は\"song_data\" フォルダの中で複数の部分を開きます。</p>  <p><b>決して .auファイルを加工したり _dataフォルダを移動させたリネームしないでください。</b>. 単純に .aup を開いてください。そうするとAudacityは複数の.auファイルを自動的に正しい順序で読み込みます。</p> <p>より詳しい情報については、Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>の中の <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> をご覧ください。</p>"
 
-#: help/faq.php:224
+#: help/faq.php:225
 msgid "Audacity crashed!  Can I recover any unsaved data?"
 msgstr "Audacityがクラッシュしました。保存されてないデータを回復することはできますか。"
 
 #. i18n-hint: Sorry, these links are in English only.  If you would
 #. like to make more information available, please create a page on
 #. the wiki for now.
-#: help/faq.php:228
+#: help/faq.php:229
 msgid ""
 "<p>You may be able to recover your project automatically with the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> page for more information.</p>\n"
 "<p>Please note the .au files need to be numbered consecutively when input to the Crash Recovery Utility or errors will occur in the program. If this problem occurs you can open Audacity's temporary folder in your system File Manager (e.g., Windows Explorer) and try resorting the .au files by time modified and then batch renaming them using a numeric sequence whilst they are sorted by time modified. An arrangement looking something like this should work:</p>\n"
@@ -4042,11 +4760,11 @@ msgstr ""
 "</ul>\n"
 "<p>もしお使いのファイルマネージャが適切なファイル名変更ツールを持っていない場合、インターネットから適切なフリーツールをダウンロードにより入手できるでしょう。</p>\n"
 
-#: help/faq.php:240
+#: help/faq.php:241
 msgid "Can Audacity import file formats like WMA, AAC, FLAC, etc.?"
 msgstr "AudacityはWMA、AAC、FLACなどのフォーマットのデータを読み込むことはできますか。"
 
-#: help/faq.php:241
+#: help/faq.php:242
 msgid ""
 "<p>Audacity <b>cannot</b> import or export files in <b>WMA, AAC, RealAudio, Shorten (SHN)</b>, or most other proprietary formats, or any kind of Digital Rights Management (DRM) protected file, including many purchased online such as on iTunes or Napster. Because of licensing and patent restrictions, we are not allowed to add these formats to Audacity.  Future versions of Audacity might be able to support these formats using codecs installed in your operating system.</p>\n"
 "<p>Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>FLAC</b>.  We hope to support these formats in future versions of Audacity.</p>\n"
@@ -4060,19 +4778,19 @@ msgstr ""
 "<p>For more detail on supported formats, see the <a href=\"../about/features\">feature list</a>.</p>\n"
 "<p>もっと見る: <a href=\"faq?s=files&amp;i=midi\">なぜMIDIファイルを再生できないのですか？</a></p>\n"
 
-#: help/faq.php:249
+#: help/faq.php:250
 msgid "Why can’t I play MIDI files?"
 msgstr "なぜMIDIファイルの再生ができないのですか？"
 
-#: help/faq.php:250
+#: help/faq.php:251
 msgid "<p>Sorry, Audacity cannot play, edit, or convert MIDI files.  It can only display them visually (for comparison with recorded sounds).  We might add MIDI editing to a future version of Audacity, but for now Audacity is focused on sampled audio (like WAV files).</p>"
 msgstr "<p>申し訳ありません。AudacityではMIDIファイルの再生・編集・及びコンバートをすることはできません。MIDIファイルは、(レコーディングされた音と比較するために)表示することのみできます。私たちは、将来のヴァージョンのAudacityにはMIDIの編集機能をつけたいと思っていますが、今は専ら、WAVEファイルのようなサンプルオーディオに専念しています。</p>"
 
-#: help/faq.php:253
+#: help/faq.php:254
 msgid "How do I import a track from an audio CD?"
 msgstr "どのようにしてオーディオCDからトラックを読み込むのですか？"
 
-#: help/faq.php:254
+#: help/faq.php:255
 msgid ""
 "<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>\n"
 "<p>On Mac OS X computers, CD tracks appear in Finder as AIFF files so can be imported directly into Audacity. For more help on importing audio from CD tracks on both Windows and OS X, see our Wiki help page on <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How_to_import_CDs</a>.</p>\n"
@@ -4082,11 +4800,11 @@ msgstr ""
 "<p>Mac OS X コンピュータではCDトラックはFinderの中でAIFFファイルとして表示されますので直接Audacityで読み込むことができます。WindowsおよびOS XでのCDトラックの読み込みについてより詳しいヘルプが必要な場合は、私たちにWikiヘルプページ <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How_to_import_CDs</a>をご覧ください。</p>\n"
 "<p>もっと見る: <a href=\"faq?s=files&amp;i=burn-cd\">録音した作品をオーディオCDに保存するには？</a></p>\n"
 
-#: help/faq.php:261
+#: help/faq.php:262
 msgid "After making a recording or editing a file in Audacity, follow these steps to save your work on an audio CD:"
 msgstr "Audacityで録音や編集が終わったら、次のステップであなたの作品をオーディオCDに保存することができます。"
 
-#: help/faq.php:262
+#: help/faq.php:263
 msgid ""
 "<ol>\n"
 "  <li>Use the “Export as WAV” or “Export as AIFF” command to save your Audacity recording in a sound file.</li>\n"
@@ -4116,11 +4834,11 @@ msgstr ""
 "<p>ウィンドウズメディアプレーヤーおよびiTunesによるCD書き込みのヒントおよびより長い\"データ\"CDに書き込むヒントについては  Audacity Wiki の<a href=\"http://audacityteam.org/wiki/index.php?title=How_to_burn_CDs\">How_to_burn_CDs</a> をご覧ください。</p>\n"
 "<p>もっと見る: <a href=\"faq?s=files&amp;i=split\">長時間録音を複数ファイルに分割する方法</a></p>"
 
-#: help/faq.php:277
+#: help/faq.php:278
 msgid "How can I split a long recording into multiple files or CD tracks?"
 msgstr "どのようにして長い録音を複数のトラックに分割するのですか？"
 
-#: help/faq.php:278
+#: help/faq.php:279
 msgid ""
 "<p>Follow these steps to create a separate file for each song or segment of a long recording.  This is particularly useful if you are creating a CD, since each file will appear as a separate track on the CD.</p>\n"
 "<ol>\n"
@@ -4138,23 +4856,23 @@ msgstr ""
 "  <li>すべて終わったら、ファイルメニューの「Export Multiple」を選びます。「Export」ボタンを押せば、Audacityは、あなたが選んだフォーマットと位置を使って、それぞれの曲を分割されたファイルとして保存します。</li>\n"
 "</ol>"
 
-#: help/faq.php:285
+#: help/faq.php:286
 msgid "A detailed, illustrated tutorial explaining this process is available on the "
 msgstr "この手順を詳しく、わかりやすく説明しているチュートリアルは"
 
-#: help/faq.php:285
+#: help/faq.php:286
 msgid " page on the Audacity Wiki."
 msgstr "をご覧ください。"
 
-#: help/faq.php:291
+#: help/faq.php:292
 msgid "<div id=\"editing\">Editing</div>"
 msgstr "<div id=\"about\">編集</div>"
 
-#: help/faq.php:294
+#: help/faq.php:295
 msgid "Why can’t I use the effects or other menu items?"
 msgstr "なぜエフェクトメニューや他のメニューが使えないのですか？"
 
-#: help/faq.php:295
+#: help/faq.php:296
 msgid ""
 "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>\n"
 "<p>Also, many menu items are disabled while playing, recording, or pausing a track. To enable them, press the yellow <b>Stop</b> button.</p>"
@@ -4162,11 +4880,11 @@ msgstr ""
 "<p>いくつかのメニューアイテムは使用可能になるまでの間はグレーになっているか無効になっています。 効果を使用する前に、対象となるオーディオを選択する必要があります。 オーディオを選択するには選択ツールを使ってそのオーディオトラックをクリック/ドラッグしてハイライトするか、編集メニューから\"全て選択\"を選んでください。</p>\n"
 "<p>また、再生中、録音中まはポーズ中は多くのメニューアイテムが無効になっています。それらを有効にするには、黄色の<b>停止</b>ボタンを押してください。</p>"
 
-#: help/faq.php:299
+#: help/faq.php:300
 msgid "How do I combine two files into one longer file?"
 msgstr "どのようにして2つのファイルを1つの長いファイルに結合するのですか？"
 
-#: help/faq.php:300
+#: help/faq.php:301
 msgid ""
 "<p>Follow these steps to splice two files together:</p>\n"
 "<ol>\n"
@@ -4190,19 +4908,19 @@ msgstr ""
 "</ol>\n"
 "<p> <b>再生</b>ボタンを押すことで結果を聴くことができます。そして書き出しコマンド（ファイルメニューの中）で１つのサウンドファイルとして保存してください。</p>"
 
-#: help/faq.php:312
+#: help/faq.php:313
 msgid "How do I mix two tracks together?"
 msgstr "どのようにして2つのトラックをミックスするのですか？"
 
-#: help/faq.php:313
+#: help/faq.php:314
 msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the <b>Play</b> button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
 msgstr "<p>2つのファイルをミックスするには、まずAudacityに両方のファイルを読み込みます。それらは別々のトラックとして現れますので、再生ボタンを押せばミックスされます。あなたはタイムシフトツールを使って異なる時刻にスタートするように移動したり、他の編集コマンドを使ってそれぞれのトラックを作り変えたりすることができます。</p>"
 
-#: help/faq.php:316
+#: help/faq.php:317
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
 msgstr "カラオケトラックを作るために録音したものからボーカルを消すことはできますか？"
 
-#: help/faq.php:317
+#: help/faq.php:318
 msgid ""
 "<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals are exactly the same on both stereo channels, you can remove them by “subtracting” one channel from the other.  This works for many studio recordings, where the vocal track is mixed exactly in the center.</p>\n"
 "<p>To do this in Audacity:</p>\n"
@@ -4228,15 +4946,15 @@ msgstr ""
 "<p><b>再生</b> ボタンを押し、結果を聴いてみてください。  運がよければボーカルは消え去り、その他の楽器は残っておりカラオケのようになっているでしょう。ファイルメニューの書き出しコマンドを使いこの結果を保存することができます。</p>\n"
 "<p>もしボーカルが正確に両チャンネルで等しくない場合、いくつかの他のテクニックがあります。またオプションのプラグインもありますので試してみる価値があります。 詳細はWikiページの <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Vocal_Removal</a> をご覧ください。</p>\n"
 
-#: help/faq.php:347
+#: help/faq.php:348
 msgid "Other frequently asked questions..."
 msgstr "他のよくある質問..."
 
-#: help/faq.php:351
+#: help/faq.php:352
 msgid "Frequently Asked Questions"
 msgstr "よくある質問"
 
-#: help/faq.php:355
+#: help/faq.php:356
 msgid "These are some of the most common questions about Audacity.  If your question isn’t answered here, see the <a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">contact us</a> for help."
 msgstr "これらはAudacityに関する質問で最も一般的なものをいくつか取り上げたものです。もしあなたの質問がここに載っていないのでしたら、<a href=\"documentation\">ドキュメンテーション</a>をご覧になるか、<a href=\"../contact/\">私たちに連絡をとってください(英語)</a>。"
 
@@ -4997,7 +5715,7 @@ msgid ""
 "          for Spectrograms</li>\n"
 "      <li>Record more than 16 channels (hardware/drivers permitting)</li>  \n"
 "      <li>New \"Mixer Board\" view with per-track VU meters</li> \n"
-"      <li>AMR NB export support via the optional \n"
+"      <li>AMR NB import and export support on all platforms via the optional \n"
 "          <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">\n"
 "          FFmpeg library</a></li>\n"
 "      <li>32-bit float data over 0 dB handled without clipping</li>\n"
@@ -6672,6 +7390,26 @@ msgstr "Audacityはインターオペラビリティを確保するためにオ�
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "Audacityプロジェクトファイル形式に関するドキュメントは今後提供される予定です。"
 
+#~ msgid ""
+#~ "<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not "
+#~ "yet able to display custom interfaces for plug-ins.  Instead, it uses "
+#~ "generic controls for all VST plug-ins.  Because of this, many plug-ins "
+#~ "will look or act differently than they do in other programs.</p>\n"
+#~ "<p>Other VST plug-ins may not work at all, because of bugs in the VST "
+#~ "Enabler.  You can <a href=\"../contact/\">contact us</a> to report plug-"
+#~ "ins that do not work.</p>\n"
+#~ "<p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>"
+#~ msgstr ""
+#~ "<p><a href=\"faq?s=install&amp;i=vst-enabler\">VSTイネーブラー</a>は、まだ"
+#~ "カスタムインターフェイスを表示することができません。その代わりに、すべての"
+#~ "VSTプラグインで一般的なコントロールを使っています。このため、多くのプラグ"
+#~ "インで、他のプログラムとは異なる表示をしたり異なる動作をしたりすることがあ"
+#~ "ります。</p>\n"
+#~ "<p>VSTイネーブラーにバグにより一部のVSTプラグインは全く動作しないこともあ"
+#~ "ります。全く動作しないVSTプラグインを報告するために、<a href\"../contact/"
+#~ "\">私たちと連絡をとる</a>ことができます(英語)。</p>  \n"
+#~ "<p>また、Audacityは、VSTインストゥルメント(VSTi) プラグインをサポートして"
+#~ "おりません。</p>"
 #~ msgid "feedback e-mail address</a> and we'll get back to you."
 #~ msgstr ""
 #~ "フィードバックE-mailアドレス</a>にメールをお送りくだされば返事を差し上げま"
