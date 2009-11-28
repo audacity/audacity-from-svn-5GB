@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity_website\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-25 07:11+0000\n"
-"PO-Revision-Date: 2009-11-26 07:50+0100\n"
-"Last-Translator: Carmelo Battaglia <battaglia.carmelo@fastwebnet.it>\n"
+"POT-Creation-Date: 2009-11-26 21:00+0000\n"
+"PO-Revision-Date: 2009-11-28 10:22-0000\n"
+"Last-Translator: g <g@g>\n"
 "Language-Team: italiano <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2488,6 +2488,7 @@ msgstr "Novità in Audacity 1.3.7"
 #. translated up to now. Feel free to translate
 #. them as a low priority.
 #: download/features-1.3-a.php:175
+#, fuzzy
 msgid ""
 "<dl>\n"
 "\t<dt> Improvements and new features </dt>\n"
@@ -2538,34 +2539,7 @@ msgid ""
 "                     <li>Restored support for multi-channel recording devices that\n"
 "                          can record more than two channels using Audacity</li>\n"
 "                </ul>\n"
-"         </dd>\n"
-"\n"
-"         <dd>Platform-specific Bug Fixes:\n"
-"                <ul>\n"
-"                     <li><i>Windows Vista:</i> fixed crash opening Preferences with no sound\n"
-"                          devices enabled and connected </li>\n"
-"                     <li><i>Mac OS X and Linux:</i></li>\n"
-"                         <ul>      \n"
-"                                <li>fixes for spurious clipping, label typing, no shortcuts after\n"
-"                                     running effects</li>                           \n"
-"                                <li>project rate now always changes to respect that of first \n"
-"                                   imported file</li>\n"
-"                         </ul>\n"
-"                     <li><i>Mac OS X only:</i></li>\n"
-"                         <ul>\n"
-"                                <li>fixes for inactive or corrupted menus, hidden dialogues, \n"
-"                                     portable settings not detected, and inability to set \n"
-"                                     independent Command and Control shortcuts</li>\n"
-"                                <li>FFmpeg installer now available</li>\n"
-"                         </ul> \n"
-"                </ul>\n"
-"         </dd>    \n"
-"   </dt>    \n"
-"</dl>\n"
-"\n"
-"<p>\n"
-"Please see the included README.txt for full details of changes, and for issues known at time of Release.\n"
-"</p>"
+"         </dd>"
 msgstr ""
 "<dl>\n"
 "\t<dt> Miglioramenti e nuove funzionalità </dt>\n"
@@ -2645,7 +2619,41 @@ msgstr ""
 "Siete pregati di vedere il file README.txt per i dettagli sulle modifiche, e per i problemi conosciuti al momento del rilascio.\n"
 "</p>"
 
-#: download/features-1.3-a.php:253
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:231
+msgid ""
+"<dd>Platform-specific Bug Fixes:\n"
+"                <ul>\n"
+"                     <li><i>Windows Vista:</i> fixed crash opening Preferences with no sound\n"
+"                          devices enabled and connected </li>\n"
+"                     <li><i>Mac OS X and Linux:</i></li>\n"
+"                         <ul>      \n"
+"                                <li>fixes for spurious clipping, label typing, no shortcuts after\n"
+"                                     running effects</li>                           \n"
+"                                <li>project rate now always changes to respect that of first \n"
+"                                   imported file</li>\n"
+"                         </ul>\n"
+"                     <li><i>Mac OS X only:</i></li>\n"
+"                         <ul>\n"
+"                                <li>fixes for inactive or corrupted menus, hidden dialogues, \n"
+"                                     portable settings not detected, and inability to set \n"
+"                                     independent Command and Control shortcuts</li>\n"
+"                                <li>FFmpeg installer now available</li>\n"
+"                         </ul> \n"
+"                </ul>\n"
+"         </dd>    \n"
+"   </dt>    \n"
+"</dl>\n"
+"\n"
+"<p>\n"
+"Please see the included README.txt for full details of changes, and for issues known at time of Release.\n"
+"</p>"
+msgstr ""
+
+#: download/features-1.3-a.php:258
 msgid "New in Audacity 1.3.6"
 msgstr "Novità in Audacity 1.3.6"
 
@@ -2653,7 +2661,7 @@ msgstr "Novità in Audacity 1.3.6"
 #. old versions of Audacity, which have never been
 #. translated up to now. Feel free to translate
 #. them as a low priority.
-#: download/features-1.3-a.php:259
+#: download/features-1.3-a.php:264
 msgid ""
 "<dl>\n"
 "\t<dt> Major new capabilities </dt>\n"
@@ -2723,7 +2731,7 @@ msgstr ""
 "   </dt>\n"
 "</dl>"
 
-#: download/features-1.3-a.php:293
+#: download/features-1.3-a.php:298
 msgid "New in Audacity 1.3.5"
 msgstr "Novità in Audacity 1.3.5"
 
@@ -2731,7 +2739,7 @@ msgstr "Novità in Audacity 1.3.5"
 #. old versions of Audacity, which have never been
 #. translated up to now. Feel free to translate
 #. them as a low priority.
-#: download/features-1.3-a.php:299
+#: download/features-1.3-a.php:304
 msgid ""
 "<dl>\n"
 "\t<dt> Recording / Playback </dt>\n"
@@ -2865,7 +2873,7 @@ msgstr ""
 "       </dt>\n"
 "</dl>"
 
-#: download/features-1.3-a.php:365
+#: download/features-1.3-a.php:370
 msgid "New in Audacity 1.3.4"
 msgstr "Novità in Audacity 1.3.4"
 
@@ -2873,7 +2881,7 @@ msgstr "Novità in Audacity 1.3.4"
 #. old versions of Audacity, which have never been
 #. translated up to now. Feel free to translate
 #. them as a low priority.
-#: download/features-1.3-a.php:371
+#: download/features-1.3-a.php:376
 msgid ""
 "<dl>\n"
 "  <dt></dt>\n"
@@ -3025,7 +3033,7 @@ msgstr ""
 "  </dd>\n"
 "</dl>"
 
-#: download/features-1.3-a.php:446
+#: download/features-1.3-a.php:451
 msgid "New features in Audacity 1.3.3"
 msgstr "Nuove funzionalità in Audacity 1.3.3"
 
@@ -3033,7 +3041,7 @@ msgstr "Nuove funzionalità in Audacity 1.3.3"
 #. old versions of Audacity, which have never been
 #. translated up to now. Feel free to translate
 #. them as a low priority.
-#: download/features-1.3-a.php:452
+#: download/features-1.3-a.php:457
 msgid ""
 "<dl>\n"
 "  <dt></dt>\n"
@@ -3149,72 +3157,72 @@ msgstr ""
 "  </dd>\n"
 "</dl>"
 
-#: download/features-1.3-a.php:509
+#: download/features-1.3-a.php:514
 msgid "New features in Audacity 1.3.1 and 1.3.2"
 msgstr "Nuove funzionalità in Audacity 1.3.1 e 1.3.2"
 
-#: download/features-1.3-a.php:512
+#: download/features-1.3-a.php:517
 #: download/features-1.3-i.php:70
 msgid "Improved Toolbar Docking"
 msgstr "Migliorato ancoraggio della barra degli strumenti"
 
-#: download/features-1.3-a.php:513
+#: download/features-1.3-a.php:518
 msgid "Track focus for improved keyboard navigation"
 msgstr "Evidenziazione traccia per una migliorata navigazione con la tastiera"
 
-#: download/features-1.3-a.php:514
+#: download/features-1.3-a.php:519
 #: download/features-1.3-i.php:77
 #: download/features-1.3-k.php:36
 msgid "Repair and Equalization effects"
 msgstr "Effetti Ripara ed Equalizzazione"
 
-#: download/features-1.3-a.php:515
+#: download/features-1.3-a.php:520
 #: download/features-1.3-j.php:71
 #: download/features-1.3-l.php:46
 msgid "Timer Recording"
 msgstr "Programma registrazione"
 
-#: download/features-1.3-a.php:516
+#: download/features-1.3-a.php:521
 #: download/features-1.3-d.php:56
 #: download/features-1.3-k.php:43
 msgid "Project saving and recovery"
 msgstr "Salvataggio e recupero dei progetti"
 
-#: download/features-1.3-a.php:517
+#: download/features-1.3-a.php:522
 #: download/features-1.3-f.php:40
 #: download/features-1.3-l.php:53
 msgid "Selection Bar"
 msgstr "Barra Selezione"
 
-#: download/features-1.3-a.php:518
+#: download/features-1.3-a.php:523
 #: download/features-1.3-b.php:50
 #: download/features-1.3-d.php:63
 msgid "Mac OS X features"
 msgstr "Funzionalità per Mac OS X"
 
-#: download/features-1.3-a.php:521
+#: download/features-1.3-a.php:526
 msgid "New features in Audacity 1.3.0"
 msgstr "Nuove funzionalità in Audacity 1.3.0"
 
-#: download/features-1.3-a.php:524
+#: download/features-1.3-a.php:529
 #: download/features-1.3-c.php:259
 #: download/features-1.3-f.php:47
 msgid "Collapse/Expand Tracks"
 msgstr "Collassa/Espandi tracce"
 
-#: download/features-1.3-a.php:525
+#: download/features-1.3-a.php:530
 #: download/features-1.3-b.php:56
 #: download/features-1.3-e.php:67
 msgid "Multiple clips per track"
 msgstr "Clip multipli per traccia"
 
-#: download/features-1.3-a.php:526
+#: download/features-1.3-a.php:531
 #: download/features-1.3-c.php:266
 #: download/features-1.3-g.php:54
 msgid "Improved Label Tracks"
 msgstr "Migliorate Tracce etichetta"
 
-#: download/features-1.3-a.php:527
+#: download/features-1.3-a.php:532
 #: download/features-1.3-e.php:74
 msgid "Other features"
 msgstr "Altre funzionalità"
