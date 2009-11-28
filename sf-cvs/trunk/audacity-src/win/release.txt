@@ -3,7 +3,7 @@ Copyright 2007-2009, Vaughan Johnson
 22 October 2007
 
 ========================================================================
-This version is currently accurate for Audacity version 1.3.10.
+This file is currently accurate for Audacity version 1.3.10.
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 See also "http://audacityteam.org/wiki/index.php?title=Developing_On_Windows".
@@ -18,54 +18,63 @@ either one, but example values are for Unicode_Release.
 
 1. Remove the old manual and make sure you can rebuild a new one
 
-	Make sure you have python installed and on your path.
-	Delete audacity\help\manual if it exists.
-	The manual should be built in audacity\help\manual by the main Solution (step 2 below).
-	(If you have disabled the 'Help' project during testing you will have to build it seperatly).
-	(If you just want to get the manual, go to audacity\scripts\mw2html_audacity, run wiki2htm and wait for it to complete.)
+   a. Make sure you have python installed and on your path.
+
+   b. Delete audacity\help\manual if it exists.
+
+   c. The manual should be built in audacity\help\manual by the 
+      main Solution (step 2 below). 
+
+      If you have disabled the 'Help' project uring testing you will have to 
+      build it separately. 
+
+      If you just want to get the manual, go to 
+      audacity\scripts\mw2html_audacity, run wiki2htm and wait for 
+      it to complete.
 
 
 2. Build the release executable. 
 
-	a. Make sure you have got a current source version from CVS.
+   a. Make sure you have a current source version from CVS.
 
-	b. Make sure to turn off ASIO support (see compile.txt) if you are 
-		creating the installer for public release. 
-		We cannot publicly post a build that supports ASIO, for 
-		licensing reasons (more detail in compile.txt). 
+   b. Make sure to turn off ASIO support (see compile.txt) if you are 
+      creating the installer for public release. 
+      We cannot publicly post a build that supports ASIO, for 
+      licensing reasons (more detail in compile.txt). 
 
-	c. If building the 'Release' build (rather than a Beta), set IS_BETA to 0
-		in Audacity.h.
+   c. If building the 'Release' build (rather than a Beta), set IS_BETA to 0
+      in Audacity.h.
+      [*** I think this is incorrect. - Vaughan, Nov 27, 2009.]
 
-	d. It's a good idea to not only do a Build > Clean Solution
-		beforehand, but to also delete the directory 
-		(e.g., audacity\win\unicode_release).
+   d. It's a good idea to not only do a Build > Clean Solution
+      beforehand, but to also delete the directory 
+      (e.g., audacity\win\unicode_release).
 
-	e. Make sure to build the "locale" project, either 
-		separately or as part of Build > Batch Build. You will need
-		msgfmt.zip in your PATH for that. Get it from
-		http://audacity.sourceforge.net/files/msgfmt.zip
+   e. Make sure to build the "locale" project, either 
+      separately or as part of Build > Batch Build. You will need
+      msgfmt.zip in your PATH for that. Get it from
+      http://audacity.sourceforge.net/files/msgfmt.zip
 
 
 3. Copy other necessities to release build folder.
 
-	a. We are still keeping some of the LADSPA plug-ins in the 
-		Audacity installer, even though we are now offering a 
-		separate installer that includes all the LADSPA plug-ins 
-		built from version 0.4.15. These are the ones we include
+   a. We are still keeping some of the LADSPA plug-ins in the 
+      Audacity installer, even though we are now offering a 
+      separate installer that includes all the LADSPA plug-ins 
+      built from version 0.4.15. These are the ones we include
 
-		* gverb_1216.dll
-		* hard_limiter_1413.dll
-		* sc4_1882.dll
-		
-		Check "http://plugin.org.uk/" for updates. 
-		If none, just grab the dlls from a previous release. 
-		If updated, build these via the 
-		audacity\win\LADSPA_plugins-win project (see 
-		audacity\win\LADSPA_plugins-win\readme_LADSPA_plugins-win.txt). 
-		
-		Once you have these DLL files, put them in the plug-ins 
-		folder, e.g., audacity\win\unicode_release\plug-ins.
+      * gverb_1216.dll
+      * hard_limiter_1413.dll
+      * sc4_1882.dll
+      
+      Check "http://plugin.org.uk/" for updates. 
+      If none, just grab the dlls from a previous release. 
+      If updated, build these via the 
+      audacity\win\LADSPA_plugins-win project (see 
+      audacity\win\LADSPA_plugins-win\readme_LADSPA_plugins-win.txt). 
+      
+      Once you have these DLL files, put them in the plug-ins 
+      folder, e.g., audacity\win\unicode_release\plug-ins.
 
    b. Copy the audacity\LICENSE.txt and audacity\README.txt files
       to the build folder.
@@ -108,38 +117,38 @@ either one, but example values are for Unicode_Release.
 
 4. Build the Installer.
 
-	a. Install the latest Inno Setup 
-		(http://www.jrsoftware.org/isinfo.php).
+   a. Install the latest Inno Setup 
+      (http://www.jrsoftware.org/isinfo.php).
 
-	b. Open the appropriate Inno Setup script, 
-		audacity\win\audacity.iss for Release or 
-		audacity\win\audacity_unicode.iss for Unicode_Release. 
-		
-	c. Change the version strings as necessary. 
-		These are current for Unicode_Release:
-	
-		* OutputBaseFilename=audacity-win-unicode-1.3.9
-		
-		* AppName=Audacity 1.3 Beta (Unicode)
-			For stable releases, this should just be 
-			"Audacity (Unicode)"
-		
-		* AppVerName=Audacity 1.3.9 (Unicode)
-		
-		* DefaultDirName={pf}\Audacity 1.3 Beta (Unicode)
-			For stable releases, this should just be 
-			"Audacity (Unicode)"
-	
-	d. Compile and test the installer. 
-		The result appears in audacity\win\Output.
+   b. Open the appropriate Inno Setup script, 
+      audacity\win\audacity.iss for Release or 
+      audacity\win\audacity_unicode.iss for Unicode_Release. 
+      
+   c. Change the version strings as necessary. 
+      These are current for Unicode_Release:
+   
+      * OutputBaseFilename=audacity-win-unicode-1.3.9
+      
+      * AppName=Audacity 1.3 Beta (Unicode)
+         For stable releases, this should just be 
+         "Audacity (Unicode)"
+      
+      * AppVerName=Audacity 1.3.9 (Unicode)
+      
+      * DefaultDirName={pf}\Audacity 1.3 Beta (Unicode)
+         For stable releases, this should just be 
+         "Audacity (Unicode)"
+   
+   d. Compile and test the installer. 
+      The result appears in audacity\win\Output.
 
-	e. Rename it as necessary, e.g., 
-		"audacity-win-unicode-1.3.9rc1.exe".
+   e. Rename it as necessary, e.g., 
+      "audacity-win-unicode-1.3.9rc1.exe".
 
 
 5. To create the zip version, go to the installed version, 
-	e.g., "C:\Program Files\Audacity 1.3 Beta (Unicode)", 
-	remove the unins*.* files and the "help" folder, then 
+   e.g., "C:\Program Files\Audacity 1.3 Beta (Unicode)", 
+   remove the unins*.* files and the "help" folder, then 
    zip the folder and rename it e.g.,
    "audacity-win-unicode-1.3.9.zip"
 
