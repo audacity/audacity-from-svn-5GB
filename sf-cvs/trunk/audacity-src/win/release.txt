@@ -18,14 +18,14 @@ either one, but example values are for Unicode_Release.
 
 1. Remove the old manual and make sure you can rebuild a new one
 
-   a. Make sure you have python installed and on your path.
+   a. Make sure you have Python installed and on your PATH.
 
    b. Delete audacity\help\manual if it exists.
 
    c. The manual should be built in audacity\help\manual by the 
       main Solution (step 2 below). 
 
-      If you have disabled the 'Help' project uring testing you will have to 
+      If you have disabled the 'Help' project during testing you will have to 
       build it separately. 
 
       If you just want to get the manual, go to 
