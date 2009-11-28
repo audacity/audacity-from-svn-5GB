@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-18 07:43+0000\n"
-"PO-Revision-Date: 2009-11-08 17:32+0100\n"
+"POT-Creation-Date: 2009-11-25 07:11+0000\n"
+"PO-Revision-Date: 2009-11-26 21:21+0100\n"
 "Last-Translator: Thomas De Rocker <thomasderocker@yahoo.com>\n"
 "Language-Team: Nederlands\n"
 "MIME-Version: 1.0\n"
@@ -66,7 +66,7 @@ msgid "Audacity&reg; is free, open source software for recording and editing sou
 msgstr "Audacity&reg; is vrije, open source software om geluid op te nemen en te bewerken.  Audacity is beschikbaar voor Mac OS X, Microsoft Windows, GNU/Linux en andere besturingssystemen. <a href=\"about/\">Kom meer te weten over Audacity...</a> Raadpleeg ook onze <a href=\"http://audacityteam.org/wiki/\">Wiki</a> en het <a href=\"http://audacityteam.org/forum/\">Forum</a> voor meer informatie."
 
 #: index.php:57
-msgid "The latest release of Audacity is <a href=\"/download\">1.3.9 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into foreign languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
+msgid "The latest release of Audacity is <a href=\"/download\">1.3.9 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into different languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
 msgstr "De laatste release van Audacity is <a href=\"/download\">1.3.9 (bèta)</a>. Omdat de ontwikkeling nog steeds voortduurt, en omdat volledige documentatie of vertalingen nog niet beschikbaar zijn, is het programma aangeraden voor meer ervaren gebruikers. Zie <a href=\"/download/features-1.3-a\">nieuwe functies in 1.3</a> voor meer informatie over de 1.3.x bèta series."
 
 #: index.php:59
@@ -303,130 +303,6 @@ msgstr ""
 "  <li>Met een licentie uitgegeven door <a href=\"license\">GNU General Public License (GPL)</a>.</li>\n"
 "  <li>Werkt op Mac OS X, Windows, en GNU/Linux.</li>\n"
 "</ul>"
-
-#: about/credits.php:10
-#: main.inc.php:27
-msgid "Credits"
-msgstr "Dank aan:"
-
-#: about/credits.php:15
-msgid ""
-"These are some of the people who have <a href=\"../community/\">contributed</a> to the free Audacity audio editor.</p>  \n"
-"</p>If you have questions or feedback about Audacity, please see the <a href=\"../contact/\">contact page</a>."
-msgstr ""
-"Dit zijn een paar van de mensen die een <a href=\"../community/\">bijdrage</a>  hebben geleverd aan de vrije Audacity audio editor.</p>  \n"
-"</p>Als u vragen heeft over Audacity of u wilt feedback geven, gelieve dan te kijken naar de <a href=\"../contact/\">contactpagina</a>."
-
-#: about/credits.php:18
-msgid "History"
-msgstr "Geschiedenis"
-
-#: about/credits.php:20
-msgid "Audacity was started by Dominic Mazzoni and Roger Dannenberg in the fall of 1999 at Carnegie Mellon University.  It was released as open-source software at SourceForge.net in May of 2000."
-msgstr "Audacity werd gestart door Dominic Mazzoni en Roger Dannenberg in the herfst van 1999 op de Carnegie Mellon Universiteit. Het werd uitgegeven als open source software op SourceForge.net in mei 2000."
-
-#: about/credits.php:24
-msgid "Audacity Team Members"
-msgstr "Audacity Teamleden"
-
-#: about/credits.php:26
-#: about/credits.php:27
-#: about/credits.php:28
-#: about/credits.php:32
-#: about/credits.php:35
-#: about/credits.php:39
-#: about/credits.php:40
-#: about/credits.php:63
-msgid "documentation and support"
-msgstr "documentatie en ondersteuning"
-
-#: about/credits.php:28
-msgid "French"
-msgstr "Frans"
-
-#: about/credits.php:29
-msgid "system administration"
-msgstr "systeemadministratie"
-
-#: about/credits.php:30
-#: about/credits.php:31
-#: about/credits.php:33
-#: about/credits.php:34
-#: about/credits.php:36
-#: about/credits.php:37
-#: about/credits.php:38
-#: about/credits.php:41
-#: about/credits.php:58
-#: about/credits.php:59
-#: about/credits.php:60
-#: about/credits.php:61
-#: about/credits.php:62
-#: about/credits.php:68
-#: about/credits.php:70
-#: about/credits.php:71
-#: about/credits.php:72
-#: about/credits.php:73
-#: about/credits.php:74
-#: about/credits.php:75
-#: about/credits.php:77
-#: about/credits.php:78
-#: about/credits.php:79
-#: about/credits.php:80
-#: about/credits.php:81
-#: about/credits.php:82
-#: about/credits.php:83
-#: about/credits.php:84
-#: about/credits.php:85
-msgid "developer"
-msgstr "ontwikkelaar"
-
-#: about/credits.php:44
-msgid "Technical Leadership Council"
-msgstr "Technical Leadership Council"
-
-#: about/credits.php:56
-msgid "Emeritus: distinguished Audacity team members, not currently active"
-msgstr "Emeritus: onderscheiden Audacity-teamleden, op dit moment niet actief"
-
-#: about/credits.php:66
-msgid "Contributors"
-msgstr "Bijdragen van:"
-
-#: about/credits.php:69
-msgid "accessibility advisor"
-msgstr "toegankelijkheidsadviseur"
-
-#: about/credits.php:76
-msgid "graphic artist"
-msgstr "grafische artiest"
-
-#: about/credits.php:88
-#: main.inc.php:69
-#: community/index.php:25
-#: community/translation.php:9
-msgid "Translators"
-msgstr "Vertalers"
-
-#: about/credits.php:135
-#: download/plugins.php:36
-msgid "Libraries"
-msgstr "Bibliotheken"
-
-#: about/credits.php:136
-msgid "Audacity is based on code from the following projects:"
-msgstr "Audacity is gebaseerd op broncode van de volgende projecten:"
-
-#: about/credits.php:156
-msgid "Thanks"
-msgstr "Bedankt"
-
-#: about/credits.php:157
-msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
-msgstr "Wij willen nog vele andere organisaties en mensen bedanken. Velen hebben broncode aangeleverd, voor patches gezorgd, feedback en geld gegeven, en tijd besteed aan het project. Weer anderen hebben ons gewoon het gereedschap aangereikt waardoor het hele project mogelijk is gemaakt."
-
-#: about/credits.php:183
-msgid "(Let us know if we're forgetting anyone!)"
-msgstr "(Laat ons weten als wij iemand vergeten zijn!)"
 
 #: about/links.php:9
 #: main.inc.php:28
@@ -786,6 +662,134 @@ msgstr "Tempo wijzigen"
 msgid "Recording with Audacity"
 msgstr "Opnemen met Audacity"
 
+#: about/credits.php:10
+#: main.inc.php:27
+msgid "Credits"
+msgstr "Dank aan:"
+
+#: about/credits.php:15
+msgid ""
+"These are some of the people who have <a href=\"../community/\">contributed</a> to the free Audacity audio editor.</p>  \n"
+"</p>If you have questions or feedback about Audacity, please see the <a href=\"../contact/\">contact page</a>."
+msgstr ""
+"Dit zijn een paar van de mensen die een <a href=\"../community/\">bijdrage</a>  hebben geleverd aan de vrije Audacity audio editor.</p>  \n"
+"</p>Als u vragen heeft over Audacity of u wilt feedback geven, gelieve dan te kijken naar de <a href=\"../contact/\">contactpagina</a>."
+
+#: about/credits.php:18
+msgid "History"
+msgstr "Geschiedenis"
+
+#: about/credits.php:20
+msgid "Audacity was started by Dominic Mazzoni and Roger Dannenberg in the fall of 1999 at Carnegie Mellon University.  It was released as open-source software at SourceForge.net in May of 2000."
+msgstr "Audacity werd gestart door Dominic Mazzoni en Roger Dannenberg in the herfst van 1999 op de Carnegie Mellon Universiteit. Het werd uitgegeven als open source software op SourceForge.net in mei 2000."
+
+#: about/credits.php:22
+msgid "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, that is, excluding the code libraries Audacity uses. The <a href=\"http://www.ohloh.net/projects/audacity/contributors\">Contributors tab</a> on the Ohloh site shows the contributions of each developer."
+msgstr "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> heeft statistieken over de waarde van Audacity-ontwikkeling. De Ohloh-&quot;badge&quot; onderaan elke pagina van deze site toont geüpdatete waarden. We hebben de Ohloh-pagina's over Audacity zo ingesteld dat de statistieken alleen de waarden van Audacity-specifieke ontwikkeling tonen, wat de third-party codebibliotheken uitsluit die Audacity gebruikt. De <a href=\"http://www.ohloh.net/projects/audacity/contributors\">Contributors-tab</a> op de Ohloh-site geeft de bijdragen van elke ontwikkelaar weer."
+
+#: about/credits.php:24
+msgid "Audacity Team Members"
+msgstr "Audacity Teamleden"
+
+#: about/credits.php:26
+#: about/credits.php:27
+#: about/credits.php:28
+#: about/credits.php:32
+#: about/credits.php:35
+#: about/credits.php:39
+#: about/credits.php:40
+#: about/credits.php:62
+msgid "documentation and support"
+msgstr "documentatie en ondersteuning"
+
+#: about/credits.php:28
+msgid "French"
+msgstr "Frans"
+
+#: about/credits.php:29
+msgid "system administration"
+msgstr "systeemadministratie"
+
+#: about/credits.php:30
+#: about/credits.php:31
+#: about/credits.php:33
+#: about/credits.php:34
+#: about/credits.php:36
+#: about/credits.php:37
+#: about/credits.php:38
+#: about/credits.php:41
+#: about/credits.php:57
+#: about/credits.php:58
+#: about/credits.php:59
+#: about/credits.php:60
+#: about/credits.php:61
+#: about/credits.php:67
+#: about/credits.php:69
+#: about/credits.php:70
+#: about/credits.php:71
+#: about/credits.php:72
+#: about/credits.php:73
+#: about/credits.php:74
+#: about/credits.php:76
+#: about/credits.php:77
+#: about/credits.php:78
+#: about/credits.php:79
+#: about/credits.php:80
+#: about/credits.php:81
+#: about/credits.php:82
+#: about/credits.php:83
+#: about/credits.php:84
+msgid "developer"
+msgstr "ontwikkelaar"
+
+#: about/credits.php:44
+msgid "Technical Leadership Council"
+msgstr "Technical Leadership Council"
+
+#: about/credits.php:55
+msgid "Emeritus: distinguished Audacity team members, not currently active"
+msgstr "Emeritus: onderscheiden Audacity-teamleden, op dit moment niet actief"
+
+#: about/credits.php:65
+msgid "Contributors"
+msgstr "Bijdragen van:"
+
+#: about/credits.php:68
+msgid "accessibility advisor"
+msgstr "toegankelijkheidsadviseur"
+
+#: about/credits.php:75
+msgid "graphic artist"
+msgstr "grafische artiest"
+
+#: about/credits.php:87
+#: main.inc.php:69
+#: community/index.php:25
+#: community/translation.php:9
+msgid "Translators"
+msgstr "Vertalers"
+
+#: about/credits.php:134
+#: download/plugins.php:36
+msgid "Libraries"
+msgstr "Bibliotheken"
+
+#: about/credits.php:135
+msgid "Audacity is based on code from the following projects:"
+msgstr "Audacity is gebaseerd op broncode van de volgende projecten:"
+
+#: about/credits.php:155
+msgid "Thanks"
+msgstr "Bedankt"
+
+#: about/credits.php:156
+msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
+msgstr "Wij willen nog vele andere organisaties en mensen bedanken. Velen hebben broncode aangeleverd, voor patches gezorgd, feedback en geld gegeven, en tijd besteed aan het project. Weer anderen hebben ons gewoon het gereedschap aangereikt waardoor het hele project mogelijk is gemaakt."
+
+#: about/credits.php:182
+msgid "(Let us know if we're forgetting anyone!)"
+msgstr "(Laat ons weten als wij iemand vergeten zijn!)"
+
 #: main.inc.php:20
 msgid "Home"
 msgstr "Home"
@@ -795,6 +799,7 @@ msgid "About"
 msgstr "Over"
 
 #: main.inc.php:31
+#: download/betawarning.inc.php:11
 #: download/index.php:10
 #: download/main.inc.php:11
 msgid "Download"
@@ -850,7 +855,7 @@ msgstr "Plugins en bibliotheken"
 
 #: main.inc.php:46
 msgid "Obtain a CD"
-msgstr "Cd verkrijgen"
+msgstr "Een cd verkrijgen"
 
 #: main.inc.php:47
 #: download/bundlers.php:10
@@ -923,7 +928,7 @@ msgstr "Ontwikkelaars"
 #: main.inc.php:70
 #: community/index.php:28
 msgid "Donate"
-msgstr "Doneer"
+msgstr "Doneren"
 
 #: site-map.php:8
 #: include/footer.inc.php:19
@@ -1006,6 +1011,10 @@ msgid ""
 "  Thank you for supporting Audacity."
 msgstr "Er zijn vele manieren om Audacity te ondersteunen, en vele graden om het te doen. We hebben altijd gebruikers verwelkomd wiens enige bijdrage het gebruik van Audacity is, door ons feedback te geven over hoe het te verbeteren, en door anderen erover te vertellen. Bedankt om Audacity te ondersteunen."
 
+#: community/donate.php:66
+msgid "Purchase from the <a href=\"http://audacitystore.com/\">Audacity Store</a>"
+msgstr "Kopen via de <a href=\"http://audacitystore.com/\">Audacity-winkel</a>"
+
 #: community/donate.php:69
 msgid ""
 "You are invited to try out the new <a href=\"http://audacitystore.com/\">Audacity Store</a>, which features \n"
@@ -1017,6 +1026,10 @@ msgstr "U bent uitgenodigd om de nieuwe <a href=\"http://audacitystore.com/\">Au
 #: include/header.inc.php:78
 msgid "Audacity Store"
 msgstr "Audacity-Winkel"
+
+#: community/donate.php:81
+msgid "Make a Donation"
+msgstr "Een donatie geven"
 
 #: community/donate.php:82
 msgid "Alternatively, click the button below to donate securely by Paypal. You can send any amount, using either your credit card or your Paypal account:"
@@ -1033,6 +1046,10 @@ msgstr "Indien u verkiest om een persoonlijke cheque of een andere vorm van beta
 #: community/donate.php:106
 msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
 msgstr "feedback e-mailadres</a> om ons te vertellen in welk land u woont en hoe u wil betalen."
+
+#: community/developers.php:16
+msgid "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses. The <a href=\"http://www.ohloh.net/projects/59/analyses/latest\">Code tab</a> on the Ohloh site shows the progress of code development."
+msgstr "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> heeft statistieken over de waarde van Audacity-ontwikkeling. De Ohloh-&quot;badge&quot; onderaan elke pagina van deze site toont geüpdatete waarden. We hebben de Ohloh-pagina's over Audacity zo ingesteld dat de statistieken alleen de waarden van Audacity-specifieke ontwikkeling tonen, wat de third-party codebibliotheken uitsluit die Audacity gebruikt. De <a href=\"http://www.ohloh.net/projects/59/analyses/latest\">Code-tab</a> op de Ohloh-site geeft de voortgang van code-ontwikkeling weer."
 
 #: community/developers.php:19
 msgid "Join the <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a> mailing list to discuss current and future development, or to get help building and modifying the Audacity source code."
@@ -1579,6 +1596,7 @@ msgstr "<b>Voor ervaren gebruikers</b> zijn <a href=\"http://wiki.audacityteam.o
 #: download/beta_mac.php:49
 #: download/beta_linux.php:36
 #: download/beta_source.php:40
+#: download/betawarning.inc.php:11
 #: download/linux.php:31
 #: download/mac.php:44
 #: download/source.php:29
@@ -2343,7 +2361,7 @@ msgid ""
 "                        <li>Improved support for non-mmap ALSA devices such as PulseAudio</li> \n"
 "                        <li>32-bit float data over 0 dB now handled without clipping</li>\n"
 "                        <li>\"Stop\" option when importing preserves already imported data</li>\n"
-"                        <li>AMR NB export now supported if the optional \n"
+"                        <li>AMR NB import and export now supported on all platforms if the optional \n"
 "                            <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">\n"
 "                            FFmpeg library</a> is installed</li>\n"
 "                        <li>Faster waveform drawing and better response in multi-track \n"
@@ -2456,88 +2474,738 @@ msgstr ""
 msgid "New in Audacity 1.3.7"
 msgstr "Nieuw in Audacity 1.3.7"
 
-#: download/features-1.3-a.php:250
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:175
+msgid ""
+"<dl>\n"
+"\t<dt> Improvements and new features </dt>\n"
+"\t      <dd>   <ul>   \n"
+"                      <li>F11 Full Screen mode</li>\n"
+"                      <li>High-quality \"Sliding Time Scale/Pitch Shift\" effect</li>\n"
+"                      <li>\"Audio Contrast Analyzer\" for testing audio on the\n"
+"                           internet for\n"
+"                           <a href=\"http://www.eramp.com/WCAG_2_audio_contrast_tool_help.htm\">\n"
+"                           WCAG2 accessibility compliance</a></li>\n"
+"                      <li>On Windows, sound devices can now be opened using the more\n"
+"                           efficient DirectSound API</li>\n"
+"                      <li>As a first step towards improving latency correction, a fixed\n"
+"                           rather than variable correction is now applied, customizable\n"
+"                           in Preferences                    \n"
+"                      <li>Numerous minor interface improvements such as Metadata\n"
+"                           Editor navigation, new \"hh:mm:ss + hundredths\" selection format\n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"\t<dt> Numerous usability and stability fixes </dt>\n"
+"\t      <dd> Cross-platform Bug Fixes:\n"
+"                <ul>\n"
+"                     <li>Muting/soloing caused incorrect channel results in exported\n"
+"                          stereo files</li>\n"
+"                     <li>Nyquist effects: pasted unmodified audio into the result,\n"
+"                          no progress bar, truncation of processed audio on\n"
+"                          cancel</li> \n"
+"                     <li>Noise Removal: pasted unmodified audio into the result, \n"
+"                          unwanted filtering tail</li>\n"
+"                     <li>Uncompressed exports:</li>\n"
+"                            <ul>\n"
+"                                  <li>Export as WAV could be corrupted if\n"
+"                                       overwriting to same file</li>\n"
+"                                  <li>Export multiple to uncompressed\n"
+"                                       formats only produced 16-bit WAV</li>\n"
+"                            </ul> \n"
+"                     <li>Compressed exports:</li>\n"
+"                            <ul>\n"
+"                                  <li>MP3 exports now produce correct bit rate\n"
+"                                       mode, quality and length, with improved \n"
+"                                       metadata visibility in player applications \n"
+"                                       (Windows users will require the\n"
+"                                       <a href=\"http://lame.buanzo.com.ar/\">\n"
+"                                       latest version of the LAME encoder</a>) \n"
+"                                  <li>WMA exports containing metadata are now correct</li> \n"
+"                            </ul>\n"
+"                     <li>Restored support for multi-channel recording devices that\n"
+"                          can record more than two channels using Audacity</li>\n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"         <dd>Platform-specific Bug Fixes:\n"
+"                <ul>\n"
+"                     <li><i>Windows Vista:</i> fixed crash opening Preferences with no sound\n"
+"                          devices enabled and connected </li>\n"
+"                     <li><i>Mac OS X and Linux:</i></li>\n"
+"                         <ul>      \n"
+"                                <li>fixes for spurious clipping, label typing, no shortcuts after\n"
+"                                     running effects</li>                           \n"
+"                                <li>project rate now always changes to respect that of first \n"
+"                                   imported file</li>\n"
+"                         </ul>\n"
+"                     <li><i>Mac OS X only:</i></li>\n"
+"                         <ul>\n"
+"                                <li>fixes for inactive or corrupted menus, hidden dialogues, \n"
+"                                     portable settings not detected, and inability to set \n"
+"                                     independent Command and Control shortcuts</li>\n"
+"                                <li>FFmpeg installer now available</li>\n"
+"                         </ul> \n"
+"                </ul>\n"
+"         </dd>    \n"
+"   </dt>    \n"
+"</dl>\n"
+"\n"
+"<p>\n"
+"Please see the included README.txt for full details of changes, and for issues known at time of Release.\n"
+"</p>"
+msgstr ""
+"<dl>\n"
+"\t<dt> Verbeteringen en nieuwe functies </dt>\n"
+"\t      <dd>   <ul>   \n"
+"                      <li>F11 volledig scherm-modus</li>\n"
+"                      <li>Hogekwaliteits \"Glijdende tijdschaal/toonhoogte\"-effect</li>\n"
+"                      <li>\"Audio contrast analyzer\" om audio te testen op het \n"
+"                           internet voor\n"
+"                           <a href=\"http://www.eramp.com/WCAG_2_audio_contrast_tool_help.htm\">\n"
+"                           WCAG2-toegankelijkheidsmogelijkheid</a></li>\n"
+"                      <li>Geluidsapparaten kunnen bij Windows nu geopend worden door gebruik te maken van de meer\n"
+"                           efficiënte DirectSound API</li>\n"
+"                      <li>Als een eerste stap naar het verbeteren van de vertragingscorrectie wordt een vaste in plaats\n"
+"                           van variabele correctie toegepast, aanpasbaar\n"
+"                           in Voorkeuren                    \n"
+"                      <li>Verschillende kleine interface-verbeteringen zoals navigatie in de Metadata\n"
+"                           Editor, nieuw \"hh:mm:ss + honderdsten\" selectieformaat\n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"\t<dt> Verschillende fixes voor gebruiksgemak en stabiliteit </dt>\n"
+"\t      <dd> Cross-platform bugfixes:\n"
+"                <ul>\n"
+"                     <li>Toepassen van \"Stil maken/solo\" zorgde voor incorrecte kanaalresultaten bij geëxporteerde\n"
+"                          stereobestanden</li>\n"
+"                     <li>Nyquist-effecten: plakten ongewijzigde audio in het resultaat,\n"
+"                          geen voortgangsbalk, afkappen van verwerkte audio bij\n"
+"                          annuleren</li> \n"
+"                     <li>Ruisverwijdering: plakte ongewijzigde audio in het resultaat, \n"
+"                          ongewilde filter-rest</li>\n"
+"                     <li>Ongecomprimeerd exporteren:</li>\n"
+"                            <ul>\n"
+"                                  <li>Exporteren als WAV kon corrupt zijn bij\n"
+"                                       het overschrijven van hetzelfde bestand</li>\n"
+"                                  <li>Meerdere exporteren naar ongecomprimeerde\n"
+"                                       formaten produceerde alleen 16-bit WAV</li>\n"
+"                            </ul> \n"
+"                     <li>Gecomprimeerd exporteren:</li>\n"
+"                            <ul>\n"
+"                                  <li>MP3-exports produceren nu een correcte bitrate-modus,\n"
+"                                       kwaliteit en lengte, met verbeterde  \n"
+"                                       metadata-zichtbaarheid in spelertoepassingen \n"
+"                                       (Windowsgebruikers hebben de \n"
+"                                       <a href=\"http://lame.buanzo.com.ar/\">\n"
+"                                       laatste versie van de LAME encoder nodig</a>) \n"
+"                                  <li>WMA-exports die metadata bevatten zijn nu correct</li> \n"
+"                            </ul>\n"
+"                     <li>Herstelde ondersteuning voor meerkanalige opname-apparaten die\n"
+"                          meer dan twee kanalen kunnen opnemen bij het gebruik van Audacity</li>\n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"         <dd>Platform-specifieke bugfixes:\n"
+"                <ul>\n"
+"                     <li><i>Windows Vista:</i> opgeloste crash bij het openen van Voorkeuren terwijl er geen geluidsapparaten\n"
+"                          geactiveerd en verbonden waren </li>\n"
+"                     <li><i>Mac OS X en Linux:</i></li>\n"
+"                         <ul>      \n"
+"                                <li>fixes voor clipping, labeltypen, geen snelkoppelingen na toepassen\n"
+"                                     van effecten</li>                           \n"
+"                                <li>projectbitrate verandert nu altijd volgens deze van het eerste geïmporteerde \n"
+"                                   bestand</li>\n"
+"                         </ul>\n"
+"                     <li><i>Alleen Mac OS X:</i></li>\n"
+"                         <ul>\n"
+"                                <li>fixes voor inactieve of corrupte menu's, verborgen dialogen, \n"
+"                                     niet-gedetecteerde draagbare instellingen en de onmogelijkheid \n"
+"                                     om onafhankelijke Command en Control snelkoppelingen in te stellen</li>\n"
+"                                <li>FFmpeg installer nu beschikbaar</li>\n"
+"                         </ul> \n"
+"                </ul>\n"
+"         </dd>    \n"
+"   </dt>    \n"
+"</dl>\n"
+"\n"
+"<p>\n"
+"Gelieve het bijgevoegde README.txt te lezen voor volledige details van aanpassingen en voor gekende problemen op het moment van vrijgave.\n"
+"</p>"
+
+#: download/features-1.3-a.php:253
 msgid "New in Audacity 1.3.6"
 msgstr "Nieuw in Audacity 1.3.6"
 
-#: download/features-1.3-a.php:287
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:259
+msgid ""
+"<dl>\n"
+"\t<dt> Major new capabilities </dt>\n"
+"         <dd>   <ul>\n"
+"                      <li><b>FFmpeg support</b> (downloadable separately) permits import and\n"
+"                             export of a much wider range of file formats, including WMA, \n"
+"                             M4A and AC3, plus import of audio from video files</li>\n"
+"                      <li><b>On-demand loading</b> of uncompressed files eliminates the \n"
+"                             wait before files can be played or edited</li> \n"
+"                      <li><b>Linked audio and label tracks</b> allow labels to move with\n"
+"                             their corresponding audio when cutting, pasting or changing\n"
+"                             speed or tempo</li>\n"
+"         </ul>   </dd>\n"
+"   </dt>\n"
+"\n"
+"   <dt> Other features </dt>\n"
+"         <dd>   <ul>\n"
+"                       <li>Hierarchical plug-in grouping for built-in plug-ins</li>\n"
+"                       <li>Sound activated recording</li>\n"
+"                       <li>Ability to save smaller, compressed project files</li>\n"
+"                       <li>MIDI files can now be imported, cut-and-paste edited, then exported</li>\n"
+"         </ul>   </dd>      \n"
+"   </dt>\n"
+"\n"
+"   <dt> Miscellaneous </dt>\n"
+"         <dd>   <ul>\n"
+"                       <li>Transport menu for easy access to frequently used\n"
+"                           recording/playback commands and preferences</li>       \n"
+"                       <li>Default View Mode Preference to choose Waveform, \n"
+"                           Spectrum or Pitch view</li>\n"
+"                       <li>Several bug fixes</li>\n"
+"         </ul>  </dd>         \n"
+"   </dt>\n"
+"</dl>"
+msgstr ""
+"<dl>\n"
+"\t<dt> Belangrijkste nieuwe capaciteiten </dt>\n"
+"         <dd>   <ul>\n"
+"                      <li><b>FFmpeg-ondersteuning</b> (apart te downloaden) staat import\n"
+"                             en export toe van een veel grotere waaier van bestandsformaten, inclusief WMA, \n"
+"                             M4A en AC3, plus importeren van audio van videobestanden</li>\n"
+"                      <li><b>Op aanvraag laden</b> van ongecomprimeerde bestanden elimineert de \n"
+"                             wachttijd voordat bestanden afgespeeld of gewijzigd kunnen worden</li> \n"
+"                      <li><b>Gelinkte audio- en labeltracks</b> staan toe dat labels verplaatst worden met\n"
+"                             hun overeenkomstige audio bij het knippen, plakken of het aanpassen van\n"
+"                             snelheid of tempo</li>\n"
+"         </ul>   </dd>\n"
+"   </dt>\n"
+"\n"
+"   <dt> Andere functies </dt>\n"
+"         <dd>   <ul>\n"
+"                       <li>Hiërarchische plugin-groepering voor ingebouwde plugins</li>\n"
+"                       <li>Geluidsgeactiveerd opnemen</li>\n"
+"                       <li>Mogelijkheid om kleinere, gecomprimeerde projectbestanden op te slaan</li>\n"
+"                       <li>MIDI-bestanden kunnen nu geïmporteerd, geknipt en geplakt worden en daarna terug geëxporteerd</li>\n"
+"         </ul>   </dd>      \n"
+"   </dt>\n"
+"\n"
+"   <dt> Varia </dt>\n"
+"         <dd>   <ul>\n"
+"                       <li>Transport-menu voor gemakkelijke toegang tot frequent gebruikte\n"
+"                           opname/afspelen-commando's en voorkeuren</li>       \n"
+"                       <li>Standaard weergavemodus-voorkeur om te kiezen tussen golfvorm, \n"
+"                           spectrum of toonhoogte-weergave</li>\n"
+"                       <li>Verschillende bugfixes</li>\n"
+"         </ul>  </dd>         \n"
+"   </dt>\n"
+"</dl>"
+
+#: download/features-1.3-a.php:293
 msgid "New in Audacity 1.3.5"
 msgstr "Nieuw in Audacity 1.3.5"
 
-#: download/features-1.3-a.php:356
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:299
+msgid ""
+"<dl>\n"
+"\t<dt> Recording / Playback </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Several bugs fixed so that latency correction should be better, \n"
+"                               and more devices work correctly.</li>\n"
+"                           <li>Problems with invalid sample rates under Linux should be much rarer.</li>\n"
+"                           <li>Newer version of Portaudio library.</li>\n"
+"                           <li>New feature to record onto the end of an existing track\n"
+"                               (hold Shift while clicking Record).</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Import / Export </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Updated versions of Libogg, Libvorbis, Libflac, Libsndfile and Twolame\n"
+"                               libraries.\n"
+"                           <li>Handling of unsupported file formats more informative.</li>\n"
+"                           <li>Handling of file names with slashes on OS X improved.</li>\n"
+"                           <li>New dialog allows replacement of illegal file name characters on all platforms.</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Interface </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Improved scaling and layout for rulers and VU meters.</li>\n"
+"                           <li>Envelope fixes/improvements including full control of undo/redo.</li>\n"
+"                           <li>New keyboard shortcuts and improved menu navigation.</li>\n"
+"                           <li>Preferences:</li>\n"
+"                               <ul>\n"
+"                                    <li>More intuitive tab arrangement.</li> \n"
+"                                    <li>New options for mute/solo and Metadata Editor behavior.</li> \n"
+"                                    <li>Language can now be changed without restart.</li>\n"
+"                               </ul>\n"
+"\t\t\t      <li>Expanded Build Information tab.</li>\n"
+"           </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Effects </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>New Vocal Remover plug-in, improvements for Generate effects.</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Compilation </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Fixes when building Audacity with libraries disabled.</li>\n"
+"                           <li>Improvements to make Mac and Solaris builds easier.</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Security </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Full fix for issue CVE-2007-6061 on systems where temporary directories\n"
+"                                can be changed by other users (thanks to Michael Schwendt).</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\n"
+"\t<dt> Miscellaneous </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Updated translations for many locales.</li>\n"
+"                           <li>Several stability improvements.</li> \n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"</dl>"
+msgstr ""
+"<dl>\n"
+"\t<dt> Opnemen/afspelen </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Verschillende bugs gefixt zodat vertragingscorrectie beter zou zijn \n"
+"                               en meer apparaten correct werken.</li>\n"
+"                           <li>Problemen met ongeldige samplerates onder Linux zouden moeten veel zeldzamer zijn.</li>\n"
+"                           <li>Nieuwere versie van de Portaudio-bibliotheek.</li>\n"
+"                           <li>Nieuwe functie om audio op te nemen aan het einde van een bestaand spoor\n"
+"                               (Shift inhouden terwijl u op Opnemen klikt).</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Importeren/Exporteren </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Geüpdatete versies van de Libogg, Libvorbis, Libflac, Libsndfile en Twolame\n"
+"                               bibliotheken.\n"
+"                           <li>Behandeling van niet-ondersteunde bestandsformaten is meer informatief.</li>\n"
+"                           <li>Behandeling van bestandsnamen met schuine strepen op OS X verbeterd.</li>\n"
+"                           <li>Nieuw dialoogvenster staat toe dat ongeldige tekens op alle platformen vervangen worden.</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Interface </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Verbeterd schalen en verbeterde layout voor linialen en VU-meters.</li>\n"
+"                           <li>Envelope fixes/verbeteringen inclusief volledige bediening van ongedaan maken/opnieuw doen.</li>\n"
+"                           <li>Nieuwe sneltoetsen en verbeterde menu-navigatie.</li>\n"
+"                           <li>Voorkeuren:</li>\n"
+"                               <ul>\n"
+"                                    <li>Meer intuïtieve tab-ordening.</li> \n"
+"                                    <li>Nieuwe opties voor het gedrag van stil maken/solo en de metadata editor.</li> \n"
+"                                    <li>De taal kan nu aangepast worden zonder opnieuw te starten.</li>\n"
+"                               </ul>\n"
+"\t\t\t      <li>Uitgebouwde build-informatietab.</li>\n"
+"           </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Effecten </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Nieuw stemverwijderingsplugin, verbeteringen voor Genereren-effecten.</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Compilatie </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Fixes bij het bouwen van Audacity met bibliotheken uitgeschakeld.</li>\n"
+"                           <li>Verbeteringen om Mac- en Solaris-builds gemakkelijker te maken.</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\t<dt> Veiligheid </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Volledige fix voor probleem CVE-2007-6061 op systemen waar tijdelijke mappen\n"
+"                                aangepast kunnen worden door andere gebruikers (dankzij Michael Schwendt).</li>\n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"\n"
+"\n"
+"\t<dt> Varia </dt>\n"
+"\t      <dd>   <ul>\n"
+"                           <li>Geüpdatete vertalingen voor vele locales.</li>\n"
+"                           <li>Verschillende stabiliteitsverbeteringen.</li> \n"
+"             </dd>   </ul>\n"
+"       </dt>\n"
+"</dl>"
+
+#: download/features-1.3-a.php:365
 msgid "New in Audacity 1.3.4"
 msgstr "Nieuw in Audacity 1.3.4"
 
-#: download/features-1.3-a.php:432
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:371
+msgid ""
+"<dl>\n"
+"  <dt></dt>\n"
+"  <dd>\n"
+"    <!-- indent cheat -->\n"
+"    <dl>\n"
+"      <dt> New features </dt>\n"
+"      <dd>New Welcome Screen with introduction to Audacity.</dd>\n"
+"      <dd>Enhanced Windows Shell integration, so Audacity shows up in lots of\n"
+"          Windows places such as \"Open With\".</dd>\n"
+"      <dd>New keyboard command: \"Mix and Render to New Track\" (bound to Ctrl+Shift+M).</dd>\n"
+"      <dd>New keyboard shortcut: \"Shift-A\" starts playback when stopped,\n"
+"          or performs \"Stop and Select\" when playing.</dd>\n"
+"      <dd>Added support for VAMP audio analysis plug-ins.</dd>\n"
+"      <dd>Solo button solos only one track at a time, and a track cannot be both mute and solo.</dd>\n"
+"\n"
+"      <dt> Interface </dt>\n"
+"      <dd>Keyboard shortcuts for making short/long jumps along the timeline.</dd>\n"
+"      <dd>Added \"Snap To\" in the Selection Bar.</dd>\n"
+"      <dd>Made keyboard navigation easier when multiple menu items with the same first letter exist.</dd>\n"
+"      <dd>Enhanced interface for label editing.</dd>\n"
+"      <dd>Layout of OK/Cancel buttons consistency improved.</dd>\n"
+"      <dd>\n"
+"        Preferences:\n"
+"        <ul>\n"
+"          <li>\"Select all audio in project, if none selected\" (on by default).</li>\n"
+"          <li>\"Beep on completion of longer activities\" (system bell, not main output).</li>\n"
+"          <li>Other preferences cleaned up and explanations improved.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>Envelopes: Many fixes when copying / pasting / repeating.</dd>\n"
+"      <dd>Many translation updates.</dd>\n"
+"      <dd>Track height fixed in several cases.</dd>\n"
+"      <dd>CleanSpeech mode switching without closing and re-opening fixed.</dd>\n"
+"\n"
+"      <dt> Opening/Saving Formats </dt>\n"
+"      <dd>Metadata editor added for OGG, FLAC and WAV/AIFF exports, and general improvements.</dd>\n"
+"      <dd>Metadata import improved.</dd>\n"
+"      <dd>Muted tracks are no longer audible in the exported mix.</dd>\n"
+"\n"
+"      <dt> Effects </dt>\n"
+"      <dd>Truncate Silence: support for multiple and stereo tracks.</dd>\n"
+"      <dd>\n"
+"        Dtmf Generator:\n"
+"        <ul>\n"
+"          <li>Added support for keypad letters.</li>\n"
+"          <li>Added an amplitude control.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>Compressor: variable decay time added.</dd>\n"
+"      <dd>\n"
+"        Equalization:\n"
+"        <ul>\n"
+"          <li>Clicks at start / end prevented.</li>\n"
+"          <li>Improvements to saved curves being found.</li>\n"
+"          <li>Preview works correctly.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>\"Merge\" command appears in Undo history.</dd>\n"
+"      <dd>Clipping detected more reliably.</dd>\n"
+"      <dd>Nyquist plug-ins reviewed and enhanced.</dd>\n"
+"      <dd>Better (and more) progress bars.</dd>\n"
+"      <dd>Canceling effect always restores previous audio.</dd>\n"
+"      <dd>Several improvement to effects in batch mode.</dd>\n"
+"\n"
+"      <dt> Recording/Playback </dt>\n"
+"      <dd>Improvements to latency correction.</dd>\n"
+"      <dd>Updated version of portaudio-v19 library.</dd>\n"
+"\n"
+"      <dt>\n"
+"        Note that Help is no longer built in, but accessible on the Web via links in Audacity.\n"
+"      </dt>\n"
+"    </dl>\n"
+"  </dd>\n"
+"</dl>"
+msgstr ""
+"<dl>\n"
+"  <dt></dt>\n"
+"  <dd>\n"
+"    <!-- indent cheat -->\n"
+"    <dl>\n"
+"      <dt> Nieuwe functies </dt>\n"
+"      <dd>Nieuw welkomstscherm met een introductie tot Audacity.</dd>\n"
+"      <dd>Verbeterde Windows Shell integratie, dus Audacity verschijnt in veel\n"
+"          Windows-plaatsen zoals \"Openen met...\".</dd>\n"
+"      <dd>Nieuw toetsenbordcommando: \"Mixen en naar nieuw spoor renderen\" (gebonden aan Ctrl+Shift+M).</dd>\n"
+"      <dd>Nieuw toetsenbordcommando: \"Shift-A\" begint het afspelen wanneer gestopt,\n"
+"          of doet \"Stoppen en selecteren\" tijdens het afspelen.</dd>\n"
+"      <dd>Ondersteuning toegevoegd voor VAMP audio-analyse plugins.</dd>\n"
+"      <dd>Solo-knop solo'et een spoor per keer, en een spoor kan niet stil en solo tegelijk zijn.</dd>\n"
+"\n"
+"      <dt> Interface </dt>\n"
+"      <dd>Sneltoetsen om kleine/grote sprongen te maken langs de tijdlijn.</dd>\n"
+"      <dd>\"Vangen aan\" toegevoegd in de selectiebalk.</dd>\n"
+"      <dd>Toetsenbordnavigatie gemakkelijker gemaakt wanneer meerdere menu-items met dezelfde eerste letter bestaan.</dd>\n"
+"      <dd>Verbeterde interface voor labelbewerking.</dd>\n"
+"      <dd>Layout van OK/Annuleren-knoppen-consistentie verbeterd.</dd>\n"
+"      <dd>\n"
+"        Voorkeuren:\n"
+"        <ul>\n"
+"          <li>\"Alle audio in het project selecteren indien niets geselecteerd\" (standaard aan).</li>\n"
+"          <li>\"Piepen bij voltooiing van langere activiteiten\" (systeembel, niet de hoofd-uitvoer).</li>\n"
+"          <li>Andere voorkeuren opgeruimd en uitleg verbeterd.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>Envelopes: veel fixes bij kopiëren/plakken/herhalen.</dd>\n"
+"      <dd>Veel vertalingsupdates.</dd>\n"
+"      <dd>Trackhoogte vastgezet in verschillende gevallen.</dd>\n"
+"      <dd>Veranderen van CleanSpeech-modus zonder sluiten en opnieuw openen gefixt.</dd>\n"
+"\n"
+"      <dt> Formaten openen/opslaan </dt>\n"
+"      <dd>Metadata editor toegevoegd voor OGG, FLAC en WAV/AIFF exports en algemene verbeteringen.</dd>\n"
+"      <dd>Metadata import verbeterd.</dd>\n"
+"      <dd>Stilgemaakte sporen zijn niet langer hoorbaar in de geëxporteerde mix.</dd>\n"
+"\n"
+"      <dt> Effecten </dt>\n"
+"      <dd>Stilte afkappen: ondersteuning voor meerdere en stereotracks.</dd>\n"
+"      <dd>\n"
+"        Dtmf-generator:\n"
+"        <ul>\n"
+"          <li>Ondersteuning voor keypad-letters toegevoegd.</li>\n"
+"          <li>Amplitude-bediening toegevoegd.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>Compressor: variabele decay-tijd toegevoegd.</dd>\n"
+"      <dd>\n"
+"        Equalizatie:\n"
+"        <ul>\n"
+"          <li>Klikjes aan het begin/einde voorkomen.</li>\n"
+"          <li>Verbeteringen om opgeslagen curves te vinden.</li>\n"
+"          <li>Preview werkt correct.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>\"Samenvoegen\"-commando verschijnt in Ongedaan maken-geschiedenis.</dd>\n"
+"      <dd>Clipping beter gedetecteerd.</dd>\n"
+"      <dd>Nyquist plugins nagekeken en verbeterd.</dd>\n"
+"      <dd>Betere (en meerdere) voortgangsbalken.</dd>\n"
+"      <dd>Annuleren van het effect herstelt altijd de vorige audi.</dd>\n"
+"      <dd>Verschillende verbeteringen aan effecten in batch-modus.</dd>\n"
+"\n"
+"      <dt> Opnemen/afspelen </dt>\n"
+"      <dd>Verbeteringen aan vertragingscorrectie.</dd>\n"
+"      <dd>Geüpdatete versie van de portaudio-v19 bibliotheek.</dd>\n"
+"\n"
+"      <dt>\n"
+"        Merk op dat de Help niet langer ingebouwd is, maar toegankelijk is op het web via links in Audacity.\n"
+"      </dt>\n"
+"    </dl>\n"
+"  </dd>\n"
+"</dl>"
+
+#: download/features-1.3-a.php:446
 msgid "New features in Audacity 1.3.3"
 msgstr "Nieuwe functies in Audacity 1.3.3"
 
-#: download/features-1.3-a.php:490
+#. i18n-hint: The following are new features in
+#. old versions of Audacity, which have never been
+#. translated up to now. Feel free to translate
+#. them as a low priority.
+#: download/features-1.3-a.php:452
+msgid ""
+"<dl>\n"
+"  <dt></dt>\n"
+"  <dd>\n"
+"    <!-- indent cheat -->\n"
+"    <dl>\n"
+"      <dt> Opening/saving formats </dt>\n"
+"      <dd>\n"
+"        Import\n"
+"        <ul>\n"
+"          <li>Import of audio from QuickTime (mov, aac, m4a) files now supported on OS X.</li>\n"
+"          <li>Broadcast Wave Format (BWF) wave files can now be imported.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>\n"
+"        Export\n"
+"        <ul>\n"
+"          <li>Metadata can be added to OGG files.</li>\n"
+"          <li>Improved Export option selection.</li>\n"
+"          <li>Additional export options added to MP3 and FLAC file formats.</li>\n"
+"          <li>Command line exporter now supported on Windows and OS X.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dt> Effects </dt>\n"
+"      <dd>\n"
+"        EQ effect\n"
+"        <ul>\n"
+"          <li>Responsiveness improved.</li>\n"
+"          <li>Several enhancements added.</li>\n"
+"          <li>Batch support added.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd> New Auto Duck effect </dd>\n"
+"      <dd> Added previewing to AudioUnit effects. </dd>\n"
+"      <dd> Much improved Noise Removal effect </dd>\n"
+"      <dd> Effects previewing can now be canceled. </dd>\n"
+"      <dd> New DTMF Tone Generator effect </dd>\n"
+"      <dd> Additional options available in Noise effect. </dd>\n"
+"      <dd> Improved the Tone Generation effects. </dd>\n"
+"      <dt> Other features </dt>\n"
+"      <dd> New built-in screen capture utility </dd>\n"
+"      <dd> Major speed improvement in Spectrogram rendering </dd>\n"
+"      <dd> Increased support for drag and drop on OS X. </dd>\n"
+"      <dd> Support added for building against wxWidgets 2.8.x. </dd>\n"
+"      <dd> Can now open multiple Audacity Projects at once from Explorer on Windows. </dd>\n"
+"      <dd> Improved main window sliders. </dd>\n"
+"      <dd> New support for snapping while selecting and sliding </dd>\n"
+"      <dd> Improved track focus handling and visual feedback. </dd>\n"
+"      <dd> Speed improvements and handling of resizing/zooming in tracks </dd>\n"
+"      <dd> Spectrum view can now be zoomed. </dd>\n"
+"      <dd> New internal file cache to improve handling of project files over networks </dd>\n"
+"      <dt> Also </dt>\n"
+"      <dd> Many improvements to language specific translations </dd>\n"
+"      <dd> Numerous stability improvements </dd>\n"
+"    </dl>\n"
+"  </dd>\n"
+"</dl>"
+msgstr ""
+"<dl>\n"
+"  <dt></dt>\n"
+"  <dd>\n"
+"    <!-- indent cheat -->\n"
+"    <dl>\n"
+"      <dt> Formaten openen/opslaan </dt>\n"
+"      <dd>\n"
+"        Importeren\n"
+"        <ul>\n"
+"          <li>Importeren van audio van QuickTime-bestanden (mov, aac, m4a) nu ondersteund op OS X.</li>\n"
+"          <li>Broadcast Wave Format (BWF) wave-bestanden kunnen nu geïmporterd worden.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd>\n"
+"        Exporteren\n"
+"        <ul>\n"
+"          <li>Metadata kan toegevoegd worden aan OGG-bestanden.</li>\n"
+"          <li>Verbeterde selectie van exporteren-optie.</li>\n"
+"          <li>Aanvullende exporteren-opties toegevoegd aan MP3- en FLAC-bestandsformaten.</li>\n"
+"          <li>Opdrachtregel-exporteren nu ondersteund op Windows en OS X.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dt> Effecten </dt>\n"
+"      <dd>\n"
+"        EQ-effect\n"
+"        <ul>\n"
+"          <li>Handelbaarheid verbeterd.</li>\n"
+"          <li>Verschillende verbeteringen toegevoegd.</li>\n"
+"          <li>Batch-ondersteuning toegevoegd.</li>\n"
+"        </ul>\n"
+"      </dd>\n"
+"      <dd> Niew Auto Duck-effect </dd>\n"
+"      <dd> Voorbeluisteren toegevoegd aan AudioUnit-effecten. </dd>\n"
+"      <dd> Enorm verbeterd ruisverwijderingseffect </dd>\n"
+"      <dd> Effect-voorbeluistering kan nu geannuleerd worden. </dd>\n"
+"      <dd> Nieuw DTMF Toongenerator-effect </dd>\n"
+"      <dd> Aanvullende opties beschikbaar in Ruis-effect. </dd>\n"
+"      <dd> Toongenerator-effecten verbeterd. </dd>\n"
+"      <dt> Andere functies </dt>\n"
+"      <dd> Nieuwe ingebouwde schermopnametoepassing </dd>\n"
+"      <dd> Grote snelheidsverbetering bij het renderen van een spectrogram </dd>\n"
+"      <dd> Toegenomen ondersteuning voor slepen en neerzetten op OS X. </dd>\n"
+"      <dd> Ondersteuning voor bouwen tegen wxWidgets 2.8.x toegevoegd. </dd>\n"
+"      <dd> Er kunnen nu meerdere Audacity-projecten tegelijk geopend worden vanuit Verkenner in Windows. </dd>\n"
+"      <dd> Verbeterde schuiven in het hoofdvenster. </dd>\n"
+"      <dd> Niewe ondersteuning voor vangen tijdens selecteren en schuiven </dd>\n"
+"      <dd> Verbeterde trackfocus-bediening en visuele feedback. </dd>\n"
+"      <dd> Snelheidsverbeteringen en bediening van zoomen in tracks </dd>\n"
+"      <dd> Spectrumweergave kan nu gezoomd worden. </dd>\n"
+"      <dd> Niewe interne bestandscache om bediening van projectbestanden over netwerken te verbeteren </dd>\n"
+"      <dt> Ook </dt>\n"
+"      <dd> Veel verbeteringen aan taalspecifieke vertalingen </dd>\n"
+"      <dd> Talrijke stabiliteitsverbeteringen </dd>\n"
+"    </dl>\n"
+"  </dd>\n"
+"</dl>"
+
+#: download/features-1.3-a.php:509
 msgid "New features in Audacity 1.3.1 and 1.3.2"
 msgstr "Nieuwe functies in Audacity 1.3.1 en 1.3.2"
 
-#: download/features-1.3-a.php:493
+#: download/features-1.3-a.php:512
 #: download/features-1.3-i.php:70
 msgid "Improved Toolbar Docking"
 msgstr "Verbeterde Werkbalk-docking"
 
-#: download/features-1.3-a.php:494
+#: download/features-1.3-a.php:513
 msgid "Track focus for improved keyboard navigation"
 msgstr "Track focus voor verbeterde toetsenbordnavigatie"
 
-#: download/features-1.3-a.php:495
+#: download/features-1.3-a.php:514
 #: download/features-1.3-i.php:77
 #: download/features-1.3-k.php:36
 msgid "Repair and Equalization effects"
 msgstr "Reparatie- en Equalizer-effecten"
 
-#: download/features-1.3-a.php:496
+#: download/features-1.3-a.php:515
 #: download/features-1.3-j.php:71
 #: download/features-1.3-l.php:46
 msgid "Timer Recording"
 msgstr "Timer-opnemen"
 
-#: download/features-1.3-a.php:497
+#: download/features-1.3-a.php:516
 #: download/features-1.3-d.php:56
 #: download/features-1.3-k.php:43
 msgid "Project saving and recovery"
 msgstr "Project opslaan en herstellen"
 
-#: download/features-1.3-a.php:498
+#: download/features-1.3-a.php:517
 #: download/features-1.3-f.php:40
 #: download/features-1.3-l.php:53
 msgid "Selection Bar"
 msgstr "Selectiebalk"
 
-#: download/features-1.3-a.php:499
+#: download/features-1.3-a.php:518
 #: download/features-1.3-b.php:50
 #: download/features-1.3-d.php:63
 msgid "Mac OS X features"
 msgstr "Mac OS X functies"
 
-#: download/features-1.3-a.php:502
+#: download/features-1.3-a.php:521
 msgid "New features in Audacity 1.3.0"
 msgstr "Nieuwe functies in Audacity 1.3.0"
 
-#: download/features-1.3-a.php:505
+#: download/features-1.3-a.php:524
 #: download/features-1.3-c.php:259
 #: download/features-1.3-f.php:47
 msgid "Collapse/Expand Tracks"
 msgstr "Sporen Samenvouwen/Uitvouwen"
 
-#: download/features-1.3-a.php:506
+#: download/features-1.3-a.php:525
 #: download/features-1.3-b.php:56
 #: download/features-1.3-e.php:67
 msgid "Multiple clips per track"
 msgstr "Meerdere clips per spoor"
 
-#: download/features-1.3-a.php:507
+#: download/features-1.3-a.php:526
 #: download/features-1.3-c.php:266
 #: download/features-1.3-g.php:54
 msgid "Improved Label Tracks"
 msgstr "Verbeterde Labelsporen"
 
-#: download/features-1.3-a.php:508
+#: download/features-1.3-a.php:527
 #: download/features-1.3-e.php:74
 msgid "Other features"
 msgstr "Andere functies "
@@ -5018,7 +5686,7 @@ msgid ""
 "          for Spectrograms</li>\n"
 "      <li>Record more than 16 channels (hardware/drivers permitting)</li>  \n"
 "      <li>New \"Mixer Board\" view with per-track VU meters</li> \n"
-"      <li>AMR NB export support via the optional \n"
+"      <li>AMR NB import and export support on all platforms via the optional \n"
 "          <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">\n"
 "          FFmpeg library</a></li>\n"
 "      <li>32-bit float data over 0 dB handled without clipping</li>\n"
