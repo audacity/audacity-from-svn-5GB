@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-06 22:36+0000\n"
-"PO-Revision-Date: 2009-11-23 20:23-0000\n"
+"PO-Revision-Date: 2009-11-28 10:54-0000\n"
 "Last-Translator: g <g@g>\n"
 "Language-Team: italiano <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1773,7 +1773,7 @@ msgstr "Modifica con&catenazioni"
 
 #: Menus.cpp:295
 msgid "Export CleanSpeech &Presets..."
-msgstr "Esporta %Preset CleanSpeech..."
+msgstr "Esporta &Preset CleanSpeech..."
 
 #: Menus.cpp:296
 msgid "I&mport CleanSpeech Presets..."
@@ -1911,7 +1911,7 @@ msgstr "Tutto"
 
 #: Menus.cpp:435
 msgid "&None"
-msgstr "&Nessuno"
+msgstr "&Nulla"
 
 #: Menus.cpp:437
 msgid "&Left at Playback Position"
@@ -8352,7 +8352,7 @@ msgstr "Spazio libero:"
 
 #: prefs/DirectoriesPrefs.cpp:103
 msgid "Audio cache"
-msgstr "Cache audio"
+msgstr "Audio cache"
 
 #: prefs/DirectoriesPrefs.cpp:105
 msgid "Play and/or record using &RAM (useful for slow drives)"
@@ -8450,7 +8450,7 @@ msgstr "&Visualizza effetti VST in modalità grafica"
 
 #: prefs/EffectsPrefs.cpp:114
 msgid "&Rescan VST effects next time Audacity is started"
-msgstr "&Riesamina effetti VST al prossimo avvio di Audacity"
+msgstr "&Riesamina effetti VST la prossima volta che Audacity è avviato"
 
 #: prefs/GUIPrefs.cpp:49
 msgid "Local"
@@ -9077,7 +9077,7 @@ msgstr "Progetti"
 
 #: prefs/ProjectsPrefs.cpp:59
 msgid "When saving a project that depends on other audio files"
-msgstr "Quando salvi un progetto che dipende da altri file audio"
+msgstr "Nel salvare un progetto che dipende da altri file audio"
 
 #: prefs/ProjectsPrefs.cpp:63
 msgid "&Always copy all audio into project (safest)"
@@ -9520,7 +9520,7 @@ msgstr "Modalità &visualizzazione predefinita:"
 
 #: prefs/TracksPrefs.cpp:103
 msgid "&Select all audio in project, if none selected"
-msgstr "&Seleziona tutto l'audio nel progetto, se nessuno è selezionato"
+msgstr "&Seleziona tutto l'audio nel progetto, se non è selezionato nulla"
 
 #: prefs/TracksPrefs.cpp:106
 msgid "Enable cu&t lines"
