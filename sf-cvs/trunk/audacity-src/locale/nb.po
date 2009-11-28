@@ -7,33 +7,45 @@ msgid ""
 msgstr "Project-Id-Version: Audacity 1.3.3\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-04-28 22:24+0100\n"
-"PO-Revision-Date: 2009-01-27 22:11+0100\n"
+"PO-Revision-Date: 2009-11-24 16:45+0100\n"
 "Last-Translator: Kevin Brubeck Unhammer <unhammer@gmail.com>\n"
 "Language-Team: Translators-Norway <unhammer@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: AboutDialog.cpp:142 AudacityApp.cpp:749 Menus.cpp:745
-msgid "&About Audacity..."
-msgstr "&Om Audacity..."
+#: AboutDialog.cpp:159
+msgid "About Audacity..."
+msgstr "Om Audacity..."
 
 #: AboutDialog.cpp:156
 #, fuzzy
 msgid "OK... Audacious!"
 msgstr "OK... Audacious!"
 
-#: AboutDialog.cpp:175
-msgid "Audacity is a free program written by a team of volunteer <a href=\"http://audacity.sourceforge.net/community/developers\">developers</a> around the world. We are grateful to <a href=\"http://sourceforge.net\">SourceForge.net</a> for our project hosting. Audacity is available for Windows 98 and later, Mac OS X, Linux and other Unix-like operating systems. Older versions of Audacity are available for Mac OS 9."
-msgstr "Audacity er et gratis program skrevet av en gruppe med frivillige <a href=\"http://audacity.sourceforge.net/community/developers\">utviklere</a> fra hele verden. Samarbeidet er mulig takket være <a href=\"http://sourceforge.net\">SourceForge.net</a>. Audacity finnes for Windows 98 og nyere, Mac OS X, Linux og andre Unix-lignende operativsystemer. Eldre versjoner av Audacity er tilgjengelige for Mac OS 9."
-
-#: AboutDialog.cpp:179
-msgid "This is a Beta version of the program. It may contain bugs and unfinished features. We depend on your feedback: please send bug reports and feature requests to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
+#: AboutDialog.cpp:192
+msgid "Audacity is a free program written by a worldwide team of volunteer <a href=\"http://audacity.sourceforge.net/community/developers\">developers</a>. We thank <a href=\"http://sourceforge.net\">SourceForge.net</a> for our project hosting. Audacity is available for Windows 98 and later, Mac OS X, Linux and other Unix-like systems. For Windows 98/ME, use version 1.2.6 or 1.3.7 Beta; for Mac OS 9, version 1.0.0."
 msgstr ""
+"Audacity er et gratis program skrevet av en gruppe med frivillige <a\n"
+"href=\"http://audacity.sourceforge.net/community/developers\">utviklere</a> fra hele\n"
+"verden. Takk til <a href=\"http://sourceforge.net\">SourceForge.net</a> for kodelager og\n"
+"nettsider. Audacity finnes for Windows 98 og nyere, Mac OS X, Linux og andre\n"
+"Unix-lignende operativsystemer. Til Windows 98/ME bruker du version 1.2.6 eller 1.3.7\n"
+"beta; for Mac OS 9, version 1.0.0."
 
-#: AboutDialog.cpp:182
-msgid "This is a stable, completed release of the program. However, if you find a bug or have a suggestion for us, please write to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help using Audacity, please visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
+#: AboutDialog.cpp:196
+msgid "This is a Beta version of the program. It may contain bugs and unfinished features. We depend on your feedback: please send bug reports and feature requests to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help, use the Help menu in the program, view the tips and tricks on our <a href=\"http://wiki.audacityteam.org/index.php?title=Audacity_Wiki_Home_Page\">Wiki</a> or visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
+msgstr "Dette er en betaversjon av programmet. Det kan inneholde leif og uferdige funksjoner. Vi har bruk for dine tilbakemeldinger, vennligst send feilrapporter og ønsker om nye funksjoner til <b>feedback@audacityteam.org</b>. Du får hjelp via Hjelp-menyen i programmet. Du finner også tips og triks på <a href=\"http://wiki.audacityteam.org/index.php?title=Audacity_Wiki_Home_Page\">wikien</a> og i <a href=\"http://audacityteam.org/forum/\">forumet</a>."
+
+#: AboutDialog.cpp:199
+msgid "This is a stable, completed release of the program. However, if you find a bug or have a suggestion for us, please write to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help, view the tips and tricks on our <a href=\"http://wiki.audacityteam.org/index.php?title=Audacity_Wiki_Home_Page\">Wiki</a> or visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
 msgstr ""
+"Dette er en stabil, ferdiggjort utgave av Audacity. Hvis du allikevel skulle finne en\n"
+"feil eller ha forslag til forbedringer kan du gjerne skrive til <a\n"
+"href=\"mailto:feedback@audacityteam.org\">tilbakemeldingsadressen</a> vår. På <a\n"
+"href=\"http://wiki.audacityteam.org/index.php?title=Audacity_Wiki_Home_Page\">wikien</a>\n"
+"og i <a href=\"http://audacityteam.org/forum/\">forumet</a> finner du tips og triks om\n"
+"bruken av Audacity."
 
 #  i18n-hint: The translation of "translator_credits" will appear
 #  in the credits in the About Audacity window.  Use this to add
@@ -88,9 +100,11 @@ msgid "Special thanks:"
 msgstr "Særlig takk til:"
 
 #: AboutDialog.cpp:250
-#, fuzzy
 msgid "<b>Audacity&reg;</b> software is copyright &copy; 1999-2009 Audacity Team. <br>The name <b>Audacity&reg;</b> is a registered trademark of Dominic Mazzoni."
-msgstr "Opphavsretten til <b>Audacity&reg;</b>-programvaren er tilhører &copy; 1999-2008 Audacity Team. <br>Navnet <b>Audacity&reg;</b> er et registrert varemerke tilhørende Dominic Mazzoni."
+msgstr ""
+"Opphavsretten til <b>Audacity&reg;</b>-programvaren tilhører &copy; 1999-2009 Audacity\n"
+"Team. <br>Navnet <b>Audacity&reg;</b> er et registrert varemerke tilhørende Dominic\n"
+"Mazzoni."
 
 #: AboutDialog.cpp:254
 msgid "Audacity"
@@ -209,14 +223,15 @@ msgstr "%s er allerede åpnet i et annet vindu"
 msgid "Error opening project"
 msgstr "Feil ved åpning av prosjekt"
 
-#: AudacityApp.cpp:502
+#: AudacityApp.cpp:780
 #, c-format
-msgid "%s does not exist and could not be opened.\n"
+msgid "%s could not be found.\n"
 "\n"
-"It has been removed from the history list."
-msgstr "%s eksisterer ikke og kunne ikke åpnes.\n"
+"It has been removed from the list of recent files."
+msgstr ""
+"Fant ikke fila %s.\n"
 "\n"
-"Den har blitt fjernet fra historielisten."
+"Den har blitt fjernet fra lista med nylig brukte filer."
 
 #: AudacityApp.cpp:581
 msgid "Master Gain Control"
@@ -240,7 +255,11 @@ msgstr "&Åpne..."
 
 #: AudacityApp.cpp:805
 msgid "Open &Recent..."
-msgstr ""
+msgstr "Åpne n&ylig brukt..."
+
+#: AboutDialog.cpp:142 AudacityApp.cpp:749 Menus.cpp:745
+msgid "&About Audacity..."
+msgstr "&Om Audacity..."
 
 #: AudacityApp.cpp:751 Menus.cpp:478
 msgid "&Preferences..."
@@ -368,15 +387,73 @@ msgstr "Feil:"
 msgid "Error Initializing Audio"
 msgstr "Feil ved initialisering av lyd"
 
+#: AudioIO.cpp:303
+msgid "There was an error initializing the midi i/o layer.\n"
+msgstr "Feil ved initialisering av MIDI I/O-laget.\n"
+
+#: AudioIO.cpp:304
+msgid "You will not be able to play midi.\n"
+"\n"
+msgstr "Du vil ikke kunne spille av MIDI.\n\n"
+
+#: AudioIO.cpp:310
+msgid "Error Initializing Midi"
+msgstr "Feil ved initialisering av MIDI"
+
 #: AudioIO.cpp:1225
 msgid "Latency Correction setting has caused the recorded audio to be hidden before zero.\n"
 "Audacity has brought it back to start at zero.\n"
 "You may have to use the Time Shift Tool (<---> or F5) to drag the track to the right place."
 msgstr ""
+"Innstillingen for latenskorreksjon gjorde at innspilt lyd ble skjult før nullpunktet.\n"
+"Audacity flyttet det tilbake slik at det starter ved null.\n"
+"Du må kanskje bruke tidsforskyvningsverktøyet (<---> eller F5) for å dra sporet til\n"
+"rett posisjon."
 
 #: AudioIO.cpp:1208
 msgid "Latency problem"
 msgstr "Latensproblem"
+
+#: AudioIO.cpp:2731
+msgid "Automated Input Level Adjustment stopped. It was not possible to optimize it more. Still too high."
+msgstr ""
+"Automatisk justering av inndatanivå stanset. Det var ikke mulig å optimisere mer.\n"
+"Fortsatt for høyt."
+
+#: AudioIO.cpp:2739
+#, c-format
+msgid "Automated Input Level Adjustment decreased the volume to %f."
+msgstr "Automatisk justering av inndatanivå senket lydnivået til %f."
+
+#: AudioIO.cpp:2754
+msgid "Automated Input Level Adjustment stopped. It was not possible to optimize it more. Still too low."
+msgstr ""
+"Automatisk justering av inndatanivå stanset. Det var ikke mulig å optimisere mer.\n"
+"Fortsatt for lavt."
+
+#: AudioIO.cpp:2766
+#, c-format
+msgid "Automated Input Level Adjustment increased the volume to %.2f."
+msgstr "Automatisk justering av inndatanivå økte lydnivået til %.2f."
+
+#: AudioIO.cpp:2800
+msgid "Automated Input Level Adjustment stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too high."
+msgstr ""
+"Automatisk justering av inndatanivå stanset. Det totale antallet analyser ble\n"
+"overskredet uten å komme fram til et akseptabelt lydnivå.\n"
+"Fortsatt for høyt."
+
+#: AudioIO.cpp:2802
+msgid "Automated Input Level Adjustment stopped. The total number of analysis has been exceeded without finding an acceptable volume. Still too low."
+msgstr ""
+"Automatisk justering av inndatanivå stanset. Det totale antallet analyser ble\n"
+"overskredet uten å komme fram til et akseptabelt lydnivå.\n"
+"Fortsatt for lavt."
+
+#: AudioIO.cpp:2805
+#, c-format
+msgid "Automated Input Level Adjustment stopped. %.2f seems an acceptable volume."
+msgstr "Automatisk justering av inndatanivå stanset. %.2f virker som et akseptabelt lydnivå."
 
 #: AutoRecovery.cpp:54
 msgid "Automatic Crash Recovery"
@@ -544,7 +621,7 @@ msgstr "Ingen kjede valgt"
 #: BatchProcessDialog.cpp:159
 #, c-format
 msgid "Applying '%s' to current project"
-msgstr "Anvender '%s' på dette prosjektet"
+msgstr "Anvender «%s» på dette prosjektet"
 
 #: BatchProcessDialog.cpp:200
 msgid "Please save and close the current project first."
@@ -603,7 +680,15 @@ msgstr "K&jeder (dobbeltklikk eller trykk MELLOMROM for å redigere)"
 #. i18n-hint: This is the number of the command in the list
 #: BatchProcessDialog.cpp:453
 msgid "Num"
-msgstr ""
+msgstr "Nr"
+
+#: prefs/KeyConfigPrefs.cpp:171
+msgid "Command"
+msgstr "Kommando"
+
+#: effects/Contrast.cpp:235
+msgid "Parameters"
+msgstr "Parametre"
 
 #: BatchProcessDialog.cpp:459
 msgid "&Insert"
@@ -649,7 +734,7 @@ msgstr "Navnet kan ikke være tomt"
 #: BatchProcessDialog.cpp:643
 #, c-format
 msgid "Names may not contain '%c' and '%c'"
-msgstr "Navner kan ikke inneholde '%c' og '%c'"
+msgstr "Navner kan ikke inneholde «%c» og «%c»"
 
 #: BatchProcessDialog.cpp:673
 #, c-format
@@ -732,11 +817,12 @@ msgstr "Prosjektet ditt er selvberget; det er ikke avhengig av eksterne lydfiler
 msgid "Dependency check"
 msgstr "Avhengighetskontroll"
 
-#: DirManager.cpp:136
-msgid "Warning: there is very little free disk space left on this volume.\n"
-"Please select another temporary directory in your preferences."
-msgstr "Advarsel: det er veldig lite ledig diskplass på denne harddisken.\n"
-"Vennligst velg en annen midlertidig mappe i innstillingene dine."
+#: DirManager.cpp:137
+msgid "There is very little free disk space left on this volume.\n"
+"Please select another temporary directory in Preferences."
+msgstr ""
+"Det er svært lite ledig diskplass på denne lagringsenheten.\n"
+"Vennligst velg en annen mappe til midlertidige filer i Innstillinger."
 
 #: DirManager.cpp:221 DirManager.cpp:251 DirManager.cpp:332
 msgid "Progress"
@@ -782,7 +868,7 @@ msgstr "Klarte ikke åpne/lage testfil"
 #: DirManager.cpp:1002
 #, c-format
 msgid "Unable to remove '%s'"
-msgstr "Klarte ikke fjerne '%s'"
+msgstr "Klarte ikke fjerne «%s»"
 
 #: DirManager.cpp:1007
 #, c-format
@@ -792,7 +878,7 @@ msgstr "Endret filnavn: %s\n"
 #: DirManager.cpp:1051
 #, c-format
 msgid "Unable to rename '%s' to '%s'"
-msgstr "Klarte ikke omdøpe '%s' til '%s'"
+msgstr "Klarte ikke omdøpe «%s» til «%s»"
 
 #: DirManager.cpp:1183
 #, c-format
@@ -956,6 +1042,11 @@ msgid "FFmpeg was configured in Preferences and successfully loaded before,     
 "\n"
 "You may want to go back to Preferences > Libraries and re-configure it."
 msgstr ""
+"FFmpeg var konfigurert i Innstillinger og har startet uten problem tidligere\n"
+"\n"
+"men denne gangen klarte ikke Audacity å laste det inn under oppstart.\n"
+"\n"
+"Du må kanskje gå tilbake til Innstillinger > Bibliotek og omkonfigurere det."
 
 #: FFmpeg.cpp:104
 msgid "FFmpeg startup failed"
@@ -1005,7 +1096,7 @@ msgstr "Last ned"
 #: export/ExportMP3.cpp:601
 #, c-format
 msgid "Where is %s?"
-msgstr "Hvor finnes filen %s?"
+msgstr "Hvor finnes fila %s?"
 
 #: FFmpeg.cpp:407
 msgid "Failed to find compatible FFmpeg libraries"
@@ -1022,6 +1113,12 @@ msgid "Audacity attempted to use FFmpeg to import an audio file,\n"
 "To use FFmpeg import, go to Preferences > Libraries\n"
 "to download or locate the FFmpeg libraries."
 msgstr ""
+"Audacity prøvde å importere en lydfil med FFmpeg,\n"
+"men fant ikke bibliotekene.\n"
+"\n"
+"Gå til Innstillinger > Bibliotek for å laste ned\n"
+"eller finne FFmpeg-bibliotekene hvis du vil \n"
+"importere med dem."
 
 #: FFmpeg.h:109
 msgid "Do not show this warning again"
@@ -1038,10 +1135,6 @@ msgstr "Dynamiske bibliotek (*.dylib)|*.dylib|Alle filer (*)|*"
 #: FFmpeg.h:266
 msgid "Only libavformat.so|libavformat.so*|Dynamically Linked Libraries (*.so*)|*.so*|All Files (*)|*"
 msgstr "Bare libavformat.so|libavformat.so*|Dynamisk lenkede bibliotek (*.so*)|*.so*|Alle filer (*)|*"
-
-#: FreqWindow.cpp:104
-msgid "Frequency Analysis"
-msgstr "Frekvensanalyse"
 
 #: FreqWindow.cpp:140 TrackPanel.cpp:563
 msgid "Spectrum"
@@ -1070,9 +1163,8 @@ msgid "Cepstrum"
 msgstr "Cepstrum"
 
 #: FreqWindow.cpp:150 FreqWindow.cpp:154
-#, fuzzy
 msgid "Algorithm"
-msgstr "Algoritme:"
+msgstr "Algoritme"
 
 #: FreqWindow.cpp:168 HistoryWindow.cpp:79
 msgid "Size"
@@ -1086,7 +1178,7 @@ msgstr "Størrelse"
 #. Frequency analyze dialog box.
 #: FreqWindow.cpp:181
 msgid " window"
-msgstr " vindu"
+msgstr "-vindu"
 
 #: FreqWindow.cpp:187 FreqWindow.cpp:191
 msgid "Function"
@@ -1115,11 +1207,11 @@ msgstr "Eksport"
 
 #: FreqWindow.cpp:240
 msgid "&Replot"
-msgstr ""
+msgstr "&Tegn igjen"
 
 #: FreqWindow.cpp:241
 msgid "Replot"
-msgstr ""
+msgstr "Tegn igjen"
 
 #: FreqWindow.cpp:209 widgets/ErrorDialog.cpp:159
 msgid "Close"
@@ -1128,7 +1220,7 @@ msgstr "Lukk"
 #: FreqWindow.cpp:247 FreqWindow.cpp:250 effects/Equalization.cpp:1303
 #: effects/Equalization.cpp:1306
 msgid "Grids"
-msgstr ""
+msgstr "Rutenett"
 
 #: FreqWindow.cpp:272 FreqWindow.cpp:402 effects/AutoDuck.cpp:489
 #: effects/AutoDuck.cpp:523 effects/AutoDuck.cpp:791
@@ -1163,9 +1255,8 @@ msgid "Not enough data selected."
 msgstr "Ikke nok data valgt."
 
 #: FreqWindow.cpp:450 effects/AutoDuck.cpp:793
-#, fuzzy
 msgid "s"
-msgstr "s"
+msgstr "sek"
 
 #: FreqWindow.cpp:779
 #, c-format
@@ -1176,6 +1267,14 @@ msgstr "Markør: %d Hz (%s) = %d dB    Toppunkt: %d Hz (%s) = %.1f dB"
 #, c-format
 msgid "Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s) = %.3f"
 msgstr "Markør: %.4f sek (%d Hz) (%s) = %f,    Toppunkt: %.4f sek (%d Hz) (%s) = %.3f"
+
+#: FreqWindow.cpp:1003
+msgid "Drawing Spectrum"
+msgstr "Tegner spektrum"
+
+#: FreqWindow.cpp:1003
+msgid "FreqWindow"
+msgstr "Frekvensvindu"
 
 #: FreqWindow.cpp:1061
 msgid "spectrum.txt"
@@ -1201,21 +1300,22 @@ msgstr "Forsinkelse (sekunder)\tFrekvens (Hz)\tNivå"
 #: GStreamerLoader.cpp:195
 #, c-format
 msgid "GStreamer %s: %s"
-msgstr ""
+msgstr "GStreamer-%s: %s"
 
 #: GStreamerLoader.cpp:212
 msgid "GStreamer was configured in preferences and successfully loaded before,\n"
 "                      but this time Audacity failed to load it at startup.\n"
 "                      You may want to go back to Preferences > Libraries and re-configure it."
 msgstr ""
+"GStreamer var konfigurert i Innstillinger og har startet uten problem tidligere\n"
+"                      men denne gangen klarte ikke Audacity å laste det inn under\n"
+"oppstart.\n"
+"                      Du må kanskje gå tilbake til Innstillinger > Bibliotek og\n"
+"omkonfigurere det."
 
 #: GStreamerLoader.cpp:215
 msgid "GStreamer startup failed"
-msgstr ""
-
-#: HelpText.cpp:85
-msgid "To [[welcome|Welcome screen]]"
-msgstr "Til [[welcome|velkomstsiden]]"
+msgstr "Feil ved oppstart av GStreamer"
 
 #: HelpText.cpp:92
 msgid "Welcome!"
@@ -1266,76 +1366,51 @@ msgstr "Brenn til CD"
 msgid "No Local Help"
 msgstr "Ingen lokale hjelpefiler"
 
-#: HelpText.cpp:148
-msgid "</p><center><h3>Getting Started</h3></center><br>"
-msgstr "</p><center><h3>Komme i gang</h3></center><br>"
+#: HelpText.cpp:176
+msgid "<center><h3>How to get Help</h3></center>"
+msgstr "<center><h3>Hvordan få hjelp</h3></center>"
 
 #: HelpText.cpp:150
 msgid "Welcome to Audacity "
 msgstr "Velkommen til Audacity"
 
-#: HelpText.cpp:151
-msgid "Learn how to: <ul><li>[[play|play]] an existing audio file <li>[[record|record]] your voice, LP or tape <li>[[edit|edit]] sounds <li>[[save|save or open an Audacity project]] <li>[[export|export]] to an MP3 or other audio file, or [[burncd|burn to a CD]]  </ul></p><p>"
-msgstr "Lær å: <ul><li>[[play|spille av]] en eksisterende lydfil <li>[[record|spille inn]] stemmen din, en LP eller kassett <li>[[edit|redigere]] lyd <li>[[save|lagre eller åpne et Audacity-prosjekt]] <li>[[export|eksportere]] til MP3 eller andre lydformat, eller [[burncd|brenne til CD]]  </ul></p><p>"
+#: HelpText.cpp:178
+msgid "These are our support methods:"
+msgstr "Våre hjelpetjenester består av:"
 
-#: HelpText.cpp:159
-msgid "This screen can be viewed at any time by clicking the <i>Help</i> menu, then <i>Show Welcome Message</i>. For a detailed guide to all the Audacity menus and controls, click  <i>Help</i> menu then <i>Index</i>, or download our <a href=\"http://audacity.sourceforge.net/help/documentation/manual_1.4.pdf\">full Manual</a> in PDF format.</p>"
-msgstr "Denne skjermen kan vises når som helst ved å klikke <i>Hjelp</i>-menyen, så <i>Vis velkomstmelding</i>. For en detaljert guide til alle menyene og kontrollene i Audacity, klikk  <i>Hjelp</i>-menyen, så <i>Hovedmeny</i>, eller last ned den <a href=\"http://audacity.sourceforge.net/help/documentation/manual_1.4.pdf\">fullstendige manualen</a> i PDF-format.</p>"
+#: HelpText.cpp:179
+msgid " [[file:quick_help.html|Quick Help]] (should be installed locally, <a href=\"http://manual.audacityteam.org/index.php?title=Quick_Help\">internet version if it isn't</a>)"
+msgstr ""
+" [[file:quick_help.html|Snarhjelp]] (skal være installert lokalt, prøv ellers <a\n"
+"href=\"http://manual.audacityteam.org/index.php?title=Quick_Help\">nettutgaven</a>)"
 
-#: HelpText.cpp:172
-msgid "<p><b>Opening audio files:</b> Either drag the files into the current project window, or click <i>File &gt; Import &gt; Audio</i>. Files can be opened into a new project window with <i>File &gt; Open</i>. The main formats Audacity plays are <b>AIFF, AU, FLAC, M4A</b> (only on a Mac), <b>MP2/MP3, OGG Vorbis</b> and <b>WAV</b>. Click [[wma-proprietary|here]] if your file is in some other format. <b>To import a CD:</b> extract it to WAV or AIFF using iTunes, Windows Media Player 11 or similar. See our online guide: [[wiki:How_to_import_CDs|importing CDs]].</p><p> <p><b>Playing audio:</b> Press the green Play button to start playback. Press the blue Pause button once to pause playback, and again to resume. To stop, press the yellow Stop button. Spacebar can be used to either play or stop. After stopping, playback resumes from its last starting point. To change the starting point, click in the track at your desired starting point. The <b>|&lt;&lt;</b> and <b>&gt;&gt;|</b> buttons can be used to skip to the start or end of the track respectively. </p><br><br>"
-msgstr "<p><b>Åpne lydfiler:</b> Enten dra filene til det åpne prosjektvinduet, eller klikk <i>Fil &gt; Importer... &gt; Lyd...</i>. Filer kan åpnes til nye prosjekt med <i>Fil &gt; Åpne...</i>. Hovedformatene som Audacity støtter er <b>AIFF, AU, FLAC, M4A</b> (bare på Mac), <b>MP2/MP3, OGG Vorbis</b> og <b>WAV</b>. Klikk [[wma-proprietary|her]] hvis filen din er i et annet format. <b>For å importere en CD:</b> trekk ut (rip) sporene til WAV eller AIFF vha. iTunes, Windows Media Player 11 eller lignende. Les retningslinjene våre på nettet: [[wiki:How_to_import_CDs|importere CD-er]].</p><p> <p><b>Spille av lyd:</b> Klikk den grønne Spill av-knappen for å sette i gang avspilling. Klikk den blåe Pause-knappen én gang for å pause, og igjen for å fortsette. For å stoppe, klikk den gule Stopp-knappen. Mellomromstasten kan brukes for å enten sette i gang eller stoppe avspilling. Etter stopping vil avspilling starte fra forrige startpunkt. For å endre startpunktet, klikk på sporet der du vil at avspillingen skal starte fra. Knappene <b>|&lt;&lt;</b> og <b>&gt;&gt;|</b> kan brukes for å flytte til henholdsvis begynnelsen eller slutten av sporet. </p><br><br>"
+#: HelpText.cpp:180
+msgid " [[file:index.html|Manual]] (should be installed locally, <a href=\"http://manual.audacityteam.org/index.php\">internet version if it isn't</a>)"
+msgstr ""
+" [[file:index.html|Manual]] (skal være installert lokalt, prøv ellers <a\n"
+"href=\"http://manual.audacityteam.org/index.php\">nettutgaven</a>)"
 
-#: HelpText.cpp:194
-msgid "<p><b>To record:</b> Set the recording device and input source, adjust the input level, then press the red Record button.</b></p><p> 1) [[inputdevice|Set Recording Device]] either in the <i>Audio I/O tab of Preferences</i> or in <i>Device Toolbar</i>. Audio I/O Preferences lets you choose stereo recording if required.<br> 2) [[inputsource|Set input source]] for that device (for example, microphone or line-in) in the dropdown selector of the <i>Mixer Toolbar</i>, or (on some systems) at Recording Device in the <i>Audio I/O tab of Preferences</i> or in <i>Device Toolbar</i>.<br> 3) [[inputlevel|Adjust input level]] using the right-hand slider on the <i>Mixer Toolbar</i>. Correct adjustment of level before recording is essential to avoid noise or distortion. </p><p> More help at: \"Recording\" <a href=\"http://audacity.sourceforge.net/help/faq\">FAQs</a>, our Tutorial <a href=\"http://www.audacityteam.org/manual/index.php?title=Tutorial_-_Your_First_Recording\"> Your First Recording</a> in the <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">Manual</a>, and our Wiki [[wiki:Recording_Tips|Recording Tips]] and [[wiki:Troubleshooting_Recordings|Troubleshooting Recordings]] pages. </p><br><br>"
-msgstr "<p><b>For å spille inn:</b> Velg opptaksenhet og inndatakilde, juster inndatavolumet og klikk på den røde Spill inn-knappen.</b></p><p> 1) [[inputdevice|Velg opptaksenhet]] enten med <i>Lyd I/O-fanen i Innstillinger</i> eller i <i>Enhetsverktøylinjen</i>. Innstillingene for Lyd I/O lar deg velge stereo-opptak hvis nødvendig.<br> 2) [[inputsource|Velg\n"
-"inndatakilde]] for enheten (for eksempel, mikrofon eller innlinje) i nedtrekksmenyen for <i>Mikserverktøylinjen</i>, eller (på visse system) i opptaksenheten i <i>Lyd I/O-fanen i Innstillinger</i> eller i <i>Enhetsverktøylinjen</i>.<br> 3) [[inputlevel|Juster inndatavolumet]] vha. glidebryteren på <i>Mikserverktøylinjen</i>. Korrekt volumjustering er av vesentlig betydning for å unngå støy eller forvrenging. </p><p> Mer hjelp finnes under: <a\n"
-"href=\"http://audacity.sourceforge.net/help/faq\">Ofte Spurte Spørsmål</a> om innspilling, brukerveiledningen <a\n"
-"href=\"http://www.audacityteam.org/manual/index.php?title=Tutorial_-_Your_First_Recording\">\n"
-"Din første innspilling</a> i <a\n"
-"href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">manualen</a> vår,\n"
-"og sidene [[wiki:Recording_Tips|Innspillingstips]] og\n"
-"[[wiki:Troubleshooting_Recordings|Feilsøking for innspilling]]\n"
-"på wikien. </p><br><br>"
+#: HelpText.cpp:181
+msgid " [[http://wiki.audacityteam.org/index.php|Wiki]] (the latest tips, tricks and tutorials, on the internet)"
+msgstr ""
+" [[http://wiki.audacityteam.org/index.php|Wikien]] (de nyeste tips, triks og\n"
+"veiledninger, på nettet)"
 
-#: HelpText.cpp:221
-#, fuzzy
-msgid "<p>The input device is the actual physical sound device you are recording from. This is chosen at \"Recording Device\" in the <i>Audio I/O tab of Preferences</i>, On Windows and Linux, Preferences are at the bottom of the <i>Edit</i> Menu. On a Mac, they in the <i>Audacity</i> Menu. You can also conveniently select Recording Device in the <i>Device Toolbar</i>, which can be enabled at <i>View &gt; Toolbars...</i>. </p><p> By default, Audacity uses the device currently being used by the system, (usually your inbuilt sound device), so it is often not necessary to change the input device. On Windows, this current system device can be selected as \"Microsoft Sound Mapper\". If you are recording from an external USB or Firewire device such as a USB turntable, select it explicitly by name as recording device after connecting it. </p><p> Back to [[record|Recording Audio]] <br></p>"
-msgstr "<p>Inndataenheten er den fysiske lydenheten som du spiller inn fra. Dette velger du under \"Opptaksenhet\" i <i>Lyd I/O-fanen i Innstillinger</i>. På Windows og Linux er innstillingene nederst i <i>Rediger</i>-menyen. På Mac er de i <i>Audacity</i>-menyen. Du kan også enkelt velge opptaksenhet under <i>Enhetsverktøylinjen</i>, som du skrur på i <i>Vis &gt; Verktøylinjer...</i>. </p><p> Standardvalget er at Audacity bruker den enheten som systemet benytter nå (vanligvis den innebygde lydenheten), så det er ofte unødvendig å endre enhet. På Windows er den nåværende systemenheten angitt som \"Microsoft lydtilordning\". Hvis du spiller inn fra en ekstern USB- eller Firewire-enhet, f.eks. en USB-platespiller, kan du velge denne som opptaksenhet ved navn etter at du har koplet den til.</p><p>\n"
-"Tilbake til [[record|Spille inn lyd]] <br></p>"
+#: HelpText.cpp:182
+msgid " <a href=\"http://forum.audacityteam.org/\">Forum</a> (ask your question directly, on the internet)"
+msgstr ""
+" <a href=\"http://forum.audacityteam.org/\">Forumet</a> (spør spørsmålet ditt direkte, på\n"
+"nettet)"
 
-#: HelpText.cpp:244
-msgid "<p>Select the input source (such as microphone or line-in) for your [[inputdevice|recording device]]:<br> - <b>On Windows (except Vista)</b> and <b>Linux</b>, in the dropdown selector on the right of the <i>Mixer Toolbar</i>.<br> - <b>On Windows Vista</b> and <b>Mac</b>, at Recording Device on the <i>Audio I/O tab of Preferences</i>, or in <i>Device Toolbar</i>. The source will be shown as part of the parent device (for example, <i>High Def Audio Card: Microphone</i>). If necessary, Mac users can choose the input source at Apple Audio MIDI Setup. <br><i><b>Note:</b> many USB or Firewire recording devices don't have a choice of inputs, so this step is not necessary. If in doubt, see the documentation for your device. </i></p><p> <b>Tip:</b> To <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&i=streaming\">record audio playing on the computer</a>, Windows and Linux users can choose the \"Stereo Mix\", \"Wave Out\", \"Sum\" or comparable input source. </p><p> Back to [[record|Recording Audio]] <br></p>"
-msgstr "<p>Velg inndatakilden (f.eks. mikrofon eller innlinje) for din [[inputdevice|opptaksenhet]]:<br> - <b>På Windows (utenom Vista)</b> og <b>Linux</b> gjør du dette i nedtrekksmenyen til høyre på <i>Mikserverktøylinjen</i>.<br> - <b>På Windows Vista</b> og <b>Mac</b> gjøres dette under Opptaksenhet i <i>Lyd I/O-fanen i Innstillinger</i>, eller i <i>Enhetsverktøylinjen</i>. Kilden blir vist som en del av foreldreenheten (f.eks. <i>Høykvalitetslydkort: Mikrofon</i>). Hvis nødvendig kan Mac-brukere velge inndatakilden under Apples Lyd- og MIDI-oppsett. <br><i><b>Merk:</b> mange opptaksenheter for USB eller Firewire har ingen inndatavalg, så dette steget er ikke nødvendig. Hvis du er usikker bør du lese dokumentasjonen for enheten din. </i></p><p> <b>Tips:</b> For å <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&i=streaming\">spille inn lyd som spilles av på datamaskinen</a> kan Windows- og Linux-brukere velge «Stereo miks», «Wave Out», «Sum» eller lignende lydkilder. </p><p> Tilbake til [[record|Spille inn lyd]] <br></p>"
+#: HelpText.cpp:183
+msgid " For even quicker answers, all the online resources above are <b>searchable</b>."
+msgstr " For at du skal få svar enda raskere er alle nettressursene over <b>søkbare</b>."
 
-#: HelpText.cpp:267
-msgid "<p>The input level must be set correctly. If the level is too low, there will be background noise. If the level is too high, there will be distortion in the loud parts. </p><p>To set the level, either see this [[wiki:Recording_levels|illustrated online guide]] or follow these steps: <ol><li>Turn on <b>monitoring</b>. Double-click the right-hand of the two <i>VU Meters</i> (or right-click over it) and click \"Start Monitoring\". If the meters are not visible, click <i>View &gt; Toolbars</i> and check \"Meter Toolbar\". </li><li>Adjust the input slider on the <i>Mixer Toolbar</i> (by the microphone symbol), so that the red bars in the meter come close to <b>but do not touch</b> the right edge of the scale. If you can't hear the monitored audio, go to the <i>Audio I/O tab of Preferences</i> and check \"Software Playthrough\". </li></ol></p><p> Back to [[record|Recording Audio]] <br></p>"
-msgstr "<p>Inndatavolumet må være korrekt justert. Hvis nivået er for lavt vil der være bakgrunnsstøy. Hvis nivået er for høyt vil der være forvrenging i de høylydte delene. </p><p>For å justere nivået kan du enten lese denne [[wiki:Recording_levels|illustrerte veiledningen på nettet]] eller følge disse stegene: <ol><li>Skru på <b>overvåking</b>. Dobbeltklikk på <i>lydnivåmåleren</i> til høyre (eller høyreklikk over det) og klikk «Start overvåking». Hvis lydnivåmålerne ikke er synlige klikker du <i>Vis &gt Verktøylinjer...</i> og merker av for «Lydnivåverktøylinje». </li><li>Juster inndatavolumet med glidebryteren på <i>Mikserverktøylinjen</i> (ved mikrofonsymbolet) slik at de røde stolpene kommer nær den høyre kanten av skalaen <b>uten å komme borti</b>. Hvis du ikke klarer å høre den overvåkede lyden åpner du <i>Lyd I/O-fanen i Innstillinger</i> og merker av for «Spill gjennom med programvare». </li></ol></p><p> Tilbake til [[record|Spille inn lyd]]<br></p>"
-
-#: HelpText.cpp:292
-msgid "<p>The main commands for editing audio are under the <i>Edit</i> menu (such as cut, copy and paste) and the <i>Effect</i> menu (you can do things like boost the bass, change pitch or tempo, or remove noise). </p><p> Audacity applies edits to selected areas of the audio track. To select a particular area, click in the track and drag the shaded area with the mouse. If no audio is selected, Audacity selects all the audio in the project window.</p><p> When playing or recording, the Edit and Effect menus will appear greyed out, because a moving track can't be edited. Commands can sometimes be unavailable for other reasons too. For example, you can't run effects until you have audio on the screen, and you can't paste audio until you've cut or copied it to Audacity's clipboard. </p><br><br>"
-msgstr "<p>Hovedkommandoene for lydredigering er under <i>Rediger</i>-menyen (f.eks. klipp, lim og kopier) og under <i>Effekt</i>-menyen (du kan gjøre slikt som å forsterke bassen, endre tonehøyde eller tempo, eller fjerne støy). </p><p> Audacity anvender redigeringen på det markerte området i lydsporet. For å markere et visst område klikker du i sporet og drar det gråe området med musen. Hvis ingen lyd er valgt vil Audacity først velge all lyden i prosjektvinduet.</p><p> Ved avspilling eller opptak vis Rediger- og Effekt-menyene være gråe, siden et spor som beveger seg ikke kan redigeres. Kommandoer kan av og til være utilgjengelige av andre grunner også. F.eks. kan du ikke bruke effekter før du har lyd på skjermen, og du kan ikke lime inn lyd før du har klippet ut eller kopiert noe lyd til Audacitys utklippstavl. </p><br><br>"
-
-#: HelpText.cpp:311
-msgid "<p>To return later to your unfinished work in Audacity with all tracks and edits as you left them, save an Audacity project. To play your current work in other media programs or send it to others, [[export|export]] an audio file such as WAV or MP3. </p><p> <i>File &gt; Save Project</i> saves an <b>.aup</b> project file and  a <b>_data</b> folder containing the actual audio. To re-open a saved project, click <i>File &gt; Open</i> and open the .aup file. If you save and exit more than once, an .aup.bak backup file is created, but the .aup file should always be opened if present. When your final exported file is exactly as you want, delete the project files and _data folder to save disc space. </p><p><i>File &gt; Save Project As...</i> is for saving an empty project. It also lets you save an existing Project to a <b> new</b> name. This is the only safe way to rename a project. The .aup file and _data folder should not be moved or renamed manually. </p><p>"
-msgstr "<p>Hvis du vil returnere til et uferdig arbeid i Audacity på et senere tidspunkt, med alle sporene og redigeringene slik som du forlot dem, så lagrer du som et Audacity-prosjekt. Hvis du vil spille av arbeidet ditt i andre mediaprogram eller sende det til andre, så [[export|eksporterer]] du det til en lydfil, f.eks. WAV eller MP3. </p><p> <i>Fil &gt; Lagre prosjekt</i> lager en <b>.aup</b>-prosjektfil og en <b>_data</b>-mappe som inneholder den faktiske lyden. For å gjenåpne et lagret prosjekt klikker du <i>Fil &gt; Åpne</i> og åpner .aup-filen. Hvis du lagrer og avslutter mer enn èn gang, vil en .aup.bak-fil, en sikkerhetskopi, bli laget, men det er .aup-filen du bør åpne, så lenge den finnes. Når den endelige versjonen av den eksporterte filen er ferdiglaget kan du slette prosjektfilene og _data-mappen for å frigjøre harddiskplass. </p><p>Bruk <i>Fil &gt; Lagre prosjekt som...</i> for å lagre et tomt prosjekt. Denne kommandoen kan du også bruke for å lagre et eksisterende prosjekt under et <b>nytt</b> navn. Dette er den eneste sikre måten å omdøpe et prosjekt. .aup-filen og _data-mappen bør ikke flyttes rundt på eller omdøpes manuelt. </p><p>"
-
-#: HelpText.cpp:335
-msgid "To hear your work in other media programs, export it to an audio file such as WAV or MP3 (some formats are [[wma-proprietary|unsupported]]). [[save|Saving an Audacity project]] creates a project file (and linked _data folder) containing all your edited tracks, so you can return to your work later. However, other programs can't read Audacity projects. </p><p> To export, click <i>File &gt; Export</i> then choose the file format you want to export to in the \"Save as type\" dropdown. To [[burncd|burn a CD]] for standalone CD players, choose WAV or AIFF. To export as MP3, the [[wiki:Lame_Installation|Lame Encoder]] must be installed. </p><p> <i>File &gt; Export Selection</i> exports only a selected area of audio. <i>Use File &gt; Export Multiple</i> to export multiple files at the same time, either one for each audio track, or one for each labeled area in a single track. <i>Tracks &gt; Add Label At Selection</i> lets you [[wiki:Splitting_recordings_into_separate_tracks|split the tracks]] from an album for multiple export as separate files. </p><br><br>"
-msgstr "Hvis du vil høre arbeidet ditt i andre mediaprogram kan du eksportere det til en lydfil, f.eks. WAV eller MP3 (visse format er [[wma-proprietary|ikke støttet]]). Ved å [[save|lagre et Audacity-prosjekt]] lager du en prosjekt-fil (lenket til en _data-mappe) som inneholder alle dine redigerte spor, slik at du kan gå tilbake til arbeidet på et senere tidspunkt. Men, andre program kan ikke lese Audacity-prosjekt. </p><p> For å eksportere klikker du <i>Fil &gt; Eksporter</i> og velger filformatet du ønsker å eksportere til i nedtrekksmenyen «Format». Vil du [[burncd|brenne CD]] som skal spilles av i vanlige CD-spillere, velger du WAV eller AIFF. For å eksportere til MP3 må du ha installert [[wiki:Lame_Installation|Lame-omkoderen]]. </p><p> <i>Fil &gt; Eksporter markering</i> eksporterer bare et markert lydområde. <i>Bruk Fil &gt; Eksporter flere filer</i> for å eksportere multiple filer samtidig, enten en for hvert lydspor eller en for hvert kommenterte område i et enkeltspor.<i>Spor &gt; Legg til kommentar ved markering</i> lar deg [[wiki:Splitting_recordings_into_separate_tracks|dele opp sporene]] fra et album for å eksportere flere spor som ulike filer. </p><br><br>"
-
-#: HelpText.cpp:359
-#, fuzzy
-msgid "<p>Audacity <b>cannot</b> [[play|play]] or [[export|export]] files in <b>WMA, RealAudio, Shorten (SHN)</b> or most other proprietary formats, due to licensing and patent restrictions.  On a Mac computer, unprotected <b>AAC</b> formats such as <b>M4A</b> can be imported. Some open formats are not yet supported, including <b>Ogg Speex</b> and <b>Musepack</b>. Files protected by any kind of Digital Rights Management (DRM), including most purchased online such as from iTunes or Napster, <b>cannot</b> be imported.</p><p> If you can't import your file into Audacity, then if it is not DRM-protected, use iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> to convert it to WAV or AIFF. If it is protected, burn it to an audio CD in the program licensed to play it, then extract the CD track to WAV or AIFF using iTunes or (on Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> or Windows Media Player 11. You could also <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">record</a> the CD to your computer. <i>To export to an unsupported format, export to WAV or AIFF and convert it to the desired format in iTunes or <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
-msgstr "<p>Audacity <b>kan ikke</b> [[play|spille av]] eller [[export|eksportere til]] formatene <b>WMA, RealAudio, Shorten (SHN)</b> eller de fleste andre proprietære format, pga. lisens- og patentbegrensninger. På en Mac kan du importere ubeskyttede <b>AAC</b>-format, f.eks. <b>M4A</b>. Visse åpne format er ennå ikke støttet, dette inkluderer <b>Ogg Speex</b> og <b>Musepack</b>. Filer som er beskyttet av en form for digital rettighetsadministrasjon (DRA/DRM), inkludert de fleste filer kjøpt på nettet fra iTunes, Napster ol., <b>kan ikke</b> importeres.</p><p> Hvis du ikke kan importere filen din til Audacity, og den ikke er beskyttet med DRM, kan du likevel bruke iTunes eller <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a> for å konvertere den til WAV eller AIFF. Hvis den er beskyttet kan du brenne til lyd-CD med programmet som er lisensiert til å spille den av, og så trekke ut CD-sporet til WAV eller AIFF med iTunes eller (på Windows) <a href=\"http://cdexos.sourceforge.net/?q=download\">CDex</a> eller Windows Media Player 11. Du kan også <a href=\"http://audacity.sourceforge.net/help/faq?s=recording&amp;i=streaming\">spille inn</a> CD-en til datamaskinen din. <i>Vil du eksportere til et ustøttet format kan du først eksportere til WAV eller AIFF og så konvertere til det ønskede formatet i iTunes eller <a href=\"http://www.erightsoft.com/SUPER.html#Dnload\">SUPER</a>. </i></p><p>"
-
-#: HelpText.cpp:383
-msgid "<p>To burn your work to an audio CD for standalone CD players, first [[export|export]] it as WAV or AIFF. The exported file should be stereo, 44100 Hz (set in the \"Project Rate\" button bottom left) and 16 bit (set in the \"Options\" button in the file export dialog). These are Audacity's default settings, so normally you will not need to change these before exporting. <p>Burn the exported file to an \"audio CD\" - not a \"data CD\" or \"MP3 CD\" - with a CD burning program like iTunes or Windows Media Player. For more help, see [[wiki:How_to_burn_CDs|How to burn CDs]] online. </p><p>"
-msgstr "<p>For å brenne arbeidet ditt til lyd-CD for vanlige CD-spillere må du først [[export|eksportere]] som WAV eller AIFF. Den eksporterte filen bør være i stereo, 44100 Hz (still dette inn med «Prosjektrate»-knappen nede til venstre) og 16 bit (still inn med «Valg»-knappen i dialogen for eksportering). Dette er standardinnstillingene til Audacity, så normalt sett vil du ikke trenge å endre disse før eksportering. <p>Brenn den eksporterte filen til en «lyd-CD» - ikke en «data-CD» eller «MP3-CD» - med et CD-brenningsprogram som iTunes eller Windows Media Player. Vil du ha mer hjelp kan du lese [[wiki:How_to_burn_CDs|Hvordan brenne CD-er]] på nettet. </p><p>"
-
-#: HelpText.cpp:403
-msgid "<p>Help for Audacity Beta is currently unfinished. For now, a draft manual is available <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">online</a>. Alternatively, click <a href=\"http://www.audacityteam.org/manual/index.php?title=Temporary_HTML_Manual_Export\">here</a> to download a single-page version of the manual which can be viewed in this window."
-msgstr "<p>Hjelp for Audacity Beta er ennå uferdig. Foreløpig finnes et utkast til en manual <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">på nettet</a>. Du kan også klikke <a href=\"http://www.audacityteam.org/manual/index.php?title=Temporary_HTML_Manual_Export\">her</a> for å laste ned hele manualen i en enkeltfil som kan leses i dette vinduet."
+#: HelpText.cpp:193
+msgid "<p>You do not appear to have 'help' installed on your computer.<br> Please <a href=\"*URL*\">view or download it online</a>."
+msgstr ""
+"<p>Det ser ut til at du ikke har «hjelp» installert på maskinen din.<br> Vennligst <a\n"
+"href=\"*URL*\">les eller last ned fra nettet</a>."
 
 #: HistoryWindow.cpp:53
 msgid "Undo History"
@@ -1389,11 +1464,11 @@ msgstr "GB"
 
 #: Internat.cpp:181
 msgid "The specified filename could not be converted due to Unicode character use."
-msgstr ""
+msgstr "Kunne ikke konvertere filnavnet pga. bruk av Unicode-tegn."
 
 #: Internat.cpp:183
 msgid "Specify New Filename:"
-msgstr ""
+msgstr "Angi nytt filnavn:"
 
 #: LabelDialog.cpp:52
 msgid "Track"
@@ -1411,9 +1486,9 @@ msgstr "Starttid"
 msgid "End Time"
 msgstr "Sluttid"
 
-#: LabelDialog.cpp:98 Menus.cpp:627
-msgid "&Edit Labels"
-msgstr "R&ediger kommentarer"
+#: LabelDialog.cpp:100
+msgid "Edit Labels"
+msgstr "Rediger kommentarer"
 
 #: LabelDialog.cpp:113
 msgid "Press F2 or double click to edit cell contents."
@@ -1460,7 +1535,7 @@ msgstr "Tekstfiler (*.txt)|*.txt|Alle filer (*.*)|*.*"
 #: LabelDialog.cpp:532 Menus.cpp:3571 Project.cpp:1831 Project.cpp:1839
 #: import/ImportMIDI.cpp:31
 msgid "Could not open file: "
-msgstr "Kunne ikke åpne filen: "
+msgstr "Kunne ikke åpne fila: "
 
 #: LabelDialog.cpp:558
 msgid "No labels to export."
@@ -1484,9 +1559,9 @@ msgstr "Nytt kommentarspor"
 msgid "Enter track name"
 msgstr "Skriv inn spornavn"
 
-#: LabelDialog.cpp:701 LabelDialog.h:52 LabelTrack.cpp:89 Menus.cpp:555
-msgid "&Label Track"
-msgstr "&Etikettspor"
+#: LabelDialog.cpp:705 LabelDialog.h:52 LabelTrack.cpp:93
+msgid "Label Track"
+msgstr "Kommentarspor"
 
 #: LangChoice.cpp:57
 msgid "Audacity First Run"
@@ -1496,16 +1571,26 @@ msgstr "Audacity først kjørt"
 msgid "Choose Language for Audacity to use:"
 msgstr "Velg språk for Audacity:"
 
+#: LangChoice.cpp:125
+#, c-format
+msgid "The language you have chosen, %s (%s), is not the same as the system language, %s (%s)."
+msgstr "Det valgte språket, %s (%s), er ikke det samme som systemspråket, %s (%s)."
+
 #: Legacy.cpp:356
 #, c-format
 msgid "Converted a 1.0 project file to the new format.\n"
 "The old file has been saved as '%s'"
 msgstr "Konverterte en 1.0 prosjektfil til det nye formatet.\n"
-"Den gamle filen har blitt lagret som '%s'"
+"Den gamle fila har blitt lagret som '%s'"
 
 #: Legacy.cpp:357
 msgid "Opening Audacity Project"
 msgstr "Åpner Audacity-prosjekt"
+
+#: LyricsWindow.cpp:48
+#, c-format
+msgid "Audacity Karaoke%s"
+msgstr "Audacity-karaoke%s"
 
 #: Menus.cpp:162
 msgid "&File"
@@ -1631,6 +1716,10 @@ msgstr "&Kopier"
 msgid "&Paste"
 msgstr "&Lim inn"
 
+#: Menus.cpp:365
+msgid "Paste Te&xt to New Label"
+msgstr "Lim inn tekst til ny komment&ar"
+
 #: Menus.cpp:333
 msgid "Tri&m"
 msgstr "Beskj&ær"
@@ -1695,10 +1784,9 @@ msgstr "Ko&pier"
 msgid "Sp&lit Delete"
 msgstr "Kløy&v og slett"
 
-#. i18n-hint: Labeled Regions submenu
-#: Menus.cpp:393
-msgid "Sile&nce"
-msgstr "Still&het"
+#: Menus.cpp:417
+msgid "Silence &Audio"
+msgstr "Demp l&yd"
 
 #. i18n-hint: Labeled Regions submenu
 #: Menus.cpp:399
@@ -1825,6 +1913,14 @@ msgstr "Vis klip&ping"
 msgid "&History..."
 msgstr "&Historie..."
 
+#: Menus.cpp:545
+msgid "&Karaoke..."
+msgstr "&Karaoke..."
+
+#: Menus.cpp:548
+msgid "&Mixer Board..."
+msgstr "&Miksepult"
+
 #: Menus.cpp:566
 msgid "&Toolbars"
 msgstr "Verkt&øylinjer"
@@ -1873,7 +1969,7 @@ msgstr "!Forenklet visning"
 #. play, record, pause etc.
 #: Menus.cpp:587
 msgid "T&ransport"
-msgstr ""
+msgstr "&Kontroll"
 
 #: Menus.cpp:591
 msgid "Play"
@@ -1920,14 +2016,16 @@ msgid "Software Playthrough (on/off)"
 msgstr "Spill gjennom med programvare (av/på)"
 
 #: Menus.cpp:612
-#, fuzzy
 msgid "Sound Activated Recording (on/off)"
 msgstr "Lydaktivert opptak (av/på)"
 
 #: Menus.cpp:614
-#, fuzzy
 msgid "Sound Activation Level..."
 msgstr "Lydaktiveringsnivå..."
+
+#: Menus.cpp:615
+msgid "Automated Input Level Adjustment (on/off)"
+msgstr "Automatisk justering av inndatanivå (av/på)"
 
 #: Menus.cpp:545
 msgid "&Tracks"
@@ -1944,6 +2042,10 @@ msgstr "&Lydspor"
 #: Menus.cpp:554
 msgid "&Stereo Track"
 msgstr "&Stereospor"
+
+#: LabelDialog.cpp:701 LabelDialog.h:52 LabelTrack.cpp:89 Menus.cpp:555
+msgid "&Label Track"
+msgstr "&Etikettspor"
 
 #: Menus.cpp:556 TimeTrack.cpp:44
 msgid "&Time Track"
@@ -2018,17 +2120,20 @@ msgid "Synchronize MIDI with Audio"
 msgstr "Synkroniser MIDI med lyd"
 
 #: Menus.cpp:686
-#, fuzzy
 msgid "&Link Audio and Label Tracks"
-msgstr "Sammenkople lyd- og kommentarspor"
+msgstr "S&ammenkople lyd- og kommentarspor"
 
 #: Menus.cpp:690
 msgid "Add Label At &Selection"
-msgstr ""
+msgstr "Legg til kommentar ved &markering"
 
 #: Menus.cpp:624
 msgid "Add Label At &Playback Position"
 msgstr "Legg til kommentar ved a&vspillingsmarkering"
+
+#: LabelDialog.cpp:98 Menus.cpp:627
+msgid "&Edit Labels"
+msgstr "R&ediger kommentarer"
 
 #: Menus.cpp:716
 msgid "S&ort tracks"
@@ -2060,11 +2165,11 @@ msgstr "&Analyser"
 
 #: Menus.cpp:874
 msgid "Contrast..."
-msgstr ""
+msgstr "Kontrast..."
 
 #: Menus.cpp:704
 msgid "Plot Spectrum..."
-msgstr "Plott spektrum..."
+msgstr "Tegn spektrum..."
 
 #: Menus.cpp:737 Menus.cpp:740
 msgid "&Help"
@@ -2074,13 +2179,13 @@ msgstr "&Hjelp"
 msgid "&About Audacity CleanSpeech..."
 msgstr "&Om Audacity CleanSpeech..."
 
-#: Menus.cpp:747
-msgid "&Show Welcome Message..."
-msgstr "Vi&s velkomstmelding..."
+#: Menus.cpp:987
+msgid "&Quick Help (in web browser)"
+msgstr "&Snarhjelp (i nettleser)"
 
-#: Menus.cpp:958
-msgid "&Help..."
-msgstr ""
+#: Menus.cpp:988
+msgid "&Manual (in web browser)"
+msgstr "&Manual (i nettleser)"
 
 #: Menus.cpp:959
 msgid "Show &Log..."
@@ -2100,11 +2205,11 @@ msgstr "L&ydenhetsinformasjon..."
 
 #: Menus.cpp:986
 msgid "Move backward from toolbars to tracks"
-msgstr ""
+msgstr "Flytt bakover fra verktøylinjer til spor"
 
 #: Menus.cpp:987
 msgid "Move forward from toolbars to tracks"
-msgstr ""
+msgstr "Flytt framover fra verktøylinjer til spor"
 
 #: Menus.cpp:774
 msgid "Selection Tool"
@@ -2178,19 +2283,19 @@ msgstr "Slettetast2"
 
 #: Menus.cpp:1018
 msgid "Short seek left during playback"
-msgstr ""
+msgstr "Kort søk mot venstre under avspilling"
 
 #: Menus.cpp:1019
 msgid "Short seek right during playback"
-msgstr ""
+msgstr "Kort søk mot høyre under avspilling"
 
 #: Menus.cpp:1020
 msgid "Long seek left during playback"
-msgstr ""
+msgstr "Langt søk mot venstre under avspilling"
 
 #: Menus.cpp:1021
 msgid "Long Seek right during playback"
-msgstr ""
+msgstr "Langt søk mot høyre under avspilling"
 
 #: Menus.cpp:823
 msgid "Move Focus to Previous Track"
@@ -2198,7 +2303,7 @@ msgstr "Flytt fokus til forrige spor"
 
 #: Menus.cpp:1027
 msgid "Move Focus to Previous and Select"
-msgstr ""
+msgstr "Flytt fokus til forrige og marker"
 
 #: Menus.cpp:825
 msgid "Move Focus to Next Track"
@@ -2206,7 +2311,7 @@ msgstr "Flytt fokus til neste spor"
 
 #: Menus.cpp:1029
 msgid "Move Focus to Next and Select"
-msgstr ""
+msgstr "Flytt fokus til neste og marker"
 
 #: Menus.cpp:827
 msgid "Toggle Focused Track"
@@ -2314,31 +2419,47 @@ msgstr "Fullskjerm av/på"
 
 #: Menus.cpp:1067
 msgid "Adjust output gain"
-msgstr ""
+msgstr "Juster utdatavolum"
 
 #: Menus.cpp:1068
 msgid "Increase output gain"
-msgstr ""
+msgstr "Øk utdatavolum"
 
 #: Menus.cpp:1069
 msgid "Decrease output gain"
-msgstr ""
+msgstr "Senk utdatavolum"
 
 #: Menus.cpp:1070
 msgid "Adjust input gain"
-msgstr ""
+msgstr "Juster inndatavolum"
 
 #: Menus.cpp:1071
 msgid "Increase input gain"
-msgstr ""
+msgstr "Øk inndatavolum"
 
 #: Menus.cpp:1072
 msgid "Decrease input gain"
-msgstr ""
+msgstr "Senk inndatavolum"
 
 #: Menus.cpp:1074
 msgid "Adjust input source"
-msgstr ""
+msgstr "Juster inndatakilde"
+
+#: Menus.cpp:1108
+msgid "Play at speed"
+msgstr "Spill med hastighet"
+
+#: Menus.cpp:1109
+msgid "Adjust playback speed"
+msgstr "Juster avspillingshastighet"
+
+#: Menus.cpp:1110
+msgid "Increase playback speed"
+msgstr "Øk avspillingshastighet"
+
+#: Menus.cpp:1111
+msgid "Decrease playback speed"
+msgstr "Senk avspillingshastighet"
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
 #: Menus.cpp:873
@@ -2348,25 +2469,17 @@ msgstr "Åpne nylig brukte"
 #. i18n-hint: This is the name of the menu item on Windows and Linux
 #: Menus.cpp:1161
 msgid "Recent &Files"
-msgstr ""
+msgstr "Nylig brukte &filer"
 
 #: Menus.cpp:925
 #, c-format
 msgid "&Undo %s"
 msgstr "&Angre %s"
 
-#: Menus.cpp:951
-msgid "Can't Undo"
-msgstr "Kan ikke angre"
-
 #: Menus.cpp:960
 #, c-format
 msgid "&Redo %s"
 msgstr "&Gjør om %s"
-
-#: Menus.cpp:966
-msgid "Can't Redo"
-msgstr "Kan ikke gjøre om"
 
 #: Menus.cpp:1528
 msgid "Sort By Time"
@@ -2384,12 +2497,16 @@ msgstr "Sorter etter navn"
 msgid "Tracks sorted by name"
 msgstr "Spor sortert etter navn"
 
-#: Menus.cpp:1705
-msgid "Set Left Selection Bound"
+#: Menus.cpp:2116 Menus.cpp:2152
+msgid "Position"
+msgstr "Posisjon"
+
+#: Menus.cpp:2116
+msgid "Set Left Selection Boundary"
 msgstr "Velg venstre markeringsgrense"
 
-#: Menus.cpp:1739
-msgid "Set Right Selection Bound"
+#: Menus.cpp:2152
+msgid "Set Right Selection Boundary"
 msgstr "Velg høyre markeringsgrense"
 
 #: Menus.cpp:2006
@@ -2468,6 +2585,10 @@ msgstr "Det går ikke an å lime inn mellom ulike typer spor."
 msgid "Copying stereo audio into a mono track is not allowed."
 msgstr "Det går ikke an å kopiere stereolyd til et monospor."
 
+#: Menus.cpp:3520
+msgid "Paste Text to New Label"
+msgstr "Lim inn tekst til ny kommentar"
+
 #: Menus.cpp:2670 toolbars/EditToolBar.cpp:139
 msgid "Trim"
 msgstr "Beskjær"
@@ -2485,14 +2606,14 @@ msgstr "Kløyvde og slettet %.2f sekunder ved t=%.2f"
 msgid "Split Delete"
 msgstr "Kløyv og slett"
 
-#: Menus.cpp:2723
+#: Menus.cpp:3607
 #, c-format
-msgid "Disjoined %.2f seconds at t=%.2f"
-msgstr "Adskilte %.2f sekunder ved t=%.2f"
+msgid "Detached %.2f seconds at t=%.2f"
+msgstr "Løsnet %.2f sekunder ved t=%.2f"
 
-#: Menus.cpp:2726
-msgid "Disjoin"
-msgstr "Adskill"
+#: Menus.cpp:3610
+msgid "Detach"
+msgstr "Løsne"
 
 #: Menus.cpp:2747
 #, c-format
@@ -2584,13 +2705,13 @@ msgstr "Sammenføy kommentarer"
 msgid "Joined labeled regions"
 msgstr "Sammenføyde kommenterte regioner"
 
-#: Menus.cpp:2925
-msgid "Disjoin Labels"
-msgstr "Adskill kommentarer"
+#: Menus.cpp:3802
+msgid "Detach Labels"
+msgstr "Løsne kommentarer"
 
-#: Menus.cpp:2925
-msgid "Disjoined labeled regions"
-msgstr "Adskilte kommenterte regioner"
+#: Menus.cpp:3802
+msgid "Detached labeled regions"
+msgstr "Løsnede kommentarregioner"
 
 #: Menus.cpp:2947 TrackPanel.cpp:6121
 msgid "Split"
@@ -2608,10 +2729,14 @@ msgstr "Kløyv til nytt spor"
 msgid "Split at labels"
 msgstr "Del opp ved kommentarer"
 
+#: FreqWindow.cpp:104
+msgid "Frequency Analysis"
+msgstr "Frekvensanalyse"
+
 #: Menus.cpp:3584
 #, c-format
 msgid "Imported labels from '%s'"
-msgstr "Importerte kommentarer fra '%s'"
+msgstr "Importerte kommentarer fra «%s»"
 
 #: Menus.cpp:3585
 msgid "Import Labels"
@@ -2628,7 +2753,7 @@ msgstr "MIDI- og Allegro-filer (*.mid;*.midi;*.gro)|*.mid;*.midi;*.gro|MIDI-file
 #: Menus.cpp:3615
 #, c-format
 msgid "Imported MIDI from '%s'"
-msgstr "Importert MIDI fra '%s'"
+msgstr "Importert MIDI fra «%s»"
 
 #: Menus.cpp:3617
 msgid "Import MIDI"
@@ -2657,7 +2782,7 @@ msgstr "Rediger metadata-tags"
 #: Menus.cpp:3725
 #, c-format
 msgid "Rendered all audio in track '%s'"
-msgstr "Rendre all lyd i spor '%s'"
+msgstr "Rendre all lyd i spor «%s»"
 
 #: Menus.cpp:3726
 msgid "Render"
@@ -2673,8 +2798,8 @@ msgstr "Mikset og rendret %d spor til ett nytt stereospor"
 msgid "Mixed and rendered %d tracks into one new mono track"
 msgstr "Mikset og rendret %d spor til ett nytt monospor"
 
-#: Menus.cpp:3736 Mix.cpp:120
-msgid "&Mix and Render"
+#: Menus.cpp:4594 Mix.cpp:120
+msgid "Mix and Render"
 msgstr "&Miks og rendre"
 
 #: Menus.cpp:3866
@@ -2814,6 +2939,48 @@ msgstr "Miks"
 msgid "Mixing and rendering tracks"
 msgstr "Mikser og rendrer spor"
 
+#  i18n-hint: Title of the Gain slider, used to adjust the volume
+#  i18n-hint: Title of the Gain slider, used to adjust the volume
+#. i18n-hint: Title of the Gain slider, used to adjust the volume
+#: TrackPanel.cpp:3485 TrackPanel.cpp:5726 TrackPanel.cpp:7149
+msgid "Gain"
+msgstr "Sporvolum"
+
+#: MixerBoard.cpp:164
+msgid "Musical Instrument"
+msgstr "Musikkinstrument"
+
+#  i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
+#. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
+#: TrackPanel.cpp:3485 TrackPanel.cpp:5664 TrackPanel.cpp:7156
+msgid "Pan"
+msgstr "Panorering"
+
+#: TrackPanel.cpp:7076
+msgid "Mute"
+msgstr "Demp"
+
+#: TrackPanel.cpp:7076
+msgid "Solo"
+msgstr "Solo"
+
+#: MixerBoard.cpp:230
+msgid "Signal Level Meter"
+msgstr "Signalnivåmåler"
+
+#: TrackPanel.cpp:3484
+msgid "Moved gain slider"
+msgstr "Flyttet glidebryter for sporvolum"
+
+#: TrackPanel.cpp:3484
+msgid "Moved pan slider"
+msgstr "Flyttet glidebryter for panorering"
+
+#: MixerBoard.cpp:1328
+#, c-format
+msgid "Audacity Mixer Board%s"
+msgstr "Audacity miksepult%s"
+
 #: NoteTrack.cpp:36
 msgid "Note Track"
 msgstr "Notatspor"
@@ -2828,7 +2995,7 @@ msgstr "Skriv ut"
 
 #: Project.cpp:669
 msgid "Repeat Last Effect"
-msgstr ""
+msgstr "Gjenta siste effekt"
 
 #: Project.cpp:636
 msgid "Main Mix"
@@ -2875,7 +3042,7 @@ msgstr "Lagre endringer?"
 
 #: Project.cpp:1925
 msgid "All files|*|All supported files|"
-msgstr ""
+msgstr "Alle filer|*|Alle støttede filer|"
 
 #: Project.cpp:1719
 msgid "Select one or more audio files..."
@@ -2894,13 +3061,13 @@ msgid "This file was saved by Audacity %s, a much\n"
 "it, so you must back it up first.\n"
 "\n"
 "Open this file now?"
-msgstr "Denne filen ble lagret av Audacity %s, en \n"
+msgstr "Denne fila ble lagret av Audacity %s, en \n"
 "mye eldre versjon. Formatet har blitt endret.\n"
 "\n"
-"Audacity kan ødelegge filen ved åpning,\n"
+"Audacity kan ødelegge fila ved åpning,\n"
 "så du bør ta en sikkerhetskopi først.\n"
 "\n"
-"Åpne filen nå?"
+"Åpne fila nå?"
 
 #: Project.cpp:1800
 msgid "1.0 or earlier"
@@ -2916,10 +3083,14 @@ msgid "You are trying to open an automatically created backup file.\n"
 "\n"
 "Please open the actual Audacity project file instead."
 msgstr ""
+"Du prøver å opne en automatisk lagret sikkerhetskopi.\n"
+"Dette kan føre til omfattende tap av data.\n"
+"\n"
+"Vennligst åpne den opprinnelige Audacity-prosjektfila i steden."
 
 #: Project.cpp:2074
 msgid "Backup file detected"
-msgstr ""
+msgstr "Sikkerhetskopi oppdaget"
 
 #: Project.cpp:1832 Project.cpp:1840
 msgid "Error opening file"
@@ -2929,7 +3100,7 @@ msgstr "Feil ved åpning av fil"
 #, c-format
 msgid "File may be invalid or corrupted: \n"
 "%s"
-msgstr "Filen kan være ugyldig eller korrumpert: \n"
+msgstr "Fila kan være ugyldig eller korrumpert: \n"
 "%s"
 
 #: Project.cpp:1847
@@ -2963,16 +3134,16 @@ msgstr "Reparer"
 #: Project.cpp:2112
 #, c-format
 msgid "Couldn't find the project data folder: \"%s\""
-msgstr "Kunne ikke finne prosjektdatamappen: \"%s\""
+msgstr "Kunne ikke finne prosjektdatamappen: «%s»"
 
 #: Project.cpp:2155
 #, c-format
 msgid "This file was saved using Audacity %s.\n"
 "You are using Audacity %s - you need to upgrade to\n"
 "a newer version to open this file."
-msgstr "Denne filen ble lagret vha. Audacity %s.\n"
+msgstr "Denne fila ble lagret vha. Audacity %s.\n"
 "Du bruker Audacity %s - du må oppgradere til\n"
-"en nyere versjon for å åpne denne filen."
+"en nyere versjon for å åpne denne fila."
 
 #: Project.cpp:2159
 msgid "Can't open project file"
@@ -2987,6 +3158,12 @@ msgid "This file was saved by Audacity %s.\n"
 "\n"
 "Open this file now?"
 msgstr ""
+"Denne fila ble lagret av Audacity %s.\n"
+"\n"
+"Audacity kan åpne og lagre fila, men lagring i denne utgaven\n"
+"vil gjøre det umulig å åpne fila i 1.2 eller eldre utgaver.\n"
+"\n"
+"Vil du åpne fila nå?"
 
 #: Project.cpp:2537
 msgid "Your project is now empty.\n"
@@ -3012,7 +3189,6 @@ msgstr "Advarsel: tomt prosjekt"
 
 #: Project.cpp:2792
 #, c-format
-#, fuzzy
 msgid "Could not save project. Perhaps %s \n"
 "is not writable or the disk is full."
 msgstr "Klarte ikke å lagre prosjektet. Kanskje %s\n"
@@ -3026,7 +3202,7 @@ msgstr "Feil ved lagring av prosjekt"
 #: effects/Equalization.cpp:1098
 #, c-format
 msgid "Couldn't write to file \"%s\": %s"
-msgstr ""
+msgstr "Klarte ikke å skrive til fila «%s»: %s"
 
 #: Project.cpp:2504
 #, c-format
@@ -3036,7 +3212,7 @@ msgstr "Lagret %s"
 #: Project.cpp:2586
 #, c-format
 msgid "Imported '%s'"
-msgstr "Importerte '%s'"
+msgstr "Importerte «%s»"
 
 #: Menus.cpp:3649 Project.cpp:2587 Project.cpp:2612 import/ImportPCM.cpp:440
 #: import/ImportPCM.cpp:484
@@ -3083,6 +3259,10 @@ msgstr "Du lagrer en Audacity prosjektfil (.aup).\n"
 "\n"
 "Hvis vil lagre en fil som kan åpnes med andre programmer, velg en av \"Fil > Eksport\"-kommandoene.\n"
 
+#: Project.cpp:3454
+msgid "Save Project As..."
+msgstr "Lagre prosjekt som..."
+
 #: Project.cpp:2692
 msgid "Audacity projects (*.aup)|*.aup"
 msgstr "Audacity prosjekter (*.aup)|*.aup"
@@ -3124,6 +3304,10 @@ msgstr "Nok ledig diskplass til %d sekunder med opptak."
 #: Project.cpp:3064
 msgid "Out of disk space"
 msgstr "Tom for diskplass"
+
+#: Project.cpp:3948
+msgid "On-demand import and waveform calculation complete."
+msgstr "Ferdig med importering og bølgeformutregning etter behov."
 
 #: Project.cpp:3336
 #, c-format
@@ -3198,15 +3382,15 @@ msgstr "32-bit flyttall"
 
 #: Screenshot.cpp:279
 msgid "Screen Capture Frame"
-msgstr ""
+msgstr "Skjermbildeverktøy"
 
 #: Screenshot.cpp:316
 msgid "Choose location to save files"
-msgstr ""
+msgstr "Velg hvor du vil lagre filene"
 
 #: Screenshot.cpp:326
 msgid "Save images to:"
-msgstr ""
+msgstr "Lagre bilder i:"
 
 #: export/ExportMultiple.cpp:216 prefs/DirectoriesPrefs.cpp:92
 msgid "Choose..."
@@ -3214,43 +3398,43 @@ msgstr "Velg..."
 
 #: Screenshot.cpp:334
 msgid "Capture entire window or screen"
-msgstr ""
+msgstr "Ta bilde av hele vinduet eller skjermen"
 
 #: Screenshot.cpp:338
 msgid "Resize Small"
-msgstr ""
+msgstr "Lag lite vindu"
 
 #: Screenshot.cpp:339
 msgid "Resize Large"
-msgstr ""
+msgstr "Lag stort vindu"
 
 #: Screenshot.cpp:342
 msgid "Blue Bkgnd"
-msgstr ""
+msgstr "Blått bak"
 
 #: Screenshot.cpp:346
 msgid "White Bkgnd"
-msgstr ""
+msgstr "Hvitt bak"
 
 #: Screenshot.cpp:353
 msgid "Capture Window Only"
-msgstr ""
+msgstr "Bare vinduet"
 
 #: Screenshot.cpp:354
 msgid "Capture Full Window"
-msgstr ""
+msgstr "Hele vinduet"
 
 #: Screenshot.cpp:355
 msgid "Capture Window Plus"
-msgstr ""
+msgstr "Vinduet og litt rundt"
 
 #: Screenshot.cpp:361
 msgid "Capture Full Screen"
-msgstr ""
+msgstr "Hele skjermen"
 
 #: Screenshot.cpp:368
 msgid "Wait 5 seconds and capture frontmost window/dialog"
-msgstr ""
+msgstr "Vent 5 sekunder og ta bilde av øvre vindu/dialog"
 
 #: effects/Normalize.cpp:74 effects/Normalize.cpp:75
 msgid "false"
@@ -3258,15 +3442,15 @@ msgstr "usann"
 
 #: Screenshot.cpp:375
 msgid "Capture part of a project window"
-msgstr ""
+msgstr "Ta bilde av deler av prosjektvinduet"
 
 #: Screenshot.cpp:379
 msgid "All Toolbars"
-msgstr ""
+msgstr "Alle verktøylinjer"
 
 #: Screenshot.cpp:380
 msgid "SelectionBar"
-msgstr ""
+msgstr "Markering"
 
 #: toolbars/ToolsToolBar.cpp:90
 msgid "Tools"
@@ -3286,7 +3470,7 @@ msgstr "Lydnivå"
 
 #: Screenshot.cpp:390 toolbars/EditToolBar.cpp:76 toolbars/EditToolBar.cpp:181
 msgid "Edit"
-msgstr ""
+msgstr "Rediger"
 
 #: prefs/AudioIOPrefs.cpp:119 prefs/AudioIOPrefs.cpp:137
 #: toolbars/DeviceToolBar.cpp:57
@@ -3303,7 +3487,7 @@ msgstr "Sporpanel"
 
 #: Screenshot.cpp:399
 msgid "Ruler"
-msgstr ""
+msgstr "Linjal"
 
 #: export/ExportMultiple.cpp:258
 msgid "Tracks"
@@ -3311,63 +3495,55 @@ msgstr "Spor"
 
 #: Screenshot.cpp:401
 msgid "First Track"
-msgstr ""
+msgstr "Første spor"
 
 #: Screenshot.cpp:402
 msgid "Second Track"
-msgstr ""
+msgstr "Andre spor"
 
 #: Screenshot.cpp:408
 msgid "Scale"
-msgstr ""
+msgstr "Skala"
 
 #: Screenshot.cpp:412
 msgid "One Sec"
-msgstr ""
+msgstr "Et sekund"
 
 #: Screenshot.cpp:413
 msgid "Ten Sec"
-msgstr ""
+msgstr "Ti sekunder"
 
 #: Screenshot.cpp:414
 msgid "One Min"
-msgstr ""
+msgstr "Et minutt"
 
 #: Screenshot.cpp:415
 msgid "Five Min"
-msgstr ""
+msgstr "Fem minutter"
 
 #: Screenshot.cpp:416
 msgid "One Hour"
-msgstr ""
+msgstr "En time"
 
 #: Screenshot.cpp:422
 msgid "Short Tracks"
-msgstr ""
+msgstr "Korte spor"
 
 #: Screenshot.cpp:423
 msgid "Medium Tracks"
-msgstr ""
+msgstr "Middels spor"
 
 #: Screenshot.cpp:424
 msgid "Tall Tracks"
-msgstr ""
-
-#: Screenshot.cpp:384
-msgid "Saved "
-msgstr "Lagret "
-
-#: Screenshot.cpp:387
-msgid "Error trying to save file: "
-msgstr "Feil ved lagring til fil: "
+msgstr "Høye spor"
 
 #: Screenshot.cpp:673
 msgid "Choose a location to save screenshot images"
-msgstr ""
+msgstr "Velg hvor du vil lagre skjermbilder"
 
 #: Sequence.cpp:732 Sequence.cpp:742 Sequence.cpp:749
 msgid "Gap detected in project file\n"
-msgstr "Gap funnet i prosjektfilen\n"
+msgstr "Gap funnet i prosjektfila\n"
 
 #: ShuttleGui.cpp:1852 effects/Effect.cpp:342
 #: effects/audiounits/AudioUnitEffect.cpp:872
@@ -3387,8 +3563,8 @@ msgid "Activation level (dB):"
 msgstr "Aktiveringsnivå (dB):"
 
 #: SplashDialog.cpp:60
-msgid "&Welcome to Audacity!"
-msgstr "&Velkommen til Audacity!"
+msgid "Welcome to Audacity!"
+msgstr "Velkommen til Audacity!"
 
 #: SplashDialog.cpp:112
 msgid "Don't show this again at start up"
@@ -3426,16 +3602,16 @@ msgstr "Kommentarer"
 msgid "Use arrow keys (or RETURN key after editing) to navigate fields."
 msgstr "Bruk piltastene (eller linjeskift etter redigering) for å navigere gjennom felt."
 
-#: Tags.cpp:802
-msgid "Tag Name"
-msgstr "Tag-navn"
+#: Tags.cpp:812
+msgid "Tag"
+msgstr "Tagg"
 
-#: Tags.cpp:803
-msgid "Tag Value"
-msgstr "Tag-verdi"
+#: Tags.cpp:813
+msgid "Value"
+msgstr "Verdi"
 
-#: Tags.cpp:818 Tags.cpp:1476 prefs/KeyConfigPrefs.cpp:116
-msgid "&Clear"
+#: Tags.cpp:828 prefs/KeyConfigPrefs.cpp:160
+msgid "Cl&ear"
 msgstr "T&øm"
 
 #: Tags.cpp:824
@@ -3462,9 +3638,9 @@ msgstr "&Åpne..."
 msgid "&Save..."
 msgstr "&Lagre..."
 
-#: Tags.cpp:841 Tags.cpp:1467 Tags.cpp:1995
-msgid "S&et Default"
-msgstr "&Sett til standardverdier"
+#: Tags.cpp:851
+msgid "Set De&fault"
+msgstr "Lagre som &standardverdier"
 
 #: Tags.cpp:991 Tags.cpp:1630 Tags.cpp:2359
 msgid "Edit Genres"
@@ -3504,13 +3680,13 @@ msgstr "Lagre metadata som:"
 
 #: Tags.cpp:1205
 msgid "Error saving tags file"
-msgstr ""
+msgstr "Klarte ikke å lagre taggfil"
 
 #: Theme.cpp:638
 #, c-format
 msgid "Audacity could not write file:\n"
 "  %s."
-msgstr "Audacity klarte ikke skrive til filen:\n"
+msgstr "Audacity klarte ikke skrive til fila:\n"
 "  %s."
 
 #: Theme.cpp:656
@@ -3518,7 +3694,7 @@ msgstr "Audacity klarte ikke skrive til filen:\n"
 msgid "Audacity could not open file:\n"
 "  %s\n"
 "for writing."
-msgstr "Audacity klarte ikke åpne filen:\n"
+msgstr "Audacity klarte ikke åpne fila:\n"
 "  %s\n"
 "for skriving."
 
@@ -3534,7 +3710,7 @@ msgstr "Audacity klarte ikke skrive bilder til fil:\n"
 msgid "Audacity could not find file:\n"
 "  %s.\n"
 "Theme not loaded."
-msgstr "Audacity klarte ikke finne filen:\n"
+msgstr "Audacity klarte ikke finne fila:\n"
 "  %s.\n"
 "Tema vil ikke åpnes."
 
@@ -3543,7 +3719,7 @@ msgstr "Audacity klarte ikke finne filen:\n"
 msgid "Audacity could not load file:\n"
 "  %s.\n"
 "Bad png format perhaps?"
-msgstr "Audacity klarte ikke åpne filen:\n"
+msgstr "Audacity klarte ikke åpne fila:\n"
 "  %s.\n"
 "Har den kanskje dårlig png-format?"
 
@@ -3573,7 +3749,7 @@ msgstr "Klarte ikke opprette mappe:\n"
 #, c-format
 msgid "Audacity could not save file:\n"
 "  %s"
-msgstr "Audacity klarte ikke lagre filen:\n"
+msgstr "Audacity klarte ikke lagre fila:\n"
 "  %s"
 
 #: Theme.cpp:975
@@ -3590,17 +3766,21 @@ msgstr "Alle de påkrevde filene i:\n"
 msgid "Duration"
 msgstr "Varighet"
 
+#: TimeTrack.cpp:44
+msgid "Time Track"
+msgstr "Tidsspor"
+
 #: SmartRecordDialog.cpp:68
 msgid "Audacity Timer Record"
 msgstr "Audacity nedtellingsopptak"
 
 #: TimerRecordDialog.cpp:205
 msgid "Duration is zero. Nothing will be recorded."
-msgstr ""
+msgstr "Varigheten er null. Ingenting blir spilt inn."
 
 #: TimerRecordDialog.cpp:206
 msgid "Error in Duration"
-msgstr ""
+msgstr "Feil i varighet"
 
 #: SmartRecordDialog.cpp:223
 msgid "Recording start"
@@ -3638,7 +3818,6 @@ msgid "Waiting to start recording at %s.\n"
 msgstr "Venter på å begynnelse innspilling %s.\n"
 
 #: TimerRecordDialog.cpp:382
-#, fuzzy
 msgid "Audacity Timer Record - Waiting for Start"
 msgstr "Audacity nedtellingsopptak - Venter på å starte"
 
@@ -3696,7 +3875,7 @@ msgstr "Del opp stereospor"
 
 #: TrackPanel.cpp:621
 msgid "Split Stereo to Mono"
-msgstr ""
+msgstr "Del stereo til mono"
 
 #: TrackPanel.cpp:575
 msgid "Set Sample Format"
@@ -3811,7 +3990,7 @@ msgstr "Tidsforskyvning"
 
 #: TrackPanel.cpp:2953
 msgid "To use Draw, choose 'Waveform' in the Track Drop-down Menu."
-msgstr "For å tegne, velg 'Bølgeform' i nedtrekksmenyen til sporet."
+msgstr "For å tegne, velg «Bølgeform» i nedtrekksmenyen til sporet."
 
 #: TrackPanel.cpp:2970
 msgid "To use Draw, zoom in further until you can see the individual samples."
@@ -3828,32 +4007,11 @@ msgstr "Datapunktredigering"
 #: TrackPanel.cpp:3341
 #, c-format
 msgid "Removed track '%s.'"
-msgstr "Fjernet spor '%s.'"
+msgstr "Fjernet spor «%s.»"
 
 #: TrackPanel.cpp:3343
 msgid "Track Remove"
 msgstr "Fjern spor"
-
-#: TrackPanel.cpp:3484
-msgid "Moved gain slider"
-msgstr "Flyttet glidebryter for sporvolum"
-
-#: TrackPanel.cpp:3484
-msgid "Moved pan slider"
-msgstr "Flyttet glidebryter for panorering"
-
-#  i18n-hint: Title of the Gain slider, used to adjust the volume
-#  i18n-hint: Title of the Gain slider, used to adjust the volume
-#. i18n-hint: Title of the Gain slider, used to adjust the volume
-#: TrackPanel.cpp:3485 TrackPanel.cpp:5726 TrackPanel.cpp:7149
-msgid "Gain"
-msgstr "Sporvolum"
-
-#  i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#: TrackPanel.cpp:3485 TrackPanel.cpp:5664 TrackPanel.cpp:7156
-msgid "Pan"
-msgstr "Panorering"
 
 #: TrackPanel.cpp:3610 TrackPanel.cpp:6385 effects/ChangePitch.cpp:284
 msgid "up"
@@ -3866,7 +4024,7 @@ msgstr "ned"
 #: TrackPanel.cpp:3621 TrackPanel.cpp:6381
 #, c-format
 msgid "Moved '%s' %s"
-msgstr "Flyttet '%s' %s"
+msgstr "Flyttet «%s» %s"
 
 #: TrackPanel.cpp:3624 TrackPanel.cpp:6387
 msgid "Move Track"
@@ -3887,6 +4045,10 @@ msgstr "Sammenføy"
 #: TrackPanel.cpp:4189
 msgid "Merged Clips"
 msgstr "Sammenføyde klipp"
+
+#: TrackPanel.cpp:4408
+msgid "Remove"
+msgstr "Fjern"
 
 #: TrackPanel.cpp:4201
 msgid "Removed Cut Line"
@@ -3910,7 +4072,7 @@ msgstr "Stereo, "
 
 #: TrackPanel.cpp:6074
 msgid "Mono, "
-msgstr "'Mono'"
+msgstr "«Mono»"
 
 #: TrackPanel.cpp:6076
 msgid "Left, "
@@ -3923,7 +4085,7 @@ msgstr "Høyre,"
 #: TrackPanel.cpp:6100 TrackPanel.cpp:6225
 #, c-format
 msgid "Changed '%s' to %s"
-msgstr "Endret '%s' til %s"
+msgstr "Endret «%s» til %s"
 
 #: TrackPanel.cpp:6105
 msgid "Channel"
@@ -3932,17 +4094,17 @@ msgstr "Kanal"
 #: TrackPanel.cpp:6118
 #, c-format
 msgid "Split stereo track '%s'"
-msgstr "Del opp stereosporet '%s'"
+msgstr "Del opp stereosporet «%s»"
 
 #: TrackPanel.cpp:6253
 #, c-format
 msgid "Split Stereo to Mono '%s'"
-msgstr ""
+msgstr "Del stereo til mono «%s»"
 
 #: TrackPanel.cpp:6139
 #, c-format
 msgid "Made '%s' a stereo track"
-msgstr "Gjorde '%s' om til et stereospor"
+msgstr "Gjorde «%s» om til et stereospor"
 
 #: TrackPanel.cpp:6142
 msgid "Make Stereo"
@@ -3951,7 +4113,7 @@ msgstr "Gjør til stereo"
 #: TrackPanel.cpp:6189
 #, c-format
 msgid "Changed '%s' to %d Hz"
-msgstr "Endret '%s' til %d Hz"
+msgstr "Endret «%s» til %d Hz"
 
 #: TrackPanel.cpp:6191
 msgid "Rate Change"
@@ -3980,7 +4142,7 @@ msgstr "Øvre hastighetsgrense"
 #: TrackPanel.cpp:6366
 #, c-format
 msgid "Set range to '%d' - '%d'"
-msgstr "Sett område til '%d' - '%d'"
+msgstr "Sett område til «%d» - «%d»"
 
 #: TrackPanel.cpp:6369
 msgid "Set Range"
@@ -3997,7 +4159,7 @@ msgstr "Spor-navn"
 #: TrackPanel.cpp:6418
 #, c-format
 msgid "Renamed '%s' to '%s'"
-msgstr "Endret navnet '%s' til '%s'"
+msgstr "Endret navnet «%s» til «%s»"
 
 #: TrackPanel.cpp:6421
 msgid "Name Change"
@@ -4017,15 +4179,7 @@ msgstr "Skriftstørrelse"
 
 #: TrackPanel.cpp:6941
 msgid "Stereo, 999999Hz"
-msgstr ""
-
-#: TrackPanel.cpp:7076
-msgid "Mute"
-msgstr "Demp"
-
-#: TrackPanel.cpp:7076
-msgid "Solo"
-msgstr "Solo"
+msgstr "Stereo, 999999Hz"
 
 #: TrackPanelAx.cpp:265
 msgid "TrackView"
@@ -4101,6 +4255,8 @@ msgstr "Programtillegg %i til %i"
 msgid "There was a problem with your last action. If you think\n"
 "this is a bug, please tell us exactly where it occurred."
 msgstr ""
+"Det var et problem med den siste handlingen. Vennligst fortell oss\n"
+"nøyaktig hvor dette skjedde hvis du tror dette kan være en programfeil."
 
 #: commands/CommandManager.cpp:781
 msgid "You can only do this when playing and recording are\n"
@@ -4125,7 +4281,6 @@ msgstr "Du må først velge noe lyd som dette skal benytte.\n"
 " [Det går ikke å velge andre typer spor.]"
 
 #: commands/CommandManager.cpp:903
-#, fuzzy
 msgid "Disallowed"
 msgstr "Ulovlig"
 
@@ -4137,6 +4292,14 @@ msgstr "Lastet inn %d tastatursnarveier\n"
 #: commands/CommandManager.cpp:974
 msgid "Loading keyboard shortcuts"
 msgstr "Laster tastatursnarveier"
+
+#: Screenshot.cpp:384
+msgid "Saved "
+msgstr "Lagret "
+
+#: Screenshot.cpp:387
+msgid "Error trying to save file: "
+msgstr "Feil ved lagring til fil: "
 
 #: effects/Amplify.cpp:52
 #, c-format
@@ -4150,7 +4313,7 @@ msgstr "Forsterk"
 #: effects/Amplify.cpp:155 effects/Compressor.cpp:476
 #: effects/Normalize.cpp:337
 msgid "by Dominic Mazzoni"
-msgstr ""
+msgstr "av Dominic Mazzoni"
 
 #: effects/Amplify.cpp:159
 msgid "Amplification (dB):"
@@ -4158,7 +4321,7 @@ msgstr "Forsterkning (dB):"
 
 #: effects/Amplify.cpp:183
 msgid "Amplification dB"
-msgstr ""
+msgstr "Forsterkning dB"
 
 #: effects/Amplify.cpp:179
 msgid "New Peak Amplitude (dB):"
@@ -4276,7 +4439,7 @@ msgstr "Frekvens (Hz):"
 
 #: effects/BassBoost.cpp:205
 msgid "Frequency Hertz"
-msgstr ""
+msgstr "Frekvens, hertz"
 
 #: effects/BassBoost.cpp:208
 msgid "Boost (dB):"
@@ -4284,7 +4447,7 @@ msgstr "Boost (dB):"
 
 #: effects/BassBoost.cpp:218
 msgid "Boost dB"
-msgstr ""
+msgstr "Boost dB"
 
 #: effects/BassBoost.h:35
 msgid "BassBoost..."
@@ -4328,31 +4491,31 @@ msgstr "bruker SoundTouch, av Olli Parviainen"
 
 #: effects/ChangePitch.cpp:269
 msgid "Pitch:"
-msgstr ""
+msgstr "Tone:"
 
 #: effects/ChangePitch.cpp:274
 msgid "From:"
-msgstr ""
+msgstr "Fra:"
 
 #: effects/ChangePitch.cpp:275
 msgid "From Pitch"
-msgstr ""
+msgstr "Fra tone"
 
 #: effects/ChangePitch.cpp:286
 msgid "Up"
-msgstr ""
+msgstr "Opp"
 
 #: effects/ChangePitch.cpp:289
 msgid "Down"
-msgstr ""
+msgstr "Ned"
 
 #: effects/ChangePitch.cpp:299
 msgid "To:"
-msgstr ""
+msgstr "Til:"
 
 #: effects/ChangePitch.cpp:300
 msgid "To Pitch"
-msgstr ""
+msgstr "Til tone"
 
 #: effects/ChangePitch.cpp:306
 msgid "Semitones (half-steps):"
@@ -4360,16 +4523,16 @@ msgstr "Halvtoner (halv-steg):"
 
 #: effects/ChangePitch.cpp:316
 msgid "Semitones in half-steps"
-msgstr ""
+msgstr "Semitoner i halv-steg"
 
 #: effects/ChangePitch.cpp:326 effects/ChangeSpeed.cpp:369
 #: effects/ChangeTempo.cpp:209 effects/ChangeTempo.cpp:222
 msgid "from"
-msgstr ""
+msgstr "fra"
 
 #: effects/ChangePitch.cpp:327
 msgid "From frequency in hertz"
-msgstr ""
+msgstr "Fra frekvens i hertz"
 
 #: effects/ChangePitch.cpp:291 effects/ChangePitch.cpp:337
 #: effects/ChangeSpeed.cpp:377 effects/ChangeTempo.cpp:239
@@ -4379,7 +4542,7 @@ msgstr "til"
 
 #: effects/ChangePitch.cpp:332
 msgid "To frequency in seconds"
-msgstr ""
+msgstr "Til frekvens i sekunder"
 
 #: effects/ChangePitch.cpp:360 effects/ChangeSpeed.cpp:331
 #: effects/ChangeTempo.cpp:198
@@ -4389,7 +4552,7 @@ msgstr "Prosentverdi:"
 #: effects/ChangePitch.cpp:343 effects/ChangePitch.cpp:356
 #: effects/ChangeSpeed.cpp:358 effects/ChangeTempo.cpp:198
 msgid "Percent Change"
-msgstr ""
+msgstr "Prosentvis endring"
 
 #: effects/ChangePitch.h:31
 msgid "Change Pitch..."
@@ -4430,15 +4593,15 @@ msgstr "bruker SampleRate, av Erik de Castro Lopo"
 
 #: effects/ChangeSpeed.cpp:366
 msgid "Standard Vinyl RPM:"
-msgstr ""
+msgstr "Standard vinyl-RPM:"
 
 #: effects/ChangeSpeed.cpp:370
 msgid "From RPM"
-msgstr ""
+msgstr "Fra RPM"
 
 #: effects/ChangeSpeed.cpp:375
 msgid "To RPM"
-msgstr ""
+msgstr "Til RPM"
 
 #: effects/ChangeSpeed.h:32
 msgid "Change Speed..."
@@ -4458,27 +4621,27 @@ msgstr "Endre tempo uten å endre tonehøyde"
 
 #: effects/ChangeTempo.cpp:206
 msgid "Beats per minute:"
-msgstr ""
+msgstr "Slag per minutt:"
 
 #: effects/ChangeTempo.cpp:210
 msgid "From beats per minute"
-msgstr ""
+msgstr "Fra slag per minutt"
 
 #: effects/ChangeTempo.cpp:215
 msgid "To beats per minute"
-msgstr ""
+msgstr "Til slag per minutt"
 
 #: effects/ChangeTempo.cpp:219
 msgid "Length (seconds):"
-msgstr ""
+msgstr "Lengde (sekunder):"
 
 #: effects/ChangeTempo.cpp:223
 msgid "From length in seconds"
-msgstr ""
+msgstr "Fra lengde i sekunder"
 
 #: effects/ChangeTempo.cpp:228
 msgid "To length in seconds"
-msgstr ""
+msgstr "Til lengde i sekunder"
 
 #: effects/ChangeTempo.h:35
 msgid "Change Tempo..."
@@ -4528,6 +4691,14 @@ msgstr "Dynamisk områdekomprimering"
 msgid "Threshold"
 msgstr "Terskel"
 
+#: effects/Compressor.cpp:640
+msgid "Noise Floor:"
+msgstr "Minimumsstøy:"
+
+#: effects/Compressor.cpp:644
+msgid "Noise Floor"
+msgstr "Minimumsstøy"
+
 #: effects/Compressor.cpp:502
 msgid "Ratio:"
 msgstr "Forhold:"
@@ -4554,7 +4725,11 @@ msgstr "Falltid"
 
 #: effects/Compressor.cpp:542
 msgid "Make-up gain for 0dB after compressing"
-msgstr ""
+msgstr "Tilbakestill sporvolum for 0dB etter komprimering"
+
+#: effects/Compressor.cpp:680
+msgid "Compress based on Peaks"
+msgstr "Komprimer basert på bølgetopper"
 
 #: effects/Compressor.cpp:563
 #, c-format
@@ -4565,6 +4740,11 @@ msgstr "Terskel: %d dB"
 #, c-format
 msgid "%3d dB"
 msgstr "%3d dB"
+
+#: effects/Compressor.cpp:722
+#, c-format
+msgid "Noise Floor %d dB"
+msgstr "Minimumsstøy %d dB"
 
 #: effects/Compressor.cpp:567
 #, c-format
@@ -4609,36 +4789,27 @@ msgstr "Komprimering..."
 msgid "Applying Dynamic Range Compression..."
 msgstr "Anvender Dynamisk områdekomprimering"
 
-#: effects/Contrast.cpp:64
-msgid "Contrast Analysis"
-msgstr ""
-
-#: effects/Contrast.cpp:79
-msgid "Contrast Tool Foreground"
-msgstr ""
-
-#: effects/Contrast.cpp:79
-msgid "Foreground times selected.\n"
-"Now select background and use Ctrl+Shift+T or menu again."
-msgstr ""
+#: effects/Contrast.cpp:65
+msgid "Contrast Analysis (WCAG 2 compliance)"
+msgstr "Kontrastanalyse (WCAG 2-samsvar)"
 
 #: effects/Contrast.cpp:127
 msgid "Start time after after end time!\n"
 "Please enter reasonable times."
 msgstr ""
+"Starttid etter sluttid!\n"
+"Vennligst skriv inn fornuftige tidspunkt."
 
 #: effects/Contrast.cpp:137
 msgid "Times are not reasonable!\n"
 "Please enter reasonable times."
 msgstr ""
+"Ufornuftige tidspunkt!\n"
+"Vennligst skriv inn fornuftige tidspunkt."
 
-#: effects/Contrast.cpp:231
-msgid "Contrast Analyzer"
-msgstr ""
-
-#: effects/Contrast.cpp:235
-msgid "Parameters"
-msgstr ""
+#: effects/Contrast.cpp:214
+msgid "Contrast Analyzer, for measuring rms volume differences between two selections of audio."
+msgstr "Kontrastanalyse måler volumforskjeller med RMS mellom to merkede lydsekvenser."
 
 #: effects/ToneGen.cpp:361 toolbars/ControlToolBar.cpp:185
 msgid "Start"
@@ -4651,48 +4822,43 @@ msgstr "Slutt"
 
 #: effects/Contrast.cpp:332
 msgid "Volume    "
-msgstr ""
+msgstr "Volum    "
 
 #: effects/Contrast.cpp:248
 msgid "Foreground:"
-msgstr ""
+msgstr "Forgrunn:"
 
 #: effects/Contrast.cpp:347
 msgid "Foreground start time"
-msgstr ""
+msgstr "Starttid for forgrunn"
 
 #: effects/Contrast.cpp:365
 msgid "Foreground end time"
-msgstr ""
+msgstr "Sluttid for forgrunn"
 
-#: effects/Contrast.cpp:193 effects/Contrast.cpp:204 effects/Contrast.cpp:266
-#: effects/Contrast.cpp:289
-msgid "Measured"
-msgstr ""
-
-#: effects/Contrast.cpp:373 effects/Contrast.cpp:417
-msgid "Use selection"
-msgstr ""
+#: effects/Contrast.cpp:266 effects/Contrast.cpp:308
+msgid "Measure selection"
+msgstr "Mål markering"
 
 #: effects/Contrast.cpp:271
 msgid "Background:"
-msgstr ""
+msgstr "Bakgrunn:"
 
 #: effects/Contrast.cpp:391
 msgid "Background start time"
-msgstr ""
+msgstr "Starttid for bakgrunn"
 
 #: effects/Contrast.cpp:409
 msgid "Background end time"
-msgstr ""
+msgstr "Sluttid for bakgrunn"
 
 #: effects/Contrast.cpp:298
 msgid "Result"
-msgstr ""
+msgstr "Resultat"
 
 #: effects/Contrast.cpp:302
 msgid "Contrast Result:"
-msgstr ""
+msgstr "Kontrastresultat:"
 
 #: Tags.cpp:829 Tags.cpp:1981
 msgid "Reset"
@@ -4700,131 +4866,138 @@ msgstr "Gjenopprett"
 
 #: effects/Contrast.cpp:304
 msgid "Difference:"
-msgstr ""
+msgstr "Forskjell:"
 
-#: effects/Contrast.cpp:313
-msgid "Information"
-msgstr ""
+#: effects/Contrast.cpp:336
+msgid "WCAG 2 Help"
+msgstr "WCAG 2-hjelp"
 
-#: effects/Contrast.cpp:447
-msgid "For measuring rms volume differences between two selections of audio."
-msgstr ""
-
-#: effects/Contrast.cpp:448
-msgid "Help for WCAG2 Audio Contrast Analyzer"
-msgstr ""
-
-#: effects/Contrast.cpp:412
-msgid "Close (keeping times)"
-msgstr ""
-
-#: effects/Contrast.cpp:328 effects/Contrast.cpp:336 effects/Contrast.cpp:344
-#: effects/Contrast.cpp:352
-msgid "Measure"
-msgstr ""
-
-#: effects/Contrast.cpp:511
-msgid "No foreground to measure"
-msgstr ""
+#: effects/Contrast.cpp:422
+msgid "No foreground measured"
+msgstr "Målte ingen forgrunn"
 
 #: effects/Contrast.cpp:516
 msgid "Measured foreground level"
-msgstr ""
+msgstr "Målt forgunnsnivå"
 
 #: effects/Contrast.cpp:191 effects/Contrast.cpp:202
 #, c-format
 msgid "%.1f dB"
-msgstr ""
+msgstr "%.1f dB"
 
-#: effects/Contrast.cpp:521
-msgid "No background to measure"
-msgstr ""
+#: effects/Contrast.cpp:431 effects/Contrast.cpp:444
+msgid "zero"
+msgstr "null"
+
+#: effects/Contrast.cpp:435
+msgid "No background measured"
+msgstr "Målte ingen bakgrunn"
 
 #: effects/Contrast.cpp:526
 msgid "Measured background level"
-msgstr ""
+msgstr "Målt bakgrunnsnivå"
 
 #: effects/Contrast.cpp:358
 msgid "WCAG2 Pass"
-msgstr ""
+msgstr "WCAG2 bestått"
 
 #: effects/Contrast.cpp:360
 msgid "WCAG2 Fail"
-msgstr ""
+msgstr "WCAG2 ikke bestått"
 
 #: effects/Contrast.cpp:535
 msgid "Current difference"
-msgstr ""
+msgstr "Forskjell"
+
+#: effects/Contrast.cpp:455
+msgid "indeterminate"
+msgstr "kunne ikke fastslå"
 
 #: effects/Contrast.cpp:536
 #, c-format
 msgid "%.1f dB Average rms"
-msgstr ""
+msgstr "%.1f dB gjennomsnittlig RMS"
+
+#: effects/Contrast.cpp:460
+msgid "infinite dB difference"
+msgstr "uendelig forskjell i dB"
 
 #: effects/Contrast.cpp:541
 msgid "Please enter valid times."
-msgstr ""
+msgstr "Vennligst skriv inn gyldige tidspunkt."
 
 #: effects/Contrast.cpp:551
 msgid "Export Contrast Result As:"
-msgstr ""
+msgstr "Eksporter kontrastresultat som:"
 
 #: effects/Contrast.cpp:572
 msgid "WCAG 2.0 Success Criteria 1.4.7 Contrast Results"
-msgstr ""
+msgstr "Kontrastresultat for WCAG 2.0, suksesskriterium 1.4.7"
 
 #: effects/Contrast.cpp:574
 #, c-format
 msgid "Filename = %s."
-msgstr ""
+msgstr "Filnavn = %s."
 
 #: effects/Contrast.cpp:576
 msgid "Foreground"
-msgstr ""
+msgstr "Forgrunn"
 
 #: effects/Contrast.cpp:581 effects/Contrast.cpp:598
 #, c-format
 msgid "Time started = %2d hour(s), %2d minute(s), %.2f seconds."
-msgstr ""
+msgstr "Starttid = %2d time(r), %2d minutt(er), %.2f sekund(er)."
 
 #: effects/Contrast.cpp:586 effects/Contrast.cpp:603
 #, c-format
 msgid "Time ended = %2d hour(s), %2d minute(s), %.2f seconds."
-msgstr ""
+msgstr "Sluttid = %2d time(r), %2d minutt(er), %.2f sekund(er)."
 
 #: effects/Contrast.cpp:588 effects/Contrast.cpp:605
 #, c-format
 msgid "Average rms = %.1f dB."
-msgstr ""
+msgstr "Gjennomsnittlig RMS = %.1f dB."
+
+#: effects/Contrast.cpp:515 effects/Contrast.cpp:534
+msgid "Average rms = zero."
+msgstr "Gjennomsnittlig RMS = null."
 
 #: effects/Contrast.cpp:590 effects/Contrast.cpp:607
 msgid "Average rms =  dB."
-msgstr ""
+msgstr "Gjennomsnittlig RMS =  dB."
 
 #: effects/Contrast.cpp:593
 msgid "Background"
-msgstr ""
+msgstr "Bakgrunn"
 
 #: effects/Contrast.cpp:609
 msgid "Results"
-msgstr ""
+msgstr "Resultat"
+
+#: effects/Contrast.cpp:541
+msgid "Difference is indeterminate."
+msgstr "Forskjellen er umulig å fastslå"
 
 #: effects/Contrast.cpp:611
 #, c-format
 msgid "Difference = %.1f Average rms dB."
-msgstr ""
+msgstr "Forskjell = %.1f dB gjennomsnittlig RMS."
+
+#: effects/Contrast.cpp:546
+msgid "Difference = infinite Average rms dB."
+msgstr "Forskjell = uendelig dB gjennomsnittlig RMS."
 
 #: effects/Contrast.cpp:613
 msgid "Success Criteria 1.4.7 of WCAG 2.0: Pass"
-msgstr ""
+msgstr "Suksesskriterium 1.4.7 i WCAG 2.0: Bestått"
 
 #: effects/Contrast.cpp:615
 msgid "Success Criteria 1.4.7 of WCAG 2.0: Fail"
-msgstr ""
+msgstr "Suksesskriterium 1.4.7 i WCAG 2.0: Ikke bestått"
 
 #: effects/Contrast.cpp:618
 msgid "Data gathered"
-msgstr ""
+msgstr "Data hentet inn"
 
 #: effects/DtmfGen.cpp:48
 msgid "DTMF Tone Generator"
@@ -4956,7 +5129,7 @@ msgstr "egendefinert"
 
 #: effects/Equalization.cpp:1100
 msgid "Error saving equalization curves"
-msgstr ""
+msgstr "Feil ved lagring av tonekontrollkurver"
 
 #. i18n-hint: && in here is an escape character to get a single &
 #. * on screen, so keep it as is
@@ -5004,6 +5177,16 @@ msgstr "Lagre som..."
 #: effects/Equalization.cpp:1265
 msgid "Flat"
 msgstr "Flat"
+
+#: effects/Equalization.cpp:1469
+msgid "To use this EQ curve in a batch chain, please choose a new name for it."
+msgstr ""
+"Vennligst velg et nytt navn om du vil bruke denne tonekontrollkurven i en satsvis\n"
+"kjede."
+
+#: effects/Equalization.cpp:1470
+msgid "EQ Curve needs a different name"
+msgstr "Tonekontrollkurven trenger et annet navn"
 
 #: effects/Equalization.cpp:2497
 msgid "Enter the desired name of the curve"
@@ -5073,6 +5256,10 @@ msgstr "Finn klipping..."
 msgid "Detecting clipping"
 msgstr "Gjenkjenn klipping"
 
+#: effects/Generator.cpp:58
+msgid "There is not enough room available to generate the audio"
+msgstr "Det var ikke nok tilgjengelig plass til å generere lyden"
+
 #: effects/Invert.h:27
 msgid "Invert"
 msgstr "Inverter"
@@ -5119,7 +5306,7 @@ msgstr "Utjevningsgrad"
 
 #: effects/Leveller.cpp:226
 msgid "Degree of Leveling:"
-msgstr ""
+msgstr "Utjevningsgrad:"
 
 #: effects/Leveller.cpp:242
 msgid "Noise Threshold (Hiss/Hum/Ambient Noise)"
@@ -5139,39 +5326,39 @@ msgstr "Anvender Utjevner"
 
 #: effects/LoadEffects.cpp:102
 msgid "Generator"
-msgstr ""
+msgstr "Generator"
 
 #: effects/LoadEffects.cpp:104
 msgid "Instrument"
-msgstr ""
+msgstr "Instrument"
 
 #: effects/LoadEffects.cpp:106
 msgid "Oscillator"
-msgstr ""
+msgstr "Oscillering"
 
 #: effects/LoadEffects.cpp:108
 msgid "Utility"
-msgstr ""
+msgstr "Verktøy"
 
 #: effects/LoadEffects.cpp:110
 msgid "Converter"
-msgstr ""
+msgstr "Konvertering"
 
 #: effects/LoadEffects.cpp:112
 msgid "Analyser"
-msgstr ""
+msgstr "Analyse"
 
 #: effects/LoadEffects.cpp:116
 msgid "Simulator"
-msgstr ""
+msgstr "Simulering"
 
 #: effects/LoadEffects.cpp:118
 msgid "Delay"
-msgstr ""
+msgstr "Forsinkelse"
 
 #: effects/LoadEffects.cpp:120
 msgid "Modulator"
-msgstr ""
+msgstr "Modulering"
 
 #: effects/LoadEffects.cpp:122
 msgid "Reverb"
@@ -5191,7 +5378,7 @@ msgstr ""
 
 #: effects/LoadEffects.cpp:130
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #: effects/LoadEffects.cpp:132
 msgid "Lowpass"
@@ -5215,11 +5402,11 @@ msgstr ""
 
 #: effects/LoadEffects.cpp:142
 msgid "Equaliser"
-msgstr ""
+msgstr "Tonekontroll"
 
 #: effects/LoadEffects.cpp:144
 msgid "Parametric"
-msgstr ""
+msgstr "Parametrisk"
 
 #: effects/LoadEffects.cpp:146
 msgid "Multiband"
@@ -5227,15 +5414,15 @@ msgstr ""
 
 #: effects/LoadEffects.cpp:148
 msgid "Spectral Processor"
-msgstr ""
+msgstr "Spektralprosessering"
 
 #: effects/LoadEffects.cpp:150
 msgid "Pitch Shifter"
-msgstr ""
+msgstr "Toneskifter"
 
 #: effects/LoadEffects.cpp:152
 msgid "Amplifier"
-msgstr ""
+msgstr "Forsterker"
 
 #: effects/LoadEffects.cpp:154
 msgid "Distortion"
@@ -5243,23 +5430,23 @@ msgstr ""
 
 #: effects/LoadEffects.cpp:156
 msgid "Waveshaper"
-msgstr ""
+msgstr "Bølgeformer"
 
 #: effects/LoadEffects.cpp:158
 msgid "Dynamics Processor"
-msgstr ""
+msgstr "Dynamikkprosessering"
 
 #: effects/LoadEffects.cpp:160
 msgid "Compressor"
-msgstr ""
+msgstr "Komprimering"
 
 #: effects/LoadEffects.cpp:162
 msgid "Expander"
-msgstr ""
+msgstr "Utvider"
 
 #: effects/LoadEffects.cpp:164
 msgid "Limiter"
-msgstr ""
+msgstr "Avgrenser"
 
 #: effects/LoadEffects.cpp:166
 msgid "Gate"
@@ -5271,11 +5458,11 @@ msgstr "Støyfjerning"
 
 #: effects/LoadEffects.cpp:201
 msgid "Pitch and Tempo"
-msgstr ""
+msgstr "Tone og tempo"
 
 #: effects/LoadEffects.cpp:203
 msgid "Timeline Changer"
-msgstr ""
+msgstr "Endring av tidslinje"
 
 #: effects/LoadEffects.cpp:205
 msgid "Time"
@@ -5283,7 +5470,7 @@ msgstr "Tid"
 
 #: effects/LoadEffects.cpp:207
 msgid "Onsets"
-msgstr ""
+msgstr "Ansatser"
 
 #: effects/Noise.cpp:37
 msgid "White"
@@ -5371,7 +5558,7 @@ msgstr "Frekvensglatting (Hz):"
 
 #: effects/NoiseRemoval.cpp:859
 msgid "Frequency smoothing"
-msgstr ""
+msgstr "Frekvensglatting"
 
 #: effects/NoiseRemoval.cpp:856
 msgid "Attack/decay time (secs):"
@@ -5417,20 +5604,19 @@ msgstr "Normaliser"
 
 #: effects/Normalize.cpp:351 effects/Normalize.cpp:352
 msgid "Remove any DC offset (center on 0.0 vertically)"
-msgstr ""
+msgstr "Fjern DC-forskyvning (sentrer vertikalt på 0.0)"
 
 #: effects/Normalize.cpp:357
 msgid "Normalize maximum amplitude to:"
-msgstr ""
+msgstr "Normaliser maksimal forsterkning til:"
 
 #: effects/Normalize.cpp:361
-#, fuzzy
 msgid "-"
 msgstr "-"
 
 #: effects/Normalize.cpp:367
 msgid "Maximum amplitude dB"
-msgstr ""
+msgstr "Maksimal amplitude i dB"
 
 #: effects/Normalize.h:32
 msgid "Normalize..."
@@ -5451,31 +5637,31 @@ msgstr "Trinn:"
 
 #: effects/Phaser.cpp:229
 msgid "Stages"
-msgstr ""
+msgstr "Trinn"
 
 #: effects/Phaser.cpp:231
 msgid "Dry/Wet:"
-msgstr ""
+msgstr "Tørr/våt:"
 
 #: effects/Phaser.cpp:234
 msgid "Dry Wet"
-msgstr ""
+msgstr "Tørr/våt"
 
 #: effects/Phaser.cpp:264 effects/Wahwah.cpp:221
 msgid "LFO Frequency (Hz):"
-msgstr "LFO frekvens (Hz):"
+msgstr "LFO-frekvens (Hz):"
 
 #: effects/Phaser.cpp:239 effects/Wahwah.cpp:224
 msgid "LFO frequency in hertz"
-msgstr ""
+msgstr "LFO-frekvens i hertz"
 
 #: effects/Phaser.cpp:280 effects/Wahwah.cpp:237
 msgid "LFO Start Phase (deg.):"
-msgstr "LFO startfase (grader):"
+msgstr "LFO-startfase (grader):"
 
 #: effects/Phaser.cpp:244 effects/Wahwah.cpp:229
 msgid "LFO start phase in degrees"
-msgstr ""
+msgstr "LFO-startfase i grader"
 
 #: effects/Phaser.cpp:296
 msgid "Depth:"
@@ -5483,7 +5669,7 @@ msgstr "Dybde:"
 
 #: effects/Phaser.cpp:249 effects/Wahwah.cpp:234
 msgid "Depth in percent"
-msgstr ""
+msgstr "Dybde i prosent"
 
 #: effects/Phaser.cpp:312
 msgid "Feedback (%):"
@@ -5491,7 +5677,7 @@ msgstr "Feedback (%):"
 
 #: effects/Phaser.cpp:254
 msgid "Feedback in percent"
-msgstr ""
+msgstr "Feedback i prosent"
 
 #: effects/Phaser.h:38
 msgid "Phaser..."
@@ -5516,6 +5702,11 @@ msgid "Repair works by using audio data outside the selection region.\n"
 "\n"
 "The more surrounding audio, the better it performs."
 msgstr ""
+"Reparer fungerer ved å bruke lyddata rundt det merkede området.\n"
+"\n"
+"Vennligst merk et område som berører lyd på minst en av sidene.\n"
+"\n"
+"Effekten fungerer bedre jo mer lyd som finnes rundt området."
 
 #: effects/Repair.h:37
 msgid "Repairing damaged audio"
@@ -5615,9 +5806,9 @@ msgstr "Spike-renser..."
 msgid "Applying Spike Cleaner..."
 msgstr "Anvender Spike-renser..."
 
-#: Menus.cpp:358 Menus.cpp:564 effects/StereoToMono.h:23
-msgid "&Stereo to Mono"
-msgstr "&Stereo til mono"
+#: effects/StereoToMono.h:23
+msgid "Stereo to Mono"
+msgstr "Stereo til mono"
 
 #: effects/StereoToMono.h:32
 msgid "Applying Stereo to Mono"
@@ -5713,22 +5904,18 @@ msgid "Waveform:"
 msgstr "Bølgeform:"
 
 #: effects/ToneGen.cpp:358
-#, fuzzy
 msgid "Frequency Hertz Start"
 msgstr "Frekvens hertz start"
 
 #: effects/ToneGen.cpp:359
-#, fuzzy
 msgid "Frequency Hertz End"
 msgstr "Frekvens hertz slutt"
 
 #: effects/ToneGen.cpp:360
-#, fuzzy
 msgid "Amplitude Start"
 msgstr "Amplitude start"
 
 #: effects/ToneGen.cpp:361
-#, fuzzy
 msgid "Amplitude End"
 msgstr "Amplitude slutt"
 
@@ -5762,11 +5949,11 @@ msgstr "Fjern stillhet"
 
 #: effects/TruncSilence.cpp:453
 msgid "by Lynn Allan && Philip Van Baren"
-msgstr ""
+msgstr "av Lynn Allan && Philip Van Baren"
 
 #: effects/TruncSilence.cpp:467
 msgid "Min silence duration:"
-msgstr ""
+msgstr "Minste lengde med stillhet:"
 
 #: effects/TruncSilence.cpp:349 prefs/AudioIOPrefs.cpp:190
 #: prefs/AudioIOPrefs.cpp:193
@@ -5775,15 +5962,15 @@ msgstr "millisekunder"
 
 #: effects/TruncSilence.cpp:346
 msgid "Max silence duration:"
-msgstr "Maksimal lengde på stillhet:"
+msgstr "Maksimal lengde med stillhet:"
 
 #: effects/TruncSilence.cpp:475
 msgid "Silence compression:"
-msgstr ""
+msgstr "Stillhetskomprimering"
 
 #: effects/TruncSilence.cpp:478
 msgid ":1"
-msgstr ""
+msgstr ":1"
 
 #: effects/TruncSilence.cpp:351
 msgid "Threshold for silence:"
@@ -5793,6 +5980,8 @@ msgstr "Stillhetsterskel:"
 msgid "   Duration must be at least 1 millisecond\n"
 "   Compress ratio must be at least 1:1"
 msgstr ""
+"   Lengden må være minst 1 millisekund\n"
+"   Komprimeringsforholdet må være minst 1:1"
 
 #: effects/TruncSilence.h:28
 msgid "Truncate Silence..."
@@ -5813,44 +6002,53 @@ msgstr "Ingen"
 
 #: effects/VST/VSTEffect.cpp:343
 msgid "Presets:"
-msgstr ""
+msgstr "Forhåndsinnstillinger:"
 
 #: effects/VST/VSTEffect.cpp:355
 msgid "Load"
-msgstr ""
+msgstr "Åpne"
 
 #: effects/VST/VSTEffect.cpp:358
 msgid "Save"
-msgstr ""
+msgstr "Lagre"
 
 #: effects/VST/VSTEffect.cpp:458
 msgid "Load VST Program:"
-msgstr ""
+msgstr "Åpne VST-program"
 
 #: effects/VST/VSTEffect.cpp:476
 msgid "Error loading program"
-msgstr ""
+msgstr "Feil ved åpning av program"
 
 #: effects/VST/VSTEffect.cpp:492
 msgid "Save VST Program As:"
-msgstr ""
+msgstr "Lagre VST-program som:"
 
 #: effects/VST/VSTEffect.cpp:626
 #, c-format
 msgid "This parameter file was saved from %s.  Continue?"
-msgstr ""
+msgstr "Denne parameterfila ble lagret fra %s. Fortsett?"
 
 #: effects/VST/VSTEffect.cpp:993
 msgid "Performing Effect: "
-msgstr ""
+msgstr "Anvender effekt:"
 
 #: effects/VST/VSTEffect.cpp:1016
 msgid "Both channels of a stereo track must be the same sample rate."
-msgstr ""
+msgstr "Begge kanalene i et stereospor må ha samme datarate."
 
 #: effects/VST/VSTEffect.cpp:1021
 msgid "Both channels of a stereo track must be the same length."
-msgstr ""
+msgstr "Begge kanalene i et stereospor må ha samme lengde."
+
+#: effects/VST/VSTEffect.cpp:1626
+msgid "Scanning VST Plugins"
+msgstr "Søker gjennom VST-tillegg"
+
+#: effects/VST/VSTEffect.cpp:1642
+#, c-format
+msgid "Checking %s"
+msgstr "Kontrollerer %s"
 
 #: effects/Wahwah.cpp:61
 #, c-format
@@ -5871,7 +6069,7 @@ msgstr "Resonans:"
 
 #: effects/Wahwah.cpp:239
 msgid "Resonance"
-msgstr ""
+msgstr "Resonans"
 
 #: effects/Wahwah.cpp:285
 msgid "Wah Frequency Offset (%):"
@@ -5879,7 +6077,7 @@ msgstr "Wah-frekvens startposisjon (%):"
 
 #: effects/Wahwah.cpp:244
 msgid "Wah frequency offset in percent"
-msgstr ""
+msgstr "Starposisjon til Wah-frekvens i prosent"
 
 #: effects/Wahwah.h:34
 msgid "Wahwah..."
@@ -5909,15 +6107,15 @@ msgstr "Lengde (sekund)"
 
 #: effects/lv2/LV2Effect.cpp:849 effects/lv2/LV2Effect.cpp:852
 msgid "Note length (seconds)"
-msgstr ""
+msgstr "Notelengde (sekund)"
 
 #: effects/lv2/LV2Effect.cpp:860 effects/lv2/LV2Effect.cpp:863
 msgid "Note velocity"
-msgstr ""
+msgstr "Notehastighet"
 
 #: effects/lv2/LV2Effect.cpp:871 effects/lv2/LV2Effect.cpp:874
 msgid "Note key"
-msgstr ""
+msgstr "Toneart"
 
 #: effects/nyquist/Nyquist.cpp:252
 msgid "Applying Nyquist Effect..."
@@ -5986,11 +6184,11 @@ msgstr "Program"
 
 #: export/Export.cpp:469
 msgid "All the selected audio is muted."
-msgstr ""
+msgstr "All markert lyd er dempet."
 
 #: export/Export.cpp:471
 msgid "All the audio is muted."
-msgstr ""
+msgstr "All lyden er dempet."
 
 #: export/Export.cpp:451
 msgid "Export File"
@@ -6002,7 +6200,7 @@ msgstr "&Valg..."
 
 #: export/Export.cpp:485
 msgid "Are you sure you want to save the file as \""
-msgstr "Er du sikker på at du vil lagre filen som \""
+msgstr "Er du sikker på at du vil lagre fila som \""
 
 #: export/Export.cpp:501
 #, c-format
@@ -6011,24 +6209,24 @@ msgid "You are about to save a %s file with the name \"%s\".\n"
 "Normally these files end in \".%s\", and some programs will not open files with nonstandard extensions.\n"
 "\n"
 "Are you sure you want to save the file under this name?"
-msgstr "Du er i ferd med å lagre en %s-fil med navnet \"%s\".\n"
+msgstr "Du er i ferd med å lagre en %s-fil med navnet «%s».\n"
 "\n"
 "Vanligvis pleier slike filer å slutte på \".%s\", og visse program kommer ikke til å åpne filer uten standard filtyper.\n"
 "\n"
-"Er du sikker på at du vil lagre filen under dette navnet?"
+"Er du sikker på at du vil lagre fila under dette navnet?"
 
 #: export/Export.cpp:522
 #, c-format
 msgid "A file named \"%s\" already exists.  Replace?"
-msgstr "Det fins allerede en fil kalt \"%s\". Erstatt?"
+msgstr "Det fins allerede en fil kalt «%s». Erstatt?"
 
 #: export/Export.cpp:604
 msgid "Your tracks will be mixed down to two stereo channels in the exported file."
-msgstr "Sporene dine vil bli mikset ned til to stereo-kanaler i den eksporterte filen."
+msgstr "Sporene dine vil bli mikset ned til to stereo-kanaler i den eksporterte fila."
 
 #: export/Export.cpp:609
 msgid "Your tracks will be mixed down to a single mono channel in the exported file."
-msgstr "Sporene dine vil bli mikset ned til en enkel mono-kanal i den eksporterte filen."
+msgstr "Sporene dine vil bli mikset ned til en enkel mono-kanal i den eksporterte fila."
 
 #: export/Export.cpp:619
 msgid "Advanced Mixing Options"
@@ -6049,7 +6247,7 @@ msgstr " - Høyre"
 
 #: export/Export.cpp:1072
 msgid "Mixer Panel"
-msgstr ""
+msgstr "Miksepult"
 
 #: export/Export.cpp:976 export/Export.cpp:1021
 #, c-format
@@ -6072,10 +6270,10 @@ msgstr "Kommando:"
 msgid "Show output"
 msgstr "Vis utdata"
 
-#: export/ExportCL.cpp:87
+#: export/ExportCL.cpp:85
 #, c-format
-msgid "Data will be piped to standard in. \"%f\" will be replaced with output filename selected."
-msgstr "Data sendes via en «pipe» til standard in. \"%f\" blir erstattet av det valgte output-filnavnet."
+msgid "Data will be piped to standard in. \"%f\" uses the file name in the export window."
+msgstr "Data ledes til standard inn. «%f» bruker filnavnet i eksportvinduet."
 
 #: export/ExportCL.cpp:220
 msgid "(external program)"
@@ -6102,10 +6300,12 @@ msgstr "Utdata fra kommando"
 msgid "Properly configured FFmpeg is required to proceed.\n"
 "You can configure it at Preferences > Libraries."
 msgstr ""
+"Du må ha konfigurert FFmpeg for å fortsette.\n"
+"Dette kan du gjøre i Innstillinger > Bibliotek."
 
-#: export/ExportFFmpeg.cpp:232
-msgid "AMR support not distributable"
-msgstr ""
+#: export/ExportFFmpeg.cpp:237
+msgid "AMR support is not distributable"
+msgstr "AMR-støtte kan ikke distribueres"
 
 #: export/ExportFFmpeg.cpp:232
 msgid "Properly configured FFmpeg is required to proceed.\n"
@@ -6114,27 +6314,34 @@ msgid "Properly configured FFmpeg is required to proceed.\n"
 "Note that AMR support is not available with our FFmpeg\n"
 "installer, but requires you compile FFmpeg yourself."
 msgstr ""
+"Du må ha konfigurert FFmpeg for å fortsette.\n"
+"Dette kan du gjøre i Innstillinger > Bibliotek.\n"
+"\n"
+"Merk at installasjonsprogrammet til FFmpeg ikke inkluderer\n"
+"AMR-støtte, for å få det må du selv kompilere FFmpeg."
 
 #: export/ExportFFmpeg.cpp:394
 #, c-format
 msgid "FFmpeg cannot find audio codec 0x%x.\n"
 "Support for this codec is probably not compiled in."
 msgstr ""
+"FFmpeg fant ikke lydkodek 0x%x.\n"
+"Støtte for denne kodeken er nok ikke kompilert inn."
 
 #: export/ExportFFmpeg.cpp:614
 #, c-format
 msgid "Attempted to export %d channels, but max. channels for selected output format is %d"
-msgstr ""
+msgstr "Prøvde å eksportere %d kanaler, men det valgte utdataformatet har maks. %d kanaler."
 
 #: export/ExportFFmpeg.cpp:638
 #, c-format
 msgid "Exporting selected audio as %s"
-msgstr ""
+msgstr "Eksporterer valgt lyd som %s"
 
 #: export/ExportFFmpeg.cpp:639
 #, c-format
 msgid "Exporting entire file as %s"
-msgstr ""
+msgstr "Eksporterer hele fila som %s"
 
 #: export/ExportMP3.cpp:1918
 msgid "Invalid sample rate"
@@ -6144,13 +6351,15 @@ msgstr "Ugyldig datarate"
 #, c-format
 msgid "The project sample rate (%d) is not supported by the current output\n"
 "file format.  "
-msgstr ""
+msgstr "Dataraten til prosjektet (%d) støttes ikke av det valgte utdataformatet.  "
 
 #: export/ExportFFmpeg.cpp:718
 #, c-format
 msgid "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
 "supported by the current output file format.  "
 msgstr ""
+"Kombinasjonen av dataraten (%d) og bitraten (%d kbps) i prosjektet støttes\n"
+"ikke av det valgte utdataformatet.  "
 
 #: export/ExportMP3.cpp:1937
 msgid "You may resample to one of the rates below."
@@ -6162,11 +6371,11 @@ msgstr "Datarater"
 
 #: export/ExportFFmpegDialogs.cpp:93
 msgid "Specify AC3 Options"
-msgstr ""
+msgstr "Angi AC3-valg"
 
 #: export/ExportFFmpegDialogs.cpp:117
 msgid "AC3 Export Setup"
-msgstr ""
+msgstr "Innstillinger for AC3-eksportering"
 
 #: export/ExportMP2.cpp:133
 msgid "Bit Rate:"
@@ -6174,11 +6383,11 @@ msgstr "Bitrate:"
 
 #: export/ExportFFmpegDialogs.cpp:162
 msgid "Specify AAC Options"
-msgstr ""
+msgstr "Angi AAC-valg"
 
 #: export/ExportFFmpegDialogs.cpp:178
 msgid "AAC Export Setup"
-msgstr ""
+msgstr "Innstillinger for AAC-eksportering"
 
 #: export/ExportOGG.cpp:86
 msgid "Quality:"
@@ -6186,77 +6395,77 @@ msgstr "Kvalitet:"
 
 #: export/ExportFFmpegDialogs.cpp:217
 msgid "Specify AMR-NB Options"
-msgstr ""
+msgstr "Angi AMR-NB-valg"
 
 #: export/ExportFFmpegDialogs.cpp:241
 msgid "AMR-NB Export Setup"
-msgstr ""
+msgstr "Innstillinger for AMR-NB-eksportering"
 
 #: export/ExportFFmpegDialogs.cpp:286
 msgid "Specify AMR-WB Options"
-msgstr ""
+msgstr "Angi AMR-WB-valg"
 
 #: export/ExportFFmpegDialogs.cpp:310
 msgid "AMR-WB Export Setup"
-msgstr ""
+msgstr "Innstillinger for AMR-WB-eksportering"
 
 #: export/ExportFFmpegDialogs.cpp:357
 msgid "Specify WMA Options"
-msgstr ""
+msgstr "Angi WMA-valg"
 
 #: export/ExportFFmpegDialogs.cpp:381
 msgid "WMA Export Setup"
-msgstr ""
+msgstr "Innstillinger for WMA-eksportering"
 
 #: export/ExportFFmpegDialogs.cpp:509
 #, c-format
 msgid "Overwrite preset '%s'?"
-msgstr ""
+msgstr "Overskriv forhåndsinnstillingen «%s»?"
 
 #: export/ExportFFmpegDialogs.cpp:510
 msgid "Confirm Overwrite"
-msgstr ""
+msgstr "Bekreft overskriving"
 
 #: export/ExportFFmpegDialogs.cpp:501
 msgid "Please select format before saving a profile"
-msgstr ""
+msgstr "Vennligst velg format før du lagrer en profil"
 
 #: export/ExportFFmpegDialogs.cpp:509
 msgid "Please select codec before saving a profile"
-msgstr ""
+msgstr "Vennligst velg kodek før du lagrer en profil"
 
 #: export/ExportFFmpegDialogs.cpp:580
 #, c-format
 msgid "Preset '%s' does not exist."
-msgstr ""
+msgstr "Forhåndsinnstillingen «%s» finnes ikke."
 
 #: export/ExportFFmpegDialogs.cpp:803
 msgid "Specify Other Options"
-msgstr ""
+msgstr "Angi andre valg"
 
 #: export/ExportFFmpegDialogs.cpp:897
 msgid "Preset:"
-msgstr ""
+msgstr "Forhåndsinnstilling:"
 
 #: export/ExportFFmpegDialogs.cpp:898
 msgid "Load Preset"
-msgstr ""
+msgstr "Åpne forhåndsinnstilling"
 
 #: export/ExportFFmpegDialogs.cpp:899
 msgid "Save Preset"
-msgstr ""
+msgstr "Lagre forhåndsinnstilling"
 
 #: export/ExportFFmpegDialogs.cpp:900
 msgid "Delete Preset"
-msgstr ""
+msgstr "Slett forhåndsinnstilling"
 
 #: export/ExportFFmpegDialogs.cpp:901
 msgid "Import Presets"
-msgstr ""
+msgstr "Importer forhåndsinnstillinger"
 
 #: export/ExportFFmpegDialogs.cpp:902
 msgid "Export Presets"
-msgstr ""
+msgstr "Eksporter forhåndsinnstillinger"
 
 #: export/ExportPCM.cpp:177
 msgid "Format:"
@@ -6264,31 +6473,33 @@ msgstr "Format:"
 
 #: export/ExportFFmpegDialogs.cpp:909
 msgid "Codec:"
-msgstr ""
+msgstr "Kodek:"
 
 #: export/ExportFFmpegDialogs.cpp:913
 msgid "Not all formats and codecs are compatible. Some parameters (such as bitrate and samplerate) combinations are not compatible with some codecs too."
 msgstr ""
+"Ikke alle formater og kodeker er kompatible. I tillegg er visse kombinasjoner av\n"
+"parametre (som bitrate og datarate) ikke kompatible med visse kodeker."
 
 #: export/ExportFFmpegDialogs.cpp:916
 msgid "Format selector:"
-msgstr ""
+msgstr "Formatvelger:"
 
 #: export/ExportFFmpegDialogs.cpp:917
 msgid "Codec selector:"
-msgstr ""
+msgstr "Kodekvelger:"
 
 #: export/ExportFFmpegDialogs.cpp:919
 msgid "Show All Formats"
-msgstr ""
+msgstr "Vis alle formater"
 
 #: export/ExportFFmpegDialogs.cpp:920
 msgid "Show All Codecs"
-msgstr ""
+msgstr "Vis alle kodeker"
 
 #: export/ExportFFmpegDialogs.cpp:914
 msgid "Options"
-msgstr ""
+msgstr "Valg"
 
 #: prefs/GUIPrefs.cpp:168
 msgid "Language:"
@@ -6299,16 +6510,22 @@ msgid "ISO 639 3-letter language code\n"
 "Optional\n"
 "empty - automatic"
 msgstr ""
+"ISO 639 3-bokstavers språkkode\n"
+"Valgfri\n"
+"tom - automatisk"
 
 #: export/ExportFFmpegDialogs.cpp:934
 msgid "Tag:"
-msgstr ""
+msgstr "Tagg:"
 
 #: export/ExportFFmpegDialogs.cpp:935
 msgid "Codec tag (FOURCC)\n"
 "Optional\n"
 "empty - automatic"
 msgstr ""
+"Kodektagg (FOURCC)\n"
+"Valgfri\n"
+"tom - automatisk"
 
 #: export/ExportFFmpegDialogs.cpp:938
 msgid "Bit Rate (bits/second) - influences the resulting file size and quality\n"
@@ -6316,6 +6533,10 @@ msgid "Bit Rate (bits/second) - influences the resulting file size and quality\n
 "0 - automatic\n"
 "Recommended - 192000"
 msgstr ""
+"Bitrate (bit/sekund) - påvirker den endelige filstørrelsen og kvalitetetn\n"
+"Visse kodeker godtar bare spesifikke verdier (128k, 192k, 256k osv.)\n"
+"0 - automatisk\n"
+"Anbefalt - 192000"
 
 #: export/ExportFFmpegDialogs.cpp:930
 msgid "Overall quality, used differently by different codecs\n"
@@ -6326,48 +6547,56 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:943
 msgid "Sample Rate:"
-msgstr ""
+msgstr "Datarate:"
 
 #: export/ExportFFmpegDialogs.cpp:944
 msgid "Sample rate (Hz)\n"
 "0 - don't change sample rate"
 msgstr ""
+"Datarate (Hz)\n"
+"0 - ikke endre datarate"
 
 #: export/ExportFFmpegDialogs.cpp:946
 msgid "Cutoff Bandwidth:"
-msgstr ""
+msgstr "Kuttefrekvens:"
 
 #: export/ExportFFmpegDialogs.cpp:936
 msgid "Audio cutoff bandwidth (Hz)\n"
 "Optional\n"
 "0 - automatic"
 msgstr ""
+"Lydkuttefrekvens (Hz)\n"
+"Valgfri\n"
+"0 - automatisk"
 
 #: export/ExportFFmpegDialogs.cpp:949
 msgid "Profile:"
-msgstr ""
+msgstr "Profil:"
 
 #: export/ExportFFmpegDialogs.cpp:951
 msgid "AAC Profile\n"
 "Low Complexity -default\n"
 "Most players won't play anything other than LC"
 msgstr ""
+"AAC-profile\n"
+"Lav kompleksitet - standard\n"
+"De fleste spillere spiller ikke annet"
 
 #: export/ExportFFmpegDialogs.cpp:940
 msgid "Use Bit Reservoir"
-msgstr ""
+msgstr "Bruk bitlager"
 
 #: export/ExportFFmpegDialogs.cpp:943
 msgid "Use Variable Block Length"
-msgstr ""
+msgstr "Bruk variabel blokklengde"
 
 #: export/ExportFFmpegDialogs.cpp:948
 msgid "FLAC options"
-msgstr ""
+msgstr "FLAC-valg"
 
 #: export/ExportFFmpegDialogs.cpp:965
 msgid "Compression Level:"
-msgstr ""
+msgstr "Komprimeringsnivå"
 
 #: export/ExportFFmpegDialogs.cpp:966
 msgid "Compression level\n"
@@ -6376,6 +6605,11 @@ msgid "Compression level\n"
 "min - 0 (fast encoding, large output file)\n"
 "max - 10 (slow encoding, small output file)"
 msgstr ""
+"Komprimeringsnivå\n"
+"Krevd for FLAC\n"
+"-1 - automatisk\n"
+"min - 0 (rask innkoding, stor fil)\n"
+"maks - 10 (treg innkoding, liten fil)"
 
 #: export/ExportFFmpegDialogs.cpp:968
 msgid "Frame Size:"
@@ -6391,7 +6625,7 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:971
 msgid "LPC coefficients precision"
-msgstr ""
+msgstr "Presisjon på LPC-koeffisienter"
 
 #: export/ExportFFmpegDialogs.cpp:972
 msgid "LPC coefficients precision\n"
@@ -6400,10 +6634,15 @@ msgid "LPC coefficients precision\n"
 "min - 1\n"
 "max - 15"
 msgstr ""
+"Presisjon på LPC-koeffisienter\n"
+"Valgfri\n"
+"0 - standard\n"
+"min - 1\n"
+"maks - 15"
 
 #: export/ExportFFmpegDialogs.cpp:974
 msgid "Minimal prediction order"
-msgstr ""
+msgstr "Minimal prediksjonsfølge"
 
 #: export/ExportFFmpegDialogs.cpp:975
 msgid "Minimal prediction order\n"
@@ -6412,10 +6651,15 @@ msgid "Minimal prediction order\n"
 "min - 0\n"
 "max - 32 (with LPC) or 4 (without LPC)"
 msgstr ""
+"Minimal prediksjonsfølge\n"
+"Valgfri\n"
+"-1 - standard\n"
+"min - 0\n"
+"maks - 32 (med LPC) eller 4 (uten LPC)"
 
 #: export/ExportFFmpegDialogs.cpp:977
 msgid "Maximal prediction order"
-msgstr ""
+msgstr "Maksimal prediksjonsfølge"
 
 #: export/ExportFFmpegDialogs.cpp:978
 msgid "Maximal prediction order\n"
@@ -6424,10 +6668,15 @@ msgid "Maximal prediction order\n"
 "min - 0\n"
 "max - 32 (with LPC) or 4 (without LPC)"
 msgstr ""
+"Maksimal prediksjonsfølge\n"
+"Valgfri\n"
+"-1 - standard\n"
+"min - 0\n"
+"maks - 32 (med LPC) eller 4 (uten LPC)"
 
 #: export/ExportFFmpegDialogs.cpp:980
 msgid "Prediction Order Method:"
-msgstr ""
+msgstr "Metode for prediksjonsfølge"
 
 #: export/ExportFFmpegDialogs.cpp:982
 msgid "Prediction Order Method\n"
@@ -6435,6 +6684,10 @@ msgid "Prediction Order Method\n"
 "Log search - slowest, best compression\n"
 "Full search - default"
 msgstr ""
+"Metode for prediksjonsfølge<\n"
+"Estimat - raskest, minste komprimering\n"
+"Logaritmisk søk - tregest, beste komprimering\n"
+"Fullt søk - standard"
 
 #: export/ExportFFmpegDialogs.cpp:984
 msgid "Minimal partition order"
@@ -6480,30 +6733,33 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.cpp:1004
 msgid "Packet Size:"
-msgstr ""
+msgstr "Pakkestørrelse:"
 
 #: export/ExportFFmpegDialogs.cpp:1005
 msgid "Packet size\n"
 "Optional\n"
 "0 - default"
 msgstr ""
+"Pakkestørrelse\n"
+"Valgfri\n"
+"0 - standard"
 
 #: export/ExportFFmpegDialogs.cpp:1207
 msgid "You can't delete a preset without name"
-msgstr ""
+msgstr "Du kan ikke slette en forhåndsinnstilling uten navn"
 
 #: export/ExportFFmpegDialogs.cpp:1219
 #, c-format
 msgid "Delete preset '%s'?"
-msgstr ""
+msgstr "Slett forhåndsinnstillingen «%s»?"
 
 #: export/ExportFFmpegDialogs.cpp:1238
 msgid "You can't save a preset without name"
-msgstr ""
+msgstr "Du kan ikke lagre en forhåndsinnstilling uten navn"
 
 #: export/ExportFFmpegDialogs.cpp:1277
 msgid "Select xml file with presets to import"
-msgstr ""
+msgstr "Velg XML-fil med forhåndsinnstillinger å importere"
 
 #: prefs/KeyConfigPrefs.cpp:200
 msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
@@ -6511,35 +6767,35 @@ msgstr "XML filer (*.xml)|*.xml|Alle filer (*.*)|*.*"
 
 #: export/ExportFFmpegDialogs.cpp:1292
 msgid "Select xml file to export presets into"
-msgstr ""
+msgstr "Velg XML-fila som forhåndsinnstillingene skal eksporteres til"
 
 #: export/ExportFFmpegDialogs.cpp:1361
 msgid "Failed to guess format"
-msgstr ""
+msgstr "Klarte ikke å gjette formatet"
 
 #: export/ExportFFmpegDialogs.cpp:1403
 msgid "Failed to find the codec"
-msgstr ""
+msgstr "Fant ikke kodeken"
 
 #: export/ExportFFmpegDialogs.h:53
 msgid "M4A (AAC) Files (FFmpeg)"
-msgstr ""
+msgstr "M4A (AAC)-filer (FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:54
 msgid "AC3 Files (FFmpeg)"
-msgstr ""
+msgstr "AC3-filer (FFmpeg)"
 
-#: export/ExportFFmpegDialogs.h:56
-msgid "AMR (narrow band) Files (FFmpeg, undistributable)"
-msgstr ""
+#: export/ExportFFmpegDialogs.h:58
+msgid "AMR (narrow band) Files (FFmpeg)"
+msgstr "AMR-filer (smalbånd, FFmpeg)"
 
-#: export/ExportFFmpegDialogs.h:57
-msgid "AMR (wide band) Files (FFmpeg, undistributable)"
-msgstr ""
+#: export/ExportFFmpegDialogs.h:60
+msgid "AMR (wide band) Files (FFmpeg)"
+msgstr "AMR-filer (vidbånd, FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:57
 msgid "WMA (version 2) Files (FFmpeg)"
-msgstr ""
+msgstr "WMA-filer (versjon 2, FFmpeg)"
 
 #: export/ExportFFmpegDialogs.h:58
 msgid "Custom FFmpeg Export"
@@ -6551,35 +6807,35 @@ msgstr ""
 
 #: export/ExportFFmpegDialogs.h:373
 msgid "Low Complexity"
-msgstr ""
+msgstr "Lav kompleksitet"
 
 #: export/ExportFFmpegDialogs.h:373
 msgid "Main profile"
-msgstr ""
+msgstr "Hovedprofil"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "2-level"
-msgstr ""
+msgstr "2-nivå"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "4-level"
-msgstr ""
+msgstr "4-nivå"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "8-level"
-msgstr ""
+msgstr "8-nivå"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "Estimate"
-msgstr ""
+msgstr "Estimat"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "Full search"
-msgstr ""
+msgstr "Fullt søk"
 
 #: export/ExportFFmpegDialogs.h:676
 msgid "Log search"
-msgstr ""
+msgstr "Logaritmisk søk"
 
 #: export/ExportFLAC.cpp:68
 msgid "Specify FLAC Options"
@@ -6648,13 +6904,15 @@ msgstr "FLAC-filer"
 #: export/ExportFLAC.cpp:288
 #, c-format
 msgid "FLAC export couldn't open %s"
-msgstr ""
+msgstr "FLAC-eksport klarte ikke å åpne %s"
 
 #: export/ExportFLAC.cpp:297
 #, c-format
 msgid "FLAC encoder failed to initialize\n"
 "Status: %d"
 msgstr ""
+"FLAC-kodeket klarte ikke å starte\n"
+"Status: %d"
 
 #: export/ExportFLAC.cpp:310
 msgid "Exporting the selected audio as FLAC"
@@ -6692,7 +6950,7 @@ msgstr "Eksporterer markert lyd med %d kbps"
 #: export/ExportMP2.cpp:272
 #, c-format
 msgid "Exporting entire file at %d kbps"
-msgstr "Eksporterer hele filen med %d kbps"
+msgstr "Eksporterer hele fila med %d kbps"
 
 #: export/ExportMP3.cpp:221 export/ExportMP3.cpp:239 export/ExportMP3.cpp:253
 msgid "kbps"
@@ -6783,7 +7041,7 @@ msgstr "Finn Lame"
 #: export/ExportMP3.cpp:556
 #, c-format
 msgid "Audacity needs the file %s to create MP3s."
-msgstr "Audacity trenger filen %s for å lage MP3-er. "
+msgstr "Audacity trenger fila %s for å lage MP3-er. "
 
 #: export/ExportMP3.cpp:578
 msgid "To get a free copy of Lame, click here -->"
@@ -6794,6 +7052,9 @@ msgstr "For å få en gratis utgave av Lame, klikk her -->"
 msgid "You are linking to lame_enc.dll v%d.%d. This version is not compatible with Audacity %d.%d.%d.\n"
 "Please download the latest version of the LAME MP3 library."
 msgstr ""
+"Du lenker til lame_enc.dll v%d.%d. Denne utgaven er ikke kompatibel med Audacity\n"
+"%d.%d.%d.\n"
+"Vennligst last ned den nyeste utgaven av MP3-biblioteket LAME."
 
 #: export/ExportMP3.cpp:1094
 msgid "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
@@ -6831,7 +7092,7 @@ msgstr "Eksporterer markert lyd med forvalget %s"
 #: export/ExportMP3.cpp:1800
 #, c-format
 msgid "Exporting entire file with %s preset"
-msgstr "Eksporterer hele filen med forvalget %s"
+msgstr "Eksporterer hele fila med forvalget %s"
 
 #: export/ExportMP3.cpp:1805
 #, c-format
@@ -6841,7 +7102,7 @@ msgstr "Eksporterer markert lyd med VBR-kvalitet %s"
 #: export/ExportMP3.cpp:1806
 #, c-format
 msgid "Exporting entire file with VBR quality %s"
-msgstr "Eksporterer hele filen med VBR-kvalitet %s"
+msgstr "Eksporterer hele fila med VBR-kvalitet %s"
 
 #: export/ExportMP3.cpp:1811
 #, c-format
@@ -6851,7 +7112,7 @@ msgstr "Eksporterer markert lyd med %d Kbps"
 #: export/ExportMP3.cpp:1812
 #, c-format
 msgid "Exporting entire file at %d Kbps"
-msgstr "Eksportere hele filen med %d Kbps"
+msgstr "Eksportere hele fila med %d Kbps"
 
 #: export/ExportMP3.cpp:1845
 #, c-format
@@ -6868,12 +7129,13 @@ msgstr "Prosjektdataraten (%d) støttes ikke av MP3-filformatet. "
 #, c-format
 msgid "The project sample rate (%d) and bit rate (%d kbps) combination is not\n"
 "supported by the MP3 file format.  "
-msgstr "Kombinasjonen av prosjektdataraten (%d) og bitraten (%d kbps) støttes\n"
+msgstr ""
+"Kombinasjonen av dataraten (%d) og bitraten (%d kbps) i prosjektet støttes\n"
 "ikke av MP3-filformatet. "
 
 #: export/ExportMP3.cpp:1965
 msgid "MP3 export library not found"
-msgstr ""
+msgstr "Fant ikke bibliotek for eksportering til MP3"
 
 #: export/ExportMultiple.cpp:95 export/ExportMultiple.cpp:374
 #: export/ExportMultiple.cpp:598 export/ExportMultiple.cpp:765
@@ -6929,7 +7191,7 @@ msgstr "Første filnavn:"
 
 #: export/ExportMultiple.cpp:280
 msgid "First file name"
-msgstr ""
+msgstr "Første filnavn"
 
 #: export/ExportMultiple.cpp:265
 msgid "Name files:"
@@ -6949,7 +7211,7 @@ msgstr "Filnavn-prefiks:"
 
 #: export/ExportMultiple.cpp:327
 msgid "File name prefix"
-msgstr ""
+msgstr "Filnavn-prefiks"
 
 #: export/ExportMultiple.cpp:306
 msgid "Overwrite existing files"
@@ -6958,7 +7220,7 @@ msgstr "Overskriv eksisterende filer"
 #: export/ExportMultiple.cpp:372
 #, c-format
 msgid "\"%s\" successfully created."
-msgstr "\"%s\" opprettet."
+msgstr "«%s» opprettet."
 
 #: export/ExportMultiple.cpp:381
 msgid "Choose a location to save the exported files"
@@ -6967,38 +7229,39 @@ msgstr "Velg en plassering for å lagre eksporterte filer"
 #: export/ExportMultiple.cpp:524
 #, c-format
 msgid "Successfully exported the following %ld file(s)."
-msgstr ""
+msgstr "Eksporterte følgende %ld fil(er)."
 
-#: export/ExportMultiple.cpp:525
+#: export/ExportMultiple.cpp:534
 #, c-format
-msgid "Something went wrong after exporting the folliwing %ld file(s)."
-msgstr ""
+msgid "Something went wrong after exporting the following %ld file(s)."
+msgstr "Noe gikk galt etter eksportering av følgende %ld fil(er)."
 
 #: export/ExportMultiple.cpp:526
 #, c-format
 msgid "Export canceled after exporting the following %ld file(s)."
-msgstr ""
+msgstr "Eksportering avbrutt etter følgende %ld fil(er)."
 
 #: export/ExportMultiple.cpp:527
 #, c-format
 msgid "Export stopped after exporting the following %ld file(s)."
-msgstr ""
+msgstr "Eksportering stanset etter følgende %ld fil(er)."
 
 #: export/ExportMultiple.cpp:528
 #, c-format
 msgid "Something went really wrong after exporting the following %ld file(s)."
-msgstr ""
+msgstr "Noe gikk virkelig galt etter eksportering av følgende %ld fil(er)."
 
 #: export/ExportMultiple.cpp:535
 msgid "ExportMultiple"
-msgstr ""
+msgstr "Eksporter flere"
 
 #: export/ExportMultiple.cpp:470
 #, c-format
 msgid "\"%s\" doesn't exist.\n"
 "\n"
 "Would you like to create it?"
-msgstr "\"%s\" eksisterer ikke.\n"
+msgstr ""
+"«%s» eksisterer ikke.\n"
 "\n"
 "Vil du opprette den?"
 
@@ -7087,7 +7350,7 @@ msgstr "Eksporterer hele prosjektet som %s"
 #: export/ExportPCM.cpp:437
 #, c-format
 msgid "Error (file may not have been written): %s"
-msgstr "Feil (filen ble muligens ikke skrevet): %s"
+msgstr "Feil (fila ble muligens ikke skrevet): %s"
 
 #: export/ExportPCM.cpp:723
 msgid "There are no options for this format.\n"
@@ -7141,7 +7404,7 @@ msgid "\"%s\" is an audio CD track. \n"
 "Audacity cannot open audio CDs directly. \n"
 "Extract (rip) the CD tracks to an audio format that \n"
 "Audacity can import, such as WAV or AIFF."
-msgstr "\"%s\" er et spor på en lyd-CD. \n"
+msgstr "«%s» er et spor på en lyd-CD. \n"
 "Audacity kan ikke åpne lyd-CD-er direkte.\n"
 "Trekk ut (rip) CD-sporene til et filformat \n"
 "som Audacity kan importere, f.eks. WAV eller AIFF."
@@ -7152,7 +7415,7 @@ msgid "\"%s\" is a playlist file. \n"
 "Audacity cannot open this file because it only contains links to other files. \n"
 "You may be able to open it in a text editor and download the actual audio files."
 msgstr " er en spillelistefil. \n"
-"Audacity kan ikke åpne denne filen fordi den bare inneholder referanser til andre filer. \n"
+"Audacity kan ikke åpne denne fila fordi den bare inneholder referanser til andre filer. \n"
 "Det kan hende at du kan åpne den i et tekstredigeringsprogram og laste ned de relevante lydfilene."
 
 #: import/Import.cpp:179
@@ -7160,7 +7423,7 @@ msgstr " er en spillelistefil. \n"
 msgid "\"%s\" is a Windows Media Audio file. \n"
 "Audacity cannot open this type of file due to patent restrictions. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
-msgstr "\"%s\" er en Windows Media Audio-fil. \n"
+msgstr "«%s» er en Windows Media Audio-fil. \n"
 "Audacity kan ikke åpne denne filtypen grunnet patentbeskyttelse. \n"
 "Du må konvertere den til et støttet filformat, f.eks. WAV eller AIFF."
 
@@ -7169,7 +7432,7 @@ msgstr "\"%s\" er en Windows Media Audio-fil. \n"
 msgid "\"%s\" is an Advanced Audio Coding file. \n"
 "Audacity cannot open this type of file. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
-msgstr "\"%s\" er en Advanced Audio Coding-fil. \n"
+msgstr "«%s» er en Advanced Audio Coding-fil. \n"
 "Audacity kan ikke åpne denne filtypen. \n"
 "Du må konvertere den til et støttet filformat, f.eks. WAV eller AIFF."
 
@@ -7180,10 +7443,10 @@ msgid "\"%s\" is an encrypted audio file. \n"
 "Audacity cannot open this type of file due to the encryption. \n"
 "Try recording the file into Audacity, or burn it to audio CD then \n"
 "extract the CD track to a supported audio format such as WAV or AIFF."
-msgstr "\"%s\" er en kryptert lydfil. \n"
+msgstr "«%s» er en kryptert lydfil. \n"
 "Disse kommer ofte fra musikkbutikker på nettet. \n"
 "Audacity kan ikke åpne denne filtypen grunnet krypteringen. \n"
-"Prøv å spille inn filen til Audacity, eller brenn den til en lyd-CD, \n"
+"Prøv å spille inn fila til Audacity, eller brenn den til en lyd-CD, \n"
 "for så å trekke ut (rippe) CD-sporet til et støttet filformat, f.eks. WAV eller AIFF."
 
 #: import/Import.cpp:194
@@ -7191,7 +7454,7 @@ msgstr "\"%s\" er en kryptert lydfil. \n"
 msgid "\"%s\" is a RealPlayer media file. \n"
 "Audacity cannot open this proprietary format. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
-msgstr "\"%s\" er en RealPlayer media-fil. \n"
+msgstr "«%s» er en RealPlayer media-fil. \n"
 "Audacity kan ikke åpne dette produsenteide formatet. \n"
 "Du må konvertere den til et støttet filformat, f.eks. WAV eller AIFF."
 
@@ -7201,7 +7464,7 @@ msgid "\"%s\" is a notes-based file, not an audio file. \n"
 "Audacity cannot open this type of file. \n"
 "Try converting it to an audio file such as WAV or AIFF and \n"
 "then import it, or record it into Audacity."
-msgstr "\"%s\" er en note-basert fil, ikke en lydfil.\n"
+msgstr "«%s» er en note-basert fil, ikke en lydfil.\n"
 "Audacity kan ikke åpne denne filtypen.\n"
 "Prøv å konvertere den til et filformat som WAV eller AIFF og så importere den, eller spill den inn med Audacity."
 
@@ -7212,7 +7475,7 @@ msgid "\"%s\" is a Musepack audio file. \n"
 "If you think it might be an mp3 file, rename it to end with \".mp3\" \n"
 "and try importing it again. Otherwise you need to convert it to a supported audio \n"
 "format, such as WAV or AIFF."
-msgstr "\"%s\" er en Musepack-lydfil.\n"
+msgstr "«%s» er en Musepack-lydfil.\n"
 "Audacity kan ikke åpne denne filtypen.\n"
 "Hvis du tror det kan være en mp3-fil, endre filnavnet slik at det slutter med \".mp3\" og prøv å importere på nytt. Hvis ikke må du konvertere den til et støttet filformat, som WAV eller AIFF."
 
@@ -7221,7 +7484,7 @@ msgstr "\"%s\" er en Musepack-lydfil.\n"
 msgid "\"%s\" is a Wavpack audio file. \n"
 "Audacity cannot open this type of file. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
-msgstr "\"%s\" er en Wavpack-lydfil.\n"
+msgstr "«%s» er en Wavpack-lydfil.\n"
 "Audacity kan ikke åpne denne filtypen.\n"
 "Du må konvertere den til et støttet filformat, som WAV eller AIFF."
 
@@ -7230,7 +7493,7 @@ msgstr "\"%s\" er en Wavpack-lydfil.\n"
 msgid "\"%s\" is a Dolby Digital audio file. \n"
 "Audacity cannot currently open this type of file. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
-msgstr "\"%s\" er en Dolby Digital-lydfil.\n"
+msgstr "«%s» er en Dolby Digital-lydfil.\n"
 "Audacity kan foreløpig ikke åpne denne filtypen.\n"
 "Du må konvertere den til et støttet filformat, som WAV eller AIFF."
 
@@ -7239,7 +7502,7 @@ msgstr "\"%s\" er en Dolby Digital-lydfil.\n"
 msgid "\"%s\" is an Ogg Speex audio file. \n"
 "Audacity cannot currently open this type of file. \n"
 "You need to convert it to a supported audio format, such as WAV or AIFF."
-msgstr "\"%s\" er en Ogg Speex-lydfil.\n"
+msgstr "«%s» er en Ogg Speex-lydfil.\n"
 "Audacity kan foreløpig ikke åpne denne filtypen.\n"
 "Du må konvertere den til et støttet filformat, som WAV eller AIFF."
 
@@ -7248,7 +7511,7 @@ msgstr "\"%s\" er en Ogg Speex-lydfil.\n"
 msgid "\"%s\" is a video file. \n"
 "Audacity cannot currently open this type of file. \n"
 "You need to extract the audio to a supported format, such as WAV or AIFF."
-msgstr "\"%s\" er en videofil.\n"
+msgstr "«%s» er en videofil.\n"
 "Audacity kan foreløpig ikke åpne denne filtypen.\n"
 "Du må trekke ut lyden til et støttet format, som WAV eller AIFF."
 
@@ -7256,14 +7519,14 @@ msgstr "\"%s\" er en videofil.\n"
 #, c-format
 msgid "Audacity did not recognize the type of the file '%s'.\n"
 "If it is uncompressed, try importing it using \"Import Raw\"."
-msgstr "Audacity gjenkjente ikke filtypen til filen '%s'.\n"
+msgstr "Audacity gjenkjente ikke filtypen til fila «%s».\n"
 "Hvis den er ukomprimert kan du prøve å importere vha. «Importer rå»."
 
 #: import/Import.cpp:322
 #, c-format
 msgid "Audacity recognized the type of the file '%s',\n"
 "but was unable to import it."
-msgstr "Audacity gjenkjente filtypen til filen '%s',\n"
+msgstr "Audacity gjenkjente filtypen til fila «%s»,\n"
 "men klarte ikke å importere den."
 
 #: import/ImportFFmpeg.cpp:34
@@ -7291,7 +7554,7 @@ msgstr "Liste av Filer i rent tekstformat"
 #. i18n-hint: You do not need to translate "LOF"
 #: import/ImportLOF.cpp:318
 msgid "Invalid window offset in LOF file."
-msgstr "Vinduet har feil startposisjon i LOF-filen"
+msgstr "Vinduet har feil startposisjon i LOF-fila"
 
 #  i18n-hint: You do not need to translate "LOF"
 #. i18n-hint: You do not need to translate "LOF"
@@ -7314,7 +7577,7 @@ msgstr "MIDI-spor kan ikke forskyves individuelt, det kan kun lydfiler."
 #. i18n-hint: You do not need to translate "LOF"
 #: import/ImportLOF.cpp:434
 msgid "Invalid track offset in LOF file."
-msgstr "Sporet har feil startposisjon i LOF-filen"
+msgstr "Sporet har feil startposisjon i LOF-fila"
 
 #: import/ImportMIDI.cpp:31
 msgid ": Filename too short."
@@ -7365,6 +7628,30 @@ msgstr "Importerer %s"
 #: import/ImportQT.cpp:21
 msgid "QuickTime files"
 msgstr "QuickTime-filer"
+
+#: import/ImportQT.cpp:246
+msgid "Unable to start QuickTime extraction"
+msgstr ""
+
+#: import/ImportQT.cpp:256
+msgid "Unable to set QuickTime render quality"
+msgstr ""
+
+#: import/ImportQT.cpp:266
+msgid "Unable to set QuickTime discrete channels property"
+msgstr ""
+
+#: import/ImportQT.cpp:277
+msgid "Unable to get QuickTime sample size property"
+msgstr ""
+
+#: import/ImportQT.cpp:288
+msgid "Unable to retrieve stream description"
+msgstr ""
+
+#: import/ImportQT.cpp:347
+msgid "Unable to get fill buffer"
+msgstr ""
 
 #: import/ImportRaw.cpp:205
 msgid "Import Raw"
@@ -7479,7 +7766,7 @@ msgid "Interface"
 msgstr "Grensesnitt"
 
 #: prefs/DevicePrefs.cpp:113
-msgid "Host"
+msgid "&Host"
 msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:122
@@ -7490,13 +7777,30 @@ msgstr "Bruker:"
 msgid "Playback"
 msgstr "Avspilling"
 
+#: prefs/DevicePrefs.cpp:132
+msgid "&Device"
+msgstr ""
+
 #: prefs/AudioIOPrefs.cpp:133
 msgid "Recording"
 msgstr "Opptak"
 
-#: prefs/AudioIOPrefs.cpp:139
-msgid "Channels"
-msgstr "Kanaler"
+#: prefs/DevicePrefs.cpp:145
+msgid "De&vice"
+msgstr ""
+
+#: prefs/DevicePrefs.cpp:150
+msgid "Cha&nnels"
+msgstr ""
+
+#: prefs/DevicePrefs.cpp:166
+msgid "No audio interfaces"
+msgstr ""
+
+#: prefs/DevicePrefs.cpp:205 prefs/DevicePrefs.cpp:210
+#: prefs/MidiIOPrefs.cpp:295 prefs/MidiIOPrefs.cpp:300
+msgid "No devices found"
+msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:100
 msgid "1 (Mono)"
@@ -7515,9 +7819,13 @@ msgstr "Mapper"
 msgid "Temporary files directory"
 msgstr "Mappe for midlertidige filer"
 
-#: prefs/DirectoriesPrefs.cpp:91
-msgid "Location:"
-msgstr "Plassering:"
+#: prefs/DirectoriesPrefs.cpp:89
+msgid "&Location:"
+msgstr ""
+
+#: prefs/DirectoriesPrefs.cpp:94
+msgid "C&hoose..."
+msgstr ""
 
 #: prefs/DirectoriesPrefs.cpp:93
 msgid "Free Space:"
@@ -7528,11 +7836,11 @@ msgid "Audio cache"
 msgstr "Lydmellomlager"
 
 #: prefs/DirectoriesPrefs.cpp:105
-msgid "Play and/or record using RAM (useful for slow drives)"
+msgid "Play and/or record using &RAM (useful for slow drives)"
 msgstr ""
 
 #: prefs/DirectoriesPrefs.cpp:111
-msgid "Minimum Free Memory (MB):"
+msgid "Mi&nimum Free Memory (MB):"
 msgstr ""
 
 #: prefs/DirectoriesPrefs.cpp:118
@@ -7566,9 +7874,65 @@ msgstr "Mappen %s er ikke skrivbar"
 msgid "Changes to temporary directory will not take effect until Audacity is restarted"
 msgstr "Endringer til den midlertidige mappen trer først i kraft når Audacity startes på nytt"
 
-#: prefs/GUIPrefs.cpp:42
-msgid "In Browser"
-msgstr "I nettleser"
+#: prefs/EffectsPrefs.cpp:32
+msgid "Effects"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:56
+msgid "Enable Effects"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:60
+msgid "Audio Unit"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:66
+msgid "&LADSPA"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:72
+msgid "N&yquist"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:78
+msgid "&VAMP"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:84
+msgid "V&ST"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:89
+msgid "Restart Audacity to apply changes."
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:94
+msgid "Audio Unit Effects"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:96
+msgid "Display Audio Unit effects in graphical mode"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:100
+msgid "Rescan VST effects next time Audacity is started"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:109
+msgid "VST Effects"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:111
+msgid "&Display VST effects in graphical mode"
+msgstr ""
+
+#: prefs/EffectsPrefs.cpp:114
+msgid "&Rescan VST effects next time Audacity is started"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:49
+msgid "Local"
+msgstr ""
 
 #: prefs/GUIPrefs.cpp:43
 msgid "From Internet"
@@ -7626,26 +7990,29 @@ msgstr "-145 dB (PCM-område for 24 bits datapunkter)"
 msgid "Display"
 msgstr "Visning"
 
-#: prefs/GUIPrefs.cpp:100
-msgid "Er&gonomic order of audio I/O buttons"
-msgstr "Er&gonomisk rekkefølge på lyd I/O-knapper"
-
-#: prefs/GUIPrefs.cpp:101
-msgid "Show &welcome message at program start up"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:109
-msgid "Meter/Waveform dB range:"
-msgstr ""
-
-#: prefs/GUIPrefs.cpp:169
-msgid "Help:"
-msgstr "Hjelp:"
-
 #: prefs/GUIPrefs.cpp:96
-#, fuzzy
-msgid "Cl&osing last window quits Audacity"
-msgstr "Avslutt Audacity ved lukking av siste vindu"
+msgid "&Ergonomic order of audio I/O buttons"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:99
+msgid "S&how 'How to get Help' message at program start up"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:107
+msgid "Meter/Waveform dB &range:"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:114
+msgid "&Language:"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:121
+msgid "Location of &Manual:"
+msgstr ""
+
+#: prefs/GUIPrefs.cpp:134
+msgid "Closing last window &quits Audacity"
+msgstr ""
 
 #: prefs/GUIPrefs.cpp:110
 msgid "&Beep on completion of longer activities"
@@ -7655,8 +8022,8 @@ msgstr "&Lydsignal ved fullføring av større oppgaver"
 msgid "Modes"
 msgstr "Modi"
 
-#: prefs/GUIPrefs.cpp:151
-msgid "Display VST effects in GUI mode"
+#: prefs/GUIPrefs.cpp:145
+msgid "Clea&nSpeech Mode (Customized GUI)"
 msgstr ""
 
 #: prefs/GUIPrefs.cpp:129
@@ -7687,9 +8054,9 @@ msgstr "&Normaliser alle spor i prosjektet"
 msgid "When exporting tracks to an audio file"
 msgstr "Ved eksportering av spor til en lydfil"
 
-#: prefs/FileFormatPrefs.cpp:123
-msgid "A&lways mix all tracks down to Stereo or Mono channel(s)."
-msgstr "Alltid &miks alle spor ned til stereo- eller monokanal(er)."
+#: prefs/ImportExportPrefs.cpp:74
+msgid "&Always mix all tracks down to Stereo or Mono channel(s)"
+msgstr ""
 
 #: prefs/FileFormatPrefs.cpp:124
 msgid "&Use custom mix (for example to export a 5.1 multichannel file)"
@@ -7716,13 +8083,21 @@ msgstr "Tastaturinstillinger er for tiden utilgjengelige."
 msgid "Open a new project to modify keyboard shortcuts."
 msgstr "Åpne et nytt prosjekt for å endre tastatursnarveiene."
 
+#: prefs/KeyConfigPrefs.cpp:111 prefs/KeyConfigPrefs.cpp:227
+msgid "All"
+msgstr ""
+
 #: prefs/KeyConfigPrefs.cpp:95
 msgid "Key Bindings"
 msgstr "Tastaturoppsett"
 
-#: prefs/KeyConfigPrefs.cpp:115
-msgid "S&et"
-msgstr "&Bruk"
+#: prefs/KeyConfigPrefs.cpp:132
+msgid "C&ategory:"
+msgstr ""
+
+#: prefs/KeyConfigPrefs.cpp:159
+msgid "Set"
+msgstr ""
 
 #: prefs/KeyConfigPrefs.cpp:120
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
@@ -7731,10 +8106,6 @@ msgstr "Merk: Trykk Cmd+Q for å avslutte. Alle andre taster er gyldige."
 #: prefs/KeyConfigPrefs.cpp:124 prefs/ThemePrefs.cpp:105
 msgid "&Defaults"
 msgstr "Stan&darder"
-
-#: prefs/KeyConfigPrefs.cpp:171
-msgid "Command"
-msgstr ""
 
 #: prefs/KeyConfigPrefs.cpp:143
 msgid "Key Combination"
@@ -7770,13 +8141,13 @@ msgstr "Feil ved lagring av tastatursnarveier"
 msgid "The keyboard shortcut '%s' is already assigned to:\n"
 "\n"
 "'%s'"
-msgstr "Tastatursnarveien '%s' er allerede tilegnet:\n"
+msgstr "Tastatursnarveien «%s» er allerede tilegnet:\n"
 "\n"
 "'%s'"
 
 #: prefs/LibraryPrefs.cpp:46
 msgid "Libraries"
-msgstr ""
+msgstr "Bibliotek"
 
 #: prefs/FileFormatPrefs.cpp:77
 msgid "MP3 Export Library"
@@ -7818,14 +8189,21 @@ msgstr ""
 msgid "FFmpeg Library:"
 msgstr "FFmpeg-bibliotek:"
 
-#: prefs/AudioIOPrefs.cpp:41 prefs/AudioIOPrefs.cpp:42
-msgid "Audio I/O"
-msgstr "Lyd-I/O"
+#: prefs/LibraryPrefs.cpp:124
+msgid "Loca&te..."
+msgstr ""
 
-#: prefs/AudioIOPrefs.cpp:123
-#, fuzzy
-msgid "Portaudio v"
-msgstr "Portaudio v"
+#: prefs/LibraryPrefs.cpp:130
+msgid "Dow&nload"
+msgstr ""
+
+#: prefs/MidiIOPrefs.cpp:58
+msgid "MIDI Devices"
+msgstr ""
+
+#: prefs/DevicePrefs.cpp:113
+msgid "Host"
+msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:145
 msgid "Playthrough"
@@ -7886,6 +8264,10 @@ msgstr "Effektforhåndsvisning"
 #: prefs/MidiIOPrefs.cpp:196
 msgid "Play when previewing:"
 msgstr "Spill av ved forhåndsvisning:"
+
+#: prefs/MidiIOPrefs.cpp:256
+msgid "No MIDI interfaces"
+msgstr ""
 
 #: prefs/MousePrefs.cpp:55 prefs/MousePrefs.cpp:56
 msgid "Mouse"
@@ -8097,21 +8479,29 @@ msgstr "Ctrl-hjul-roter"
 msgid "Zoom in or out"
 msgstr "Zoom inn eller ut"
 
-#: prefs/AudioIOPrefs.cpp:165
-msgid "Length of preview:"
-msgstr "Lengde på forhåndsvisning:"
+#: prefs/PlaybackPrefs.cpp:61
+msgid "&Length of preview:"
+msgstr "&Lengde på forhåndsvisning:"
 
-#: prefs/AudioIOPrefs.cpp:173
-msgid "Preview before cut region:"
-msgstr "Forhåndsvis før utklippsregion:"
+#: prefs/PlaybackPrefs.cpp:76
+msgid "Preview &before cut region:"
+msgstr "Forhåndsvis &før utklippsregion:"
 
-#: prefs/AudioIOPrefs.cpp:175
-msgid "Preview after cut region:"
-msgstr "Forhåndsvis etter utklippsregion:"
+#: prefs/PlaybackPrefs.cpp:83
+msgid "Preview &after cut region:"
+msgstr "Forhåndsvis &etter utklippsregion:"
 
 #: prefs/AudioIOPrefs.cpp:197
 msgid "Seek Time when playing"
 msgstr "Søketid under avspilling"
+
+#: prefs/PlaybackPrefs.cpp:98
+msgid "&Short period:"
+msgstr ""
+
+#: prefs/PlaybackPrefs.cpp:105
+msgid "Lo&ng period:"
+msgstr ""
 
 #: prefs/PrefsDialog.cpp:89
 msgid "Audacity Preferences"
@@ -8119,35 +8509,35 @@ msgstr "Audacity innstillinger"
 
 #: prefs/ProjectsPrefs.cpp:31
 msgid "Projects"
-msgstr ""
+msgstr "Prosjekt"
 
 #: prefs/FileFormatPrefs.cpp:111
 msgid "When saving a project that depends on other audio files"
 msgstr "Ved lagring av prosjekter som avhenger av andre lydfiler"
 
-#: prefs/FileFormatPrefs.cpp:114
-msgid "Always &copy all audio into project (safest)"
-msgstr "Alltid &kopier all lyd inn i prosjektet (tryggest)"
+#: prefs/ProjectsPrefs.cpp:63
+msgid "&Always copy all audio into project (safest)"
+msgstr "Kopier &alltid all lyd inn i prosjektet (sikrest)"
 
-#: prefs/FileFormatPrefs.cpp:115
-msgid "&Do not copy any audio"
-msgstr "&Ikke kopier noe lyd"
+#: prefs/ProjectsPrefs.cpp:65
+msgid "Do &not copy any audio"
+msgstr "Kopier ikke &noe lyd"
 
-#: prefs/FileFormatPrefs.cpp:116
-msgid "&Ask user"
+#: prefs/ProjectsPrefs.cpp:67
+msgid "As&k user"
 msgstr "&Spør bruker"
 
 #: prefs/DirectoriesPrefs.cpp:99
 msgid "Auto save"
 msgstr "Autolagre"
 
-#: prefs/DirectoriesPrefs.cpp:101
-msgid "Auto save a copy of the project in a separate folder"
-msgstr "Autolagre en kopi av prosjektet i en egen mappe"
+#: prefs/ProjectsPrefs.cpp:76
+msgid "Auto &save a copy of the project in a separate folder"
+msgstr "Auto&lagre en kopi av prosjektet i en egen mappe"
 
-#: prefs/DirectoriesPrefs.cpp:104
-msgid "Auto save interval:"
-msgstr "Intervall for autolagring:"
+#: prefs/ProjectsPrefs.cpp:82
+msgid "Auto save in&terval:"
+msgstr "In&tervall for autolagring:"
 
 #: prefs/DirectoriesPrefs.cpp:105
 msgid "minutes"
@@ -8169,62 +8559,113 @@ msgstr "Formet"
 msgid "Sampling"
 msgstr "Datarate"
 
-#: prefs/QualityPrefs.cpp:125
-msgid "Default Sample Rate:"
-msgstr "Standard datarate:"
+#: prefs/QualityPrefs.cpp:129
+msgid "Default Sample &Rate:"
+msgstr "Standard data&rate:"
 
-#: prefs/QualityPrefs.cpp:127
-msgid "Default Sample Format:"
-msgstr "Standard datapunktformat:"
+#: prefs/QualityPrefs.cpp:154
+msgid "Default Sample &Format:"
+msgstr "Standard datapunkt&format:"
 
 #: prefs/QualityPrefs.cpp:165
 msgid "Real-time Conversion"
 msgstr ""
 
-#: prefs/QualityPrefs.cpp:171 prefs/QualityPrefs.cpp:193
-#, fuzzy
-msgid "Sample Rate Converter:"
-msgstr "Dataratekonverterer"
+#: prefs/QualityPrefs.cpp:171
+msgid "Sample Rate Con&verter:"
+msgstr "Datarate&konverterer"
 
-#: prefs/QualityPrefs.cpp:164
-msgid "Dither"
-msgstr "Dither"
+#: prefs/QualityPrefs.cpp:178
+msgid "&Dither:"
+msgstr "&Utjevning:"
 
 #: prefs/QualityPrefs.cpp:189
 msgid "High-quality Conversion"
-msgstr ""
+msgstr "Høykvalitetskonvertering"
+
+#: prefs/QualityPrefs.cpp:193
+msgid "Sample Rate Conver&ter:"
+msgstr "Dataratekonver&terer"
+
+#: prefs/QualityPrefs.cpp:200
+msgid "Dit&her:"
+msgstr "Ut&jevning:"
 
 #: prefs/AudioIOPrefs.cpp:149
 msgid "Overdub: &Play other tracks while recording new one"
 msgstr "Overdub: S&pill andre spor samtidig med opptak av et nytt ett"
 
-#: prefs/AudioIOPrefs.cpp:150
-msgid "&Hardware Playthrough: Play new track while recording it"
-msgstr "Spill gjennom med &maskinvare: Spill av nytt spor under innspilling"
+#: prefs/RecordingPrefs.cpp:69
+msgid "&Hardware Playthrough: Listen while recording or monitoring new track"
+msgstr ""
 
-#: prefs/AudioIOPrefs.cpp:157
-msgid "&Software Playthrough: Play new track while recording or monitoring"
-msgstr "Spill gjennom med &programvare: Spill av nytt spor under innspilling eller overvåking"
+#: prefs/RecordingPrefs.cpp:73
+msgid "&Software Playthrough: Listen while recording or monitoring new track"
+msgstr ""
 
 #: prefs/AudioIOPrefs.cpp:160
 msgid "(uncheck when recording \"stereo mix\")"
 msgstr "(ikke huk av ved opptak av «stereomiks»)"
 
+#: prefs/RecordingPrefs.cpp:88
+msgid "Audio to &buffer:"
+msgstr "Lyd til &buffer:"
+
 #: prefs/RecordingPrefs.cpp:86
 msgid "milliseconds (higher = more latency)"
-msgstr ""
+msgstr "millisekunder (høyere = mer latens)"
+
+#: prefs/RecordingPrefs.cpp:95
+msgid "L&atency correction:"
+msgstr "L&atenskorreksjon:"
 
 #: prefs/RecordingPrefs.cpp:92
 msgid "milliseconds (negative = backwards)"
-msgstr ""
+msgstr "millisekunder (negativ = bakover)"
 
 #: prefs/SmartRecordPrefs.cpp:64 prefs/SmartRecordPrefs.cpp:66
 msgid "Sound Activated Recording"
 msgstr "Lydaktivert opptak"
 
-#: prefs/SmartRecordPrefs.cpp:71
-msgid "Sound Activation Level (dB):"
-msgstr "Lydaktiveringsnivå (dB):"
+#: prefs/RecordingPrefs.cpp:108
+msgid "Sound Activated &Recording"
+msgstr "Lydaktivert &opptak"
+
+#: prefs/RecordingPrefs.cpp:117
+msgid "Sound Activation Le&vel (dB):"
+msgstr "&Lydaktiveringsnivå (dB):"
+
+#: prefs/RecordingPrefs.cpp:128
+msgid "Automated Input Level Adjustment"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:130
+msgid "Enable Automated Input Level Adjustment."
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:138
+msgid "Target Peak:"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:144
+msgid "Within:"
+msgstr "Innen:"
+
+#: prefs/RecordingPrefs.cpp:154
+msgid "Analysis Time:"
+msgstr "Analysetid:"
+
+#: prefs/RecordingPrefs.cpp:158
+msgid "milliseconds (time of one analysis)"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:160
+msgid "Number of consecutive analysis:"
+msgstr ""
+
+#: prefs/RecordingPrefs.cpp:164
+msgid "0 means endless"
+msgstr "0 betyr uendelig"
 
 #: prefs/SpectrumPrefs.cpp:41 prefs/SpectrumPrefs.cpp:42
 msgid "Spectrograms"
@@ -8236,19 +8677,19 @@ msgstr "8 - mest båndbredde"
 
 #: prefs/SpectrumPrefs.cpp:42
 msgid "16"
-msgstr ""
+msgstr "16"
 
 #: prefs/SpectrumPrefs.cpp:43
 msgid "32"
-msgstr ""
+msgstr "32"
 
 #: prefs/SpectrumPrefs.cpp:44
 msgid "64"
-msgstr ""
+msgstr "64"
 
 #: prefs/SpectrumPrefs.cpp:45
 msgid "128"
-msgstr ""
+msgstr "128"
 
 #: prefs/SpectrumPrefs.cpp:99
 msgid "256 - default"
@@ -8256,27 +8697,27 @@ msgstr "256 - standard"
 
 #: prefs/SpectrumPrefs.cpp:47
 msgid "512"
-msgstr ""
+msgstr "512"
 
 #: prefs/SpectrumPrefs.cpp:48
 msgid "1024"
-msgstr ""
+msgstr "1024"
 
 #: prefs/SpectrumPrefs.cpp:49
 msgid "2048"
-msgstr ""
+msgstr "2048"
 
 #: prefs/SpectrumPrefs.cpp:51
 msgid "4096"
-msgstr ""
+msgstr "4096"
 
 #: prefs/SpectrumPrefs.cpp:52
 msgid "8192"
-msgstr ""
+msgstr "8192"
 
 #: prefs/SpectrumPrefs.cpp:53
 msgid "16384"
-msgstr ""
+msgstr "16384"
 
 #: prefs/SpectrumPrefs.cpp:107
 msgid "32768 - most narrowband"
@@ -8288,45 +8729,55 @@ msgstr "4096 - minst båndbredde"
 
 #: prefs/SpectrumPrefs.cpp:82
 msgid "FFT Window"
-msgstr ""
+msgstr "FFT-vindu"
 
 #: prefs/SpectrumPrefs.cpp:86
-msgid "Window size"
-msgstr ""
+msgid "Window &size"
+msgstr "&Størrelse på vindu"
 
 #: prefs/SpectrumPrefs.cpp:93
-#, fuzzy
-msgid "Window type"
-msgstr "Vindustype"
+msgid "Window &type"
+msgstr "Vindus&type"
 
 #: prefs/SpectrumPrefs.cpp:125
-#, fuzzy
 msgid "FFT Skip Points"
 msgstr "FFT Skip-punkt"
 
 #: prefs/SpectrumPrefs.cpp:117
 msgid "Skip Points"
-msgstr ""
+msgstr "Skip-punkt"
 
-#: prefs/SpectrumPrefs.cpp:147
-msgid "Minimum Frequency (Hz):"
-msgstr "Minimumsfrekvens (Hz):"
+#: prefs/SpectrumPrefs.cpp:134
+msgid "Mi&nimum Frequency (Hz):"
+msgstr "Mi&nimumsfrekvens (Hz):"
+
+#: prefs/SpectrumPrefs.cpp:140
+msgid "Ma&ximum Frequency (Hz):"
+msgstr "Ma&ksimal frekvens (Hz):"
+
+#: prefs/SpectrumPrefs.cpp:146
+msgid "&Gain (dB):"
+msgstr "&Volum (dB):"
 
 #: prefs/SpectrumPrefs.cpp:152
-msgid "Maximum Frequency (Hz):"
-msgstr "Maksimal frekvens (Hz):"
+msgid "&Range (dB):"
+msgstr "&Rekkevidde (dB):"
 
-#: prefs/SpectrumPrefs.cpp:147
-msgid "Show the spectrum using &grayscale colors"
-msgstr ""
+#: prefs/SpectrumPrefs.cpp:158
+msgid "Frequency g&ain (dB/dec):"
+msgstr "Fr&ekvensvolum (dB/des):"
+
+#: prefs/SpectrumPrefs.cpp:165
+msgid "S&how the spectrum using grayscale colors"
+msgstr "V&is spektrumet med gråtoner"
 
 #: prefs/SpectrumPrefs.cpp:152
 msgid "Show a grid along the &Y-axis"
-msgstr ""
+msgstr "Vis et gitter langs &Y-aksen"
 
 #: prefs/SpectrumPrefs.cpp:160
 msgid "FFT Find Notes"
-msgstr ""
+msgstr "Finn noter med FFT"
 
 #: prefs/SpectrumPrefs.cpp:165
 msgid "Minimum Amplitude (dB):"
@@ -8362,7 +8813,31 @@ msgstr "Minimumsfrekvensen må være minst 0 Hz"
 
 #: prefs/SpectrumPrefs.cpp:213
 msgid "Minimum frequency must be less than maximum frequency"
-msgstr ""
+msgstr "Minimumsfrekvensen må være mindre enn maksimumsfrekvensen"
+
+#: prefs/SpectrumPrefs.cpp:237
+msgid "The gain must be an integer"
+msgstr "Volumet må være et heltall"
+
+#: prefs/SpectrumPrefs.cpp:242
+msgid "The range must be a positive integer"
+msgstr "Rekkevidden må være et positivt heltall"
+
+#: prefs/SpectrumPrefs.cpp:246
+msgid "The range must be at least 1 dB"
+msgstr "Rekkevidden må være minst 1 dB"
+
+#: prefs/SpectrumPrefs.cpp:252
+msgid "The frequency gain must be an integer"
+msgstr "Frekvensen må være et heltall"
+
+#: prefs/SpectrumPrefs.cpp:256
+msgid "The frequency gain cannot be negative"
+msgstr "Frekvensvolumet kan ikke være negativt"
+
+#: prefs/SpectrumPrefs.cpp:260
+msgid "The frequency gain must be no more than 60 dB/dec"
+msgstr "Frekvensvolumet må være mer enn 60 dB/des"
 
 #: prefs/SpectrumPrefs.cpp:220
 msgid "The minimum amplitude (dB) must be an integer"
@@ -8370,11 +8845,11 @@ msgstr "Minimumsamplituden (dB) må være et heltall"
 
 #: prefs/SpectrumPrefs.cpp:226
 msgid "The maximum number of notes must be an integer"
-msgstr ""
+msgstr "Maksimalt antall noter må være et heltall"
 
 #: prefs/SpectrumPrefs.cpp:230
 msgid "The maximum number of notes must be in the range 1..128"
-msgstr ""
+msgstr "Maksimalt antall noter må være mellom 1 og 128"
 
 #: prefs/ThemePrefs.cpp:62 prefs/ThemePrefs.cpp:63
 msgid "Theme"
@@ -8385,7 +8860,6 @@ msgid "Info"
 msgstr "Info"
 
 #: prefs/ThemePrefs.cpp:91
-#, fuzzy
 msgid "Themability is an experimental feature.\n"
 "\n"
 "To try it out, click \"Save Theme Cache\" then find and modify the images and colors in\n"
@@ -8395,7 +8869,8 @@ msgid "Themability is an experimental feature.\n"
 "\n"
 "[Only the control toolbar and the colors on the wavetrack are currently affected, even\n"
 "though the image file shows other icons too.]"
-msgstr "Tema er en eksperimentell funksjon.\n"
+msgstr ""
+"Tema er en eksperimentell funksjon.\n"
 "\n"
 "For å prøve det, klikk \"Lagre tema-\n"
 "mellomlager\", finn så fram og modifiser\n"
@@ -8405,9 +8880,9 @@ msgstr "Tema er en eksperimentell funksjon.\n"
 "Klikk \"Åpne tema-mellomlager\" for å laste\n"
 "inn de endrede bildene og fargene i Audacity.\n"
 "\n"
-"[Bare kontrollverktøylinjen og fargene på\n"
+"(Bare kontrollverktøylinjen og fargene på\n"
 "lydbølgesporet blir påvirket foreløpig, selv om\n"
-"bildefilen viser andre ikon også.]"
+"bildefila viser andre ikon også.)"
 
 #: prefs/ThemePrefs.cpp:96
 msgid "You have compiled Audacity with an extra button, 'Output Sourcery'.  This will save a\n"
@@ -8467,18 +8942,17 @@ msgstr "&Oppdater grensesnitt under avspilling"
 msgid "Automatically &fit tracks vertically zoomed"
 msgstr "Vertikalt &zoom og tilpass spor automatisk"
 
-#: prefs/TracksPrefs.cpp:88
-#, fuzzy
-msgid "Default View Mode:"
-msgstr "Standard visningsmodus"
+#: prefs/TracksPrefs.cpp:90
+msgid "Default &View Mode:"
+msgstr "Standard &visningsmodus"
 
 #: prefs/GUIPrefs.cpp:108
 msgid "&Select all audio in project, if none selected"
 msgstr "&Marker all lyd i prosjektet, hvis ingenting er markert"
 
-#: prefs/GUIPrefs.cpp:116
-msgid "Enable cut &lines"
-msgstr "Vis utklippslinjer"
+#: prefs/TracksPrefs.cpp:106
+msgid "Enable cu&t lines"
+msgstr ""
 
 #: prefs/GUIPrefs.cpp:98
 msgid "Enable &dragging of left and right selection edges"
@@ -8488,40 +8962,40 @@ msgstr "&Venstre og høyre markeringskanter kan dras"
 msgid "\"Move track focus\" c&ycles repeatedly through tracks"
 msgstr "«&Flytt sporfokus» veksler gjennom spor gjentatte ganger"
 
-#: prefs/GUIPrefs.cpp:106
-msgid "Editing a &clip can move other clips"
-msgstr "Redigering av &klipp kan flytte andre klipp"
+#: prefs/TracksPrefs.cpp:115
+msgid "Editing a clip can &move other clips"
+msgstr ""
 
-#: prefs/GUIPrefs.cpp:170
-msgid "Solo Button:"
-msgstr "Solo-knapp:"
+#: prefs/TracksPrefs.cpp:123
+msgid "Solo &Button:"
+msgstr "Solo-&knapp:"
 
 #: prefs/WarningsPrefs.cpp:31
 msgid "Warnings"
 msgstr ""
 
 #: prefs/WarningsPrefs.cpp:55
-msgid "Show Warnings/Prompts"
+msgid "Show Warnings/Prompts for"
 msgstr ""
 
 #: prefs/WarningsPrefs.cpp:57
-msgid "When saving &projects"
+msgid "Saving &projects"
 msgstr ""
 
 #: prefs/WarningsPrefs.cpp:60
-msgid "When saving &empty project"
+msgid "Saving &empty project"
 msgstr ""
 
 #: prefs/WarningsPrefs.cpp:63
-msgid "When &disk space is getting low"
+msgid "&Low disk space at program start up"
 msgstr ""
 
 #: prefs/WarningsPrefs.cpp:66
-msgid "When mixing down to &stereo during export"
+msgid "Mixing down to &stereo during export"
 msgstr ""
 
 #: prefs/WarningsPrefs.cpp:69
-msgid "When mixing down to &mono during export"
+msgid "Mixing down to &mono during export"
 msgstr ""
 
 #: Menus.cpp:786
@@ -8629,7 +9103,6 @@ msgid "Output Volume"
 msgstr "Outputvolum"
 
 #: toolbars/MixerToolBar.cpp:92
-#, fuzzy
 msgid "Slider Output"
 msgstr "Glidebryter-output"
 
@@ -8638,7 +9111,6 @@ msgid "Input Volume"
 msgstr "Inputvolum"
 
 #: toolbars/MixerToolBar.cpp:103
-#, fuzzy
 msgid "Slider Input"
 msgstr "Glidebryter-input"
 
@@ -8652,6 +9124,10 @@ msgstr ""
 
 #: toolbars/MixerToolBar.cpp:306
 msgid "Select Input Source"
+msgstr ""
+
+#: toolbars/MixerToolBar.cpp:314
+msgid "Input Source:"
 msgstr ""
 
 #: toolbars/SelectionBar.cpp:80
@@ -8898,12 +9374,10 @@ msgid "Help"
 msgstr "Hjelp"
 
 #: widgets/ErrorDialog.cpp:137
-#, fuzzy
 msgid "<"
 msgstr "<"
 
 #: widgets/ErrorDialog.cpp:138
-#, fuzzy
 msgid ">"
 msgstr ">"
 
@@ -8919,19 +9393,13 @@ msgstr "Tilbake"
 msgid "Help on the Internet"
 msgstr "Hjelp på nettet"
 
+#: Tags.cpp:818 Tags.cpp:1476 prefs/KeyConfigPrefs.cpp:116
+msgid "&Clear"
+msgstr "T&øm"
+
 #: widgets/Grabber.cpp:62
 msgid "Grabber"
 msgstr "Håndtak"
-
-#: widgets/Grid.cpp:643
-#, c-format
-msgid "%d rows, %d columns"
-msgstr "%d rader, %d kolonner"
-
-#: widgets/Grid.cpp:649 widgets/Grid.cpp:776
-#, c-format
-msgid "Row %d"
-msgstr "Rad %d"
 
 #: widgets/Grid.cpp:791
 msgid "Empty"
@@ -8953,6 +9421,14 @@ msgstr "Stans overvåking"
 msgid "Start Monitoring"
 msgstr "Start overvåking"
 
+#: widgets/Meter.cpp:418
+msgid "Stop Automated Input Level Adjustment"
+msgstr "Stans automatisk justering av inndatanivå"
+
+#: widgets/Meter.cpp:420
+msgid "Start Automated Input Level Adjustment"
+msgstr "Start automatisk justering av inndatanivå"
+
 #: widgets/Meter.cpp:370
 msgid "Horizontal Stereo"
 msgstr "Horisontal stereo"
@@ -8965,19 +9441,15 @@ msgstr "Vertikal stereo"
 msgid "Preferences..."
 msgstr "Innstillinger..."
 
-#: widgets/Meter.cpp:876
-msgid "Mix Volume"
-msgstr "Miksvolum"
+#: widgets/Meter.cpp:1268
+msgid "Automated Input Level Adjustment stopped as requested by user."
+msgstr "Automatisk justering av inndatanivå stanset etter forespørsel"
 
-#: widgets/Meter.cpp:1078
-msgid "This determines how often the meter is refreshed.\n"
-"If you have a slower PC you may want to select a\n"
-"lower refresh rate (30 per second or lower), so that\n"
-"audio qualtiy is not affected by the meter display."
-msgstr "Dette avgjør hvor ofte lydnivåmålerne oppfriskes. Hvis\n"
-"du har en treg datamaskin bør du kanskje velge en\n"
-"lavere oppfriskingsrate (maks. 30 per sekund), slik at\n"
-"lydkvaliteten ikke påvirkes av målerframvisningen."
+#: widgets/Meter.cpp:1283
+msgid "Higher refresh rates make the meter show more frequent\n"
+"changes. A rate of 30 per second or less should prevent\n"
+"the meter affecting audio quality on slower machines."
+msgstr ""
 
 #: widgets/Meter.cpp:1079
 msgid "Meter refresh rate per second [1-100]: "
@@ -9228,9 +9700,9 @@ msgstr "01000,01000 frames|75"
 msgid "Use right mouse button or context key to change format"
 msgstr "Bruk høyre museknapp eller kontekstknapp for å endre format"
 
-#: widgets/TimeTextCtrl.cpp:1485
-msgid "Time Control"
-msgstr "Tidskontroll"
+#: widgets/TimeTextCtrl.cpp:1526
+msgid "centiseconds"
+msgstr "centisekunder"
 
 #: widgets/Warning.cpp:64
 msgid "Don't show this warning again"
@@ -9239,27 +9711,27 @@ msgstr "Ikke vis denne advarselen igjen"
 #: xml/XMLFileReader.cpp:49
 #, c-format
 msgid "Could not open file: \"%s\""
-msgstr "Kunne ikke åpne filen: \"%s\""
+msgstr "Kunne ikke åpne fila: «%s»"
 
 #: xml/XMLFileReader.cpp:63
 #, c-format
 msgid "Error: %hs at line %lu"
-msgstr ""
+msgstr "Feil: %hs ved linje %lu"
 
 #: xml/XMLFileReader.cpp:79
 #, c-format
 msgid "Could not load file: \"%s\""
-msgstr "Klarte ikke å laste fil: \"%s\""
+msgstr "Klarte ikke å laste fil: «%s»"
 
 #: xml/XMLWriter.cpp:325
 msgid "Error flushing file"
-msgstr ""
+msgstr "Feil ved tømming av fil"
 
 #: xml/XMLWriter.cpp:330
 msgid "Error closing file"
-msgstr ""
+msgstr "Feil ved lukking av fil"
 
 #: xml/XMLWriter.cpp:340
 msgid "Error writing to file"
-msgstr ""
+msgstr "Feil ved skriving til fil"
 
