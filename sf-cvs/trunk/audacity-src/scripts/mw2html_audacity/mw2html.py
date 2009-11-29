@@ -187,6 +187,8 @@ def monobook_fix_html(doc, page_url):
   doc = remove_tag(doc, '<div class="portlet" id="p-personal">', '</div>', '<div')
   doc = remove_tag(doc, '<div id="p-search" class="portlet">', '</div>','<div')
   doc = remove_tag(doc, '<div class="portlet" id="p-editors">', '</div>', '<div')
+  #James also remove the page/discussion/source/history/ div.
+  doc = remove_tag(doc, '<li id="ca-', '</li>', '<li')
   
   #andre special mode
   if config.special_mode:
@@ -835,10 +837,11 @@ def parse_html(doc, url):
       new_urls += [u]
       item.url = url_to_relative(u, url)
     else:
-      if not any( license in u for license in ('creativecommons.org', 'wxwidgets.org', 'gnu.org', 'mediawiki.org') ):
-        item.url = ''
+      # James, let's keep everything by default (but not follow it).
+      # if not any( license in u for license in ('creativecommons.org', 'wxwidgets.org', 'gnu.org', 'mediawiki.org') ):
+      #  item.url = ''
       if config.debug:
-        print 'DENIED     - ', u
+        print 'NOT INCLUDED     - ', u
 
   newdoc = htmldata.urljoin(doc, L)
   newdoc = newdoc.replace(BEGIN_COMMENT_REPLACE, '<!--')
