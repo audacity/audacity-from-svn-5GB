@@ -14,6 +14,7 @@ Improved performance.
 Improved filtering.
 Improved usability.
 Customized for Audacity's manual wiki.
+Minor tweaks (for Audacity) By James Crook, Nov 2009.
 ...
 """
 
@@ -769,7 +770,7 @@ def should_follow(url):
       print url, 'with multiple query fields'
     return False
 
-  if any(x in url for x in ('Special:', 'Image:', 'Talk:', 'User:', 'Help:')):
+  if any(x in url for x in ('Special:', 'Image:', 'Talk:', 'User:', 'Help:', 'User_talk:', 'MediaWiki_talk:', 'File:', 'action=edit', 'title=-' )):
     if config.debug:
       print url, 'is a forbidden wiki page'
     return False
@@ -778,6 +779,12 @@ def should_follow(url):
     if config.debug:
       print url, 'is a image and you are in no-images mode'
     return False
+
+  if any(url.strip().lower().endswith(suffix) for suffix in ('.zip', '.7z')):
+    if config.debug:
+      print url, 'is a compressed file'
+    return False
+
 
   # limit_parent support
   ncurl = normalize_url(config.rooturl)
