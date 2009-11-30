@@ -398,8 +398,9 @@ void MixerTrackCluster::UpdateMeter(const double t0, const double t1)
       i++;
    }
 
-   bool bWantPostFadeValues = true; //v Turn this into a checkbox on MixerBoard?
-   if (bSuccess && bWantPostFadeValues)
+   //const bool bWantPostFadeValues = true; //v Turn this into a checkbox on MixerBoard?
+   //if (bSuccess && bWantPostFadeValues)
+   if (bSuccess)
    {
       for (i = 0; i < nFramesPerBuffer; i++)
       {
@@ -417,7 +418,7 @@ void MixerTrackCluster::UpdateMeter(const double t0, const double t1)
 
    if (bSuccess)
       mMeter->UpdateDisplay(
-         2, // If mono, show left track values in both meters, as in MeterToolBar.      kNumChannels, 
+         2, // If mono, show left track values in both meters, as in MeterToolBar, rather than kNumChannels.
          nFramesPerBuffer, 
          maxLeft, rmsLeft, 
          maxRight, rmsRight, 
