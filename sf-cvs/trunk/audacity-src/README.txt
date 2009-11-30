@@ -107,6 +107,9 @@ Changes and improvements:
        version so they can be bug fixed
     * Input volume slider will be disabled if it doesn't have proper
        control of system slider; use the system slider instead
+    * Proper support for copying/pasting label-with-audio including 
+       label text; new Edit > Paste Text to New Label menu item to
+       paste system clipboard     
     * Contrast Tool now modeless, more intuitive handling of multiple
        project windows, various other minor improvements
  
