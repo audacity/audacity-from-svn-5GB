@@ -204,12 +204,12 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
 
    c->AddItem(wxT("New"), _("&New"), FN(OnNew), wxT("Ctrl+N"),
-              AlwaysEnabledFlag,
-              AlwaysEnabledFlag);
+              AudioIONotBusyFlag,
+              AudioIONotBusyFlag);
 
    c->AddItem(wxT("Open"), _("&Open..."), FN(OnOpen), wxT("Ctrl+O"),
-              AlwaysEnabledFlag,
-              AlwaysEnabledFlag);
+              AudioIONotBusyFlag,
+              AudioIONotBusyFlag);
 
    /////////////////////////////////////////////////////////////////////////////
 
