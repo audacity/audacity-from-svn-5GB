@@ -44,7 +44,7 @@ either one, but example values are for Unicode_Release.
       We cannot publicly post a build that supports ASIO, for 
       licensing reasons (more detail in compile.txt). 
 
-   c. If building the 'non-Beta' build (rather than a Beta), set IS_BETA to 0
+   c. If building a 'Stable' build (rather than a Beta), set IS_BETA to 0
       in Audacity.h.
 
    d. It's a good idea to not only do a Build > Clean Solution
@@ -53,7 +53,7 @@ either one, but example values are for Unicode_Release.
 
    e. Make sure to build the "locale" project, either 
       separately or as part of Build > Batch Build. You will need
-      msgfmt.zip in your PATH for that. Get it from
+      msgfmt.exe in your PATH for that. Get it from
       http://audacity.sourceforge.net/files/msgfmt.zip
 
 
@@ -86,14 +86,18 @@ either one, but example values are for Unicode_Release.
       folder in the Audacity build directory. This may be automated 
       in future. Until then, go to
       http://www.audacity.homerow.net/index.php?dir=windows
-
       and download "locales-2.8.10-msw.zip". Extract the contents 
-      into the "Languages" folder as above (note that 7-zip does (most of?) what
-      you want, the standard XP extractor doesn't (or I can't make it (MJS)).
-      You want each wxstd.mo file in the appropriate language directory/folder).
+      into the "Languages" folder.  You want each wxstd.mo file in the
+      appropriate language directory/folder.
+
       Then go to the newly added "gl_ES" and "zh_CN" folders in turn,
       and copy the "wxstd.mo" files from each into the "gl" and zh" folders 
       respectively. Then delete the "gl_ES" and "zh_CN" folders.
+      
+      (Note that I (MJS) can't make the standard XP extractor do what is
+      required here.  I can make 7-zip do it by navigating into
+      locales-2.8.10-msw.zip\locales-2.8.10\, selecting all the folders
+      then extracting into the Languages folder.)
 
    d. Also in 1.3.8, it became apparent after release that VC9 Express
       sp1 built Audacity so that it needed pre-sp1 runtimes. To save 
