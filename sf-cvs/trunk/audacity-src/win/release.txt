@@ -44,8 +44,20 @@ either one, but example values are for Unicode_Release.
       We cannot publicly post a build that supports ASIO, for 
       licensing reasons (more detail in compile.txt). 
 
-   c. If building a 'Stable' build (rather than a Beta), set IS_BETA to 0
-      in Audacity.h.
+   c. Check that the following #defines in Audacity.h are up-to-date:
+	IS_BETA
+
+	AUDACITY_VERSION
+
+	AUDACITY_RELEASE
+
+	AUDACITY_REVISION
+
+	AUDACITY_SUFFIX
+	   Especially check the overriding "-alpha-<date>" line.
+
+      (Vaughan believes we have never changed 
+      AUDACITY_MODLEVEL, so it can be ignored.)
 
    d. It's a good idea to not only do a Build > Clean Solution
       beforehand, but to also delete the directory 
