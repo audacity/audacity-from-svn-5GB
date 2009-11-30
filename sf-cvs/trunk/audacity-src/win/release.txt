@@ -45,16 +45,16 @@ either one, but example values are for Unicode_Release.
       licensing reasons (more detail in compile.txt). 
 
    c. Check that the following #defines in Audacity.h are up-to-date:
-	IS_BETA
+      IS_BETA
 
-	AUDACITY_VERSION
+   AUDACITY_VERSION
 
-	AUDACITY_RELEASE
+   AUDACITY_RELEASE
 
-	AUDACITY_REVISION
+   AUDACITY_REVISION
 
-	AUDACITY_SUFFIX
-	   Especially check the overriding "-alpha-<date>" line.
+   AUDACITY_SUFFIX
+      Especially check the overriding "-alpha-<date>" line.
 
       (Vaughan believes we have never changed 
       AUDACITY_MODLEVEL, so it can be ignored.)
@@ -157,7 +157,12 @@ either one, but example values are for Unicode_Release.
    d. Compile and test the installer. 
       The result appears in audacity\win\Output.
 
-   e. Rename it as necessary, e.g., 
+   e. Check the inbuilt manual to make sure that the 'look'
+      is pretty similar to the previous version.  Some changes
+      to style sheets may 'break' the mw2html.py script and cause it to
+      leave in / miss out some vital bits.
+
+   f. Rename it as necessary, e.g., 
       "audacity-win-unicode-1.3.9rc1.exe".
 
 
