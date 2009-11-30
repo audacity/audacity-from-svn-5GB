@@ -20,12 +20,12 @@ http://creativecommons.org/licenses/by/3.0/legalcode
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Version 1.3.9 Beta
+Version 1.3.10 Beta 
 
 Contents of this README:
 
 1.  Licensing
-2.  Changes in version 1.3.9 Beta
+2.  Changes in version 1.3.10 Beta
 3.  Known Issues at Release
 4.  Source Code, Libraries and Additional Copyright Information
 5.  Compilation Instructions
@@ -56,46 +56,60 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 
 --------------------------------------------------------------------------------
 
-2. Changes in version 1.3.9 Beta: 
+2. Changes in version 1.3.10 Beta: 
 
 Bug fixes for:
-           * Crash, slow launch or excessive CPU/memory use arising 
-              from automatic VST support:
-              * VST instrument plug-ins should now be correctly ignored
-              * VST effects now scanned only at start of first session
-                 that detects them, then cached; effects are now not 
-                 loaded or opened until needed
-              * New "Effects" tab in Preferences to enable/disable VST 
-                 effects and enable VST rescan on next launch
-           * Default View Mode now works
-           * Chains now always apply their stored parameters rather than 
-              those last used in Effect menu  
-           * Non-MP3 files imported via drag or Recent Files caused
-              crash if filter in file open window set to MP3
-           * AAC exports (using the optional FFmpeg library) were 
-              silenced 
-           * Generating audio always fitted the project in the window; 
-              fit now done only if generating in new track  
-           * View menu items/shortcuts incorrectly disabled when playing
-              or recording 
-           * DTMF generator defaulted to zero duration on open   	
-           * Unwanted interactions between linked audio and label tracks  
-           * (Windows XP) Failure to launch on some machines due to
-              "incorrect configuration" issue 
-           * (Windows) Crash importing a stereo file while a screen reader
-              such as JAWS is running
-           * (Mac OS X):
-              * Audio Units effects applied to all tracks in project even
-                 if not selected
-              * QuickTime importer now handles files greater than 16-bit 
-                or 64000 Hz
-           * Various other interface bugs 
 
-Improvements:
-           * Compressor: new option to compress based on peaks, improved
-              attack and decay time support
-           * Mixer Board: improved design, more responsive meters and 
-              now interacts fully with Track Panel in main window
+ * Imports and Exports:
+    * Freeze importing audio files when Default View Mode set to 
+       Pitch (EAC)
+    * Simultaneous On-Demand imports sorted incorrectly
+    * WAV or AIFF files imported as noise if Preferences set to 
+       copy in the data at 24-bit quality
+    * WMA exports corrupted if they contained metadata 
+    * Metadata Editor appeared before the Export window when 
+       exporting to any format
+
+ * Effects:
+    * Crash or hang using Equalization on longer tracks
+    * Reverse did not reverse clip boundaries
+    * Nyquist: 
+       * Excessive memory consumption led to slow processing or
+          crashes
+       * Values appearing in Nyquist effects text boxes were not 
+          always the default or previously entered values
+       * Errors running Nyquist effects in European locales where
+          comma used as decimal separator
+    * VST effects remained in Effect menu even when re-scanned and 
+       no longer available 
+    * Truncate Silence produced incorrect results if silences 
+       spanned a block boundary    
+
+ * Other bug fixes:
+    * Spurious "not writable/disk full" errors when saving projects
+    * Playing, rendering or exporting multiple tracks led to 
+       desynchronised playback or loss of audio data
+    * Crash opening Preferences when no recording and/or playback
+       devices enabled or connected
+    * Preferences window: OK button did not respond to ENTER when
+       a tab selected in left-hand panel
+    * Mixer Board solo button handling 
+    * (Windows) After a period launching correctly, Audacity 
+       sometimes did not come up on top at launch
+    * (Mac OS X) Correctly installed Help folder could not be found 
+    * (Mac OS X and Linux) Output slider could affect VU playback 
+        meter which then did not reflect actual waveform volume level 
+    * (Linux) Undoing or redoing a label edit could cause a crash 
+
+Changes and improvements:
+
+    * Linked audio and label tracks disabled until a future Beta
+       version so they can be bug fixed
+    * Input volume slider will be disabled if it doesn't have proper
+       control of system slider; use the system slider instead
+    * Contrast Tool now modeless, more intuitive handling of multiple
+       project windows, various other minor improvements
+ 
 
 --------------------------------------------------------------------------------
 
@@ -108,6 +122,9 @@ for details of any issues that have been identified after release of
 this version.
 
  * Imports:
+    * On-Demand WAV/AIFF import not available if using the optional 
+       FFmpeg importer (that is, if "FFmpeg-compatible files" set in 
+       the import dialog)
     * (Windows) The Audacity executable cannot be added to the 
         Explorer "Open With" menu if you have another version
         of Audacity also called "audacity.exe". You can set the 
@@ -116,173 +133,156 @@ this version.
         the list accessed by the "Open With" context menu item
         whilst there is another "audacity.exe" on the computer.  
     * (Linux) Metadata in imported FLAC files not visible     
-              
+
  * Exports:
-    * Metadata Editor appears before the Export window when exporting 
-       to any format. Click OK in Metadata Editor to proceed to the 
-       Export window. If you do not use metadata, you can go to the 
-       Import / Export tab of Preferences and uncheck "Show Metadata
-       Editor prior to export step". 
+    * Album art and lyrics in imported metadata lost when exporting   
     * WAVEX (Microsoft) headers: GSM 6.10 files cannot be exported, and
-       U-Law/A-Law files may not be playable
+        U-Law/A-Law files may not be playable
     * M4A: exports at 38000 Hz may not play properly (FFmpeg bug); M4A
-       renamed to MOV will not play on Windows in iTunes or QuickTime
+        renamed to MOV will not play on Windows in iTunes or QuickTime
     * Muting specific time-shifted mono tracks produces audio at wrong 
-       point on timeline in exported file if muted tracks are to left 
-       of unmuted.
+        point on timeline in exported file if muted tracks are to left 
+        of unmuted
+    * (Windows) Exported "Comments" ID3 tag not recognised by Windows 
+        Media Player or Explorer
+
+ * Genre WAV info tag (IGNR) not supported due to limitation in
+    libsndfile 
 
  * It is currently possible to attempt simultaneous imports or exports
     by using shortcuts (or File > New on Mac): Audacity is not yet
     capable of running these simultaneous operations safely, and
-    attempting this may crash your project.
-
- * Genre WAV info tag (IGNR) not supported due to limitation in
-    libsndfile. 
+    attempting this may crash your project
 
  * Effects and Analysis:
-    * VST effects always remain in Effect menu even when rescanned 
-       and no longer available. 
-    * Nyquist effects, SoundTouch, SBSMS and Generators join separate 
-       clips together.
-    * Values appearing in Nyquist effects text boxes are not always 
-       the default or previously entered values. 
+    * Truncate Silence may not give intuitive results on multiple tracks.
+    * Nyquist effects join separate clips together
     * LADSPA Multiband EQ (optional download) may not be visible in 
-       the Effect menu, or may crash in use.
+       the Effect menu, or may crash in use
 
- * If playback scrolls, cursor jumps to start of scroll on stop, hiding
-    previously visible audio preceding the playback position.  
-
- * Preferences window: OK button does not respond to ENTER when a tab 
-    is selected in the left-hand panel.
-
- * On-Demand:
-    * does not work if using the optional FFmpeg importer (that is, if
-       "FFmpeg-compatible files" set in the import dialogue)
-    * when importing a mixture of uncompressed and compressed files,
-       the compressed files intentionally load first to minimise UI
-       blockage, unless File > Open is used so that the files import 
-       into separate projects. This distinction is not yet observed on 
-       Windows. On all platforms, multiple files in one project will 
-       not necessarily be sorted in file name order after import.  
+ * Label tracks:
+    * Typing "j" or "k" in a label may activate the "move cursor" 
+      shortcut instead 
+    * Multiple labels cannot be added to the same label track using
+      Nyquist Analyze effects or Nyquist Prompt. Workaround: move
+      the audio track below the label track. 
 
  * Mixer Board:
     * The meter range does not reflect a change in the dB range meter 
-       preferences until restart. 
+       preferences until restart 
 
- * Not all menu items are correctly enabled when the preference:
-    "Select all audio in project, if none selected" is checked.
+ * Accessibility:
+    * The following may not read correctly in screen readers:
+      Labels, cells in Label Editor, time values in Generate effects,
+      accelerators in Preferences, Metadata Editor(JAWS 11)   
 
- * Edit Labels: start/end times not available to screen readers.
+ * If playback scrolls, cursor jumps to start of scroll on stop, hiding
+    previously visible audio preceding the playback position  
 
- * Label tracks: typing "j" or "k" in a label may activate the
-    "move cursor" shortcut instead. 
-
- * Time Track disables linking of audio and label tracks. 
+ * Not all menu items correctly enabled when the preference:
+    "Select all audio in project, if none selected" is checked
 
  * A few interface elements do not change correctly after a language 
-    change until restart.
+    change until restart
 
  * Calculation of "disk space remains for recording (time)" incorrect
     when recording in 24-bit quality. You may record for 50% longer
     than the indicated time.
 
  * Pressing Play (but not Space) in a second project when another is
-    already playing stops playback of the first project.
+    already playing stops playback of the first project
 
- * Automatic Crash Recovery disregards track zoom level and position.
+ * Automatic Crash Recovery disregards track zoom level and position
 
  * Projects created by Audacity 1.1.x or earlier are no longer
-    supported. Export each project track as WAV using the appropriate
-    legacy version of Audacity, then import the WAV files into current
-    Audacity.
+    supported. Workaround: Export each project track as WAV using the 
+    appropriate legacy version of Audacity, then import the WAV files
+    into current Audacity.
 
  * Audacity can import, display and cut/copy/paste MIDI files, then
     export them, but they cannot be played; undoing an edit with a MIDI
-    track open causes the MIDI data to be lost in Windows builds.
-
- * Audacity requires restart to detect audio devices plugged in while 
-    it is running.  
+    track open causes the MIDI data to be lost in Windows builds
 
  * Intermittently occurring bugs: Please write to feedback@audacityteam.org   
    if you experience any of these known but not fully understood 
-   issues, giving us steps to reproduce them so they can be fixed:
+   issues, giving us steps to reproduce them so they can be fixed.
+   For items marked ¶, some work has already been done which may
+   have eliminated the issue - your help with testing these issues 
+   is especially welcome.  
  
     * Projects do not reopen properly with "orphaned" or "missing"
-       blockfiles or "duplicate attribute" errors.
+       blockfiles or "duplicate attribute" errors
     * Projects do not re-open properly from the Automatic 
-       Crash Recovery dialogue.
+       Crash Recovery dialogue
     * Projects crash when applying repeated effects towards
-       the end of audio tracks. 
-    * AIFF files import as noise.   
-    * (Windows) After a period launching correctly, Audacity may not come
-       up on top at launch. Workaround: Right-click over Audacity's Taskbar
-       icon > "Maximize" or "Restore", ALT - tab, or reset the audacity.cfg
-       settings file by removing all content except "NewPrefsInitialized=1".  
-    * (Windows XP, reported on) Clicks during recording. 
+       the end of audio tracks¶ 
+    * WAV or AIFF files import as noise¶   
+    * (Windows XP, reported on) Clicks during recording 
     * (Windows) Timer Record unreliable with recordings starting
-       before and ending after midnight.
+       before and ending after midnight
+    * (Windows) On Vista and 7, and on XP with some USB microphones, the
+       Audacity input/output level sliders act independently of/incorrectly
+       with system level sliders:¶
+       * The achieved recorded level only matches the level indicated on 
+          the Recording VU meter if the Audacity input slider is at 100% 
+       * On Vista, adjusting the system level sliders then starting to 
+          record may reset the system level sliders unless monitoring is on 
+    * (Windows) Effects processing/waveform rendering after completion 
+       may be much slower than Audacity Beta 1.3.8
+    * (Mac OS X 10.5.8 PPC) Hang when scanning for VST effects on first
+       install of Audacity Beta. Workaround: rename the system VST folders
+       /Library/Audio/Plug-ins/VST or ~/Library/Audio/Plug-ins/VST
     * (Linux) After opening a sufficiently long audio file, opening a 
        second file of any size leads to locked GUI/console messages 
-       until first file completes play.
+       until first file completes play
+
+ * (Windows XP) The input slider and selector for inbuilt devices are 
+    unavailable if a USB microphone is also connected
 
  * (Windows 7) On launching Audacity, "Runtime Error Program:(location)
-    R6034" occurs. Workaround: Right-click over audacity.exe and change
-    compatibility mode to Vista SP2 or XP SP3. 
+    R6034" occurs. Workaround: Right-click over audacity.exe > Properties
+    and change compatibility mode to Vista SP2 or XP SP3. 
 
- * (Windows) On Vista and 7, and on XP with some USB microphones, the
-    Audacity input/output level sliders act independently of/incorrectly
-    with system level sliders.
-    * The achieved recorded level only matches the level indicated on 
-       the Recording VU meter if the Audacity input slider is at 100%. 
-    * On Vista, adjusting the system level sliders then starting to record 
-       may reset the system level sliders unless monitoring is on. 
+ * (Windows) Visible scanning dialogue appears on every launch of Audacity
+     when no VST plug-ins are present
 
  * (Windows) On Vista and 7, input sources such as microphone and line-in 
     must be selected in the Audacity Audio I/O Preferences, not the 
-    Mixer Toolbar input selector.   
-
- * (Windows) After a period of use, Audacity may not come up on top at
-    launch. Right-click over Audacity's Taskbar icon > "Maximize" or 
-    "Restore", ALT - tab, or reset the audacity.cfg settings file by
-    removing all content except "NewPrefsInitialized=1".  
+    Mixer Toolbar input selector   
 
  * (Windows) Timer Record cannot maintain scheduled duration if system 
-    clock changes.
+    clock changes
 
  * (Windows) Audacity is incompatible with some professional sound
     cards and may crash if one of these cards is the default when you
     open Audacity: as a workaround, make a different sound card your
     default when using Audacity, but please let us know if this affects
-    you so we can track down and solve the problem.
+    you so we can track down and solve the problem
 
- * (Mac OS X) Very occasionally, users may find that recording
-    causes "error opening sound device", or that after running
-    Audacity, other media players don't produce any sound, or crash:
-    to resolve this, set up your sound device in Apple Audio MIDI Setup
-    to work in stereo, 16-bit, with a sample rate of 44100 Hz or
-    48000 Hz, and set the sample format and rate identically in
-    Audacity. More help at:
+ * (Mac OS X) Very occasionally, users may find that recording causes 
+    "error opening sound device", or that after running Audacity, other
+    media players don't produce any sound, or crash:to resolve this, 
+    set up your sound device in Apple Audio MIDI Setup to work in stereo,
+    16-bit, with a sample rate of 44100 Hz or 48000 Hz, and set the 
+    sample format and rate identically in Audacity. More help at:
       http://audacityteam.org/forum/viewtopic.php?f=17&t=5064
 
  * (Mac OS X) If using Audacity when the "Hear" audio plug-in is
     running (or has been since boot), there will be excessive memory
     usage which could cause a crash: appears to be due to buggy
-    memory allocation in "Hear".
+    memory allocation in "Hear"
 
- * (Linux) Undoing or redoing a label edit may cause a crash if some 
-    character strings are common to all labels.    
+ * (Linux) If Audacity is left open but without focus, its CPU use
+    will rise slowly until all available the system CPU is consumed. 
+    This is a bug in wxGTK 2.8.10 (not previous versions) which will
+    be fixed in wxGTK 2.8.11. See: http://trac.wxwidgets.org/ticket/11315
 
  * (Linux) Effects and other dialogues do not have focus on opening. 
-    This is a bug in wxGTK for which there is no current workaround. 
+    This is a bug in wxGTK for which there is no current workaround: 
     Click in the dialogue to navigate it and change parameters.    
 
- * (Linux) If Portmixer uses emulated playback volume rather than 
-    native, the Audacity output slider will affect the VU playback 
-    meters and these may not then reflect the actual volume level 
-    of the waveform. 
-
  * (Linux) Audacity will require a FFmpeg package or build later than
-    0.5 in order for optional FFmpeg import/export features to work.    
+    0.5 in order for optional FFmpeg import/export features to work    
 
  * (Linux) Audacity now supports interfacing with JACK, but this has
     not been tested, and has a number of known reliability and usability
@@ -307,12 +307,12 @@ first if you want Audacity to have certain capabilities.  Most of these librarie
 are not distributed under the terms of the GPL, but rather some other free,
 GPL-compatible license.  Specifically:
 
-  wxWidgets: wxWindows license (based on LGPL)
-    Cross-platform GUI library - must be downloaded and
-    compiled separately.
-
   expat: BSD-like license.
-    Provides XML parsing.  Included with Audacity
+    Provides XML parsing.  Included with Audacity.
+
+  FFmpeg: GPL or LGPL (according to how you obtain/configure it)
+    Provides decoding/encoding of additional formats. Optional separate
+    download.
 
   iAVC: LGPL
     Part of the code to the AVC Compressor effect.
@@ -361,6 +361,11 @@ GPL-compatible license.  Specifically:
   Twolame: LGPL
     Encodes MPEG I layer 2 audio (used in DVDs and Radio). Optional separate
     download.
+
+  wxWidgets: wxWindows license (based on LGPL)
+    Cross-platform GUI library - must be downloaded and
+    compiled separately.
+
 
 For more information, see the documentation inside each library's
 source code directory.
@@ -476,6 +481,48 @@ or e-mail us at:
 
 6.  Previous Changes going back to version 1.1.0
 
+Changes in version 1.3.9 Beta:
+
+Bug fixes for:
+           * Crash, slow launch or excessive CPU/memory use arising 
+              from automatic VST support:
+              * VST instrument plug-ins should now be correctly ignored
+              * VST effects now scanned only at start of first session
+                 that detects them, then cached; effects are now not 
+                 loaded or opened until needed
+              * New "Effects" tab in Preferences to enable/disable VST 
+                 effects and enable VST rescan on next launch
+           * Default View Mode now works
+           * Chains now always apply their stored parameters rather than 
+              those last used in Effect menu  
+           * Non-MP3 files imported via drag or Recent Files caused
+              crash if filter in file open window set to MP3
+           * AAC exports (using the optional FFmpeg library) were 
+              silenced 
+           * Generating audio always fitted the project in the window; 
+              fit now done only if generating in new track  
+           * View menu items/shortcuts incorrectly disabled when playing
+              or recording 
+           * DTMF generator defaulted to zero duration on open   	
+           * Unwanted interactions between linked audio and label tracks  
+           * (Windows XP) Failure to launch on some machines due to
+              "incorrect configuration" issue 
+           * (Windows) Crash importing a stereo file while a screen reader
+              such as JAWS is running
+           * (Mac OS X):
+              * Audio Units effects applied to all tracks in project even
+                 if not selected
+              * QuickTime importer now handles files greater than 16-bit 
+                or 64000 Hz
+           * Various other interface bugs 
+
+Improvements:
+           * Compressor: new option to compress based on peaks, improved
+              attack and decay time support
+           * Mixer Board: improved design, more responsive meters and 
+              now interacts fully with Track Panel in main window
+
+
 Changes in version 1.3.8 Beta:
 
 New Features:
@@ -504,7 +551,7 @@ New Features:
               * Improved support for non-mmap ALSA devices such as PulseAudio 
               * 32-bit float data over 0 dB now handled without clipping
               * "Stop" option when importing preserves already imported data
-              * AMR NB export now supported if the optional FFmpeg library
+              * AMR NB import/export now supported if the optional FFmpeg library
                  is installed
               * Faster waveform drawing and better response in multi-track 
                  projects 
