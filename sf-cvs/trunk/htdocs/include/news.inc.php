@@ -40,6 +40,89 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "December 01, 2009",
+  	"1.3.10-release",
+  _("Audacity 1.3.10 released"),
+  _("
+<p>
+The Audacity Team is pleased to announce the release of
+<a href=\"/download\">Audacity 1.3.10 (Beta)</a> for Windows, 
+Mac and Linux/Unix. This release removes a significant 
+number of crash or freeze problems and other major bugs.  
+It brings us very close to our goal of a new 2.0 Release.
+</p>        
+<p> 1.3.10 is strongly recommended for users on Windows 
+Vista and 7, rather than 1.2.6 Stable. We ask everyone to help 
+us test 1.3.10 and  
+<a href=\"http://audacity.sourceforge.net/contact/#feedback\">
+let us know</a> of any problems you find. Advanced users are 
+encouraged to test our latest fixes as we make them by 
+downloading our 
+<a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">
+Nightly Builds</a>. We hope a final 1.3.11 Beta will follow soon. Please
+<a href=\"http://audacity.sourceforge.net/#announce\">
+subscribe</a> to receive news of all our releases.    
+</p>
+<p>
+<b>Summary of Changes in 1.3.10:</b>
+<div style=\"width:60%;padding-left:4em\">
+<dl>
+	<dt> Imports/Exports bug fixes: </dt>
+	      <dd>   
+                <ul>  
+                      <li>Freeze importing audio files in Pitch (EAC) view</li> 
+                      <li>Corrupted WAV or AIFF imports and WMA exports</li>
+                      <li>Metadata Editor appeared before the Export window</li>
+                </ul>
+         </dd>
+
+   <dt> Effects bug fixes: </dt>
+         <dd>
+                <ul> 
+                      <li> Crash/hang using Equalization; errors in Reverse 
+                            and Truncate Silence</li>
+                      <li> Nyquist: Excessive memory consumption; errors in
+                            European locales; inaccurate text box values</li>
+                      <li> VST effects remained in menu when no longer available</li> 
+                </ul>
+         </dd>
+
+   <dt> Other bug fixes:</dt>
+         <dd>
+                <ul>
+                      <li> Spurious \"not writable/disk full\" errors when saving 
+                            projects</li>
+                      <li> Desynchronized playback/data loss when using multiple 
+                            tracks</li>
+                      <li> Crash opening Preferences when no valid devices present</li>
+                      <li> <i>(Windows)</i> Audacity sometimes did not come up on 
+                            top at launch</li>
+                      <li> <i>(Linux)</i> Crash when undoing or redoing label edits</li>
+                </ul>
+         </dd>
+
+   <dt> Improvements:</dt>
+         <dd>   
+                <ul>
+                      <li> Improved copying/pasting of label-with-audio and 
+                            system clipboard text</li>
+                      <li> Contrast Tool now modeless, intuitive handling of 
+                            multiple project windows, various other improvements</li>
+                </ul>
+         </dd>
+</dl>
+</div>
+</p>
+<p>See 
+<a href=\"http://audacity.sourceforge.net/download/features-1.3-a#details\">   
+Changes in Audacity 1.3.10</a> for more on 1.3.10 and the Beta series. <b>Note:</b> 
+This release does not support Windows 98 or ME, for which 1.3.7 is 
+<a href=\"http://audacity.sourceforge.net/download/beta_windows#recdown\">
+still available</a>. 
+</p>
+"));
+
+add_news_item(
   "September 01, 2009",
   	"1.3.9-release",
   _("Audacity 1.3.9 released, Google Summer of Code (GSoC) 2009 completed"),

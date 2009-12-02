@@ -21,7 +21,7 @@
 
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 <ul>
-  <li><p>OS X 10.4 or later (Universal Binary): <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB)'), "".$macosx_ub_url, macosx_ub_version, macosx_ub_size)?></p></li>
+  <li><p>OS X 10.4 or later (Universal Binary): <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB, including help files)'), "".$macosx_ub_url, macosx_ub_version, macosx_ub_size)?></p></li>
 </ul>
 
 <p> <b><?=_("Installation instructions (.dmg files)")?>:</b>
