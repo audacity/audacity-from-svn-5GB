@@ -31,26 +31,26 @@
 
 <ul id="bundlers">
   <li>
-   <a href="#hardware">Hardware Bundles</a>
+   <a href="#hardware"><?=_('Hardware Bundles')?></a>
   </li>
   <li>
-   <a href="#interfaces">Interfaces and Sound Cards</a>
+   <a href="#interfaces"><?=_('Interfaces and Sound Cards')?></a>
   </li>
   <li>
-    <a href="#instruments">Musical Instruments</a>
+    <a href="#instruments"><?=_('Musical Instruments')?></a>
   </li>
   <li>
-    <a href="#playback">Playback Devices</a>
+    <a href="#playback"><?=_('Playback Devices')?></a>
   </li>
   <li>
-    <a href="#cd">Open Source CD Bundles</a>
+    <a href="#cd"><?=_('Open Source CD Bundles')?></a>
   </li>
   <li>
-    <a href="#others">Others</a>
+    <a href="#others"><?=_('Others')?></a>
   </li>
 </ul>
 
-<h3 id="hardware">Hardware Bundles</h3>
+<h3 id="hardware"><?=_('Hardware Bundles')?></h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
@@ -111,7 +111,7 @@
   </tr>
 </table>
 
-<h3 id="interfaces">Interfaces and Sound Cards</h3>
+<h3 id="interfaces"><?=_('Interfaces and Sound Cards')?></h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
@@ -210,7 +210,7 @@
   </tr>
 </table>
 
-<h3 id="instruments">Musical Instruments</h3>
+<h3 id="instruments"><?=_('Musical Instruments')?></h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
@@ -270,7 +270,7 @@
   </tr>
 </table>
 
-<h3 id="playback">Playback Devices</h3>
+<h3 id="playback"><?=_('Playback Devices')?></h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
@@ -331,7 +331,7 @@
   </tr>
 </table>
 
-<h3 id="cd">Open Source CD Bundles</h3>
+<h3 id="cd"><?=_('Open Source CD Bundles')?></h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
@@ -373,7 +373,7 @@
   </tr>
 </table>
 
-<h3 id="others">Others</h3>
+<h3 id="others"><?=_('Others')?></h3>
 <table class="bundlers">
   <tr>
    <th><?=_("Vendor")?></th>
