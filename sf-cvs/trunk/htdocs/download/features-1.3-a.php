@@ -24,7 +24,92 @@
  </ul>
 ')?></p>
 
-<h3 id="details"><?=_("New in Audacity 1.3.9")?></h3>
+<h3 id="details"><?=_("Changes in Audacity 1.3.10")?></h3>
+
+<?=_("
+<dl>
+   <dt> Bug fixes for: </dt>
+	       <dd> Imports and Exports: 
+                 <ul>
+                       <li> Freeze importing audio files when Default View Mode
+                             set to Pitch (EAC)</li>
+                       <li> Simultaneous On-Demand imports sorted incorrectly</li>
+                       <li> WAV or AIFF files imported as noise if Preferences set to 
+                             copy in the data at 24-bit quality</li>
+                       <li> WMA exports corrupted if they contained metadata</li> 
+                       <li> Metadata Editor appeared before the Export window when 
+                             exporting to any format </li>
+                 </ul>       
+           </dd>
+
+           <dd> Effects:
+                 <ul>  
+                       <li> Crash or hang using Equalization on longer tracks</li>
+                       <li> Reverse did not reverse clip boundaries</li>
+                       <li> Nyquist:</li>
+                             <ul> 
+                                   <li> Excessive memory consumption led to slow 
+                                         processing or crashes</li>
+                                   <li> Values appearing in text boxes not always 
+                                         the default or previously entered values</li>
+                                   <li> Errors running in European locales where 
+                                         comma used as decimal separator</li>
+                              </ul>
+                       <li> VST effects remained in Effect menu even when re-scanned and 
+                             no longer available </li> 
+                       <li> Truncate Silence produced incorrect results if silences 
+                             spanned a block boundary </li>    
+
+                 </ul>
+           </dd>
+
+           <dd> Other bug fixes: 
+                 <ul> 
+                       <li> Spurious \"not writable/disk full\" errors when saving projects </li>
+                       <li> Playing, rendering or exporting multiple tracks led to 
+                             desynchronized playback or loss of audio data </li>
+                       <li> Crash opening Preferences when no recording and/or playback
+                             devices enabled or connected </li>
+                       <li> Preferences window: OK button did not respond to ENTER when
+                             a tab selected in left-hand panel </li>
+                       <li> Mixer Board solo button handling</li> 
+                       <li> <i>(Windows)</i> After a period launching correctly, Audacity
+                              sometimes did not come up on top at launch </li>
+                       <li> <i>(Mac OS X)</i> Correctly installed Help folder could not
+                              be found</li>  
+                       <li> <i>(Mac OS X and Linux)</i> Output slider could affect VU 
+                              playback meter which then did not reflect actual waveform
+                              volume level</li>
+                       <li> <i>(Linux)</i> Undoing or redoing a label edit could cause 
+                              a crash</li>
+                 </ul>
+           </dd>
+")?>
+
+<?=_("
+   <dt> Changes and improvements:</dt>
+           <dd>
+                 <ul>
+                       <li> Linked audio and label tracks disabled until a future Beta
+                             version so they can be bug fixed</li>
+                       <li> Input volume slider will be disabled if it doesn't have proper
+                             control of system slider; use the system slider instead</li>
+                       <li> Proper support for copying/pasting label-with-audio including 
+                             label text; new Edit > Paste Text to New Label menu item to
+                             paste system clipboard </li>    
+                       <li> Contrast Tool now modeless, more intuitive handling of multiple
+                             project windows, various other minor improvements </li>
+                 </ul>
+           </dd>
+</dl>
+<p>
+Please be aware of 
+<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.10#Known_Issues_at_Release\">
+Known Issues at Release</a> (also viewable in the included README.txt).
+</p>
+")?>
+
+<h3><?=_("New in Audacity 1.3.9")?></h3>
 
 <?=_("
 <dl>
