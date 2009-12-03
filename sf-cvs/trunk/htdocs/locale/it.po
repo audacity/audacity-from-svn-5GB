@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity_website\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-26 21:00+0000\n"
-"PO-Revision-Date: 2009-11-28 10:22-0000\n"
-"Last-Translator: g <g@g>\n"
+"POT-Creation-Date: 2009-12-02 09:46+0000\n"
+"PO-Revision-Date: 2009-12-03 07:13+0100\n"
+"Last-Translator: Carmelo Battaglia <battaglia.carmelo@fastwebnet.it>\n"
 "Language-Team: italiano <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,12 +64,12 @@ msgid "Audacity&reg; is free, open source software for recording and editing sou
 msgstr "Audacity&reg; è un software libero, open source per registrare e modificare l'audio.  È disponibile per Mac OS X, Microsoft Windows, GNU/Linux, e altri sistemi operativi. <a href=\"about/\">Imparate di più su Audacity...</a> Controllate anche il nostro <a href=\"http://audacityteam.org/wiki/\">Wiki</a> e il nostro <a href=\"http://audacityteam.org/forum/\">Forum</a> per avere maggiori informazioni."
 
 #: index.php:57
-msgid "The latest release of Audacity is <a href=\"/download\">1.3.9 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into different languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
-msgstr "L'ultima versione di Audacity è la <a href=\"/download\">1.3.9 (Beta)</a>. Poiché la versione è in fase di sviluppo e non è ancora disponibile con una documentazione completa o con traduzioni in altre lingue, se ne raccomanda l'utilizzo solo agli utenti esperti. Vedere <a href=\"/download/features-1.3-a\">Nuove funzionalità in 1.3</a> per avere maggiori informazioni sulle versioni 1.3.x Beta."
+msgid "The latest release of Audacity is <a href=\"/download\">1.3.10 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into different languages, it is recommended for more advanced users. See <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3.x Beta series."
+msgstr "L'ultima versione di Audacity è la <a href=\"/download\">1.3.10 (Beta)</a>. Poiché la versione è in fase di sviluppo e non è ancora disponibile con una documentazione completa o con traduzioni in altre lingue, se ne raccomanda l'utilizzo solo agli utenti esperti. Vedere <a href=\"/download/features-1.3-a\">Nuove funzionalità in 1.3</a> per avere maggiori informazioni sulle versioni 1.3.x Beta."
 
 #: index.php:59
-msgid "For all users, <a href=\"/download\">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have Audacity 1.2.6 and 1.3.9 installed on the same machine."
-msgstr "Per tutti gli utenti, <a href=\"/download\">Audacity 1.2.6</a> è una versione stabile, completa e ben documentata.  Potete installare le versioni 1.2.6 e 1.3.9 di Audacity nello stesso computer."
+msgid "For all users, <a href=\"/download\">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have Audacity 1.2.6 and 1.3.10 installed on the same machine."
+msgstr "Per tutti gli utenti, <a href=\"/download\">Audacity 1.2.6</a> è una versione stabile, completa e ben documentata.  Potete installare le versioni 1.2.6 e 1.3.10 di Audacity nello stesso computer."
 
 #: index.php:64
 #: index.php:68
@@ -1558,8 +1558,8 @@ msgstr "Download raccomandati"
 
 #: download/beta_mac.php:24
 #, php-format
-msgid "<a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB)"
-msgstr "<a href=\"%s\">Audacity %s</a> (file .dmg, %.1lf MB)"
+msgid "<a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB, including help files)"
+msgstr "<a href=\"%s\">Audacity %s</a> (file .dmg, %.1lf MB, compresi i file help)"
 
 #: download/beta_mac.php:27
 msgid "Installation instructions (.dmg files)"
@@ -1685,6 +1685,36 @@ msgstr "e vorreste essere inseriti in questa lista, "
 #: download/bundlers.php:30
 msgid "contact us"
 msgstr "contattateci"
+
+#: download/bundlers.php:34
+#: download/bundlers.php:53
+msgid "Hardware Bundles"
+msgstr "Hardware abbinato"
+
+#: download/bundlers.php:37
+#: download/bundlers.php:114
+msgid "Interfaces and Sound Cards"
+msgstr "Interfacce e schede audio"
+
+#: download/bundlers.php:40
+#: download/bundlers.php:213
+msgid "Musical Instruments"
+msgstr "Strumenti musicali"
+
+#: download/bundlers.php:43
+#: download/bundlers.php:273
+msgid "Playback Devices"
+msgstr "Dispositivi di riproduzione"
+
+#: download/bundlers.php:46
+#: download/bundlers.php:334
+msgid "Open Source CD Bundles"
+msgstr "CD open source abbinati"
+
+#: download/bundlers.php:49
+#: download/bundlers.php:376
+msgid "Others"
+msgstr "Altro"
 
 #: download/bundlers.php:56
 #: download/bundlers.php:117
@@ -1900,8 +1930,8 @@ msgid "Dependencies"
 msgstr "Dipendenze"
 
 #: download/beta_source.php:49
-msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</b>.  Audacity 1.3.9 requires wxGTK 2.8.10."
-msgstr "La libreria <a href=\"http://wxwidgets.org\">wxWidgets</a> è <b>indispensabile</b>.  Audacity 1.3.9 richiede wxGTK 2.8.10."
+msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</b>.  Audacity 1.3.10 requires wxGTK 2.8.10."
+msgstr "La libreria <a href=\"http://wxwidgets.org\">wxWidgets</a> è <b>indispensabile</b>.  Audacity 1.3.10 richiede wxGTK 2.8.10."
 
 #: download/beta_source.php:50
 #: download/source.php:39
@@ -2035,16 +2065,16 @@ msgid "Beta: 1.3 - for advanced users"
 msgstr "Beta: 1.3 - per utenti esperti"
 
 #: download/index.php:47
-msgid "&nbsp;&nbsp;1.3.9"
-msgstr "&nbsp;&nbsp;1.3.9"
+msgid "&nbsp;&nbsp;1.3.10"
+msgstr "&nbsp;&nbsp;1.3.10"
 
 #: download/index.php:50
-msgid "&nbsp;1.3.9 (Universal Binary)"
-msgstr "&nbsp;1.3.9 (Universal Binary)"
+msgid "&nbsp;1.3.10 (Universal Binary)"
+msgstr "&nbsp;1.3.10 (Universal Binary)"
 
 #: download/index.php:53
-msgid "&nbsp;1.3.9 (in source code)"
-msgstr "&nbsp;1.3.9 (in codice sorgente)"
+msgid "&nbsp;1.3.10 (in source code)"
+msgstr "&nbsp;1.3.10 (in codice sorgente)"
 
 #: download/index.php:59
 msgid "Legacy Downloads"
@@ -2200,10 +2230,180 @@ msgstr ""
 " </ul>\n"
 
 #: download/features-1.3-a.php:27
+msgid "Changes in Audacity 1.3.10"
+msgstr "Novità in Audacity 1.3.10"
+
+#: download/features-1.3-a.php:29
+msgid ""
+"\n"
+"<dl>\n"
+"   <dt> Bug fixes for: </dt>\n"
+"\t       <dd> Imports and Exports: \n"
+"                 <ul>\n"
+"                       <li> Freeze importing audio files when Default View Mode\n"
+"                             set to Pitch (EAC)</li>\n"
+"                       <li> Simultaneous On-Demand imports sorted incorrectly</li>\n"
+"                       <li> WAV or AIFF files imported as noise if Preferences set to \n"
+"                             copy in the data at 24-bit quality</li>\n"
+"                       <li> WMA exports corrupted if they contained metadata</li> \n"
+"                       <li> Metadata Editor appeared before the Export window when \n"
+"                             exporting to any format </li>\n"
+"                 </ul>       \n"
+"           </dd>\n"
+"\n"
+"           <dd> Effects:\n"
+"                 <ul>  \n"
+"                       <li> Crash or hang using Equalization on longer tracks</li>\n"
+"                       <li> Reverse did not reverse clip boundaries</li>\n"
+"                       <li> Nyquist:</li>\n"
+"                             <ul> \n"
+"                                   <li> Excessive memory consumption led to slow \n"
+"                                         processing or crashes</li>\n"
+"                                   <li> Values appearing in text boxes not always \n"
+"                                         the default or previously entered values</li>\n"
+"                                   <li> Errors running in European locales where \n"
+"                                         comma used as decimal separator</li>\n"
+"                              </ul>\n"
+"                       <li> VST effects remained in Effect menu even when re-scanned and \n"
+"                             no longer available </li> \n"
+"                       <li> Truncate Silence produced incorrect results if silences \n"
+"                             spanned a block boundary </li>    \n"
+"\n"
+"                 </ul>\n"
+"           </dd>\n"
+"\n"
+"           <dd> Other bug fixes: \n"
+"                 <ul> \n"
+"                       <li> Spurious \"not writable/disk full\" errors when saving projects </li>\n"
+"                       <li> Playing, rendering or exporting multiple tracks led to \n"
+"                             desynchronized playback or loss of audio data </li>\n"
+"                       <li> Crash opening Preferences when no recording and/or playback\n"
+"                             devices enabled or connected </li>\n"
+"                       <li> Preferences window: OK button did not respond to ENTER when\n"
+"                             a tab selected in left-hand panel </li>\n"
+"                       <li> Mixer Board solo button handling</li> \n"
+"                       <li> <i>(Windows)</i> After a period launching correctly, Audacity\n"
+"                              sometimes did not come up on top at launch </li>\n"
+"                       <li> <i>(Mac OS X)</i> Correctly installed Help folder could not\n"
+"                              be found</li>  \n"
+"                       <li> <i>(Mac OS X and Linux)</i> Output slider could affect VU \n"
+"                              playback meter which then did not reflect actual waveform\n"
+"                              volume level</li>\n"
+"                       <li> <i>(Linux)</i> Undoing or redoing a label edit could cause \n"
+"                              a crash</li>\n"
+"                 </ul>\n"
+"           </dd>\n"
+msgstr ""
+"\n"
+"<dl>\n"
+"   <dt> Eseguite correzioni per: </dt>\n"
+"\t       <dd> Importazione ed esportazione: \n"
+"                 <ul>\n"
+"                       <li> Importazione bloccata di file audio quando la modalità Vista Predefinita\n"
+"                             era impostata a Intonazione (EAC)</li>\n"
+"                       <li> Simultanee importazioni a richiesta ordinate in modo non corretto</li>\n"
+"                       <li> File WAV o AIFF importati come rumore se le Preferenze erano impostate a \n"
+"                             Copia i dati con qualità 24-bit</li>\n"
+"                       <li> Esportazione file WMA corrotta se contenevano certi metadati</li> \n"
+"                       <li> L'Editor metadati appariva prima della finestra Esporta quando \n"
+"                             veniva eseguita l'esportazione in qualsiasi formato </li>\n"
+"                 </ul>       \n"
+"           </dd>\n"
+"\n"
+"           <dd> Effetti:\n"
+"                 <ul>  \n"
+"                       <li> Crash o interruzioni usando l'effetto Equalizzazione su tracce lunghe</li>\n"
+"                       <li> Rovescia non rovesciava i clip confinanti</li>\n"
+"                       <li> Nyquist:</li>\n"
+"                             <ul> \n"
+"                                   <li> Un eccessivo consumo di memoria portava a lente \n"
+"                                         elaborazioni o crash</li>\n"
+"                                   <li> I valori che apparivano nei riquadri di testo non sempre \n"
+"                                         erano i valori predefiniti o precedentemente introdotti</li>\n"
+"                                   <li> Errori avviando localizzazione europee in cui \n"
+"                                         la virgola era usata come separatore decimale</li>\n"
+"                              </ul>\n"
+"                       <li> Gli effetti VST restavano nel menu Effetti anche quando riesaminati e \n"
+"                             non più disponibili </li> \n"
+"                       <li> Tronca Silenzio produceva risultati non corretti se i silenzi \n"
+"                             superavano un limite di blocco </li>    \n"
+"\n"
+"                 </ul>\n"
+"           </dd>\n"
+"\n"
+"           <dd> Altre correzioni di errori: \n"
+"                 <ul> \n"
+"                       <li> Errori che simulavano \"non scrivibile/disco pieno\" nel salvataggio dei progetti </li>\n"
+"                       <li> La riproduzione, il rendering o l'esportazione di tracce multiple portava a \n"
+"                             una riproduzione non sincronizzata o a perdita di dati audio </li>\n"
+"                       <li> Crash aprendo le Preferenze quando non erano abilitati o collegati\n"
+"                             dispositivi di registrazione e/o riproduzione </li>\n"
+"                       <li> Finestra Preferenze: il pulsante OK non rispondeva alla pressione del tasto Invio \n"
+"                             quando era selezionata una scheda nel pannello a sinistra </li>\n"
+"                       <li> Gestione del pulsante Solo nel pannello Mixer</li> \n"
+"                       <li> <i>(Windows)</i> Dopo periodi di corretto avvio, Audacity\n"
+"                              alcune volte all'avvio non appariva davanti</li>\n"
+"                       <li> <i>(Mac OS X)</i> La cartella Help correttamente installata\n"
+"                              non poteva essere trovata</li>  \n"
+"                       <li> <i>(Mac OS X e Linux)</i> Il cursore di uscita poteva influire \n"
+"                              sul monitor di riproduzione che poi non rifletteva il reale livello del volume\n"
+"                              della forma d'onda</li>\n"
+"                       <li> <i>(Linux)</i> L'annullamento o il ripristino di una modifica nelle etichette poteva causare \n"
+"                              un crash</li>\n"
+"                 </ul>\n"
+"           </dd>\n"
+
+#: download/features-1.3-a.php:89
+msgid ""
+"\n"
+"   <dt> Changes and improvements:</dt>\n"
+"           <dd>\n"
+"                 <ul>\n"
+"                       <li> Linked audio and label tracks disabled until a future Beta\n"
+"                             version so they can be bug fixed</li>\n"
+"                       <li> Input volume slider will be disabled if it doesn't have proper\n"
+"                             control of system slider; use the system slider instead</li>\n"
+"                       <li> Proper support for copying/pasting label-with-audio including \n"
+"                             label text; new Edit > Paste Text to New Label menu item to\n"
+"                             paste system clipboard </li>    \n"
+"                       <li> Contrast Tool now modeless, more intuitive handling of multiple\n"
+"                             project windows, various other minor improvements </li>\n"
+"                 </ul>\n"
+"           </dd>\n"
+"</dl>\n"
+"<p>\n"
+"Please be aware of \n"
+"<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.10#Known_Issues_at_Release\">\n"
+"Known Issues at Release</a> (also viewable in the included README.txt).\n"
+"</p>\n"
+msgstr ""
+"\n"
+"   <dt> Modifiche e miglioramenti:</dt>\n"
+"           <dd>\n"
+"                 <ul>\n"
+"                       <li> Disabilitato collegamento tracce audio ed etichette fino a una futura versione\n"
+"                             Beta quando verrà corretto un errore</li>\n"
+"                       <li> Il cursore del volume di ingresso verrà disabilitato se non vi è un appropriato\n"
+"                             controllo del cursore di sistema; si deve usare invece il cursore di sistema</li>\n"
+"                       <li> Adeguato supporto per copia/incolla etichetta-con-audio che comprende \n"
+"                            testo nell'etichetta; ora vi è una nuova voce Modifica > Incolla testo in nuova etichetta \n"
+"                             che utilizza la clipboard di sistema </li>    \n"
+"                       <li> Lo strumento Contrasto ora senza modalità, gestione intuitiva di multiple\n"
+"                            finestre progetto, e vari altri miglioramenti minori </li>\n"
+"                 </ul>\n"
+"           </dd>\n"
+"</dl>\n"
+"<p>\n"
+"Dovete inoltre vedere \n"
+"<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.10#Known_Issues_at_Release\">\n"
+"Problemi conosciuti nella versione</a> (disponibile anche nell'incluso file README.txt).\n"
+"</p>\n"
+
+#: download/features-1.3-a.php:112
 msgid "New in Audacity 1.3.9"
 msgstr "Novità in Audacity 1.3.9"
 
-#: download/features-1.3-a.php:29
+#: download/features-1.3-a.php:114
 msgid ""
 "\n"
 "<dl>\n"
@@ -2327,11 +2527,11 @@ msgstr ""
 "Problemi conosciuti delle versioni</a> (inoltre visionabili nell'incluso file README.txt).\n"
 "</p>\n"
 
-#: download/features-1.3-a.php:92
+#: download/features-1.3-a.php:177
 msgid "New in Audacity 1.3.8"
 msgstr "Novità in Audacity 1.3.8"
 
-#: download/features-1.3-a.php:94
+#: download/features-1.3-a.php:179
 msgid ""
 "\n"
 "<dl>\n"
@@ -2479,7 +2679,7 @@ msgstr ""
 "Problemi conosciuti delle versioni</a> (visionabili inoltre nell'incluso file README.txt).\n"
 "</p>\n"
 
-#: download/features-1.3-a.php:169
+#: download/features-1.3-a.php:254
 msgid "New in Audacity 1.3.7"
 msgstr "Novità in Audacity 1.3.7"
 
@@ -2487,8 +2687,7 @@ msgstr "Novità in Audacity 1.3.7"
 #. old versions of Audacity, which have never been
 #. translated up to now. Feel free to translate
 #. them as a low priority.
-#: download/features-1.3-a.php:175
-#, fuzzy
+#: download/features-1.3-a.php:260
 msgid ""
 "<dl>\n"
 "\t<dt> Improvements and new features </dt>\n"
@@ -2623,7 +2822,7 @@ msgstr ""
 #. old versions of Audacity, which have never been
 #. translated up to now. Feel free to translate
 #. them as a low priority.
-#: download/features-1.3-a.php:231
+#: download/features-1.3-a.php:316
 msgid ""
 "<dd>Platform-specific Bug Fixes:\n"
 "                <ul>\n"
@@ -2652,8 +2851,34 @@ msgid ""
 "Please see the included README.txt for full details of changes, and for issues known at time of Release.\n"
 "</p>"
 msgstr ""
+"<dd>Errori corretti per specifiche piattaforme:\n"
+"                <ul>\n"
+"                     <li><i>Windows Vista:</i> corretto crash all'apertura delle Preferenze quando non vi\n"
+"                         dispositivi audio abilitati e collegati </li>\n"
+"                     <li><i>Mac OS X e Linux:</i></li>\n"
+"                         <ul>      \n"
+"                                <li>Corretti fenomeni di clipping spurio, digitazione di etichette, mancanza di scorciatoie\n"
+"                                     dopo l'avvio degli effetti</li>                           \n"
+"                                <li>La frequenza del progetto ora cambia sempre in relazione a quella del \n"
+"                                   primo file importato</li>\n"
+"                         </ul>\n"
+"                     <li><i>Mac OS X solo:</i></li>\n"
+"                         <ul>\n"
+"                                <li>Corretti menu inattivi o corrotti, dialoghi nascosti, \n"
+"                                     impostazioni portabili non riconosciute, e impossibilità a impostare \n"
+"                                     indipendenti scorciatoie con Command e Control</li>\n"
+"                                <li>Disponibile ora l'installer FFmpeg</li>\n"
+"                         </ul> \n"
+"                </ul>\n"
+"         </dd>    \n"
+"   </dt>    \n"
+"</dl>\n"
+"\n"
+"<p>\n"
+"Si prega di vedere l'incluso file README.txt per le informazioni dettagliate delle modifiche, e per i problemi conosciuti al momento del rilascio.\n"
+"</p>"
 
-#: download/features-1.3-a.php:258
+#: download/features-1.3-a.php:343
 msgid "New in Audacity 1.3.6"
 msgstr "Novità in Audacity 1.3.6"
 
@@ -2661,7 +2886,7 @@ msgstr "Novità in Audacity 1.3.6"
 #. old versions of Audacity, which have never been
 #. translated up to now. Feel free to translate
 #. them as a low priority.
-#: download/features-1.3-a.php:264
+#: download/features-1.3-a.php:349
 msgid ""
 "<dl>\n"
 "\t<dt> Major new capabilities </dt>\n"
@@ -2731,7 +2956,7 @@ msgstr ""
 "   </dt>\n"
 "</dl>"
 
-#: download/features-1.3-a.php:298
+#: download/features-1.3-a.php:383
 msgid "New in Audacity 1.3.5"
 msgstr "Novità in Audacity 1.3.5"
 
@@ -2739,7 +2964,7 @@ msgstr "Novità in Audacity 1.3.5"
 #. old versions of Audacity, which have never been
 #. translated up to now. Feel free to translate
 #. them as a low priority.
-#: download/features-1.3-a.php:304
+#: download/features-1.3-a.php:389
 msgid ""
 "<dl>\n"
 "\t<dt> Recording / Playback </dt>\n"
@@ -2873,7 +3098,7 @@ msgstr ""
 "       </dt>\n"
 "</dl>"
 
-#: download/features-1.3-a.php:370
+#: download/features-1.3-a.php:455
 msgid "New in Audacity 1.3.4"
 msgstr "Novità in Audacity 1.3.4"
 
@@ -2881,7 +3106,7 @@ msgstr "Novità in Audacity 1.3.4"
 #. old versions of Audacity, which have never been
 #. translated up to now. Feel free to translate
 #. them as a low priority.
-#: download/features-1.3-a.php:376
+#: download/features-1.3-a.php:461
 msgid ""
 "<dl>\n"
 "  <dt></dt>\n"
@@ -3033,7 +3258,7 @@ msgstr ""
 "  </dd>\n"
 "</dl>"
 
-#: download/features-1.3-a.php:451
+#: download/features-1.3-a.php:536
 msgid "New features in Audacity 1.3.3"
 msgstr "Nuove funzionalità in Audacity 1.3.3"
 
@@ -3041,7 +3266,7 @@ msgstr "Nuove funzionalità in Audacity 1.3.3"
 #. old versions of Audacity, which have never been
 #. translated up to now. Feel free to translate
 #. them as a low priority.
-#: download/features-1.3-a.php:457
+#: download/features-1.3-a.php:542
 msgid ""
 "<dl>\n"
 "  <dt></dt>\n"
@@ -3157,72 +3382,72 @@ msgstr ""
 "  </dd>\n"
 "</dl>"
 
-#: download/features-1.3-a.php:514
+#: download/features-1.3-a.php:599
 msgid "New features in Audacity 1.3.1 and 1.3.2"
 msgstr "Nuove funzionalità in Audacity 1.3.1 e 1.3.2"
 
-#: download/features-1.3-a.php:517
+#: download/features-1.3-a.php:602
 #: download/features-1.3-i.php:70
 msgid "Improved Toolbar Docking"
 msgstr "Migliorato ancoraggio della barra degli strumenti"
 
-#: download/features-1.3-a.php:518
+#: download/features-1.3-a.php:603
 msgid "Track focus for improved keyboard navigation"
 msgstr "Evidenziazione traccia per una migliorata navigazione con la tastiera"
 
-#: download/features-1.3-a.php:519
+#: download/features-1.3-a.php:604
 #: download/features-1.3-i.php:77
 #: download/features-1.3-k.php:36
 msgid "Repair and Equalization effects"
 msgstr "Effetti Ripara ed Equalizzazione"
 
-#: download/features-1.3-a.php:520
+#: download/features-1.3-a.php:605
 #: download/features-1.3-j.php:71
 #: download/features-1.3-l.php:46
 msgid "Timer Recording"
 msgstr "Programma registrazione"
 
-#: download/features-1.3-a.php:521
+#: download/features-1.3-a.php:606
 #: download/features-1.3-d.php:56
 #: download/features-1.3-k.php:43
 msgid "Project saving and recovery"
 msgstr "Salvataggio e recupero dei progetti"
 
-#: download/features-1.3-a.php:522
+#: download/features-1.3-a.php:607
 #: download/features-1.3-f.php:40
 #: download/features-1.3-l.php:53
 msgid "Selection Bar"
 msgstr "Barra Selezione"
 
-#: download/features-1.3-a.php:523
+#: download/features-1.3-a.php:608
 #: download/features-1.3-b.php:50
 #: download/features-1.3-d.php:63
 msgid "Mac OS X features"
 msgstr "Funzionalità per Mac OS X"
 
-#: download/features-1.3-a.php:526
+#: download/features-1.3-a.php:611
 msgid "New features in Audacity 1.3.0"
 msgstr "Nuove funzionalità in Audacity 1.3.0"
 
-#: download/features-1.3-a.php:529
+#: download/features-1.3-a.php:614
 #: download/features-1.3-c.php:259
 #: download/features-1.3-f.php:47
 msgid "Collapse/Expand Tracks"
 msgstr "Collassa/Espandi tracce"
 
-#: download/features-1.3-a.php:530
+#: download/features-1.3-a.php:615
 #: download/features-1.3-b.php:56
 #: download/features-1.3-e.php:67
 msgid "Multiple clips per track"
 msgstr "Clip multipli per traccia"
 
-#: download/features-1.3-a.php:531
+#: download/features-1.3-a.php:616
 #: download/features-1.3-c.php:266
 #: download/features-1.3-g.php:54
 msgid "Improved Label Tracks"
 msgstr "Migliorate Tracce etichetta"
 
-#: download/features-1.3-a.php:532
+#: download/features-1.3-a.php:617
 #: download/features-1.3-e.php:74
 msgid "Other features"
 msgstr "Altre funzionalità"
@@ -5526,10 +5751,172 @@ msgid "%B %d, %Y"
 msgstr "%d %B %Y"
 
 #: include/news.inc.php:45
+msgid "Audacity 1.3.10 released"
+msgstr "Rilasciato Audacity 1.3.10"
+
+#: include/news.inc.php:46
+msgid ""
+"\n"
+"<p>\n"
+"The Audacity Team is pleased to announce the release of\n"
+"<a href=\"/download\">Audacity 1.3.10 (Beta)</a> for Windows, \n"
+"Mac and Linux/Unix. This release removes a significant \n"
+"number of crash or freeze problems and other major bugs.  \n"
+"It brings us very close to our goal of a new 2.0 Release.\n"
+"</p>        \n"
+"<p> 1.3.10 is strongly recommended for users on Windows \n"
+"Vista and 7, rather than 1.2.6 Stable. We ask everyone to help \n"
+"us test 1.3.10 and  \n"
+"<a href=\"http://audacity.sourceforge.net/contact/#feedback\">\n"
+"let us know</a> of any problems you find. Advanced users are \n"
+"encouraged to test our latest fixes as we make them by \n"
+"downloading our \n"
+"<a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">\n"
+"Nightly Builds</a>. We hope a final 1.3.11 Beta will follow soon. Please\n"
+"<a href=\"http://audacity.sourceforge.net/#announce\">\n"
+"subscribe</a> to receive news of all our releases.    \n"
+"</p>\n"
+"<p>\n"
+"<b>Summary of Changes in 1.3.10:</b>\n"
+"<div style=\"width:60%;padding-left:4em\">\n"
+"<dl>\n"
+"\t<dt> Imports/Exports bug fixes: </dt>\n"
+"\t      <dd>   \n"
+"                <ul>  \n"
+"                      <li>Freeze importing audio files in Pitch (EAC) view</li> \n"
+"                      <li>Corrupted WAV or AIFF imports and WMA exports</li>\n"
+"                      <li>Metadata Editor appeared before the Export window</li>\n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"   <dt> Effects bug fixes: </dt>\n"
+"         <dd>\n"
+"                <ul> \n"
+"                      <li> Crash/hang using Equalization; errors in Reverse \n"
+"                            and Truncate Silence</li>\n"
+"                      <li> Nyquist: Excessive memory consumption; errors in\n"
+"                            European locales; inaccurate text box values</li>\n"
+"                      <li> VST effects remained in menu when no longer available</li> \n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"   <dt> Other bug fixes:</dt>\n"
+"         <dd>\n"
+"                <ul>\n"
+"                      <li> Spurious \"not writable/disk full\" errors when saving \n"
+"                            projects</li>\n"
+"                      <li> Desynchronized playback/data loss when using multiple \n"
+"                            tracks</li>\n"
+"                      <li> Crash opening Preferences when no valid devices present</li>\n"
+"                      <li> <i>(Windows)</i> Audacity sometimes did not come up on \n"
+"                            top at launch</li>\n"
+"                      <li> <i>(Linux)</i> Crash when undoing or redoing label edits</li>\n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"   <dt> Improvements:</dt>\n"
+"         <dd>   \n"
+"                <ul>\n"
+"                      <li> Improved copying/pasting of label-with-audio and \n"
+"                            system clipboard text</li>\n"
+"                      <li> Contrast Tool now modeless, intuitive handling of \n"
+"                            multiple project windows, various other improvements</li>\n"
+"                </ul>\n"
+"         </dd>\n"
+"</dl>\n"
+"</div>\n"
+"</p>\n"
+"<p>See \n"
+"<a href=\"http://audacity.sourceforge.net/download/features-1.3-a#details\">   \n"
+"Changes in Audacity 1.3.10</a> for more on 1.3.10 and the Beta series. <b>Note:</b> \n"
+"This release does not support Windows 98 or ME, for which 1.3.7 is \n"
+"<a href=\"http://audacity.sourceforge.net/download/beta_windows#recdown\">\n"
+"still available</a>. \n"
+"</p>\n"
+msgstr ""
+"\n"
+"<p>\n"
+"L'Audacity Team è lieto di annunciare il rilascio della versione\n"
+"<a href=\"/download\">Audacity 1.3.10 (Beta)</a> per Windows, \n"
+"Mac e Linux/Unix. Questa versione elimina un significativo \n"
+"numero di crash o corregge problemi e altri importanti errori.  \n"
+"Questa versione ci porta molto vicino alla nuova versione 2.0.\n"
+"</p>        \n"
+"<p>La versione 1.3.10 è fortemente raccomandata per gli utenti Windows \n"
+"Vista e 7, invece della versione stabile 1.2.6. Chiediamo a ognuno di voi di aiutarci \n"
+"provando la versione 1.3.10 e  \n"
+"<a href=\"http://audacity.sourceforge.net/contact/#feedback\">\n"
+"comunicandoci</a> qualsiasi problema troviate. Gli utenti esperti sono \n"
+"invitati a provare le nostre ultime correzioni eseguite \n"
+"scaricando i nostri \n"
+"<a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">\n"
+"Nightly Builds</a>. Ci auguriamo che seguirà presto una versione 1.3.11 Beta. Siete invitati a\n"
+"<a href=\"http://audacity.sourceforge.net/#announce\">\n"
+"iscrivervi</a> per ricevere comunicazioni sulle novità delle versioni.    \n"
+"</p>\n"
+"<p>\n"
+"<b>Sommario delle modifiche nella versione 1.3.10:</b>\n"
+"<div style=\"width:60%;padding-left:4em\">\n"
+"<dl>\n"
+"\t<dt> Errori corretti nelle funzioni di importazione/esportazione: </dt>\n"
+"\t      <dd>   \n"
+"                <ul>  \n"
+"                      <li>Importazione file audio bloccata in vista Intonazione (EAC)</li> \n"
+"                      <li>Importazione file WAV o AIFF ed esportazione file WMA corrotte</li>\n"
+"                      <li>L'Editor metadati appariva prima della finestra Esporta</li>\n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"   <dt> Errori corretti negli Effetti: </dt>\n"
+"         <dd>\n"
+"                <ul> \n"
+"                      <li> Crash/interruzione usando l'effetto Equalizzazione; errori negli effetti Rovescia \n"
+"                            e Tronca Silenzio</li>\n"
+"                      <li> Nyquist: Eccessivo consumo di memoria; errori nelle\n"
+"                            localizzazioni europee; valori inaccurati nei riquadri di testo</li>\n"
+"                      <li> Gli effetti VST restavano nel menu quando non erano più disponibili</li> \n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"   <dt> Altri errori corretti:</dt>\n"
+"         <dd>\n"
+"                <ul>\n"
+"                      <li> Errori che simulavano \"non scrivibile/disco pieno\" nel salvataggio dei \n"
+"                            progetti</li>\n"
+"                      <li> Riproduzione non sincronizzata/perdita di dati utilizzando \n"
+"                            tracce multiple</li>\n"
+"                      <li> Crash aprendo le Preferenze quando presenti dispositivi non validi</li>\n"
+"                      <li> <i>(Windows)</i> Audacity alcune volte non appariva davanti \n"
+"                           all'avvio</li>\n"
+"                      <li> <i>(Linux)</i> Crash quando si annullavano o ripristinavano modifiche delle etichette</li>\n"
+"                </ul>\n"
+"         </dd>\n"
+"\n"
+"   <dt> Miglioramenti:</dt>\n"
+"         <dd>   \n"
+"                <ul>\n"
+"                      <li> Migliorato funzione di copia/incolla etichette-con-audio e \n"
+"                            del testo nella clipboard di sistema</li>\n"
+"                      <li> Lo strumento Contrasto ora senza modalità, gestione intuitiva di \n"
+"                           multiple finestre progetto, vari altri miglioramenti</li>\n"
+"                </ul>\n"
+"         </dd>\n"
+"</dl>\n"
+"</div>\n"
+"</p>\n"
+"<p>Vedere \n"
+"<a href=\"http://audacity.sourceforge.net/download/features-1.3-a#details\">   \n"
+"Modifiche in Audacity 1.3.10</a> per avere maggiori informazioni sulla versione 1.3.10 e le serie Beta. <b>Nota:</b> \n"
+"Questa versione non supporta Windows 98 o ME, per i quali è ancora disponibile \n"
+"<a href=\"http://audacity.sourceforge.net/download/beta_windows#recdown\">\n"
+"la versione 1.3.7.</a>. \n"
+"</p>\n"
+
+#: include/news.inc.php:128
 msgid "Audacity 1.3.9 released, Google Summer of Code (GSoC) 2009 completed"
 msgstr "Rilasciato Audacity 1.3.9, completato il Google Summer of Code (GSoC) 2009"
 
-#: include/news.inc.php:46
+#: include/news.inc.php:129
 msgid ""
 "\n"
 "<p>\n"
@@ -5651,11 +6038,11 @@ msgstr ""
 "ancora disponibile</a>. \n"
 "</p>\n"
 
-#: include/news.inc.php:110
+#: include/news.inc.php:193
 msgid "SourceForge.net Community Choice Awards 2009"
 msgstr "SourceForge.net Community Choice Awards 2009"
 
-#: include/news.inc.php:111
+#: include/news.inc.php:194
 msgid ""
 "\n"
 "<p>\n"
@@ -5679,11 +6066,11 @@ msgstr ""
 "supporto negli anni!\n"
 "</p>\n"
 
-#: include/news.inc.php:126
+#: include/news.inc.php:209
 msgid "Audacity 1.3.8 released"
 msgstr "Rilasciato Audacity 1.3.8"
 
-#: include/news.inc.php:127
+#: include/news.inc.php:210
 msgid ""
 "\n"
 "<p>\n"
@@ -5757,11 +6144,11 @@ msgstr ""
 "disponibile la versione 1.3.7</a>. \n"
 "</p>\n"
 
-#: include/news.inc.php:167
+#: include/news.inc.php:250
 msgid "Linux Journal and Bestcovery Awards, and new \"Audacity compact\" book"
 msgstr "Linux Journal e Bestcovery Awards, e il nuovo libro \"Audacity compact\""
 
-#: include/news.inc.php:168
+#: include/news.inc.php:251
 msgid ""
 "\n"
 "<p>\n"
@@ -5891,11 +6278,11 @@ msgstr ""
 "</tr>\n"
 "</table>\n"
 
-#: include/news.inc.php:236
+#: include/news.inc.php:319
 msgid "Audacity is mentoring two Google Summer of Code (GSoC) 2009 students"
 msgstr "Audacity è guida per due studenti al Google Summer of Code (GSoC) 2009 "
 
-#: include/news.inc.php:237
+#: include/news.inc.php:320
 msgid ""
 "\n"
 "<p>\n"
@@ -5937,11 +6324,11 @@ msgstr ""
 "\tCongratulazioni agli studenti approvati e grazie a tutti coloro che si sono applicati per l'interesse ad Audacity!\n"
 "</p>\n"
 
-#: include/news.inc.php:261
+#: include/news.inc.php:344
 msgid "Audacity 1.3.7 released"
 msgstr "Rilasciato Audacity 1.3.7"
 
-#: include/news.inc.php:262
+#: include/news.inc.php:345
 msgid ""
 "\n"
 "<p>\n"
@@ -6067,11 +6454,11 @@ msgstr ""
 "</p>\n"
 "<br>\n"
 
-#: include/news.inc.php:328
+#: include/news.inc.php:411
 msgid "Audacity 1.3.6 released"
 msgstr "Rilasciato Audacity 1.3.6"
 
-#: include/news.inc.php:329
+#: include/news.inc.php:412
 msgid ""
 "\n"
 "<p>\n"
@@ -6161,11 +6548,11 @@ msgstr ""
 "1.3.6 installati sullo stesso computer.\n"
 "</p>\n"
 
-#: include/news.inc.php:377
+#: include/news.inc.php:460
 msgid "German Audacity Book released"
 msgstr "Rilasciato un libro su Audacity in lingua tedesca"
 
-#: include/news.inc.php:378
+#: include/news.inc.php:461
 msgid ""
 "\n"
 "<p>\n"
@@ -6245,11 +6632,11 @@ msgstr ""
 "</table>\n"
 "</p>\n"
 
-#: include/news.inc.php:421
+#: include/news.inc.php:504
 msgid "Audacity shines in Google Summer of Code (GSoC) 2008"
 msgstr "Audacity brilla nel Google Summer of Code (GSoC) 2008"
 
-#: include/news.inc.php:422
+#: include/news.inc.php:505
 msgid ""
 "\n"
 "<p>\n"
@@ -6345,11 +6732,11 @@ msgstr ""
 "\"celebrano i migliori prodotti che l'open source offre\".  \n"
 "</p>    \n"
 
-#: include/news.inc.php:473
+#: include/news.inc.php:556
 msgid "Audacity in PC World 100 Best Products of 2008"
 msgstr "Audacity nel PC World 100 Best Products of 2008"
 
-#: include/news.inc.php:474
+#: include/news.inc.php:557
 msgid ""
 "\n"
 "<p>\n"
@@ -6427,11 +6814,11 @@ msgstr ""
 "<em>di PC Magazine</em> per il Migliore Software Libero.\n"
 "</p>\n"
 
-#: include/news.inc.php:516
+#: include/news.inc.php:599
 msgid "Audacity 1.3.5 Released"
 msgstr "Rilasciato Audacity 1.3.5"
 
-#: include/news.inc.php:517
+#: include/news.inc.php:600
 msgid ""
 "\n"
 "<p>\n"
@@ -6605,11 +6992,11 @@ msgstr ""
 "per avere ulteriori informazioni sulla serie delle versioni 1.3.x beta.\n"
 "</p>\n"
 
-#: include/news.inc.php:607
+#: include/news.inc.php:690
 msgid "Audacity is mentoring five Google Summer of Code (GSoC) 2008 students"
 msgstr "Audacity è stato guida per cinque studenti nel Google Summer of Code (GSoC) 2008"
 
-#: include/news.inc.php:608
+#: include/news.inc.php:691
 msgid ""
 "\n"
 "<p>\n"
@@ -6643,11 +7030,11 @@ msgstr ""
 "\tCongratulazioni ai cinque studenti approvati e grazie a tutti coloro che si sono applicati per l'interesse su Audacity!\n"
 "</p>\n"
 
-#: include/news.inc.php:628
+#: include/news.inc.php:711
 msgid "Audacity is a mentoring organization Google Summer of Code (GSoC) 2008 "
 msgstr "Audacity è una organizzazione guida di Google Summer of Code (GSoC) 2008 "
 
-#: include/news.inc.php:629
+#: include/news.inc.php:712
 msgid ""
 "\n"
 "<p>\n"
@@ -6681,11 +7068,11 @@ msgstr ""
 "\tGrazie per l'interesse!\n"
 "</p>\n"
 
-#: include/news.inc.php:649
+#: include/news.inc.php:732
 msgid "Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "
 msgstr "Invito per gli studenti! Richiedete <em>ORA</em> i progetti Audacity in Google Summer of Code (GSoC) 2008 "
 
-#: include/news.inc.php:650
+#: include/news.inc.php:733
 msgid ""
 "\n"
 "<p>\n"
@@ -6763,11 +7150,11 @@ msgstr ""
 "musica/audio, indirizzateli al nostro <a href=\"http://audacity.sourceforge.net/\">sito web</a> per queste informazioni.\n"
 "</p>\n"
 
-#: include/news.inc.php:692
+#: include/news.inc.php:775
 msgid "Audacity and Google Summer of Code (GSoC) 2008 "
 msgstr "Audacity e Google Summer of Code (GSoC) 2008 "
 
-#: include/news.inc.php:693
+#: include/news.inc.php:776
 msgid ""
 "\n"
 "<p>\n"
@@ -6823,11 +7210,11 @@ msgstr ""
 "musica/audio, indirizzateli al nostro <a href=\"http://audacity.sourceforge.net/\">sito web</a> per queste informazioni.\n"
 "</p>\n"
 
-#: include/news.inc.php:724
+#: include/news.inc.php:807
 msgid "LinuxQuestions.org Audio Authoring Award 2007"
 msgstr "LinuxQuestions.org Audio Authoring Award 2007"
 
-#: include/news.inc.php:725
+#: include/news.inc.php:808
 #, php-format
 msgid ""
 "\n"
@@ -6844,11 +7231,11 @@ msgstr ""
 "Applicazione di authoring audio dell'anno</a> nel 2007 LinuxQuestions.org Members Choice. LinuxQuestions.org è una attiva comunità Linux online. Nella votazione, Audacity ha ricevuto quasi il 70% dei 444 voti espressi. Grazie a chiunque abbia votato.\n"
 "</p>\n"
 
-#: include/news.inc.php:736
+#: include/news.inc.php:819
 msgid "Audacity 1.3.4 Released"
 msgstr "Rilasciato Audacity 1.3.4 "
 
-#: include/news.inc.php:737
+#: include/news.inc.php:820
 msgid ""
 "\n"
 "<p>\n"
@@ -6916,11 +7303,11 @@ msgstr ""
 "<a href=\"http://www.informit.com/store/product.aspx?isbn=0132366576&rl=1\">Podcasting with Audacity</a>.\n"
 "</p>\n"
 
-#: include/news.inc.php:774
+#: include/news.inc.php:857
 msgid "SourceForge Community Choice Awards 2007"
 msgstr "SourceForge Community Choice Awards 2007"
 
-#: include/news.inc.php:775
+#: include/news.inc.php:858
 msgid ""
 "\n"
 "<p>\n"
@@ -6944,11 +7331,11 @@ msgstr ""
 "coloro che hanno contribuito a rendere Audacity grande!\n"
 "</p>\n"
 
-#: include/news.inc.php:790
+#: include/news.inc.php:873
 msgid "Audacity 1.3.3 Released"
 msgstr "Rilasciato Audacity 1.3.3"
 
-#: include/news.inc.php:791
+#: include/news.inc.php:874
 msgid ""
 "\n"
 "<p>\n"
@@ -7088,11 +7475,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>\n"
 
-#: include/news.inc.php:864
+#: include/news.inc.php:947
 msgid "Audacity 1.3.2 and 1.2.5 Released"
 msgstr "Rilasciati Audacity 1.3.2 e 1.2.5"
 
-#: include/news.inc.php:865
+#: include/news.inc.php:948
 msgid ""
 "<p>\n"
 "The Audacity developers have been busy with many new features over\n"
@@ -7213,11 +7600,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>"
 
-#: include/news.inc.php:929
+#: include/news.inc.php:1012
 msgid "The Audacity Store Is Open"
 msgstr "Il negozio Audacity è aperto"
 
-#: include/news.inc.php:930
+#: include/news.inc.php:1013
 msgid ""
 "\n"
 "\t<p>You are invited to try out the new <a href=\"http://audacitystore.com/\">Audacity Store</a>, which features\n"
@@ -7299,11 +7686,11 @@ msgstr ""
 "\t</p>\n"
 "\t"
 
-#: include/news.inc.php:974
+#: include/news.inc.php:1057
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr "Rilasciato Audacity 1.2.4 e 1.3.0"
 
-#: include/news.inc.php:975
+#: include/news.inc.php:1058
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple of bug fixes and minor improvements and is recommended for all users.  Audacity 1.3.0 is a beta release that contains hundreds of <a href=\"/download/features-1.3-a\">new features</a>, but this version is unfinished and unstable, and is recommended primarily for advanced users.  You can install both Audacity 1.2 and 1.3 simultaneously.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">1.2.4 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.4, or see <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for information about the new beta version.</p>\n"
@@ -7317,11 +7704,11 @@ msgstr ""
 "<a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>.\n"
 "</p>"
 
-#: include/news.inc.php:985
+#: include/news.inc.php:1068
 msgid "Audacity 1.2.3 Released"
 msgstr "Rilasciato Audacity 1.2.3"
 
-#: include/news.inc.php:986
+#: include/news.inc.php:1069
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
