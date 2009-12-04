@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: Audacity 1.3\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-06 22:36+0000\n"
-"PO-Revision-Date: 2009-11-08 17:10+0100\n"
+"PO-Revision-Date: 2009-12-03 21:09+0100\n"
 "Last-Translator: Thomas De Rocker <thomasderocker@yahoo.com>\n"
 "Language-Team: Dutch <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -4951,7 +4951,7 @@ msgstr "Luistervoorbeeld niet beschikbaar"
 
 #: effects/AutoDuck.h:98
 msgid "Auto Duck..."
-msgstr "Automatsch dempen…"
+msgstr "Automatisch dempen…"
 
 #: effects/AutoDuck.h:115
 msgid "Processing Auto Duck..."
@@ -5228,7 +5228,7 @@ msgstr "Klik-verwijdering"
 
 #: effects/ClickRemoval.cpp:327
 msgid "Click and Pop Removal by Craig DeForest"
-msgstr "Click en pop verwijderen door Craig DeForest"
+msgstr "Klik-verwijdering door Craig DeForest"
 
 #: effects/ClickRemoval.cpp:341
 msgid "Select threshold (lower is more sensitive):"
@@ -5251,7 +5251,7 @@ msgstr "Maximum piekbreedte"
 # knarsen, kliks, klikken, clicks ...
 #: effects/ClickRemoval.h:42
 msgid "Click Removal..."
-msgstr "Clicks verwijderen…"
+msgstr "Klik-verwijdering…"
 
 #: effects/ClickRemoval.h:56
 msgid "Removing clicks and pops..."
@@ -9226,7 +9226,7 @@ msgstr "Muisgebruik"
 #: prefs/MousePrefs.cpp:121
 #: prefs/MousePrefs.cpp:126
 msgid "Left-Click"
-msgstr "Links-klikken"
+msgstr "Linksklikken"
 
 #: prefs/MousePrefs.cpp:102
 #: prefs/MousePrefs.cpp:103
@@ -9261,7 +9261,7 @@ msgstr "Selectie vergroten"
 
 #: prefs/MousePrefs.cpp:104
 msgid "Shift-Left-Click"
-msgstr "Shift-links-klikken"
+msgstr "Shift-linksklikken"
 
 #: prefs/MousePrefs.cpp:105
 msgid "Left-Double-Click"
@@ -9306,7 +9306,7 @@ msgstr "hetzelfde als rechts-slepen"
 #: prefs/MousePrefs.cpp:110
 #: prefs/MousePrefs.cpp:128
 msgid "Right-Click"
-msgstr "Rechts-klikken"
+msgstr "Rechtsklikken"
 
 #: prefs/MousePrefs.cpp:110
 #: prefs/MousePrefs.cpp:128
@@ -9379,7 +9379,7 @@ msgstr "Tekenen"
 
 #: prefs/MousePrefs.cpp:122
 msgid "Alt-Left-Click"
-msgstr "Alt-Links-klikken"
+msgstr "Alt-Linksklikken"
 
 # het gaat om de tekenfunctie
 #: prefs/MousePrefs.cpp:122
