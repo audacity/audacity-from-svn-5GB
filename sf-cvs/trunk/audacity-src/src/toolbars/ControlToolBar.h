@@ -69,7 +69,7 @@ class ControlToolBar:public ToolBar {
    void PlayDefault();
    
    // Stop playing
-   void StopPlaying();
+   void StopPlaying(bool stopStream = true);
 
    void Populate();
    virtual void Repaint(wxDC *dc);
