@@ -2178,10 +2178,16 @@ void AudioIO::FillBuffers()
                // The mixer here isn't actually mixing: it's just doing
                // resampling, format conversion, and possibly time track
                // warping
-               int processed =
-                  mPlaybackMixers[i]->Process(lrint(deltat * mRate));
-               samplePtr warpedSamples = mPlaybackMixers[i]->GetBuffer();
-               mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
+               int processed = 0;
+               samplePtr warpedSamples;
+               //don't do anything if we have no length.  In particular, Process() will fail an wxAssert
+               //that causes a crash since this is not the GUI thread and wxASSERT is a GUI call.
+               if(deltat > 0.0)
+               { 
+                  processed = mPlaybackMixers[i]->Process(lrint(deltat * mRate));
+                  warpedSamples = mPlaybackMixers[i]->GetBuffer();
+                  mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
+               }
                //if looping and processed is less than the full chunk/block/buffer that gets pulled from
                //other longer tracks, then we still need to advance the ring buffers or
                //we'll trip up on ourselves when we start them back up again.

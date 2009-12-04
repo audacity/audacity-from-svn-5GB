@@ -889,8 +889,10 @@ void TrackPanel::OnTimer()
             && !gAudioIO->IsMidiActive()
          #endif
       ) 
-   {
-      p->GetControlToolBar()->OnStop(dummyEvent);
+   {  
+      //the stream may have been started up after this one finished (by some other project)
+      //in that case reset the buttons don't stop the stream
+      p->GetControlToolBar()->StopPlaying(!gAudioIO->IsStreamActive());
       #ifdef EXPERIMENTAL_LYRICS_WINDOW
          // Reset lyrics display. 
          LyricsWindow* pLyricsWindow = p->GetLyricsWindow();
@@ -942,7 +944,7 @@ void TrackPanel::OnTimer()
    // AS: The "indicator" is the little graphical mark shown in the ruler
    //  that indicates where the current play/record position is.
    if (!gAudioIO->IsPaused() &&
-       (mIndicatorShowing || gAudioIO->IsStreamActive(p->GetAudioIOToken())))
+       ( mIndicatorShowing || gAudioIO->IsStreamActive(p->GetAudioIOToken())))
    {
       DrawIndicator();
    }
@@ -1288,8 +1290,13 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    // Drawing now goes directly to the client area
    wxClientDC cdc( this );
 
-   // Update the indicator in case it was damaged.
-   DoDrawIndicator( cdc );
+   // Update the indicator in case it was damaged if this project is playing
+   AudacityProject* p = GetProject();
+   if (!gAudioIO->IsPaused() &&
+       ( mIndicatorShowing || gAudioIO->IsStreamActive(p->GetAudioIOToken())))
+   {
+      DoDrawIndicator( cdc );
+   }
 
    // Draw the cursor
    if( mViewInfo->sel0 == mViewInfo->sel1)

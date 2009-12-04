@@ -701,12 +701,13 @@ void ControlToolBar::PlayDefault()
    mPlay->PopUp();
 }
 
-void ControlToolBar::StopPlaying()
+void ControlToolBar::StopPlaying(bool stopStream /* = true*/)
 {
    mStop->PushDown();
 
    SetStop(false);
-   gAudioIO->StopStream();
+   if(stopStream)
+      gAudioIO->StopStream();
    SetPlay(false);
    SetRecord(false);
 
@@ -717,7 +718,7 @@ void ControlToolBar::StopPlaying()
    mPause->PopUp();
    mPaused=false;
    //Make sure you tell gAudioIO to unpause
-   gAudioIO->SetPaused(mPaused);
+      gAudioIO->SetPaused(mPaused);
    
    ClearCutPreviewTracks();
 

@@ -1750,11 +1750,43 @@ void AudacityProject::OnPlayStop()
 {
    ControlToolBar *toolbar = GetControlToolBar();
 
-   //If busy, stop playing, make sure everything is unpaused.
+   //If this project is playing, stop playing, make sure everything is unpaused.
    if (gAudioIO->IsStreamActive(GetAudioIOToken())) {
       toolbar->SetPlay(false);        //Pops
       toolbar->SetStop(true);         //Pushes stop down
       toolbar->StopPlaying();
+   }
+   else if (gAudioIO->IsStreamActive()) {
+      //If this project isn't playing, but another one is, stop playing the old and start the new.
+
+      //find out which project we need;
+      AudacityProject* otherProject = NULL;
+      for(unsigned i=0; i<gAudacityProjects.GetCount(); i++) {
+         if(gAudioIO->IsStreamActive(gAudacityProjects[i]->GetAudioIOToken())) {
+            otherProject=gAudacityProjects[i];
+            break;
+         }
+      }
+      
+      //stop playing the other project
+      if(otherProject) {
+         ControlToolBar *otherToolbar = otherProject->GetControlToolBar();
+         otherToolbar->SetPlay(false);        //Pops
+         otherToolbar->SetStop(true);         //Pushes stop down
+         otherToolbar->StopPlaying();
+      }
+      
+      //play the front project
+      if (!gAudioIO->IsBusy()) {
+         //update the playing area
+         TP_DisplaySelection(); 
+         //Otherwise, start playing (assuming audio I/O isn't busy)
+         toolbar->SetPlay(true);
+         toolbar->SetStop(false);
+
+         // Will automatically set mLastPlayMode
+         toolbar->PlayCurrentRegion(false);
+      }
    }
    else if (!gAudioIO->IsBusy()) {
       //Otherwise, start playing (assuming audio I/O isn't busy)

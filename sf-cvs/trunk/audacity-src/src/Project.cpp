@@ -1620,7 +1620,10 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
       UpdateFirstVisible();
    }
 
-   SetActiveProject(this);
+   //mchinen: do not always set this project to be the active one.
+   //a project may autoscroll while playing in the background
+   //I think this is okay since OnMouseEvent has one of these.
+   //SetActiveProject(this);
 
    if (!mAutoScrolling) {
       mTrackPanel->Refresh(false);
