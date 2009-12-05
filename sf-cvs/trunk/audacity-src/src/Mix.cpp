@@ -452,13 +452,14 @@ sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
    int c;
    double t = *pos / track->GetRate();
    double trackEndTime = track->GetEndTime();
+   double tEnd = trackEndTime > mT1 ? mT1 : trackEndTime;
 
-   //don't process if we're at the end of the track.
-   if (t>=trackEndTime)
+   //don't process if we're at the end of the selection or track.
+   if (t>=tEnd)
       return 0;
-   //if we're about to approach the end of the track, figure out how much we need to grab 
-   if (t + slen/track->GetRate() > trackEndTime)
-      slen = (int)((trackEndTime - t) * track->GetRate() + 0.5);
+   //if we're about to approach the end of the track or selection, figure out how much we need to grab 
+   if (t + slen/track->GetRate() > tEnd)
+      slen = (int)((tEnd - t) * track->GetRate() + 0.5);
 
    if (slen > mMaxOut)
       slen = mMaxOut;
