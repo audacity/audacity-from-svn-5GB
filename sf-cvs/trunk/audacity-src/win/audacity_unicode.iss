@@ -19,6 +19,7 @@ AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
 ChangesAssociations=yes
+; Change the following line for a Stable release, to what I din't know (MJS)
 DefaultDirName={pf}\Audacity 1.3 Beta (Unicode)
 ; Always warn if dir exists, because we'll overwrite previous Audacity.
 DirExistsWarning=yes
@@ -56,7 +57,6 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: desktopicon; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"
 ; No longer allow user to choose whether to associate AUP file type with Audacity.
 ; Name: associate_aup; Description: "&Associate Audacity project files"; GroupDescription: "Other tasks:"; Flags: checkedonce
-
 
 [Files]
 ; Don't display in separate window, rather as InfoAfterFile.   Source: "..\README.txt"; DestDir: "{app}"; Flags: ignoreversion isreadme
@@ -131,6 +131,7 @@ Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; Va
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
+
 
 
 
