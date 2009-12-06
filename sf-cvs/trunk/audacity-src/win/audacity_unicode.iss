@@ -106,6 +106,9 @@ Type: files; Name: "{app}\Microsoft.VC80.CRT.manifest"
 Type: files; Name: "{app}\msvcp80.dll"
 Type: files; Name: "{app}\msvcr80.dll"
 
+; Get rid of previous help folder.
+Type: filesandordirs; Name: "{app}\help"
+
 ; Don't want to do this because user may have stored their own.
 ;   Type: filesandordirs; Name: "{app}\vst"
 
@@ -131,6 +134,7 @@ Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; Va
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
+
 
 
 
