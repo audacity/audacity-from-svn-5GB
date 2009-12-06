@@ -22,6 +22,7 @@
 *****************************************************************************/
 
 #include "switches.h"
+#include <sys/resource.h>
 
 #ifdef UNIX
 #include <sys/param.h>
@@ -376,6 +377,7 @@ void eventwait(timeout)
     struct timeval unix_timeout;
     struct timeval *waitspec = NULL;
     fd_set readfds;
+    struct rlimit file_limit;
 
     FD_ZERO(&readfds);
     FD_SET(MI_CONNECTION(midiconn), &readfds);
@@ -387,7 +389,8 @@ void eventwait(timeout)
     unix_timeout.tv_usec = (timeout - (unix_timeout.tv_sec * 1000)) * 1000;
     waitspec = &unix_timeout;
     }
-    select(NOFILE+1, &readfds, 0, 0, waitspec);
+    getrlimit(RLIMIT_NOFILE, &file_limit);
+    select(file_limit.rlim_max+1, &readfds, 0, 0, waitspec);
     return;
 }
 #else /* !UNIX_ITC */
@@ -424,6 +427,7 @@ void eventwait(timeout)
 {
     struct timeval unix_timeout;
     struct timeval *waitspec = NULL;
+    struct rlimit file_limit;
 
     if (timeout >= 0) {
     timeout -= gettime();   /* convert to millisecond delay */
@@ -431,7 +435,8 @@ void eventwait(timeout)
     /* remainder become microsecs: */
     unix_timeout.tv_usec = (timeout - (unix_timeout.tv_sec * 1000)) * 1000;
     waitspec = &unix_timeout;
-    select(NOFILE+1, 0, 0, 0, waitspec);
+    getrlimit(RLIMIT_NOFILE, &file_limit);
+    select(file_limit.rlim_max+1, 0, 0, 0, waitspec);
     } else {
     int c = getc(stdin);
     ungetc(c, stdin);
@@ -445,6 +450,7 @@ void eventwait(timeout)
     struct timeval unix_timeout;
     struct timeval *waitspec = NULL;
     int readfds = 1 << IOinputfd;
+    struct rlimit file_limit;
 
     if (timeout >= 0) {
     timeout -= gettime();   /* convert to millisecond delay */
@@ -453,7 +459,8 @@ void eventwait(timeout)
     unix_timeout.tv_usec = (timeout - (unix_timeout.tv_sec * 1000)) * 1000;
     waitspec = &unix_timeout;
     }
-    select(NOFILE+1, &readfds, 0, 0, waitspec);
+    getrlimit(RLIMIT_NOFILE, &file_limit);
+    select(file_limit.rlim_max+1, &readfds, 0, 0, waitspec);
     return;
 }
 #endif /* BUFFERED_SYNCHRONOUS_INPUT */
