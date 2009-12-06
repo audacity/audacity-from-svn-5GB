@@ -113,14 +113,10 @@ void ODFLACFile::error_callback(FLAC__StreamDecoderErrorStatus status)
 
 //the inside of the read loop.
 FLAC__StreamDecoderWriteStatus ODFLACFile::write_callback(const FLAC__Frame *frame,
-							  const FLAC__int32 * const buffer[])
+                       const FLAC__int32 * const buffer[])
 {
-
-   float testfdb;
-   float testfb;
-   int   testi;
    
-   int bytesToCopy = frame->header.blocksize;
+   unsigned int bytesToCopy = frame->header.blocksize;
    if(bytesToCopy>mDecoder->mDecodeBufferLen-mDecoder->mDecodeBufferWritePosition)
       bytesToCopy=mDecoder->mDecodeBufferLen-mDecoder->mDecodeBufferWritePosition;
       

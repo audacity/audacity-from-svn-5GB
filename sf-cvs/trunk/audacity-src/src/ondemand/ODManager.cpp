@@ -322,7 +322,8 @@ void ODManager::Start()
       paused=mPause;
       mPauseLock.Unlock();
       
-      while(!paused && tasksInArray&& mCurrentThreads < mMaxThreads)
+      // keep adding tasks if there is work to do, up to the limit.
+      while(!paused && tasksInArray && (mCurrentThreads < mMaxThreads))
       {
          mCurrentThreads++;
          mCurrentThreadsMutex.Unlock();
@@ -352,8 +353,10 @@ void ODManager::Start()
       mCurrentThreadsMutex.Unlock();
       //use a conditon variable to block here instead of a sleep.  
 
+      // JKC: If there are no tasks ready to run, or we're paused then 
+      // we wait for there to be tasks in the queue.
       mQueueNotEmptyCondLock.Lock();
-      if(tasksInArray<=0 || paused)
+      if( (!tasksInArray) || paused)
          mQueueNotEmptyCond->Wait();
       mQueueNotEmptyCondLock.Unlock();  
       
@@ -366,7 +369,7 @@ void ODManager::Start()
       //redraw the current project only (ODTasks will send a redraw on complete even if the projects are in the background)
       //we don't want to redraw at a faster rate when we have more queues because
       //this means the CPU is already taxed.  This if statement normalizes the rate
-      if(mNeedsDraw>numQueues && numQueues)
+      if((mNeedsDraw>numQueues) && numQueues)
       {
          mNeedsDraw=0;
          wxCommandEvent event( EVT_ODTASK_UPDATE );
