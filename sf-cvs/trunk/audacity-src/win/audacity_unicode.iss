@@ -19,8 +19,11 @@ AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
 ChangesAssociations=yes
-; Change the following line for a Stable release, to what I din't know (MJS)
+
+; For a beta release, e.g.:   DefaultDirName={pf}\Audacity 1.3 Beta (Unicode)
+; For a stable release:   DefaultDirName={pf}\Audacity
 DefaultDirName={pf}\Audacity 1.3 Beta (Unicode)
+
 ; Always warn if dir exists, because we'll overwrite previous Audacity.
 DirExistsWarning=yes
 DisableProgramGroupPage=yes
@@ -134,6 +137,7 @@ Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; Va
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
+
 
 
 
