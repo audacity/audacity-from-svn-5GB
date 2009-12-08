@@ -70,7 +70,6 @@ ascii_input = poll for char + CR->EOL conversion
 */
 
 #include "switches.h"
-#include <sys/resource.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -134,6 +133,7 @@ extern struct condition a_cond, a_in_cond;
 
 #ifdef UNIX
 #include <sys/param.h>
+#include <sys/resource.h>
 #include "cmtio.h"
 #ifdef _IBMR2
 #define NBBY 8
