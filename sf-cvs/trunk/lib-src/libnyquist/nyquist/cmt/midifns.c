@@ -22,9 +22,9 @@
 *****************************************************************************/
 
 #include "switches.h"
-#include <sys/resource.h>
 
 #ifdef UNIX
+#include <sys/resource.h>
 #include <sys/param.h>
 #ifndef OPEN_MAX
 /* this is here for compiling the UNIX version under AIX. This is a BSDism */
