@@ -3378,7 +3378,11 @@ bool AudacityProject::SaveAs(bool bWantSaveCompressed /*= false*/)
       fName = FileSelector(_("Save Project As..."),
                     path, fName, wxT(""),
                     _("Audacity projects (*.aup)|*.aup"),
-                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxRESIZE_BORDER, this);
+      // JKC: I removed 'wxFD_OVERWRITE_PROMPT' because we are checking 
+      // for overwrite ourselves later, and we disallow it.
+      // We disallow overwrite because we would have to delete the many
+      // smaller files too, or prompt to move them.
+                    wxFD_SAVE |  wxRESIZE_BORDER, this);
    }
 
    if (fName == wxT(""))
