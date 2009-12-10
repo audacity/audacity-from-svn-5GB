@@ -3003,7 +3003,7 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
    }  // end recording VU meter update
 
    // Stop recording if 'silence' is detected
-   if(gAudioIO->mPauseRec && inputBuffer) {
+   if(gAudioIO->mPauseRec && inputBuffer && gAudioIO->mInputMeter) {
       if(gAudioIO->mInputMeter->GetMaxPeak() < gAudioIO->mSilenceLevel ) {
          if(!gAudioIO->IsPaused()) {
             AudacityProject *p = GetActiveProject();
