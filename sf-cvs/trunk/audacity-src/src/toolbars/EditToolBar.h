@@ -18,6 +18,7 @@
 
 #include "ToolBar.h"
 #include "../Theme.h"
+#include "../Experimental.h"
 
 class wxCommandEvent;
 class wxDC;
