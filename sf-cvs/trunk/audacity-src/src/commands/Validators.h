@@ -149,7 +149,7 @@ public:
       if (!v.Convert(&val)) 
          return false;
       SetConverted(val);   
-      for(unsigned int i=0; i != val.Len(); i++)
+      for(size_t i=0; i != val.Len(); i++)
          if( val[i] != '0' && val[i] != '1' && val[i] != 'x' && val[i] != 'X')
             return false;
       return true;
