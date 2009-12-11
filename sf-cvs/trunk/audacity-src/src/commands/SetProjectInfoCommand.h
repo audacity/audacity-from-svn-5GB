@@ -19,6 +19,9 @@
 #include "Command.h"
 #include "CommandType.h"
 
+// Forward decls
+class Track;
+class TrackList;
 
 class SetProjectInfoCommandType : public CommandType
 {
