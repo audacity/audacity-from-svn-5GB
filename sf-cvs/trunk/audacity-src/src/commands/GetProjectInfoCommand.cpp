@@ -141,9 +141,9 @@ void GetProjectInfoCommand::SendTracksInfo(TrackList *projTracks,
    while (trk)
    {
       if( (this->*functPtrToGetter)(trk))    // Function Pointer to the desired parameter to Test
-         boolValueStr.Append("1",1);
+         boolValueStr.Append(_("1"),1);
       else
-         boolValueStr.Append("0",1);
+         boolValueStr.Append(_("0"),1);
       trk = iter.Next();
    }
    Status(boolValueStr);

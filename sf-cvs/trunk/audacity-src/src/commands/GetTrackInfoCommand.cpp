@@ -57,9 +57,9 @@ Command *GetTrackInfoCommandType::Create(CommandOutputTarget *target)
 void GetTrackInfoCommand::SendBooleanStatus(bool boolValue)
 {
    if(boolValue)
-      Status("1");  // in C# we can say boolValue.ToString();
+      Status(_("1"));  // in C# we can say boolValue.ToString();
    else
-      Status("0");
+      Status(_("0"));
 }
 
 
