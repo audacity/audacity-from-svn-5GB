@@ -22,10 +22,12 @@
 #include "GetAllMenuCommands.h"
 #include "MessageCommand.h"
 #include "GetTrackInfoCommand.h"
+#include "GetProjectInfoCommand.h"
 #include "HelpCommand.h"
 #include "SelectCommand.h"
 #include "CompareAudioCommand.h"
 #include "SetTrackInfoCommand.h"
+#include "SetProjectInfoCommand.h"
 #include "PreferenceCommands.h"
 #include "ImportExportCommands.h"
 
@@ -44,10 +46,14 @@ CommandDirectory::CommandDirectory()
    AddCommand(new GetAllMenuCommandsType());
    AddCommand(new MessageCommandType());
    AddCommand(new GetTrackInfoCommandType());
+   AddCommand(new GetProjectInfoCommandType());
+
    AddCommand(new HelpCommandType());
    AddCommand(new SelectCommandType());
    AddCommand(new CompareAudioCommandType());
    AddCommand(new SetTrackInfoCommandType());
+   AddCommand(new SetProjectInfoCommandType());
+
    AddCommand(new SetPreferenceCommandType());
    AddCommand(new GetPreferenceCommandType());
    AddCommand(new ImportCommandType());
