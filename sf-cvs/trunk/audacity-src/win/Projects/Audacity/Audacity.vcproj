@@ -2048,6 +2048,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\commands\GetProjectInfoCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\GetProjectInfoCommand.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\commands\GetTrackInfoCommand.cpp"
 				>
 			</File>
@@ -2125,6 +2133,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\commands\SelectCommand.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\SetProjectInfoCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\commands\SetProjectInfoCommand.h"
 				>
 			</File>
 			<File
