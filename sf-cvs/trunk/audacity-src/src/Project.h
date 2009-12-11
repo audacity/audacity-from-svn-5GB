@@ -182,6 +182,8 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    bool GetDirty() { return mDirty; }
    void SetProjectTitle();
 
+   TrackPanel * GetTrackPanel(){return mTrackPanel;};
+
    bool GetIsEmpty() { return mTracks->IsEmpty(); }
 
    bool GetTracksFitVerticallyZoomed() { return mTracksFitVerticallyZoomed; } //lda
