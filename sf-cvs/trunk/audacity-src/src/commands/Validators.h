@@ -23,6 +23,9 @@ a certain criterion. This is a base validator which allows anything.
 \class BoolValidator
 \brief Parameter must be a boolean
 
+\class BoolArrayValidator
+\brief Parameter must be char array of booleans, e.g. "011010001"
+
 \class DoubleValidator
 \brief Parameter must be a floating-point number
 
@@ -129,11 +132,35 @@ public:
    }
    virtual wxString GetDescription() const
    {
-      return wxT("y/n");
+      return wxT("true/false or 1/0 or yes/no");
    }
    virtual Validator *GetClone() const
    {
       return new BoolValidator();
+   }
+};
+
+class BoolArrayValidator : public Validator
+{
+public:
+   virtual bool Validate(const wxVariant &v)
+   {
+      wxString val;         // Validate a string of chars containing only 0, 1 and x.
+      if (!v.Convert(&val)) 
+         return false;
+      SetConverted(val);   
+      for(int i=0; i != val.Len(); i++)
+         if( val[i] != '0' && val[i] != '1' && val[i] != 'x' && val[i] != 'X')
+            return false;
+      return true;
+   }
+   virtual wxString GetDescription() const
+   {
+      return wxT("0X101XX101...etc.  where 0=false, 1=true, and X=don't care.  Numbering starts at leftmost = track 0");
+   }
+   virtual Validator *GetClone() const
+   {
+      return new BoolArrayValidator();
    }
 };
 
