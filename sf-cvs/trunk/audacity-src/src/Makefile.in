@@ -125,6 +125,7 @@ OBJS = \
 	commands/CommandType.o \
 	commands/ExecMenuCommand.o \
 	commands/GetAllMenuCommands.o \
+	commands/GetProjectInfoCommand.o \
 	commands/GetTrackInfoCommand.o \
 	commands/HelpCommand.o \
 	commands/ImportExportCommands.o \
@@ -135,6 +136,7 @@ OBJS = \
 	commands/ScreenshotCommand.o \
 	commands/ScriptCommandRelay.o \
 	commands/SelectCommand.o \
+	commands/SetProjectInfoCommand.o \
 	commands/SetTrackInfoCommand.o \
 	effects/Effect.o \
 	effects/Generator.o \
