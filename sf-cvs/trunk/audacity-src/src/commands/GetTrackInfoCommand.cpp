@@ -5,7 +5,7 @@
    License: wxwidgets
 
    Dan Horgan
-
+   Marty Goddard
 ******************************************************************//**
 
 \file GetTrackInfoCommand.cpp
@@ -19,6 +19,7 @@
 #include "GetTrackInfoCommand.h"
 #include "../Project.h"
 #include "../Track.h"
+#include "../WaveTrack.h"
 
 wxString GetTrackInfoCommandType::BuildName()
 {
@@ -34,6 +35,14 @@ void GetTrackInfoCommandType::BuildSignature(CommandSignature &signature)
    infoTypeValidator->AddOption(wxT("Name"));
    infoTypeValidator->AddOption(wxT("StartTime"));
    infoTypeValidator->AddOption(wxT("EndTime"));
+   infoTypeValidator->AddOption(wxT("Pan"));
+   infoTypeValidator->AddOption(wxT("Gain"));
+   infoTypeValidator->AddOption(wxT("Selected"));
+   infoTypeValidator->AddOption(wxT("Linked"));
+   infoTypeValidator->AddOption(wxT("Solo"));
+   infoTypeValidator->AddOption(wxT("Mute"));
+   infoTypeValidator->AddOption(wxT("Focused"));
+
    signature.AddParameter(wxT("Type"), wxT("Name"), infoTypeValidator);
 }
 
@@ -42,12 +51,29 @@ Command *GetTrackInfoCommandType::Create(CommandOutputTarget *target)
    return new GetTrackInfoCommand(*this, target);
 }
 
+
+
+//******************* Private Member Functions ********************************
+void GetTrackInfoCommand::SendBooleanStatus(bool boolValue)
+{
+   if(boolValue)
+      Status("1");  // in C# we can say boolValue.ToString();
+   else
+      Status("0");
+}
+
+
+
+
+// ===================== Public Member Functions =================================
+
 bool GetTrackInfoCommand::Apply(CommandExecutionContext context)
 {
    wxString mode = GetString(wxT("Type"));
 
    long trackIndex = GetLong(wxT("TrackIndex"));
 
+   // Get the track indicated by the TrackIndex parameter
    // (Note: this ought to be somewhere else)
    long i = 0;
    TrackListIterator iter(context.proj->GetTracks());
@@ -63,6 +89,7 @@ bool GetTrackInfoCommand::Apply(CommandExecutionContext context)
       return false;
    }
 
+   // Now get the particular desired item about the track of interest
    if (mode.IsSameAs(wxT("Name")))
    {
       Status(t->GetName());
@@ -74,6 +101,43 @@ bool GetTrackInfoCommand::Apply(CommandExecutionContext context)
    else if (mode.IsSameAs(wxT("EndTime")))
    {
       Status(wxString::Format(wxT("%f"), t->GetEndTime()));
+   }
+   else if (mode.IsSameAs(wxT("Pan")))
+   {
+     if(t->GetKind() == Track::Wave)
+       Status(wxString::Format(wxT("%f"), static_cast<WaveTrack*>(t)->GetPan()));
+   }
+   else if (mode.IsSameAs(wxT("Gain")))
+   {
+      if(t->GetKind() == Track::Wave)
+         Status(wxString::Format(wxT("%f"), static_cast<WaveTrack*>(t)->GetGain()));
+   }
+   else if (mode.IsSameAs(wxT("Focused")))
+   {
+      TrackPanel *panel = context.proj->GetTrackPanel();
+      SendBooleanStatus(panel->GetFocusedTrack() == t);
+   }
+   else if (mode.IsSameAs(wxT("Selected")))
+   {
+      SendBooleanStatus(t->GetSelected());
+   }
+   else if (mode.IsSameAs(wxT("Linked")))
+   {
+      SendBooleanStatus(t->GetLinked());
+   }
+   else if (mode.IsSameAs(wxT("Solo")))
+   {
+      if (t->GetKind() == Track::Wave)
+         SendBooleanStatus(t->GetSolo());
+      else 
+         SendBooleanStatus(false);
+   }
+   else if (mode.IsSameAs(wxT("Mute")))
+   {
+      if (t->GetKind() == Track::Wave)
+         SendBooleanStatus(t->GetMute());
+      else 
+         SendBooleanStatus(false);
    }
    else
    {

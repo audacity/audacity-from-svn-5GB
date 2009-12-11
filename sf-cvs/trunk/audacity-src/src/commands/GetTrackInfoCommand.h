@@ -5,7 +5,7 @@
    License: wxwidgets
 
    Dan Horgan
-
+   Marty Goddard
 ******************************************************************//**
 
 \file GetTrackInfoCommand.h
@@ -37,6 +37,9 @@ public:
    { }
 
    virtual bool Apply(CommandExecutionContext context);
+
+private:
+   void SendBooleanStatus(bool BooleanValue);
 };
 
 #endif /* End of include guard: __GETTRACKINFOCOMMAND__ */
