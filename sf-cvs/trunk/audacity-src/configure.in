@@ -528,17 +528,24 @@ case "${host_os}" in
       CONFIGHEADER="configwin.h"
     
       AC_DEFINE(__CYGWIN__,1,[We're using cygwin])
+      dnl ' (end endless string in vim)
       AC_DEFINE(_FILE_OFFSET_BITS,32,[Placeholder for large file support])
     
       AFTERBUILD=""
       ;;
 
    *)
-      dnl Unix OSS configuration
+      dnl Unix configuration
       CONFIGHEADER="configunix.h"
       AFTERBUILD=""
       EXTRAINSTALLTARGETS="$EXTRAINSTALLTARGETS install-extra-data"
       EXTRAUNINSTALLTARGETS="$EXTRAUNINSTALLTARGETS uninstall-extra-data"
+
+      dnl On Unix we always use dlopen
+      AC_SEARCH_LIBS([dlopen], [dl])
+      if [[ "$ac_cv_search_dlopen" = no ]]; then
+         AC_MSG_ERROR(dlopen not found, required by Audacity)
+      fi
 
       AC_SUBST(HAVE_GTK)
       PKG_CHECK_MODULES(GTK, gtk+-2.0, have_gtk=yes, have_gtk=no)
@@ -546,6 +553,7 @@ case "${host_os}" in
       then
          AC_DEFINE(HAVE_GTK, 1, [Define if GTK is available])
          CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
+         LIBS="$LIBS $GTK_LIBS"
       fi
    ;;
 esac
