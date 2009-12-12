@@ -252,11 +252,14 @@ class AUDACITY_DLL_API Effect {
    // Use these two methods to copy the input tracks to mOutputTracks, if 
    // doing the processing on them, and replacing the originals only on success (and not cancel).
    void CopyInputTracks(int trackType = Track::Wave);
-   
+
    // If bGoodResult, replace mWaveTracks tracks in mTracks with successfully processed 
    // mOutputTracks copies, get rid of old mWaveTracks, and set mWaveTracks to mOutputTracks. 
    // Else clear and delete mOutputTracks copies.
    void ReplaceProcessedTracks(const bool bGoodResult);
+
+   // Use this to append a new output track.
+   void AddToOutputTracks(Track *t);
 
  // Used only by the base Effect class
  //

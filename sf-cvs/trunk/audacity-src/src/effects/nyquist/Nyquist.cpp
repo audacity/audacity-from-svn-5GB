@@ -695,7 +695,7 @@ bool EffectNyquist::ProcessOne()
       unsigned int l;
       LabelTrack *ltrack = NULL;
 
-      TrackListIterator iter(mTracks);
+      TrackListIterator iter(mOutputTracks);
       for (Track *t = iter.First(); t; t = iter.Next()) {
          if (t->GetKind() == Track::Label) {
             ltrack = (LabelTrack *)t;
@@ -705,7 +705,7 @@ bool EffectNyquist::ProcessOne()
       
       if (!ltrack) {
          ltrack = mFactory->NewLabelTrack();
-         mTracks->Add((Track *)ltrack);
+         this->AddToOutputTracks((Track *)ltrack);
       }
 
       for (l = 0; l < numLabels; l++) {

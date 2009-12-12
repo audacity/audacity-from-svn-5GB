@@ -280,6 +280,13 @@ void Effect::CopyInputTracks(int trackType)
    }
 }
 
+void Effect::AddToOutputTracks(Track *t)
+{
+   mOutputTracks->Add(t);
+   mIMap.Add(NULL);
+   mOMap.Add(t);
+}
+
 // If bGoodResult, replace mTracks tracks with successfully processed mOutputTracks copies.
 // Else clear and delete mOutputTracks copies.
 void Effect::ReplaceProcessedTracks(const bool bGoodResult)
@@ -308,7 +315,10 @@ void Effect::ReplaceProcessedTracks(const bool bGoodResult)
       // If tracks were removed from mOutputTracks, then there will be
       // tracks in the map that must be removed from mTracks.
       while (i < cnt && mOMap[i] != o) {
-         mTracks->Remove((Track *)mIMap[i], true);
+         Track *t = (Track *) mIMap[i];
+         if (t) {
+            mTracks->Remove(t, true);
+         }
          i++;
       }
 
@@ -318,24 +328,36 @@ void Effect::ReplaceProcessedTracks(const bool bGoodResult)
       // Remove the track from the output list...don't delete it
       x = iterOut.RemoveCurrent(false);
 
-      // Replace mTracks entry with the new track...don't delete original track
       Track *t = (Track *) mIMap[i];
-      mTracks->Replace(t, o, false);
-
-      // Swap the wavecache track the ondemand task uses, since now the new
-      // one will be kept in the project
-      if (ODManager::IsInstanceCreated()) {
-         ODManager::Instance()->ReplaceWaveTrack((WaveTrack *)t, (WaveTrack *)o);
+      if (t == NULL)
+      {
+         // This track is a new addition to output tracks; add it to mTracks
+         mTracks->Add(o);
       }
+      else
+      {
+         // Replace mTracks entry with the new track
+         mTracks->Replace(t, o, false);
 
-      // No longer need the original track
-      delete t;
+         // Swap the wavecache track the ondemand task uses, since now the new
+         // one will be kept in the project
+         if (ODManager::IsInstanceCreated()) {
+            ODManager::Instance()->ReplaceWaveTrack((WaveTrack *)t,
+                                                    (WaveTrack *)o);
+         }
+
+         // No longer need the original track
+         delete t;
+      }
    }
 
    // If tracks were removed from mOutputTracks, then there may be tracks
    // left at the end of the map that must be removed from mTracks.
    while (i < cnt) {
-      mTracks->Remove((Track *)mIMap[i], true);
+      Track *t = (Track *) mIMap[i];
+      if (t) {
+         mTracks->Remove((Track *)mIMap[i], true);
+      }
       i++;
    }
 
