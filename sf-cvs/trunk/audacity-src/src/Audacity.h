@@ -22,7 +22,7 @@
 
 // As of November 2009, we can have alphas of a beta release or 
 // alphas of a stable release, typically the nightly builds. 
-// Most of the time we're in development IS_ALPHA should be defined
+// Most of the time we're in development, so IS_ALPHA should be defined
 // to 1.
 #define IS_ALPHA 1
 
@@ -34,12 +34,10 @@
 
 #if IS_ALPHA
    #define AUDACITY_SUFFIX wxT("-alpha-") __TDATE__ 
+#elif (IS_BETA)
+   #define AUDACITY_SUFFIX    wxT("-beta") 
 #else
-   #if (IS_BETA)
-      #define AUDACITY_SUFFIX    wxT("-beta") 
-   #else
-      #define AUDACITY_SUFFIX    wxT("") // for a stable release
-   #endif
+   #define AUDACITY_SUFFIX    wxT("") // for a stable release
 #endif
 
 #define AUDACITY_MAKESTR( x ) #x
