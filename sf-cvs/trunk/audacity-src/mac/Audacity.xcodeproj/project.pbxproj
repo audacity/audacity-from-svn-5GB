@@ -676,6 +676,8 @@
 		2840CF7A0AEB810000F49FC3 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF790AEB810000F49FC3 /* config.h */; };
 		2840CF860AEB83DB00F49FC3 /* ExportMP2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF840AEB83DB00F49FC3 /* ExportMP2.cpp */; };
 		2840CFA80AEB883500F49FC3 /* libtwolame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2840CF220AEB803C00F49FC3 /* libtwolame.a */; };
+		284249EE10D337CE004330A6 /* GetProjectInfoCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 284249EA10D337CE004330A6 /* GetProjectInfoCommand.cpp */; };
+		284249EF10D337CE004330A6 /* SetProjectInfoCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 284249EC10D337CE004330A6 /* SetProjectInfoCommand.cpp */; };
 		28456AC20A2C180E00C23C1E /* ThemePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */; };
 		2849B4620A7444BE00ECF12D /* Dependencies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2849B4600A7444BE00ECF12D /* Dependencies.cpp */; };
 		284A7B920F31571C001D7A67 /* nyx.c in Sources */ = {isa = PBXBuildFile; fileRef = 284A7B8F0F31571B001D7A67 /* nyx.c */; };
@@ -2557,6 +2559,10 @@
 		2840CF790AEB810000F49FC3 /* config.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = config.h; path = twolame/build/config.h; sourceTree = "<group>"; };
 		2840CF840AEB83DB00F49FC3 /* ExportMP2.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ExportMP2.cpp; sourceTree = "<group>"; };
 		2840CF850AEB83DB00F49FC3 /* ExportMP2.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ExportMP2.h; sourceTree = "<group>"; };
+		284249EA10D337CE004330A6 /* GetProjectInfoCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = GetProjectInfoCommand.cpp; sourceTree = "<group>"; };
+		284249EB10D337CE004330A6 /* GetProjectInfoCommand.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = GetProjectInfoCommand.h; sourceTree = "<group>"; };
+		284249EC10D337CE004330A6 /* SetProjectInfoCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = SetProjectInfoCommand.cpp; sourceTree = "<group>"; };
+		284249ED10D337CE004330A6 /* SetProjectInfoCommand.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = SetProjectInfoCommand.h; sourceTree = "<group>"; };
 		28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ThemePrefs.cpp; sourceTree = "<group>"; };
 		28456AC10A2C180E00C23C1E /* ThemePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ThemePrefs.h; sourceTree = "<group>"; };
 		2849B4600A7444BE00ECF12D /* Dependencies.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Dependencies.cpp; sourceTree = "<group>"; };
@@ -4071,6 +4077,8 @@
 				28BD8AAD101DF4C600686679 /* ExecMenuCommand.h */,
 				28BD8AAE101DF4C600686679 /* GetAllMenuCommands.cpp */,
 				28BD8AAF101DF4C600686679 /* GetAllMenuCommands.h */,
+				284249EA10D337CE004330A6 /* GetProjectInfoCommand.cpp */,
+				284249EB10D337CE004330A6 /* GetProjectInfoCommand.h */,
 				28851FA31027F16400152EE1 /* GetTrackInfoCommand.cpp */,
 				28851FA41027F16400152EE1 /* GetTrackInfoCommand.h */,
 				28851FA51027F16400152EE1 /* HelpCommand.cpp */,
@@ -4091,6 +4099,8 @@
 				28D540040FD1912A00FA7C75 /* ScriptCommandRelay.h */,
 				28851FA91027F16400152EE1 /* SelectCommand.cpp */,
 				28851FAA1027F16400152EE1 /* SelectCommand.h */,
+				284249EC10D337CE004330A6 /* SetProjectInfoCommand.cpp */,
+				284249ED10D337CE004330A6 /* SetProjectInfoCommand.h */,
 				28DE72AC10388583007E18EC /* SetTrackInfoCommand.cpp */,
 				28DE72AD10388583007E18EC /* SetTrackInfoCommand.h */,
 				28BD8AB0101DF4C600686679 /* Validators.h */,
@@ -8480,6 +8490,8 @@
 				28DE72B2103885AA007E18EC /* TimeWarper.cpp in Sources */,
 				EDD94EDB103CB520000873F1 /* ImportExportCommands.cpp in Sources */,
 				EEFF576E109AB4E20032EDFE /* CaptureEvents.cpp in Sources */,
+				284249EE10D337CE004330A6 /* GetProjectInfoCommand.cpp in Sources */,
+				284249EF10D337CE004330A6 /* SetProjectInfoCommand.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
