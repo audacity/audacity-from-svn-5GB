@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-06 22:36+0000\n"
-"PO-Revision-Date: 2009-11-15 01:40-0000\n"
+"PO-Revision-Date: 2009-12-14 18:41-0000\n"
 "Last-Translator: g <g@g>\n"
 "Language-Team: Atsushi YOSHIDA <ayoshida.pub@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -3171,13 +3171,13 @@ msgstr "パンスライダー"
 #: MixerBoard.cpp:1069
 #: TrackPanel.cpp:7286
 msgid "Mute"
-msgstr "Mute"
+msgstr "ミュート"
 
 #: MixerBoard.cpp:229
 #: MixerBoard.cpp:1119
 #: TrackPanel.cpp:7286
 msgid "Solo"
-msgstr "Solo"
+msgstr "ソロ"
 
 #: MixerBoard.cpp:230
 msgid "Signal Level Meter"
@@ -3630,7 +3630,7 @@ msgstr "24-bit PCM"
 #. i18n-hint: Audio data bit depth (precision): 32-bit floating point
 #: SampleFormat.cpp:72
 msgid "32-bit float"
-msgstr "32-bit float"
+msgstr "32-bit浮動小数点"
 
 #: Screenshot.cpp:266
 msgid "Screen Capture Frame"
