@@ -2851,8 +2851,9 @@ void EqualizationDialog::OnPreview(wxCommandEvent &event)
    TransferDataFromWindow();
    m_pEffect->Preview();
    mPanel->RecalcRequired = true;
-   wxPaintEvent dummyEvent;
-   OnPaint(dummyEvent);
+   //redraw the window.
+   Refresh();
+   Update();
    //v Restore previous values?
 }
 
