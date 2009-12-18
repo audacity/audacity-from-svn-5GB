@@ -36,12 +36,14 @@ class EffectSBSMS : public Effect {
    void setParameters(double rateStart, double rateEnd, double pitchStart, double pitchEnd, int quality, bool bPreAnalyze);
 
  private:
+   bool ProcessLabelTrack(Track *track);
    double rateStart, rateEnd, pitchStart, pitchEnd;
    int quality;
    bool bPreAnalyze;
    int mCurTrackNum;
    double mCurT0;
-   double mCurT1;   
+   double mCurT1;
+   real mTotalStretch;
 };
 
 #endif

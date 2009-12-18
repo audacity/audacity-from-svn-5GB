@@ -85,6 +85,19 @@ bool EffectChangeSpeed::TransferParameters( Shuttle & shuttle )
    return true;
 }
 
+// Labels are time-scaled linearly inside the affected region, and labels after
+// the region are shifted along according to how the region size changed.
+bool EffectChangeSpeed::ProcessLabelTrack(Track *t)
+{
+   SetTimeWarper(new RegionTimeWarper(mCurT0, mCurT1,
+                     new LinearTimeWarper(mCurT0, mCurT0,
+                         mCurT1, mCurT0 + (mCurT1-mCurT0)*mFactor)));
+   LabelTrack *lt = (LabelTrack*)t;
+   if (lt == NULL) return false;
+   lt->WarpLabels(*GetTimeWarper());
+   return true;
+}
+
 bool EffectChangeSpeed::Process()
 {
    // Similar to EffectSoundTouch::Process()
@@ -104,6 +117,8 @@ bool EffectChangeSpeed::Process()
    mCurTrackNum = 0;
    m_maxNewLength = 0.0;
 
+   mFactor = 100.0 / (100.0 + m_PercentChange);
+
    //Get start and end times from track
    mCurT0 = pOutWaveTrack->GetStartTime();
    mCurT1 = pOutWaveTrack->GetEndTime();
@@ -113,16 +128,20 @@ bool EffectChangeSpeed::Process()
    mCurT0 = wxMax(mT0, mCurT0);
    mCurT1 = wxMin(mT1, mCurT1);
 
-   double len = pOutWaveTrack->GetEndTime() - pOutWaveTrack->GetStartTime();
-
    // we only do a "group change" in the first selected track of the group. 
    // ClearAndPaste has a call to Paste that does changes to the group tracks
    bool first = true;
 
    while (t != NULL)
    {
-      if (t->GetKind() == Track::Label)
+      if (t->GetKind() == Track::Label) {
          first = true;
+         if (t->GetSelected() && !ProcessLabelTrack(t))
+         {
+            bGoodResult = false;
+            break;
+         }
+      }
       else if (t->GetKind() == Track::Wave && t->GetSelected()) {
          pOutWaveTrack = (WaveTrack*)t;
          //Get start and end times from track
@@ -135,7 +154,7 @@ bool EffectChangeSpeed::Process()
          mCurT1 = wxMin(mT1, mCurT1);
 
          // Process only if the right marker is to the right of the left marker
-         if (mCurT1 > mCurT0) {       
+         if (mCurT1 > mCurT0) {
             //Transform the marker timepoints to samples
             sampleCount start = pOutWaveTrack->TimeToLongSamples(mCurT0);
             sampleCount end = pOutWaveTrack->TimeToLongSamples(mCurT1);
@@ -150,7 +169,7 @@ bool EffectChangeSpeed::Process()
          }
          mCurTrackNum++;
       }
-      
+
       //Iterate to the next track
       t=iter.Next();
    }
@@ -188,13 +207,12 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 
    float * inBuffer = new float[inBufferSize];
 
-   double factor = 100.0 / (100.0 + m_PercentChange);
    sampleCount outBufferSize = 
-      (sampleCount)((factor * inBufferSize) + 10);
+      (sampleCount)((mFactor * inBufferSize) + 10);
    float * outBuffer = new float[outBufferSize]; 
 
    // Set up the resampling stuff for this track.
-   Resample resample(true, factor, factor);
+   Resample resample(true, mFactor, mFactor);
 
    //Go through the track one buffer at a time. samplePos counts which
    //sample the current buffer starts at.
@@ -213,7 +231,7 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
       track->Get((samplePtr) inBuffer, floatSample, samplePos, blockSize);
 
       int inUsed;
-      int outgen = resample.Process(factor,
+      int outgen = resample.Process(mFactor,
                                     inBuffer,
                                     blockSize,
                                     ((samplePos + blockSize) >= end),

@@ -43,6 +43,7 @@ class EffectSoundTouch:public Effect {
    double mCurT1;
 
  private:
+   bool ProcessLabelTrack(Track *track);
    bool ProcessOne(WaveTrack * t,
                    sampleCount start, sampleCount end, bool first);
    bool ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack, 

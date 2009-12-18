@@ -58,6 +58,7 @@ for drawing different aspects of the label and its text box.
 #include "commands/CommandManager.h"
 
 #include "CaptureEvents.h"
+#include "effects/TimeWarper.h"
 
 wxFont LabelTrack::msFont;
 
@@ -234,6 +235,16 @@ double LabelTrack::AdjustTimeStampOnScale(double t, double b, double e, double c
    }else{
       double shift = (t-b)*change - (t-b);
       return t + shift;
+   }
+}
+
+// Move the labels in the track according to the given TimeWarper.
+// (If necessary this could be optimised by ignoring labels that occur before a
+// specified time, as in most cases they don't need to move.)
+void LabelTrack::WarpLabels(const TimeWarper &warper) {
+   for (int i = 0; i < mLabels.GetCount(); ++i) {
+      double &labelT0 = mLabels[i]->t; labelT0 = warper.Warp(labelT0);
+      double &labelT1 = mLabels[i]->t1; labelT1 = warper.Warp(labelT1);
    }
 }
 

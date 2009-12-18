@@ -58,6 +58,7 @@ class EffectChangeSpeed : public Effect {
 
  private:
    bool ProcessOne(WaveTrack * t, sampleCount start, sampleCount end, bool first);
+   bool ProcessLabelTrack(Track *t);
 
  private:
 	// track related
@@ -72,8 +73,8 @@ class EffectChangeSpeed : public Effect {
 										// Slider is (-100, 200], but textCtrls can set higher.
    int		m_FromVinyl;		// from standard vinyl speed (RPM)
    int		m_ToVinyl;			// to standard vinyl speed (RPM)
+   double   mFactor;          // Scale factor calculated from percent change
 
-   
 friend class ChangeSpeedDialog;
 };
 

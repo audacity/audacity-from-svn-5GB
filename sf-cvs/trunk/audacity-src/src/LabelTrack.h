@@ -34,6 +34,7 @@ class TrackList;
 
 class AudacityProject;
 class DirManager;
+class TimeWarper;
 
 
 class LabelStruct 
@@ -174,6 +175,7 @@ class LabelTrack:public Track {
    void ChangeLabelsOnReverse(double b, double e);
    void ScaleLabels(double b, double e, double change);
    double AdjustTimeStampOnScale(double t, double b, double e, double change);
+   void WarpLabels(const TimeWarper &warper);
    
    // Returns tab-separated text of all labels completely within given region
    wxString GetTextOfLabels(double t0, double t1);
