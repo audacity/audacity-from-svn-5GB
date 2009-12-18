@@ -149,6 +149,27 @@ long resampleCB(void *cb_data, sbsms_resample_frame *data)
    return blockSize;
 }
 
+// Labels inside the affected region are moved to match the audio; labels after
+// it are shifted along appropriately.
+bool EffectSBSMS::ProcessLabelTrack(Track *t)
+{
+   TimeWarper *warper = NULL;
+   if (rateStart == rateEnd)
+   {
+      warper = new LinearTimeWarper(mCurT0, mCurT0,
+            mCurT1, mCurT0+(mCurT1-mCurT0)*mTotalStretch);
+   } else
+   {
+      warper = new LogarithmicTimeWarper(mCurT0, mCurT1,
+            rateStart, rateEnd);
+   }
+   SetTimeWarper(new RegionTimeWarper(mCurT0, mCurT1, warper));
+   LabelTrack *lt = (LabelTrack*)t;
+   if (lt == NULL) return false;
+   lt->WarpLabels(*GetTimeWarper());
+   return true;
+}
+
 bool EffectSBSMS::Process()
 {
    if(!bInit) {
@@ -173,14 +194,26 @@ bool EffectSBSMS::Process()
 
    double len = leftTrack->GetEndTime() - leftTrack->GetStartTime();   
    double maxDuration = 0.0;
-   
+
+   if(rateStart == rateEnd)
+      mTotalStretch = 1.0/rateStart;
+   else
+      mTotalStretch = 1.0/(rateEnd-rateStart)*log(rateEnd/rateStart);
+
+
    // we only do a "group change" in the first selected track of the group. 
    // ClearAndPaste has a call to Paste that does changes to the group tracks
    bool first = true;
 
    while (t != NULL) {
-      if (t->GetKind() == Track::Label)
+      if (t->GetKind() == Track::Label) {
          first = true;
+         if (t->GetSelected() && !ProcessLabelTrack(t))
+         {
+            bGoodResult = false;
+            break;
+         }
+      }
       else if (t->GetKind() == Track::Wave && t->GetSelected()) {
          WaveTrack* leftTrack = (WaveTrack*)t;
 
@@ -247,14 +280,9 @@ bool EffectSBSMS::Process()
             sampleCount samplesToProcess = (sampleCount) ((real)samplesIn*(srSBSMS/srIn));
             
             // Samples in output after resampling back
-            real stretch2;
-            if(rateStart == rateEnd)
-               stretch2 = 1.0/rateStart;
-            else
-               stretch2 = 1.0/(rateEnd-rateStart)*log(rateEnd/rateStart);
-            sampleCount samplesToGenerate = (sampleCount) ((real)samplesToProcess * stretch2);
-            sampleCount samplesOut = (sampleCount) ((real)samplesIn * stretch2);
-            double duration =  (mCurT1-mCurT0) * stretch2;
+            sampleCount samplesToGenerate = (sampleCount) ((real)samplesToProcess * mTotalStretch);
+            sampleCount samplesOut = (sampleCount) ((real)samplesIn * mTotalStretch);
+            double duration =  (mCurT1-mCurT0) * mTotalStretch;
 
             if(duration > maxDuration)
                maxDuration = duration;

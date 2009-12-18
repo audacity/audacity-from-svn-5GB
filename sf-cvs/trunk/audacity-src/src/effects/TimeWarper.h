@@ -32,6 +32,11 @@ split points in the input.
 \class StepTimeWarper
 \brief Like identity but with a jump
 
+\class RegionTimeWarper
+\brief No change before the specified region; during the region, warp according
+to the given warper; after the region, constant shift so as to match at the end
+of the warped region.
+
 *//*******************************************************************/
 
 #ifndef __TIMEWARPER__
@@ -98,6 +103,37 @@ private:
 public:
    StepTimeWarper(double tStep, double offset);
    virtual double Warp(double originalTime) const;
+};
+
+
+// Note: this assumes that tStart is a fixed point of warper->warp()
+class RegionTimeWarper : public TimeWarper
+{
+private:
+   TimeWarper *mWarper;
+   double mTStart;
+   double mTEnd;
+   double mOffset;
+public:
+   RegionTimeWarper(double tStart, double tEnd, TimeWarper *warper)
+      : mWarper(warper), mTStart(tStart), mTEnd(tEnd),
+         mOffset(mWarper->Warp(mTEnd)-mTEnd)
+   { }
+   virtual ~RegionTimeWarper()
+   { delete mWarper; }
+   virtual double Warp(double originalTime) const
+   {
+      if (originalTime < mTStart)
+      {
+         return originalTime;
+      } else if (originalTime < mTEnd)
+      {
+         return mWarper->Warp(originalTime);
+      } else
+      {
+         return mOffset + originalTime;
+      }
+   }
 };
 
 #endif /* End of include guard: __TIMEWARPER__ */

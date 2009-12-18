@@ -23,6 +23,16 @@ effect that uses SoundTouch to do its processing (ChangeTempo
 #include "../Project.h"
 #include "TimeWarper.h"
 
+bool EffectSoundTouch::ProcessLabelTrack(Track *track)
+{
+//   SetTimeWarper(new RegionTimeWarper(mCurT0, mCurT1,
+ //           new LinearTimeWarper(mCurT0, mCurT0,
+   //            mCurT1, mCurT0 + (mCurT1-mCurT0)*mFactor)));
+   LabelTrack *lt = (LabelTrack*)track;
+   if (lt == NULL) return false;
+   lt->WarpLabels(*GetTimeWarper());
+   return true;
+}
 
 bool EffectSoundTouch::Process()
 {
@@ -51,8 +61,14 @@ bool EffectSoundTouch::Process()
    bool first = true;
 
    while (t != NULL) {
-      if (t->GetKind() == Track::Label)
+      if (t->GetKind() == Track::Label) {
          first = true;
+         if (t->GetSelected() && !ProcessLabelTrack(t))
+         {
+            bGoodResult = false;
+            break;
+         }
+      }
       else if (t->GetKind() == Track::Wave && t->GetSelected()) {
          WaveTrack* leftTrack = (WaveTrack*)t;
          //Get start and end times from track
