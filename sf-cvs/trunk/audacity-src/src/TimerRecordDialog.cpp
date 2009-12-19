@@ -208,7 +208,13 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
    }
 
    m_timer.Stop(); // Don't need to keep updating m_DateTime_Start to prevent backdating.
+   this->EndModal(wxID_OK);
+}
 
+///Runs the wait for start dialog.  Returns false if the user clicks stop while we are recording
+///so that the high
+bool TimerRecordDialog::RunWaitDialog()
+{
    int updateResult = eProgressSuccess;
    if (m_DateTime_Start > wxDateTime::UNow()) 
       updateResult = this->WaitForStart(); 
@@ -216,8 +222,7 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
    if (updateResult != eProgressSuccess) 
    {
       // Don't proceed, but don't treat it as canceled recording. User just canceled waiting. 
-      this->EndModal(wxID_CANCEL);
-      return;
+      return true;
    }
    else 
    {
@@ -253,9 +258,8 @@ void TimerRecordDialog::OnOK(wxCommandEvent& event)
    }
    // Let the caller handle cancellation or failure from recording progress. 
    if (updateResult == eProgressCancelled || updateResult == eProgressFailed)
-      this->EndModal(updateResult);
-   else
-      this->EndModal(wxID_OK);
+      return false;
+   return true;
 }
 
 wxString TimerRecordDialog::GetDisplayDate( wxDateTime & dt )
