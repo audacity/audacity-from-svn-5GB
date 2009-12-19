@@ -4982,11 +4982,20 @@ void AudacityProject::OnNewTimeTrack()
 
 void AudacityProject::OnTimerRecord()
 {
+   //we break the prompting and waiting dialogs into two sections
+   //because they both give the user a chance to click cancel
+   //and therefore remove the newly inserted track.
+
    TimerRecordDialog dialog(this /* parent */ );
    int modalResult = dialog.ShowModal();
-   if (modalResult == eProgressCancelled)
+   if (modalResult == wxID_CANCEL)
    {
-      // Cancelled while the recording, so throw out the fresh track.
+      // Cancelled before recording - don't need to do anyting.
+   }
+   else if(!dialog.RunWaitDialog())
+   {
+      //show th e "wait for start dialog
+      //Possibly cancelled while the recording, so throw out the fresh track.
       OnUndo();
    }
 }

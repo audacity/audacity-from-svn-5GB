@@ -31,6 +31,8 @@ public:
    ~TimerRecordDialog();
 
    void OnTimer(wxTimerEvent& event);
+   ///Runs the wait for start dialog.  Returns false if the user clicks stop.
+   bool RunWaitDialog();
 
 private:
    void OnDatePicker_Start(wxDateEvent& event);
