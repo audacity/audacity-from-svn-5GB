@@ -176,14 +176,19 @@ either one, but example values are for Unicode_Release.
    "audacity-win-unicode-1.3.10rc1.zip"
 
 
-TESTING
+6. TESTING
 
-Test the rc1 release candidate. If changes are necessary, name 
-successive candidates rcN.
+   Put the release candidate somewhere for other people to test.
+   If changes are necessary, name successive candidates rcN.
 
-When the final rcN is approved, simply remove the rcN 
-suffix from the name on the exe and zip files, and those 
-are the release installer and zip.
+   Get people to test the installer in both a fresh directory
+   and over the top of previous recent and older versions.
+   
+   Hopefully people can test both cases on several Win OSs, like XP and 7.
 
+7. Finished testing:
+   When the final rcN is approved, simply remove the rcN 
+   suffix from the name on the exe and zip files, and those 
+   are the release installer and zip.
 
 =======
