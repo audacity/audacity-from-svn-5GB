@@ -518,7 +518,6 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    // Last effect applied to this project
    Effect *mLastEffect;
    int mLastEffectType;
-   wxString mLastEffectDesc;
 
    // The screenshot class needs to access internals
    friend class ScreenshotCommand;

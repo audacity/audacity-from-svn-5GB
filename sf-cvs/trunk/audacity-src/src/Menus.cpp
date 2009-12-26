@@ -819,7 +819,14 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
                       AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
 
-   c->AddItem(wxT("RepeatLastEffect"), mLastEffectDesc, FN(OnRepeatLastEffect), wxT("Ctrl+R"),
+   wxString buildMenuLabel;
+   if (mLastEffectType != 0) {
+      buildMenuLabel.Printf(_("Repeat %s"), mLastEffect->GetEffectName().c_str());
+   }
+   else 
+      buildMenuLabel.Printf(_("Repeat Last Effect"));
+
+   c->AddItem(wxT("RepeatLastEffect"), buildMenuLabel, FN(OnRepeatLastEffect), wxT("Ctrl+R"),
               AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag | HasLastEffectFlag,
               AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag | HasLastEffectFlag);
 
@@ -2580,8 +2587,11 @@ bool AudacityProject::OnEffect(int type,
          if ((f->GetEffectFlags() & (INSERT_EFFECT | ANALYZE_EFFECT))==0) {
             mLastEffect = f;
             mLastEffectType = type;
-            mLastEffectDesc.Printf(_("Repeat %s"), shortDesc.c_str());
-            mCommandManager.Modify(wxT("RepeatLastEffect"), mLastEffectDesc);
+            wxString lastEffectDesc;
+            /* i18n-hint: %s will be the name of the effect which will be
+             * repeated if this menu item is chosen */
+            lastEffectDesc.Printf(_("Repeat %s"), shortDesc.c_str());
+            mCommandManager.Modify(wxT("RepeatLastEffect"), lastEffectDesc);
          }
       }
       //STM:

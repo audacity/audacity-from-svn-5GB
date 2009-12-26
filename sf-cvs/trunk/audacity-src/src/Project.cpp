@@ -758,8 +758,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mImportedDependencies(false), 
      mWantSaveCompressed(false),
      mLastEffect(NULL),
-     mLastEffectType(0),
-     mLastEffectDesc(_("Repeat Last Effect"))
+     mLastEffectType(0)
 {
    int widths[] = {-1, 130};
    mStatusBar = CreateStatusBar(2);
