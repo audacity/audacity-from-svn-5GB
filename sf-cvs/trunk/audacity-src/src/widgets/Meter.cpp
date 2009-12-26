@@ -245,11 +245,6 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mPeakPeakPen = wxPen(theTheme.Colour( clrMeterPeak),        1, wxSOLID);
    mDisabledPen = wxPen(theTheme.Colour( clrMeterDisabledPen), 1, wxSOLID);
 
-   /* i18n-hint: One-letter abbreviation for Left, in VU Meter */
-   mLeftText = _("L");
-   /* i18n-hint: One-letter abbreviation for Right, in VU Meter */
-   mRightText = _("R");
-
    mLeftSize = wxSize(0, 0);
    mRightSize = wxSize(0, 0);
 
@@ -943,6 +938,11 @@ void Meter::HandleLayout()
 void Meter::HandlePaint(wxDC &dc)
 {
    int i;
+   /* i18n-hint: One-letter abbreviation for Left, in VU Meter */
+   wxString mLeftText = _("L");  // used in a couple of places in this method.
+   // not a class member so it changes when the UI language is changed.
+   /* i18n-hint: One-letter abbreviation for Right, in VU Meter */
+   wxString mRightText = _("R");
 
    dc.SetFont(GetFont());
    if (mLeftSize.x == 0) { // Not yet initialized to dc.
