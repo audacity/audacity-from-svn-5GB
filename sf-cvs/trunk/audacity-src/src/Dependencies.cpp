@@ -223,7 +223,8 @@ enum {
 };
 
 wxString kDependencyDialogPrompt =
-_("Your project currently depends on the presence of other files.\nCopy audio from the following files into your project to make it self-contained?\nThis will need more disc space but is safer.");
+_("Copying the following files into your project will remove this dependency.\
+   \nThis needs more disk space, but is safer.");
 
 class DependencyDialog : public wxDialog
 {
