@@ -119,10 +119,21 @@ PrefsDialog::PrefsDialog(wxWindow * parent)
 
    S.AddStandardButtons(eOkButton | eCancelButton);
 
-   size_t selected = gPrefs->Read(wxT("/Prefs/PrefsCategory"), 0L);
-   if (selected < 0 || selected >= mCategories->GetPageCount()) {
-      selected = 0;
-   }
+   /* long is signed, size_t is unsigned. On some platforms they are different
+    * lengths as well. So we must check that the stored category is both > 0
+    * and within the possible range of categories, making the first check on the
+    * _signed_ value to avoid issues when converting an unsigned one.
+    */
+   size_t selected;
+   long prefscat = gPrefs->Read(wxT("/Prefs/PrefsCategory"), 0L);
+   if (prefscat > 0L )
+      selected = prefscat; // only assign if number will fit
+   else
+      selected = 0;  // use 0 if value can't be assigned
+
+   if (selected >= mCategories->GetPageCount())
+      selected = 0;  // clamp to available range of tabs
+
    mCategories->SetSelection(selected);
 
 #if defined(__WXGTK__)
