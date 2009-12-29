@@ -100,28 +100,30 @@ void SelectionBar::Create(wxWindow * parent)
 
 void SelectionBar::Populate()
 {
-   int i;
-
    // This will be inherited by all children:
    SetFont(wxFont(9, wxSWISS, wxNORMAL, wxNORMAL));
 
    wxFlexGridSizer *mainSizer;
    wxBoxSizer *hSizer;
 
-   wxString formatName = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
-   int formatIndex = 1;
-
+   int formatIndex;
    /* we don't actually need a control yet, but we want to use it's methods
     * to do some look-ups, so we'll have to create one. We can't make the 
     * look-ups static because they depend on translations which are done at
     * runtime */
-   /* for now we don't give this a format, we'll set that later once we've
-    * done some other format-related housekeeping */
    TimeTextCtrl *ttc = new TimeTextCtrl(this, wxID_ANY, wxT(""), 0.0, mRate);
-   for(i=0; i<ttc->GetNumBuiltins(); i++)
-      if (ttc->GetBuiltinName(i) == formatName)
-         formatIndex = i;
-   formatName = ttc->GetBuiltinName(formatIndex);
+   wxString formatName;
+   if (gPrefs->Read(wxT("/SelectionFormat"), &formatName)) {
+      for(int i = 0; i < ttc->GetNumBuiltins(); i++) {
+         if (ttc->GetBuiltinName(i) == formatName) {
+            formatIndex = i;
+            break;
+         }
+      }
+   }
+   else 
+      formatIndex = 1;
+
    wxString format = ttc->GetBuiltinFormat(formatIndex);
    delete ttc;
 
@@ -359,13 +361,14 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
    bool audioFocus = (w == mAudioTime);
    
    evt.Skip(false);
-
-   /* we need an object to call these methods on. It actually doesn't matter
-    * which as they have no effect on the object state, so we just use the first
-    * one to hand */
-   wxString formatName =  mLeftTime->GetBuiltinName(index);
-
+   
+   /* we don't actually need a TimeTextCtrl, but need it's 
+    * translations which are done at runtime */
+   
+   TimeTextCtrl *ttc = new TimeTextCtrl(this, wxID_ANY, wxT(""), 0.0, mRate);
+   wxString formatName(ttc->GetBuiltinName(index));
    gPrefs->Write(wxT("/SelectionFormat"), formatName);
+   delete ttc;
 
    // ToolBar::ReCreateButtons() will get rid of our sizers and controls
    // so reset pointers first.
