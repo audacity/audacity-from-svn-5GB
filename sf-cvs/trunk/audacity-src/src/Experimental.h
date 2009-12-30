@@ -148,6 +148,8 @@ extern void AddPages(   AudacityProject * pProj, GuiFactory & Factory,  wxNotebo
    //#define AUTOMATED_INPUT_LEVEL_ADJUSTMENT
 #endif
 
+//#define EXPERIMENTAL_EQ_INVERT // MJS, 30th Dec 2009.  Add a button to EQ to allow inverting of any curve.
+
 #endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

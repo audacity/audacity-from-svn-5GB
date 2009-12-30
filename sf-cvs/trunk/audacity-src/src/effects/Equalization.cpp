@@ -939,14 +939,12 @@ void EqualizationPanel::OnMouseEvent(wxMouseEvent & event)
       CaptureMouse();
    }
 
-   if (mEnvRect.Contains(event.GetPosition())) {
-      if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mEnvRect.width, false,
-               dBMin, dBMax, dBMin, dBMax))
-      {
-         mParent->EnvelopeUpdated();
-         RecalcRequired = true;
-         Refresh(false);
-      }
+   if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mEnvRect.width, false,
+            dBMin, dBMax, dBMin, dBMax))
+   {
+      mParent->EnvelopeUpdated();
+      RecalcRequired = true;
+      Refresh(false);
    }
 
    if (event.ButtonUp() && HasCapture())
@@ -990,6 +988,9 @@ BEGIN_EVENT_TABLE(EqualizationDialog,wxDialog)
    EVT_BUTTON( ID_SAVEAS, EqualizationDialog::OnSaveAs )
    EVT_BUTTON( ID_DELETE, EqualizationDialog::OnDelete )
    EVT_BUTTON( ID_CLEAR, EqualizationDialog::OnClear )
+#ifdef EXPERIMENTAL_EQ_INVERT
+   EVT_BUTTON( ID_INVERT, EqualizationDialog::OnInvert )
+#endif
 
    EVT_BUTTON( ID_EFFECT_PREVIEW, EqualizationDialog::OnPreview )
    EVT_BUTTON( wxID_OK, EqualizationDialog::OnOk )
@@ -1400,6 +1401,10 @@ void EqualizationDialog::MakeEqualizationDialog()
 
    btn = new wxButton( this, ID_CLEAR, _("Flat"));
    szrC->Add( btn, 0, wxALIGN_CENTRE | wxALL, 4 );
+#ifdef EXPERIMENTAL_EQ_INVERT
+   btn = new wxButton( this, ID_INVERT, _("Invert"));
+   szrC->Add( btn, 0, wxALIGN_CENTRE | wxALL, 4 );
+#endif
    mGridOnOff = new wxCheckBox(this, GridOnOffID, _("Grids"),
                             wxDefaultPosition, wxDefaultSize,
                             wxALIGN_RIGHT);
@@ -2817,6 +2822,82 @@ void EqualizationDialog::OnClear(wxCommandEvent &event)
    }
    EnvelopeUpdated();
 }
+
+#ifdef EXPERIMENTAL_EQ_INVERT
+void EqualizationDialog::OnInvert(wxCommandEvent &event) // Inverts any curve
+{
+   if(!drawMode)   // Graphic (Slider) mode. Invert the sliders.
+   {
+      for (int i = 0; thirdOct[i] <= mHiFreq; ++i)
+      {
+         if( i == NUMBER_OF_BANDS )
+            break;
+         m_EQVals[i] = -m_EQVals[i];
+         int newPosn = (int)m_EQVals[i];
+         m_sliders[i]->SetValue( newPosn );
+         m_sliders_old[i] = newPosn;
+   #if wxUSE_TOOLTIPS
+         wxString tip;
+         if( thirdOct[i] < 1000.)
+            tip.Printf( wxT("%dHz\n%.1fdB"), (int)thirdOct[i], m_EQVals[i] );
+         else
+            tip.Printf( wxT("%gkHz\n%.1fdB"), thirdOct[i]/1000., m_EQVals[i] );
+         m_sliders[i]->SetToolTip(tip);
+   #endif
+      }
+      GraphicEQ(mLogEnvelope);
+   }
+   else  // Draw mode.  Invert the points.
+   {
+      bool lin;   // refers to the 'log' or 'lin' of the frequency scale, not the amplitude
+      int numPoints; // number of points in the curve/envelope
+
+      // determine if log or lin curve is the current one
+      // and find out how many points are in the curve
+      if(mLinFreq->IsChecked())  // lin freq scale and so envelope
+      {
+         lin = true;
+         numPoints = mLinEnvelope->GetNumberOfPoints();
+      }
+      else
+      {
+         lin = false;
+         numPoints = mLogEnvelope->GetNumberOfPoints();
+      }
+
+      if( numPoints == 0 )
+         return;
+
+      double *when = new double[ numPoints ];
+      double *value = new double[ numPoints ];
+
+      if(lin)
+         mLinEnvelope->GetPoints( when, value, numPoints );
+      else
+         mLogEnvelope->GetPoints( when, value, numPoints );
+
+      // invert the curve
+      for( int i=0; i < numPoints; i++)
+      {
+         if(lin)
+            mLinEnvelope->Move(when[i] , -value[i]);
+         else
+            mLogEnvelope->Move(when[i] , -value[i]);
+      }
+
+      // copy it back to the other one (just in case)
+      if(lin)
+         EnvLinToLog();
+      else
+         EnvLogToLin();
+   }
+
+   // and update the display etc
+   mPanel->Recalc();
+   mPanel->Refresh(false);
+   EnvelopeUpdated();
+}
+#endif
 
 void EqualizationDialog::OnErase(wxEraseEvent &event)
 {
