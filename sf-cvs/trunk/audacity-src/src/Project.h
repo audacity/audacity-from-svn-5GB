@@ -161,7 +161,35 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
 
    // File I/O
 
-   static wxArrayString ShowOpenDialog(wxString extra = wxEmptyString);
+   /** @brief Show an open dialogue for opening audio files, and possibly other
+    * sorts of files.
+    *
+    * The file type filter will automatically contain:
+    * - "All files" with any extension or none,
+    * - "All supported files" based on the file formats supported in this
+    *   build of Audacity,
+    * - All of the individual formats specified by the importer plug-ins which
+    *   are built into this build of Audacity, each with the relevant file
+    *   extensions for that format.
+    * The dialogue will start in the DefaultOpenPath directory read from the
+    * preferences, failing that the working directory. The file format filter
+    * will be set to the DefaultOpenType from the preferences, failing that
+    * the first format specified in the dialogue. These two parameters will
+    * be saved to the preferences once the user has chosen a file to open.
+    * @param extraformat Specify the name of an additional format to allow
+    * opening in this dialogue. This string is free-form, but should be short
+    * enough to fit in the file dialogue filter drop-down. It should be
+    * translated.
+    * @param extrafilter Specify the file extension(s) for the additional format
+    * specified by extraformat. The patterns must include the wildcard (e.g. 
+    * "*.aup" not "aup" or ".aup"), separate multiple patters with a semicolon,
+    * e.g. "*.aup;*.AUP" because patterns are case-sensitive. Do not add a
+    * trailing semicolon to the string. This string should not be translated
+    * @return Array of file paths which the user selected to open (multiple
+    * selections allowed).
+    */
+   static wxArrayString ShowOpenDialog(wxString extraformat = wxEmptyString,
+         wxString extrafilter = wxEmptyString);
    static void OpenFiles(AudacityProject *proj);
    void OpenFile(wxString fileName, bool addtohistory = true);
    bool WarnOfLegacyFile( );
