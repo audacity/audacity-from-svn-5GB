@@ -2038,15 +2038,19 @@ void AudacityProject::OnReleaseKeyboard(wxCommandEvent & event)
 }
 
 // static method, can be called outside of a project
-wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
+wxArrayString AudacityProject::ShowOpenDialog(wxString extraformat, wxString extrafilter)
 {
    FormatList l;
-   wxString filter;
-   wxString all;
+   wxString filter;  ///< List of file format names and extensions, separated
+   /// by | characters between _formats_ and extensions for each _format_, i.e.
+   /// format1name | *.ext | format2name | *.ex1;*.ex2
+   wxString all;  ///< One long list of all supported file extensions,
+   /// semicolon separated
 
-   if (extra != wxEmptyString)
-   {
-      all = extra.AfterFirst(wxT('|')).BeforeFirst(wxT('|')) + wxT(';');
+   if (extraformat != wxEmptyString)
+   {  // additional format specified
+      all = extrafilter + wxT(';');
+      // add it to the "all supported files" filter string
    }
 
    // Construct the filter
@@ -2054,10 +2058,14 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
    wxGetApp().mImporter->GetSupportedImportFormats(&l);
 
    for (FormatList::compatibility_iterator n = l.GetFirst(); n; n = n->GetNext()) {
+      /* this loop runs once per supported _format_ */
       Format *f = n->GetData();
 
       wxString newfilter = f->formatName + wxT("|");
+      // bung format name into string plus | separator
       for (size_t i = 0; i < f->formatExtensions.GetCount(); i++) {
+         /* this loop runs once per valid _file extension_ for file containing
+          * the current _format_ */
          if (!newfilter.Contains(wxT("*.") + f->formatExtensions[i] + wxT(";")))
             newfilter += wxT("*.") + f->formatExtensions[i] + wxT(";");
          if (!all.Contains(wxT("*.") + f->formatExtensions[i] + wxT(";")))
@@ -2080,9 +2088,13 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
 #endif
 
    wxString mask = _("All files|*|All supported files|") +
-                   all + wxT("|") +
-                   extra + 
-                   filter;
+                   all + wxT("|"); // "all" and "all supported" entries
+   if (extraformat != wxEmptyString)
+   {  // append caller-defined format if supplied  
+      mask +=  extraformat + wxT("|") + extrafilter + wxT("|");
+   }
+   mask += filter;   // put the names and extensions of all the importer formats
+   // we built up earlier into the mask
 
    // Retrieve saved path and type
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
@@ -2137,7 +2149,10 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extra)
 // static method, can be called outside of a project
 void AudacityProject::OpenFiles(AudacityProject *proj)
 {
-   wxArrayString selectedFiles = ShowOpenDialog(_("Audacity projects|*.aup|"));
+   /* i18n-hint: This string is a label in the file type filter in the open 
+    * / save dialogues, for the option that only shows project files created
+    * with Audacity. */
+   wxArrayString selectedFiles = ShowOpenDialog(_("Audacity projects"), wxT("*.aup"));
    if (selectedFiles.GetCount() == 0) {
       return;
    }
@@ -3375,8 +3390,8 @@ bool AudacityProject::SaveAs(bool bWantSaveCompressed /*= false*/)
                            _("You are saving an Audacity project file (.aup).\n\nSaving a project creates a file that only Audacity can open.\n\nTo save an audio file for other programs, use one of the \"File > Export\" commands.\n"));
 
       fName = FileSelector(_("Save Project As..."),
-                    path, fName, wxT(""),
-                    _("Audacity projects (*.aup)|*.aup"),
+         path, fName, wxT(""),
+         _("Audacity projects") + static_cast<wxString>(wxT(" (*.aup)|*.aup")),
       // JKC: I removed 'wxFD_OVERWRITE_PROMPT' because we are checking 
       // for overwrite ourselves later, and we disallow it.
       // We disallow overwrite because we would have to delete the many
