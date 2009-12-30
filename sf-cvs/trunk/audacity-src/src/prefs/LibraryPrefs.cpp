@@ -183,8 +183,7 @@ void LibraryPrefs::OnFFmpegFindButton(wxCommandEvent & e)
 
    // Libs are fine, don't show "locate" dialog unless user really wants it
    if (!locate) {
-      int response = wxMessageBox(_("Audacity has automatically detected valid FFmpeg libraries.\
-                                      \nDo you still want to locate them manually?"),
+      int response = wxMessageBox(_("Audacity has automatically detected valid FFmpeg libraries.\nDo you still want to locate them manually?"),
                                   wxT("Success"),
                                   wxCENTRE | wxYES_NO | wxNO_DEFAULT |wxICON_QUESTION);
       if (response == wxYES) {
