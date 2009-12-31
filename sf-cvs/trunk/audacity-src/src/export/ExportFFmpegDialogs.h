@@ -59,7 +59,7 @@ static ExposedFormat fmts[] =
 #if FFMPEG_STABLE
    {FMT_AMRWB,       wxT("AMRWB"),   wxT("amr"),  wxT("amr"),  1,   false,false,_("AMR (wide band) Files (FFmpeg)"),   CODEC_ID_AMR_WB, true},
 #endif
-   {FMT_WMA2,        wxT("WMA"),     wxT("wma"),  wxT("asf"),  2,   true ,false,_("WMA (version 2) Files (FFmpeg)"),   CODEC_ID_WMAV2,  true},
+   {FMT_WMA2,        wxT("WMA"),     wxT("wma"),  wxT("asf"),  2,   false,false,_("WMA (version 2) Files (FFmpeg)"),   CODEC_ID_WMAV2,  true},
    {FMT_OTHER,       wxT("FFMPEG"),  wxT(""),     wxT(""),     255, true ,true ,_("Custom FFmpeg Export"),             CODEC_ID_NONE,   true}
 };
 
