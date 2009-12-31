@@ -313,20 +313,22 @@ bool ExportFFmpeg::Init(const char *shortname, AudacityProject *project, Tags *m
    if (!InitCodecs(project))
       return false;
 
+   if (metadata == NULL) metadata = project->GetTags();
+
+   // Add metadata BEFORE writing the header.
+   // At the moment that works with ffmpeg-git and ffmpeg-0.5 for MP4.
+   if (fmts[mSubFormat].canmetadata)
+   {
+      mSupportsUTF8 = fmts[mSubFormat].canutf8;
+      AddTags(metadata);
+   }
+
    // Write headers to the output file.
    if ((err = FFmpegLibsInst->av_write_header(mEncFormatCtx)) < 0)
    {
       wxLogMessage(wxT("FFmpeg : ERROR - Can't write headers to output file \"%s\". Error code is %d."), mName.c_str(),err);
 
       return false;
-   }
-
-   if (metadata == NULL) metadata = project->GetTags();
-
-   if (fmts[mSubFormat].canmetadata)
-   {
-      mSupportsUTF8 = fmts[mSubFormat].canutf8;
-      AddTags(metadata);
    }
 
    return true;
