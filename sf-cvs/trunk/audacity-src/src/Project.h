@@ -496,6 +496,8 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    void SetNormalizedWindowState(wxRect pSizeAndLocation) {  mNormalizedWindowState = pSizeAndLocation;   }
    wxRect GetNormalizedWindowState() const { return mNormalizedWindowState;   }
 
+   bool IsTimerRecordCancelled(){return mTimerRecordCanceled;}
+   void ResetTimerRecordFlag(){mTimerRecordCanceled=false;}
  private:
 
    int  mAudioIOToken;
@@ -551,6 +553,9 @@ class AUDACITY_DLL_API AudacityProject:  public wxFrame,
    friend class ScreenshotCommand;
 
    wxRect mNormalizedWindowState;
+   
+   //flag for cancellation of timer record.
+   bool mTimerRecordCanceled;
 
  public:
     DECLARE_EVENT_TABLE()
