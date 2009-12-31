@@ -5,9 +5,10 @@ ErrorDocument 404 /404.php
 RewriteEngine On
 RewriteBase /
 RewriteRule ^/blog - [L]
-# Redirect URL from Audacity 1.3.3
-RewriteRule ^lame.html download/lame [R=permanent]
-RewriteRule ^lame download/lame [R=permanent]
+# Redirect URLs for LAME 
+RewriteRule ^lame.html help/faq?s=install&i=lame-mp3 [R=permanent]
+RewriteRule ^lame help/faq?s=install&i=lame-mp3 [R=permanent]
+RewriteRule ^download/lame help/faq?s=install&i=lame-mp3 [R=permanent]
 
 # Redirect URLs from previous version of site
 #RewriteRule ^index.php(.*) ./$1 [R=permanent]
