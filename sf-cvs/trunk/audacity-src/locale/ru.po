@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: audacity-translation@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-07-30 01:32+0300\n"
-"PO-Revision-Date: 2009-11-30 18:01+0300\n"
+"PO-Revision-Date: 2009-12-31 04:31+0300\n"
 "Last-Translator: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@lists.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,15 +27,15 @@ msgstr "Вот и отлично!"
 
 #: AboutDialog.cpp:192
 msgid "Audacity is a free program written by a worldwide team of volunteer <a href=\"http://audacity.sourceforge.net/community/developers\">developers</a>. We thank <a href=\"http://sourceforge.net\">SourceForge.net</a> and <a href=\"http://code.google.com\">Google Code</a> for our project hosting. Audacity is available for Windows 98 and later, Mac OS X, Linux and other Unix-like systems. For Windows 98/ME, use version 1.2.6 or 1.3.7 Beta; for Mac OS 9, version 1.0.0."
-msgstr ""
+msgstr "Audacity — свободный звуковой редактор, созданный <a href=\"http://audacity.sourceforge.net/community/developers\">группой программистов</a> из разных стран мира. Мы благодарим <a href=\"http://sourceforge.net\">SourceForge.net</a> за хостинг нашего проекта. Программа доступна для операционных систем Windows 98 и новее, Mac OS X, Linux и прочих Unix-подобных систем.  ОС Windows 98/ME поддерживаются версиями 1.2.6 и 1.3.7 Beta; Mac OS 9 поддерживается в 1.0.0."
 
 #: AboutDialog.cpp:196
 msgid "This is a Beta version of the program. It may contain bugs and unfinished features. We depend on your feedback: please send bug reports and feature requests to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help, use the Help menu in the program, view the tips and tricks on our <a href=\"http://wiki.audacityteam.org/index.php?title=Audacity_Wiki_Home_Page\">Wiki</a> or visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
-msgstr ""
+msgstr "Это бета-версия программы, которая может содержать ошибки и недоработанные функции. Эффективность нашей работы зависит от ваших откликов: присылайте нам сообщения об ошибках и пожелания по адресу для <a href=\"mailto:feedback@audacityteam.org\">откликов</a>. За справкой по использованию Audacity обратитесь на наш <a href=\"http://audacityteam.org/forum/\">форум</a> и в <a href=\"http://wiki.audacityteam.org/index.php?title=Audacity_Wiki_Home_Page\">вики</a>."
 
 #: AboutDialog.cpp:199
 msgid "This is a stable, completed release of the program. However, if you find a bug or have a suggestion for us, please write to our <a href=\"mailto:feedback@audacityteam.org\">Feedback</a> address. For help, view the tips and tricks on our <a href=\"http://wiki.audacityteam.org/index.php?title=Audacity_Wiki_Home_Page\">Wiki</a> or visit our <a href=\"http://audacityteam.org/forum/\">Forum</a>."
-msgstr ""
+msgstr "Это стабильная, готовая к повседневному использованию версия программы. Тем не менее, мы с радостью примем от вас сообщения об ошибках и пожелания по адресу для <a href=\"mailto:feedback@audacityteam.org\">откликов</a>. За справкой по использованию Audacity обратитесь на наш <a href=\"http://audacityteam.org/forum/\">форум</a> и в <a href=\"http://wiki.audacityteam.org/index.php?title=Audacity_Wiki_Home_Page\">вики</a>."
 
 #. i18n-hint: The translation of "translator_credits" will appear
 #. in the credits in the About Audacity window.  Use this to add
@@ -811,15 +811,11 @@ msgstr "Удаляются зависимости"
 msgid "Copying audio data into project..."
 msgstr "Звуковые файлы копируются в проект..."
 
-#: Dependencies.cpp:223
+#: Dependencies.cpp:226
 msgid ""
-"Your project currently depends on the presence of other files.\n"
-"Copy audio from the following files into your project to make it self-contained?\n"
-"This will need more disc space but is safer."
+"Copying the following files into your project will remove this dependency.   \n"
+"This needs more disk space, but is safer."
 msgstr ""
-"Ваш проект зависит от присутствия в системе внешних файлов.\n"
-"Вы хотите, чтобы эти данные были включены в проект, чтобы сделать его самодостаточным?\n"
-"Это приведёт к расходу места на диске, но обезопасит проект от потери данных."
 
 #: Dependencies.cpp:270
 msgid "Project depends on other audio files"
@@ -1576,7 +1572,7 @@ msgstr "Время завершения"
 
 #: LabelDialog.cpp:100
 msgid "Edit Labels"
-msgstr ""
+msgstr "Изменить пометки"
 
 #: LabelDialog.cpp:115
 msgid "Press F2 or double click to edit cell contents."
@@ -2270,6 +2266,15 @@ msgstr "Без сортировки"
 msgid "Effe&ct"
 msgstr "Эффек&ты"
 
+#: Menus.cpp:2365
+#, c-format
+msgid "Repeat %s"
+msgstr "Повторить %s"
+
+#: Project.cpp:669
+msgid "Repeat Last Effect"
+msgstr "Повторить последний эффект"
+
 #: Menus.cpp:877
 msgid "&Analyze"
 msgstr "&Анализ"
@@ -2624,11 +2629,6 @@ msgstr "Установить правую границу выделения"
 msgid "You must select a track first."
 msgstr "Предварительно выделите дорожку."
 
-#: Menus.cpp:2365
-#, c-format
-msgid "Repeat %s"
-msgstr "Повторить %s"
-
 #: Menus.cpp:2508
 msgid "There are no label tracks to export."
 msgstr "Экспортируемых дорожек для пометок нет"
@@ -2731,7 +2731,7 @@ msgstr ""
 
 #: Menus.cpp:3546
 msgid "Detach"
-msgstr ""
+msgstr "Отцепить"
 
 #: Menus.cpp:3287
 #, c-format
@@ -2826,11 +2826,11 @@ msgstr "Объединены помеченные области"
 
 #: Menus.cpp:3735
 msgid "Detach Labels"
-msgstr ""
+msgstr "Отцепить метки"
 
 #: Menus.cpp:3735
 msgid "Detached labeled regions"
-msgstr ""
+msgstr "Отцепить помеченные области"
 
 #: Menus.cpp:3487
 #: TrackPanel.cpp:6134
@@ -3129,10 +3129,6 @@ msgstr "При печати возникла проблема."
 msgid "Print"
 msgstr "Напечатать"
 
-#: Project.cpp:669
-msgid "Repeat Last Effect"
-msgstr "Повторить последний эффект"
-
 #: Project.cpp:676
 msgid "Main Mix"
 msgstr "Основной микс"
@@ -3188,9 +3184,13 @@ msgstr "Сохранить изменения?"
 msgid "Select one or more audio files..."
 msgstr "Выберите один или несколько звуковых файлов..."
 
-#: Project.cpp:1832
-msgid "Audacity projects|*.aup|"
-msgstr "Проекты Audacity|*.aup|"
+#. i18n-hint: This string is a label in the file type filter in the open
+#. * / save dialogues, for the option that only shows project files created
+#. * with Audacity.
+#: Project.cpp:2155
+#: Project.cpp:3394
+msgid "Audacity projects"
+msgstr "Проекты Audacity"
 
 #: Project.cpp:1885
 #: Project.cpp:2307
@@ -3321,7 +3321,7 @@ msgstr ""
 
 #: Project.cpp:2506
 msgid "Warning empty project"
-msgstr ""
+msgstr "Предупреждение о пустом проекте"
 
 #: Project.cpp:2816
 #, c-format
@@ -3343,7 +3343,7 @@ msgstr "Ошибка при сохранении проекта"
 #: effects/Equalization.cpp:1098
 #, c-format
 msgid "Couldn't write to file \"%s\": %s"
-msgstr ""
+msgstr "Не удалось записать в файл \"%s\": %s"
 
 #: Project.cpp:2683
 #, c-format
@@ -3413,9 +3413,15 @@ msgstr ""
 msgid "Save Project As..."
 msgstr "Сохранить проект как..."
 
-#: Project.cpp:2901
-msgid "Audacity projects (*.aup)|*.aup"
-msgstr "Проекты Audacity (*.aup)|*.aup"
+#: Project.cpp:3415
+msgid "Error Saving Project"
+msgstr "Ошибка при сохранении проекта"
+
+#: Project.cpp:3415
+msgid ""
+"The project was not saved because the file name provided would overwrite another project.\n"
+"Please try again and select an original name."
+msgstr ""
 
 #: Project.cpp:2955
 msgid "Created new project"
@@ -3458,7 +3464,7 @@ msgstr "Свободное пространство на диске законч
 
 #: Project.cpp:3773
 msgid "On-demand import and waveform calculation complete."
-msgstr ""
+msgstr "Импорт и расчёт волновой формы дорожки по требованию завершён"
 
 #: Project.cpp:3336
 #, c-format
@@ -3994,7 +4000,7 @@ msgstr "Длительность"
 
 #: TimeTrack.cpp:44
 msgid "Time Track"
-msgstr ""
+msgstr "Дорожка времени"
 
 #: TimerRecordDialog.cpp:68
 msgid "Audacity Timer Record"
@@ -4310,11 +4316,11 @@ msgstr "Объединить"
 
 #: TrackPanel.cpp:4164
 msgid "Merged Clips"
-msgstr ""
+msgstr "Объединены клипы"
 
 #: TrackPanel.cpp:4286
 msgid "Remove"
-msgstr ""
+msgstr "Удалить"
 
 #: TrackPanel.cpp:4176
 msgid "Removed Cut Line"
@@ -5511,6 +5517,10 @@ msgstr "Сохранить как..."
 msgid "Flat"
 msgstr "Всё в ноль"
 
+#: effects/Invert.h:27
+msgid "Invert"
+msgstr "Инвертирование"
+
 #: effects/Equalization.cpp:1423
 msgid "To use this EQ curve in a batch chain, please choose a new name for it."
 msgstr ""
@@ -5591,10 +5601,6 @@ msgstr "Выполняется поиск перегрузки"
 #: effects/Generator.cpp:57
 msgid "There is not enough room available to generate the audio"
 msgstr "Недостаточно места для создания звуковых данных"
-
-#: effects/Invert.h:27
-msgid "Invert"
-msgstr "Инвертирование"
 
 #: effects/Invert.h:41
 msgid "Inverting"
@@ -6543,7 +6549,7 @@ msgstr "Извините, не удалось инициализировать �
 
 #: effects/vamp/VampEffect.cpp:387
 msgid " - Vamp audio analysis plugin"
-msgstr ""
+msgstr " - расширение Vamp для анализа звука"
 
 #: effects/vamp/VampEffect.cpp:423
 msgid "Plugin Settings"
@@ -6556,11 +6562,11 @@ msgstr "Программа"
 
 #: export/Export.cpp:469
 msgid "All the selected audio is muted."
-msgstr ""
+msgstr "Весь выбранный звук приглушён."
 
 #: export/Export.cpp:471
 msgid "All the audio is muted."
-msgstr ""
+msgstr "Весь звук приглушён."
 
 #: export/Export.cpp:522
 msgid "Export File"
@@ -8613,6 +8619,12 @@ msgstr "У&казать..."
 #: prefs/LibraryPrefs.cpp:130
 msgid "Dow&nload"
 msgstr "Ска&чать"
+
+#: prefs/LibraryPrefs.cpp:186
+msgid ""
+"Audacity has automatically detected valid FFmpeg libraries.\n"
+"Do you still want to locate them manually?"
+msgstr ""
 
 #: prefs/MidiIOPrefs.cpp:58
 msgid "MIDI Devices"
