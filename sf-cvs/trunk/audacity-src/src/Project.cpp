@@ -758,7 +758,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mImportedDependencies(false), 
      mWantSaveCompressed(false),
      mLastEffect(NULL),
-     mLastEffectType(0)
+     mLastEffectType(0),
+     mTimerRecordCanceled(false)
 {
    int widths[] = {-1, 130};
    mStatusBar = CreateStatusBar(2);
@@ -1833,6 +1834,11 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
             }
          }
          PushState(_("Recorded Audio"), _("Record"));
+         if(IsTimerRecordCancelled())
+         {
+            OnUndo();
+            ResetTimerRecordFlag();
+         }
       }
 
       FixScrollbars();

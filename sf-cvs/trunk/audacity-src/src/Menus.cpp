@@ -5004,9 +5004,12 @@ void AudacityProject::OnTimerRecord()
    }
    else if(!dialog.RunWaitDialog())
    {
-      //show th e "wait for start dialog
-      //Possibly cancelled while the recording, so throw out the fresh track.
-      OnUndo();
+      //RunWaitDialog() shows the "wait for start" as well as "recording" dialog
+      //if it returned false it means the user cancelled while the recording, so throw out the fresh track.
+      //However, we can't undo it here because the PushState() is called in TrackPanel::OnTimer(),
+      //which is blocked by this function.
+      //so instead we mark a flag to undo it there.
+      mTimerRecordCanceled = true;
    }
 }
 

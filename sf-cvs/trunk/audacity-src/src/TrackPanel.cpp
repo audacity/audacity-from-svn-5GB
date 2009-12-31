@@ -931,6 +931,11 @@ void TrackPanel::OnTimer()
             }
          }
          MakeParentPushState(_("Recorded Audio"), _("Record"));
+         if(p->IsTimerRecordCancelled())
+         {
+            p->OnUndo();
+            p->ResetTimerRecordFlag();
+         }
       }
       mRedrawAfterStop = false;
 
