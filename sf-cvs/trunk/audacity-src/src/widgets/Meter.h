@@ -236,8 +236,6 @@ class Meter : public wxPanel
    wxPoint   mIconPos;
    wxPoint   mLeftTextPos;
    wxPoint   mRightTextPos;
-   wxString  mLeftText;
-   wxString  mRightText;
    wxSize    mLeftSize;
    wxSize    mRightSize;
    wxBitmap *mIcon;
