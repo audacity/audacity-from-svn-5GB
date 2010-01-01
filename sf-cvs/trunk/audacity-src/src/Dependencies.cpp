@@ -224,7 +224,7 @@ enum {
 
 wxString kDependencyDialogPrompt =
 _("Copying the following files into your project will remove this dependency.\
-   \nThis needs more disk space, but is safer.");
+\nThis needs more disk space, but is safer.");
 
 class DependencyDialog : public wxDialog
 {
