@@ -54,7 +54,10 @@ class AUDACITY_DLL_API EffectNyquist:public Effect
 {
  public:
    
-   EffectNyquist(wxString fname);
+   /** @param fName File name of the Nyquist script defining this effect. If 
+    * an empty string, then prompt the user for the Nyquist code to interpret.
+    */
+   EffectNyquist(wxString fName);
    virtual ~EffectNyquist();
 
    bool SetXlispPath();
@@ -70,6 +73,10 @@ class AUDACITY_DLL_API EffectNyquist:public Effect
    void SetCommand(wxString cmd);
    wxString GetOutput();
 
+   /** Get the name of the effect (taken from the script that is loaded). Note
+    * that this name is currently not translated because the translations system
+    * doesn't see the lisp files containing the Nyquist effect scripts.
+    * @return The name of the effect */
    virtual wxString GetEffectName() {
       return mName;
    }
@@ -138,8 +145,8 @@ class AUDACITY_DLL_API EffectNyquist:public Effect
 
    wxString          mXlispPath;
 
-   wxFileName        mFileName;
-   wxDateTime        mFileModified;
+   wxFileName        mFileName;  ///< Name of the Nyquist script file this effect is loaded from
+   wxDateTime        mFileModified; ///< When the script was last modified on disk
 
    bool              mStop;
    bool              mBreak;
@@ -148,10 +155,14 @@ class AUDACITY_DLL_API EffectNyquist:public Effect
    bool              mCompiler;
    bool              mIsSal;
    bool              mExternal;
-   bool              mInteractive;
+   /** True if the code to execute is obtained interactively from the user via
+    * the "Nyquist Prompt", false for all other effects (lisp code read from
+    * files)
+    */
+   bool              mInteractive;  
    bool              mOK;
    wxString          mCmd;
-   wxString          mName;
+   wxString          mName;   ///< Name of the Effect
    wxString          mAction;
    wxString          mInfo;
    bool              mDebug;
