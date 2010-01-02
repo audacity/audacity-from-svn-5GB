@@ -80,22 +80,21 @@ int PCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
    wxFile f;   // will be closed when it goes out of scope
    SNDFILE *sf = NULL;
 
-   if (f.Open(mAliasedFileName.GetFullPath())) {
-      // Even though there is an sf_open() that takes a filename, use the one that
-      // takes a file descriptor since wxWidgets can open a file with a Unicode name and
-      // libsndfile can't (under Windows).
-      ODManager::LockLibSndFileMutex();
-      sf = sf_open_fd(f.fd(), SFM_READ, &info, FALSE);
-      ODManager::UnlockLibSndFileMutex();
+   if (f.Exists(mAliasedFileName.GetFullPath())) { // Don't use Open if file does not exits
+      if (f.Open(mAliasedFileName.GetFullPath())) {
+         // Even though there is an sf_open() that takes a filename, use the one that
+         // takes a file descriptor since wxWidgets can open a file with a Unicode name and
+         // libsndfile can't (under Windows).
+         ODManager::LockLibSndFileMutex();
+         sf = sf_open_fd(f.fd(), SFM_READ, &info, FALSE);
+         ODManager::UnlockLibSndFileMutex();
+      }
    }
 
    if (!sf){
-      
       memset(data,0,SAMPLE_SIZE(format)*len);
-
       if(silence) delete silence;
       mSilentAliasLog=TRUE;
-
       return len;
    }
 
