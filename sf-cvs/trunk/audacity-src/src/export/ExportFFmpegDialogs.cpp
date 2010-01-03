@@ -891,6 +891,7 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
       mExportPresets = S.Id(FEExportPresetsID).AddButton(_("Export Presets"));
    }
    S.EndMultiColumn();
+   S.AddVariableText(_("Not all formats and codecs are compatible. Some parameters (such as bitrate and samplerate) combinations are not compatible with some codecs too."),false);
    S.StartTwoColumn();
    {
       S.Id(FEFormatLabelID).AddVariableText(_("Format:"));
@@ -899,20 +900,20 @@ void ExportFFmpegOptions::PopulateOrExchange(ShuttleGui & S)
       mCodecName = S.Id(FECodecNameID).AddVariableText(wxT(""));
    }
    S.EndTwoColumn();
-   S.AddVariableText(_("Not all formats and codecs are compatible. Some parameters (such as bitrate and samplerate) combinations are not compatible with some codecs too."),false);
-   S.StartMultiColumn(3,wxEXPAND);
+   S.StartTwoColumn();
    {
-      S.AddVariableText(_("Format selector:"),true);
-      S.AddVariableText(_("Codec selector:"),true);
-      S.AddVariableText(wxEmptyString);
-      S.Id(FEAllFormatsID).AddButton(_("Show All Formats"));
-      S.Id(FEAllCodecsID).AddButton(_("Show All Codecs"));
-      S.AddVariableText(wxEmptyString);
-      mFormatList = S.Id(FEFormatID).AddListBox(&mFormatNames);
-      mCodecList = S.Id(FECodecID).AddListBox(&mCodecNames);
-      mFormatList->DeselectAll();
-      mCodecList->DeselectAll();
-
+      S.StartTwoColumn();
+      {
+         S.AddVariableText(_("Format selector:"),true);
+         S.AddVariableText(_("Codec selector:"),true);
+         S.Id(FEAllFormatsID).AddButton(_("Show All Formats"));
+         S.Id(FEAllCodecsID).AddButton(_("Show All Codecs"));
+         mFormatList = S.Id(FEFormatID).AddListBox(&mFormatNames);
+         mCodecList = S.Id(FECodecID).AddListBox(&mCodecNames);
+         mFormatList->DeselectAll();
+         mCodecList->DeselectAll();
+      }
+      S.EndTwoColumn();
       S.StartStatic(_("Options"),0);
       {
          S.StartMultiColumn(4, wxALIGN_LEFT);
