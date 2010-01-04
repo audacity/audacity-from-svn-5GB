@@ -106,7 +106,7 @@ void SelectionBar::Populate()
    wxFlexGridSizer *mainSizer;
    wxBoxSizer *hSizer;
 
-   int formatIndex;
+   int formatIndex = 1;
    /* we don't actually need a control yet, but we want to use it's methods
     * to do some look-ups, so we'll have to create one. We can't make the 
     * look-ups static because they depend on translations which are done at
