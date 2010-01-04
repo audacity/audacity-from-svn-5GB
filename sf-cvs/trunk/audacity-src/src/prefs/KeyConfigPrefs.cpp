@@ -136,6 +136,7 @@ void KeyConfigPrefs::PopulateOrExchange(ShuttleGui & S)
       S.EndHorizontalLay();
                                     
       mList = S.Id(CommandsListID).AddListControlReportMode();
+      mList->SetName(_("Key Bindings"));
 
       S.StartThreeColumn();
       {
@@ -339,6 +340,20 @@ void KeyConfigPrefs::OnDefaults(wxCommandEvent & e)
 void KeyConfigPrefs::OnCaptureKeyDown(wxKeyEvent & e)
 {
    wxTextCtrl *t = (wxTextCtrl *)e.GetEventObject();
+
+#if defined(__WXMAC__)
+   if (e.GetKeyCode() == WXK_TAB) {
+      wxNavigationKeyEvent nevent;
+      nevent.SetWindowChange(e.ControlDown());
+      nevent.SetDirection(!e.ShiftDown());
+      nevent.SetEventObject(t);
+      nevent.SetCurrentFocus(t);
+      t->GetParent()->ProcessEvent(nevent);
+
+      return;
+   }
+#endif
+
    t->SetValue(KeyStringDisplay(KeyEventToKeyString(e)));
 }
 
