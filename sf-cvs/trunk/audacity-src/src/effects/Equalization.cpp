@@ -2118,6 +2118,15 @@ void EqualizationDialog::LayoutEQSliders()
    wxSize rulerSize = ruler->GetSize();   //and the ruler
    wxSizerItem *EQslider = szrG->GetItem((size_t)1);
    wxSize EQsliderSize = EQslider->GetSize();   //size of the sliders
+
+#if defined(__WXMAC__)
+   // LL: 2010-01-04 - Don't know why, but on the Mac, the rightmost sliders
+   // will wind up off the edge of the window since they get spaced out too
+   // much.  Somewhere, there's an extra 2 pixels in slider width that's not
+   // being accounted for.  (I guess)
+   EQsliderSize.x += 2;
+#endif
+
    int start, w, range, so_far;
    start = szr2Size.x + rulerSize.x + 12;   //inc ruler & mPanel border (4+4 + 4)
    szrG->SetItemMinSize((size_t)0, start - EQsliderSize.x/2, -1);   //set 1st spacer so that 1st slider aligned with ruler
@@ -2137,6 +2146,7 @@ void EqualizationDialog::LayoutEQSliders()
       szrG->SetItemMinSize((size_t)(i*2), w, -1);   //set spacers so that sliders aligned with ruler
       so_far += (w + EQsliderSize.x);
    }
+
    RefreshRect(wxRect(szrG->GetPosition(),szrGSize));
 }
 
