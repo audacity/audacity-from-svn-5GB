@@ -486,6 +486,7 @@ wxSizer *VSTEffectDialog::BuildProgramBar()
                              wxSize(200, -1),
                              progs
                              );
+   mProgram->SetName(_("Presets"));
    hs->Add(mProgram, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
    wxButton *bt = new wxButton(this, ID_VST_LOAD, _("Load"));
