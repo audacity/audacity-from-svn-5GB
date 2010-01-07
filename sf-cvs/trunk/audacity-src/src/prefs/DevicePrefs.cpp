@@ -158,6 +158,10 @@ void DevicePrefs::PopulateOrExchange(ShuttleGui & S)
 
 void DevicePrefs::OnHost(wxCommandEvent & e)
 {
+   // Bail if we have no hosts
+   if (mHostNames.size() < 1)
+      return;
+
    // Find the index for the host API selected
    int index = -1;
    wxString apiName = mHostNames[mHost->GetCurrentSelection()];
