@@ -2156,8 +2156,9 @@ wxArrayString AudacityProject::ShowOpenDialog(wxString extraformat, wxString ext
 void AudacityProject::OpenFiles(AudacityProject *proj)
 {
    /* i18n-hint: This string is a label in the file type filter in the open 
-    * / save dialogues, for the option that only shows project files created
-    * with Audacity. */
+    * and save dialogues, for the option that only shows project files created
+    * with Audacity. Do not include pipe symbols or .aup (this extension will 
+    * now be added automatically for the Save Projects dialogues).*/
    wxArrayString selectedFiles = ShowOpenDialog(_("Audacity projects"), wxT("*.aup"));
    if (selectedFiles.GetCount() == 0) {
       return;
