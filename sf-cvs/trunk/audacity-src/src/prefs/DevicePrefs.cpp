@@ -359,15 +359,21 @@ bool DevicePrefs::Apply()
    ShuttleGui S(this, eIsSavingToPrefs);
    PopulateOrExchange(S);
 
-   const PaDeviceInfo *info;
+   const PaDeviceInfo *info = NULL;
 
-   info = (const PaDeviceInfo *) mPlay->GetClientData(mPlay->GetSelection());
+   if (mPlay->GetCount() > 0) {
+      info = (const PaDeviceInfo *) mPlay->GetClientData(
+            mPlay->GetSelection());
+   }
    if (info) {
       gPrefs->Write(wxT("/AudioIO/PlaybackDevice"),
                     DeviceName(info));
    }
 
-   info = (const PaDeviceInfo *) mRecord->GetClientData(mRecord->GetSelection());
+   info = NULL;
+   if (mRecord->GetCount() > 0) {
+      info = (const PaDeviceInfo *) mRecord->GetClientData(mRecord->GetSelection());
+   }
    if (info) {
       gPrefs->Write(wxT("/AudioIO/RecordingDevice"),
                     DeviceName(info));
