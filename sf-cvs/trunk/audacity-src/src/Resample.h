@@ -73,14 +73,28 @@ class Resample
    /// Returns true if the constructor succeeded.
    bool Ok();
 
-   /// Main processing function.  Reads up to inBufferLen samples
-   /// from the input buffer, and writes up to outBufferLen samples
-   /// to the output buffer.  Pass true in lastFlag if this is the
-   /// end of the input; otherwise not all of the input samples will
-   /// be used.  The number of input samples used is returned in
-   /// inBufferUsed, and the number of output samples generated
-   /// is the return value of the function.  This function may do
-   /// nothing if you don't pass a large enough output buffer.
+   /** @brief Main processing function. Resamples from the input buffer to the 
+    * output buffer.
+    *
+    * Reads samples from the input buffer, and writes samples to the output
+    * buffer. Stops when either is exhaughsted, or we reach a convenient block
+    * end, unless lastFlag is set to force emptying the input buffer.
+    * The number of input samples used is returned in inBufferUsed, and the
+    * number of output samples generated is the return value of the function. 
+    * This function may do nothing if you don't pass a large enough output
+    * buffer (i.e. there is no where to put a full block of output data)
+    @param factor The scaling factor to resample by.
+    @param inBuffer Buffer of input samples to be processed (mono)
+    @param inBufferLen Length of the input buffer, in samples.
+    @param lastFlag Flag to indicate this is the last lot of input samples and
+    the buffer needs to be emptied out into the rate converter.
+    @param inBufferUsed Number of samples from inBuffer that have been used 
+    (unless lastFlag is true, we don't garuntee to process all the samples in
+    the input this time, we may leave some for next time)
+    @param outBuffer Buffer to write output (converted) samples to.
+    @param outBufferLen How big outBuffer is.
+    @return Number of output samples created by this call
+   */
    int Process(double  factor,
                float  *inBuffer,
                int     inBufferLen,
