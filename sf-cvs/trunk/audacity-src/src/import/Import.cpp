@@ -123,10 +123,10 @@ int Importer::Import(wxString fName,
 
    // This list is used to call plugins in correct order
    ImportPluginList importPlugins;
-
-   bool haveCompatiblePlugin = false;
-
    ImportPluginList::compatibility_iterator importPluginNode;
+
+   // This list is used to remember plugins that should have been compatible with the file.
+   ImportPluginList compatiblePlugins;
    
    // If user explicitly selected a filter,
    // then we should try importing via corresponding plugin first
@@ -148,7 +148,7 @@ int Importer::Import(wxString fName,
          importPlugins.Append(plugin);
       }
       if (plugin->SupportsExtension(extension))
-        haveCompatiblePlugin = true;
+        compatiblePlugins.Append(plugin);
       importPluginNode = importPluginNode->GetNext();
    }
 
@@ -250,7 +250,7 @@ int Importer::Import(wxString fName,
    }
 #endif
 
-   if (!haveCompatiblePlugin)
+   if (compatiblePlugins.GetCount() <= 0)
    {
       // if someone has sent us a .cda file, send them away
       if (extension.IsSameAs(wxT("cda"), false)) {
@@ -327,7 +327,20 @@ int Importer::Import(wxString fName,
    else
    {
       // We DO have a plugin for this file, but import failed.
-      errorMessage.Printf(_("Audacity recognized the type of the file '%s',\nbut was unable to import it."),fName.c_str());
+      wxString pluglist = wxEmptyString;
+
+      importPluginNode = compatiblePlugins.GetFirst();
+      while(importPluginNode)
+      {
+         ImportPlugin *plugin = importPluginNode->GetData();
+         if (pluglist == wxEmptyString)
+           pluglist = plugin->GetPluginFormatDescription();
+         else
+           pluglist = pluglist + wxT(", ") + plugin->GetPluginFormatDescription();
+         importPluginNode = importPluginNode->GetNext();
+      }
+
+      errorMessage.Printf(_("Audacity recognized the type of the file '%s'.\nImporters supposedly supporting such files are:\n%s,\nbut none of them understood this file format."),fName.c_str(), pluglist.c_str());
    }
 
    return 0;
