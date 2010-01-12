@@ -541,7 +541,7 @@ void ExportMultiple::OnExport(wxCommandEvent& event)
 
       SuccessDialog dlg(this,
                    wxID_ANY,
-                   wxString(_("ExportMultiple")));
+                   wxString(_("Export Multiple")));
       ShuttleGui S(&dlg, eIsCreating);
       S.StartVerticalLay();
       {
