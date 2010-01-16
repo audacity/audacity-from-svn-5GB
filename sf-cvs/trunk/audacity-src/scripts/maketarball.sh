@@ -227,7 +227,7 @@ function fixwinforslim {
 	updsln $mode libscorealign
 }
 
-echo "Maketarball 2.0.0 -- make an Audacity distribution tarball"
+echo "Maketarball 2.1.0 -- make an Audacity distribution tarball"
 
 # check number of arguments, if not one then print a usage message
 if [ $# == 1 ]; then
@@ -309,13 +309,50 @@ if [ $mode -eq 1 ]; then
 else
 	$SHELL -c "./configure ${configargs}" > /dev/null 2>&1
 fi
-echo -n "Getting program version... "
 
-# find version number from C header file
-major_version=`awk '/^#define+ AUDACITY_VERSION / {print $3}' src/Audacity.h`
-minor_version=`awk '/^#define+ AUDACITY_RELEASE / {print $3}' src/Audacity.h`
-micro_version=`awk '/^#define+ AUDACITY_REVISION / {print $3}' src/Audacity.h`
-version_suffix=`awk '/^#define+ AUDACITY_SUFFIX / {split($0,subs,"\""); print(subs[2]) }' src/Audacity.h`
+# The version number is stored in a C++ header as a set of #defines. Trying to 
+# parse this with another language (as was done first with Perl and then with
+# awk) is always going to be fragile, so we use a C++ pre-processor (which
+# strangely enough we are pretty much garunteed to have) to do it. Essentially
+# we have a trivial bit of C++ code stored in-line in this script which is fed
+# through the pre-processor to get the version string components where we can
+# find them.
+
+echo -n "Getting program version... "
+# first off, find out what C++ pre-processor configure has found for us to use
+# (because we want the same one that will be used to build Audacity). This is a
+# neat trick using the config.status script left behind after configure has
+# been run
+cppprog="$(echo '@CXX@' | ./config.status --file=-)"
+
+# now create a temporary directory where out source file will live
+cppdir="$(mktemp -d mktarball.XXXXXXXXXXX)"
+cppfile="${cppdir}/ver.cpp"
+# create the test source file
+cat > "${cppfile}" << EOFCPP
+#include "$(pwd)/src/Audacity.h"
+AUDACITY_VERSION
+AUDACITY_RELEASE
+AUDACITY_REVISION
+AUDACITY_SUFFIX
+EOFCPP
+
+# pre-process the source (to get macros expanded) and parse the result
+major_version=$(${cppprog} "${cppfile}" -E | tail -n 4 | head -n 1)
+minor_version=$(${cppprog} "${cppfile}" -E | tail -n 3 | head -n 1)
+micro_version=$(${cppprog} "${cppfile}" -E | tail -n 2 | head -n 1)
+# this gets the text out of the wxT("") macro it is already wrapped in
+version_suffix=$(${cppprog} "${cppfile}" -E | tail -n 1 | cut -d\" -f 2)
+# see if the suffix contains a compiler date macro
+${cppprog} "${cppfile}" -E | tail -n 1 | grep -v -q '__TDATE__'
+version_date=$?
+
+if [[ ${version_date} -ne 0 ]] ; then
+		# need to suffix the date on to the suffix string
+		version_suffix="${version_suffix}$(date "+%Y%m%d")"
+fi
+# remove that temp directory and the associated files
+rm -fr "${cppdir}"
 
 version="${major_version}.${minor_version}.${micro_version}${version_suffix}"
 echo "${version}"
