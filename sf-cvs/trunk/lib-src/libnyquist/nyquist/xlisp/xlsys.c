@@ -28,9 +28,9 @@
 #include "xlisp.h"
 
 /* profile variables */
-static int invisible_counter;
-int *profile_count_ptr = &invisible_counter;
-int profile_flag = FALSE;
+static FIXTYPE invisible_counter;
+FIXTYPE *profile_count_ptr = &invisible_counter;
+FIXTYPE profile_flag = FALSE;
 
 
 /* external variables */
