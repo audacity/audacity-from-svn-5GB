@@ -10,7 +10,7 @@ Personal support with Audacity is not provided by e-mail,
 but on our Forum:
   http://audacityteam.org/forum/
 
-Audacity is copyright (c) 1999-2009 by Audacity Team.
+Audacity is copyright (c) 1999-2010 by Audacity Team.
 This copyright notice applies to all documents in the
 Audacity source code archive, except as otherwise noted
 (mostly in the lib-src subdirectories).
@@ -20,12 +20,12 @@ http://creativecommons.org/licenses/by/3.0/legalcode
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Version 1.3.10 Beta 
+Version 1.3.11 Beta 
 
 Contents of this README:
 
 1.  Licensing
-2.  Changes in version 1.3.10 Beta
+2.  Changes in version 1.3.11 Beta
 3.  Known Issues at Release
 4.  Source Code, Libraries and Additional Copyright Information
 5.  Compilation Instructions
@@ -56,63 +56,45 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 
 --------------------------------------------------------------------------------
 
-2. Changes in version 1.3.10 Beta: 
+2. Changes in version 1.3.11 Beta: 
 
 Bug fixes for:
 
  * Imports and Exports:
-    * Freeze importing audio files when Default View Mode set to 
-       Pitch (EAC)
-    * Simultaneous On-Demand imports sorted incorrectly
-    * WAV or AIFF files imported as noise if Preferences set to 
-       copy in the data at 24-bit quality
-    * WMA exports corrupted if they contained metadata 
-    * Metadata Editor appeared before the Export window when 
-       exporting to any format
+   * Improved help for files that cannot be imported because the relevant
+     optional library is missing.
+   * Fix corrupt files exported through FFmpeg when tags are set.
+   * Prevent saving an new Audacity Project over an existing one, as this ruins
+     both projects.
+   * Bug when Exporting partial tracks causing too much audio to be exported
+     is fixed.
 
  * Effects:
-    * Crash or hang using Equalization on longer tracks
-    * Reverse did not reverse clip boundaries
-    * Nyquist: 
-       * Excessive memory consumption led to slow processing or
-          crashes
-       * Values appearing in Nyquist effects text boxes were not 
-          always the default or previously entered values
-       * Errors running Nyquist effects in European locales where
-          comma used as decimal separator
-    * VST effects remained in Effect menu even when re-scanned and 
-       no longer available 
-    * Truncate Silence produced incorrect results if silences 
-       spanned a block boundary    
+   * Allow effects which change the length of the audio they work on to also be
+     applied to selected label tracks, thus keeping them in sync.
+   * Fixed problems with using plug-ins that create labels on existing label
+     tracks.
+
+ * Audio Devices:
+   * Fixed bug causing recording to stop short when the record sample is not
+     supported by the sound device and libsamplerate is used for resampling.
+   * Fix crash when opening the preferences on a machine where there are no
+     available audio devices.
+   * Fixes for bugs associated with Timer Record.
+
+ * User Interface:
+   * Sizes of some dialogues adjusted to ensure they fit on the screen.
+   * Fix for supposedly "hidden" items appearing on screen with large
+     monitors.
+   * Various keyboard shortcut and translation fixes.
 
  * Other bug fixes:
-    * Spurious "not writable/disk full" errors when saving projects
-    * Playing, rendering or exporting multiple tracks led to 
-       desynchronised playback or loss of audio data
-    * Crash opening Preferences when no recording and/or playback
-       devices enabled or connected
-    * Preferences window: OK button did not respond to ENTER when
-       a tab selected in left-hand panel
-    * Mixer Board solo button handling 
-    * (Windows) After a period launching correctly, Audacity 
-       sometimes did not come up on top at launch
-    * (Mac OS X) Correctly installed Help folder could not be found 
-    * (Mac OS X and Linux) Output slider could affect VU playback 
-        meter which then did not reflect actual waveform volume level 
-    * (Linux) Undoing or redoing a label edit could cause a crash 
+   * Several timing-dependent crashes and minor incorrect behaviours have been
+     fixed
 
 Changes and improvements:
-
-    * Linked audio and label tracks disabled until a future Beta
-       version so they can be bug fixed
-    * Input volume slider will be disabled if it doesn't have proper
-       control of system slider; use the system slider instead
-    * Proper support for copying/pasting label-with-audio including 
-       label text; new Edit > Paste Text to New Label menu item to
-       paste system clipboard     
-    * Contrast Tool now modeless, more intuitive handling of multiple
-       project windows, various other minor improvements
- 
+   * Better icon file for Windows - higher resolution and transparency
+   * Windows Installer now installs correctly over previous versions of Audacity
 
 --------------------------------------------------------------------------------
 
@@ -123,7 +105,6 @@ Please also check:
 
 for details of any issues that have been identified after release of
 this version.
-
  * Imports:
     * On-Demand WAV/AIFF import not available if using the optional 
        FFmpeg importer (that is, if "FFmpeg-compatible files" set in 
@@ -135,7 +116,9 @@ this version.
         to open the required file type, but it will not appear in 
         the list accessed by the "Open With" context menu item
         whilst there is another "audacity.exe" on the computer.  
-    * (Linux) Metadata in imported FLAC files not visible     
+     * If a WAV/AIFF file is imported into a project using on-demand 
+        import, then the file is deleted whilst the project is still
+	open, then trying to play the project will cause Audacity to hang.
 
  * Exports:
     * Album art and lyrics in imported metadata lost when exporting   
@@ -166,9 +149,6 @@ this version.
  * Label tracks:
     * Typing "j" or "k" in a label may activate the "move cursor" 
       shortcut instead 
-    * Multiple labels cannot be added to the same label track using
-      Nyquist Analyze effects or Nyquist Prompt. Workaround: move
-      the audio track below the label track. 
 
  * Mixer Board:
     * The meter range does not reflect a change in the dB range meter 
@@ -192,9 +172,6 @@ this version.
     when recording in 24-bit quality. You may record for 50% longer
     than the indicated time.
 
- * Pressing Play (but not Space) in a second project when another is
-    already playing stops playback of the first project
-
  * Automatic Crash Recovery disregards track zoom level and position
 
  * Projects created by Audacity 1.1.x or earlier are no longer
@@ -209,7 +186,7 @@ this version.
  * Intermittently occurring bugs: Please write to feedback@audacityteam.org   
    if you experience any of these known but not fully understood 
    issues, giving us steps to reproduce them so they can be fixed.
-   For items marked ¶, some work has already been done which may
+   For items marked ï¿½, some work has already been done which may
    have eliminated the issue - your help with testing these issues 
    is especially welcome.  
  
@@ -218,18 +195,20 @@ this version.
     * Projects do not re-open properly from the Automatic 
        Crash Recovery dialogue
     * Projects crash when applying repeated effects towards
-       the end of audio tracks¶ 
-    * WAV or AIFF files import as noise¶   
+       the end of audio tracksï¿½ 
+    * WAV or AIFF files import as noiseï¿½   
     * (Windows XP, reported on) Clicks during recording 
     * (Windows) Timer Record unreliable with recordings starting
        before and ending after midnight
     * (Windows) On Vista and 7, and on XP with some USB microphones, the
        Audacity input/output level sliders act independently of/incorrectly
-       with system level sliders:¶
+       with system level sliders:ï¿½
        * The achieved recorded level only matches the level indicated on 
           the Recording VU meter if the Audacity input slider is at 100% 
        * On Vista, adjusting the system level sliders then starting to 
-          record may reset the system level sliders unless monitoring is on 
+          record may reset the system level sliders unless monitoring is on
+    * (Windows 7) Clicking in a file open or save dialogue may cause the files
+	  or some folders to disappear from the list.
     * (Windows) Effects processing/waveform rendering after completion 
        may be much slower than Audacity Beta 1.3.8
     * (Mac OS X 10.5.8 PPC) Hang when scanning for VST effects on first
@@ -283,9 +262,6 @@ this version.
  * (Linux) Effects and other dialogues do not have focus on opening. 
     This is a bug in wxGTK for which there is no current workaround: 
     Click in the dialogue to navigate it and change parameters.    
-
- * (Linux) Audacity will require a FFmpeg package or build later than
-    0.5 in order for optional FFmpeg import/export features to work    
 
  * (Linux) Audacity now supports interfacing with JACK, but this has
     not been tested, and has a number of known reliability and usability
@@ -484,6 +460,63 @@ or e-mail us at:
 
 6.  Previous Changes going back to version 1.1.0
 
+Changes in version 1.3.10 Beta: 
+
+Bug fixes for:
+
+ * Imports and Exports:
+    * Freeze importing audio files when Default View Mode set to 
+       Pitch (EAC)
+    * Simultaneous On-Demand imports sorted incorrectly
+    * WAV or AIFF files imported as noise if Preferences set to 
+       copy in the data at 24-bit quality
+    * WMA exports corrupted if they contained metadata 
+    * Metadata Editor appeared before the Export window when 
+       exporting to any format
+
+ * Effects:
+    * Crash or hang using Equalization on longer tracks
+    * Reverse did not reverse clip boundaries
+    * Nyquist: 
+       * Excessive memory consumption led to slow processing or
+          crashes
+       * Values appearing in Nyquist effects text boxes were not 
+          always the default or previously entered values
+       * Errors running Nyquist effects in European locales where
+          comma used as decimal separator
+    * VST effects remained in Effect menu even when re-scanned and 
+       no longer available 
+    * Truncate Silence produced incorrect results if silences 
+       spanned a block boundary    
+
+ * Other bug fixes:
+    * Spurious "not writable/disk full" errors when saving projects
+    * Playing, rendering or exporting multiple tracks led to 
+       desynchronised playback or loss of audio data
+    * Crash opening Preferences when no recording and/or playback
+       devices enabled or connected
+    * Preferences window: OK button did not respond to ENTER when
+       a tab selected in left-hand panel
+    * Mixer Board solo button handling 
+    * (Windows) After a period launching correctly, Audacity 
+       sometimes did not come up on top at launch
+    * (Mac OS X) Correctly installed Help folder could not be found 
+    * (Mac OS X and Linux) Output slider could affect VU playback 
+        meter which then did not reflect actual waveform volume level 
+    * (Linux) Undoing or redoing a label edit could cause a crash 
+
+Changes and improvements:
+
+    * Linked audio and label tracks disabled until a future Beta
+       version so they can be bug fixed
+    * Input volume slider will be disabled if it doesn't have proper
+       control of system slider; use the system slider instead
+    * Proper support for copying/pasting label-with-audio including 
+       label text; new Edit > Paste Text to New Label menu item to
+       paste system clipboard     
+    * Contrast Tool now modeless, more intuitive handling of multiple
+       project windows, various other minor improvements
+
 Changes in version 1.3.9 Beta:
 
 Bug fixes for:
@@ -524,7 +557,6 @@ Improvements:
               attack and decay time support
            * Mixer Board: improved design, more responsive meters and 
               now interacts fully with Track Panel in main window
-
 
 Changes in version 1.3.8 Beta:
 
