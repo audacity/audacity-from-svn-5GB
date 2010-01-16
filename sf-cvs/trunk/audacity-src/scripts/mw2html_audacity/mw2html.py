@@ -536,17 +536,25 @@ def url_open(url):
         r = conn.getresponse()
         print 'Status',r.status,r.reason,'accessing',rel_url
         if r.status == 404:
-          print "it's not possible to recover this error."
+          print "   it's not possible to recover this error."
           errors += 1
           return ('','')
         if r.status == 500:
-          print "eventually this error might be recovered. let's try again."
-          print 'reconnecting...'
+          print "   eventually this error might be recovered. let's try again."
+          print '   reconnecting...'
+          conn = httplib.HTTPConnection(domain)
+          attempts += 1
+          continue
+        if r.status == 403:
+          print "   that shouldn't happen, but let's try again anyway."
+          print '   reconnecting...'
           conn = httplib.HTTPConnection(domain)
           attempts += 1
           continue
         if attempts != 0:
           recovered = True
+        if r.status != 200:
+          print "      Status other than 200, 404, 500, 403. It is: ",r.status
         success = True
         
       except httplib.HTTPException, e:
