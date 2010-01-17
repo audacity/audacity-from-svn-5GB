@@ -61,40 +61,45 @@ to http://www.gnu.org/copyleft/gpl.html or write to
 Bug fixes for:
 
  * Imports and Exports:
+   * Bug when exporting partial selections caused too much audio to be 
+      exported is fixed.
+   * Fix corrupt files exported through FFmpeg when metadata included,
+      (metadata is now exported correctly in M4A files)
+   * Prevent saving a new Audacity Project over an existing one as this 
+      could corrupt both projects.
    * Improved help for files that cannot be imported because the relevant
-     optional library is missing.
-   * Fix corrupt files exported through FFmpeg when tags are set.
-   * Prevent saving an new Audacity Project over an existing one, as this ruins
-     both projects.
-   * Bug when Exporting partial tracks causing too much audio to be exported
-     is fixed.
+      optional library is missing.
 
  * Effects:
    * Allow effects which change the length of the audio they work on to also be
-     applied to selected label tracks, thus keeping them in sync.
-   * Fixed problems with using plug-ins that create labels on existing label
-     tracks.
+      applied to selected label tracks, thus keeping them synchronized.
+   * Fixed inability in Nyquist plug-ins to add labels to an existing label track 
+   * (Mac) Equalization window was corrupted after Preview  
+   * (Linux 64-bit) Fixed crash Generating Click Track
 
  * Audio Devices:
-   * Fixed bug causing recording to stop short when the record sample is not
-     supported by the sound device and libsamplerate is used for resampling.
-   * Fix crash when opening the preferences on a machine where there are no
-     available audio devices.
-   * Fixes for bugs associated with Timer Record.
+   * Fixed bug causing recording to stop short when the recording sample rate 
+      is not supported by the sound device and libsamplerate is used for 
+      resampling.
+   * Fix crash when opening Preferences on a machine where there are no
+      available audio devices.
+   * Fixes for bugs using Timer Record and Sound Activated Recording 
 
  * User Interface:
    * Sizes of some dialogues adjusted to ensure they fit on the screen.
    * Fix for supposedly "hidden" items appearing on screen with large
-     monitors.
+      monitors.
    * Various keyboard shortcut and translation fixes.
 
  * Other bug fixes:
    * Several timing-dependent crashes and minor incorrect behaviours have been
-     fixed
+      fixed
+   * Windows installer now installs correctly over previous versions of Audacity
 
 Changes and improvements:
-   * Better icon file for Windows - higher resolution and transparency
-   * Windows Installer now installs correctly over previous versions of Audacity
+   * (Windows) Better icon file with higher resolution and transparency
+   * New SoundFinder plug-in to label regions of audio between silences, so 
+      allowing silences between tracks to be excluded when exporting multiple 
 
 --------------------------------------------------------------------------------
 
@@ -108,29 +113,36 @@ this version.
  * Imports:
     * On-Demand WAV/AIFF import not available if using the optional 
        FFmpeg importer (that is, if "FFmpeg-compatible files" set in 
-       the import dialog)
+       the import dialogue)
     * (Windows) The Audacity executable cannot be added to the 
-        Explorer "Open With" menu if you have another version
-        of Audacity also called "audacity.exe". You can set the 
-        file association to always use the Audacity Beta executable
-        to open the required file type, but it will not appear in 
-        the list accessed by the "Open With" context menu item
-        whilst there is another "audacity.exe" on the computer.  
-     * If a WAV/AIFF file is imported into a project using on-demand 
-        import, then the file is deleted whilst the project is still
-	open, then trying to play the project will cause Audacity to hang.
+       Explorer "Open With" menu if you have another version
+       of Audacity also called "audacity.exe". You can set the 
+       file association to always use the Audacity Beta executable
+       to open the required file type, but it will not appear in 
+       the list accessed by the "Open With" context menu item
+       whilst there is another "audacity.exe" on the computer.  
+    * If a WAV/AIFF file is imported into a project using on-demand 
+       import, then the file is deleted whilst the project is still
+       open, trying to play the project will cause Audacity to hang.
 
  * Exports:
     * Album art and lyrics in imported metadata lost when exporting   
     * WAVEX (Microsoft) headers: GSM 6.10 files cannot be exported, and
-        U-Law/A-Law files may not be playable
+       U-Law/A-Law files may not be playable
     * M4A: exports at 38000 Hz may not play properly (FFmpeg bug); M4A
-        renamed to MOV will not play on Windows in iTunes or QuickTime
+       renamed to MOV will not play on Windows in iTunes or QuickTime
+    * WMA: no metadata is exported; this has been disabled because 
+       Windows cannot play the files if metadata is included (due to 
+       a current limitation in FFmpeg)
     * Muting specific time-shifted mono tracks produces audio at wrong 
-        point on timeline in exported file if muted tracks are to left 
-        of unmuted
+       point on timeline in exported file if muted tracks are to left 
+       of unmuted
+    * Custom FFmpeg Export: Not all combinations of format,codec and
+       options will produce a successful export. This is mainly or
+       entirely due to limitations in FFmpeg, but currently Audacity 
+       lacks a warning that errors were encountered on export.  
     * (Windows) Exported "Comments" ID3 tag not recognised by Windows 
-        Media Player or Explorer
+       Media Player or Explorer
 
  * Genre WAV info tag (IGNR) not supported due to limitation in
     libsndfile 
@@ -148,7 +160,11 @@ this version.
 
  * Label tracks:
     * Typing "j" or "k" in a label may activate the "move cursor" 
-      shortcut instead 
+       shortcut instead 
+    * After adding a label at the playback position and confirming with
+       ENTER, using an unmodified shortcut to stop or pause will not do
+       so, but will write a label at the cursor position. Workaround:
+       use up arrow instead of ENTER to confirm the label.  
 
  * Mixer Board:
     * The meter range does not reflect a change in the dB range meter 
@@ -168,6 +184,9 @@ this version.
  * A few interface elements do not change correctly after a language 
     change until restart
 
+ * If you add an external audio device while Audacity is open, you 
+    must restart Audacity to enable it to recognise that device 
+
  * Calculation of "disk space remains for recording (time)" incorrect
     when recording in 24-bit quality. You may record for 50% longer
     than the indicated time.
@@ -179,30 +198,36 @@ this version.
     appropriate legacy version of Audacity, then import the WAV files
     into current Audacity.
 
+ * It is no longer possible to use Save Project or Save Project As to
+    overwrite another pre-existing project, even if that project is not
+    in use. Functionality to overwrite a project not in use will be 
+    restored in a future version of Audacity when we are sure it will
+    always be safe.   
+
  * Audacity can import, display and cut/copy/paste MIDI files, then
     export them, but they cannot be played; undoing an edit with a MIDI
     track open causes the MIDI data to be lost in Windows builds
 
  * Intermittently occurring bugs: Please write to feedback@audacityteam.org   
-   if you experience any of these known but not fully understood 
-   issues, giving us steps to reproduce them so they can be fixed.
-   For items marked �, some work has already been done which may
-   have eliminated the issue - your help with testing these issues 
-   is especially welcome.  
+    if you experience any of these known but not fully understood 
+    issues, giving us steps to reproduce them so they can be fixed.
+    For items marked ^, some work has already been done which may
+    have eliminated the issue - your help with testing these issues 
+    is especially welcome.  
  
     * Projects do not reopen properly with "orphaned" or "missing"
        blockfiles or "duplicate attribute" errors
     * Projects do not re-open properly from the Automatic 
        Crash Recovery dialogue
     * Projects crash when applying repeated effects towards
-       the end of audio tracks� 
-    * WAV or AIFF files import as noise�   
+       the end of audio tracks^ 
+    * WAV or AIFF files import as noise^   
     * (Windows XP, reported on) Clicks during recording 
     * (Windows) Timer Record unreliable with recordings starting
        before and ending after midnight
     * (Windows) On Vista and 7, and on XP with some USB microphones, the
        Audacity input/output level sliders act independently of/incorrectly
-       with system level sliders:�
+       with system level sliders:^
        * The achieved recorded level only matches the level indicated on 
           the Recording VU meter if the Audacity input slider is at 100% 
        * On Vista, adjusting the system level sliders then starting to 
@@ -219,14 +244,14 @@ this version.
        until first file completes play
 
  * (Windows XP) The input slider and selector for inbuilt devices are 
-    unavailable if a USB microphone is also connected
+    unavailable if a USB device is also connected
 
  * (Windows 7) On launching Audacity, "Runtime Error Program:(location)
     R6034" occurs. Workaround: Right-click over audacity.exe > Properties
     and change compatibility mode to Vista SP2 or XP SP3. 
 
  * (Windows) Visible scanning dialogue appears on every launch of Audacity
-     when no VST plug-ins are present
+    when no VST plug-ins are present
 
  * (Windows) On Vista and 7, input sources such as microphone and line-in 
     must be selected in the Audacity Audio I/O Preferences, not the 
@@ -266,6 +291,9 @@ this version.
  * (Linux) Audacity now supports interfacing with JACK, but this has
     not been tested, and has a number of known reliability and usability
     issues: patches to improve both will be welcomed
+
+ * (Linux) Custom FFmpeg Export dialogue does not respond to ENTER after
+    clicking in the Formats or Codecs selector   
 
 Also note the Windows installer will not replace 1.2.x installations,
 but will install alongside them. 
