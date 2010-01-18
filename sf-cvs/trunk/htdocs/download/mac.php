@@ -2,7 +2,7 @@
 /*
  * Copyright 2004 Matt Brubeck
  * Richard Ash 2006
- * Gale Andrews 2009
+ * Gale Andrews 2009 onwards
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -25,12 +25,12 @@
   <p><?=_("(Unfortunately, we no longer have the resources to provide new versions of Audacity for Mac OS 9.)")?></p></li>
 </ul>
 
-<p> <b>Installation instructions (OS X):</b>
+<p> <b><?=_("Installation instructions (OS X .dmg files)")?>:</b>
  <ol>
-  <li>Inside your Applications folder, create a folder called "Audacity"</li>
-  <li>Double-click the downloaded .dmg to mount it</li>
-  <li>Option-drag the whole of the .dmg contents (not the .dmg itself) into the "Audacity" folder you created</li>
-  <li>Double-click Audacity.app inside the Applications folder to launch it</li>
+   <li><?=_("Inside your Applications folder, create a folder called \"Audacity\"")?></li>
+   <li><?=_("Double-click the downloaded .dmg to mount it")?></li>
+   <li><?=_("Option-drag the whole of the .dmg contents (not the .dmg itself) into the \"Audacity\" folder you created")?></li>
+   <li><?=_("Double-click Audacity.app inside the Applications folder to launch it")?></li>
  </ol>
 </p>
 
