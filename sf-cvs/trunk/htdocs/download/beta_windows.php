@@ -19,7 +19,7 @@
 
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 <ul>
-  <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor, including help files. See <a href="http://audacityteam.org/wiki/index.php?title=Windows_Vista_OS">further information about Vista</a>.'), "".$win_exe_unicode_url, win_exe_unicode_version, win_exe_unicode_size)?></p></li>
+  <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor, including help files. <b>See further information about</b> <a href="http://audacityteam.org/wiki/index.php?title=Windows_7_OS">Windows 7</a> <b>and</b> <a href="http://audacityteam.org/wiki/index.php?title=Windows_Vista_OS">Vista</a><b>.</b>'), "".$win_exe_unicode_url, win_exe_unicode_version, win_exe_unicode_size)?></p></li>
 <div id="ansi"></div>
   <li><p>Windows 98/ME: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest available version for Windows 98 and ME.</a>'), "".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
 </ul>
@@ -50,6 +50,10 @@
   <li><p>Windows 98/ME: <?php printf('<a href="%s">Audacity %s zip file</a> (%.1lf MB)',
     "".$win_zip_url, win_zip_version, win_zip_size)?></p></li>
 </ul>
+<h3 id="sysreq"><?=_("System Requirements")?></h3>
+<p>
+  <?=_("Windows 95 and NT are not supported. Windows 7 is <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">provisionally supported</a>.")?>
+</p>
 <?php include "windows_sys_reqs.inc.php" ?>
 
 <?php

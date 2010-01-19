@@ -1,15 +1,11 @@
 <?php
 /*
- * Copyright 2007 by Vaughan Johnnson
+ * Copyright 2007 onwards by Vaughan Johnnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
 ?>
 
-<h3 id="sysreq"><?=_("System Requirements")?></h3>
-<p>
-  <?=_("Windows 95 and NT are not supported.")?>
-</p>
 <p>
   <?=_('The values in the "Recommended RAM/processor speed" column below are for tasks like recording for an hour, or editing three 20 minute tracks simultaneously. The values in the "Minimum RAM/processor speed" column will be fine for smaller/shorter tasks, especially if unnecessary programs are closed.')?>
 </p>
