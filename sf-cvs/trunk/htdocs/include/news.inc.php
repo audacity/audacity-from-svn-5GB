@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007-9 Vaughan Johnson, Gale Andrews
+ * 2007 onwards Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -38,6 +38,68 @@ function most_recent_news_item() {
 
 // Add news items below in reverse-chronological order
 // (most recent first).
+
+add_news_item(
+  "January 18, 2010",
+  	"1.3.11-release",
+  _("Audacity 1.3.11 released"),
+  _("
+<p>
+The Audacity Team is pleased to announce the release of
+<a href=\"/download\">Audacity 1.3.11 (Beta)</a> for Windows, 
+Mac and Linux/Unix. This release fixes a number of bugs reported
+to us in 1.3.10. Thank you to everyone who sent us feedback. 
+</p>        
+<p> 1.3.11 has provisional support for <b>Windows 7</b> and is 
+also strongly recommended for <b>Windows Vista</b> and 
+<b>Mac OS X 10.6</b>, rather than 1.2 Stable. We ask everyone 
+to help us test 1.3.11 and 
+<a href=\"http://audacity.sourceforge.net/contact/#feedback\">
+let us know</a> of any problems you find. Advanced users are 
+encouraged to test our latest fixes as we make them by 
+downloading our 
+<a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">
+Nightly Builds</a>. Beta releases are still ongoing at present. Please
+<a href=\"http://audacity.sourceforge.net/#announce\">
+subscribe</a> to receive news of all our future releases.    
+</p>
+<p>
+<div style=\"width:66%;padding-left:4em\">
+<b>Summary of Changes in 1.3.11:</b>
+<dl>
+	<dt> Bug fixes for: </dt>
+	      <dd>   
+                <ul>  
+                      <li>Too much audio exported when exporting partial selections</li>
+                      <li>Exports via FFmpeg corrupted if included metadata; M4A now
+                           supports metadata export</li>
+                      <li>Nyquist plug-ins did not add labels to an existing label track</li>
+                      <li>Crash opening Preferences when no audio devices available</li>
+                      <li>Timer Record and Sound Activated Recording bugs</li>
+                      <li><i>(Windows)</i>&nbsp; Installer now installs correctly over 
+                           previous Audacity versions</li>
+                      <li>Miscellaneous crashes and interface issues</li>  
+                </ul>
+         </dd>
+
+   <dt> Improvements:</dt>
+         <dd>   
+                <ul>
+                      <li><i>(Windows)</i>&nbsp; Higher resolution icon file </li>
+                      <li>New Sound Finder plug-in for labelling regions of audio</li>
+                </ul>
+         </dd>
+</dl>
+</div>
+</p>
+<p>See 
+<a href=\"http://audacity.sourceforge.net/download/features-1.3-a#details\">   
+Changes in Audacity 1.3.11</a> for more on 1.3.11 and the Beta series. <b>Note:</b> 
+This release does not support Windows 98 or ME, for which 1.3.7 is 
+<a href=\"http://audacity.sourceforge.net/download/beta_windows#recdown\">
+still available</a>. 
+</p>
+"));
 
 add_news_item(
   "December 01, 2009",

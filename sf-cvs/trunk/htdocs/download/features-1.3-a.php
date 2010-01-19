@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2009 Dominic Mazzoni, Gale Andrews
+ * Copyright 2005-2009 onwards Dominic Mazzoni, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -24,7 +24,91 @@
  </ul>
 ')?></p>
 
-<h3 id="details"><?=_("Changes in Audacity 1.3.10")?></h3>
+<h3 id="details"><?=_("Changes in Audacity 1.3.11")?></h3>
+
+<?=_("
+<dl>
+   <dt> Bug fixes for: </dt>
+	       <dd> Imports and Exports: 
+                 <ul>
+                       <li> Bug when exporting partial selections caused
+                             too much audio to be exported is fixed</li>
+                       <li> Fix corrupt files exported through FFmpeg when 
+                             metadata included (metadata is now exported 
+                             correctly in M4A files)</li>
+                       <li> Prevent saving a new Audacity Project over an 
+                             existing one as this could corrupt both projects</li>
+                       <li> Improved help for files that cannot be imported 
+                             because the relevant optional library is missing</li>
+                 </ul>       
+          </dd>
+
+	       <dd> Effects: 
+                 <ul>
+                       <li> Allow effects which change the length of the audio 
+                             they work on to also be applied to selected label
+                             tracks, thus keeping them synchronized</li>
+                       <li> Fixed inability in Nyquist plug-ins to add labels 
+                             to an existing label track</li>
+                       <li> <i>(Mac)</i>&nbsp; Equalization window was corrupted 
+                             after Preview</li>
+                       <li> <i>(Linux 64-bit)</i>&nbsp; Fixed crash Generating 
+                              Click Track</li>
+                 </ul>
+          </dd>
+
+	       <dd> Audio Devices: 
+                 <ul>
+                       <li> Fixed bug causing recording to stop short when the 
+                             recording sample rate is not supported by the sound
+                             device and libsamplerate is used for resampling</li>
+                       <li> Fix crash when opening Preferences on a machine where 
+                             there are no available audio devices</li>
+                       <li> Fixes for bugs using Timer Record and Sound Activated 
+                              Recording</li>
+                 </ul>
+          </dd>
+
+	       <dd> User Interface: 
+                 <ul> 
+                       <li> Sizes of some dialogs adjusted to ensure they fit on
+                             the screen</li>
+                       <li> Fix for supposedly \"hidden\" items appearing on screen
+                             with large monitors</li>
+                       <li> Various keyboard shortcut and translation fixes</li>
+                 </ul>
+          </dd>
+
+	       <dd> Other bug fixes: 
+                 <ul>
+                       <li> Several timing-dependent crashes and minor incorrect 
+                             behaviours have been fixed</li>
+                       <li> Windows installer now installs correctly over previous
+                             versions of Audacity</li>
+                 </ul>
+          </dd>
+")?>
+
+<?=_("
+   <dt> Changes and improvements:</dt>
+           <dd>
+                 <ul>
+                       <li> <i>(Windows)</i>&nbsp; Better icon file with higher 
+                             resolution and transparency</li>
+                       <li> New SoundFinder plug-in to label regions of audio
+                             between silences, so allowing silences between tracks
+                             to be excluded when exporting multiple</li>
+                 </ul>
+          </dd>
+</dl>
+<p>
+Please be aware of 
+<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.11#Known_Issues_at_Release\">
+Known Issues at Release</a> (also viewable in the included README.txt).
+</p>
+")?>
+
+<h3><?=_("Changes in Audacity 1.3.10")?></h3>
 
 <?=_("
 <dl>
