@@ -4,7 +4,7 @@
 // Author:      Julian Smart
 // Modified by: Leland Lucius
 // Created:     01/02/97
-// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.18 2009-11-13 05:21:43 llucius Exp $
+// RCS-ID:      $Id: FileDialogPrivate.cpp,v 1.19 2010-01-19 09:08:39 llucius Exp $
 // Copyright:   (c) Julian Smart
 // Licence:     wxWindows licence
 //
@@ -74,6 +74,9 @@
 
 // standard dialog size
 static wxRect gs_rectDialog(0, 0, 428, 266);
+
+// true to use custom filtering code (anything less than Win7)
+static bool gs_customFilter = true;
 
 // ============================================================================
 // implementation
@@ -226,14 +229,14 @@ FileDialogHookFunction(HWND      hDlg,
             EnableWindow(hwndDialog, TRUE);
             SetFocus(w);
          }
-         else if (CDN_SELCHANGE == (pNotifyCode->hdr).code)
+         else if (CDN_SELCHANGE == (pNotifyCode->hdr).code && gs_customFilter)
          {
             OPENFILENAME *ofn = (OPENFILENAME *)
             GetWindowLongPtr(hDlg, GWLP_USERDATA);
             FileDialog *me = (FileDialog *) ofn->lCustData;
             me->FilterFiles(hDlg, false);
          }
-         else if (CDN_TYPECHANGE == (pNotifyCode->hdr).code)
+         else if (CDN_TYPECHANGE == (pNotifyCode->hdr).code && gs_customFilter)
          {
             OPENFILENAME *ofn = (OPENFILENAME *)
             GetWindowLongPtr(hDlg, GWLP_USERDATA);
@@ -625,7 +628,8 @@ int FileDialog::ShowModal()
    wxZeroMemory(of);
    
    // Allow Places bar to show on supported platforms
-   if ( wxGetOsVersion() == wxOS_WINDOWS_NT )
+   int major, minor;
+   if ( wxGetOsVersion(&major, &minor) == wxOS_WINDOWS_NT )
    {
       of.lStructSize       = sizeof(OPENFILENAME);
    }
@@ -690,13 +694,17 @@ int FileDialog::ShowModal()
    
    wxASSERT_MSG( items > 0 , wxT("empty wildcard list") );
    
+   // We do not use the custom filter code on Windows 7 or higher since it now
+   // handles filters larger than 260 characters.
+   gs_customFilter = (major < 6 || minor < 1);
+
    wxString filterBuffer;
    
    for (i = 0; i < items ; i++)
    {
       filterBuffer += wildDescriptions[i];
       filterBuffer += wxT("|");
-      filterBuffer += wxT("*.*");
+      filterBuffer += (gs_customFilter ? wxT("*.*") : m_FilterGroups[i]);
       filterBuffer += wxT("|");
    }
    
