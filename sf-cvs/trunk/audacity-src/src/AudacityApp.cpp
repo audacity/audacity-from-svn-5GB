@@ -70,6 +70,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "GStreamerLoader.h"
 #include "Internat.h"
 #include "LangChoice.h"
+#include "Languages.h"
 #include "Prefs.h"
 #include "Project.h"
 #include "Screenshot.h"
@@ -1024,9 +1025,8 @@ bool AudacityApp::OnInit()
 
    wxString lang = gPrefs->Read(wxT("/Locale/Language"), wxT(""));
 
-   // Pop up a dialog the first time the program is run
    if (lang == wxT(""))
-      lang = ChooseLanguage(NULL);
+      lang = GetSystemLanguageCode();
 
 #ifdef NOT_RQD
 //TIDY-ME: (CleanSpeech) Language prompt??
@@ -1038,7 +1038,6 @@ bool AudacityApp::OnInit()
 //lda   if (lang == "")
 //lda      lang = ChooseLanguage(NULL);
 #endif
-   gPrefs->Write(wxT("/Locale/Language"), lang);
 
    mLocale = NULL;
    InitLang( lang );
