@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007 onwards Vaughan Johnson, Gale Andrews
+ * 2007 - 2010 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -49,14 +49,24 @@ The Audacity Team is pleased to announce the release of
 <a href=\"/download\">Audacity 1.3.11 (Beta)</a> for Windows, 
 Mac and Linux/Unix. This release fixes a number of bugs reported
 to us in 1.3.10. Thank you to everyone who sent us feedback. 
-</p>        
+</p>
+<p>
+<blockquote style=\"margin-left:auto; margin-right:auto; width:90%; background-color:#EBDDE2; padding:10px\">
+<i>We dedicate this release to 
+<a href=\"http://www.garyallendj.com/davidsky/index.html\">David R.Sky
+</a> who passed away in October 2009. David did some great work on
+Audacity
+<a href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins\">
+plug-ins</a> and his work lives on today in our program. He provided 
+assistance to all who needed help. We shall miss him.</i></blockquote>
+</p>
 <p> 1.3.11 has provisional support for <b>Windows 7</b> and is 
 also strongly recommended for <b>Windows Vista</b> and 
 <b>Mac OS X 10.6</b>, rather than 1.2 Stable. We ask everyone 
 to help us test 1.3.11 and 
 <a href=\"http://audacity.sourceforge.net/contact/#feedback\">
 let us know</a> of any problems you find. Advanced users are 
-encouraged to test our latest fixes as we make them by 
+encouraged to test our subsequent fixes as we make them by 
 downloading our 
 <a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">
 Nightly Builds</a>. Beta releases are still ongoing at present. Please
