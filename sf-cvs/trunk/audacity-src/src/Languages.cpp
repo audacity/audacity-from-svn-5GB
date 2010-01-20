@@ -223,6 +223,10 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
 
    tempNames.Sort();
 
+   // Add system language
+   langNames.Add(wxT("System"));
+   langCodes.Add(wxT(""));
+
    for(j=0; j<tempNames.GetCount(); j++) {
       langNames.Add(tempNames[j]);
       langCodes.Add(reverseHash[tempNames[j]]);

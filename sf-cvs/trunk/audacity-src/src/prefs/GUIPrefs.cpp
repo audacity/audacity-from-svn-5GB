@@ -113,7 +113,7 @@ void GUIPrefs::PopulateOrExchange(ShuttleGui & S)
 
          S.TieChoice(_("&Language:"),
                      wxT("/Locale/Language"),
-                     wxT("en"),
+                     wxT(""),
                      mLangNames,
                      mLangCodes);
          S.SetSizeHints(mLangNames);
@@ -161,6 +161,8 @@ bool GUIPrefs::Apply()
 
    // If language has changed, we want to change it now, not on the next reboot.
    wxString lang = gPrefs->Read(wxT("/Locale/Language"), wxT(""));
+   if (lang == wxT(""))
+      lang = GetSystemLanguageCode();
    wxGetApp().InitLang(lang);
 
    return true;
