@@ -334,6 +334,10 @@ wxString DevicePrefs::GetDefaultPlayDevice(int index)
    wxLogDebug(wxT("GetDefaultPlayDevice(): HostAPI index %d, name %s"), index, wxString(apiinfo->name, wxConvLocal).c_str());
    wxLogDebug(wxT("GetDefaultPlayDevice() default output %d"), apiinfo->defaultOutputDevice);
    const PaDeviceInfo* devinfo = Pa_GetDeviceInfo(apiinfo->defaultOutputDevice);
+   if (devinfo == NULL) {
+     wxLogDebug(wxT("GetDefaultPlayDevice() no default output device"));
+     return wxString("", wxConvLocal);
+   }
    wxString name(devinfo->name, wxConvLocal);
    wxLogDebug(wxT("GetDefaultPlayDevice() default output device name %s"), name.c_str());
    return name;
@@ -349,6 +353,10 @@ wxString DevicePrefs::GetDefaultRecordDevice(int index)
    wxLogDebug(wxT("GetDefaultRecordDevice(): HostAPI index %d, name %s"), index, wxString(apiinfo->name, wxConvLocal).c_str());
    wxLogDebug(wxT("GetDefaultRecordDevice() default input %d"), apiinfo->defaultInputDevice);
    const PaDeviceInfo* devinfo = Pa_GetDeviceInfo(apiinfo->defaultInputDevice);
+   if (devinfo == NULL) {
+     wxLogDebug(wxT("GetDefaultRecordDevice() no default input device"));
+     return wxString("", wxConvLocal);
+   }
    wxString name(devinfo->name, wxConvLocal);
    wxLogDebug(wxT("GetDefaultRecordDevice() default input device name %s"), name.c_str());
    return name;
