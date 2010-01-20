@@ -51,8 +51,8 @@ $siteNavItems = array(
     array(
       array(_("FAQ"), "faq"),
       array(_("Documentation"), "documentation"),
-      array(_("<A class=\"ext\" href=\"http://audacityteam.org/wiki/index.php?title=Tutorials\" target=\"_blank\">Tutorials (Wiki)</a>")."", ""),
-      array(_("<A class=\"ext\" href=\"http://audacityteam.org/wiki/index.php?title=Tips\" target=\"_blank\">Tips (Wiki)</a>")."", ""),
+      array(_("<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\" target=\"_blank\">Tutorials (Wiki)</a>")."", ""),
+      array(_("<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Category:Tips\" target=\"_blank\">Tips (Wiki)</a>")."", ""),
       array(_("Nyquist"), "nyquist"),
     )
   ),
