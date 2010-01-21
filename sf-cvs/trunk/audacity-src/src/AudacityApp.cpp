@@ -1194,7 +1194,10 @@ bool AudacityApp::OnInit()
                // Create new window for project
                project = CreateNewAudacityProject();
             }
-            project->OpenFile(argv[option]);
+            // Always open files with an absolute path
+            wxFileName fn(argv[option]);
+            fn.MakeAbsolute();
+            project->OpenFile(fn.GetFullPath());
             project = NULL; // don't reuse this project for other file
          }
 
