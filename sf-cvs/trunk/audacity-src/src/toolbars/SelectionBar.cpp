@@ -85,7 +85,7 @@ END_EVENT_TABLE()
 SelectionBar::SelectionBar()
 : ToolBar(SelectionBarID, _("Selection"), wxT("Selection")),
   mListener(NULL), mRate(0.0), mStart(0.0), mEnd(0.0), mAudio(0.0),
-  mLeftTime(NULL), mRightTime(NULL), mDummyRight(NULL), mAudioTime(NULL)
+  mLeftTime(NULL), mRightTime(NULL), mAudioTime(NULL)
 {
 }
 
@@ -265,10 +265,6 @@ void SelectionBar::Populate()
    mRightTime->EnableMenu();
    mainSizer->Add(mRightTime, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 
-   // Dummy control is constructed but shown off screen
-   mDummyRight = new TimeTextCtrl(this, -1, format, 0.0, mRate,
-                                  wxPoint(-32000,-32000));
-
    mainSizer->Add(new wxStaticLine(this, -1, wxDefaultPosition,
                                    wxSize(1, toolbarSingle),
                                    wxLI_VERTICAL),
@@ -378,7 +374,6 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
    // so reset pointers first.
    mLeftTime =
    mRightTime =
-   mDummyRight =
    mAudioTime = NULL;
 
    mRightEndButton =
@@ -394,7 +389,6 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
    wxString formatString = mLeftTime->GetBuiltinFormat(index);
    mLeftTime->SetFormatString(formatString);
    mRightTime->SetFormatString(formatString);
-   mDummyRight->SetFormatString(formatString);
    mAudioTime->SetFormatString(formatString);
 
    if (leftFocus) {
@@ -414,14 +408,10 @@ void SelectionBar::ValuesToControls()
 {
    mLeftTime->SetTimeValue(mStart);
 
-   if (mRightEndButton->GetValue()) {
+   if (mRightEndButton->GetValue())
       mRightTime->SetTimeValue(mEnd);
-      mDummyRight->SetTimeValue(mEnd - mStart);
-   }
-   else {
+   else
       mRightTime->SetTimeValue(mEnd - mStart);
-      mDummyRight->SetTimeValue(mEnd);
-   }
 
    mAudioTime->SetTimeValue(mAudio);
 }
@@ -444,8 +434,14 @@ double SelectionBar::GetRightTime()
 {
    if (mRightEndButton->GetValue())
       return mRightTime->GetTimeValue();
-   else
-      return mDummyRight->GetTimeValue();
+   else {
+      // What would be shown if we were showing the end time
+      TimeTextCtrl ttc(this, wxID_ANY, wxT(""), 0.0, mRate);
+      ttc.SetFormatString(mRightTime->GetFormatString());
+      ttc.SetSampleRate(mRate);
+      ttc.SetTimeValue(mEnd);
+      return ttc.GetTimeValue();
+   }
 }
 
 void SelectionBar::SetField(const wxChar *msg, int fieldNum)
@@ -473,7 +469,6 @@ void SelectionBar::SetRate(double rate)
       // update the TimeTextCtrls if they exist
       if (mLeftTime) mLeftTime->SetSampleRate(rate);
       if (mRightTime) mRightTime->SetSampleRate(rate);
-      if (mDummyRight) mDummyRight->SetSampleRate(rate);
       if (mAudioTime) mAudioTime->SetSampleRate(rate);
    }
 }
@@ -485,7 +480,6 @@ void SelectionBar::OnRate(wxCommandEvent &evt)
    {
       if (mLeftTime) mLeftTime->SetSampleRate(mRate);
       if (mRightTime) mRightTime->SetSampleRate(mRate);
-      if (mDummyRight) mDummyRight->SetSampleRate(mRate);
       if (mAudioTime) mAudioTime->SetSampleRate(mRate);
       if (mListener) mListener->AS_SetRate(mRate);
    }
