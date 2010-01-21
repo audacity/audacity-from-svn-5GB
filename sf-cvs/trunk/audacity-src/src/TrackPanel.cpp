@@ -1789,9 +1789,14 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
 
    if (mSnapManager)
       delete mSnapManager;
-   mSnapManager = new SnapManager(mTracks, NULL,
-                                  mViewInfo->zoom,
-                                  4); // pixel tolerance
+
+   // "/SnapTo" pref refers to snapping to time. Don't use the snap manager in
+   // this case
+   if (gPrefs->Read(wxT("/SnapTo"), 0L) == 0) {
+      mSnapManager = new SnapManager(mTracks, NULL,
+                                     mViewInfo->zoom,
+                                     4); // pixel tolerance
+   }
    mSnapLeft = -1;
    mSnapRight = -1;
 

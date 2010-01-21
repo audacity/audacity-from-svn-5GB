@@ -90,8 +90,6 @@ class SelectionBar:public ToolBar {
 
    TimeTextCtrl   *mLeftTime;
    TimeTextCtrl   *mRightTime;
-   // An un-shown control; holds whichever of end/length is not displayed
-   TimeTextCtrl   *mDummyRight;
    wxRadioButton  *mRightEndButton;
    wxRadioButton  *mRightLengthButton;
    TimeTextCtrl   *mAudioTime;
