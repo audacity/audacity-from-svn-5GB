@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2003 Dominic Mazzoni
- * Copyright 2004-9 Matt Brubeck, Vaughan Johnson
+ * Copyright 2004-10 Matt Brubeck, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -24,7 +24,7 @@
 <h3><?=_("Audacity Team Members")?></h3>
 <ul>
   <li>Gale Andrews, <?=_("documentation and support")?></li>
-  <li>Richard Ash, <?=_("documentation and support")?></li>
+  <li>Richard Ash, <?=_("developer")?></li>
   <li>Christian Brochec, <?=_("documentation and support")?>, <?=_("French")?></li>
   <li>Arturo "Buanzo" Busleiman, <?=_("system administration")?></li>
   <li>Michael Chinen, <?=_("developer")?></li>
@@ -78,6 +78,7 @@
   <li>Paul Nasca, <?=_("developer")?></li>
   <li>André Pinto, <?=_("developer")?></li>
   <li>Augustus Saunders, <?=_("developer")?></li>
+  <li>David R. Sky, <?=_("Nyquist plug-ins")?> - <a href="http://www.garyallendj.com/davidsky/index.html">Obituary</a></li>
   <li>Mike Underwood, <?=_("developer")?></li>
   <li>Jun Wan, <?=_("developer")?></li>
   <li>Tom Woodhams, <?=_("developer")?></li>
@@ -171,7 +172,6 @@
   <li>Jonathan Ryshpan</li>
   <li>Michael Schwendt</li>
   <li>Patrick Shirkey</li>
-  <li>David R. Sky</li>
   <li>Tuomas Suutari</li>
   <li>Mark Tomlinson</li>
   <li>David Topper</li>
