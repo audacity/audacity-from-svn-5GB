@@ -10,15 +10,18 @@ Authors:
   Shane Mueller
   Lynn Allan
 
-================================================================
-This version is currently accurate for Audacity version 1.3.0.
-Last Updated: Nov 14, 2005
+========================================================================
+This version is currently accurate for Audacity version 1.3.1.
+Last Updated: January 20, 2006
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
-================================================================
+See also "http://audacityteam.org/wiki/index.pl?CompilingAudacity".
+========================================================================
 
-Audacity releases are now built with Visual C++ .NET 
-2003 or Visual C++ 7.x, generically known as "MSVC7".
+Audacity releases are now built with Microsoft Visual C++ 8, 
+generically known as "VC8", but we still have the Visuall C++ 7 (VC7) 
+solution and project files in CVS. Descriptions of how to access and 
+use the VC7 files are interspersed below.
 
 For instructions on compiling Audacity under the Cygwin 
 UNIX Emulation Layer, see the "Compiling Audacity under 
@@ -60,13 +63,14 @@ build it. Audacity requires different build settings than
 are shipped with the wxWidgets projects, to use the 
 multithreaded statically-linked runtime libraries instead 
 of the multithreaded DLL runtime libraries. However, 
-wxWidgets 2.6.2 does not ship with MSVC7 solution and project 
-files, only MSVC6, so Audacity supplies MSVC7 versions. 
+wxWidgets 2.6.2 does not ship with VC8 (or VC7) solution and project 
+files, only MSVC6, so Audacity supplies VC8 (and VC7) versions. 
 All you need to do is copy them to the right place and use 
 them to build wxWidgets -- no need to edit the wxWidgets 
 versions.
 
 1. Copy all the files from "audacity\win\wxWidgets_additions" 
+   (or "audacity\win\wxWidgets_additions_VC7" if using VC7)
    to "C:\wxWidgets-2.6.2\build\msw" (or the corresponding 
    location if you installed wxWidgets someplace other than 
    the default). 
@@ -127,6 +131,23 @@ MSVC++ STEP 5:  Build Audacity
 Run Visual C++ and load the Audacity solution, 
 "audacity\win\audacity.sln".
 
+(For VC7: 
+   We maintain the Audacity VC7 solution and project files as they are 
+   backed up by the VC8 conversion tool, i.e., in the same location as 
+   the converted fiels, but with a suffix of ".old" added for the 
+   solution and a suffix of ".7.10.old" on the project files. So, 
+   you'll need to delete the VC8 solution and project files, and 
+   fix the VC7 suffixes to use the VC7 files.
+
+   1) Delete the VC8 solution file ("audacity\win\audacity.sln") and 
+      rename "audacity\win\audacity.sln.old" to 
+      "audacity\win\audacity.sln".
+   2) Search "audacity\" for *.vcproj.7.10.old VC7 project files, and 
+      for each of those, delete the corresponding *.vcproj VC8 project 
+      file in the same directory and rename the ".7.10.old" suffix from 
+      the VC7 versions.
+   )
+
 Open the file "configwin.h" and change it according to the
 third-party libraries you have installed. Audacity comes with
 all libs necessary to build the default configuration, but
@@ -136,7 +157,7 @@ optionally and must be downloaded separately.
 Select the configuration that you wish to build:
 * "Release" for general use 
 * "Debug" for a slower but debuggable executable
-* "Unicode_Debug" for a Unicode-based slower, debuggable 
+* "Unicode_Debug" for a Unicode-based, slower, debuggable 
    executable
 
 You can select the configuration from the Solution 

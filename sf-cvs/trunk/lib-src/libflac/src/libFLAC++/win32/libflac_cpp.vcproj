@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="libflac_cpp"
-	SccProjectName=""
-	SccLocalPath="">
+	ProjectGUID="{B28C9F3F-FF0E-4FEC-844C-685390B8AC06}"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\."
 			IntermediateDirectory=".\."
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -25,102 +45,148 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\./libflac_cpp.pch"
 				AssemblerListingLocation=".\./"
 				ObjectFile=".\./"
 				ProgramDataBaseFileName=".\./"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\..\..\obj\lib\libflac++d.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"/>
+				Culture="1033"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLibrarianTool"
+				OutputFile="..\..\..\obj\lib\libflac++d.lib"
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\."
 			IntermediateDirectory=".\."
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\..\..\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\./libflac_cpp.pch"
 				AssemblerListingLocation=".\./"
 				ObjectFile=".\./"
 				ProgramDataBaseFileName=".\./"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\..\..\obj\lib\libflac++.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1033"/>
+				Culture="1033"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLibrarianTool"
+				OutputFile="..\..\..\obj\lib\libflac++.lib"
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Unicode_Debug|Win32"
 			OutputDirectory=".\."
 			IntermediateDirectory=".\."
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="1">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -128,41 +194,47 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\./libflac_cpp.pch"
 				AssemblerListingLocation=".\./"
 				ObjectFile=".\./"
 				ProgramDataBaseFileName=".\./"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\..\..\obj\lib\libflac++ud.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"/>
+				Culture="1033"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLibrarianTool"
+				OutputFile="..\..\..\obj\lib\libflac++ud.lib"
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -170,200 +242,230 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;cc;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			Filter="cpp;cc;c;cxx;rc;def;r;odl;idl;hpj;bat"
+			>
 			<File
-				RelativePath="..\file_decoder.cc">
+				RelativePath="..\file_decoder.cc"
+				>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Unicode_Debug|Win32">
+					Name="Unicode_Debug|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\file_encoder.cc">
+				RelativePath="..\file_encoder.cc"
+				>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Unicode_Debug|Win32">
+					Name="Unicode_Debug|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\metadata.cc">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Unicode_Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\seekable_stream_decoder.cc">
+				RelativePath="..\metadata.cc"
+				>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Unicode_Debug|Win32">
+					Name="Unicode_Debug|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\seekable_stream_encoder.cc">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Unicode_Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\stream_decoder.cc">
+				RelativePath="..\seekable_stream_decoder.cc"
+				>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Unicode_Debug|Win32">
+					Name="Unicode_Debug|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\stream_encoder.cc">
+				RelativePath="..\seekable_stream_encoder.cc"
+				>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Unicode_Debug|Win32">
+					Name="Unicode_Debug|Win32"
+					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\stream_decoder.cc"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode_Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\stream_encoder.cc"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode_Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="$(IntDir)\$(InputName).obj"
+					/>
 				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl">
+			Filter="h;hpp;hxx;hm;inl"
+			>
 		</Filter>
 	</Files>
 	<Globals>
