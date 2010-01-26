@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2005 - 9 Dominic Mazzoni, Gale Andrews
+ * Copyright 2005 - 10 Dominic Mazzoni, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -29,7 +29,7 @@
 <ul>
 <li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (%s file, %.1lf MB)'), download_url($full_src_url), src_version, src_suffix, full_src_size)?> 
 <?php printf(_('This is a full source tarball, useful for Windows and Mac machines which may lack the necessary dependencies to compile Audacity.'))?></p></li>
-<li><p><?php printf(_('<a href="%s">Latest CVS development code</a>, incorporating changes since the release tarball.'), "../community/developers#cvs")?></p></li>
+<li><p><?php printf(_('<a href="%s">Latest SVN development code</a>, incorporating changes since the release tarball.'), "../community/developers#svn")?></p></li>
 <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our alternate download links:')) ?></p>
    <ul><li><?php printf(_('<a href="%s">Sourceforge</a> (older versions can be viewed by clicking on the appropriate package)'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
        <li><?php printf(_('<a href="%s">Google Code</a> (click on the headings to sort the list)'), "http://code.google.com/p/audacity/downloads/list")?></li>
@@ -47,7 +47,7 @@
 
 <h4><?=_("Dependencies")?></h4>
 <p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.3.11 requires wxGTK 2.8.10.')?></p>
-<p><?=_('Installation of the following libraries is <b>optional</b> - they are included in Audacity obtained from <a href="../community/developers#cvs">CVS</a>.')?></p>
+<p><?=_('Installation of the following libraries is <b>optional</b> - they are included in Audacity obtained from <a href="../community/developers#svn">SVN</a>.')?></p>
 <ul>
   <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>
   <li><a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a></li>

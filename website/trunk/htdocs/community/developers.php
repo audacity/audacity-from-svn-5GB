@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007-2008 Vaughan Johnson, Gale Andrews
+ * 2007-2010 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -18,20 +18,32 @@
 <h3><?=_('Mailing Lists')?></h3>
 <p><?=_('Join the <a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel">audacity-devel</a> mailing list to discuss current and future development, or to get help building and modifying the Audacity source code.')?></p>
 
-<h3 id="cvs"><?=_('CVS')?></h3>
-<p><?=_('You can get the latest Audacity stable or development code from our CVS repository.')?>
+<h3 id="cvs"><?=_('CVS')?><span style="font-weight:normal"> <?=_('(Stable code only)')?></span></h3>
+<p><?=_('You can get the latest Audacity stable code from our CVS repository, or from <a href="#svn">SVN</a>.')?>
 
 <ul>
-  <li><p><?=_('Browse the source code online sorted by <a href="http://audacity.cvs.sourceforge.net/audacity/audacity-src/">file name</a> or <a href="http://audacity.cvs.sourceforge.net/audacity/audacity-src/?sortby=date#dirlist">date</a>.')?></p></li>
-
-  <li><p><?=_('Type this at the command line to check out the latest stable source code from CVS:')?> (1.2)</p>
+  <li><p><?=_('Type this at the command line to check out the latest Stable source code from CVS:')?> (1.2)</p>
   <p><kbd>cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity checkout -r AUDACITY_1_2 audacity</kbd></p></li>
-
-  <li><p><?=_('Or type this at the command line to check out the latest beta/development source code from CVS:')?> (1.3)</p>
-  <p><kbd>cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>
 </ul>
+
 <p><?=_('For more information, read the <a href="http://sourceforge.net/cvs/?group_id=6235">SourceForge CVS instructions</a>. If using an interface CVS tool such as TortoiseCVS or WinCVS, use the command instructed in the tool\'s documentation.')?></p>
-<p><?=_('See the source code page for <a href="../download/source#instructions">compilation instructions</a>.')?></p>
+<p><?=_('See our Stable source code page for <a href="../download/source#instructions">compilation instructions</a>.')?></p>
+
+<h3 id="svn"><?=_('SVN')?></h3>
+<p><?=_('You can now get both the Audacity Stable and latest Beta development code from our <a href="http://code.google.com/p/audacity/source/browse/audacity-src/trunk">SVN repository</a>.')?>
+
+<ul>
+  <li><p><?=_('Type this at the command line to check out the latest Stable source code from SVN:')?> (1.2)</p>
+  <p><kbd>svn checkout http://audacity.googlecode.com/svn/audacity-src/branches/AUDACITY_1_2/  audacity-read-only</kbd></p></li>
+</ul>
+
+<ul>
+  <li><p><?=_('Type this at the command line to check out the latest Beta development source code from SVN:')?> (1.3)</p>
+  <p><kbd>svn checkout http://audacity.googlecode.com/svn/audacity-src/trunk/ audacity-read-only</kbd></p></li>
+</ul>
+
+<p><?=_('The SVN repository may also be accessed using many different GUI and IDE <a href="http://subversion.tigris.org/links.html#clients">clients and plug-ins</a>. If using GUI or IDE tools, please use the commands indicated in the tool\'s documentation.')?></p>
+<p><?=_('See our development source code page for <a href="../download/beta_source#instructions">compilation instructions</a>.')?></p>
 
 <h3 id="bugs"><?=_('Bug Tracking')?></h3>
 <p><?=_('The Audacity developers now use <a href="http://audacityteam.org/wiki/index.php?title=Release_Checklist">Release Checklist</a> on the <a href="http://audacityteam.org/wiki/index.php">Wiki</a> to keep track of confirmed bugs. Check the list of <a href="http://audacityteam.org/wiki/index.php?title=Release_Checklist#Release_Issues">Release Issues</a> on that page if you are looking for something to work on.')?></p>
