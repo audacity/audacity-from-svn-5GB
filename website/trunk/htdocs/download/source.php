@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2006 - 8 Richard Ash, Gale Andrews
+ * 2006 - 2010 Richard Ash, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -22,7 +22,7 @@
 
 <h3><?=_("Optional Downloads")?></h3>
 <ul>
-  <li><p><?=_('Get the latest stable code (incorporating any changes since the release tarball) from <a href="../community/developers#cvs">CVS</a>. This is the best choice if you are compiling on Windows.')?></p></li>
+  <li><p><?=_('Get the latest Stable code (incorporating any changes since the release tarball) from <a href="../community/developers#cvs">CVS</a> or <a href="../community/developers#svn">SVN</a>. This is the best choice if you are compiling on Windows.')?></p></li>
   <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our <a href="%s">alternate download links</a>.'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></p></li>
 </ul>
 
@@ -35,8 +35,8 @@
 <h3 id="instructions"><?=_("How to Compile Audacity")?></h3>
 
 <h4><?=_("Dependencies")?></h4>
-<p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the unicode options. The next stable version of Audacity will support newer wxWidgets and GTK libraries.')?></p>
-<p><?=_('Installation of the following libraries is <b>optional</b> - they are included in Audacity obtained from <a href="../community/developers#cvs">CVS</a>.')?></p>
+<p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the unicode options. The next Stable version of Audacity will support newer wxWidgets and GTK libraries.')?></p>
+<p><?=_('Installation of the following libraries is <b>optional</b> - they are included in Audacity obtained from <a href="../community/developers#cvs">CVS</a> or <a href="../community/developers#svn">SVN</a>.')?></p>
 <ul>
   <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>
   <li><a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a></li>
