@@ -39,6 +39,7 @@ $available_locales = array(
   "fi" => array("fi_FI", "Suomi"),
   "sv" => array("sv_SE", "Svenska"),
   "tr" => array("tr_TR", "Türkçe"),
+  "uk" => array("uk_UA", "Ukrainian"),
   "ja" => array("ja_JP", "日本語"),
   "ru" => array("ru_RU", "Русский"),
   "zh-CN" => array("zh_CN.UTF-8", "中文(简)"),
