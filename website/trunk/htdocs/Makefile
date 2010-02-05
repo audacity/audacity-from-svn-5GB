@@ -108,7 +108,7 @@ RSYNCOPTS=-vrchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 #--exclude '*.po'	don't move .po files (source code of translations) to/from
 #					server because it can't use them (it only wants the .mo
 #					compiled versions)
-RSYNCOPTS+=--exclude '.svn'  --exclude '.*.swp'
+RSYNCOPTS+=--exclude '.svn'  --exclude '.*.swp' --exclude 'svn-commit*.tmp'
 # Exclude CVS files we don't need on the server
 # Exclude vim swapfiles from being synced
 RSYNCOPTS+=--exclude '*.bak' --exclude '/files' --itemize-changes
