@@ -9,7 +9,7 @@ PROG_POT_FILE=locale/audacity.pot
 # dates of the .pot files
 INC_FILE=community/potdates.inc
 
-# The authoritative (CVS managed) set of .po files)
+# The authoritative (SVN managed) set of .po files)
 PO_FILES_ORIG := $(wildcard locale/*.po)
 # The set of po files copied out into the typical gettext file structure
 # (with a clever piece of make string mangling which produces names like
@@ -72,17 +72,19 @@ MSGFMT_ARGS=-fv
 # build has updated them from the .pot files
 .PHONY: revert-po
 revert-po:
-	-rm -f locale/*.po
-	-rm -f locale/.#*.po.*
-	cvs up locale/
+	svn revert locale/*.po
 
 # Host / Project configuration
 # ============================
 # Variables in this section configure the project, host etc to use at
-# Sourceforge.
+# Google Code.
 # $SFUSER must be set from outside to a valid SF user name, but it will be 
 # different for everyone who uses this file, so no point setting it here.
-# project unix name
+#
+# You need to use Google Code username / password to work SVN, but they don't 
+# crop up in this file because it doesn't do network SVN operations
+#
+# project name on sourceforge
 PROJECT=audacity
 # host files are on
 SFHOST=web.sourceforge.net
@@ -91,7 +93,6 @@ PROJDIR=/home/groups/a/au/audacity/htdocs/
 
 # Internal configuration stuff (applies to all projects)
 # Options to all rsync commands:
-#RSYNCOPTS=-vrchlO --delete-during --rsh=ssh --exclude '*~'
 RSYNCOPTS=-vrchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 # -v Verbose mode transfers
 # -r Recursive transfer of whole dir tree
@@ -107,7 +108,7 @@ RSYNCOPTS=-vrchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 #--exclude '*.po'	don't move .po files (source code of translations) to/from
 #					server because it can't use them (it only wants the .mo
 #					compiled versions)
-RSYNCOPTS+=--exclude 'CVS' --exclude '.cvsignore' --exclude '.*.swp'
+RSYNCOPTS+=--exclude '.svn'  --exclude '.*.swp'
 # Exclude CVS files we don't need on the server
 # Exclude vim swapfiles from being synced
 RSYNCOPTS+=--exclude '*.bak' --exclude '/files' --itemize-changes
