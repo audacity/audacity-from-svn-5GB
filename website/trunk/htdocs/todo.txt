@@ -1,4 +1,4 @@
-- Makefile: Use "make publish" for locale files only (CVS for the rest).
+- Makefile: Use "make publish" for locale files only (SVN for the rest).
 - about/news: Add an RSS feed.  Should be localized (just like regular pages).
     Should support "conditional GET" (Etag/If-Modified-Since).
 - community/users: Add buttons and banners for users to put on web sites.

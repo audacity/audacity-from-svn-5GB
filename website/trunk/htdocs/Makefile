@@ -68,7 +68,7 @@ MSGFMT_ARGS=-fv
 %.mo: %.po
 	$(MSGFMT) $(MSGFMT_ARGS) -o $@ $<
 
-# automation of reverting .po files to the CVS versions after translation
+# automation of reverting .po files to the SVN versions after translation
 # build has updated them from the .pot files
 .PHONY: revert-po
 revert-po:
@@ -109,7 +109,7 @@ RSYNCOPTS=-vrchlO --delete-during --rsh=ssh --exclude '*~' --exclude '*.po'
 #					server because it can't use them (it only wants the .mo
 #					compiled versions)
 RSYNCOPTS+=--exclude '.svn'  --exclude '.*.swp' --exclude 'svn-commit*.tmp'
-# Exclude CVS files we don't need on the server
+# Exclude SVN files we don't need on the server
 # Exclude vim swapfiles from being synced
 RSYNCOPTS+=--exclude '*.bak' --exclude '/files' --itemize-changes
 # Exclude backup files from windows editors as well

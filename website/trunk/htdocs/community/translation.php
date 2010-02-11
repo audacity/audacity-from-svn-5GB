@@ -84,7 +84,7 @@ printf(_('A group of volunteers is translating the free Audacity sound editor in
 <ul>
   <li><b>To submit a translation</b>, please send the completed .po file to the audacity-translation mailing list. A member of Audacity Team will commit the file and send a message to the list confirming this.</li> 
   <li>Please read <a href="http://wiki.audacityteam.org/index.php?title=Translating_Audacity">Translating Audacity</a> for more tips on translating the Audacity source code, and to learn how the Audacity software and web site are translated.</li>
-</ul>'), "http://audacity.cvs.sourceforge.net/audacity/audacity-src/locale/", "http://audacity.cvs.sourceforge.net/audacity/htdocs/locale/");
+</ul>'), "http://code.google.com/p/audacity/source/browse/audacity-src/trunk/locale", "http://code.google.com/p/audacity/source/browse/website/trunk/htdocs/locale");
 
   include "../include/footer.inc.php";
 ?>
