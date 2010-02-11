@@ -31,7 +31,14 @@
   <dd>
     <p><?=_('For  <a href="../community/developers">developers</a> working with the Audacity source code and documentation, and others interested in following our development process, or learning about compiling or developing our code.')?>  <?=$subscriberOnlyStr?></p>
     <p><a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel"><?php printf($archiveStr, "audacity-devel")?></a>
-    <p><?=_('Developers may also subscribe to automated notifications of <a href="http://lists.sourceforge.net/lists/listinfo/audacity-cvs">latest source code changes</a> and <a href="http://lists.sourceforge.net/lists/listinfo/audacity-bugs">bugs</a> reported to our <a href="http://limpet.net/audacity/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">Bugzilla</a> database. However, <a href="http://audacityteam.org/wiki/index.php?title=Release_Checklist">Release Checklist</a> on the <a href="http://audacityteam.org/wiki/">Wiki</a> is now used for internal bug tracking.')?></p> 
+    <p><?=_('Developers may also subscribe to automated notifications of <a href="#svn">latest source code changes</a> and <a href="http://lists.sourceforge.net/lists/listinfo/audacity-bugs">bugs</a> reported to our <a href="http://limpet.net/audacity/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">Bugzilla</a> database. However, <a href="http://audacityteam.org/wiki/index.php?title=Release_Checklist">Release Checklist</a> on the <a href="http://audacityteam.org/wiki/">Wiki</a> is now used for internal bug tracking.')?></p> 
+  </dd>
+
+<dt id="svn">audacity-svn</dt>
+  <dd>
+    <p><?=_('Receive automatic notification of every change made to the Audacity <a href="../community/developers#svn">source code</a>.')?> <?=$subscriberOnlyStr?></p>
+	<p><a href="http://groups.google.co.uk/group/audacity-svn">
+	<?php printf($archiveStr, "audacity-svn")?></a>
   </dd>
 
   <dt id="translation">audacity-translation</dt>

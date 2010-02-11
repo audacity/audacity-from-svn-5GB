@@ -63,13 +63,25 @@
 <p><?=_("You can type <i>./configure --help</i> to see a list of compilation options. After Audacity is compiled, run <i>make install</i> as root to install it.")?></p>
 
 <h4><?=_("Further Help")?></h4>
-<p><?=_('
-<ul>
- <li>On Windows, see the file "compile.txt" inside the "Win" folder in the source code. For OS X, see "compile.txt" inside the "Mac" folder in the code.</li>
- <li>See our guides to compiling Audacity for <a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Windows">Windows</a>, <a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Mac">Mac</a> and <a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Linux">Linux/Unix</a> on the <a href="http://audacityteam.org/wiki/">Wiki</a>.</li>
- <li>If you are still having difficulties, we want to help! Please join <a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel">audacity-devel</a>, our developers\' mailing list, then send us an e-mail.</li>
-</ul>
-')?></p>
+<p><? printf('<ul><li>%s</li>',
+	_('On Windows, see the file "compile.txt" inside the "Win" folder in the source code. For OS X, see "compile.txt" inside the "Mac" folder in the code.'));
+  printf(_('%sSee our guides to compiling Audacity for %sWindows%s, %sMac%s and %sLinux/Unix%s on the %sWiki%s.%s'),
+   '<li>',
+   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Windows">',
+   '</a>',
+   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Mac">',
+   '</a>',
+   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Linux">',
+   '</a>',
+   '<a href="http://audacityteam.org/wiki/">',
+   '</a>',
+   '</li>');
+  printf(_('%sIf you are still having difficulties, we want to help! Please join %saudacity-devel%s, our developers\' mailing list, then send us an e-mail.%s'),
+  '<li>',
+  '<a href="../contact/lists#devel">',
+  '</a>',
+  '</li></ul>');
+?></p>
 
 <p>&nbsp;</p>
 

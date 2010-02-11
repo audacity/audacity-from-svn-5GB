@@ -22,7 +22,7 @@
 
 <h3><?=_("Optional Downloads")?></h3>
 <ul>
-  <li><p><?=_('Get the latest Stable code (incorporating any changes since the release tarball) from <a href="../community/developers#cvs">CVS</a> or <a href="../community/developers#svn">SVN</a>. This is the best choice if you are compiling on Windows.')?></p></li>
+  <li><p><?=_('Get the latest Stable code (incorporating any changes since the release tarball) from <a href="../community/developers#svn">SVN</a>. This is the best choice if you are compiling on Windows.')?></p></li>
   <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our <a href="%s">alternate download links</a>.'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></p></li>
 </ul>
 
@@ -36,7 +36,7 @@
 
 <h4><?=_("Dependencies")?></h4>
 <p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the unicode options. The next Stable version of Audacity will support newer wxWidgets and GTK libraries.')?></p>
-<p><?=_('Installation of the following libraries is <b>optional</b> - they are included in Audacity obtained from <a href="../community/developers#cvs">CVS</a> or <a href="../community/developers#svn">SVN</a>.')?></p>
+<p><?=_('Installation of the following libraries is <b>optional</b> - they are included in Audacity obtained from <a href="../community/developers#svn">SVN</a>.')?></p>
 <ul>
   <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>
   <li><a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a></li>
@@ -52,13 +52,25 @@
 <p><?=_("You can type <i>./configure --help</i> to see a list of compilation options. After Audacity is compiled, run <i>make install</i> as root to install it.")?></p>
 
 <h4><?=_("Further Help")?></h4>
-<p><?=_('
-<ul>
- <li>On Windows, see the file "compile.txt" inside the "Win" folder in the source code. For OS X, see "compile.txt" inside the "Mac" folder in the code.</li>
- <li>See our guides to compiling Audacity for <a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Windows">Windows</a>, <a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Mac">Mac</a> and <a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Linux">Linux/Unix</a> on the <a href="http://audacityteam.org/wiki/">Wiki</a>.</li>
- <li>If you are still having difficulties, we want to help! Please join <a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel">audacity-devel</a>, our developers\' mailing list, then send us an e-mail.</li>
-</ul>
-')?></p>
+<p><? printf('<ul><li>%s</li>',
+	_('On Windows, see the file "compile.txt" inside the "Win" folder in the source code. For OS X, see "compile.txt" inside the "Mac" folder in the code.'));
+  printf(_('%sSee our guides to compiling Audacity for %sWindows%s, %sMac%s and %sLinux/Unix%s on the %sWiki%s.%s'),
+   '<li>',
+   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Windows">',
+   '</a>',
+   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Mac">',
+   '</a>',
+   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Linux">',
+   '</a>',
+   '<a href="http://audacityteam.org/wiki/">',
+   '</a>',
+   '</li>');
+  printf(_('%sIf you are still having difficulties, we want to help! Please join %saudacity-devel%s, our developers\' mailing list, then send us an e-mail.%s'),
+  '<li>',
+  '<a href="../contact/lists#devel">',
+  '</a>',
+  '</li></ul>');
+?></p>
 
 <p>&nbsp;</p>
 
