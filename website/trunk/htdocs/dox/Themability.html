@@ -119,7 +119,7 @@ There are three formats:<ul>
 <li>Images stored combined into one PNG file.</li><li>Images stored as individual PNG files.</li><li>The PNG file as a file of comma separated numbers.</li></ul>
 <p>
 The first form is the one usually used. It is useful for designers making systematic changes of the images, particularly systematic colour changes. It is also convenient for archives containing many themes and for sharing of themes. However it is inconvenient when there are additions to and removals from the image set used in Audacity, as can happen between versions. A combined PNG made for one version of Audacity may no longer be suitable for the next version.<p>
-Storing as individual images solves that problem and makes it easier for a designer to change just one image. In CVS we check in the individual images.<p>
+Storing as individual images solves that problem and makes it easier for a designer to change just one image. In SVN we check in the individual images.<p>
 The third form allows Audacity to store the combined PNG in 'C' format for use in the exe. It is only ever used by developers. It is this third form that provides the built in defaults in Audacity.<p>
 <dl class="attention" compact><dt><b>Attention:</b></dt><dd>The button to save a theme in the 'C' format is only provided in debug builds.</dd></dl>
 <hr>
@@ -150,14 +150,14 @@ Having defined the new image, follow these steps:<p>
 <p>
 Audacity will now be using the image.<p>
 <ul>
-<li>When you come to check in the updated code into CVS, including <a class="el" href="ThemeAsCeeCode_8h.html">ThemeAsCeeCode.h</a>, remember to also add your new .png image into CVS too.</li></ul>
+<li>When you come to check in the updated code into SVN, including <a class="el" href="ThemeAsCeeCode_8h.html">ThemeAsCeeCode.h</a>, remember to also add your new .png image into SVN too.</li></ul>
 <p>
 <hr>
 <h2><a class="anchor" name="RescuingDefaultImages">
 Rescuing Default Images</a></h2>
 It is possible to completely screw up the built in default images through using an incorrect <a class="el" href="ThemeAsCeeCode_8h.html">ThemeAsCeeCode.h</a>. A correct <a class="el" href="ThemeAsCeeCode_8h.html">ThemeAsCeeCode.h</a> can be regenerated as follows:<p>
 <ul>
-<li>Retrieve a correct set of images from CVS and place them in the components directory used by Audacity.</li><li>Compile Audacity in debug mode.</li><li>Use <a class="el" href="classThemePrefs.html" title="A PrefsPanel that configures dynamic loading of Theme icons and colours.">ThemePrefs</a> 'Load Components' to load the correct set of images.</li><li>Press the 'Output Sourcery' button on the <a class="el" href="classTheme.html" title="Based on ThemeBase, Theme manages image and icon resources.">Theme</a> prefs panel. This generates a corrected <a class="el" href="ThemeAsCeeCode_8h.html">ThemeAsCeeCode.h</a> using the images you just loaded.</li><li>Replace the existing <a class="el" href="ThemeAsCeeCode_8h.html">ThemeAsCeeCode.h</a> in the Audacity source code and recompile. </li></ul>
+<li>Retrieve a correct set of images from SVN and place them in the components directory used by Audacity.</li><li>Compile Audacity in debug mode.</li><li>Use <a class="el" href="classThemePrefs.html" title="A PrefsPanel that configures dynamic loading of Theme icons and colours.">ThemePrefs</a> 'Load Components' to load the correct set of images.</li><li>Press the 'Output Sourcery' button on the <a class="el" href="classTheme.html" title="Based on ThemeBase, Theme manages image and icon resources.">Theme</a> prefs panel. This generates a corrected <a class="el" href="ThemeAsCeeCode_8h.html">ThemeAsCeeCode.h</a> using the images you just loaded.</li><li>Replace the existing <a class="el" href="ThemeAsCeeCode_8h.html">ThemeAsCeeCode.h</a> in the Audacity source code and recompile. </li></ul>
 <hr size="1"><address style="text-align: right;"><small>Generated on Sat Oct 11 21:08:36 2008 for Audacity by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.4 </small></address>
