@@ -38,8 +38,8 @@
 <p><?=_('The SVN repository may also be accessed using many different GUI and IDE <a href="http://subversion.tigris.org/links.html#clients">clients and plug-ins</a>. If using GUI or IDE tools, please use the commands indicated in the tool\'s documentation.')?></p>
 
 <h3 id="bugs"><?=_('Bug Tracking')?></h3>
-<p><?=_('The Audacity developers now use <a href="http://audacityteam.org/wiki/index.php?title=Release_Checklist">Release Checklist</a> on the <a href="http://audacityteam.org/wiki/index.php">Wiki</a> to keep track of confirmed bugs. Check the list of <a href="http://audacityteam.org/wiki/index.php?title=Release_Checklist#Release_Issues">Release Issues</a> on that page if you are looking for something to work on.')?></p>
-<p><?=_('<strong>Note:</strong> This Checklist is for development use only. If you are a user reporting new bugs, please <a href="../contact/">use our Forum or e-mail us</a> instead.')?></p>
+<p><?=_('The Audacity developers now use a <a href="http://www.bugzilla.org/">Bugzilla</a> installation to track bugs and enhancements. To find issues to work on, please view our categorized <a href="http://wiki.audacityteam.org/wiki/Bug_Lists">Bug Lists</a>.')?></p>
+<p><?=_('If you are a user reporting a new bug, please e-mail our <a href="../contact#feedback">feedback address</a>.')?></p>
 
 <h3><?=_('Submitting Patches')?></h3>
 <p><?=_('We welcome patches from developers. Please see our <a href="http://audacityteam.org/wiki/index.php?title=SubmittingPatches">Submitting Patches</a> page on the <a href="http://audacityteam.org/wiki/index.php?title=Audacity_Wiki_Home_Page">Wiki</a>.')?></p>
