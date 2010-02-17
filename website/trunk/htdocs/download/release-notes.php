@@ -1,9 +1,9 @@
 <?php
 /*
  * Copyright 2005 Dominic Mazzoni
- * Copyright 2004 Matt Brubeck
+ * Copyright 2004 - 2010 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "release-notes";
@@ -15,11 +15,18 @@
 <h2><?=$pageTitle?></h2>
 
 <h3><?=_("Known Problems")?></h3>
-<p><?php printf(_("The following are known bugs or problems in Audacity %s:"), src_version); ?></p>
+<p><?php printf(_("The following were known bugs or problems in Audacity %s at release:"), src_version); ?></p>
 <ul>
   <li><p><?=_("Audacity can import and display MIDI files, but cannot play or edit them.")?></p></li>
   <li><p><?=_("Linux:  Recording in full duplex (playing existing tracks while recording) on some systems causes mono recordings to sound distorted or low-pitched.  To work around this problem, set Audacity to record in stereo.")?></p></li>
   <li><p><?=_("MacOS X: Audacity cannot work with files or folders that are contained inside folders with non-English characters (accents, symbols, etc.) in their names.  Files with accented characters work, and Audacity projects with accented characters work.  Only folders with accented characters in their names will cause problems.")?></p></li>
+</ul>
+
+<p><?php printf(_("The following additional problems have become apparent in Audacity %s after release:"), src_version); ?></p>
+<ul>
+  <li><p><?=_("Windows Vista: Pressing Stop after recording may cause a crash.")?></p></li>
+  <li><p><?=_("Mac OS X: Shortcut keys may activate when typing in file open or save windows.")?></p></li>
+  <li><p><?=_("<a href=\"../download\">Audacity Beta (1.3 Series)</a> is now the recommended version on Windows 7, Windows Vista and Mac OS X 10.6.")?></p></li>
 </ul>
 
 <?=_("<h3>Changes in Audacity 1.2.6</h3>
