@@ -23,7 +23,7 @@
 <div class="download_container">
   <div class="downloads" id="stable_downloads">
     <div class="downloads_header">
-      <h3><?=_("Stable: 1.2")?></h3>
+      <h3><?=_("1.2 Series")?></h3>
       <p><?=_("Latest versions:")?></p>
     </div>
     <div>
@@ -39,7 +39,7 @@
 </div>
   <div class="downloads" id="beta_downloads">
     <div class="downloads_header">
-      <h3><a href="features-1.3-a"><?=_("Beta: 1.3")?></a></h3>
+      <h3><a href="features-1.3-a"><?=_("1.3 Series (Beta)")?></a></h3>
       <p><?=_("Latest versions:")?></p>
     </div>
     <div>

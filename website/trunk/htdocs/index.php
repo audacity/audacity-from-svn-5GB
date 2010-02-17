@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2005 Matt Brubeck
- * 2007 onwards Vaughan Johnson, Gale Andrews
+ * 2007 -10 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -54,9 +54,9 @@
   <p>
     <?=_('Audacity&reg; is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href="about/">Learn more about Audacity...</a> Also check our <a href="http://audacityteam.org/wiki/">Wiki</a> and <a href="http://audacityteam.org/forum/">Forum</a> for more information.')?></p>
   <p>
-    <?=_('The latest release of Audacity is <a href="/download">1.3.11 (Beta)</a>. Because it is a work in progress and does not yet come with complete documentation or translations into different languages, it is recommended for more advanced users. See <a href="/download/features-1.3-a">New Features in 1.3</a> for more information about the 1.3.x Beta series.')?></p>
+<?php printf(_('The latest release of Audacity is <a href="download/">%s (Beta)'), $beta_version)?></a>. <?=_('This is our active "work in progress" version with our latest features. Documentation and translations into different languages are not quite complete. We recommend this version for more advanced users, and for everyone on Windows 7, Windows Vista and Mac OS X 10.6. See <a href="download/features-1.3-a">New Features in 1.3</a> for more information about the 1.3 Beta series.')?></p>
   <p>
-    <?=_('For all users, <a href="/download">Audacity 1.2.6</a> is a stable release, complete and fully documented.  You can have Audacity 1.2.6 and 1.3.11 installed on the same machine.')?></p>
+    <?=_('<a href="download/">Audacity 1.2.6</a> is our main release, complete and fully documented, but no longer under development.')?> <?php printf(_('You may install Audacity %s and %s on the same machine.'), $download_version, $beta_version)?></p>
 </div>
 
 <div id="download">
