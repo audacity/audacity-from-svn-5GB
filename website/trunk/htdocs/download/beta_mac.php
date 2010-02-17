@@ -2,7 +2,7 @@
 /*
  * Copyright 2004 Matt Brubeck
  * Copyright 2005 Dominic Mazzoni
- * Copyright 2008-9 Gale Andrews
+ * Copyright 2008-10 Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -29,7 +29,7 @@
    <li><?=_("Inside your Applications folder, create a folder called \"Audacity\"")?></li>
    <li><?=_("Double-click the downloaded .dmg to mount it")?></li>
    <li><?=_("Option-drag the whole of the .dmg contents (not the .dmg itself) into the \"Audacity\" folder you created")?></li>
-   <li><?=_("Double-click Audacity.app inside the Applications folder to launch it")?></li>
+   <li><?=_("Double-click the Audacity icon inside the \"Audacity\" folder to launch the program")?></li>
  </ol>
 </p>
 
