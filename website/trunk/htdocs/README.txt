@@ -1,3 +1,4 @@
+
 This file contains documentation for editing and maintaining the Audacity web
 site.  Audacity is free software for sound editing and recording.  The web site
 is at <http://audacity.sourceforge.net/>.
@@ -30,10 +31,10 @@ CONTENTS:
 2. LICENSE AND COPYRIGHT
 
   Except where otherwise noted, all material on this site is licensed under the
-  Creative Commons Attribution License, version 2.0.  You can find a copy of
+  Creative Commons Attribution 3.0 license.  You can find a copy of
   this license in the file LICENSE.txt, or at:
 
-    http://creativecommons.org/licenses/by/2.0/
+    http://creativecommons.org/licenses/by/3.0/legalcode
 
   If you contribute original material to this web site, please add your name to
   the comments at the start of each file you add or modify.  For example:
@@ -42,7 +43,7 @@ CONTENTS:
      * Copyright 2003 Dominic Mazzoni
      * Copyright 2004 Matt Brubeck
      * This file is licensed under a Creative Commons license:
-     * http://creativecommons.org/licenses/by/2.0/
+     * http://creativecommons.org/licenses/by/3.0/legalcode
      */
 
    If you contribute material that you can't (or don't want to) place under
@@ -95,4 +96,5 @@ CONTENTS:
 5. UPLOADING CHANGES
 
    See
-   http://wiki.audacityteam.org/index.php?title=Editing_audacity.sourceforge.net
+   http://wiki.audacityteam.org/wiki/Editing_audacity.sourceforge.net
+
