@@ -1,8 +1,8 @@
 <?php
 /*
- * Copyright 2004 Matt Brubeck
+ * Copyright 2004 -10 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
 
 // Work around PHP bug on sf.net where include_path gets reset.
@@ -30,13 +30,13 @@ $siteNavItems = array(
   ),
   array(_("Download"), "download/",
     array(
-      array(_("Stable").": 1.2", ""),
+      array(_("1.2 Series")."", ""),
       array($ind._("Windows"), "windows"),
       array($ind._("Mac"), "mac"),
       array($ind._("Linux/Unix"), "linux"),
       array($ind._("Source Code"), "source"),
       array($ind._("Release Notes"), "release-notes"),
-      array(_("Beta").": 1.3", ""),
+      array(_("1.3 Series (Beta)")."", ""),
       array($ind._("New Features in 1.3"), "features-1.3-a"),
       array($ind._("Windows"), "beta_windows"),
       array($ind._("Mac"), "beta_mac"),

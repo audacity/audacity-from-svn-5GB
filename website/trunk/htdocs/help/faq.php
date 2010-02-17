@@ -2,7 +2,7 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2005 Matt Brubeck
- * Copyright 2007 - 9 Gale Andrews, Vaughan Johnson
+ * Copyright 2007 - 10 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -112,7 +112,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
         ),
         "vst-bugs" => array(
           _("Why do some VST plug-ins look wrong, or not work?"),
-          _("<p>Stable (1.2) versions of Audacity require the <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> in order to display VST plug-ins. The Enabler can only display a generic, tabular interface for plug-ins, so they may look or act differently than they do in other programs, or not function at all.</p>
+          _("<p>1.2 versions of Audacity require the <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> in order to display VST plug-ins. The Enabler can only display a generic, tabular interface for plug-ins, so they may look or act differently than they do in other programs, or not function at all.</p>
 <p>Current Beta (1.3) versions of Audacity will by default display VST effect plug-ins with their full interface, without the need of an Enabler. If you experience any problems with VST plug-ins in Audacity Beta, please read this <a href=\"http://forum.audacityteam.org/viewtopic.php?f=37&t=11534&p=45667#p45667\">Forum topic</a>. You may <a href=\"../contact#feedback\">contact us</a> to report any difficulties not covered in that topic.</p>                
 <p>Neither version of Audacity supports VST instrument (VSTi) plug-ins. </p>")
         ),
@@ -196,8 +196,8 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
         ),
         "scheduled" => array(
           _("Can I set Audacity to record at a certain time?"),
-          _("<p>Sorry, Audacity does not yet support scheduled recording.  We may add this feature to a future version of the program.</p>
-<p>You can make Audacity <b>stop</b> recording after a certain time limit, by following these steps:</p>
+          _("<p>Audacity 1.2 does not support scheduled recording, but Audacity <a href=\"../download/features-1.3-a\">1.3 Beta</a> has a <a href=\"http://audacity.sourceforge.net/download/features-1.3-k.php\">Timer Record</a> feature to start and stop recording at a particular time. </p>
+<p>In 1.2, you can make Audacity <b>stop</b> recording after a certain time limit, by following these steps:</p>
 <ol>
   <li>Turn on “Play existing tracks while recording” in the “Audio I/O” section of the preferences.</li>
   <li>Choose “New Audio Track” from the Project menu.</li>
@@ -283,7 +283,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
   <li>Repeat steps 1 and 2 for each song.</li>
   <li>When you are finished, choose “Export Multiple” from the File menu.  When you click the “Export” button, Audacity will save each song as a separate file, using the format and location you choose.</li>
 </ol>").
-"<p>"._("A detailed, illustrated tutorial explaining this process is available on the ").' <a href="http://audacityteam.org/wiki/index.php?title=Splitting_recordings_into_separate_tracks">Splitting_recordings_into_separate_tracks</a>'._(" page on the Audacity Wiki.")."</p>".
+"<p>"._("A detailed, illustrated tutorial explaining this process is available on the ").' <a href="http://audacityteam.org/wiki/index.php?title=Splitting_recordings_into_separate_tracks">Splitting recordings into separate tracks</a>'._(" page on the Audacity Wiki.")."</p>".
 "<p>"._("See also:").' <a href="faq?s=files&amp;i=burn-cd">'._("How do I save my recording on an audio CD?")."</a></p>"
         ),
       ),

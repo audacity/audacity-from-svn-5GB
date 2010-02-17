@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 9 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 10 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -34,7 +34,7 @@
 <p><?=_('The <a href="http://audacityteam.org/wiki/index.php?title=VST_Plug-ins">VST Plug-ins</a> page on our <a href="http://audacityteam.org/wiki/">Wiki<a/> lists a large number of VST plug-ins that have been reported to work well in Audacity.')?></p>
 
 <h3><?=_("Libraries")?></h3>
-<p><?=_('At present, the only library you can add to the Stable 1.2 version of Audacity is the <b>LAME MP3 encoding</b> library. This allows Audacity to export audio in the popular <a href="http://wiki.audacityteam.org/index.php?title=MP3">MP3</a> format. To install the LAME library, please read our <a href="../help/faq?s=install&i=lame-mp3">LAME FAQ</a>.')?></p>    
+<p><?=_('At present, the only library you can add to the 1.2 version of Audacity is the <b>LAME MP3 encoding</b> library. This allows Audacity to export audio in the popular <a href="http://wiki.audacityteam.org/index.php?title=MP3">MP3</a> format. To install the LAME library, please read our <a href="../help/faq?s=install&i=lame-mp3">LAME FAQ</a>.')?></p>    
 <p><?=_('In addition to supporting LAME, the <a href="../download/features-1.3-a">Beta 1.3</a> version of Audacity has experimental support for the <b>FFmpeg import/export</b> library. This allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href="http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg">FFmpeg FAQ.</a> The next 2.0 Stable version of Audacity is expected to support the FFmpeg library.</a>')?></p>
 
 <?php
