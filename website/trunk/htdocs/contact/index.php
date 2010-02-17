@@ -3,7 +3,7 @@
  * Copyright 2004 Matt Brubeck
  * 2006 Richard Ash
  * 2007 Vaughan Johnson
- * 2008-9 Gale Andrews
+ * 2008-10 Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -46,14 +46,16 @@
    echo _('To give us feedback that does <b>not</b> require a personal response, please ')?>
    <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;"> 
 <?php
-   echo _('e-mail us</a> in <b>English language only.</b> Please tell us your experiences of the Audacity program, documentation or web site. We particularly welcome reports of possible program bugs and requests for new Audacity features.');?></p>
+   echo _('e-mail us</a> in <b>English language only.</b> Please tell us your experiences of the Audacity program, documentation or web site. We particularly welcome reports of possible program bugs and requests for new Audacity features. Before reporting bugs, please check the Release Notes for the Audacity <a href="http://audacity.sourceforge.net/download/release-notes">1.2<a/> and <a href="http://wiki.audacityteam.org/wiki/Release_Notes">1.3 (Beta)</a> series.');?></p>
 
+<div class="advice">
 <p><?=_('Reports of apparent bugs should be as specific as possible, including:</p>
 <ol>
   <li>Your version of Audacity (for example, 1.2.6).</li>
   <li>Your operating system (for example, Windows XP Service Pack 2 or Intel Mac OS X 10.4).</li>
   <li>Details of what you were trying to do, what steps led to the problem occurring, and details of any error messages.</li>
 </ol>
+</div>
 
 <p>Patches to fix problems or enhance features will be gratefully received. Please follow the guidance on the <a href="http://audacityteam.org/wiki/index.php?title=SubmittingPatches">Submitting Patches</a> page on our <a href="http://audacityteam.org/wiki/index.php">Wiki</a>.</p>')?>    
 
