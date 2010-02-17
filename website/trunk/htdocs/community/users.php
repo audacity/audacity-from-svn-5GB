@@ -1,9 +1,9 @@
 <?php
 /*
  * Copyright 2003, 2004 Dominic Mazzoni
- * Copyright 2004 Matt Brubeck
+ * Copyright 2004 -10 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "users";
@@ -27,10 +27,10 @@
 <p><?=_('Join our')?> <a class ="ext" target="blank" href="http://audacityteam.org/forum/"> <?=_('Audacity Forum')?></a>, <?=_('where you can ask and answer questions about Audacity.')?></p>
 
 <h3><?=_('Report bugs')?></h3>
-<p><?=_('If you find a bug in Audacity,')?> <a href="../contact/"><?=_('let us know')?></a>.</p>
+<p><?=_('If you find a bug in Audacity,')?> <a href="../contact#feedback"><?=_('let us know')?></a>.</p>
 
-<h3><?=_('Be a Beta Tester')?></h3>
-<p><?=_('In addition to the latest stable version of Audacity, we usually have beta versions available.  These versions usually contain new features that haven\'t been fully tested. If you want to help out, ')?><a href="../download/"><?=_('download')?></a><?=_(' the Beta version and play with it.')?> <a href="../contact#feedback"><?=_('Let us know')?></a><?=_(' what you like and don\'t like, and how you think it should be improved.  Tell us if you find any <em>regressions</em> - things that used to work but don\'t work anymore.')?></p>
+<h3><?=_('Help us test our latest versions')?></h3>
+<p><?=_('You can help us by downloading our latest <a href="../download/">Beta version</a> or <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds">Nightly Build<a/> and testing it out. These versions usually contain new features or bug fixes that haven\'t been fully tested yet. Please <a href="../contact#feedback">let us know</a> of any problems you encounter, what you like and what could be improved. Tell us if you find any <em>regressions</em> - things that used to work but don\'t work anymore.')?></p>
 
 <?php
   include "../include/footer.inc.php";
