@@ -267,3 +267,13 @@ span.downloads_smaller { font-size:85%; font-weight:300; }
 .downloads_header p {
   margin: 0;
 }
+
+.advice {
+  border: 1px solid black;
+  padding-top: 6px; 
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 6px;
+  margin: 24px;
+  background:#EEEEEE;
+}
