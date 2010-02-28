@@ -1,7 +1,8 @@
 #summary Canned Issue Tracker Queries
-#labels Featured
 
 = Introduction =
+
+This is an earlier experiment with using Google's issue tracker for Audacity.  We've since then moved to Bugzilla.
 
 Here are the default displays, first as a list, then as a grid.
   * [http://code.google.com/p/audacity/issues/list The default issue tracker report].
