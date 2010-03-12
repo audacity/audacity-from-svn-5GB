@@ -62,7 +62,8 @@ printf(_('A group of volunteers is translating the free Audacity sound editor in
 <p><b>Programs for creating and editing .po files:</b></p>
 <ul>
   <li><a href="http://poedit.sourceforge.net/">poEdit</a> for Windows and Unix.</li>
-  <li><a href="http://i18n.kde.org/tools/kbabel/">KBabel</a> for KDE.</li>
+  <li><a href="http://userbase.kde.org/Lokalize">Lokalize</a> for KDE4</li>
+  <li><a href="http://translate.sourceforge.net/wiki/virtaal/index">Virtaal</a></li>
   <li><a href="http://www.gnu.org/software/gettext/">GNU gettext</a> is standard on most Unix systems.  It includes a PO mode for the Emacs text editor.</li>
 </ul>
 
