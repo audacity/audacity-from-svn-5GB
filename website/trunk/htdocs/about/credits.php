@@ -33,9 +33,7 @@
   <li>Ruslan Ijbulatov, <?=_("developer")?></li>
   <li>Vaughan Johnson, <?=_("developer")?></li>
   <li>Greg Kozikowski, <?=_("documentation and support")?></li>
-  <li>Leland Lucius, <?=_("developer")?></li>
   <li>Dominic Mazzoni, <?=_("developer")?></li>
-  <li>Markus Meyer, <?=_("developer")?></li>
   <li>Alexandre Prokoudine, <?=_("documentation and support")?></li>
   <li>Peter Sampson, <?=_("documentation and support")?></li>
   <li>Martyn Shaw, <?=_("developer")?></li>
@@ -47,16 +45,16 @@
   <li>Richard Ash</li>
   <li>James Crook</li>
   <li>Vaughan Johnson</li>
-  <li>Leland Lucius</li>
-  <li>Markus Meyer</li>
   <li>Martyn Shaw</li>
 </ul>
 
-<h3><?=_("Emeritus: distinguished Audacity team members, not currently active")?></h3>
+<h3><?=_("Emeritus: distinguished Audacity Team members, not currently active")?></h3>
 <ul>
   <li><a href="http://limpet.net/mbrubeck/">Matt Brubeck</a>, <?=_("developer")?></li>
   <li><a href="http://www.cs.cmu.edu/~rbd">Roger Dannenberg</a>, <?=_("developer")?></li>
   <li><a href="http://www.reverberate.org/">Joshua Haberman</a>, <?=_("developer")?></li>
+  <li>Leland Lucius, <?=_("developer")?></li>
+  <li>Markus Meyer, <?=_("developer")?></li>
   <li>Monty Montgomery, <?=_("developer")?></li>
   <li>Shane Mueller, <?=_("developer")?></li>
   <li>Tony Oetzmann, <?=_("documentation and support")?></li>
