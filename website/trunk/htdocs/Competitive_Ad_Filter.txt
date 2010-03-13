@@ -1,5 +1,3 @@
-// list of ad sources we want to block via AdSense Competitive Ad Filter
-
 2009-version.info
 appcraft.org/shop_mobile-ringtone-converter_590_0_45.html
 audacity-.down-uk.com
@@ -10,7 +8,10 @@ audacity-pro.com
 audacity-pro.net
 audacity-pro.org
 audacity-site.com
+audacity-software.com
 audacity-software.org
+audacity.2010-fr.com
+audacity.au-2010.com
 audacity.download-latest.com
 audacity.es-2010.com
 audacity.lem7.com
