@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Website\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-16 06:27+0000\n"
+"POT-Creation-Date: 2010-03-28 17:22+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: KimKha <nkimkha@gmail.com>\n"
 "Language-Team: \n"
@@ -2391,7 +2391,7 @@ msgstr ""
 #: include/header.inc.php:209
 #: contact/privacy.php:22
 msgid "Advertisements Policy"
-msgstr ""
+msgstr "Chính Sách Quảng Cáo"
 
 #. i18n-hint: Controls how dates are formatted.
 #. See http://www.php.net/manual/function.strftime.php for details.
@@ -5120,7 +5120,7 @@ msgstr ""
 
 #: help/index.php:9
 msgid "Documentation and Support"
-msgstr ""
+msgstr "Tài Liệu và Hỗ Trợ"
 
 #: help/index.php:16
 msgid ""
@@ -5137,6 +5137,18 @@ msgid ""
 " </ul>\n"
 "</p>"
 msgstr ""
+"<p><b>Có câu hỏi?</b> Đầu tiên, hãy xem <a href=\"faq\">Các Câu Hỏi Thường Gặp</a> của chúng tôi và các tài nguyên sau:</p>\n"
+"\n"
+"<p>\n"
+" <ul>\n"
+"   <li><a href=\"documentation\">Tài Liệu</a> - Hãy đọc hướng dẫn sử dụng và tham khảo nhanh.</li>\n"
+"   <li><a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a> là một tài nguyên trợ giúp mở rộng có thể sửa được bao gồm:\n"
+"    <ul><li><a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">Hướng Dẫn</a> - các hướng dẫn từng bước trên các tác vụ mẫu chung chung trong Audacity, như là tạo nhạc chuông, khử âm thanh, trộn lẫn, tạo đoạn mẫu và chuyển băng từ và đĩa hát vào máy tính. Một số <a href=\"http://audacityteam.org/wiki/index.php?title=MultiLingual\">hướng dẫn bằng tiếng nước ngoài</a> cũng có sẵn.</li>\n"
+"     <li><a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Mẹo Vặt</a> - các bài viết sẽ giúp bạn làm việc và hiểu rõ về Audacity và phần cứng âm thanh của bạn.</li>\n"
+"    </ul>\n"
+"  </li>\n"
+" </ul>\n"
+"</p>"
 
 #. i18n-hint: If there are any special sources of help (local forums, lists) for
 #. Audacity users in your language (other than our Russian, French, German
@@ -5145,7 +5157,7 @@ msgstr ""
 #. please add links to it at the bottom of \htdocs\help\documentation.php
 #: help/index.php:36
 msgid "<p><b>Still need help?</b> Please <a href=\"../contact/\">contact us</a>.</p>"
-msgstr ""
+msgstr "<p><b>Vẫn cần giúp đỡ?</b> Vui lòng <a href=\"../contact/\">liên lạc với chúng tôi</a>.</p>"
 
 #: contact/main.inc.php:11
 #: contact/index.php:12
@@ -5165,20 +5177,25 @@ msgid ""
 "\n"
 "<p>As of April 8, 2009, this includes \"interest-based\" advertising, which utilizes cookies to try to determine users' areas of interest (for example, audio editing), to show advertisements of likelier interest. Please see <a href=\"https://www.google.com/adsense/support/bin/answer.py?hl=en&answer=100557\">Google Advertising Cookie and Privacy Policies</a> for information regarding your privacy and how to <a href=\"http://www.google.com/privacy_ads.html\">opt out</a> of this tracking.</p>"
 msgstr ""
+"<p>Trên vài trang của trang web chúng tôi, chúng tôi có quảng cáo từ chương trình Google AdSense. Hãy xem trang &ldquo;<a href=\"http://audacity.sourceforge.net/community/donate\">Audacity Kiếm Tiền Bằng Cách Nào?</a>&rdquo; để biết lý do chúng tôi có quảng cáo.</p>\n"
+"\n"
+"<p>Đến ngày 8 Tháng Tư năm 2009, cái này bao gồm quảng cáo \"dựa trên sở thích\", tận dụng cookie để cố gắng xác định các nhóm sở thích của người dùng (ví dụ, biên tập âm thanh), để hiển thị quảng cáo gần với sở thích hơn. Vui lòng xem trang <a href=\"https://www.google.com/adsense/support/bin/answer.py?hl=en&answer=100557\">Chính Sách Cookie Quảng Cáo và Bảo Mật của Google</a> để có thêm thông tin về quyền riêng tư của bạn và làm thế nào <a href=\"http://www.google.com/privacy_ads.html\">thoát khỏi</a> sự theo dõi này.</p>"
 
 #: contact/privacy.php:28
 msgid "Announcement List Policy"
-msgstr ""
+msgstr "Chính Sách Danh Sách Thông Báo"
 
 #: contact/privacy.php:30
 msgid ""
 "<p>You can subscribe to our announcement list by entering your e-mail address in the <a href=\"../#announce\"> form</a> on the <a href=\"../\">Audacity home page</a>.  We will use this list only to send you brief announcements of new Audacity releases.  We will never share the addresses on this list with anyone.</p>\n"
 "<p>To <b>unsubscribe</b> from the list at any time, enter your address in the <a href=\"../#announce\">form</a> on our <a href=\"../\">home page</a> and click \"Remove\". If you have any problems or questions, please contact our <a href=\"&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#100;&#x6f;&#109;&#x69;&#110;&#x69;&#x63;&#64;&#x61;&#117;&#100;&#97;&#99;&#x69;&#x74;&#121;&#x74;&#x65;&#x61;&#109;&#x2e;&#111;&#114;&#103;&#63;&#115;&#117;&#98;&#x6a;&#101;&#99;&#116;&#61;&#x41;&#110;&#110;&#111;&#x75;&#110;&#99;&#x65;&#109;&#101;&#x6e;&#x74;&#32;&#108;&#105;&#x73;&#116;\">lead developer</a>.</p>"
 msgstr ""
+"<p>Bạn có thể đăng ký nhận tin với danh sách thông báo của chúng tôi bằng việc điền địa chỉ e-mail của bạn vào <a href=\"../#announce\">biểu mẫu</a> trên <a href=\"../\">trang chủ Audacity</a>.  Chúng tôi sử dụng danh sách này chỉ để gửi cho bạn những thông báo về bản Audacity mới.  Chúng tôi không bao giờ chia sẻ các địa chỉ trong danh sách với bất cứ ai.</p>\n"
+"<p>Để <b>bỏ đăng ký nhận tin</b> khỏi danh sách bất cứ lúc nào, hãy nhập địa chỉ của bạn vào <a href=\"../#announce\">biểu mẫu</a> trên <a href=\"../\">trang chủ</a> của chúng tôi và nhấp vào \"Loại bỏ\". Nếu bạn gặp bất kỳ vấn đề hoặc câu hỏi nào, vui lòng liên hệ với <a href=\"&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#100;&#x6f;&#109;&#x69;&#110;&#x69;&#x63;&#64;&#x61;&#117;&#100;&#97;&#99;&#x69;&#x74;&#121;&#x74;&#x65;&#x61;&#109;&#x2e;&#111;&#114;&#103;&#63;&#115;&#117;&#98;&#x6a;&#101;&#99;&#116;&#61;&#x41;&#110;&#110;&#111;&#x75;&#110;&#99;&#x65;&#109;&#101;&#x6e;&#x74;&#32;&#108;&#105;&#x73;&#116;\">trưởng nhóm phát triển</a> của chúng tôi.</p>"
 
 #: contact/privacy.php:33
 msgid "Mailing List Policy"
-msgstr ""
+msgstr "Chính Sách Danh Sách Thư"
 
 #: contact/privacy.php:35
 msgid ""
@@ -5188,16 +5205,21 @@ msgid ""
 "<p><b>Your e-mail address will always be truncated in published archives for your privacy, and the Audacity developers will not share your address with anyone.</b>  However, we <b>cannot</b> prevent other subscribers from seeing or publishing your messages. Therefore we recommend you avoid putting contact details such as street addresses or telephone numbers in your e-mails.</p>\n"
 "<p>If you have any questions about this policy or are not comfortable writing to a public mailing list, please send a private e-mail to our <a href=\"&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x64;&#111;&#x6d;&#105;&#x6e;&#x69;&#x63;&#64;&#97;&#x75;&#100;&#x61;&#99;&#105;&#116;&#121;&#x74;&#x65;&#97;&#109;&#x2e;&#x6f;&#x72;&#x67;&#x3f;&#115;&#x75;&#98;&#106;&#101;&#99;&#116;&#x3d;&#x4d;&#97;&#x69;&#108;&#105;&#110;&#x67;&#x20;&#76;&#x69;&#115;&#x74;&#115;\">lead developer</a>.</p>"
 msgstr ""
+"<p>(Cái này áp dụng cho <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a>, <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-users\">audacity-users</a> và <a href=\"../contact/lists\">danh sách thảo luận</a> khác của chúng tôi.)</p>\n"
+"\n"
+"<p>Đây là danh sách thư công cộng.  Khi bạn gửi một tin nhắn tới bất kỳ một địa chỉ nào, nó sẽ được chuyển đến tất cả những người nhận tin trong danh sách, bao gồm nhà phát triển Audacity và những người khác.  SourceForge và các web site khác có thể công bố bản lưu trữ của danh sách này.</p>\n"
+"<p><b>Địa chỉ e-mail của bạn sẽ luôn được cắt ngắn trong bản lưu trữ vì quyền riêng tư của bạn, và các nhà phát triển Audacity sẽ không chia sẻ địa chỉ của bạn với bất cứ ai.</b>  Tuy nhiên, chúng tôi <b>không thể</b> ngăn người nhận tin khác xem và công bố tin nhắn của bạn. Vì vậy chúng tôi khuyên bạn tránh việc đưa địa chỉ chi tiết như số nhà và số điện thoại trong e-mail của bạn.</p>\n"
+"<p>Nếu bạn có câu hỏi nào về chính sách này hoặc không thoải mái viết vào danh sách thư công cộng, vui lòng gửi một e-mail riêng tới <a href=\"&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x64;&#111;&#x6d;&#105;&#x6e;&#x69;&#x63;&#64;&#97;&#x75;&#100;&#x61;&#99;&#105;&#116;&#121;&#x74;&#x65;&#97;&#109;&#x2e;&#x6f;&#x72;&#x67;&#x3f;&#115;&#x75;&#98;&#106;&#101;&#99;&#116;&#x3d;&#x4d;&#97;&#x69;&#108;&#105;&#110;&#x67;&#x20;&#76;&#x69;&#115;&#x74;&#115;\">trưởng nhóm phát triển</a> của chúng tôi.</p>"
 
 #: contact/lists.php:12
 msgid "You must subscribe to send messages to this list."
-msgstr ""
+msgstr "Bạn phải đăng ký nhận tin để gửi tin nhắn đến danh sách này."
 
 #. i18n-hint: The "%s" will be replaced by the name of a mailing list.
 #: contact/lists.php:14
 #, php-format
 msgid "%s archives and subscription information"
-msgstr ""
+msgstr "Thông tin đăng ký nhận tin và các lưu trữ %s"
 
 #. i18n-hint: Please add a note that these lists are in English.  If there are
 #. Audacity mailing lists or forums in your language, please link to them here.
@@ -5206,30 +5228,32 @@ msgid ""
 "These lists are for discussion about the Audacity audio editor.  </p>\n"
 "<p><b>Note:</b> In line with our <a href=\"../contact/privacy#lists\">Privacy Policy</a>, these are public lists - messages are seen by all list subscribers, and posted on several web sites where the messages are archived.</p>"
 msgstr ""
+"Danh sách này dành cho việc thảo luận về trình biên tâm âm thanh Audacity.  </p>\n"
+"<p><b>Chú ý:</b> Trong một dòng của <a href=\"../contact/privacy#lists\">Chính Sách Riêng Tư</a> của chúng tôi, đây là danh sách công cộng - tin nhắn được xem bởi mọi người đăng ký nhận tin, và được gửi lên vài web site nơi các tin nhắn được lưu trữ.</p>"
 
 #: contact/lists.php:26
 msgid "Discuss Audacity with other <a href=\"../community/users\">users</a> and developers."
-msgstr ""
+msgstr "Thảo luận về Audacity với <a href=\"../community/users\">người dùng</a> và nhà phát triển khác."
 
 #: contact/lists.php:32
 msgid "For  <a href=\"../community/developers\">developers</a> working with the Audacity source code and documentation, and others interested in following our development process, or learning about compiling or developing our code."
-msgstr ""
+msgstr "Dành cho  <a href=\"../community/developers\">các nhà phát triển</a> làm việc với mã nguồn và tư liệu Audacity, và những người khác thích theo dõi quy trình phát triển của chúng tôi, hoặc tìm hiểu về việc dịch và phát triển mã nguồn của chúng tôi."
 
 #: contact/lists.php:34
 msgid "Developers may also subscribe to automated notifications of <a href=\"#svn\">latest source code changes</a> and <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-bugs\">bugs</a> reported to our <a href=\"http://limpet.net/audacity/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">Bugzilla</a> database. However, <a href=\"http://audacityteam.org/wiki/index.php?title=Release_Checklist\">Release Checklist</a> on the <a href=\"http://audacityteam.org/wiki/\">Wiki</a> is now used for internal bug tracking."
-msgstr ""
+msgstr "Các nhà phát triển cũng có thể đăng ký nhận thông báo tự động của <a href=\"#svn\">các thay đổi mã nguồn sau cùng</a> và <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-bugs\">các lỗi</a> được báo tới cơ sở dữ liệu <a href=\"http://limpet.net/audacity/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">Bugzilla</a> của chúng tôi. Tuy nhiên, <a href=\"http://audacityteam.org/wiki/index.php?title=Release_Checklist\">Bảng Liệt Kê Phát Hành</a> trên <a href=\"http://audacityteam.org/wiki/\">Wiki</a> được dùng cho việc truy vết lỗi nội bộ."
 
 #: contact/lists.php:39
 msgid "Receive automatic notification of every change made to the Audacity <a href=\"../community/developers#svn\">source code</a>."
-msgstr ""
+msgstr "Nhận thông báo tự động của mọi thay đổi ảnh hưởng đến <a href=\"../community/developers#svn\">mã nguồn</a> Audacity."
 
 #: contact/lists.php:46
 msgid "For <a href=\"../community/translation\">translators</a> localizing the Audacity software, web site and documentation."
-msgstr ""
+msgstr "Dành cho <a href=\"../community/translation\">các dịch giả</a> bản địa hóa phần mềm, web site và tư liệu Audacity."
 
 #: contact/lists.php:52
 msgid "Share questions and tips about programming <a href=\"../help/nyquist\">Nyquist plug-ins</a>."
-msgstr ""
+msgstr "Chia sẻ các câu hỏi và mẹo vặt về việc lập trình <a href=\"../help/nyquist\">trình bổ sung Nyquist</a>."
 
 #. i18n-hint: If there are any special sources of help (local forums, lists) for Audacity
 #. users in your language (other than our Russian, French, German and Spanish
@@ -5238,29 +5262,29 @@ msgstr ""
 #. of \htdocs\help\documentation.php
 #: contact/index.php:25
 msgid "Audacity Forum for Questions or Problems"
-msgstr ""
+msgstr "Diễn Đàn Audacity cho Các Câu Hỏi và Vấn Đề"
 
 #: contact/index.php:26
 msgid "<b>There is no technical support by e-mail or telephone.</b> Most questions are answered in our <a href=\"../help/faq\">Frequently Asked Questions (FAQ)</a>, <a href=\"../help/documentation\">documentation</a>, and the <a href=\"http://audacityteam.org/wiki/index.php?title=Tutorials\">Tutorials</a> and <a href=\"http://audacityteam.org/wiki/index.php?title=Tips\">Tips</a> on our <a href=\"http://audacityteam.org/wiki\">Wiki</a>. All these resources are searchable using the search box top right of this page."
-msgstr ""
+msgstr "<b>Không có sự hỗ trợ bằng e-mail hoặc điện thoại.</b> Hầu hết câu hỏi được hỏi trong <a href=\"../help/faq\">Các Câu Hỏi Thường Gặp (FAQ)</a>, <a href=\"../help/documentation\">tư liệu</a> của chúng tôi, và trong <a href=\"http://audacityteam.org/wiki/index.php?title=Tutorials\">Hướng Dẫn</a> và <a href=\"http://audacityteam.org/wiki/index.php?title=Tips\">Mẹo Vặt</a> trên <a href=\"http://audacityteam.org/wiki\">Wiki</a> của chúng tôi. Tất cả tài nguyên này có thể tìm thấy thông qua khung tìm kiếm ở phía trên bên phải của trang này."
 
 #: contact/index.php:28
 msgid "If you still need help, expert assistance is available on our"
-msgstr ""
+msgstr "Nếu bạn vẫn cần sự giúp đỡ, đội hỗ trợ chuyên nghiệp luôn sẵn sàng trên"
 
 #. i18n-hint: "Forum" is the link text to the Forum. Probably you should not
 #. translate this link text unless there is a sub-forum in your language.
 #: contact/index.php:33
 msgid "Forum</a>."
-msgstr ""
+msgstr "Diễn Đàn</a> của chúng tôi."
 
 #: contact/index.php:35
 msgid " To post a question, <a href=\"http://audacityteam.org/forum/ucp.php?mode=register\">register</a>, confirm your registration then log in. Choose the correct subforum (for example, Audacity 1.2.x for Windows), click \"New Topic\" top left, then submit your message. Foreign language subforums are available for <a href=\"http://audacityteam.org/forum/viewforum.php?f=7\">French</a>, <a href=\"http://audacity-forum.de/\">German</a>, <a href=\"http://audacityteam.org/forum/viewforum.php?f=10\">Russian</a> and <a href=\"http://audacityteam.org/forum/viewforum.php?f=8\">Spanish</a>."
-msgstr ""
+msgstr " Để tạo một câu hỏi, hãy <a href=\"http://audacityteam.org/forum/ucp.php?mode=register\">đăng ký</a>, xác nhận sự đăng ký của bạn sau đó thì đăng nhập. Hãy chọn diễn đàn con chính xác (ví dụ, Audacity 1.2.x cho Windows), nhấp vào \"Chủ Đề Mới\" ở phía trên bên trái, sau đó gửi tin nhắn của bạn. Các diễn đàn con ngoại ngữ thì có sẵn <a href=\"http://audacityteam.org/forum/viewforum.php?f=7\">tiếng Pháp</a>, <a href=\"http://audacity-forum.de/\">tiếng Đức</a>, <a href=\"http://audacityteam.org/forum/viewforum.php?f=10\">tiếng Nga</a> và <a href=\"http://audacityteam.org/forum/viewforum.php?f=8\">tiếng Tây Ban Nha</a>."
 
 #: contact/index.php:37
 msgid "When reporting a problem or apparent bug to the Forum, please include full details of what you are trying to do. If there is a crash or error message, please state what you did that led up to this, and what exactly any error message said."
-msgstr ""
+msgstr "Khi báo cáo một vấn đề hoặc lỗi rõ rành rành lên Diễn Đàn, vui lòng kèm theo các chi tiết đầy đủ về những gì bạn đang cố gắng thực hiện. Nếu có thông báo lỗi hoặc hư hỏng, vui lòng nói rõ những gì bạn đã làm để xuất hiện nó, và chính xác những gì thông báo lỗi nói."
 
 #: contact/index.php:39
 msgid "Suggestions, Bug Reports and Feature Requests"
