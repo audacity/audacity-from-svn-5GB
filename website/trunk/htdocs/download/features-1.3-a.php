@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2009 onwards Dominic Mazzoni, Gale Andrews
+ * Copyright 2005-2010 Dominic Mazzoni, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -24,7 +24,85 @@
  </ul>
 ')?></p>
 
-<h3 id="details"><?=_("Changes in Audacity 1.3.11")?></h3>
+<h3 id="details"><?=_("Changes in Audacity 1.3.12")?></h3>
+
+<?=_("
+<dl>
+   <dt> Bug fixes for: </dt>
+	       <dd> Imports and Exports: 
+                 <ul>
+                       <li>AAC files could not be exported at 48000 Hz</li>
+                       <li>When importing multiple native file formats using 
+                            FFmpeg, all files after the first reverted to using
+                            the native importer</li>
+                       <li>FFmpeg custom export window too large on 800 x 600 
+                            resolution monitors</li> 
+                       <li>Projects froze if files imported via On-Demand were
+                             no longer available</li>
+                       <li><i>(Linux)</i> WAV/AIFF exports were corrupted if 
+                             overwriting an aliased file which had been imported 
+                             using the command line</li>
+                 </ul>       
+              </dd>
+
+	       <dd> Labels: 
+                 <ul>
+                       <li>Cutting or deleting a region in the waveform and label
+                            track did not move the labels in advance of the cut</li>
+                       <li>Incorrect behavior snapping to labels and boundaries with
+                            Snap To enabled</li>
+                       <li>Labels can now be reversed if included with the audio selection</li> 
+                             using the command line</li>
+                 </ul>       
+              </dd>
+
+	       <dd> Other bug fixes: 
+                 <ul>
+                       <li>When using non-English languages, Generate effects truncated
+                            the selected region</li>
+                       <li>Mice with high-precision scroll-wheels could cause a crash</li>   
+                       <li>Changing recording preferences using the Transport menu did
+                            not update the menu in other open projects</li>  
+                       <li><i>(Windows 7)</i>&nbsp;Clicking in a file open or save dialog caused 
+                            files or folders to disappear from the list, and file filtering
+                            was broken</li>
+                 </ul>       
+              </dd>
+")?>
+
+<?=_("
+   <dt> Changes and improvements:</dt>
+           <dd>
+                 <ul>
+                       <li>A hover tooltip is now provided if the Mixer Toolbar input
+                            selector cannot control the system slider for the selected input.</li>
+                       <li>More intuitive behavior when moving and resizing labels by dragging</li>
+                       <li>Support added for importing lists of files (LOF) containing relative 
+                            paths</li>  
+                       <li>Export Multiple: new option to use a numerical prefix before existing 
+                            label or track names; \"Success\" dialog now resizable</li>
+                       <li>New Equalization preset \"Inverse RIAA\", with new button to invert
+                            other curves</li>
+                       <li>Timer Record now remembers last scheduled duration</li> 
+                       <li>Meter Toolbar can now be made much narrower, and so more suitable 
+                            for vertical orientation</li>  
+                       <li>New Preferences choice for \"System\" language which is used on first 
+                            run instead of asking user to choose language</li>    
+                       <li>Warning now provided if WAV/AIFF exports are not successfully 
+                            completed</li>
+                       <li><i>(Linux)</i>&nbsp;Improved icon set in compliance with freedesktop.org
+                            Icon Theme Specification 0.6</li> 
+                 </ul>
+          </dd>
+</dl>
+<p>
+Please be aware of 
+<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.12#Known_Issues_at_Release\">
+Known Issues at Release</a> (also viewable in the included README.txt).
+</p>
+")?>
+
+<h3><?=_("Changes in Audacity 1.3.11")?></h3>
 
 <?=_("
 <dl>

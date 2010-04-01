@@ -40,6 +40,85 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "April 1, 2010",
+  	"1.3.12-release_and_PACKT_Audacity_book",
+  _("Audacity 1.3.12 released, and Audacity book release from PACKT Publishing"),
+  _("
+<p>
+The Audacity Team is pleased to announce the release of
+<a href=\"/download\">Audacity 1.3.12 (Beta)</a> for Windows, 
+Mac and Linux/Unix. There are some important bug fixes and 
+improvements, especially for dragging and synchonization of labels.
+</p>
+<p> We continue to recommend the ongoing Beta series for <b>Windows 7</b>,
+<b>Windows Vista</b> and <b>Mac OS X 10.6</b>, rather than 1.2. Please help 
+us test 1.3.12 and 
+<a href=\"http://audacity.sourceforge.net/contact/#feedback\">
+let us know</a> of any problems you find. Advanced users are 
+encouraged to test our subsequent changes as we make them by 
+downloading our 
+<a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">
+Nightly Builds</a>. Please
+<a href=\"http://audacity.sourceforge.net/#announce\">
+subscribe</a> to receive news of all our future releases.    
+</p>
+<p>
+<div style=\"width:66%;padding-left:4em\">
+<b>Summary of Changes in 1.3.12:</b>
+<dl>
+	<dt> Bug fixes for: </dt>
+	  <dd>   
+                <ul>  
+                      <li>Cutting or deleting a region in the waveform and label track did 
+                           not move the labels in advance of the cut </li>
+                      <li>Incorrect behavior snapping to labels and boundaries with Snap To 
+                           enabled</li>
+                      <li>Projects froze if files imported via On-Demand were no longer 
+                           available</li>
+                      <li><i>(Windows 7)</i>&nbsp;Clicking in a file open or save dialog caused
+                           files or folders to disappear from the list, and file filtering was                                   
+                           broken</li>
+                      <li>Other import/export, effects and crash fixes</li>
+                </ul>
+         </dd>
+
+   <dt> Changes and Improvements:</dt>
+         <dd>   
+                <ul>
+                      <li>A hover tooltip is now provided if the Mixer Toolbar input selector 
+                           cannot control the system slider for the selected input </li>
+                      <li>More intuitive behavior when moving and resizing labels by dragging</li>
+                      <li>Export Multiple: new option to use a numerical prefix before existing 
+                           label or track names</li>
+                      <li>New Equalization preset \"Inverse RIAA\", with new button to invert  
+                           other curves</li>
+                      <li>New Preferences choice for \"System\" language which is used on first 
+                           run instead of asking user to choose language</li>    
+                </ul>
+         </dd>
+</dl>
+</div>
+</p>
+<p>Please see 
+<a href=\"http://audacity.sourceforge.net/download/features-1.3-a#details\">   
+Changes in Audacity 1.3.12</a> for more on 1.3.12 and the Beta series. <b>Note:</b> 
+This release supports Windows 98/ME, and we recommend users on those systems
+to upgrade from the previous 1.3.7 release.  
+</p>
+<p>
+<b>Also this month:</b> 
+<a href=\"https://www.packtpub.com/about\">PACKT Publishing</a> release a new book  
+about Audacity 
+<a href=\"https://www.packtpub.com/getting-started-with-audacity-1-3/book?utm_source=audacity.sourceforge.net&utm_medium=link&utm_content=pod&utm_campaign=mdb_002840\">
+\"Getting started with Audacity 1.3\"</a> by Bethany Hiitola. PACKT operate an Open Source 
+Royalty Scheme, and every sale of the new Audacity book will directly benefit our project. 
+You can find the new book and others on our 
+<a href=\"http://wiki.audacityteam.org/wiki/Books_about_Audacity\">Books about Audacity</a> page.
+</p> 
+"));
+
+
+add_news_item(
   "January 18, 2010",
   	"1.3.11-release",
   _("Audacity 1.3.11 released"),
