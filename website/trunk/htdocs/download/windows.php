@@ -1,9 +1,9 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2007 - 8 onwards Gale Andrews, Vaughan Johnson
+ * Copyright 2007 - 10 onwards Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   require_once "../latest/versions.inc.php";

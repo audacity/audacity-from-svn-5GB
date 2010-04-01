@@ -18,7 +18,7 @@
     $download_version = win_exe_version;
     $download_desc = _("for Windows&reg; 98/ME/2000/XP/Vista");
     $download_page = "windows";
-    $beta_download_desc = _("for Windows&reg; 2000/XP/Vista <p><i>Read about <b>provisional support</b> for <a href=\"http://audacityteam.org/wiki/index.php?title=Windows_7_OS\">Windows 7</a></i></p><p>or <a href=\"http://audacity.sourceforge.net/download/beta_windows#ansi\">Audacity 1.3.7</a> <b>(Beta)</b> for Windows&reg; 98/ME</i></p>");
+    $beta_download_desc = _("for Windows&reg; 98/ME/2000/XP/Vista <p><i>Read about <b>provisional support</b> for <a href=\"http://audacityteam.org/wiki/index.php?title=Windows_7_OS\">Windows 7</a></i></p><!--<p>or <a href=\"http://audacity.sourceforge.net/download/beta_windows#ansi\">Audacity 1.3.7</a> <b>(Beta)</b> for Windows&reg; 98/ME</i></p>-->");
     $beta_download_page = "beta_windows";
 
     include "beta/versions.inc.php";

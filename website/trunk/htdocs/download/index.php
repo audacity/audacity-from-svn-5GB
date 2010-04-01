@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2008 onwards Gale Andrews, Vaughan Johnson
+ * 2008 - 2010 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -44,13 +44,13 @@
     </div>
     <div>
       <h3><a href="beta_windows"><img alt="Windows" src="../images/new_win.png" >
-      <?=_("Windows")?></a><span class="downloads_smaller">&nbsp;&nbsp;1.3.11<br><img src="../images/download_spacer.png"><b><i>&nbsp;<?=_("best version for <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista")?></i></b></span></h3>
+      <?=_("Windows")?></a><span class="downloads_smaller">&nbsp;&nbsp;1.3.12<br><img src="../images/download_spacer.png"><b><i>&nbsp;<?=_("best version for <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista")?></i></b></span></h3>
   
       <h3><a href="beta_mac"><img alt="Mac" src="../images/mac.png">
-      <?=_("Mac OS X")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.11 (Universal Binary)&nbsp")?><br><img src="../images/download_spacer.png"><b><i>&nbsp;<?=_("best version for OS X 10.6")?></i></b></span></h3>
+      <?=_("Mac OS X")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.12 (Universal Binary)&nbsp")?><br><img src="../images/download_spacer.png"><b><i>&nbsp;<?=_("best version for OS X 10.6")?></i></b></span></h3>
   
       <h3><a href="beta_linux"><img alt="Linux" src="../images/unix.png">
-      <?=_("Linux/Unix")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.11 (in source code)")?></span></h3>
+      <?=_("Linux/Unix")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.12 (in source code)")?></span></h3>
   </div>
 </div>
 
