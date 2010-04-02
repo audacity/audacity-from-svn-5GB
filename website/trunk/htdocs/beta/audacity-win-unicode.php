@@ -4,6 +4,6 @@
 
 include 'mirror.inc.php';
 include 'versions.inc.php';
-header('Location: '.download_url('audacity-win-unicode-'.win_exe_unicode_version.'.exe'));
+header('Location: '.download_url($win_exe_unicode_url));
 
 ?>

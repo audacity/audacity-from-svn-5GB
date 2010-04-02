@@ -4,6 +4,6 @@
 
 include 'mirror.inc.php';
 include 'versions.inc.php';
-header('Location: '.download_url('LADSPA_plugins-win-'.ladspa_version.'.exe'));
+header('Location: '.download_url($ladspa_url));
 
 ?>
