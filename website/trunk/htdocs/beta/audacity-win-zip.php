@@ -4,6 +4,7 @@
 
 include 'mirror.inc.php';
 include 'versions.inc.php';
-header('Location: '.download_url('audacity-win-'.win_zip_version.'.zip'));
+// ANSI zip
+header('Location: '.download_url($win_zip_url));
 
 ?>

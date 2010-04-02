@@ -8,6 +8,7 @@
  */
   require_once "main.inc.php";
   require_once "../beta/versions.inc.php";
+  require_once "../beta/mirror.inc.php";
   $pageId = "beta_windows";
   $pageTitle = _("Windows");
   include "../include/header.inc.php";
@@ -19,9 +20,9 @@
 
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 <ul>
-  <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor, including help files. <b>See further information about</b> <a href="http://audacityteam.org/wiki/index.php?title=Windows_7_OS">Windows 7</a> <b>and</b> <a href="http://audacityteam.org/wiki/index.php?title=Windows_Vista_OS">Vista</a><b>.</b>'), "".$win_exe_unicode_url, win_exe_unicode_version, win_exe_unicode_size)?></p></li>
+  <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor, including help files. <b>See further information about</b> <a href="http://audacityteam.org/wiki/index.php?title=Windows_7_OS">Windows 7</a> <b>and</b> <a href="http://audacityteam.org/wiki/index.php?title=Windows_Vista_OS">Vista</a><b>.</b>'), download_url($win_exe_unicode_url), win_exe_unicode_version, win_exe_unicode_size)?></p></li>
 <div id="ansi"></div>
-  <li><p>Windows 98/ME: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) -  The latest version of the free Audacity audio editor, including help files.</a>'), "".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
+  <li><p>Windows 98/ME: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) -  The latest version of the free Audacity audio editor, including help files.</a>'), download_url($win_exe_url), win_exe_version, win_exe_size)?></p></li>
 </ul>
 
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
@@ -37,15 +38,15 @@
 ?>
 <h4><?=_("Plug-ins and Libraries")?></h4>
 <ul>
-  <li><p><?php printf(_('<a href="%s">LADSPA plug-ins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins.'), "../beta/".$ladspa_url, ladspa_version, ladspa_size)?></p></li>
+  <li><p><?php printf(_('<a href="%s">LADSPA plug-ins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins.'), download_url($ladspa_url), ladspa_version, ladspa_size)?></p></li>
   <?php include "beta_common.inc.php"; ?>
 <ul>
   <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB)
   - If you want a download without help files, or cannot run the installer because of restricted permissions, download and unzip this or the Windows 98/ME file below instead.'),
-    "".$win_zip_unicode_url, win_zip_unicode_version, win_zip_unicode_size)?></p></li>
+    download_url($win_zip_unicode_url), win_zip_unicode_version, win_zip_unicode_size)?></p></li>
 
   <li><p>Windows 98/ME: <?php printf('<a href="%s">Audacity %s zip file</a> (%.1lf MB)',
-    "".$win_zip_url, win_zip_version, win_zip_size)?></p></li>
+    download_url($win_zip_url), win_zip_version, win_zip_size)?></p></li>
 
   <li><p>Windows 98/ME/2000/XP/Vista: <?php echo _('<b>For advanced users</b>, <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries">Nightly Builds</a> are available for testing purposes.')?>
 <?php include "beta_nightly.inc.php"; ?></p></li>

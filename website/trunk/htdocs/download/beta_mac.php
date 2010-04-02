@@ -8,6 +8,7 @@
  */
   require_once "main.inc.php";
   require_once "../beta/versions.inc.php";
+  require_once "../beta/mirror.inc.php";
   $pageId = "beta_mac";
   $pageTitle = _("Mac OS X");
   include "../include/header.inc.php";
@@ -21,7 +22,7 @@
 
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 <ul>
-  <li><p>OS X 10.4 or later (Universal Binary): <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB, including help files)'), "".$macosx_ub_url, macosx_ub_version, macosx_ub_size)?></p></li>
+  <li><p>OS X 10.4 or later (Universal Binary): <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB, including help files)'), download_url($macosx_ub_url), macosx_ub_version, macosx_ub_size)?></p></li>
 </ul>
 
 <p> <b><?=_("Installation instructions (.dmg files)")?>:</b>
@@ -41,7 +42,7 @@
 <ul>
   <li><p>OS X 10.4 or later (Universal Binary): <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB)
   - If you want a download without help files, or prefer not to use .dmg files, download and unzip this file instead.'),
-    "".$macosx_ub_zip_url, macosx_ub_zip_version, macosx_ub_zip_size)?></p></li>
+    download_url($macosx_ub_zip_url), macosx_ub_zip_version, macosx_ub_zip_size)?></p></li>
   <li><p>OS X 10.4 or later (Universal Binary): <?php echo _('<b>For advanced users</b>, <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Macintosh_Binaries">Nightly Builds</a> are available for testing purposes.')?>
 <?php include "beta_nightly.inc.php"; ?></p></li>
 </ul>
