@@ -48,7 +48,7 @@ add_news_item(
 The Audacity Team is pleased to announce the release of
 <a href=\"/download\">Audacity 1.3.12 (Beta)</a> for Windows, 
 Mac and Linux/Unix. There are some important bug fixes and 
-improvements, especially for dragging and synchonization of labels.
+improvements, especially for dragging and synchronization of labels.
 </p>
 <p> We continue to recommend the ongoing Beta series for <b>Windows 7</b>,
 <b>Windows Vista</b> and <b>Mac OS X 10.6</b>, rather than 1.2. Please help 
