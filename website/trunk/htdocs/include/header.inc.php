@@ -74,8 +74,8 @@
 ?>
 
 <div align="right">
-	<a href="http://audacitystore.com/">
-	<img src="../images/Audacity Store_banner_50pct.jpg" alt="<?=_('Audacity Store')?>"></img>
+	<a title="<?=_('Audacity Store, for Audacity-logo shirts, bags and ceramic mugs')?>" href="http://audacitystore.com/">
+   <img src="../images/Audacity Store_banner_50pct.jpg" alt="<?=_('Audacity Store, for Audacity-logo shirts, bags and ceramic mugs')?>" />
 	</a>
 	<br>
 </div>

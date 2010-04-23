@@ -2,7 +2,7 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
- * Copyright 2006-9 Vaughan Johnson
+ * Copyright 2006-10 Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -66,14 +66,13 @@
   <?=_('Purchase from the <a href="http://audacitystore.com/">Audacity Store</a>')?>
 </h2>
 <p>
-  <?=_('You are invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features 
-  Audacity-logo items (T-shirts, embroidered polo shirts and embroidered messenger bags).')?>
+  <?=_('Please visit <a href="http://audacitystore.com/">Audacity Store</a> for  
+  high quality Audacity-logo items (T-shirts, embroidered polo shirts, embroidered messenger bags and ceramic mugs).')?>
 </p>
 <p class="logo">
-  <a title="<?=_('Audacity Store')?>"
+  <a title="<?=_('Audacity Store, for Audacity-logo shirts, bags and ceramic mugs')?>"
      href="http://audacitystore.com/">
-    <img alt="<?=_('Audacity Store')?>"
-    src="../images/Audacity Store_banner_50pct.jpg">
+    <img src="../images/Audacity Store_banner_50pct.jpg" alt="<?=_('Audacity Store, for Audacity-logo shirts, bags and ceramic mugs')?>" />
   </a>
 </p>
 
