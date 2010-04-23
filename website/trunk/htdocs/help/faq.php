@@ -51,6 +51,12 @@
           e-mail us</a> in confidence. </p>
 <p><b>If you want to obtain Audacity on CD</b>, free ISO downloads and inexpensive CDs by post are available from suppliers on our <a href=\"../download/buy\">Audacity on CD page</a>.</p>")
         ),
+        "language" => array(
+          _("How can I change the language displayed in Audacity?"),
+          _("<p>Audacity can display in many non-English languages. In Audacity 1.2, you can choose the displayed language when you first run the program. In current Audacity Beta (1.3 series), the language Audacity uses on first run is determined by the language the operating system uses.</p>
+<p>To change the current Audacity language, go to the Interface tab of Preferences, choose the specific language required from the \"Language\" box, click OK and restart the program. Restart is not necessary in Audacity Beta.</p> 
+<p>If Audacity is already running in an unfamiliar language, you can still navigate the menus sequentially to change the language, or change it in the Audacity settings file. For instructions, please see <a href=\"http://wiki.audacityteam.org/wiki/Changing_the_current_language\">Changing the current language</a> on the Audacity <a href=\"http://wiki.audacityteam.org\">Wiki</a>.</p>") 
+        ),
         "64-bit" => array(
           _("Does Audacity run on 64-bit systems?"),
           _("<p>There is no 64-bit version of Audacity, but in principle it should run on 64-bit systems, subject to having appropriate drivers for the sound device. Sufficient RAM must be available to run Audacity smoothly and support the greater memory requirements of 64-bit systems compared to 32-bit.</p>    
@@ -63,7 +69,7 @@
         "blind-users" => array(
           _("Does Audacity work with screen-reader programs for blind users?"),
           // i18n-hint: The link below is in English.
-          _("<p>Audacity works with most screen-reader programs, but some of Audacity’s features are difficult or impossible to use without a mouse.  We are working on improving the program’s accessibility and keyboard shortcuts.  For more information, see <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity for Blind Users</a>.</p>")
+          _("<p>Audacity works with most screen-reader programs, but some of Audacity’s features are difficult or impossible to use without a mouse. The <a href=\"../download/features-1.3-a\">1.3 (Beta)</a> series of Audacity contains many accessibility improvements, such as <a href=\"../download/features-1.3-i.php\">track focus for improved keyboard navigation</a> and enhanced keyboard shortcuts. For more information, see <a href=\"http://audacityteam.org/wiki/index.pl?Audacity_for_blind_users\">Audacity for blind users</a>.</p>")
         ),
         "time-remaining" => array(
           _("What does “time remaining” mean?  Does Audacity expire?"),
@@ -135,8 +141,8 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
 <p>Next, plug one end of a stereo cable into the “Line Out” or “Headphone” connector on your tape deck, minidisc player, or stereo system.  Plug the other end into your computer’s “Line In” connector.  If you do not have a cable that fits both of these connectors, you can find one at an electronics store.</p>
 <p>Choose “Line In” as the input source on the Audacity toolbar, or in the Audacity Preferences (Windows Vista and 7) or Apple Audio-MIDI Setup (OS X).</p>
 <p>Then press the <b>Record</b> button.  While Audacity is recording, start playing your tape or disc.  When you have captured the entire recording, press the <b>Stop</b> button.</p>
-<p>Vinyl or shellac records can also be recorded into Audacity with a special type of turntable that connects to the USB port of your computer. These turntables need to be set up differently to those that connect to your line-in port. For instructions on setting up USB turntables, see <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB_turntables</a> on the Audacity Wiki.</p>
-<p>There is also a detailed tutorial, <a href="http://audacityteam.org/wiki/index.php?title=Transferring_tapes_and_records_to_computer_or_CD">Transferring_tapes_and_records_to_computer_or_CD</a>, on the Wiki. This will guide you through the steps from recording your records, cassettes or minidiscs to exporting as an audio file and burning to CD.</p>
+<p>Vinyl or shellac records can also be recorded into Audacity with a special type of turntable that connects to the USB port of your computer. These turntables need to be set up differently to those that connect to your line-in port. For instructions on setting up USB turntables, see <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB turntables</a> on the Audacity Wiki.</p>
+<p>There is also a detailed tutorial, <a href="http://audacityteam.org/wiki/index.php?title=Transferring_tapes_and_records_to_computer_or_CD">Transferring tapes and records to computer or CD</a>, on the Wiki. This will guide you through the steps from recording your records, cassettes or minidiscs to exporting as an audio file and burning to CD.</p>
 <p>Notes:</p>
 <ul>
 	<li><p>Do not plug stereo equipment into your computer’s “Microphone” port, which is designed for low-powered (“mic-level”) signals only.   Use the “Line In” port instead.</p></li>
@@ -148,16 +154,16 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
         "mixer-toolbar-input" => array(
           _("Why doesn't the Mixer Toolbar input selector work properly, for example on Windows 7?"),
           _("<p>The Input selector may be greyed-out, lacking the expected choices, or apparently not recording from the indicated source.</p>
-<p>The cause varies by operating system and sound card driver. For example, on Windows Vista or 7, you must use the \"Recording Device\" menu in the Audio I/O tab of Preferences to select input sources. For more help, see the <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixer Toolbar Issues</a> page on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>
+<p>The cause varies by operating system and sound card driver. For example, on Windows Vista or 7, you must use the \"Recording Device\" dropdown in the \"Audio I/O\" tab of Preferences (\"Devices\" tab in Audacity Beta) to select input sources. For more help, see the <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixer Toolbar Issues</a> page on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>
 ")
         ),
         "playthrough" => array(
           _("Why can’t I hear what I’m recording?"),
           _("<h3>Windows and Linux</h3>
 <p>To monitor your recording, open your computer's volume control panel.  Turn up the playback volume and turn off the “mute” checkbox for your recording source (usually “microphone” or “line in”).</p>
-<p>If this does not work, open the Audacity preferences.  In the “Audio I/O” section, turn on the “Software Playthrough” option.</p>
+<p>If this does not work, open the Audacity preferences.  In the “Audio I/O” section (\"Devices\" in Audacity Beta), turn on the “Software Playthrough” option.</p>
 <h3>Mac OS X</h3>
-<p>Open the Audacity preferences.  In the “Audio I/O” section, turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead.</p>
+<p>Open the Audacity preferences.  In the “Audio I/O” section (\"Devices\" in Audacity Beta), turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead.</p>
 <h3>Monitoring while Recording from a Microphone</h3>
 <p>Always use headphones when listening as you record from a microphone, to avoid the playthrough of the recording being picked up in the recording itself.</p>
 ")
@@ -188,7 +194,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
           _("Can Audacity record RealAudio or other streaming audio?"),
           _("<h3>Windows and Linux</h3>
 <p>With most Windows and Linux audio devices, it is possible to record whatever sound the computer is currently playing, including internet radio streams.</p>
-<p>In the drop-down menu on Audacity's mixer toolbar, choose “Wave Out” or “Stereo Mix” as the input source.  (The exact name may be different, depending on your computer's sound drivers.)  When you press the <b>Record</b> button, Audacity will capture whatever sound is playing on your computer's speakers. Note that on Windows Vista or 7, the “stereo mix” option must be chosen in the Audio I/O tab of Preferences, in the “Recording Device” dropdown. On Windows, if you don't have a “Wave Out” or “Stereo Mix” option, or if it won't record, go to the system Control Panel and try to enable this option there. For instructions see: <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues#Using_the_Control_Panel\">Using the Control Panel</a> on the Wiki.</p>
+<p>In the drop-down menu on Audacity's mixer toolbar, choose “Wave Out” or “Stereo Mix” as the input source.  (The exact name may be different, depending on your computer's sound drivers.)  When you press the <b>Record</b> button, Audacity will capture whatever sound is playing on your computer's speakers. <b>Note:</b> on Windows Vista or 7, you must choose the required input source in the \"Recording Device\" dropdown in the \"Audio I/O\" tab of Preferences (\"Devices\" tab in Audacity Beta). On Windows, if you don't have a “Wave Out” or “Stereo Mix” option, or if it won't record, go to the system Control Panel and try to enable this option there. For instructions see: <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues#Using_the_Control_Panel\">Using the Control Panel</a> on the Wiki.</p>
 <p>If this doesn't work on your computer, you can instead use a cable to connect your computer's “Line Out” (speaker) port to its “Line In” port, and use Audacity to record from Line In.</p>
 <h3 id=\"mac\">Mac OS X</h3>
 <p>Mac OS X users can capture streaming audio using a program like <a href=\"http://www.cycling74.com/products/soundflower\">Soundflower</a> (free, open source), <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>. For more help see <a href=\"http://wiki.audacityteam.org/wiki/Recording_audio_playing_on_the_computer#Mac\">this page</a> on our <a href=\"http://wiki.audacityteam.org/wiki/\">Wiki</a>.</p>
@@ -249,7 +255,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
         ),
         "midi" => array(
           _("Why can’t I play MIDI files?"),
-          _("<p>Sorry, Audacity cannot play, edit, or convert MIDI files.  It can only display them visually (for comparison with recorded sounds).  We might add MIDI editing to a future version of Audacity, but for now Audacity is focused on sampled audio (like WAV files).</p>")
+          _("<p>Audacity cannot play MIDI files, or convert between MIDI files and audio files. MIDI files can be imported for visual comparison with recorded sounds. Additionally, the <a href=\"../download/features-1.3-a\">Beta 1.3</a> version of Audacity can edit MIDI files by cut-and-paste, then export them as another MIDI file. Audacity cannot record MIDI input, only audio input. More MIDI funtionality may be added to Audacity in future. For more information, see the article about <a href=\"http://wiki.audacityteam.org/wiki/Midi\">MIDI</a> on our <a href=\"http://wiki.audacityteam.org\">Wiki</a>.</p>")
         ),
         "import-cd" => array(
           _("How do I import a track from an audio CD?"),
