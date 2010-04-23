@@ -37,7 +37,7 @@
 <li>Corrected font size problems.
 </li>
 
-<li>Enabled missing FLAC support.
+<li>FLAC import now works correctly. FLAC export does not work on Windows or Mac.
 </li>
 
 <li>Fixed Mac OS X (PPC only) screen redraw issues.
