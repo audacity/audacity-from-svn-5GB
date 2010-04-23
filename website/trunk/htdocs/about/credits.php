@@ -30,6 +30,7 @@
   <li>Michael Chinen, <?=_("developer")?></li>
   <li>James Crook, <?=_("developer")?></li>
   <li>Steve Daulton, <?=_("documentation and support")?></li>
+  <li>Al Dimond, <?=_("developer")?></li>
   <li>Ruslan Ijbulatov, <?=_("developer")?></li>
   <li>Vaughan Johnson, <?=_("developer")?></li>
   <li>Greg Kozikowski, <?=_("documentation and support")?></li>
