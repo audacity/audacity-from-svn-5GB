@@ -83,6 +83,9 @@ void OnZeroCrossing();
         // File Menu
 
 void OnNew();
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   void OnEmail();
+#endif
 void OnOpen();
 void OnClose();
 void OnSave();

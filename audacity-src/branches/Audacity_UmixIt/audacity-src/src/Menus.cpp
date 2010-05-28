@@ -25,6 +25,9 @@
 #include <wx/textfile.h>
 #include <wx/progdlg.h>
 #include <wx/scrolbar.h>
+#include <wx/scrolbar.h>
+
+#include <wx/net/email.h>  
 
 #include "Project.h"
 
@@ -150,8 +153,9 @@ void AudacityProject::CreateMenusAndCommands()
 #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
    // For Audiotouch, commands re-ordered, and 
    // export commands renamed to "save as" commands and given new key codes.
-   c->AddItem("Export",         _("Save As...\tCtrl+S"),                         FN(OnExportMix));
-   c->AddItem("ExportSel",      _("Save Selection As...\tCtrl+Shift+S"),         FN(OnExportSelection));
+   c->AddItem("Export",         _("Save As and Exit...\tCtrl+S"),    FN(OnExportMix));
+   // per R Barr, Mar 1, 2010    c->AddItem("ExportSel",      _("Save Selection As...\tCtrl+Shift+S"),         FN(OnExportSelection));
+   c->AddItem("Open",           _("&Email...\tCtrl+E"), FN(OnEmail)); //vvv Set enable flags.
    c->AddItem("Open",           _("&Open...\tCtrl+O"),               FN(OnOpen));
    c->AddItem("[blank]",        _(""),                               NULL);
    c->AddSeparator();
@@ -165,22 +169,23 @@ void AudacityProject::CreateMenusAndCommands()
    mRecentFiles->Load(*gPrefs);
    gPrefs->SetPath("..");
    c->AddSeparator();
-   c->AddItem("ExportOgg",      _("Save As Ogg Vorbis...\tCtrl+G"),              FN(OnExportOggMix));
-   c->AddItem("ExportOggSel",   _("Save Selection As Ogg Vorbis...\tCtrl+Shift+G"), FN(OnExportOggSelection));
+   c->AddItem("ExportOgg",      _("Save As Ogg Vorbis...\tCtrl+G"),  FN(OnExportOggMix));
+   // per R Barr, Mar 1, 2010    c->AddItem("ExportOggSel",   _("Save Selection As Ogg Vorbis...\tCtrl+Shift+G"), FN(OnExportOggSelection));
    c->AddSeparator();
-   c->AddItem("ExportMP3",      _("Save As MP3...\tCtrl+M"),                     FN(OnExportMP3Mix));
-   c->AddItem("ExportMP3Sel",   _("Save Selection As MP3...\tCtrl+Shift+M"),     FN(OnExportMP3Selection));
+   c->AddItem("ExportMP3",      _("Save As MP3...\tCtrl+M"),         FN(OnExportMP3Mix));
+   // per R Barr, Mar 1, 2010    c->AddItem("ExportMP3Sel",   _("Save Selection As MP3...\tCtrl+Shift+M"),     FN(OnExportMP3Selection));
    c->AddSeparator();
-   c->AddItem("Save",           _("&Save Project\tCtrl+P"),             FN(OnSave));
+   c->AddItem("Save",           _("&Save Project and Exit\tCtrl+P"), FN(OnSave));
    c->SetCommandFlags("Save",
                      AudioIONotBusyFlag | UnsavedChangesFlag,
                      AudioIONotBusyFlag | UnsavedChangesFlag);
-   c->AddItem("SaveAs",         _("Save Project &As...\tCtrl+Shift+P"), FN(OnSaveAs));
+   c->AddItem("SaveAs",         _("Save Project &As and Exit...\tCtrl+Shift+P"), FN(OnSaveAs));
    c->AddSeparator();
    c->AddItem("New",            _("&New\tCtrl+N"),                   FN(OnNew));
    c->SetCommandFlags("New", 0, 0);
    c->AddItem("Close",          _("&Close\tCtrl+W"),                 FN(OnClose));
-#else // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
+#else 
+   // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
    c->AddItem("New",            _("&New\tCtrl+N"),                   FN(OnNew));
    c->SetCommandFlags("New", 0, 0);
    c->AddItem("Open",           _("&Open...\tCtrl+O"),               FN(OnOpen));
@@ -807,11 +812,12 @@ void AudacityProject::ModifyExportMenus()
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       // For Audiotouch, export commands renamed to "save as" commands, re-ordered, given new key codes.
       mCommandManager.Modify("Export",
-                           wxString::Format(_("&Save As %s..."),
+                           wxString::Format(_("&Save As %s and Exit..."),
                                              (const char *)pcmFormat));
-      mCommandManager.Modify("ExportSel",
-                           wxString::Format(_("&Save Selection As %s..."),
-                                             (const char *)pcmFormat));
+      // per R Barr, Mar 1, 2010    
+      //mCommandManager.Modify("ExportSel",
+      //                     wxString::Format(_("&Save Selection As %s and Exit..."),
+      //                                       (const char *)pcmFormat));
    #else // (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
       mCommandManager.Modify("Export",
                            wxString::Format(_("&Export As %s..."),
@@ -1211,7 +1217,7 @@ void AudacityProject::OnPlayLooped()
    void AudacityProject::OnLockUnlock()
    {
       ControlToolBar *toolbar = GetControlToolBar();
-      wxCommandEvent evt; //vvv
+      wxCommandEvent evt; 
       toolbar->OnLock(evt);
    }
 #endif
@@ -1542,6 +1548,72 @@ void AudacityProject::OnNew()
 {
    CreateNewAudacityProject(gParentWindow);
 }
+
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   void AudacityProject::OnEmail()
+   {
+      wxString path = gPrefs->Read("/DefaultOpenPath",FROMFILENAME(::wxGetCwd()));
+
+      // TODO: Build the list of file types dynamically
+      
+      wxFileDialog dlog(this, _("Select one or more audio files..."),
+                        path, "",
+                        _("All files (*.*)|*.*|"
+                        "WAV files (*.wav)|*.wav|"
+                        "AIFF files (*.aif)|*.aif|"
+                        "AU files (*.au)|*.au|"
+                        "MP3 files (*.mp3)|*.mp3|"
+                        "Ogg Vorbis files (*.ogg)|*.ogg|"
+                        "List of Files (*.lof)|*.lof"),
+                        wxOPEN | wxMULTIPLE);
+
+      int result = dlog.ShowModal();
+
+      if (result != wxID_OK)
+         return;
+
+      wxArrayString selectedFiles;
+      unsigned int ff;
+
+      dlog.GetPaths(selectedFiles);
+
+      wxString body = _("The attached audio file was generated in Audiotouch.\n\n"); 
+      body += _("http://www.audiotouch.com.au/files/email_options.pdf\n\n"); 
+      body += _("If the attached audio file is in .wav or .mp3 formats, it should play on your computer with your installed software.\n\n"); 
+      body += _("If the attached audio file is .ogg (open source) format, you may need to download free software to play it. Try http://www.vorbis.com/.");
+      wxMailMessage msg(
+         _("Audiotouch audio file attached"), // const wxString& subject
+         _("replace.me@somewhere.com"), // const wxString& to
+         body, // const wxString& body, 
+         wxEmptyString // const wxString& from = wxEmptyString,
+         // const wxString& attachment = wxEmptyString, 
+         // const wxString& attachmentTitle = wxEmptyString
+         );
+
+      // Add the attachments.
+      wxString fileName = wxT("");
+      for(ff=0; ff<selectedFiles.GetCount(); ff++) {
+         fileName = selectedFiles[ff];
+         msg.AddAttachment(fileName);
+      }
+      
+      // Rather than update the default path for each file, 
+      // do it only for the last one.
+      path =::wxPathOnly(fileName);
+      gPrefs->Write("/DefaultOpenPath", path);
+
+      if (!wxEmail::Send(msg))
+         wxMessageBox(_("Email failed."), _("Email failed."), wxICON_ERROR);
+	   
+      //v This is another way to do it without having to use 
+      // wxEmail and the extra "net" contrib lib, but always 
+      // opens the default browser, too. 
+      //
+      // OpenInDefaultBrowser(
+      //   wxHtmlLinkInfo(
+      //      wxT("mailto:<recipient>&attach=\"C:/V_data/sfw_dev/Audacity_Audiotouch/audacity/win/Output\"")));
+   }
+#endif
 
 void AudacityProject::OnOpen()
 {
