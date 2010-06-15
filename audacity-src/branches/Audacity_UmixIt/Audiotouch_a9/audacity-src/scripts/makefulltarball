@@ -1,0 +1,74 @@
+#!/usr/bin/perl
+
+print "makefulltarball 1.2.0-pre4 -- make Audacity distribution tarball\n";
+print "This version creates a full tarball including all libraries\n";
+
+unless(-f "src/Audacity.h") {
+	print "Must be run from Audacity directory\n";
+	exit;
+}
+
+# find version number
+open(HEADER, "src/Audacity.h");
+@lines = <HEADER>;
+$lines = join " ", @lines;
+$lines =~ /AUDACITY_VERSION_STRING "([0-9\-.a-z]*)"/;
+$version = $1;
+print "version set to $version...\n";
+close(HEADER);
+
+print "making copy of source directory...\n";
+`cp -r . ../audacity-fullsrc-$version`;
+chdir "../audacity-fullsrc-$version";
+
+print "removing CVS directories...\n";
+`find . -name "CVS" -exec rm -rf '{}' \\; 2> /dev/null`;
+
+print "removing emacs temp files...\n";
+`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
+
+print "removing executable and other intermediate files...\n";
+`rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
+
+print "removing bugs and todo lists\n";
+`rm -f bugs.txt todo.txt`;
+
+print "removing scripts...\n";
+`rm -rf scripts`;
+
+print "removing unused libraries...\n";
+`rm -rf lib-src/id3lib`;
+`rm -rf lib-src/iAVC lib-src/libsamplerate`;
+`rm -rf lib-src/wave++`;
+
+print "removing qa\n";
+`rm -rf qa`;
+
+print "removing doxygen files (unfinished)\n";
+`rm audacity.dox`;
+
+print "removing unused portaudio-v19 dirs\n";
+`rm -rf lib-src/portaudio-v19/docs`;
+`rm -rf lib-src/portaudio-v19/pa_asio`;
+`rm -rf lib-src/portaudio-v19/pa_sgi`;
+`rm -rf lib-src/portaudio-v19/pa_mac_sm`;
+`rm -f lib-src/portaudio-v19/pa_tests/debug*`;
+
+print "removing wxstd locale files (since they should come with wxWindows\n";
+`rm -rf locale/wxstd`;
+
+print "removing Nyquist plug-ins that are just for show\n";
+`rm -f plug-ins/analyze.ny plug-ins/fadein.ny plug-ins/fadeout.ny`;
+`rm -f plug-ins/beat.ny plug-ins/undcbias.ny`;
+
+print "Giving VC++ project/workspace files DOS line endings\n";
+@projfiles = split("\n", `find . -name "*.ds?"`);
+foreach $f (@projfiles) {
+	 print `unix2dos "$f"`;
+}
+
+#print "making tarball audacity-fullsrc-$version.tgz...\n";
+chdir "..";
+#`tar zcf audacity-src-$version.tgz audacity-src-$version`;
+
+print "done.\n";
