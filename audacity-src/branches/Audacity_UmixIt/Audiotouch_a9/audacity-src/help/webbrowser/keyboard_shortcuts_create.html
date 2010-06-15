@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Keyboard Shortcut Customization</title>
+<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+<body>
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="reference.html">Back to the Reference page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+<H2 align=center>Edit or Create<BR>Keyboard Shortcuts</H2>
+
+
+<center><table>
+<tr><td nowrap><H3>Where ?</H3></td></tr>
+<tr><td>
+ <P class=a>In the <a href="prefs.html">preferences dialog</a>,
+  go to the <a href="prefs.html#keyboard">keyboard section</a> or edit the keyboard configuration file
+  directly with a text editor. You will find this file in the directory where you installed Audacity.
+  Its filename is <B>Audacity-keys.xml</B> .
+ </P>
+ <P class=a>
+  Audacity will NOT load this keymap upon startup, but save them in the registry(Windows). Should you make changes
+  to the Audacity.xml file with a text editor, you'll need to load that shortcut file with the &quot;Load&quot; button
+  to make Audacity use them. Thus you can save your keymaps under any filename with an XML extension and keep different
+  keymaps around for different purposes.
+ </P>
+ <P class=a>
+  Audacity will NOT store the current keymap in the file Audacity.xml. Should you want to make changes to the current keymap
+  with a text editor, you'll have to use the &quot;Save&quot; button to save that keymap to an XML file first. After editing
+  it you'll have to &quot;Load&quot; it again.
+ </P>
+</td></tr>
+</table></center>
+
+<P class=qy>Editing and Creating Shortcuts with the Preferences Dialog</P>
+<table widht="98%"><tr>
+ <td valign=top><img src="images/preferences_keyboard.png" width="531" height="385" alt="Keyboard Preferences"></td>
+ <td valign=top>
+  <H3>Changing a shortcut:</H3>
+  <OL>
+   <LI>Click on the command in the list. The command to be changed is now highlighted.</LI>
+   <LI>Click in to the box to left of the <b>Set</b> button. If a shortcut was assigned to the command previously, it will be displayed in this box.</LI>
+   <LI>Hit the key or key combination you wish to assign to this command. Then processed to the next step.</LI>
+   <LI>Click on the <B>Set</B> button to assign the chosen key or key combination to the chosen command.</LI>
+  </OL>
+
+  <H3>Clearing a shortcut:</H3>
+  <OL>
+   <LI>Click on the command in the list. The command to be cleared is now highlighted.</LI>
+   <LI>Click on the clear button to clear the command.</LI>
+  </OL>
+ </td>
+</tr></table>
+
+
+<P class=qg>Editing and Creating Shortcuts with a text editor</P>
+<P class=a>
+The keyboard shortcuts you were editing with the dialog are stored in a simple XML file.
+Thus, you can edit it with any text editor.
+</P>
+<P class=a>Each keyboard map starts with</P>
+<center>
+<table><tr><td>
+<h3><B>&lt;audacitykeyboard audacityversion=&quot;1.2&quot;&gt;</B></H3>
+<P class=a>and ends with</P>
+<H3><B>&lt;/audacitykeyboard&gt;</B></H3>
+</td></tr></table>
+</center>
+
+<P class=a>Each command is defined with the <B>command</B> tag. An example :</P>
+<H3 align=center>&nbsp;&nbsp;&nbsp;<B>&lt;command
+<span class=textr>name=&quot;Undo&quot;</span>
+<span class=texto>label=&quot;Undo&quot;</span>
+<span class=textg>key=&quot;Ctrl+Z&quot;</span> /&gt;</B>.</H3>
+
+<center>
+<table><tr><td>
+<P class=menuref_item>name</P>
+<P class=ar>The actual command as Audacity understands it.</P>
+
+<P class=menuref_item>label</P>
+<P class=ao>Command description as seen in the Preferences keyboard map editor.</P>
+
+<P class=menuref_item>key</P>
+<P class=ag>This is the actual shortcut. Check out what the format is in the Preferences dialog.</P>
+</td></tr></table>
+</center>
+
+<BR>
+
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="reference.html">Back to the Reference page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+
+
+</body>
+</html>
