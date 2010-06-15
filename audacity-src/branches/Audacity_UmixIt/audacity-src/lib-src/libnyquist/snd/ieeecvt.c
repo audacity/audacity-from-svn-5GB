@@ -33,6 +33,9 @@
  * NaN's, and denormalized numbers.
  */
 
+#ifdef WIN32
+   #include <float.h> // Vaughan, 2010-06-15: Linkage problem with VS2008 on HUGE_VAL, so use DBL_MAX instead.
+#endif
 #include "math.h"
 
 #ifndef HUGE_VAL
@@ -164,7 +167,7 @@ double ConvertFromIeeeExtended(unsigned char *bytes /* LCN */)
     }
     else {
         if (expon == 0x7FFF) {    /* Infinity or NaN */
-            f = HUGE_VAL;
+            f = DBL_MAX; // Vaughan, 2010-06-15: Linkage problem with VS2008:   HUGE_VAL;
         }
         else {
             expon -= 16383;

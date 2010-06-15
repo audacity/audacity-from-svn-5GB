@@ -12,6 +12,7 @@
 #include "sys/types.h"
 #endif
 #ifdef WINDOWS
+#include <float.h> // Vaughan, 2010-06-15: Linkage problem with VS2008 on HUGE_VAL, so use DBL_MAX instead.
 #include <io.h>
 #endif
 #include <stdio.h>
@@ -470,7 +471,7 @@ sample_type sound_save_array(LVAL sa, long n, snd_type snd,
     long i, chans;
     long buflen;
     sound_state_type state;
-    double start_time = HUGE_VAL;
+    double start_time = DBL_MAX; // Vaughan, 2010-06-15: Linkage problem with VS2008:   HUGE_VAL;
     float *float_bufp;
     LVAL sa_copy;
     long debug_unit;    /* print messages at intervals of this many samples */

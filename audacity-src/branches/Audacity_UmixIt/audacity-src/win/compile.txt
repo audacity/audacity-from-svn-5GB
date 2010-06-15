@@ -13,22 +13,17 @@ Authors:
   Shane Mueller
 
 ================================================================
-This version is currently accurate for Audacity version 1.2.6.
-Last Updated: November 7, 2006
+This version is currently accurate for Audacity version 1.2.6, 
+branch Audacity_UmixIt. 
+Last Updated: June 15, 2010
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
 
 Audacity 1.2.x releases are built with Microsoft Visual C++ 7 
-("VC7", in Visual Studio 2003). The build process has not been 
-updated to VC8 (VS2005) as there is no active development of the 
-1.2.x branch. Unfortunately, Microsoft no longer makes VC7 
-available. So, we recommend building Audacity on Windows 
-from 1.3.x sources, or failing that 1.2.x CVS rather 
-than the tarball. If you do not have VC7 and are trying to build 
-1.2.x in VC8, you will probably need to do some work to
-get a functional set of VS2005 projects, or else do a command line
-build in Cygwin
+("VC7", in Visual Studio 2003). This version of the Audacity_UmixIt 
+branch has been upgraded to VC9 in Visual Studio 2008. This upgrade 
+has not been done in the trunk version of Audacity 1.2.6.
 
 Note that wxWidgets must be built with the same compiler used to 
 build Audacity.
@@ -69,7 +64,7 @@ them to build wxWidgets -- no need to edit the wxWidgets
 versions.
 
 1. Copy all the files and folders from 
-   "audacity\win\wxWidgets_additions_VC7" to "C:\wxWindows-2.4.2\src" 
+   "audacity\win\wxWidgets_additions_VC9" to "C:\wxWindows-2.4.2\src" 
    (or the corresponding location if you installed wxWidgets 
    someplace other than the default). 
 
