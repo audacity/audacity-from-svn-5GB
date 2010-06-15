@@ -1,77 +1,120 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9.00"
 	Name="vorbis_static"
-	SccProjectName=""
-	SccLocalPath="">
+	ProjectGUID="{7A939851-118D-4DC9-ABBA-F2B752ACBDBD}"
+	TargetFrameworkVersion="131072"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\Vorbis_Static_Release"
 			IntermediateDirectory=".\Vorbis_Static_Release"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/O2"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				OptimizeForProcessor="3"
 				AdditionalIncludeDirectories="..\include,..\..\libogg\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
-				StringPooling="TRUE"
+				StringPooling="true"
 				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Vorbis_Static_Release/vorbis_static.pch"
 				AssemblerListingLocation=".\Vorbis_Static_Release/"
 				ObjectFile=".\Vorbis_Static_Release/"
 				ProgramDataBaseFileName=".\Vorbis_Static_Release/"
 				WarningLevel="2"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile=".\Vorbis_Static_Release\vorbis_static.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1033"/>
+				Culture="1033"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLibrarianTool"
+				OutputFile=".\Vorbis_Static_Release\vorbis_static.lib"
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\Vorbis_Static_Debug"
 			IntermediateDirectory=".\Vorbis_Static_Debug"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -79,41 +122,47 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Vorbis_Static_Debug/vorbis_static.pch"
 				AssemblerListingLocation=".\Vorbis_Static_Debug/"
 				ObjectFile=".\Vorbis_Static_Debug/"
 				ProgramDataBaseFileName=".\Vorbis_Static_Debug/"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="Vorbis_Static_Debug\vorbis_static_d.lib"
-				SuppressStartupBanner="TRUE"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"/>
+				Culture="1033"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLibrarianTool"
+				OutputFile="Vorbis_Static_Debug\vorbis_static_d.lib"
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -121,695 +170,892 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+			>
 			<File
-				RelativePath="..\lib\analysis.c">
+				RelativePath="..\lib\analysis.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\bitrate.c">
+				RelativePath="..\lib\bitrate.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\block.c">
+				RelativePath="..\lib\block.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\codebook.c">
+				RelativePath="..\lib\codebook.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\envelope.c">
+				RelativePath="..\lib\envelope.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\floor0.c">
+				RelativePath="..\lib\floor0.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\floor1.c">
+				RelativePath="..\lib\floor1.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\info.c">
+				RelativePath="..\lib\info.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\lpc.c">
+				RelativePath="..\lib\lpc.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\lsp.c">
+				RelativePath="..\lib\lsp.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\mapping0.c">
+				RelativePath="..\lib\mapping0.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\mdct.c">
+				RelativePath="..\lib\mdct.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\psy.c">
+				RelativePath="..\lib\psy.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\registry.c">
+				RelativePath="..\lib\registry.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\res0.c">
+				RelativePath="..\lib\res0.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\sharedbook.c">
+				RelativePath="..\lib\sharedbook.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\smallft.c">
+				RelativePath="..\lib\smallft.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\synthesis.c">
+				RelativePath="..\lib\synthesis.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\vorbisenc.c">
+				RelativePath="..\lib\vorbisenc.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\window.c">
+				RelativePath="..\lib\window.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
+						BasicRuntimeChecks="3"
+					/>
 				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl">
+			Filter="h;hpp;hxx;hm;inl"
+			>
 			<File
-				RelativePath="..\include\vorbis\backends.h">
+				RelativePath="..\include\vorbis\backends.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\bitbuffer.h">
+				RelativePath="..\lib\bitbuffer.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\bitrate.h">
+				RelativePath="..\lib\bitrate.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\bookinternal.h">
+				RelativePath="..\lib\bookinternal.h"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\codebook.h">
+				RelativePath="..\include\vorbis\codebook.h"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\codec.h">
+				RelativePath="..\include\vorbis\codec.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\envelope.h">
+				RelativePath="..\lib\envelope.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\iir.h">
+				RelativePath="..\lib\iir.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\lpc.h">
+				RelativePath="..\lib\lpc.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\lsp.h">
+				RelativePath="..\lib\lsp.h"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\lsp12_0.vqh">
+				RelativePath="..\include\vorbis\book\lsp12_0.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\lsp30_0.vqh">
+				RelativePath="..\include\vorbis\book\lsp30_0.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\masking.h">
+				RelativePath="..\lib\masking.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\mdct.h">
+				RelativePath="..\lib\mdct.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\misc.h">
+				RelativePath="..\lib\misc.h"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\mode_A.h">
+				RelativePath="..\include\vorbis\mode_A.h"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\mode_B.h">
+				RelativePath="..\include\vorbis\mode_B.h"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\mode_C.h">
+				RelativePath="..\include\vorbis\mode_C.h"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\mode_D.h">
+				RelativePath="..\include\vorbis\mode_D.h"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\mode_E.h">
+				RelativePath="..\include\vorbis\mode_E.h"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\modes.h">
+				RelativePath="..\include\vorbis\modes.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\os.h">
+				RelativePath="..\lib\os.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\psy.h">
+				RelativePath="..\lib\psy.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\registry.h">
+				RelativePath="..\lib\registry.h"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_128_1.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_128_1.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_128_2.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_128_2.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_128_3.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_128_3.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_128_4.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_128_4.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_128_5.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_128_5.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_128_6.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_128_6.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_128_7.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_128_7.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_128_8.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_128_8.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_128_9.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_128_9.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_160_1.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_160_1.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_160_2.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_160_2.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_160_3.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_160_3.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_160_4.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_160_4.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_160_5.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_160_5.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_160_6.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_160_6.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_160_7.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_160_7.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_160_8.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_160_8.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_160_9.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_160_9.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_192_1.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_192_1.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_192_2.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_192_2.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_192_3.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_192_3.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_192_4.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_192_4.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_192_5.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_192_5.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_256_1.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_256_1.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_256_2.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_256_2.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_256_3.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_256_3.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_256_4.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_256_4.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_256_5.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_256_5.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_350_1.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_350_1.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_350_2.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_350_2.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_350_3.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_350_3.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_350_4.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_350_4.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_1024a_350_5.vqh">
+				RelativePath="..\include\vorbis\book\res0_1024a_350_5.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_128_1.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_128_1.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_128_2.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_128_2.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_128_3.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_128_3.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_128_4.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_128_4.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_128_5.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_128_5.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_160_1.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_160_1.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_160_2.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_160_2.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_160_3.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_160_3.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_160_4.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_160_4.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_160_5.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_160_5.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_192_1.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_192_1.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_192_2.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_192_2.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_192_3.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_192_3.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_192_4.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_192_4.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_192_5.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_192_5.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_256_1.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_256_1.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_256_2.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_256_2.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_256_3.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_256_3.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_256_4.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_256_4.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_256_5.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_256_5.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_350_1.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_350_1.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_350_2.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_350_2.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_350_3.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_350_3.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_350_4.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_350_4.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\res0_128a_350_5.vqh">
+				RelativePath="..\include\vorbis\book\res0_128a_350_5.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\resaux0_1024a_128.vqh">
+				RelativePath="..\include\vorbis\book\resaux0_1024a_128.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\resaux0_1024a_160.vqh">
+				RelativePath="..\include\vorbis\book\resaux0_1024a_160.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\resaux0_1024a_192.vqh">
+				RelativePath="..\include\vorbis\book\resaux0_1024a_192.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\resaux0_1024a_256.vqh">
+				RelativePath="..\include\vorbis\book\resaux0_1024a_256.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\resaux0_1024a_350.vqh">
+				RelativePath="..\include\vorbis\book\resaux0_1024a_350.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\resaux0_128a_128.vqh">
+				RelativePath="..\include\vorbis\book\resaux0_128a_128.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\resaux0_128a_160.vqh">
+				RelativePath="..\include\vorbis\book\resaux0_128a_160.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\resaux0_128a_192.vqh">
+				RelativePath="..\include\vorbis\book\resaux0_128a_192.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\resaux0_128a_256.vqh">
+				RelativePath="..\include\vorbis\book\resaux0_128a_256.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\book\resaux0_128a_350.vqh">
+				RelativePath="..\include\vorbis\book\resaux0_128a_350.vqh"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\sharedbook.h">
+				RelativePath="..\lib\sharedbook.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\smallft.h">
+				RelativePath="..\lib\smallft.h"
+				>
 			</File>
 			<File
-				RelativePath="..\lib\window.h">
+				RelativePath="..\lib\window.h"
+				>
 			</File>
 		</Filter>
 	</Files>
