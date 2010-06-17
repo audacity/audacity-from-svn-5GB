@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: audacity_website\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-12 22:27+0000\n"
-"PO-Revision-Date: 2010-03-13 22:37+0100\n"
-"Last-Translator: Carmelo Battaglia <battaglia.carmelo@fastwebnet.it>\n"
+"PO-Revision-Date: 2010-06-17 22:19-0000\n"
+"Last-Translator: Gale <gale@audacityteam.org>\n"
 "Language-Team: italiano <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3825,7 +3825,7 @@ msgstr "la migliore versione per <a href=\"http://wiki.audacityteam.org/wiki/Win
 
 #: download/index.php:50
 msgid "&nbsp;1.3.11 (Universal Binary)&nbsp"
-msgstr "&nbsp;1.3.11 (Universal Binary)&nbsp"
+msgstr "&nbsp;1.3.12 (Universal Binary)&nbsp"
 
 #: download/index.php:50
 msgid "best version for OS X 10.6"
@@ -3833,7 +3833,7 @@ msgstr "la versione migliore per OS X 10.6"
 
 #: download/index.php:53
 msgid "&nbsp;1.3.11 (in source code)"
-msgstr "&nbsp;1.3.11 (in codice sorgente)"
+msgstr "&nbsp;1.3.12 (in codice sorgente)"
 
 #: download/index.php:59
 msgid "Legacy Downloads"
@@ -8095,6 +8095,7 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 
 #~ msgid "Be a Beta Tester"
 #~ msgstr "Essere un Beta Tester"
+
 #~ msgid ""
 #~ "In addition to the latest stable version of Audacity, we usually have "
 #~ "beta versions available.  These versions usually contain new features "
@@ -8104,12 +8105,16 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "disponibili delle versioni beta.  Queste versioni in genere contengono "
 #~ "delle nuove funzionalità che non sono state completamente provate. Se "
 #~ "volete potete aiutarci, "
+
 #~ msgid "download"
 #~ msgstr "scaricando"
+
 #~ msgid " the Beta version and play with it."
 #~ msgstr " la versione Beta e utilizzandola."
+
 #~ msgid "Let us know"
 #~ msgstr "Fateci sapere "
+
 #~ msgid ""
 #~ " what you like and don't like, and how you think it should be improved.  "
 #~ "Tell us if you find any <em>regressions</em> - things that used to work "
@@ -8118,22 +8123,27 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "quello che vi piace e quello che non vi piace, e come pensate che debba "
 #~ "essere migliorato.  Diteci se trovate qualche <em>regressione</em> - le "
 #~ "cose che usate per lavorare, ma che non funzionano."
+
 #~ msgid "CVS"
 #~ msgstr "CVS"
+
 #~ msgid "(Stable code only)"
 #~ msgstr "(Solo codice stabile)"
+
 #~ msgid ""
 #~ "You can get the latest Audacity stable code from our CVS repository, or "
 #~ "from <a href=\"#svn\">SVN</a>."
 #~ msgstr ""
 #~ "Potete ottenere l'ultima versione stabile o il codice in fase di sviluppo "
 #~ "di Audacity dal nostro archivio CVS o <a href=\"#svn\">SVN</a>."
+
 #~ msgid ""
 #~ "Type this at the command line to check out the latest Stable source code "
 #~ "from CVS:"
 #~ msgstr ""
 #~ "Digitatelo nella linea comandi per ottenere l'ultimo codice sorgente "
 #~ "stabile da CVS:"
+
 #~ msgid ""
 #~ "For more information, read the <a href=\"http://sourceforge.net/cvs/?"
 #~ "group_id=6235\">SourceForge CVS instructions</a>. If using an interface "
@@ -8144,6 +8154,7 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "net/cvs/?group_id=6235\">istruzioni CVS SourceForge</a>. Se state usando "
 #~ "uno strumento interfaccia CVS come TortoiseCVS o WinCVS, usate il comando "
 #~ "indicato nella documentazione dello strumento."
+
 #~ msgid ""
 #~ "The Audacity developers now use <a href=\"http://audacityteam.org/wiki/"
 #~ "index.php?title=Release_Checklist\">Release Checklist</a> on the <a href="
@@ -8159,6 +8170,7 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "audacityteam.org/wiki/index.php?title=Release_Checklist#Release_Issues"
 #~ "\">Release Issues</a> in questa pagina se volete dare uno sguardo a "
 #~ "qualcosa su cui state lavorando."
+
 #~ msgid ""
 #~ "<strong>Note:</strong> This Checklist is for development use only. If you "
 #~ "are a user reporting new bugs, please <a href=\"../contact/\">use our "
@@ -8167,6 +8179,7 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "<strong>Nota:</strong> Questa Checklist è usata solo in fase di sviluppo. "
 #~ "Se siete un utente che comunica nuovi errori, invece <a href=\"../contact/"
 #~ "\">usate il nostro Forum o inviateci una e-mail </a>."
+
 #~ msgid ""
 #~ "\r\n"
 #~ "<ul>\r\n"
@@ -8201,6 +8214,7 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "\">audacity-devel</a>, la nostra mailing list di sviluppatori, poi "
 #~ "inviateci una e-mail.</li>\n"
 #~ "</ul>\r\n"
+
 #~ msgid ""
 #~ "Installation of the following libraries is <b>optional</b> - they are "
 #~ "included in Audacity obtained from <a href=\"../community/developers#cvs"
@@ -8209,12 +8223,16 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "L'installazione delle seguenti librerie è <b>opzionale</b> - queste sono "
 #~ "incluse in Audacity ottenuto da <a href=\"../community/developers#cvs"
 #~ "\">CVS</a> o <a href=\"../community/developers#svn\">SVN</a>."
+
 #~ msgid "Stable: 1.2"
 #~ msgstr "Stabile: 1.2"
+
 #~ msgid "Beta: 1.3"
 #~ msgstr "Beta: 1.3"
+
 #~ msgid "Stable"
 #~ msgstr "Stabile"
+
 #~ msgid ""
 #~ "Browse the source code online sorted by <a href=\"http://audacity.cvs."
 #~ "sourceforge.net/audacity/audacity-src/\">file name</a> or <a href="
@@ -8225,16 +8243,22 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "audacity.cvs.sourceforge.net/audacity/audacity-src/\">nome file</a> o per "
 #~ "<a href=\"http://audacity.cvs.sourceforge.net/audacity/audacity-src/?"
 #~ "sortby=date#dirlist\">data</a>."
+
 #~ msgid "Stable: 1.2 - for all users"
 #~ msgstr "Stabile: 1.2 - per tutti gli utenti"
+
 #~ msgid "&nbsp;&nbsp;1.2.6"
 #~ msgstr "&nbsp;&nbsp;1.2.6"
+
 #~ msgid "Beta: 1.3 - for advanced users"
 #~ msgstr "Beta: 1.3 - per utenti esperti"
+
 #~ msgid "&nbsp;&nbsp;1.3.10"
 #~ msgstr "&nbsp;&nbsp;1.3.10"
+
 #~ msgid "LAME MP3 Encoder"
 #~ msgstr "Encoder LAME MP3"
+
 #~ msgid ""
 #~ "<p>Because of software patents, we cannot distribute MP3 encoding "
 #~ "software ourselves.  Follow these instructions to use the free LAME "
@@ -8284,8 +8308,10 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "  <li>La prima volta che userete il comando \"Esporta MP3\", Audacity vi "
 #~ "chiederà dove avete salvato LameLib.</li>\n"
 #~ "</ol>"
+
 #~ msgid "Windows 95 and NT are not supported."
 #~ msgstr "Windows 95 e NT non sono più supportati."
+
 #~ msgid ""
 #~ "<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not "
 #~ "yet able to display custom interfaces for plug-ins.  Instead, it uses "
@@ -8305,6 +8331,7 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "nel VST Enabler. Potete <a href\"../contact/\">contattarci</a> per "
 #~ "segnalarci i plug-in che non funzionano.</p>  \n"
 #~ "<p>Audacity inoltre non supporta i plug-in VST instrument (VSTi) .</p>"
+
 #~ msgid ""
 #~ "<p>Audacity project files are saved in a special format that only "
 #~ "Audacity can open.  To open your project in another program or burn it to "
@@ -8317,6 +8344,7 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "programma o per masterizzarli su un CD, dovete aprire il file .aup in "
 #~ "Audacity e usare i comandi presenti nel menù File per esportare l'audio "
 #~ "in formati come WAV o AIFF.</p>"
+
 #~ msgid ""
 #~ "<p>Audacity breaks long tracks into small pieces so it can edit them more "
 #~ "efficiently.  When you save a project, Audacity stores all of the pieces "
@@ -8332,10 +8360,10 @@ msgstr "\"Audacity\" è un marchio di Dominic Mazzoni.  Il logo di Google è un 
 #~ "manualmente.  Audacity li caricherà automaticamente quando viene aperto "
 #~ "il file \"project.aup\", che è salvato nella stessa posizione della "
 #~ "directory con i dati.</p>"
+
 #~ msgid ""
 #~ "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> is a "
 #~ "street-rock band from Finland."
 #~ msgstr ""
 #~ "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> è un "
 #~ "complesso rock proveniente dalla Finlandia."
-
