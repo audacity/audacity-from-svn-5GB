@@ -34,8 +34,6 @@ UninstallDisplayIcon="{app}\audacity.exe"
 LicenseFile=..\LICENSE.txt
 InfoBeforeFile=..\README.txt
 
-; min versions: Win95, NT 4.0
-MinVersion=4.0,4.0
 
 [Tasks]
 Name: desktopicon; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4
@@ -45,7 +43,8 @@ Name: associate_aup; Description: "&Associate Audacity project files"; GroupDesc
 [Files]
 Source: "..\win\Release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\Release\audacity-1.2-help.htb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\win\Release\*.htm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\Release\Audacity_Audiotouch-about.htm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\Release\*Audacity_Audiotouch-download.htm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\Release\Languages\ar\*.*"; DestDir: "{app}\Languages\ar"; Flags: ignoreversion
 Source: "..\win\Release\Languages\bg\*.*"; DestDir: "{app}\Languages\bg"; Flags: ignoreversion
 Source: "..\win\Release\Languages\ca\*.*"; DestDir: "{app}\Languages\ca"; Flags: ignoreversion
@@ -137,4 +136,5 @@ Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; Va
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity_Audiotouch"; Flags: nowait postinstall skipifsilent
+
 

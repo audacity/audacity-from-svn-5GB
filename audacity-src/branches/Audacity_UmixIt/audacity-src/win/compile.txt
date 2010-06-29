@@ -21,9 +21,15 @@ email audacity-devel@lists.sourceforge.net.
 ================================================================
 
 Audacity 1.2.x releases are built with Microsoft Visual C++ 7 
-("VC7", in Visual Studio 2003). This version of the Audacity_UmixIt 
-branch has been upgraded to VC9 in Visual Studio 2008. This upgrade 
-has not been done in the trunk version of Audacity 1.2.6.
+("VC7", in Visual Studio 2003). This version of the 
+Audacity_UmixIt branch has been upgraded to VC9 in Visual 
+Studio 2008. This upgrade has not been done in the trunk 
+version of Audacity 1.2.6.
+
+As this is an upgrade, from VC7 to VC8 to VC9, it relies on 
+the VC8 runtimes. To run and debug, you must have the VC8 
+runtimes (msvc*80*.dll) installed -- not the whole development 
+environment, just the runtimes. 
 
 Note that wxWidgets must be built with the same compiler used to 
 build Audacity.
