@@ -92,6 +92,9 @@ void OnSave();
 void OnSaveAs();
 
 void OnExportMix();
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   void OnExportMixAndExit();
+#endif
 void OnExportSelection();
 void OnExportMP3Mix();
 void OnExportMP3Selection();

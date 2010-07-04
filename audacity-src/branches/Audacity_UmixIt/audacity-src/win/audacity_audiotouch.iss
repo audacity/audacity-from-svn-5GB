@@ -3,7 +3,7 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=audacity-audiotouch-win-1.2.6a8
+OutputBaseFilename=audacity-audiotouch-win-1.2.6a10
 SetupIconFile=Audacity.ico
 
 WizardImageFile=audacity_InnoWizardImage.bmp
@@ -136,5 +136,6 @@ Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; Va
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity_Audiotouch"; Flags: nowait postinstall skipifsilent
+
 
 
