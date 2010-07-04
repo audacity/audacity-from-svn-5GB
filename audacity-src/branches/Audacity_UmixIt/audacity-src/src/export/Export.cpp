@@ -315,7 +315,11 @@ wxString ExportCommon(AudacityProject *project,
 }
 
 bool Export(AudacityProject *project,
-            bool selectionOnly, double t0, double t1)
+            bool selectionOnly, double t0, double t1
+            #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+               , bool bWantExit /* = false */
+            #endif
+            )
 {
    wxString fName;
    wxString formatStr;
@@ -344,7 +348,7 @@ bool Export(AudacityProject *project,
       ::wxRenameFile(FILENAME(fName), FILENAME(actualName));
 
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      if (success)
+      if (bWantExit && success)
          project->OnClose();
    #endif
 

@@ -153,11 +153,12 @@ void AudacityProject::CreateMenusAndCommands()
 #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
    // For Audiotouch, commands re-ordered, and 
    // export commands renamed to "save as" commands and given new key codes.
-   c->AddItem("Export",         _("Save As and Exit...\tCtrl+S"),    FN(OnExportMix));
+   c->AddItem("ExportAndExit",  _("Save As and Exit...\tCtrl+S"), FN(OnExportMixAndExit));
+   c->AddItem("Export",         _("Save As"),                     FN(OnExportMix));
    // per R Barr, Mar 1, 2010    c->AddItem("ExportSel",      _("Save Selection As...\tCtrl+Shift+S"),         FN(OnExportSelection));
-   c->AddItem("Open",           _("&Email...\tCtrl+E"), FN(OnEmail)); //vvv Set enable flags.
-   c->AddItem("Open",           _("&Open...\tCtrl+O"),               FN(OnOpen));
-   c->AddItem("[blank]",        _(""),                               NULL);
+   c->AddItem("Open",           _("&Email...\tCtrl+E"),           FN(OnEmail)); //vvv Set enable flags.
+   c->AddItem("Open",           _("&Open...\tCtrl+O"),            FN(OnOpen));
+   c->AddItem("[blank]",        _(""),                            NULL);
    c->AddSeparator();
    // Recent Files and Recent Projects menus
    wxMenu* pm = c->BeginSubMenu(_("&Recent Files...")); 
@@ -227,8 +228,11 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("ExportMultiple",   _("Export &Multiple..."),              FN(OnExportMultiple));
    // Enable Export commands only when there are tracks
    c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
-                      AudioIONotBusyFlag | TracksExistFlag,
-                      "Export", "ExportMP3", "ExportOgg", NULL);
+                        AudioIONotBusyFlag | TracksExistFlag,
+                        #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+                           "ExportAndExit", 
+                        #endif
+                        "Export", "ExportMP3", "ExportOgg", NULL);
    // Enable Export Selection commands only when there's a selection
    c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
                       AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
@@ -416,6 +420,10 @@ void AudacityProject::CreateMenusAndCommands()
    // Start with "Do Not" versions because default for both is TRUE.
    c->AddItem("PlayAfterOpen", _("Do Not Play after File Open\tCtrl+Shift+O"),  FN(OnPlayAfterOpen));
    c->AddItem("PlayAfterRecord", _("Do Not Play after Record\tCtrl+Shift+R"),  FN(OnPlayAfterRecord));
+   c->AddSeparator();
+   c->AddItem("Lock/Unlock", 
+               _("Lock Recording\tCtrl+9"), // Default is unlocked.
+               FN(OnLockUnlock));
    c->AddSeparator();
    c->AddItem("AppendRecording", _("Do Not Append Recording"),  FN(OnAppendRecording));
    c->EndMenu();
@@ -749,7 +757,6 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("PrevTool",   _("Previous Tool\tA"),             FN(OnPrevTool));
 
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      c->AddCommand("Lock/Unlock", _("Lock/Unlock Recording\tCtrl+9"), FN(OnLockUnlock));
       c->AddCommand("Play/Stop",   _("Play/Stop\tEnter"),            FN(OnPlayStop));
       c->AddCommand("Stop",        _("Stop\tS"),                     FN(OnStop));
       c->AddCommand("Pause",       _("Pause\tP"),                    FN(OnPause));
@@ -811,8 +818,11 @@ void AudacityProject::ModifyExportMenus()
 
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       // For Audiotouch, export commands renamed to "save as" commands, re-ordered, given new key codes.
-      mCommandManager.Modify("Export",
+      mCommandManager.Modify("ExportAndExit",
                            wxString::Format(_("&Save As %s and Exit..."),
+                                             (const char *)pcmFormat));
+      mCommandManager.Modify("Export",
+                           wxString::Format(_("&Save As %s..."),
                                              (const char *)pcmFormat));
       // per R Barr, Mar 1, 2010    
       //mCommandManager.Modify("ExportSel",
@@ -1219,6 +1229,11 @@ void AudacityProject::OnPlayLooped()
       ControlToolBar *toolbar = GetControlToolBar();
       wxCommandEvent evt; 
       toolbar->OnLock(evt);
+      mCommandManager.Modify(
+         "Lock/Unlock", 
+         toolbar->IsLocked() ? 
+            _("Unlock Recording") : 
+            _("Lock Recording"));
    }
 #endif
 
@@ -1735,6 +1750,11 @@ void AudacityProject::OnExportLabels()
 void AudacityProject::OnExportMix()
 {
    ::Export(this, false, 0.0, mTracks->GetEndTime());
+}
+
+void AudacityProject::OnExportMixAndExit()
+{
+   ::Export(this, false, 0.0, mTracks->GetEndTime(), true);
 }
 
 void AudacityProject::OnExportSelection()
