@@ -23,7 +23,7 @@
   <dd><p><?=_("If you are a C++ programmer, join the development team and help us improve Audacity.  We also welcome documentation and other contributions, and can help with questions on building and modifying the Audacity source code.")?></p></dd>
 
   <dt><a href="translation"><?=_("Translators")?></a></dt>
-  <dd><p><?=_("If you are fluent in both English and another language, you can help translate the Audacity software, web site and <a href=\"http://manual.audacityteam.org/index.php?title=Main_Page\">Bata Manual</a>. We also need people to help provide support for Audacity in different languages.")?></p></dd>
+  <dd><p><?=_("If you are fluent in both English and another language, you can help translate the Audacity software, web site and <a href=\"http://manual.audacityteam.org/index.php?title=Main_Page\">Beta Manual</a>. We also need people to help provide support for Audacity in different languages.")?></p></dd>
 
   <dt><a href="donate"><?=_("Donate")?></a></dt>
   <dd><p><?=_("We welcome donations to support Audacity development.")?></p></dd>
