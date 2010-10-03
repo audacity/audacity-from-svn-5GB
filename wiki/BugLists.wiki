@@ -104,4 +104,4 @@ Individual tags (these appear in green in the tracker).
 
 = Issue Tracker Status =
 
-Using Google's issue tracker is just an experiment at the moment.  The live tracker is our  [http://wiki.audacityteam.org/index.php?title=Release_Checklist Release Checklist wiki page].  The real tracker has many more P3's and higher, and has links to e-mail threads.
+Using Google's issue tracker is a discarded experiment.  The live tracker is our  [http://wiki.audacityteam.org/index.php?title=Bug_Lists bugzilla].  The real tracker has many more issues and discussions thereon.
