@@ -53,7 +53,7 @@
         ),
         "language" => array(
           _("How can I change the language displayed in Audacity?"),
-          _("<p>Audacity can display in many non-English languages. In Audacity 1.2, you can choose the displayed language when you first run the program. In current Audacity Beta (1.3 series), the language Audacity uses on first run is determined by the language the operating system uses.</p>
+          _("<p>Audacity can display in many non-English languages. In Audacity 1.2, you can choose the displayed language when you first run the program. In current Audacity Beta (1.3 series), the language Audacity uses on first run is determined by the language the operating system uses. Note that on Windows, the Audacity installer only sets the language for the installer to run in, not the language Audacity runs in, which is determined as above.</p>
 <p>To change the current Audacity language, go to the Interface tab of Preferences, choose the specific language required from the \"Language\" box, click OK and restart the program. Restart is not necessary in Audacity Beta.</p> 
 <p>If Audacity is already running in an unfamiliar language, you can still navigate the menus sequentially to change the language, or change it in the Audacity settings file. For instructions, please see <a href=\"http://wiki.audacityteam.org/wiki/Changing_the_current_language\">Changing the current language</a> on the Audacity <a href=\"http://wiki.audacityteam.org\">Wiki</a>.</p>") 
         ),
@@ -87,8 +87,8 @@
 <h3 id="win">Windows</h3>
 <ol>
   <li>Go to the <a href="http://lame.buanzo.com.ar/">LAME download page</a>.</li>
-  <li>Under "For Audacity on Windows", left-click the link "Lame v3.98.2 for Audacity on Windows.exe" and save the file anywhere on your computer. <b>Do not right-click the link to the .exe file.</b> </li> 
-  <li>Double-click <b>"Lame_v3.98.2_for_Audacity_on_Windows.exe"</b> to launch it (you can safely ignore any warnings that the "publisher could not be verified").</li> 
+  <li>Under "For Audacity on Windows", left-click the link <b>"Lame v3.98.3 for Audacity on Windows.exe"</b> and save the file anywhere on your computer. <b>Do not right-click the link to the .exe file.</b> </li> 
+  <li>Double-click <b>"Lame v3.98.3 for Audacity on Windows.exe"</b> to launch it (you can safely ignore any warnings that the "publisher could not be verified").</li> 
   <li>Follow the "Setup" instructions to install LAME for Audacity. Do not change the offered destination location of "C:\Program Files\Lame for Audacity".</li>
   <li>The first time you use the "Export as MP3" command, Audacity will ask for the location of <b>"lame_enc.dll"</b>. Navigate to "C:\Program Files\Lame for Audacity", select "lame_enc.dll", then click "Open" and "OK".</li>
   <li>If you prefer the Zip option for the LAME download, save the zip file to anywhere on your computer, extract "lame_enc.dll" to any location, then show Audacity where to find it as in Step 5 above.</li>
@@ -113,13 +113,15 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
 <li><p>Place the unzipped VST Enabler, along with your VST plug-ins, into the “Plug-ins” folder in the Audacity installation folder.  (On Mac OS X, this is usually in the Applications folder.  On Windows, it is usually under Program Files.)</li>
 <li><p>The next time you start Audacity, your VST effects will appear at the bottom of the “Effect” menu.</li>
 </ol>
-<p><b>Note:</b> Current Beta (1.3) versions of Audacity will display VST plug-ins automatically, without having to install the VST Enabler.</p>    
+<p><b>Note:</b> Current Beta (1.3) versions of Audacity will display VST plug-ins automatically, without having to install the VST Enabler. To display newly added plug-ins in Audacity Beta, go to the Effects tab of Audacity Preferences, check \"Rescan VST effects next time Audacity is started\", then exit and start Audacity again.</p>    
 <p>See also: <a href=\"faq?s=install&amp;i=vst-bugs\">Why do some VST plug-ins look wrong, or not work?</a></p>"), "http://audacityteam.org/vst/")
         ),
         "vst-bugs" => array(
           _("Why do some VST plug-ins look wrong, or not work?"),
-          _("<p>1.2 versions of Audacity require the <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> in order to display VST plug-ins. The Enabler can only display a generic, tabular interface for plug-ins, so they may look or act differently than they do in other programs, or not function at all.</p>
-<p>Current Beta (1.3) versions of Audacity will by default display VST effect plug-ins with their full interface, without the need of an Enabler. If you experience any problems with VST plug-ins in Audacity Beta, please read this <a href=\"http://forum.audacityteam.org/viewtopic.php?f=37&t=11534&p=45667#p45667\">Forum topic</a>. You may <a href=\"../contact#feedback\">contact us</a> to report any difficulties not covered in that topic.</p>                
+          _("<p>1.2 versions of Audacity require the <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> in order to display VST plug-ins. The Enabler can only display a generic, tabular interface for plug-ins, so they may look or act differently than they do in other programs, or not function at all.
+<p>Current Beta (1.3) versions of Audacity will by default display VST effect plug-ins with their full interface, without the need of an Enabler.</p>  
+<p>To display newly added plug-ins in Audacity, exit the program and start it again. In Audacity Beta, you must also go to the Effects tab of Audacity Preferences and check \"Rescan VST effects next time Audacity is started\" before exiting and re-starting.</p>
+<p>If you experience any problems with VST plug-ins in Audacity, please read our detailed <a href=\"http://wiki.audacityteam.org/w/index.php?title=VST_Plug-ins\">VST Plug-ins page</a>. You may <a href=\"../contact#feedback\">contact us</a> to report any difficulties not covered on that page.</p>                
 <p>Neither version of Audacity supports VST instrument (VSTi) plug-ins. </p>")
         ),
         "download-problems" => array(
@@ -163,7 +165,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
 <p>To monitor your recording, open your computer's volume control panel.  Turn up the playback volume and turn off the “mute” checkbox for your recording source (usually “microphone” or “line in”).</p>
 <p>If this does not work, open the Audacity preferences.  In the “Audio I/O” section (\"Devices\" in Audacity Beta), turn on the “Software Playthrough” option.</p>
 <h3>Mac OS X</h3>
-<p>Open the Audacity preferences.  In the “Audio I/O” section (\"Devices\" in Audacity Beta), turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead.</p>
+<p>Open the Audacity preferences.  In the “Audio I/O” section (\"Devices\" in Audacity Beta), turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead, or try the free LineIn application from <a href=\"http://www.rogueamoeba.com/freebies\">Rogue Amoeba</url>.</p>
 <h3>Monitoring while Recording from a Microphone</h3>
 <p>Always use headphones when listening as you record from a microphone, to avoid the playthrough of the recording being picked up in the recording itself.</p>
 ")
@@ -174,7 +176,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
 <ol>
   <li>Select the correct recording input that you are plugged into (probably microphone or line-in). On <b>Windows or Linux</b>, select the input in the dropdown menu in Audacity's <a href=\"http://audacity.sourceforge.net/onlinehelp-1.2/toolbar_mixer.htm\">Mixer Toolbar</a> (on Windows Vista or 7, use the \"Recording Device\" dropdown in the Audacity Preferences instead). On <b>OS X</b>, Mixer Toolbar may only show \"Default Input\". If so, select the source on the Audio Devices tab of Apple Audio MIDI Setup.</li>
   <li>Import or record the first track.</li>
-  <li>Open the \"Audio I/O\" tab of Audacity preferences, and check the box labeled <b>Play other tracks while recording new one.</b></li>
+  <li>Open the \"Audio I/O\" tab of Audacity preferences (or the \"Recording\" tab in Audacity Beta), and check the box labeled <b>Play other tracks while recording new one.</b></li>
   <li>Close the preferences and press the <b>Record</b> button. If you are recording from a microphone, make sure you use headphones so that the microphone picks up only what you are recording.</li>
 </ol>
 <p>See also:
@@ -196,6 +198,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
 <p>With most Windows and Linux audio devices, it is possible to record whatever sound the computer is currently playing, including internet radio streams.</p>
 <p>In the drop-down menu on Audacity's mixer toolbar, choose “Wave Out” or “Stereo Mix” as the input source.  (The exact name may be different, depending on your computer's sound drivers.)  When you press the <b>Record</b> button, Audacity will capture whatever sound is playing on your computer's speakers. <b>Note:</b> on Windows Vista or 7, you must choose the required input source in the \"Recording Device\" dropdown in the \"Audio I/O\" tab of Preferences (\"Devices\" tab in Audacity Beta). On Windows, if you don't have a “Wave Out” or “Stereo Mix” option, or if it won't record, go to the system Control Panel and try to enable this option there. For instructions see: <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues#Using_the_Control_Panel\">Using the Control Panel</a> on the Wiki.</p>
 <p>If this doesn't work on your computer, you can instead use a cable to connect your computer's “Line Out” (speaker) port to its “Line In” port, and use Audacity to record from Line In.</p>
+<p><b>Note:</b> Do not enable \"software playthrough\" when recording computer playback, because this creates a series of echoes.</p> 
 <h3 id=\"mac\">Mac OS X</h3>
 <p>Mac OS X users can capture streaming audio using a program like <a href=\"http://www.cycling74.com/products/soundflower\">Soundflower</a> (free, open source), <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>. For more help see <a href=\"http://wiki.audacityteam.org/wiki/Recording_audio_playing_on_the_computer#Mac\">this page</a> on our <a href=\"http://wiki.audacityteam.org/wiki/\">Wiki</a>.</p>
 ")
@@ -332,7 +335,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
   <li>Using the track menus, change each track to “Mono.”</li>
 </ol>
 <p>Press the <b>Play</b> button to hear the results.  If you are lucky, the voice will be gone but most of the other instruments will be unaffected, just like a karaoke track.  You can use the Export commands in the File menu to save the results.</p>
-<p>If the vocals are not exactly the same on both stereo channels, there are some other techniques or optional plugins you can try. Please see our <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Vocal_Removal</a> Wiki page for more details.</p>
+<p>If the vocals are not exactly the same on both stereo channels, there are some other techniques or optional plug-ins you can try. Please see our <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Vocal Removal</a> Wiki page for more details.</p>
 ")
         ),
       ),
