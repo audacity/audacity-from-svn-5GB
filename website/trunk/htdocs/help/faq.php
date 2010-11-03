@@ -165,7 +165,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
 <p>To monitor your recording, open your computer's volume control panel.  Turn up the playback volume and turn off the “mute” checkbox for your recording source (usually “microphone” or “line in”).</p>
 <p>If this does not work, open the Audacity preferences.  In the “Audio I/O” section (\"Devices\" in Audacity Beta), turn on the “Software Playthrough” option.</p>
 <h3>Mac OS X</h3>
-<p>Open the Audacity preferences.  In the “Audio I/O” section (\"Devices\" in Audacity Beta), turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead, or try the free LineIn application from <a href=\"http://www.rogueamoeba.com/freebies\">Rogue Amoeba</url>.</p>
+<p>Open the Audacity preferences.  In the “Audio I/O” section (\"Devices\" in Audacity Beta), turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead, or try the free LineIn application from <a href=\"http://www.rogueamoeba.com/freebies\">Rogue Amoeba</a>.</p>
 <h3>Monitoring while Recording from a Microphone</h3>
 <p>Always use headphones when listening as you record from a microphone, to avoid the playthrough of the recording being picked up in the recording itself.</p>
 ")
