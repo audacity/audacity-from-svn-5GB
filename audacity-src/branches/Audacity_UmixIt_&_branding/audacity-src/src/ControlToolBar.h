@@ -80,8 +80,6 @@ class ControlToolBar:public ToolBar {
    void OnPlay(wxCommandEvent &evt);
    #if (AUDACITY_BRANDING == BRAND_THINKLABS)
       void OnLoopPlay(wxCommandEvent &evt);
-   #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      void OnLock(wxCommandEvent &evt);
    #endif
    void OnStop(wxCommandEvent &evt);
    void OnRecord(wxCommandEvent &evt);
@@ -151,6 +149,7 @@ class ControlToolBar:public ToolBar {
       bool mIsLocked;
       public:
          bool IsLocked() { return mIsLocked; };
+         void SetLock(bool bLocked);
       private:
    #endif
    AButton *mRecord;

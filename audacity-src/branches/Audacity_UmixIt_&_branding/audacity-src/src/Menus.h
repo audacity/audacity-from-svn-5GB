@@ -92,6 +92,9 @@ void OnSave();
 void OnSaveAs();
 
 void OnExportMix();
+#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   void OnExportMixAndExit();
+#endif
 void OnExportSelection();
 void OnExportMP3Mix();
 void OnExportMP3Selection();
@@ -232,11 +235,14 @@ void OnBenchmark();
    //void OnDifferences();
    void OnGetAudiotouch();
 
- public:
-   bool m_bWantPlayAfterRecord;
-   bool m_bWantAppendRecording;
  private:
    bool m_bWantPlayAfterOpen;
+
+ public:
+   bool m_bWantPlayAfterRecord;
+	bool m_bWantLockedRecording;
+   bool m_bWantAppendRecording;
+
  public:
 
 #endif

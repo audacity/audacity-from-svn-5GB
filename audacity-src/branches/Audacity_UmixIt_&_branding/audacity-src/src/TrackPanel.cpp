@@ -4274,7 +4274,7 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
       #endif
 
       #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-         // Descriptive text appears below mute/solo for Audacity_Audiotouch, so locate it lower.
+         // Descriptive text appears below mute/solo for BRAND_AUDIOTOUCH, so locate it lower.
          dc->DrawText(TrackSubText(t), r.x + offset, r.y + 44);
          dc->DrawText(GetSampleFormatStr
                      (((WaveTrack *) t)->GetSampleFormat()), r.x + offset,
@@ -4951,7 +4951,7 @@ void TrackLabel::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
       }
       return; 
    #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      // Descriptive text appears below mute/solo for Audacity_Audiotouch, so move the mute/solos up. 
+      // Descriptive text appears below mute/solo for BRAND_AUDIOTOUCH, so move the mute/solos up. 
       dest.y = r.y + 22; // magic number from call to draw TrackSubText()
    #endif
 
