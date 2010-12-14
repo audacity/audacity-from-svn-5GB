@@ -80,7 +80,7 @@ void InitPreferences()
    wxString appName = "Thinklabs Phonocardiography, powered by Audacity";
 #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
    wxString vendorName = "Audacity";
-   wxString appName = "Audacity_Audiotouch";
+   wxString appName = "Audacity_Voice";
 #elif AUDACITY_NAME
    wxString appName = AUDACITY_NAME;
    wxString vendorName = AUDACITY_NAME;

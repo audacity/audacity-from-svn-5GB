@@ -40,7 +40,7 @@
 
 #elif AUDACITY_BRANDING == BRAND_AUDIOTOUCH
 
-   #define AUDACITY_BRANDING_BRANDNAME wxT("Audacity_Audiotouch")
+   #define AUDACITY_BRANDING_BRANDNAME wxT("Audacity_Voice")
    #define AUDACITY_BRANDING_BRANDURL wxT("http://www.audiotouch.com.au/")
 
 #endif

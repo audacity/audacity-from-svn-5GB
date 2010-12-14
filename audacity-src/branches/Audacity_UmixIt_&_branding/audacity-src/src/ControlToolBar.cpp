@@ -170,8 +170,9 @@ void ControlToolBar::InitializeControlToolBar()
 
    MakeButtons();
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      mIsLocked = false; // 2009-02-22: No lock button, and mIsLocked defaults false.   mIsLocked = true;
-      //mLock->PushDown();
+	   AudacityProject* pProj = GetActiveProject();
+	   if (pProj) 
+			this->SetLock(pProj->m_bWantLockedRecording);
    #endif
 
    wxImage *sliderOriginal = new wxImage(wxBitmap(Slider).ConvertToImage());
@@ -574,7 +575,7 @@ void ControlToolBar::MakeButtons()
          break;
       
       #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH) 
-         // Audacity_Audiotouch swaps colors for Pause and Stop. 
+         // BRAND_AUDIOTOUCH swaps colors for Pause and Stop. 
          case ID_PAUSE_BUTTON:
             mPause = MakeButton((char const **)Pause_yellow,
                               (char const **) PauseDisabled_yellow,
@@ -1067,18 +1068,15 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
       }
    }
 #elif (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-   void ControlToolBar::OnLock(wxCommandEvent &evt)
+   void ControlToolBar::SetLock(bool bLocked)
    {
-      mIsLocked = !mIsLocked;
+      mIsLocked = bLocked;
+		// 2009-02-22: No lock button.
       //if (mIsLocked)
-      //{
       //   mLock->PushDown();
-      //}
       //else
-      //{
       //   // In unlocked state, user must hold down Record btn or spacebar to continue recording. 
       //   mLock->PopUp();
-      //}
    }
 #endif
 
