@@ -13,7 +13,7 @@ SolidCompression=yes
 
 ; installer-related directives
 
-AppName=Audacity_Audiotouch
+AppName=Audacity_Voice
 
 ; Use the same appname as standard version, so they CANNOT be installed side-by-side.
 AppVerName=Audacity 1.2.6
@@ -43,8 +43,8 @@ Name: associate_aup; Description: "&Associate Audacity project files"; GroupDesc
 [Files]
 Source: "..\win\Release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\Release\audacity-1.2-help.htb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\win\Release\Audacity_Voice-about.htm"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\win\Release\*Audacity_Voice-download.htm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\Audacity_Voice-about.htm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\Audacity_Voice-download.htm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\win\Release\Languages\ar\*.*"; DestDir: "{app}\Languages\ar"; Flags: ignoreversion
 Source: "..\win\Release\Languages\bg\*.*"; DestDir: "{app}\Languages\bg"; Flags: ignoreversion
 Source: "..\win\Release\Languages\ca\*.*"; DestDir: "{app}\Languages\ca"; Flags: ignoreversion
@@ -113,7 +113,7 @@ Source: "..\win\Release\Plug-Ins\tremolo.ny"; DestDir: "{app}\Plug-Ins"; Flags: 
 
 [Icons]
 Name: "{commonprograms}\Audacity"; Filename: "{app}\audacity.exe"
-Name: "{userdesktop}\Audacity_Audiotouch"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+Name: "{userdesktop}\Audacity_Voice"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
 
 [InstallDelete]
 ; Get rid of Audacity 1.0.0 stuff that's no longer used.
@@ -135,7 +135,7 @@ Root: HKCR; Subkey: "Audacity.Project\shell\open"; Flags: createvalueifdoesntexi
 Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; ValueData: """{app}\audacity.exe"" ""%1"""; Flags: createvalueifdoesntexist uninsdeletekey; Tasks: associate_aup
 
 [Run]
-Filename: "{app}\audacity.exe"; Description: "Launch Audacity_Audiotouch"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\audacity.exe"; Description: "Launch Audacity_Voice"; Flags: nowait postinstall skipifsilent
 
 
 
