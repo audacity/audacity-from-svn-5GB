@@ -169,11 +169,6 @@ void ControlToolBar::InitializeControlToolBar()
    wxASSERT( multiTool    == ID_MULTI    - ID_FIRST_TOOL );
 
    MakeButtons();
-   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-	   AudacityProject* pProj = GetActiveProject();
-	   if (pProj) 
-			this->SetLock(pProj->m_bWantLockedRecording);
-   #endif
 
    wxImage *sliderOriginal = new wxImage(wxBitmap(Slider).ConvertToImage());
    wxImage *thumbOriginal = new wxImage(wxBitmap(SliderThumb).ConvertToImage());
@@ -1134,6 +1129,12 @@ void ControlToolBar::StopPlaying()
 
 void ControlToolBar::OnRecord(wxCommandEvent &evt)
 {
+   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+	   AudacityProject* pProj = GetActiveProject();
+	   if (pProj) 
+			// Currently just sets mIsLocked, but use it in case we want side effects, as before.
+			this->SetLock(pProj->m_bWantLockedRecording);
+   #endif
    if (gAudioIO->IsBusy()) {
       #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
          if (mIsLocked) // Stop only if in locked mode. 
