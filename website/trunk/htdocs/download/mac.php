@@ -8,6 +8,7 @@
  */
   require_once "main.inc.php";
   require_once "../latest/versions.inc.php";
+  require_once "../latest/mirror.inc.php";  
   $pageId = "mac";
   $pageTitle = _("Mac OS 9 / X");
   include "../include/header.inc.php";
@@ -19,9 +20,9 @@
 <h3><?=_("Recommended Download")?></h3>
 <p><a href="#sysreq">System Requirements</a></p>
 <ul>
-  <li><p><?php printf(_('For Mac OS X (<b>Intel</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "".$macosx_intel_url, macosx_intel_version, macosx_intel_size)?></p></li>
-  <li><p><?php printf(_('For Mac OS X (<b>PPC</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "".$macosx_url, macosx_version, macosx_size)?></p></li>
-  <li><p><?php printf(_('For Mac OS 9: <a href="%s">Audacity %s</a> (.sit file, %.1lf MB)'), "".$mac_classic_url, mac_classic_version, mac_classic_size)?></p></li>
+  <li><p><?php printf(_('For Mac OS X (<b>Intel</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url($macosx_intel_url), macosx_intel_version, macosx_intel_size)?></p></li>
+  <li><p><?php printf(_('For Mac OS X (<b>PPC</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url ($macosx_url), macosx_version, macosx_size)?></p></li>
+  <li><p><?php printf(_('For Mac OS 9: <a href="%s">Audacity %s</a> (.sit file, %.1lf MB)'), download_url($mac_classic_url), mac_classic_version, mac_classic_size)?></p></li>
   <p><?=_("(Unfortunately, we no longer have the resources to provide new versions of Audacity for Mac OS 9.)")?></p></li>
 </ul>
 

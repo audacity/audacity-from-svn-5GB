@@ -5,6 +5,8 @@
  * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
+  require_once "../latest/versions.inc.php";
+  require_once "../latest/mirror.inc.php";
   $pageId = "plugins";
   $pageTitle = _("Plug-Ins and Libraries");
   include "../include/header.inc.php";
@@ -17,7 +19,7 @@
 <p><?=_('To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under "Program Files".  On Mac OS X, it is usually under "Applications". Restart Audacity, then the Plug-ins will appear underneath the divider in the "Effect", "Generate" or "Analyze" menus.')?></p>
 
 <h3><?=_("LADSPA Plug-Ins")?></h3>
-<p><?=_('Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity includes some sample LADSPA effects. Windows users can install an additional <a href="http://audacity.sourceforge.net/beta/ladspa/ladspa-0.4.15.exe">set of over 90 LADSPA plug-ins</a>. There is a similar set of LADSPA plug-ins for <a href="http://ardour.org/files/releases/swh-plugins-0.4.15.dmg">Mac</a>. More information and many LADSPA plug-ins for Linux can be found on the <a href="http://www.ladspa.org/">LADSPA web site</a>.')?></p>
+<p><?php printf(_('Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity includes some sample LADSPA effects. Windows users can install an additional <a href="%s">set of over 90 LADSPA plug-ins</a>.  There is a similar set of LADSPA plug-ins for <a href="%s">Mac</a>. More information and many LADSPA plug-ins for Linux can be found on the <a href="%s">LADSPA web site</a>.'), download_url($ladspa_url), 'http://ardour.org/files/releases/swh-plugins-0.4.15.dmg', 'http://www.ladspa.org/')?></p>
 
 <h3><?=_("Nyquist Plug-Ins")?></h3>
 <p><?=_('Audacity has built-in support for Nyquist effects on all operating systems. You can download additional <a href="nyquistplugins">Nyquist plug-ins</a>, or create your own using the <a href="../help/nyquist">Nyquist programming language</a>. Nyquist code can be tested using "Nyquist Prompt" under the Effect menu, or code for Nyquist plug-ins that generate audio can be quickly tested with <a href="http://audacity.sourceforge.net/nyquist/generate.zip">Nyquist Generate Prompt</a>.')?>
@@ -31,7 +33,7 @@
 <li><a href="http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/">Open Directory</a> (Windows, Mac).</li>
 </ul>
 
-<p><?=_('The <a href="http://audacityteam.org/wiki/index.php?title=VST_Plug-ins">VST Plug-ins</a> page on our <a href="http://audacityteam.org/wiki/">Wiki<a/> lists a large number of VST plug-ins that have been reported to work well in Audacity.')?></p>
+<p><?=_('The <a href="http://wiki.audacityteam.org/wiki/VST_Plug-ins">VST Plug-ins</a> page on our <a href="http://wiki.audacityteam.org/">Wiki<a/> lists a large number of VST plug-ins that have been reported to work well in Audacity.')?></p>
 
 <h3><?=_("Libraries")?></h3>
 <p><?=_('At present, the only library you can add to the 1.2 version of Audacity is the <b>LAME MP3 encoding</b> library. This allows Audacity to export audio in the popular <a href="http://wiki.audacityteam.org/index.php?title=MP3">MP3</a> format. To install the LAME library, please read our <a href="../help/faq?s=install&i=lame-mp3">LAME FAQ</a>.')?></p>    
