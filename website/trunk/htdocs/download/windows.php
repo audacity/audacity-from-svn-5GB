@@ -7,6 +7,7 @@
  */
   require_once "main.inc.php";
   require_once "../latest/versions.inc.php";
+  require_once "../latest/mirror.inc.php";
   $pageId = "windows";
   $pageTitle = _("Windows");
   include "../include/header.inc.php";
@@ -14,11 +15,17 @@
 
 <h2><?=$pageTitle?></h2>
 
-<h3><?=_("Recommended Download")?></h3>
+<div class="advice">
+<b>See further information about</b> <a href="http://wiki.audacityteam.org/wiki/Windows_Vista_OS">Windows Vista</a> <b>and</b> <a href="http://wiki.audacityteam.org/wiki/Windows_7_OS">Windows 7</a><b>.</b>
+</div>
+
+<p>
 <a href="#sysreq">System Requirements</a>
-<?php include "recommended.inc.php"?>
+</p>
+
+<h3><?=_("Recommended Download")?></h3>
 <ul>
-  <li><p><?php printf(_('Windows 98/ME/2000/XP/Vista: <a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor. <b>See further information about</b> <a href="http://audacityteam.org/wiki/index.php?title=Windows_Vista_OS">Vista</a><b>.</b>'), "../latest/".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
+  <li><p><?php printf(_('Windows 98/ME/2000/XP/Vista: <a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url($win_exe_url), win_exe_version, win_exe_size)?></p></li>
 </ul>
 
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
@@ -34,14 +41,13 @@
 ?>
 <h4><?=_("Plug-ins and Libraries")?></h4>
 <ul>
-  <li><p><?php printf(_('<a href="%s">LADSPA plug-ins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins.'), "".$ladspa_url, ladspa_version, ladspa_size)?></p></li>
+  <li><p><?php printf(_('<a href="%s">LADSPA plug-ins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins.'), download_url($ladspa_url), ladspa_version, ladspa_size)?></p></li>
   <?php include "common.inc.php"; ?>
 
 <h4><?=_("Audacity Zip file")?></h4>
 <ul>
   <li><p><?php printf(_('Windows 98/ME/2000/XP/Vista: <a href="%s">Audacity %s zip file</a> (%.1lf MB)
-  - If you cannot run the installer because of restricted permissions, download and unzip this file instead.'),
-    "../latest/".$win_zip_url, win_zip_version, win_zip_size)?></p></li>
+  - If you cannot run the installer because of restricted permissions, download and unzip this file instead.'), download_url($win_zip_url), win_zip_version, win_zip_size)?></p></li>
 </ul>
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>

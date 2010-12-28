@@ -7,6 +7,7 @@
  */
   require_once "main.inc.php";
   require_once "../latest/versions.inc.php";
+  require_once "../latest/mirror.inc.php";
   $pageId = "source";
   $pageTitle = _("Source Code");
   include "../include/header.inc.php";
@@ -17,13 +18,17 @@
 <h3><?=_("Recommended Download")?></h3>
 
 <ul>
-  <li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (.tar.gz file, %.1lf MB)'), "".$src_url, src_version, src_size)?></p></li>
+  <li><p><?php printf(_('<a href="%s">Audacity %s release (source tarball)</a> (.tar.gz file, %.1lf MB)'), download_url($src_url), src_version, src_size)?></p></li>
 </ul>
 
 <h3><?=_("Optional Downloads")?></h3>
 <ul>
   <li><p><?=_('Get the latest Stable code (incorporating any changes since the release tarball) from <a href="../community/developers#svn">SVN</a>. This is the best choice if you are compiling on Windows.')?></p></li>
-  <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our <a href="%s">alternate download links</a>.'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></p></li>
+<li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our alternate download links:')) ?></p>
+   <ul><li><?php printf(_('<a href="%s">SourceForge</a> (older versions can be viewed by clicking to enter the required folder under "Name")'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
+       <li><?php printf(_('<a href="%s">Google Code</a> (click on the headings to sort the list)'), "http://code.google.com/p/audacity/downloads/list")?></li>
+   </ul>
+</li>
 </ul>
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
@@ -56,18 +61,20 @@
 	_('On Windows, see the file "compile.txt" inside the "Win" folder in the source code. For OS X, see "compile.txt" inside the "Mac" folder in the code.'));
   printf(_('%sSee our guides to compiling Audacity for %sWindows%s, %sMac%s and %sLinux/Unix%s on the %sWiki%s.%s'),
    '<li>',
-   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Windows">',
+   '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Windows">',
    '</a>',
-   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Mac">',
+   '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Mac">',
    '</a>',
-   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Linux">',
+   '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Linux">',
    '</a>',
-   '<a href="http://audacityteam.org/wiki/">',
+   '<a href="http://wiki.audacityteam.org/">',
    '</a>',
    '</li>');
-  printf(_('%sIf you are still having difficulties, we want to help! Please join %saudacity-devel%s, our developers\' mailing list, then send us an e-mail.%s'),
+  printf(_('%sIf you are still having difficulties, we want to help! Please ask on the %sCompiling Audacity%s board on our %sForum%s.%s'),
   '<li>',
-  '<a href="../contact/lists#devel">',
+  '<a href="http://forum.audacityteam.org/viewforum.php?f=19">',
+  '</a>',
+  '<a href="http://forum.audacityteam.org/">',
   '</a>',
   '</li></ul>');
 ?></p>
