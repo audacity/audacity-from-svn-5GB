@@ -31,7 +31,7 @@
 <?php printf(_('This is a full source tarball, useful for Windows and Mac machines which may lack the necessary dependencies to compile Audacity.'))?></p></li>
 <li><p><?php printf(_('<a href="%s">Latest SVN development code</a>, incorporating changes since the release tarball.'), "../community/developers#svn")?></p></li>
 <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our alternate download links:')) ?></p>
-   <ul><li><?php printf(_('<a href="%s">Sourceforge</a> (older versions can be viewed by clicking on the appropriate package)'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
+   <ul><li><?php printf(_('<a href="%s">SourceForge</a> (older versions can be viewed by clicking to enter the required folder under "Name")'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
        <li><?php printf(_('<a href="%s">Google Code</a> (click on the headings to sort the list)'), "http://code.google.com/p/audacity/downloads/list")?></li>
    </ul>
 </li>
@@ -67,21 +67,25 @@
 	_('On Windows, see the file "compile.txt" inside the "Win" folder in the source code. For OS X, see "compile.txt" inside the "Mac" folder in the code.'));
   printf(_('%sSee our guides to compiling Audacity for %sWindows%s, %sMac%s and %sLinux/Unix%s on the %sWiki%s.%s'),
    '<li>',
-   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Windows">',
+   '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Windows">',
    '</a>',
-   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Mac">',
+   '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Mac">',
    '</a>',
-   '<a href="http://audacityteam.org/wiki/index.php?title=Developing_On_Linux">',
+   '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Linux">',
    '</a>',
-   '<a href="http://audacityteam.org/wiki/">',
+   '<a href="http://wiki.audacityteam.org/">',
    '</a>',
    '</li>');
-  printf(_('%sIf you are still having difficulties, we want to help! Please join %saudacity-devel%s, our developers\' mailing list, then send us an e-mail.%s'),
+  printf(_('%sIf you are still having difficulties, we want to help! Please ask on the %sCompiling Audacity%s board on our %sForum%s.%s'),
   '<li>',
-  '<a href="../contact/lists#devel">',
+  '<a href="http://forum.audacityteam.org/viewforum.php?f=19">',
   '</a>',
+  '<a href="http://forum.audacityteam.org">',
+  '</a>', 
   '</li></ul>');
+
 ?></p>
+
 
 <p>&nbsp;</p>
 
