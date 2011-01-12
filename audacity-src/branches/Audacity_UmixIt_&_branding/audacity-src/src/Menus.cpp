@@ -433,13 +433,14 @@ void AudacityProject::CreateMenusAndCommands()
                FN(OnPlayAfterRecord));
    c->AddSeparator();
 
-   gPrefs->Read("/Transport/bWantLockedRecording", &m_bWantLockedRecording, false); // Default is unlocked.
-   c->AddItem("Lock/Unlock", 
-               m_bWantLockedRecording ? 
-                  _("Unlock Recording\tCtrl+9") : 
-                  _("Lock Recording\tCtrl+9"),
-               FN(OnLockUnlock));
-   c->AddSeparator();
+   // Vaughan, 2011-01-12: Removed per Robert Barr's email. 
+   //gPrefs->Read("/Transport/bWantLockedRecording", &m_bWantLockedRecording, false); // Default is unlocked.
+   //c->AddItem("Lock/Unlock", 
+   //            m_bWantLockedRecording ? 
+   //               _("Unlock Recording\tCtrl+9") : 
+   //               _("Lock Recording\tCtrl+9"),
+   //            FN(OnLockUnlock));
+   //c->AddSeparator();
 
    gPrefs->Read("/Transport/bWantAppendRecording", &m_bWantAppendRecording, true); 
    c->AddItem("AppendRecording", 
@@ -779,7 +780,8 @@ void AudacityProject::CreateMenusAndCommands()
 
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       c->AddCommand("Play/Stop",   _("Play/Stop\tEnter"),            FN(OnPlayStop));
-      c->AddCommand("Stop",        _("Stop\tS"),                     FN(OnStop));
+      // Vaughan, 2011-01-12: Removed per Robert Barr's email
+      //c->AddCommand("Stop",        _("Stop\tS"),                     FN(OnStop));
       c->AddCommand("Pause",       _("Pause\tP"),                    FN(OnPause));
       c->AddCommand("Record",      _("Record\tSpacebar"),            FN(OnRecord));
    #else
