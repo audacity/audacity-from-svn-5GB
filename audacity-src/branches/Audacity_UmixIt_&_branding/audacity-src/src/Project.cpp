@@ -399,7 +399,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
         m_bWantPlayAfterOpen(true),
         m_bWantPlayAfterRecord(true),
-		  m_bWantLockedRecording(true), 
+		  m_bWantLockedRecording(false), // Default is unlocked.
         m_bWantAppendRecording(true),
      #elif (AUDACITY_BRANDING != BRAND_THINKLABS) // && (AUDACITY_BRANDING != BRAND_AUDIOTOUCH)
         mLyricsWindow(NULL),
