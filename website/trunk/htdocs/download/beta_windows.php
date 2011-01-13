@@ -20,7 +20,7 @@
 
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 <ul>
-  <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor, including help files. <b>See further information about</b> <a href="http://audacityteam.org/wiki/index.php?title=Windows_7_OS">Windows 7</a> <b>and</b> <a href="http://audacityteam.org/wiki/index.php?title=Windows_Vista_OS">Vista</a><b>.</b>'), download_url($win_exe_unicode_url), win_exe_unicode_version, win_exe_unicode_size)?></p></li>
+  <li><p>Windows 2000/XP/Vista (and provisional support for Windows 7): <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor, including help files. <b>See further information about</b> <a href="http://wiki.audacityteam.org/wiki/Windows_7_OS">Windows 7</a> <b>and</b> <a href="http://wiki.audacityteam.org/wiki/Windows_Vista_OS">Vista</a><b>.</b>'), download_url($win_exe_unicode_url), win_exe_unicode_version, win_exe_unicode_size)?></p></li>
 <div id="ansi"></div>
   <li><p>Windows 98/ME: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) -  The latest version of the free Audacity audio editor, including help files.</a>'), download_url($win_exe_url), win_exe_version, win_exe_size)?></p></li>
 </ul>
