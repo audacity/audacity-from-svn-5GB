@@ -3,7 +3,7 @@
  * Copyright 2004 Matt Brubeck
  * 2006 Richard Ash
  * 2007 Vaughan Johnson
- * 2008-10 Gale Andrews
+ * 2008-11 Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -23,41 +23,51 @@
   ?>
 
 <h3><?=_('Audacity Forum for Questions or Problems')?></h3>
-<p><?=_('<b>There is no technical support by e-mail or telephone.</b> Most questions are answered in our <a href="../help/faq">Frequently Asked Questions (FAQ)</a>, <a href="../help/documentation">documentation</a>, and the <a href="http://audacityteam.org/wiki/index.php?title=Tutorials">Tutorials</a> and <a href="http://audacityteam.org/wiki/index.php?title=Tips">Tips</a> on our <a href="http://audacityteam.org/wiki">Wiki</a>. All these resources are searchable using the search box top right of this page.')?></p>
+<p><?=_('<b>There is no technical support by e-mail or telephone.</b> Most questions are answered in our <a href="../help/faq">Frequently Asked Questions (FAQ)</a>, <a href="../help/documentation">documentation</a>, and the <a href="http://wiki.audacityteam.org/wiki/Category:Tutorial">Tutorials</a> and <a href="http://wiki.audacityteam.org/wiki/Category:Tips">Tips</a> on our <a href="http://wiki.audacityteam.org/wiki">Wiki</a>. All these resources are searchable using the search box top right of this page.')?></p>
 <p>
 <?php echo _('If you still need help, expert assistance is available on our');?>
-  <a href="http://audacityteam.org/forum/">
+  <a href="http://forum.audacityteam.org/">
 <?php
   // i18n-hint: "Forum" is the link text to the Forum. Probably you should not
   // translate this link text unless there is a sub-forum in your language.
   echo _('Forum</a>.');?>
 <?php
-  echo _(' To post a question, <a href="http://audacityteam.org/forum/ucp.php?mode=register">register</a>, confirm your registration then log in. Choose the correct subforum (for example, Audacity 1.2.x for Windows), click "New Topic" top left, then submit your message. Foreign language subforums are available for <a href="http://audacityteam.org/forum/viewforum.php?f=7">French</a>, <a href="http://audacity-forum.de/">German</a>, <a href="http://audacityteam.org/forum/viewforum.php?f=10">Russian</a> and <a href="http://audacityteam.org/forum/viewforum.php?f=8">Spanish</a>.');?>
+  echo _(' To post a question, <a href="http://forum.audacityteam.org/ucp.php?mode=register">register</a>, confirm your registration then log in. Choose the correct subforum (for example, "Windows" in the Audacity 1.2.x Forum), click "New Topic" top left, then submit your message.  Foreign language subforums are available for <a href="http://forum.audacityteam.org/viewforum.php?f=7">French</a>, <a href="http://audacity-forum.de/">German</a>, <a href="http://forum.audacityteam.org/viewforum.php?f=10">Russian</a> and <a href="http://forum.audacityteam.org/viewforum.php?f=8">Spanish</a>.');?>
 </p>
-<p><?=_('When reporting a problem or apparent bug to the Forum, please include full details of what you are trying to do. If there is a crash or error message, please state what you did that led up to this, and what exactly any error message said.')?></p>
+<p><?=_('Always give plenty of information when asking questions on the Forum. You can find more help with joining and using the Forum <a href="http://wiki.audacityteam.org/wiki/Asking_Questions">here</a>.')?></p>
 
-<h3 id="feedback"><?=_('Suggestions, Bug Reports and Feature Requests')?></h3>
+<h3 id="feedback"><?=_('Suggestions, Bug Reports, Feature Requests and Patches')?></h3>
 <p>
 <?php
    // i18n-hint: the encoding inside the <a href> tag between the two 
    // "echo" strings obscures the e-mail address from (at least some) 
    // harvesting bots. Please translate the strings above and below
    // the <a href> tag, and ignore the line with the <a href> tag itself.   
-   echo _('To give us feedback that does <b>not</b> require a personal response, please ')?>
+   echo _('You can ')?>
    <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;"> 
 <?php
-   echo _('e-mail us</a> in <b>English language only.</b> Please tell us your experiences of the Audacity program, documentation or web site. We particularly welcome reports of possible program bugs and requests for new Audacity features. Before reporting bugs, please check the Release Notes for the Audacity <a href="http://audacity.sourceforge.net/download/release-notes">1.2<a/> and <a href="http://wiki.audacityteam.org/wiki/Release_Notes">1.3 (Beta)</a> series.');?></p>
+   echo _('e-mail us</a> about any Audacity matter, but <b>not for technical support</b> - this is provided on our <a href="http://forum.audacityteam.org/">Forum</a>. Please write in <b>English language only.</b> Please tell us your experiences of the Audacity program, documentation or web site. We particularly welcome the following:</p>
+
+<p>
+<ul>
+<li>Reports of possible program bugs</li>
+<li>Requests for new or enhanced features</li>
+<li>Offers to <a href="http://wiki.audacityteam.org/wiki/Contribute">contribute</a> to the Audacity project.');?></li>
+</ul>
+</p>
+
+<p><?=_('<b>Bug reports:</b> Please check the latest Release Notes for Audacity <a href="http://audacity.sourceforge.net/download/release-notes">1.2<a/> or <a href="http://wiki.audacityteam.org/wiki/Release_Notes">1.3 (Beta)</a> series, and <a href="http://wiki.audacityteam.org/wiki/Reporting_Bugs">Reporting Bugs</a> <b>before</b> making a report.');?></p>
 
 <div class="advice">
 <p><?=_('Reports of apparent bugs should be as specific as possible, including:</p>
 <ol>
-  <li>Your version of Audacity (for example, 1.2.6).</li>
-  <li>Your operating system (for example, Windows XP Service Pack 2 or Intel Mac OS X 10.4).</li>
-  <li>Details of what you were trying to do, what steps led to the problem occurring, and details of any error messages.</li>
+  <li><b>The exact three-digit version number of Audacity</b> (for example, 1.2.6) - you can check this at Help > About Audacity, or Audacity > About Audacity on Mac</li>
+  <li><b>Your operating system</b> (for example, Windows XP Service Pack 2 or Intel Mac OS X 10.4)</li>
+  <li><b>Details of what you were trying to do</b>, including what steps led to the problem occurring, and the text of any error messages.</li>
 </ol>
 </div>
 
-<p>Patches to fix problems or enhance features will be gratefully received. Please follow the guidance on the <a href="http://audacityteam.org/wiki/index.php?title=SubmittingPatches">Submitting Patches</a> page on our <a href="http://audacityteam.org/wiki/index.php">Wiki</a>.</p>')?>    
+<p><b>Patches:</b> Code patches to fix problems or enhance features will be gratefully received. Please follow the guidance on the <a href="http://wiki.audacityteam.org/wiki/SubmittingPatches">Submitting Patches</a> page on our <a href="http://wiki.audacityteam.org/">Wiki</a>.</p>')?>    
 
 <h3><?php echo _('Discussion Lists')?></h3>
 <p><?php echo _('Subscribe to our');?>
