@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2002-2009 Dominic Mazzoni, Matt Brubeck, Gale Andrews
+ * Copyright 2002-2011 Dominic Mazzoni, Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -55,7 +55,7 @@ printf(_('A group of volunteers is translating the free Audacity sound editor in
   <li><a href="%s">Audacity web site translations</a></li>
 </ul>
 
-<p>On the "Log" page for your language, click the "download" link at the top, just to right of "Links to HEAD" (right-click or control-click and save the target or link if necessary).</p> 
+<p>After clicking either link above, click on the link for the .po file for your language. On the page you come to, scroll down to the blue "File info" panel on the right, then right-click or control-click over the "View raw file" link and "save target" or "save link as" to download the .po file.</p> 
 
 <p><b>If there is no .po file for your language</b>, create one by downloading the latest "audacity.pot" or "audacity_website.pot" file under "Resources for Translators" above. (If the links only produce text in the browser, right-click or control-click and save the target or link). Rename the .pot to "audacity.po" (or "audacity_website.po" for web site translation) before starting your translation.</p>
 
