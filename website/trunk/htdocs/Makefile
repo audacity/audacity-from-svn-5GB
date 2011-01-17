@@ -89,7 +89,7 @@ PROJECT=audacity
 # host files are on
 SFHOST=web.sourceforge.net
 # where the files are kept. The trailing / is important.
-PROJDIR=/home/groups/a/au/audacity/htdocs/
+PROJDIR=/home/project-web/audacity/htdocs/
 
 # Internal configuration stuff (applies to all projects)
 # Options to all rsync commands:
