@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2003 Dominic Mazzoni
- * Copyright 2004-10 Matt Brubeck, Vaughan Johnson
+ * Copyright 2004-11 Matt Brubeck, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -29,6 +29,7 @@
   <li>Arturo "Buanzo" Busleiman, <?=_("system administration")?></li>
   <li>Michael Chinen, <?=_("developer")?></li>
   <li>James Crook, <?=_("developer")?></li>
+  <li><a href="http://www.cs.cmu.edu/~rbd">Roger Dannenberg</a>, <?=_("developer")?></li>
   <li>Steve Daulton, <?=_("documentation and support")?></li>
   <li>Al Dimond, <?=_("developer")?></li>
   <li>Ruslan Ijbulatov, <?=_("developer")?></li>
@@ -38,6 +39,7 @@
   <li>Alexandre Prokoudine, <?=_("documentation and support")?></li>
   <li>Peter Sampson, <?=_("documentation and support")?></li>
   <li>Martyn Shaw, <?=_("developer")?></li>
+  <li>Bill Wharrie, <?=_("documentation and support")?></li>
 </ul>
 
 <h3><?=_("Technical Leadership Council")?></h3>
@@ -52,7 +54,6 @@
 <h3><?=_("Emeritus: distinguished Audacity Team members, not currently active")?></h3>
 <ul>
   <li><a href="http://limpet.net/mbrubeck/">Matt Brubeck</a>, <?=_("developer")?></li>
-  <li><a href="http://www.cs.cmu.edu/~rbd">Roger Dannenberg</a>, <?=_("developer")?></li>
   <li><a href="http://www.reverberate.org/">Joshua Haberman</a>, <?=_("developer")?></li>
   <li>Leland Lucius, <?=_("developer")?></li>
   <li>Markus Meyer, <?=_("developer")?></li>
@@ -128,7 +129,7 @@
   <li>Maxim Dziumanenko (uk)</li>
   <li>XiaoXi Liu (zh_CN)</li>
   <li><a href="http://chido.idv.st/">Chido</a> (zh_TW)</li>
-  <li>??? - <a href="http://rt.openfoundry.org/Foundry/Project/index.html?Queue=210">Audacity ???</a> (zh_TW)</li>
+  <li> 潘明忠 - <a href="http://rt.openfoundry.org/Foundry/Project/index.html?Queue=210">Audacity 中文化 </a> (zh_TW)</li>
 </ul>
 
 <h3><?=_("Libraries")?></h3>
