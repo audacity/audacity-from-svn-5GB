@@ -2,9 +2,9 @@
 /*
  * Copyright 2004 Matt Brubeck
  * Richard Ash 2006
- * Gale Andrews 2009-2010
+ * Gale Andrews 2009-2011
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   require_once "../latest/versions.inc.php";
@@ -39,7 +39,7 @@
 
 <h4><?=_("Plug-ins and Libraries")?></h4>
 <ul>
-  <li><p><a href="http://ardour.org/files/releases/swh-plugins-0.4.15.dmg">LADSPA plug-ins installer</a> - over 90 plug-ins.</p></li>
+  <li><p><a href="http://ardour.org/files/releases/swh-plugins-0.4.15.dmg"><?=_("LADSPA plug-ins installer</a> - over 90 plug-ins.")?></p></li>
 <?php include "common.inc.php"; ?>
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
