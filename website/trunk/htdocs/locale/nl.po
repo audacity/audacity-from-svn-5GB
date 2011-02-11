@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: Audacity Beta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-06 15:00+0000\n"
-"PO-Revision-Date: 2011-02-06 20:21+0100\n"
-"Last-Translator: Thomas De Rocker <thomasderocker.at.h0tmail.d0t.c0m>\n"
+"POT-Creation-Date: 2011-02-10 01:37+0000\n"
+"PO-Revision-Date: 2011-02-11 01:00-0000\n"
+"Last-Translator: Gale <gale@audacityteam.org>\n"
 "Language-Team: Nederlands\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3762,23 +3762,27 @@ msgid "VST Plug-Ins"
 msgstr "VST plugins"
 
 #: download/plugins.php:28
-msgid "Audacity can load VST effects on Windows and Mac using the optional <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  VST effects can be found on many plug-in sites such as:"
-msgstr "Audacity kan VST-effecten laden op Windows en Mac door de optionele <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a> te gebruiken. VST-effecten kunnen teruggevonden worden op vele plugin-sites zoals:"
+msgid "Audacity can load VST effects (but not VST instruments) on Windows and Mac. Audacity 1.2 only has <a href=\"../help/faq?s=install&i=vst-bugs\">limited</a> support for VST effects. This support can be added by downloading the optional <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>. Audacity 1.3.8 onwards supports a much wider range of VST effects with full GUI interface (where provided by the plug-in). The VST Enabler is not required."
+msgstr "Audacity kan VST-effecten (maar geen VST-instrumenten) op Windows en Mac. Audacity 1.2 heeft alleen <a href=\"../help/faq?s=install&i=vst-bugs\">gelimiteerde</a> ondersteuning voor VST-effecten. Deze ondersteuning kan toegevoegd worden door de optionele <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a> te downloaden. Audacity 1.3.8 ondersteunt een veel groter aantal VST-effecten met volledige GUI-interface (waar voorzien door de plugin). De VST enabler is niet vereist."
 
-#: download/plugins.php:36
-msgid "The <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-ins</a> page on our <a href=\"http://wiki.audacityteam.org/\">Wiki<a/> lists a large number of VST plug-ins that have been reported to work well in Audacity."
-msgstr "De <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST-plug-ins</a>-pagina op onze <a href=\"http://wiki.audacityteam.org/\">Wiki<a/> geeft een lijst van een groot aantal VST-plug-ins waarvan gerapporteerd werd dat ze goed in Audacity werken."
+#: download/plugins.php:30
+msgid "VST effects can be found on many plug-in sites such as:"
+msgstr "VST-effecten kunnen teruggevonden op vele plugin-sites zoals:"
 
 #: download/plugins.php:38
+msgid "The <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-ins</a> page on our <a href=\"http://wiki.audacityteam.org/\">Wiki<a/> contains further help for VST plug-ins, and lists a large number of VST plug-ins that have been reported to work well in Audacity."
+msgstr "De <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST-plug-ins</a>-pagina op onze <a href=\"http://wiki.audacityteam.org/\">Wiki<a/> bevat verdere hulp voor VST-plugins en geeft een lijst van een groot aantal VST-plug-ins waarvan gerapporteerd werd dat ze goed in Audacity werken."
+
+#: download/plugins.php:40
 #: about/credits.php:135
 msgid "Libraries"
 msgstr "Bibliotheken"
 
-#: download/plugins.php:39
+#: download/plugins.php:41
 msgid "At present, the only library you can add to the 1.2 version of Audacity is the <b>LAME MP3 encoding</b> library. This allows Audacity to export audio in the popular <a href=\"http://wiki.audacityteam.org/index.php?title=MP3\">MP3</a> format. To install the LAME library, please read our <a href=\"../help/faq?s=install&i=lame-mp3\">LAME FAQ</a>."
 msgstr "Momenteel is de enige bibliotheek die u kunt toevoegen aan de stabiele 1.2-versie van Audacity de <b>LAME MP3-coderings</b>bibliotheek. Dit laat Audacity toe om audio te exporteren naar het populaire <a href=\"http://wiki.audacityteam.org/index.php?title=MP3\">mp3</a>-formaat. Om de LAME-bibliotheek te installeren, gelieve onze <a href=\"../help/faq?s=install&i=lame-mp3\">LAME veelgestelde vragen</a> te lezen."
 
-#: download/plugins.php:40
+#: download/plugins.php:42
 msgid "In addition to supporting LAME, the <a href=\"../download/features-1.3-a\">Beta 1.3</a> version of Audacity has experimental support for the <b>FFmpeg import/export</b> library. This allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg FAQ.</a> The next 2.0 Stable version of Audacity is expected to support the FFmpeg library.</a>"
 msgstr "Naast het ondersteunen van LAME heeft de <a href=\"../download/features-1.3-a\">bèta 1.3</a>-versie van Audacity experimentele ondersteuning voor de <b>FFmpeg import/export</b>-bibliotheek. Dit laat Audacity toe om veel extra audioformaten te importeren en te exporteren, zoals AC3, AMR(NB), M4A en WMA, en om audio te importeren van videobestanden. Om de FFmpeg-bibliotheek te installeren, lees onze <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg FAQ.</a>Er wordt verwacht dat de volgende 2.0 stabiele versie van Audacity de FFmpeg-bibliotheek ondersteunt.</a>"
 
@@ -4133,6 +4137,10 @@ msgstr "Sleep de volledige inhoud van het .dmg-bestand (niet de .dmg zelf) in de
 #: download/beta_mac.php:33
 msgid "Double-click the Audacity icon inside the \"Audacity\" folder to launch the program"
 msgstr "Dubbelklik op het Audacity-icoon in de \"Audacity\"-map om het programma te starten"
+
+#: download/mac.php:42
+msgid "LADSPA plug-ins installer</a> - over 90 plug-ins."
+msgstr "LADSPA plug-ins installer</a> - meer dan 90 plugins."
 
 #: download/mac.php:47
 msgid "Audacity 1.2 requires Mac OS X 10.1 or later."
@@ -5887,14 +5895,14 @@ msgstr ""
 "<li>Aanbiedingen om <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">bij te dragen</a> aan het Audacity-project."
 
 #: contact/index.php:59
-msgid "<b>Bug reports:</b> Please check the latest Release Notes for Audacity <a href=\"http://audacity.sourceforge.net/download/release-notes\">1.2<a/> or <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">1.3 (Beta)</a> series, and <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Reporting Bugs</a> <b>before</b> making a report."
-msgstr "<b>Foutrapporten:</b> raadpleeg de laatste vrijgave-opmerkingen voor Audacity <a href=\"http://audacity.sourceforge.net/download/release-notes\">1.2<a/> of <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">1.3 (bèta)</a>, en <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">fouten rapporteren</a> <b>voordat</b> u een rapport aanmaakt."
+msgid "<b>Bug reports:</b> Please check the latest Release Notes for Audacity <a href=\"http://audacity.sourceforge.net/download/release-notes\">1.2<a/> or <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">1.3 (Beta)</a> series, and <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Reporting Bugs</a> <b>before</b> making a report. We are no longer fixing bugs in the 1.2 series - please try <a href=\"/../download\">1.3 (Beta)</a> if you have a problem with a 1.2 version of Audacity."
+msgstr "<b>Foutrapporten:</b> raadpleeg de laatste vrijgave-opmerkingen voor Audacity <a href=\"http://audacity.sourceforge.net/download/release-notes\">1.2<a/> of <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">1.3 (bèta)</a>, en <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">fouten rapporteren</a> <b>voordat</b> u een rapport aanmaakt. We repareren niet langer fouten in versie 1.2 - probeer <a href=\"/../download\">1.3 (bèta)</a> als u een probleem heeft met versie 1.2 van Audacity."
 
 #: contact/index.php:62
 msgid ""
 "Reports of apparent bugs should be as specific as possible, including:</p>\n"
 "<ol>\n"
-"  <li><b>The exact three-digit version number of Audacity</b> (for example, 1.2.6) - you can check this at Help > About Audacity, or Audacity > About Audacity on Mac</li>\n"
+"  <li><b>The exact three-digit version number of Audacity</b> (for example, 1.3.12) - you can check this at Help > About Audacity, or Audacity > About Audacity on Mac</li>\n"
 "  <li><b>Your operating system</b> (for example, Windows XP Service Pack 2 or Intel Mac OS X 10.4)</li>\n"
 "  <li><b>Details of what you were trying to do</b>, including what steps led to the problem occurring, and the text of any error messages.</li>\n"
 "</ol>\n"
@@ -5904,13 +5912,13 @@ msgid ""
 msgstr ""
 "Rapporten van schijnbare bugs moeten zo specifiek mogelijk zijn, inclusief:</p>\n"
 "<ol>\n"
-"  <li><b>Het exacte drie-cijferige versienummer van Audacity</b> (bijvoorbeeld 1.2.6) - u kan dit terugvinden bij Help > Over Audacity, of op Mac bij Audacity > Over Audacity.</li>\n"
-"  <li><b>Uw besturingssysteem<b> (bijvoorbeeld Windows XP Service Pack 2 of Intel Mac OS X 10.4).</li>\n"
-"  <li><b>Details over wat u probeerde te doen<b>, welke stappen leidden tot het optredende probleem en details over eventuele foutberichten.</li>\n"
+"  <li><b>Het exacte drie-cijferige versienummer van Audacity</b> (bijvoorbeeld 1.3.12) - u kan dit terugvinden bij Help > Over Audacity, of op Mac bij Audacity > Over Audacity.</li>\n"
+"  <li><b>Uw besturingssysteem</b> (bijvoorbeeld Windows XP Service Pack 2 of Intel Mac OS X 10.4).</li>\n"
+"  <li><b>Details over wat u probeerde te doen</b>, welke stappen leidden tot het optredende probleem en details over eventuele foutberichten.</li>\n"
 "</ol>\n"
 "</div>\n"
 "\n"
-"<p>Patches om problemen op te lossen of functies te verbeteren zullen dankbaar aanvaard worden. Volg alstublieft de handleiding over het <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Inzenden van Patches</a> op onze <a href=\"http://wiki.audacityteam.org/\">Wiki</a>.</p>"
+"<p><b>Patches:</b> patches om problemen op te lossen of functies te verbeteren zullen dankbaar aanvaard worden. Volg de handleiding over het <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Inzenden van Patches</a> op onze <a href=\"http://wiki.audacityteam.org/\">Wiki</a>.</p>"
 
 #: contact/index.php:72
 msgid "Discussion Lists"
@@ -8405,6 +8413,16 @@ msgstr "Audacity gebruikt een open XML-bestandsformaat om interoperabiliteit aan
 #: xml/index.php:22
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "Meer informatie over het Audacity-projectformaat komt eraan."
+
+#~ msgid ""
+#~ "Audacity can load VST effects on Windows and Mac using the optional <a "
+#~ "href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  VST "
+#~ "effects can be found on many plug-in sites such as:"
+#~ msgstr ""
+#~ "Audacity kan VST-effecten laden op Windows en Mac door de optionele <a "
+#~ "href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a> te "
+#~ "gebruiken. VST-effecten kunnen teruggevonden worden op vele plugin-sites "
+#~ "zoals:"
 
 #~ msgid ""
 #~ "<a href=\"%s\">Sourceforge</a> (older versions can be viewed by clicking "
