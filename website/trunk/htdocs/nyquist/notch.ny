@@ -1,32 +1,24 @@
 ;nyquist plug-in
 ;version 1
 ;type process
+;categories "http://lv2plug.in/ns/lv2core/#FilterPlugin"
 ;name "Notch Filter..."
-;action "Applying Notch Filter..."
-;info "by David R. Sky\nReleased under terms of GNU Public License\nlower q gives wider notch"
+;action "Performing Notch Filter..."
+;info "By Steve Daulton and Bill Wharrie. Released under GPL v2."
 
-;control choice "Default choice" int "0=60 1=50 2=alternative" 0 0 2
-;control freq "Notch frequency" real "Hz" 60.0 20.0 20000.0
-;control q "Notch q" real "Q" 1.00 0.01 5.00
+;control freq "Frequency" real "Hz" 60 0 10000
+;control q "Q (higher value reduces width)" real "" 1 0.1 20
 
-; Notch filter by David R. Sky
-; updated January 2, 2006
-; Released under terms of the GNU Public License
-; http://www.opensource.org/licenses/gpl-license.php
+;; notch.ny by Steve Daulton and Bill Wharrie, September 2010
+;; Released under terms of the GNU General Public License version 2
+;; http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-(setf freq (cond
-; remove 60 Hz hum, North America
-((= choice 0) 60)
-; remove 50Hz hum, UK and elsewhere
-((= choice 1) 50)
-; set other desired notch frequency
-((= choice 2) freq)))
+;; (multichan-expand) provides legacy support for old versions of Audacity 
+;; in which the (notch2) function only supports mono tracks.
 
-; if audio is stereo...
-(if (arrayp s)
-; apply notch to stereo audio
-(vector (notch2 (aref s 0) freq q)
-(notch2 (aref s 1) freq q))
-; ... otherwise apply to mono
-(notch2 s freq q))
-
+(cond
+  ((> freq (/ *sound-srate* 2.0))(format nil "Error:\nFrequency too high for track sample rate."))
+  ((< freq 0)(format nil "Error:\nNegative frequency is invalid."))
+  ((< q 0.01)(format nil "Error:\nWidth must be at least 0.01."))
+  ((= freq 0) (format nil "Nothing to be done."))
+  (T (multichan-expand #'notch2 s freq q)))
