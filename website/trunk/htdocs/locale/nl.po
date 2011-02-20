@@ -5,18 +5,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacity Beta\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-10 01:37+0000\n"
-"PO-Revision-Date: 2011-02-15 04:27-0000\n"
-"Last-Translator: Gale <gale@audacityteam.org>\n"
-"Language-Team: Dutch\n"
-"Language: \n"
+"POT-Creation-Date: 2011-02-16 03:15+0000\n"
+"PO-Revision-Date: 2011-02-18 16:34+0100\n"
+"Last-Translator: Thomas De Rocker <thomasderocker.at.h0tmail.d0t.c0m>\n"
+"Language-Team: Nederlands\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Dutch\n"
-"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-Country: BELGIUM\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: main.inc.php:20
 msgid "Home"
@@ -336,7 +336,8 @@ msgstr "Hoe installeer ik de LAME MP3-encoder?"
 #: help/faq.php:86
 #, php-format
 msgid ""
-"<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.\n"
+"<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.</p>\n"
+"\n"
 "<h3 id=\"win\">Windows</h3>\n"
 "<ol>\n"
 "  <li>Go to the <a href=\"http://lame.buanzo.com.ar/\">LAME download page</a>.</li>\n"
@@ -359,7 +360,8 @@ msgid ""
 "<h3 id=\"nix\">Linux/Unix</h3>\n"
 "Follow <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions\">these instructions</a> on our <a href=\"http://audacityteam.org/wiki/\">Wiki</a> to download and install a suitable LAME package from the internet."
 msgstr ""
-"<p>Vanwege softwarepatenten kunnen we zelf geen MP3 coderingssoftware verspreiden. Volg deze instructies om de gratis LAME encoder te gebruiken om MP3-bestanden te exporteren met Audacity.\n"
+"<p>Omwille van softwarepatenten kunnen we zelf geen MP3-coderingssoftware verspreiden. Volg deze instructies om de gratis LAME encoder te gebruiken om MP3-bestanden te exporteren met Audacity.</p>\n"
+"\n"
 "<h3 id=\"win\">Windows</h3>\n"
 "<ol>\n"
 "  <li>Ga naar de <a href=\"http://lame.buanzo.com.ar/\">LAME downloadpagina</a>.</li>\n"
@@ -382,11 +384,11 @@ msgstr ""
 "<h3 id=\"nix\">Linux/Unix</h3>\n"
 "Volg <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions\">deze instructies</a> op onze <a href=\"http://audacityteam.org/wiki/\">Wiki</a> om een passend LAME-pakket te downloaden en installeren van het Internet."
 
-#: help/faq.php:110
+#: help/faq.php:111
 msgid "How do I install VST plug-ins?"
 msgstr "Hoe installeer ik VST-plugins?"
 
-#: help/faq.php:111
+#: help/faq.php:112
 #, php-format
 msgid ""
 "<ol>\n"
@@ -405,11 +407,11 @@ msgstr ""
 "<p><b>Opmerking:</b> de huidige bètaversies (1.3) van Audacity zullen VST-plugins automatisch weergeven, zonder de VST Enabler te moeten installeren. Om recent toegevoegde plugins in Audacity bèta weer te geven, gaat u naar de Effecten-tab van Voorkeuren en vinkt u \"VST-effecten opnieuw scannen bij volgende start van Audacity\" aan, waarna u Audacity opnieuw opstart</p>    \n"
 "<p>Zie ook: <a href=\"faq?s=install&amp;i=vst-bugs\">Waarom zien sommige VST-plugins er vreemd uit of werken ze niet?</a></p>"
 
-#: help/faq.php:120
+#: help/faq.php:121
 msgid "Why do some VST plug-ins look wrong, or not work?"
 msgstr "Waarom zien sommig VST-plugins er vreemd uit of werken ze niet?"
 
-#: help/faq.php:121
+#: help/faq.php:122
 msgid ""
 "<p>1.2 versions of Audacity require the <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> in order to display VST plug-ins. The Enabler can only display a generic, tabular interface for plug-ins, so they may look or act differently than they do in other programs, or not function at all.\n"
 "<p>Current Beta (1.3) versions of Audacity will by default display VST effect plug-ins with their full interface, without the need of an Enabler.</p>  \n"
@@ -423,31 +425,31 @@ msgstr ""
 "Als u problemen heeft met VST-plugins in Audacity, gelieve onze gedetailleerde <a href=\"http://wiki.audacityteam.org/w/index.php?title=VST_Plug-ins\">VST-plugins pagina</a> te lezen. U kan ons <a href=\"../contact#feedback\">contacteren</a> om moeilijkheden te rapporteren die niet behandeld worden op die pagina.</p>                \n"
 "<p>Geen enkele versie van Audacity ondersteunt VST-instrument (VSTi) plugins. </p>"
 
-#: help/faq.php:128
+#: help/faq.php:129
 msgid "What should I do if I have problems downloading or installing Audacity?"
 msgstr "Wat moet ik doen als ik problemen heb met het downloaden of installeren van Audacity?"
 
-#: help/faq.php:129
+#: help/faq.php:130
 msgid "<p>If you can't download Audacity, or if the downloaded setup file is corrupt, try downloading it from our <a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">alternate servers</a>.</p>"
 msgstr "<p>Als u Audacity niet kunt downloaden of als het installatiebestand beschadigd is, probeert u het te downloaden van onze <a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">alternatieve servers</a>.</p>"
 
-#: help/faq.php:134
+#: help/faq.php:135
 msgid "<div id=\"record\">Recording</div>"
 msgstr "<div id=\"record\">Opnemen</div>"
 
-#: help/faq.php:137
+#: help/faq.php:138
 msgid "How can I record in stereo?"
 msgstr "Hoe kan ik in stereo opnemen?"
 
-#: help/faq.php:138
+#: help/faq.php:139
 msgid "<p>To record in stereo, open the Audacity preferences.  In the “Audio I/O” section, change the number of recording channels from 1 (mono) to 2 (stereo).</p>"
 msgstr "<p>Om in stereo op te nemen opent u Voorkeuren... van Audacity (in het menu Bewerken).  Onder “Audio I/O”, verandert u het aantal opnamekanalen van 1 (mono) in 2 (stereo).</p>"
 
-#: help/faq.php:141
+#: help/faq.php:142
 msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
 msgstr "Hoe neem ik op van vinylplaten, cassettebandjes of minidiscs?"
 
-#: help/faq.php:142
+#: help/faq.php:143
 msgid ""
 "<p>First, set Audacity to <a href=\"faq?s=recording&amp;i=stereo\">record in stereo</a>.</p>\n"
 "<p>Next, plug one end of a stereo cable into the “Line Out” or “Headphone” connector on your tape deck, minidisc player, or stereo system.  Plug the other end into your computer’s “Line In” connector.  If you do not have a cable that fits both of these connectors, you can find one at an electronics store.</p>\n"
@@ -475,23 +477,23 @@ msgstr ""
 "</ul>\n"
 "<p>Zie ook: <a href=\"faq?s=files&amp;i=split\">Hoe een lange opname te splitsen in meerdere bestanden</a>.</p>"
 
-#: help/faq.php:154
-#: help/faq.php:231
-#: help/faq.php:297
+#: help/faq.php:155
+#: help/faq.php:232
+#: help/faq.php:298
 msgid "See also:"
 msgstr "Zie ook:"
 
-#: help/faq.php:154
-#: help/faq.php:271
-#: help/faq.php:297
+#: help/faq.php:155
+#: help/faq.php:272
+#: help/faq.php:298
 msgid "How do I save my recording on an audio CD?"
 msgstr "Hoe brand ik mijn opnames op een audio-cd?"
 
-#: help/faq.php:157
+#: help/faq.php:158
 msgid "Why doesn't the Mixer Toolbar input selector work properly, for example on Windows 7?"
 msgstr "Waarom werkt de input-selector van de Mixer-toolbar niet naar behoren, bijvoorbeeld bij Windows 7?"
 
-#: help/faq.php:158
+#: help/faq.php:159
 msgid ""
 "<p>The Input selector may be greyed-out, lacking the expected choices, or apparently not recording from the indicated source.</p>\n"
 "<p>The cause varies by operating system and sound card driver. For example, on Windows Vista or 7, you must use the \"Recording Device\" dropdown in the \"Audio I/O\" tab of Preferences (\"Devices\" tab in Audacity Beta) to select input sources. For more help, see the <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixer Toolbar Issues</a> page on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>\n"
@@ -499,11 +501,11 @@ msgstr ""
 "<p>De Input-selector kan in het grijs staan, de verwachte keuzes mankeren, of schijnbaar niet opnemen van de aangeduide bron.</p>\n"
 "<p>De redenen van deze problemen variëren per besturingssysteem en geluidskaart-driver. Bij Windows Vista of 7 moet u bijvoorbeeld het \"Opname-Apparaat\"-menu gebruiken in de Audio Invoer/Uitvoer-tab van Voorkeuren (\"Apparaten\"-tab bij Audacity bèta) om invoerbronnen te selecteren. Voor meer hulp, zie de <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixerwerkbalk-problemen</a>-pagina op de <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>\n"
 
-#: help/faq.php:163
+#: help/faq.php:164
 msgid "Why can’t I hear what I’m recording?"
 msgstr "Waarom kan ik niet horen wat ik opneem?"
 
-#: help/faq.php:164
+#: help/faq.php:165
 msgid ""
 "<h3>Windows and Linux</h3>\n"
 "<p>To monitor your recording, open your computer's volume control panel.  Turn up the playback volume and turn off the “mute” checkbox for your recording source (usually “microphone” or “line in”).</p>\n"
@@ -521,11 +523,11 @@ msgstr ""
 "<h3>Monitoring tijdens opnemen via een microfoon</h3>\n"
 "<p>Gebruik altijd een koptelefoon wanneer u luistert terwijl u opneemt via een microfoon, om te vermijden dat de playthrough van de opname opgenomen wordt in de opname zelf.</p>\n"
 
-#: help/faq.php:174
+#: help/faq.php:175
 msgid "Can I play a track while recording a new one on top of it?"
 msgstr "Kan ik een spoor afspelen terwijl ik er een nieuw spoor overheen opneem?"
 
-#: help/faq.php:175
+#: help/faq.php:176
 msgid ""
 "<p>This is called multi-track recording.  It makes it possible to record harmonies with yourself, or add new instruments or vocals to an existing recording.  To do this in Audacity, follow these instructions:</p>\n"
 "<ol>\n"
@@ -557,11 +559,11 @@ msgstr ""
 "\t</ul>\n"
 "</p>"
 
-#: help/faq.php:191
+#: help/faq.php:192
 msgid "Why isn’t my new track in sync with the previous ones?"
 msgstr "Waarom loopt mijn nieuwe spoor niet synchroon met het vorige?"
 
-#: help/faq.php:192
+#: help/faq.php:193
 msgid ""
 "<p>When you make a <a href=\"faq?s=recording&amp;i=multi-track\">multi-track recording</a>, there is an unpredictable delay between playback and recording.  Audacity tries to correct for this automatically, but this doesn't yet work on all computers.</p>\n"
 "<p>If a new track is not synchronized with the others, you can zoom in and use the Time Shift tool to drag it to the correct location.</p>"
@@ -569,11 +571,11 @@ msgstr ""
 "<p>Als u een <a href=\"faq?s=recording&amp;i=multi-track\">meersporenopname</a> maakt, is er een onvoorspelbare vertraging tussen afspelen en opnemen. Audacity probeert dit automatisch voor u te corrigeren, maar dit werkt nog niet op alle pc's.</p>\n"
 "<p>Als een nieuw spoor niet gesynchroniseerd wordt met de andere, kunt u inzoomen en het gereedschap Tijd verschuiven gebruiken om het naar de juiste locatie te slepen.</p>"
 
-#: help/faq.php:196
+#: help/faq.php:197
 msgid "Can Audacity record RealAudio or other streaming audio?"
 msgstr "Kan Audacity RealAudio of andere streaming audio opnemen?"
 
-#: help/faq.php:197
+#: help/faq.php:198
 msgid ""
 "<h3>Windows and Linux</h3>\n"
 "<p>With most Windows and Linux audio devices, it is possible to record whatever sound the computer is currently playing, including internet radio streams.</p>\n"
@@ -590,11 +592,11 @@ msgstr ""
 "<h3 id=\"mac\">Mac OS X</h3>\n"
 "<p>Mac OS X-gebruikers kunnen streaming audio opnemen door een programma te gebruiken zoals <a href=\"http://www.cycling74.com/products/soundflower\">Soundflower</a> (gratis, open source), <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> of <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>. Zie <a href=\"http://wiki.audacityteam.org/wiki/Recording_audio_playing_on_the_computer#Mac\">deze pagina</a> op onze <a href=\"http://wiki.audacityteam.org/wiki/\">Wiki</a> voor meer informatie.</p>\n"
 
-#: help/faq.php:207
+#: help/faq.php:208
 msgid "Can I set Audacity to record at a certain time?"
 msgstr "Kan ik Audacity instellen zodat de opname op een bepaald moment start?"
 
-#: help/faq.php:208
+#: help/faq.php:209
 msgid ""
 "<p>Audacity 1.2 does not support scheduled recording, but Audacity <a href=\"../download/features-1.3-a\">1.3 Beta</a> has a <a href=\"http://audacity.sourceforge.net/download/features-1.3-k.php\">Timer Record</a> feature to start and stop recording at a particular time. </p>\n"
 "<p>In 1.2, you can make Audacity <b>stop</b> recording after a certain time limit, by following these steps:</p>\n"
@@ -614,16 +616,16 @@ msgstr ""
 "  <li>Start de opname.  Audacity stopt de opname automatisch als het einde van het geselecteerde gebied bereikt is.</li>\n"
 "</ol>"
 
-#: help/faq.php:220
+#: help/faq.php:221
 msgid "<div id=\"opensave\">Opening and Saving Files</div>"
 msgstr "<div id=\"opensave\">Bestanden Openen en Opslaan</div>"
 
-#: help/faq.php:223
-#: help/faq.php:231
+#: help/faq.php:224
+#: help/faq.php:232
 msgid "How do I open an Audacity project (AUP file) in another program?"
 msgstr "Hoe open ik een Audacity project (AUP-bestand) in een ander programma?"
 
-#: help/faq.php:224
+#: help/faq.php:225
 msgid ""
 "<p>Audacity project files are saved in a special format that only Audacity can open. To open your project in another program or <a href=\"faq?s=files&amp;i=burn-cd\">burn it to CD</a>, firstly open the .aup file in Audacity if you have already saved one (if you saved it recently it will be in the File > Recent Files menu). Then use the <b>Export</b> commands further down the File menu to save the audio in a standard format like WAV or AIFF.</p>\n"
 "<p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>   \n"
@@ -631,22 +633,22 @@ msgstr ""
 "<p>Audacity projectbestanden worden opgeslagen in een speciaal formaat dat alleen Audacity kan openen. Om uw project te openen in een ander programma of het <a·href=\"faq?s=files&amp;i=burn-cd\">op een cd te branden</a>, opent u in de eerste plaats het .aup-bestand in Audacity als u er al een opgeslagen hebt (als u het recent opgeslagen hebt zal het aanwezig zijn in het menu Bestand > Recente bestanden). Gebruik vervolgens de <b>exporteren</b>-commando's verderop in het menu Bestand om de audio in een standaardformaat als WAV of AIFF op te slaan.</p>\n"
 "<p>Voor meer informatie over het werken met Audacity-projecten, zie onze <a·href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">tips voor bestandsbeheer</a> op de Audacity <a href=\"http://wiki.audacityteam.org/index.php\">wiki</a>.</p>   \n"
 
-#: help/faq.php:229
+#: help/faq.php:230
 msgid "Why does Audacity create a folder full of .au files when I save a project?"
 msgstr "Waarom maakt Audacity een map aan die vol zit met .au-bestanden als ik een project opsla?"
 
-#: help/faq.php:230
+#: help/faq.php:231
 msgid "<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently. When you save an .aup project file, Audacity stores all the pieces in a _data folder that has the same name as the .aup file. For example, \"song.aup\" will open the pieces inside the \"song_data\" folder.</p>  <p><b>You should not touch the .au files yourself, or move or rename the _data folder</b>. Simply open the .aup file, then Audacity will load the .au files in the correct sequence automatically.</p> <p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>"
 msgstr "<p>Audacity splitst lange nummers in kleine stukjes, zodat het deze efficiënter kan bewerken. Wanneer u een .aup-projectbestand opent, slaat Audacity alle stukken op in een _data-map die dezelfde naam als het .aup-bestand heeft. Bijvoorbeeld, \"song.aup\" opent de stukken in de \"song_data\"-map.</p> <p><b>Het is best om van de .au-bestanden te blijven en de _data-map niet te verplaatsen of te hernoemen</b>. Open het .aup-bestand, dan laadt Audacity de .au-bestanden automatisch in de juiste volgorde.</p> <p>Om meer te leren over het werken met Audacity-projecten, zie onze <a href=\"http://wiki .audacityteam.org/index.php?title=File_Management_Tips\">tips voor bestandsbeheer</a> op de Audacity <a href=\"http://wiki.audacityteam.org/index.php\">wiki</a>.</p>"
 
-#: help/faq.php:234
+#: help/faq.php:235
 msgid "Audacity crashed!  Can I recover any unsaved data?"
 msgstr "Audacity is vastgelopen! Kan ik niet-opgeslagen gegevens terughalen?"
 
 #. i18n-hint: Sorry, these links are in English only.  If you would
 #. like to make more information available, please create a page on
 #. the wiki for now.
-#: help/faq.php:238
+#: help/faq.php:239
 msgid ""
 "<p>You may be able to recover your project automatically with the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> page for more information.</p>\n"
 "<p>Please note the .au files need to be numbered consecutively when input to the Crash Recovery Utility or errors will occur in the program. If this problem occurs you can open Audacity's temporary folder in your system File Manager (e.g., Windows Explorer) and try resorting the .au files by time modified and then batch renaming them using a numeric sequence whilst they are sorted by time modified. An arrangement looking something like this should work:</p>\n"
@@ -668,11 +670,11 @@ msgstr ""
 "</ul>\n"
 "<p>Indien uw bestandsbeheerder geen passend gereedschap voor naamswijziging heeft, kan u gratis tools verkrijgen op het Internet.</p>\n"
 
-#: help/faq.php:250
+#: help/faq.php:251
 msgid "Can Audacity import additional formats like M4A, WMA or FLAC?"
 msgstr "Kan Audacity formaten als M4A, WMA of FLAC importeren?"
 
-#: help/faq.php:251
+#: help/faq.php:252
 msgid ""
 "<p>Audacity 1.2 <b>cannot</b> import or export <b>AC3, AMR(NB), M4A, WMA</b> or most other proprietary file formats due to licensing and patent restrictions. However, the <a href=\"../download/features-1.3-a\">Beta 1.3</a> version of Audacity can import or export these and many additional formats, if you install the optional <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg</a> library. FFmpeg also allows Audacity to import audio from video files. Note that on Mac, Audacity Beta has built-in support for M4A import without installing FFmpeg, using the QuickTime components supplied by the operating system.</p>\n"
 "<p><b>Digital Rights Management (DRM) protected</b> files, such as those purchased from iTunes prior to 2009, <b>cannot</b> be imported into any version of Audacity. If you use Windows Media Player to extract (rip) a CD track to WMA, ensure the option to copy-protect the WMA file is turned off.</p>\n"
@@ -688,19 +690,19 @@ msgstr ""
 "<p>Zie de <a href=\"../about/features\">functielijst</a> voor meer details over ondersteunde formaten.</p>\n"
 "<p>Zie ook: <a href=\"faq?s=files&amp;i=midi\">waarom kan ik geen midi-bestanden afspelen?</a></p>\n"
 
-#: help/faq.php:260
+#: help/faq.php:261
 msgid "Why can’t I play MIDI files?"
 msgstr "Waarom kan ik geen MIDI-bestanden afspelen?"
 
-#: help/faq.php:261
+#: help/faq.php:262
 msgid "<p>Audacity cannot play MIDI files, or convert between MIDI files and audio files. MIDI files can be imported for visual comparison with recorded sounds. Additionally, the <a href=\"../download/features-1.3-a\">Beta 1.3</a> version of Audacity can edit MIDI files by cut-and-paste, then export them as another MIDI file. Audacity cannot record MIDI input, only audio input. More MIDI funtionality may be added to Audacity in future. For more information, see the article about <a href=\"http://wiki.audacityteam.org/wiki/Midi\">MIDI</a> on our <a href=\"http://wiki.audacityteam.org\">Wiki</a>.</p>"
 msgstr "<p>Audacity kan geen MIDI-bestanden afspelen of converteren tussen MIDI- en geluidsbestanden. MIDI-bestanden kunnen geïmporteerd worden voor visuele vergelijking met opgenomen geluiden. De <a href=\"../download/features-1.3-a\">1.3 bèta</a>-versie van Audacity kan ook MIDI-bestanden wijzigen door middel van knippen en plakken en ze daarne exporteren als een ander midi-bestand. Audacity kan geen MIDI-invoer opnemen, alleen audio-invoer. Meer MIDI-mogelijkheden kunnen aan Audacity toegevoegd worden in de toekomst. Voor meer informatie, zie het artikel over <a href=\"http://wiki.audacityteam.org/wiki/Midi\">MIDI</a> op onze <a href=\"http://wiki.audacityteam.org\">Wiki</a>.</p>"
 
-#: help/faq.php:264
+#: help/faq.php:265
 msgid "How do I import a track from an audio CD?"
 msgstr "Hoe importeer ik een spoor van een audio-cd?"
 
-#: help/faq.php:265
+#: help/faq.php:266
 msgid ""
 "<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>\n"
 "<p>On Mac OS X computers, CD tracks appear in Finder as AIFF files so can be imported directly into Audacity. For more help on importing audio from CD tracks on both Windows and OS X, see our Wiki help page on <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How_to_import_CDs</a>.</p>\n"
@@ -710,11 +712,11 @@ msgstr ""
 "<p>Op Mac OS X computers verschijnen cd-tracks in Finder als AIFF-bestanden die direct in Audacity kunnen geïmporteerd worden. Voor meer hulp bij het importeren van audio van cd-tracks bij Windows en OS X, zie onze Wiki helppagina op <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">hoe cd's te importeren</a>.</p>\n"
 "<p>Zie ook: <a href=\"faq?s=files&amp;i=burn-cd\">hoe brand ik mijn opname op een audio-cd?</a></p>\n"
 
-#: help/faq.php:272
+#: help/faq.php:273
 msgid "After making a recording or editing a file in Audacity, follow these steps to save your work on an audio CD:"
 msgstr "Volg deze stappen om uw werk te branden op een audio-cd, nadat u een opname heeft gemaakt of een bestand in Audacity heeft bewerkt:"
 
-#: help/faq.php:273
+#: help/faq.php:274
 msgid ""
 "<ol>\n"
 "  <li>Use the “Export as WAV” or “Export as AIFF” command to save your Audacity recording in a sound file.</li>\n"
@@ -744,11 +746,11 @@ msgstr ""
 "<p>Voor handige tips in verband met het branden van cd's met Windows Media Player en iTunes, en hulp bij het branden van langere \"data\"-cd's, zie <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_burn_CDs\">Hoe cd's te branden</a> op de Audacity Wiki.</p>\n"
 "<p>Zie ook: <a href=\"faq?s=files&amp;i=split\">Hoe kan ik een opname splitsen in meerdere tracks?</a></p>"
 
-#: help/faq.php:288
+#: help/faq.php:289
 msgid "How can I split a long recording into multiple files or CD tracks?"
 msgstr "Hoe kan ik een lange opname splitsen in meerdere bestanden of cd-sporen?"
 
-#: help/faq.php:289
+#: help/faq.php:290
 msgid ""
 "<p>Follow these steps to create a separate file for each song or segment of a long recording.  This is particularly useful if you are creating a CD, since each file will appear as a separate track on the CD.</p>\n"
 "<ol>\n"
@@ -766,23 +768,23 @@ msgstr ""
 "  <li>Als u klaar bent, kiest u “Meervoudig exporteren” in het menu Bestand.  Als u de knop \"Exporteren\" aanklikt, slaat Audacity elk lied op als een apart bestand, met het formaat en de locatie die u daarvoor kiest.</li>\n"
 "</ol>"
 
-#: help/faq.php:296
+#: help/faq.php:297
 msgid "A detailed, illustrated tutorial explaining this process is available on the "
 msgstr "Een gedetailleerde, geïllustreerde tutorial die dit proces omschrijft, is beschikbaar op de "
 
-#: help/faq.php:296
+#: help/faq.php:297
 msgid " page on the Audacity Wiki."
 msgstr "-pagina op de Audacity Wiki"
 
-#: help/faq.php:302
+#: help/faq.php:303
 msgid "<div id=\"editing\">Editing</div>"
 msgstr "<div id=\"editing\">Bewerken</div>"
 
-#: help/faq.php:305
+#: help/faq.php:306
 msgid "Why can’t I use the effects or other menu items?"
 msgstr "Waarom kan ik de effecten of de andere menu-items niet gebruiken?"
 
-#: help/faq.php:306
+#: help/faq.php:307
 msgid ""
 "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>\n"
 "<p>Also, many menu items are disabled while playing, recording, or pausing a track. To enable them, press the yellow <b>Stop</b> button.</p>"
@@ -790,11 +792,11 @@ msgstr ""
 "<p>Sommige menu-items staan in grijs of zijn uitgeschakeld tot ze klaar zijn om gebruikt teworden. Voordat u een effect selecteert, moet u de audio selecteren die u wilt veranderen. Om audio te selecteren, doet u het volgende: klik en sleep met het Selectie-gereedschap om het te markeren, of kies het \"Selecteer alles\"-commando via het Bewerken-menu.</p>\n"
 "<p>Veel menu-items zijn ook uitgeschakeld tijdens het afspelen, opnemen of pauzeren van een track. Om ze te activeren drukt u op de gele <b>Stop</b>-knop.</p>"
 
-#: help/faq.php:310
+#: help/faq.php:311
 msgid "How do I combine two files into one longer file?"
 msgstr "Hoe combineer ik twee bestanden tot één lang bestand?"
 
-#: help/faq.php:311
+#: help/faq.php:312
 msgid ""
 "<p>Follow these steps to splice two files together:</p>\n"
 "<ol>\n"
@@ -818,19 +820,19 @@ msgstr ""
 "</ol>\n"
 "<p>U kan op de <b>Afspelen</b>-knop klikken om het resultaat te horen en de Exporteren-commando's (in Bestand-menu) gebruiken om het op te slaan als een geluidsbestand.</p>"
 
-#: help/faq.php:323
+#: help/faq.php:324
 msgid "How do I mix two tracks together?"
 msgstr "Hoe meng ik twee sporen tot één?"
 
-#: help/faq.php:324
+#: help/faq.php:325
 msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the <b>Play</b> button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
 msgstr "<p>Om twee bestanden te mixen, importeert u ze beide in Audacity.  Ze verschijnen dan als aparte sporen, en worden gemixt als u op de knop <b>Afspelen</b> drukt. U kunt de functie Tijd verschuiven gebruiken om ze te verplaatsen om ze op verschillende momenten te laten beginnen, of de andere bewerkingsfuncties gebruiken om elk van de sporen te wijzigen.</p>"
 
-#: help/faq.php:327
+#: help/faq.php:328
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
 msgstr "Kan ik de zangstem verwijderen uit een opname om een karaoke-spoor te maken?"
 
-#: help/faq.php:328
+#: help/faq.php:329
 msgid ""
 "<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals are exactly the same on both stereo channels, you can remove them by “subtracting” one channel from the other.  This works for many studio recordings, where the vocal track is mixed exactly in the center.</p>\n"
 "<p>To do this in Audacity:</p>\n"
@@ -850,21 +852,21 @@ msgstr ""
 "  <li>Importeer uw stereo-bestand in Audacity.</li>\n"
 "  <li>Open het sporen-menu (klik op de pijl vlak naast de tracktitel) en kies “Stereospoor splitsen”</li>\n"
 "  <li>Selecteer de onderste track (het rechterkanaal) door erop te klikken in de omgeving rond de stil/solo-knoppen.</li>\n"
-"  <li>Kies “Spiegelen” van het Effecten-menu.</li>\n"
+"  <li>Kies “Inverteren” van het Effecten-menu (“Spiegelen” in Audacity 1.3.12 of eerder).</li>\n"
 "  <li>Verander elke track naar “Mono” door gebruik te maken van het trackmenu</li>\n"
 "</ol>\n"
 "<p>Druk op de <b>Afspelen</b>-knop om het resultaat te horen. Indien u geluk hebt, zal de stem verdwenen zijn, terwijl de meeste andere instrumenten niet aangetast zijn, net zoals een karaoke track. U kan de Exporteren-commando's gebruiken in het Bestandsmenu om de resultaten op te slaan.</p>\n"
 "<p>Indien de stemmen niet exact hetzelfde zijn op beide stereokanalen, zijn er een aantal andere technieken en optionele plugins die u kan proberen. Zie onze <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Vocal_Removal</a> Wiki-pagina voor meer details.</p>\n"
 
-#: help/faq.php:358
+#: help/faq.php:359
 msgid "Other frequently asked questions..."
 msgstr "Andere veelgestelde vragen ..."
 
-#: help/faq.php:362
+#: help/faq.php:363
 msgid "Frequently Asked Questions"
 msgstr "Veelgestelde vragen"
 
-#: help/faq.php:366
+#: help/faq.php:367
 msgid "These are some of the most common questions about Audacity.  If your question isn’t answered here, see the <a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">contact us</a> for help."
 msgstr "Dit zijn enkele van de meest voorkomende vragen over Audacity. Als uw vraag hier niet beantwoord wordt, kan u kijken in de <a href=\"documentation\">documentatie</a> of ons <a href=\"../contact/\">contacteren</a> voor hulp."
 
