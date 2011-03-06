@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2005 Dominic Mazzoni
- * Copyright 2004 - 2010 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 2011 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -24,7 +24,8 @@
 
 <p><?php printf(_("The following additional problems have become apparent in Audacity %s after release:"), src_version); ?></p>
 <ul>
-  <li><p><?=_("Windows Vista: Pressing Stop after recording may cause a crash.")?></p></li>
+  <li><p><?=_("Labels do not accept lower case \"z\". To use \"z\" in labels, go to the Keyboard Preferences and change the shortcut for \"Find Zero Crossings\" to something other than z.")?></p></li>
+  <li><p><?=_("Windows Vista or 7: Pressing Stop after recording may cause a crash.")?></p></li>
   <li><p><?=_("Mac OS X: Shortcut keys may activate when typing in file open or save windows.")?></p></li>
   <li><p><?=_("<a href=\"../download\">Audacity Beta (1.3 Series)</a> is now the recommended version on Windows 7, Windows Vista and Mac OS X 10.6.")?></p></li>
 </ul>
