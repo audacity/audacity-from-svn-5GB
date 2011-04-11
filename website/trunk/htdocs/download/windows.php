@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2007 - 10 onwards Gale Andrews, Vaughan Johnson
+ * Copyright 2007 - 11 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -16,7 +16,7 @@
 <h2><?=$pageTitle?></h2>
 
 <div class="advice">
-<b>See further information about</b> <a href="http://wiki.audacityteam.org/wiki/Windows_Vista_OS">Windows Vista</a> <b>and</b> <a href="http://wiki.audacityteam.org/wiki/Windows_7_OS">Windows 7</a><b>.</b>
+<?=_('<a href="http://wiki.audacityteam.org/wiki/Windows_Vista_OS">Windows Vista</a> and <a href="http://wiki.audacityteam.org/wiki/Windows_7_OS">Windows 7</a> <b>are not supported in Audacity 1.2.6. Please use</b> <a href="../download/beta_windows">Audacity Beta</a><b> for these operating systems.</b>')?>
 </div>
 
 <p>
@@ -25,7 +25,7 @@
 
 <h3><?=_("Recommended Download")?></h3>
 <ul>
-  <li><p><?php printf(_('Windows 98/ME/2000/XP/Vista: <a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url($win_exe_url), win_exe_version, win_exe_size)?></p></li>
+  <li><p><?php printf(_('Windows 98/ME/2000/XP: <a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url($win_exe_url), win_exe_version, win_exe_size)?></p></li>
 </ul>
 
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
@@ -46,13 +46,13 @@
 
 <h4><?=_("Audacity Zip file")?></h4>
 <ul>
-  <li><p><?php printf(_('Windows 98/ME/2000/XP/Vista: <a href="%s">Audacity %s zip file</a> (%.1lf MB)
+  <li><p><?php printf(_('Windows 98/ME/2000/XP: <a href="%s">Audacity %s zip file</a> (%.1lf MB)
   - If you cannot run the installer because of restricted permissions, download and unzip this file instead.'), download_url($win_zip_url), win_zip_version, win_zip_size)?></p></li>
 </ul>
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
 <p>
-  <?=_("Windows 95 and NT are not supported. Windows 7 is <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">provisionally supported</a> only in <a href=\"../download/beta_windows\">Audacity Beta</a>.")?>
+  <?=_("Windows 95 and NT are not supported. Windows Vista and 7 are only supported in <a href=\"../download/beta_windows\">Audacity Beta</a>.")?>
 </p>
 <?php include "windows_sys_reqs.inc.php" ?>
 

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2010 Dominic Mazzoni, Gale Andrews
+ * Copyright 2005-2011 Dominic Mazzoni, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -24,7 +24,131 @@
  </ul>
 ')?></p>
 
-<h3 id="details"><?=_("Changes in Audacity 1.3.12")?></h3>
+<h3 id="details"><?=_("Changes in Audacity 1.3.13")?></h3>
+
+<?=_('
+<dl>
+   <dt> Bug fixes for: </dt>
+	       <dd> Interface: 
+                 <ul>   
+                       <li>Cutting or copying from a track at a given sample
+                            rate into a track at another rate resulted in 
+                            speed-changed audio.</li> 
+                       <li>Generating inside a clip could modify the clip 
+                            length or create spurious clips.</li>
+                       <li>Recorded stereo tracks were only half the height
+                            of imported or generated stereo tracks. Imported
+                            stereo files had a "1" appended to the track name.</li>
+                       <li> Edit > Region Save did not save the cursor position.</li>  
+                       <li><i>(Windows)</i> Projects crashed when clicking rapidly
+                            inside the interface or when applying repeated effects
+                            towards the end of audio tracks.</li> 
+                       <li><i>(Windows)</i> Some Unicode characters could not be typed 
+                            into labels,or caused a freeze using some input methods.</li>
+                       <li><i>(OS X)</i>Crash when quitting an empty project window,
+                            or when closing the main project window while a progress 
+                            dialog was on screen.</li>  
+                       <li>Numerous other interface fixes including Dependencies dialog, 
+                            Keyboard Preferences and spurious lines drawn on waveform.</li>
+                 </ul>
+              </dd>
+')?>
+
+<?=_('
+	       <dd> Imports and Exports: 
+                 <ul>  <li>Support added for later versions of the optional FFmpeg
+                            library up to current FFmpeg HEAD. This should significantly
+                            improve FFmpeg support on Linux. FFmpeg downloads for 
+<a href="http://manual.audacityteam.org/man/FAQ:Installation_and_Plug-Ins#winff">
+                            Windows</a> and 
+<a href="http://manual.audacityteam.org/man/FAQ:Installation_and_Plug-Ins#macff">
+                            Mac</a> updated to v0.6. This fixes mono AAC files importing
+                            as stereo, though current 0.5 versions of FFmpeg will still 
+                            work.</li>
+                       <li>Both FFmpeg and LAME should now be properly detected even
+                            when other versions of those libraries exist on the system.</li> 
+                       <li>New warning (on by default) for importing uncompressed audio
+                            files. Better error messages when read-directly uncompressed
+                            files are missing.</li>
+                       <li>Imported ID3v2 metadata tags were removed when exporting without
+                            the Metadata Editor appearing (for example, when using an 
+                            export command in Chains). Note: As a result of this fix, ID3v1 
+                            tags must now be written by exporting using (external program) 
+                            and an installed LAME.</li>
+                       <li>U-Law/A-Law files with WAV headers now use the standard 18 byte fmt
+                            chunk, so should now be recognised by most telephony applications.</li>   
+                       <li>Variable bit rate MP3s exported using "MP3 Files" were larger than
+                            necessary because using the bit reservoir was disabled. </li>
+                       <li><i>(OS X)</i> Files imported from iTunes could create invalid 
+                            characters in the .aup project file, causing an error when
+                            re-opening the project. <b>Note:</b> An error "reference to invalid
+                            character number" will still occur if re-opening a project created
+                            in previous Betas that contains such characters. To fix the issue,
+                            open a back-up copy of the .aup file in a text editor, turn off 
+                            word wrap, then in the line indicated in the error message, remove 
+                            the string of characters that starts with \&\# and ends with a 
+                            semi-colon \(\;\).</li>
+                 </ul>
+              </dd>
+')?>
+
+<?=_('
+	       <dd> Other bug fixes: 
+                 <ul>  <li>Nyquist effects: fixes for crashes, incorrect slider behaviour 
+                            and better support for backslashes, double quotes and Unicode 
+                            characters.</li>
+                       <li><i>(Windows and OS X)</i> Processing of VST effects was substantially
+                            slower than in previous versions of Audacity.</li>
+                       <li><i>(OS X 10.5 PPC)</i> A first-time installation of Audacity Beta 
+                            would hang on launch if VST effects were detected. </li>
+                       <li><i>(Linux)</i> Recordings made with the pulse device crashed or
+                            stalled when using overdub and/or software playthrough. </li>
+                       <li><i>(Linux)</i> Play-at-Speed crashed at 0.08 speed or lower if
+                            Audacity was configured with libsamplerate. </li>
+                 </ul>       
+              </dd>
+')?>
+
+<?=_('
+   <dt> Changes and improvements:</dt>
+           <dd>
+                 <ul>
+                       <li>Control Toolbar renamed to Transport Toolbar.</li>
+                       <li>Device Toolbar (on by default) now contains all input and 
+                            output device choices, including host and recording channels.
+                            Input/output choices are no longer in Mixer Toolbar on 
+                            Windows XP or some older operating systems. New Transport > 
+                            Rescan Audio Devices menu item to refresh the device list.</li>  
+                       <li>New "Sync-Lock Tracks" feature (turned on in the Tracks menu)
+                            to allow groups of audio and/or label tracks to retain
+                            synchronisation when the track length changes.</li> 
+                       <li>Equalization: New "Manage Curves" dialog for importing and
+                            exporting curves.</li>
+                       <li>Noise Removal: New "Sensitivity" slider to adjust the noise
+                            threshold, and new option to isolate noise.</li>
+                       <li>New "Extended Import" Preferences for specifying different
+                            importers to open specific file extensions.</li>
+                       <li>Improved Automatic Crash Recovery with all project changes
+                            autosaved.</li>
+                       <li>MIDI tracks can be vertically zoomed, time shifted and display 
+                            bar lines. <b>Note:</b> the channel selection buttons are not
+                            available in 1.3.13.</li>
+                       <li><i>(Windows and Linux)</i> The window Close button and other
+                            system close or shutdown commands now quit on closing the last
+                            window. File > Close now always clears to a new, empty project.</li> 
+                       <li><i>(OS X)</i> Simpler installer with top-level "Audacity" folder.</li> 
+                 </ul>
+              </dd>
+</dl>
+<p>
+Please be aware of 
+<a href="http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.13#Known_Issues_at_Release">
+Known Issues at Release</a> (also viewable in the included README.txt).
+</p>
+')?>
+
+
+<h3><?=_("Changes in Audacity 1.3.12")?></h3>
 
 <?=_("
 <dl>

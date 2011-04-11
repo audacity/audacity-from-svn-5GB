@@ -4,7 +4,7 @@
  * only need to update this number and the various sizes for a new beta release.
  * Versions only need coding for specific platforms if they are lagging behind
  * the current release version. */
-define('beta_version', '1.3.12');
+define('beta_version', '1.3.13');
 
 /* Specific download versions below. Only define these if the version for that
  * download is different to the current beta above. You do need to go
@@ -15,31 +15,31 @@ define('beta_version', '1.3.12');
 define('beta_macosx_version', beta_version);
 // version and size for Universal Binary DMG
 define('macosx_ub_version', beta_macosx_version);
-define('macosx_ub_size',    17.1);
+define('macosx_ub_size',    22.5);
 // version and size for Universal Binary zip file
 define('macosx_ub_zip_version', beta_macosx_version);
-define('macosx_ub_zip_size',    11.0);
+define('macosx_ub_zip_size',    13.7);
 
 // version for all Win releases
 define('beta_win_version', beta_version);
 // version and size for Win ANSI installer
 define('win_exe_version', beta_win_version);
-define('win_exe_size',    10.7);
+define('win_exe_size',    13.2);
 // version and size for Win ANSI zip
 define('win_zip_version', beta_win_version);
-define('win_zip_size',    7.8);
+define('win_zip_size',    7.9);
 // version and size for Win Unicode installer
 define('win_exe_unicode_version', beta_win_version);
-define('win_exe_unicode_size',    11.3);
+define('win_exe_unicode_size',    13.8);
 // version and size for Win Unicode zip
 define('win_zip_unicode_version', beta_win_version);
-define('win_zip_unicode_size',    8.1);
+define('win_zip_unicode_size',    7.6);
 
 // version for source code releases (should always track beta_version)
 define('src_version', beta_version);
 // sizes of minimal and full source tarballs
-define('min_src_size',    5.8);
-define('full_src_size',    17.0);
+define('min_src_size',    6.2);
+define('full_src_size',    17.6);
 // suffix of tarballs (in case we change compression etc)
 define('src_suffix',  '.tar.bz2');
 
