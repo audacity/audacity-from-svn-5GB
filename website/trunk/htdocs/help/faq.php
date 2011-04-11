@@ -2,7 +2,7 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2005 Matt Brubeck
- * Copyright 2007 - 10 Gale Andrews, Vaughan Johnson
+ * Copyright 2007 - 11 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -25,14 +25,15 @@
       array(
         "free" => array(
           _("Is Audacity really free?  Why?"),
-          _("<p>Yes, Audacity is <a href=\"../about/\">completely free, open source software</a>.  You are free to use this program for any personal, commercial, or educational purposes, including installing it on as many different computers as you wish. You are also free to give it away, sell it, or modify it for your own use, under the terms of the <a href=\"../about/license\">GNU General Public License</a>.</p>
+          _("<p>Yes, Audacity is <a href=\"../about/\">completely free, open source software</a>.  You are free to use this program for any legitimate purpose, including personal, commercial or educational, and may install it on as many different computers as you wish. You are also free to give it away, sell it, or modify it for your own use, under the terms of the <a href=\"../about/license\">GNU General Public License</a>.</p>
 <p>The authors of Audacity decided to release it under the GPL for many reasons. Some of us do it out of generosity. Some of us do it for moral reasons, because we feel that all software should be free; others believe that there is a place for both free and proprietary software.</p>
 <p>One reason Audacity is free is so that it will be more popular and useful.  Yet another reason is to encourage collaboration. Because of Audacity's free license, dozens of people around the world have contributed code, bug fixes, documentation, and graphics.</p>
 <p>We welcome <a href=\"../community/donate\">donations</a> to support Audacity development.</p>")
         ),
         "spyware" => array(
-          _("Does Audacity contain any spyware or adware?"),
-          _("<p>No.  Audacity does not include any spyware or adware.  Audacity is <a href=\"../about/\">completely free and open source</a>.  It is developed by a not-for-profit volunteer group, and the source code is available for anyone to study or use.</p>")
+          _("Does Audacity contain any viruses, spyware or adware?"),
+          _("<p>No. Audacity does not include any type of malware or adware if you download it from this site.  Audacity is <a href=\"../about/\">completely free and open source</a>.  It is developed by a not-for-profit volunteer group, and the source code is available for anyone to study or use.</p>
+<p>Sometimes, virus checkers can report false positives for the Audacity installer for Windows (.exe). This is because it is a compressed installer. If you are concerned, please download the .zip file instead and check that for viruses.</p>")
         ),
         "copy-permission" => array(
           _("May I distribute copies of Audacity?"),
@@ -289,11 +290,12 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
           _("<p>Follow these steps to create a separate file for each song or segment of a long recording.  This is particularly useful if you are creating a CD, since each file will appear as a separate track on the CD.</p>
 <ol>
   <li>Click to place the cursor at the start of the first song.</li>
-  <li>Choose “Add Label at Selection” from the Project menu.  If you wish, you can type the name of the song.</li>
+  <li>Choose “Add Label at Selection” from the Project menu (or Tracks menu in Audacity Beta).  If you wish, you can type the name of the song.</li>
   <li>Repeat steps 1 and 2 for each song.</li>
   <li>When you are finished, choose “Export Multiple” from the File menu.  When you click the “Export” button, Audacity will save each song as a separate file, using the format and location you choose.</li>
 </ol>").
-"<p>"._("A detailed, illustrated tutorial explaining this process is available on the ").' <a href="http://audacityteam.org/wiki/index.php?title=Splitting_recordings_into_separate_tracks">Splitting recordings into separate tracks</a>'._(" page on the Audacity Wiki.")."</p>".
+"<p>"._("Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically.</p>
+<p>Full instructions for both methods are in the illustrated tutorial").' <a href="http://wiki.audacityteam.org/wiki/Splitting_recordings_into_separate_tracks">Splitting recordings into separate tracks</a> '._("on the Audacity Wiki.")."</p>".
 "<p>"._("See also:").' <a href="faq?s=files&amp;i=burn-cd">'._("How do I save my recording on an audio CD?")."</a></p>"
         ),
       ),
