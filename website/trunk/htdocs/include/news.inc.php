@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007 - 2010 Vaughan Johnson, Gale Andrews
+ * 2007 - 2011 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -38,6 +38,86 @@ function most_recent_news_item() {
 
 // Add news items below in reverse-chronological order
 // (most recent first).
+
+
+add_news_item(
+  "April 11, 2011",
+  	"1.3.13-release_and_LinuxQuestions.org_Award 2010",
+  _("Audacity 1.3.13 released, and LinuxQuestions.org Audio Authoring Award 2010"),
+  _("
+<p>
+The Audacity Team is pleased to announce the release of
+<a href=\"/download\">Audacity 1.3.13 (Beta)</a> for Windows, 
+Mac and Linux/Unix. This version now fully supports <b>Windows 7</b> 
+and contains many bug fixes plus a few new features. Please also obtain this 
+version for <b>Windows Vista</b> and <b>Mac OS X 10.6</b> rather than Audacity 1.2.</p>
+<p>Please give us your <a href=\"http://audacity.sourceforge.net/contact/#feedback\">
+feedback</a> on 1.3.13 and our 
+<a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">
+Nightly Builds</a> to help us progress as rapidly as possible 
+towards a new Audacity 2.0 stable version. Please
+<a href=\"http://audacity.sourceforge.net/#announce\">
+subscribe</a> to receive news of the next 1.3.14 Beta and all our future releases.    
+</p>
+<p>
+<div style=\"width:75%;padding-left:4em\">
+<b>Summary of Changes in 1.3.13:</b>
+
+<dl>
+	<dt> Numerous bug fixes </dt>
+	  <dd>   
+                <ul>  
+                      <li>Crashes on Windows when clicking in the track or in effects dialogs.</li>
+                      <li>Crashes on OS X when closing or quitting. </li>
+                      <li>Warning (on by default) now provided when importing uncompressed audio
+                           files and when read-directly uncompressed files are missing. </li>
+                      <li>Full support added for later versions of the optional 
+<a href=\"http://manual.audacityteam.org/man/FAQ:Installation_and_Plug-Ins#ffdown\">
+                           FFmpeg library</a> up to current FFmpeg HEAD. More compatible 
+                           U-Law/A-Law exports.</li>
+                      <li>VST effects processing restored to full speed. Hang fixed when
+                           launching on OS X 10.5 PPC with VST effects present.</li>
+                      <li><i>(OS X)</i> Files imported from iTunes could create invalid
+                           characters in the .aup project file. See 
+<a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_1.3.13#itunes\">
+                           here</a> for help re-opening older projects that have this error.</li>  
+                      <li><i>(Linux)</i> Crashes or stalled recordings using the pulse device.
+                           Crashes using Play-at-Speed if Audacity was configured with 
+                           libsamplerate.</li> 
+                </ul>
+         </dd>
+
+   <dt> Changes and Improvements</dt>
+         <dd>   
+                <ul>
+                      <li>Control Toolbar renamed to Transport Toolbar. Input/output
+                           selection moved from Mixer Toolbar to improved Device Toolbar
+                           (on by default).</li>
+                      <li>New \"Sync-Lock Tracks\" feature (turned on in the Tracks menu). </li>
+                      <li>Equalization now supports importing and exporting curves. 
+                           Noise Removal improvements including new option to isolate noise.</li>
+                      <li>Improved Automatic Crash Recovery with all project changes autosaved.</li>
+                      <li>New \"Extended Import\" Preferences for specifying audio file
+                          importers.</li>
+                       <li><i>(Windows and Linux)</i> Close button now quits on closing the last 
+                           window while File > Close clears to a new, empty project. </li>    
+                </ul>
+         </dd>
+</dl>
+</div>
+</p>
+<p>Please see 
+<a href=\"http://audacity.sourceforge.net/download/features-1.3-a#details\">   
+Changes in Audacity 1.3.13</a> for more on 1.3.13 and the Beta series.
+</p>
+<p>
+<b>Other recent news:</b> 
+Audacity was chosen as 
+<a href=\"http://www.linuxquestions.org/questions/2010-linuxquestions-org-members-choice-awards-93/audio-authoring-application-of-the-year-855921/\">
+Audio Authoring Application of the Year</a> in the 2010 LinuxQuestions.org Members Choice poll. LinuxQuestions.org is an active online Linux community. In the voting, Audacity received nearly 75 per cent of the votes cast. Thanks to everyone who voted. 
+</p> 
+"));
+
 
 add_news_item(
   "April 1, 2010",

@@ -1,8 +1,8 @@
 <?php
 /*
- * Copyright 2007 onwards by Vaughan Johnnson
+ * Copyright 2007, 2011 by Vaughan Johnnson
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
 ?>
 
@@ -27,15 +27,23 @@
     <td>128 MB/300 MHz</td>
   </tr>
   <tr>
-    <td>Windows Vista Home Basic</td>
+    <td>Windows Vista Home Basic &para;</td>
     <td>2 GB / 1 GHz</td>
     <td>512 MB / 1 GHz</td>
   </tr>
   <tr>
-    <td>Windows Vista Home Premium/<br>Business/Ultimate</td>
+    <td>Windows Vista Home Premium/<br>Business/Ultimate/7 (32-bit) &para;</td>
     <td>4 GB / 2 GHz</td>
     <td>1 GB / 1 GHz</td>
   </tr>
+  <tr>
+    <td>Windows 7 (64-bit) &para; </td>
+    <td>4 GB / 2 GHz</td>
+    <td>2 GB / 1 GHz</td>
+  </tr>
+  <tr>
+    <td>&para; Windows Vista / 7 are not supported in Audacity 1.2.6.
+  </tr> 
 </table>
 
 <p>&nbsp;</p>
