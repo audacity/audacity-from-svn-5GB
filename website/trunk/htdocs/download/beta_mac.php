@@ -2,7 +2,7 @@
 /*
  * Copyright 2004 Matt Brubeck
  * Copyright 2005 Dominic Mazzoni
- * Copyright 2008-10 Gale Andrews
+ * Copyright 2008-11 Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -27,10 +27,8 @@
 
 <p> <b><?=_("Installation instructions (.dmg files)")?>:</b>
  <ol>
-   <li><?=_("Inside your Applications folder, create a folder called \"Audacity\"")?></li>
    <li><?=_("Double-click the downloaded .dmg to mount it")?></li>
-   <li><?=_("Option-drag the whole of the .dmg contents (not the .dmg itself) into the \"Audacity\" folder you created")?></li>
-   <li><?=_("Double-click the Audacity icon inside the \"Audacity\" folder to launch the program")?></li>
+   <li><?=_("Then to install Audacity, copy the \"Audacity\" folder from the newly mounted .dmg to <b>/Applications</b> or any other location of your choosing.")?></li>
  </ol>
 </p>
 
