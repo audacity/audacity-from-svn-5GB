@@ -45,7 +45,7 @@
                             towards the end of audio tracks.</li> 
                        <li><i>(Windows)</i> Some Unicode characters could not be typed 
                             into labels,or caused a freeze using some input methods.</li>
-                       <li><i>(OS X)</i>Crash when quitting an empty project window,
+                       <li><i>(OS X)</i> Crash when quitting an empty project window,
                             or when closing the main project window while a progress 
                             dialog was on screen.</li>  
                        <li>Numerous other interface fixes including Dependencies dialog, 
@@ -72,7 +72,7 @@
                             files are missing.</li>
                        <li>Imported ID3v2 metadata tags were removed when exporting without
                             the Metadata Editor appearing (for example, when using an 
-                            export command in Chains). Note: As a result of this fix, ID3v1 
+                            export command in Chains). <b>Note:</b> As a result of this fix, ID3v1 
                             tags must now be written by exporting using (external program) 
                             and an installed LAME.</li>
                        <li>U-Law/A-Law files with WAV headers now use the standard 18 byte fmt
@@ -86,8 +86,8 @@
                             in previous Betas that contains such characters. To fix the issue,
                             open a back-up copy of the .aup file in a text editor, turn off 
                             word wrap, then in the line indicated in the error message, remove 
-                            the string of characters that starts with \&\# and ends with a 
-                            semi-colon \(\;\).</li>
+                            the string of characters that starts with &# and ends with a 
+                            semi-colon (;).</li>
                  </ul>
               </dd>
 ')?>
