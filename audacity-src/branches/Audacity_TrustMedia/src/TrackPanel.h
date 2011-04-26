@@ -17,11 +17,11 @@
 #include <wx/timer.h>
 #include <wx/window.h>
 
-//Stm:  The following included because of the sampleCount struct.
-#include "Sequence.h"  
+#include "LabelTrack.h"
+#include "Sequence.h"  //Stm: included for the sampleCount declaration
+//vvv #include "TrackGroup.h"
 #include "WaveClip.h"
 #include "WaveTrack.h"
-#include "LabelTrack.h"
 
 class wxMenu;
 class wxRect;
@@ -244,6 +244,8 @@ class TrackPanel:public wxPanel {
    void SetFocusedTrack(Track *t);
 
    void HandleCursorForLastMouseEvent();
+
+  //vvv void MakeTrackGroup();
 
    void UpdateVRulers();
    void UpdateVRuler(Track *t);
@@ -468,13 +470,14 @@ private:
    
    wxString TrackSubText(Track *t);
 
-   bool MoveClipToTrack(WaveClip *clip, WaveTrack* src, WaveTrack* dst);
+   bool MoveClipToTrack(WaveClip *clip, WaveTrack* dst);
 
    TrackInfo mTrackInfo;
 
    TrackPanelListener *mListener;
 
    TrackList *mTracks;
+   //vvv TrackGroupManager* mTrackGroupManager;
    ViewInfo *mViewInfo;
 
    AdornedRulerPanel *mRuler;
