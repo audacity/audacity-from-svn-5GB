@@ -440,6 +440,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
      mTrackInfo(this),
      mListener(listener),
      mTracks(tracks),
+     //vvv mTrackGroupManager(NULL), 
      mViewInfo(viewInfo),
      mRuler(ruler),
      mTrackArtist(NULL),
@@ -562,6 +563,7 @@ TrackPanel::~TrackPanel()
                        wxCommandEventHandler(TrackPanel::OnTrackListResized),
                        NULL,
                        this);
+   //vvv delete mTrackGroupManager;
 
    // This can happen if a label is being edited and the user presses
    // ALT+F4 or Command+Q
@@ -789,9 +791,9 @@ void TrackPanel::SelectTracksByLabel( LabelTrack *lt )
    }
 }
 
-/// Set selection length to the length of a track -- but if linking is turned
-/// on, use the largest possible selection in the group.  And if it's a stereo
-/// track, do the same for the stereo channels.
+// Set selection length to the length of a track -- but if sync-lock is turned
+// on, use the largest possible selection in the sync-lock group.  
+// If it's a stereo track, do the same for the stereo channels.
 void TrackPanel::SelectTrackLength(Track *t)
 {
    AudacityProject *p = GetActiveProject();
@@ -800,7 +802,8 @@ void TrackPanel::SelectTrackLength(Track *t)
    double minOffset = t->GetOffset();
    double maxEnd = t->GetEndTime();
 
-   // If we have a group and linking is on, check the group tracks
+   // If we have a sync-lock group and sync-lock linking is on, 
+   // check the sync-lock group tracks.
    if (p->IsSyncLocked() && t1 != NULL)
    {
       for ( ; t1; t1 = it.Next())
@@ -1364,6 +1367,13 @@ void TrackPanel::HandleCursorForLastMouseEvent()
 {
    HandleCursor(mLastMouseEvent);
 }
+
+//vvv void TrackPanel::MakeTrackGroup()
+//vvv {
+//vvv    if (!mTrackGroupManager)
+//vvv       mTrackGroupManager = new TrackGroupManager();
+//vvv    //vvvvvv
+//vvv }
 
 MixerBoard* TrackPanel::GetMixerBoard()
 {
@@ -2624,10 +2634,19 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
 
          // Check for stereo partner
          Track *partner = mTracks->GetLink(vt);
-         if (partner && partner->GetKind() == Track::Wave) {
-            WaveClip *clip = ((WaveTrack *)partner)->GetClipAtX(event.m_x);
-            if (clip) {
-               mCapturedClipArray.Add(TrackClip(partner, clip));
+         if (mCapturedClip && partner && partner->GetKind() == Track::Wave) {
+            // WaveClip::GetClipAtX doesn't work unless the clip is on the screen and can return bad info otherwise
+            // instead calculate the time manually
+            double rate = ((WaveTrack*)partner)->GetRate();
+            double pps = mViewInfo->zoom;
+            double tt = (event.m_x - GetLeftOffset()) / pps + mViewInfo->h;
+            sampleCount s0 = (sampleCount)(tt * rate + 0.5);
+
+            if (s0 >= 0) {
+               WaveClip *clip = ((WaveTrack *)partner)->GetClipAtSample(s0);
+               if (clip) {
+                  mCapturedClipArray.Add(TrackClip(partner, clip));
+               }
             }
          }
       }
@@ -2644,7 +2663,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
             // don't capture based on links to label tracks for now (until
             // we can treat individual labels as clips)
             if (mCapturedClipArray[i].clip) {
-               // Iterate over group tracks
+               // Iterate over sync-lock group tracks.
                SyncLockedTracksIterator git(mTracks);
                for ( Track *t = git.First(mCapturedClipArray[i].track);
                      t; t = git.Next() )
@@ -2658,7 +2677,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
             // Capture additional clips from NoteTracks
             Track *nt = mCapturedClipArray[i].track;
             if (nt->GetKind() == Track::Note) {
-               // Iterate over group tracks
+               // Iterate over sync-lock group tracks.
                SyncLockedTracksIterator git(mTracks);
                for (Track *t = git.First(nt); t; t = git.Next())
                {
@@ -2903,8 +2922,7 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
          if (mCapturedClipArray[i].clip)
             mCapturedClipArray[i].clip->Offset(desiredSlideAmount);
       // See if it can be moved
-      if (MoveClipToTrack(mCapturedClip,
-                          (WaveTrack*)mCapturedTrack, 
+      if (MoveClipToTrack(mCapturedClip, 
                           (WaveTrack*)mouseTrack)) {
          mCapturedTrack = mouseTrack;
          mDidSlideVertically = true;
@@ -3512,6 +3530,9 @@ void TrackPanel::HandleSampleEditingClick( wxMouseEvent & event )
    mDrawingTrack = NULL;
    t = FindTrack(event.m_x, event.m_y, false, false, &r);
    
+   if( t->GetKind() != Track::Wave )
+	   return;
+
    if( !IsSampleEditingPossible( event, t ) )
    {
       if( HasCapture() )
@@ -5222,6 +5243,8 @@ bool TrackPanel::HitTestStretch(Track *track, wxRect &r, wxMouseEvent & event)
 /// envelope boundary.
 bool TrackPanel::HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event)
 {
+   if( track->GetKind() != Track::Wave )
+      return false;
    WaveTrack *wavetrack = (WaveTrack *)track;
    Envelope *envelope = wavetrack->GetEnvelopeAtX(event.GetX());
 
@@ -5285,6 +5308,9 @@ bool TrackPanel::HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event)
 /// editable sample
 bool TrackPanel::HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event)
 {
+   if( track->GetKind() != Track::Wave )
+      return false;
+
    WaveTrack *wavetrack = (WaveTrack *)track;
    //Get rate in order to calculate the critical zoom threshold
    double rate = wavetrack->GetRate();
@@ -5301,7 +5327,7 @@ bool TrackPanel::HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event)
    float oneSample;
    double pps = mViewInfo->zoom;
    double tt = (event.m_x - r.x) / pps + mViewInfo->h;
-   int    s0 = (int)(tt * rate + 0.5);
+   sampleCount s0 = (sampleCount)(tt * rate + 0.5);
 
    // Just get one sample.
    wavetrack->Get((samplePtr)&oneSample, floatSample, s0, 1);
@@ -6516,6 +6542,8 @@ void TrackPanel::OnTrackPanRight()
 
 void TrackPanel::SetTrackPan(Track * t, LWSlider * s)
 {
+   if( t->GetKind() != Track::Wave )
+      return;
    float newValue = s->Get();
 
    WaveTrack *link = (WaveTrack *)mTracks->GetLink(t);
@@ -6568,6 +6596,8 @@ void TrackPanel::OnTrackGainDec()
 
 void TrackPanel::SetTrackGain(Track * t, LWSlider * s)
 {
+   if( t->GetKind() != Track::Wave )
+      return ;
    float newValue = s->Get();
 
    WaveTrack *link = (WaveTrack *)mTracks->GetLink(t);
@@ -7520,43 +7550,57 @@ void TrackPanel::DisplaySelection()
    mListener->TP_DisplaySelection();
 }
 
-bool TrackPanel::MoveClipToTrack(WaveClip *clip,
-                                 WaveTrack* src, WaveTrack* dst)
+bool TrackPanel::MoveClipToTrack(WaveClip *clip, WaveTrack* dst)
 {
+   WaveTrack *src  = NULL;
    WaveClip *clip2 = NULL;
    WaveTrack *src2 = NULL;
    WaveTrack *dst2 = NULL;
+   size_t i;
 
 #ifdef USE_MIDI
    // dst could be a note track. Can't move clip to a note track.
    if (dst->GetKind() != Track::Wave) return false;
 #endif
 
+   for (i = 0; i < mCapturedClipArray.GetCount(); i++) {
+      if (clip == mCapturedClipArray[i].clip) {
+         src = (WaveTrack*)mCapturedClipArray[i].track;
+         break;
+      }
+   }
+   
+   if (!src)
+      return false;
+   
    // Make sure we have the first track of two stereo tracks
    // with both source and destination
    if (!src->GetLinked() && mTracks->GetLink(src)) {
-      src = (WaveTrack*)mTracks->GetLink(src);
-      if (mCapturedClipArray.GetCount() == 2) {
-         if (mCapturedClipArray[0].clip == clip)
-            clip = mCapturedClipArray[1].clip;
-         else
-            clip = mCapturedClipArray[0].clip;
+      // find the first track by getting the linked track from src
+      // assumes that mCapturedArray[i].clip and .track is not NULL.
+      for (i = 0; i < mCapturedClipArray.GetCount(); i++) {
+         if (mTracks->GetLink(src) == mCapturedClipArray[i].track) {
+            clip = mCapturedClipArray[i].clip;
+            break;
+         }
       }
+
+      src = (WaveTrack*)mTracks->GetLink(src);
    }
    if (!dst->GetLinked() && mTracks->GetLink(dst))
       dst = (WaveTrack*)mTracks->GetLink(dst);
-
-   if (mCapturedClipArray.GetCount() == 2) {
-      if (mCapturedClipArray[0].clip == clip)
-         clip2 = mCapturedClipArray[1].clip;
-      else
-         clip2 = mCapturedClipArray[0].clip;
-   }
 
    // Get the second track of two stereo tracks
    src2 = (WaveTrack*)mTracks->GetLink(src);
    dst2 = (WaveTrack*)mTracks->GetLink(dst);
 
+   for (i = 0; i < mCapturedClipArray.GetCount(); i++) {
+      if (mCapturedClipArray[i].track == src2) {
+         clip2 = mCapturedClipArray[i].clip;
+         break;
+      }
+   }
+   
    if ((src2 && !dst2) || (dst2 && !src2))
       return false; // cannot move stereo- to mono track or other way around
 
@@ -7564,6 +7608,10 @@ bool TrackPanel::MoveClipToTrack(WaveClip *clip,
       return false;
 
    if (clip2) {
+      // we should have a source and dest track
+      if (!dst2 || !src2)
+         return false;
+
       if (!dst2->CanInsertClip(clip2))
          return false;
    }
@@ -7572,20 +7620,17 @@ bool TrackPanel::MoveClipToTrack(WaveClip *clip,
    if (src2)
       src2->MoveClipToTrack(clip2, dst2);
 
-   if (mCapturedClipArray.GetCount() == 2) {
-      if (mCapturedClipArray[0].clip == clip) {
-         mCapturedClipArray[0].track = dst;
-         mCapturedClipArray[1].track = dst2;
-      }
-      else {
-         mCapturedClipArray[0].track = dst2;
-         mCapturedClipArray[1].track = dst;
+   // update the captured clip array.
+   bool did1, did2;
+   did1 = did2 = false;
+   for (i = 0; i < mCapturedClipArray.GetCount(); i++) {
+      if (mCapturedClipArray[i].clip == clip) {
+         mCapturedClipArray[i].track = dst;
+      } else if (mCapturedClipArray[i].clip == clip2) {
+         mCapturedClipArray[i].track = dst2;
       }
    }
-   else {
-      mCapturedClipArray[0].track = dst;
-   }
-
+         
    return true;
 }
 

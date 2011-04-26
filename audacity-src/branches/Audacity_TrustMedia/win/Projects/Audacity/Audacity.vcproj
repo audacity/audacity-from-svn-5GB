@@ -1004,6 +1004,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\TrackGroup.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\TrackGroup.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\TrackPanel.cpp"
 				>
 			</File>
