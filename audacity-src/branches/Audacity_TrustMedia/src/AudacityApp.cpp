@@ -616,7 +616,7 @@ public:
    IPCServ()
    : wxServer()
    {
-      Create(wxT("audacity"));
+      Create(IPC_APPL);
    };
 
    ~IPCServ()
@@ -941,7 +941,7 @@ void AudacityApp::InitLang( const wxString & lang )
 #ifdef AUDACITY_NAME
       mLocale->AddCatalog(wxT(AUDACITY_NAME));
 #else
-      mLocale->AddCatalog(wxT("audacity"));
+      mLocale->AddCatalog(IPC_APPL);
 #endif
    } else
       mLocale = NULL;
@@ -988,8 +988,12 @@ bool AudacityApp::OnInit()
    wxString appName = wxT(AUDACITY_NAME);
    wxString vendorName = wxT(AUDACITY_NAME);
 #else
-   wxString vendorName = wxT("Audacity");
-   wxString appName = wxT("Audacity");
+   wxString vendorName = wxT("Audacity Team");
+   #ifdef IS_TRUSTMEDIA_VERSION
+      wxString appName = wxT("TrustMedia_Audacity");
+   #else
+      wxString appName = wxT("Audacity");
+   #endif
 #endif
 
    wxTheApp->SetVendorName(vendorName);
