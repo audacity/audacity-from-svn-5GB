@@ -923,7 +923,8 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, const wxRect &r, const double
       begin = x;
       for (; x < r.width && where[x] < ssel1; ++x);
       end = x;
-      DrawSyncLockTiles(&dc, wxRect(r.x + begin, r.y, end - 1 - begin, r.height));
+      wxRect syncLockSelRect(r.x + begin, r.y, end - 1 - begin, r.height);
+      DrawSyncLockTiles(&dc, syncLockSelRect);
    }
 
    //OK, the display bounds are between min and max, which
@@ -1450,8 +1451,8 @@ void TrackArtist::DrawClipWaveform(WaveTrack *track,
    clip->GetEnvelope()->GetValues(envValues, mid.width, t0 + tOffset, tstep);
 
    // Draw the background of the track, outlining the shape of
-   // the envelope and using a colored pen for the selected
-   // part of the waveform
+   // the envelope and using a colored brush for the selected
+   // part of the waveform.
    DrawWaveformBackground(dc, mid, envValues, zoomMin, zoomMax, dB,
                           where, ssel0, ssel1, drawEnvelope,
                           !track->GetSelected());
@@ -3017,7 +3018,7 @@ void TrackArtist::DrawBackgroundWithSelection(wxDC *dc, const wxRect &r,
    dc->SetPen(*wxTRANSPARENT_PEN);
    if (track->GetSelected() || track->IsSyncLockSelected())
    {
-      // Rectangles before, within, after the selction
+      // rectangles before, within, after the selection
       wxRect before = r;
       wxRect within = r;
       wxRect after = r;

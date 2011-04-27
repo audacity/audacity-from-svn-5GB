@@ -1157,7 +1157,11 @@ void AudacityProject::SetProjectTitle()
    wxString name = GetName();
    if( name.IsEmpty() )
    {
-      name = mCleanSpeechMode ? wxT("Audacity CleanSpeech") : wxT("Audacity");
+      #ifdef IS_TRUSTMEDIA_VERSION 
+         name = wxT("TrustMedia_Audacity");
+      #else
+         name = mCleanSpeechMode ? wxT("Audacity CleanSpeech") : wxT("Audacity");
+      #endif
    }
    
    if (mIsRecovered)

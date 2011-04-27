@@ -32,6 +32,8 @@
 // to 1.
 #define IS_ALPHA 1
 
+#define IS_TRUSTMEDIA_VERSION 1
+
 // Increment as appropriate every time you release a new version
 #define AUDACITY_VERSION   1
 #define AUDACITY_RELEASE   3
