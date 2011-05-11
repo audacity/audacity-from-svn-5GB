@@ -9,7 +9,7 @@
 # NOTE: Change this to the base of the Audacity source distribution, or specify
 #       via command line or environment
 #
-AUDACITY_DIR = /home/mchinen/scm/Audacity_TrustMedia
+AUDACITY_DIR =
 
 # -----------------------------------------------------------------------------
 # NOTE: Set to the names of your objects and final module name
