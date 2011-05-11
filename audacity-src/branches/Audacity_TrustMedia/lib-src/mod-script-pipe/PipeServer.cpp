@@ -110,7 +110,8 @@ void PipeServer()
 #include <unistd.h>
 #include <string.h>
 
-const char fifotmpl[] = "/tmp/audacity_script_pipe.%s.%d";
+//const char fifotmpl[] = "/tmp/audacity_script_pipe.%s.%d";
+const char fifotmpl[] = "/tmp/audacity_script_pipe.%s.%s";
 
 const int nBuff = 1024;
 
@@ -125,16 +126,19 @@ void PipeServer()
    char buf[nBuff];
    char toFifoName[nBuff];
    char fromFifoName[nBuff];
+   mode_t mask;
 
-   sprintf(toFifoName, fifotmpl, "to", getuid());
-   sprintf(fromFifoName, fifotmpl, "from", getuid());
+   sprintf(toFifoName, fifotmpl, "to", "ipc");
+   sprintf(fromFifoName, fifotmpl, "from", "ipc");
 
    unlink(toFifoName);
    unlink(fromFifoName);
 
    // TODO avoid symlink security issues?
+   mask = umask(0);
+   rc = mkfifo(fromFifoName, S_IRWXU | S_IRWXG | S_IRWXO) & mkfifo(toFifoName, S_IRWXU | S_IRWXG | S_IRWXO);
+   umask(mask);
 
-   rc = mkfifo(fromFifoName, S_IRWXU) & mkfifo(toFifoName, S_IRWXU);
    if (rc < 0)
    {
       perror("Unable to create fifos");

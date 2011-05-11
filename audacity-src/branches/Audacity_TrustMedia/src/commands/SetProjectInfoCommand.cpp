@@ -35,8 +35,7 @@ void SetProjectInfoCommandType::BuildSignature(CommandSignature &signature)
    infoTypeValidator->AddOption(wxT("SelectedTracks"));
    infoTypeValidator->AddOption(wxT("MuteTracks"));
    infoTypeValidator->AddOption(wxT("SoloTracks"));
-
-   signature.AddParameter(wxT("Type"), wxT("Name"), infoTypeValidator);
+   signature.AddParameter(wxT("Type"), wxT("SelectedTracks"), infoTypeValidator);
 
    BoolArrayValidator *TracksSetValidator = new BoolArrayValidator();
    signature.AddParameter(wxT(kSetOfTracksStr), wxT("x"), TracksSetValidator);

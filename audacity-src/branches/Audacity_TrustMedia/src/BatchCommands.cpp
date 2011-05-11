@@ -511,7 +511,7 @@ bool BatchCommands::SetCurrentParametersFor( Effect * f, const wxString command,
    return true;
 }
 
-bool BatchCommands::ApplyEffectCommand(   Effect * f, const wxString command, const wxString params)
+bool BatchCommands::ApplyEffectCommand(   Effect * f, const wxString command, const wxString params, bool saveState)
 {
    //Possibly end processing here, if in batch-debug
    if( ReportAndSkip(command, params))
@@ -525,7 +525,7 @@ bool BatchCommands::ApplyEffectCommand(   Effect * f, const wxString command, co
    project->SelectAllIfNone();
 
    // NOW actually apply the effect.
-   return project->OnEffect(ALL_EFFECTS | CONFIGURED_EFFECT , f, params, false);
+   return project->OnEffect(ALL_EFFECTS | CONFIGURED_EFFECT , f, params, saveState);
 }
 
 bool BatchCommands::ApplyMenuCommand(const wxString command, const wxString params)
@@ -535,7 +535,7 @@ bool BatchCommands::ApplyMenuCommand(const wxString command, const wxString para
    return true;
 }
 
-bool BatchCommands::ApplyCommand(const wxString command, const wxString params)
+bool BatchCommands::ApplyCommand(const wxString command, const wxString params, bool saveState)
 {
 
    unsigned int i;
@@ -549,7 +549,7 @@ bool BatchCommands::ApplyCommand(const wxString command, const wxString params)
    // Test for an effect.
    Effect * f = EffectManager::Get().GetEffectByIdentifier( command );
    if( f!=NULL )
-      return ApplyEffectCommand( f, command, params );
+      return ApplyEffectCommand( f, command, params, saveState);
 
 //   return ApplyMenuCommand( command, params );
    wxMessageBox(
