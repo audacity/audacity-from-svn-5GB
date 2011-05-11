@@ -25,10 +25,10 @@ class BatchCommands {
    BatchCommands();
  public:
    bool ApplyChain(const wxString & filename = wxT(""));
-   bool ApplyCommand( const wxString command, const wxString params );
+   bool ApplyCommand( const wxString command, const wxString params, bool saveState = false);
    bool ApplyCommandInBatchMode(const wxString & command, const wxString &params);
    bool ApplySpecialCommand(int iCommand, const wxString command,const wxString params);
-   bool ApplyEffectCommand(Effect * f, const wxString command, const wxString params);
+   bool ApplyEffectCommand(Effect * f, const wxString command, const wxString params, bool saveState = false);
    bool ApplyMenuCommand(const wxString command, const wxString params);
    bool ReportAndSkip( const wxString command, const wxString params );
    void AbortBatch();

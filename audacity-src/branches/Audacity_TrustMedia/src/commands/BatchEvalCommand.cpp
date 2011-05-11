@@ -52,7 +52,8 @@ bool BatchEvalCommand::Apply(CommandExecutionContext context)
    // Create a Batch that will have just one command in it...
    BatchCommands Batch;
 
-   return Batch.ApplyCommand(cmdName, cmdParams);
+   // do a batch command but save the state so we can undo it.
+   return Batch.ApplyCommand(cmdName, cmdParams, true);
 }
 
 BatchEvalCommand::~BatchEvalCommand()

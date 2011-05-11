@@ -20,6 +20,10 @@
 #include "../Project.h"
 #include "../Track.h"
 
+// The following parameters have a boolean value, indicated by the kSettingStr
+#define kSettingStr "Setting"
+
+
 wxString SetTrackInfoCommandType::BuildName()
 {
    return wxT("SetTrackInfo");
@@ -32,9 +36,14 @@ void SetTrackInfoCommandType::BuildSignature(CommandSignature &signature)
 
    OptionValidator *infoTypeValidator = new OptionValidator();
    infoTypeValidator->AddOption(wxT("Name"));
+   infoTypeValidator->AddOption(wxT("Selected"));
+   infoTypeValidator->AddOption(wxT("Solo"));
+   infoTypeValidator->AddOption(wxT("Mute"));
    signature.AddParameter(wxT("Type"), wxT("Name"), infoTypeValidator);
    Validator *nameValidator = new Validator();
    signature.AddParameter(wxT("Name"), wxT("Unnamed"), nameValidator);
+   BoolValidator *selectValidator = new BoolValidator();
+   signature.AddParameter(wxT(kSettingStr), wxT("false"), selectValidator );  // gets a single bool track setting
 }
 
 Command *SetTrackInfoCommandType::Create(CommandOutputTarget *target)
@@ -67,6 +76,18 @@ bool SetTrackInfoCommand::Apply(CommandExecutionContext context)
    {
       wxString name = GetString(wxT("Name"));
       t->SetName(name);
+   }
+   else if (mode.IsSameAs(wxT("Select")))
+   {
+      t->SetSelected(GetBool(wxT(kSettingStr)));
+   }
+   else if (mode.IsSameAs(wxT("Solo")))     //  See also the TrackSolo/TrackMute commands
+   {
+      t->SetSolo(GetBool(wxT(kSettingStr)));
+   }
+   else if (mode.IsSameAs(wxT("Mute")))
+   {
+      t->SetMute(GetBool(wxT(kSettingStr)));
    }
    else
    {

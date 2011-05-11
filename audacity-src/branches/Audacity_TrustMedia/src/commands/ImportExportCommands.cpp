@@ -107,8 +107,8 @@ bool ExportCommand::Apply(CommandExecutionContext context)
 
    if (exportSuccess)
    {
-      Status(wxString::Format(wxT("Exported to %s format: %s"),
-                              extension.c_str(), filename.c_str()));
+      Status(wxString::Format(wxT("Exported to %s format: %s with start %f end %f"),
+                              extension.c_str(), filename.c_str(), t0, t1));
       return true;
    }
 
