@@ -1556,7 +1556,11 @@ void AudacityProject::ModifyToolbarMenus()
    mCommandManager.Check(wxT("Duplex"), active);
    gPrefs->Read(wxT("/AudioIO/SWPlaythrough"),&active, false);
    mCommandManager.Check(wxT("SWPlaythrough"), active);
-   gPrefs->Read(wxT("/GUI/SyncLockTracks"), &active, false);
+   #ifdef IS_TRUSTMEDIA_VERSION 
+      gPrefs->Read(wxT("/GUI/SyncLockTracks"), &active, true);
+   #else
+      gPrefs->Read(wxT("/GUI/SyncLockTracks"), &active, false);
+   #endif
    SetSyncLock(active);
    mCommandManager.Check(wxT("SyncLock"), active);
 }
@@ -5461,7 +5465,11 @@ int AudacityProject::DoAddLabel(double left, double right)
 void AudacityProject::OnSyncLock()
 {
    bool bSyncLockTracks;
-   gPrefs->Read(wxT("/GUI/SyncLockTracks"), &bSyncLockTracks, false);
+   #ifdef IS_TRUSTMEDIA_VERSION 
+      gPrefs->Read(wxT("/GUI/SyncLockTracks"), &bSyncLockTracks, true);
+   #else
+      gPrefs->Read(wxT("/GUI/SyncLockTracks"), &bSyncLockTracks, false);
+   #endif
    gPrefs->Write(wxT("/GUI/SyncLockTracks"), !bSyncLockTracks);
 
    // Toolbar, project sync-lock handled within

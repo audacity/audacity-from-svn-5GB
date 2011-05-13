@@ -307,7 +307,11 @@ void EditToolBar::EnableDisableButtons()
    
 #ifdef EXPERIMENTAL_SYNC_LOCK
    bool bSyncLockTracks;
-   gPrefs->Read(wxT("/GUI/SyncLockTracks"), &bSyncLockTracks, false);
+   #ifdef IS_TRUSTMEDIA_VERSION 
+      gPrefs->Read(wxT("/GUI/SyncLockTracks"), &bSyncLockTracks, true);
+   #else
+      gPrefs->Read(wxT("/GUI/SyncLockTracks"), &bSyncLockTracks, false);
+   #endif
 
    if (bSyncLockTracks)
       mButtons[ETBSyncLockID]->PushDown();
