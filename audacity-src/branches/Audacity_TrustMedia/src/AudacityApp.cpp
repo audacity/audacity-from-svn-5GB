@@ -938,6 +938,7 @@ void AudacityApp::InitLang( const wxString & lang )
       //      catalogs are search in LIFO order, so add wxstd first.
       mLocale->AddCatalog(wxT("wxstd"));
 
+// AUDACITY_NAME is legitimately used on some *nix configurations. 
 #ifdef AUDACITY_NAME
       mLocale->AddCatalog(wxT(AUDACITY_NAME));
 #else
@@ -986,15 +987,12 @@ bool AudacityApp::OnInit()
 //     on OSX with case-sensitive file systems.
 #ifdef AUDACITY_NAME
    wxString appName = wxT(AUDACITY_NAME);
-   wxString vendorName = wxT(AUDACITY_NAME);
+#elif IS_TRUSTMEDIA_VERSION
+   wxString appName = wxT("TrustMedia_Audacity");
 #else
-   wxString vendorName = wxT("Audacity Team");
-   #ifdef IS_TRUSTMEDIA_VERSION
-      wxString appName = wxT("TrustMedia_Audacity");
-   #else
-      wxString appName = wxT("Audacity");
-   #endif
+   wxString appName = wxT("Audacity");
 #endif
+   wxString vendorName = wxT("Audacity Team");
 
    wxTheApp->SetVendorName(vendorName);
    wxTheApp->SetAppName(appName);
