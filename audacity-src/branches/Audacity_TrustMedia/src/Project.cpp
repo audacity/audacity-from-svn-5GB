@@ -814,7 +814,11 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    // Make sure valgrind sees mIsSyncLocked is initialized, even 
    // though we're about to set it from prefs.
    mIsSyncLocked = false; 
-   gPrefs->Read(wxT("/GUI/SyncLockTracks"), &mIsSyncLocked, false);
+   #ifdef IS_TRUSTMEDIA_VERSION 
+      gPrefs->Read(wxT("/GUI/SyncLockTracks"), &mIsSyncLocked, true);
+   #else
+      gPrefs->Read(wxT("/GUI/SyncLockTracks"), &mIsSyncLocked, false);
+   #endif
 
    CreateMenusAndCommands();
 
