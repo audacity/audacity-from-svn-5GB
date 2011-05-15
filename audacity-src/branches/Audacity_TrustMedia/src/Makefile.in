@@ -132,6 +132,7 @@ OBJS = \
 	commands/ImportExportCommands.o \
 	commands/Keyboard.o \
 	commands/MessageCommand.o \
+	commands/MixGPTCommand.o \
 	commands/PreferenceCommands.o \
 	commands/ResponseQueue.o \
 	commands/ScreenshotCommand.o \
