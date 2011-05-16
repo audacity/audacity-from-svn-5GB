@@ -440,7 +440,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
      mTrackInfo(this),
      mListener(listener),
      mTracks(tracks),
-     //vvv mTrackGroupManager(NULL), 
+     mTrackGroupManager(NULL), 
      mViewInfo(viewInfo),
      mRuler(ruler),
      mTrackArtist(NULL),
@@ -563,7 +563,7 @@ TrackPanel::~TrackPanel()
                        wxCommandEventHandler(TrackPanel::OnTrackListResized),
                        NULL,
                        this);
-   //vvv delete mTrackGroupManager;
+   delete mTrackGroupManager;
 
    // This can happen if a label is being edited and the user presses
    // ALT+F4 or Command+Q
@@ -1367,13 +1367,6 @@ void TrackPanel::HandleCursorForLastMouseEvent()
 {
    HandleCursor(mLastMouseEvent);
 }
-
-//vvv void TrackPanel::MakeTrackGroup()
-//vvv {
-//vvv    if (!mTrackGroupManager)
-//vvv       mTrackGroupManager = new TrackGroupManager();
-//vvv    //vvvvvv
-//vvv }
 
 MixerBoard* TrackPanel::GetMixerBoard()
 {

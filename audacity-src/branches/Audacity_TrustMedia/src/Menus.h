@@ -304,6 +304,9 @@ void OnImportRaw();
 
 void OnEditMetadata();
 
+#ifdef IS_TRUSTMEDIA_VERSION
+   void OnTrustMediaMix();
+#endif
 void OnMixAndRender();
 void OnMixAndRenderToNewTrack();
 void HandleMixAndRender(bool toNewTrack);
@@ -333,7 +336,6 @@ void OnNewWaveTrack();
 void OnNewStereoTrack();
 void OnNewLabelTrack();
 void OnNewTimeTrack();
-//vvv void OnMakeTrackGroup();
 
 void OnTimerRecord();
 void OnRemoveTracks();

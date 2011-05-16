@@ -19,7 +19,7 @@
 
 #include "LabelTrack.h"
 #include "Sequence.h"  //Stm: included for the sampleCount declaration
-//vvv #include "TrackGroup.h"
+#include "TrackGroup.h"
 #include "WaveClip.h"
 #include "WaveTrack.h"
 
@@ -244,8 +244,6 @@ class TrackPanel:public wxPanel {
    void SetFocusedTrack(Track *t);
 
    void HandleCursorForLastMouseEvent();
-
-  //vvv void MakeTrackGroup();
 
    void UpdateVRulers();
    void UpdateVRuler(Track *t);
@@ -477,7 +475,7 @@ private:
    TrackPanelListener *mListener;
 
    TrackList *mTracks;
-   //vvv TrackGroupManager* mTrackGroupManager;
+   TrackGroupManager* mTrackGroupManager;
    ViewInfo *mViewInfo;
 
    AdornedRulerPanel *mRuler;
