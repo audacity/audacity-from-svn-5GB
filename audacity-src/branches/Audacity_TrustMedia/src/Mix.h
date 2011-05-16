@@ -19,9 +19,14 @@
 #include "TimeTrack.h"
 #include "Resample.h"
 
-class DirManager;
+#ifdef IS_TRUSTMEDIA_VERSION
+   bool TrustMediaMix(TrackList *tracks, TrackFactory *trackFactory,
+                        double rate, sampleFormat format,
+                        double startTime, double endTime,
+                        WaveTrack **newLeft, WaveTrack **newRight);
+#endif
 
-bool MixAndRender(TrackList * tracks, TrackFactory *factory,
+bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
                   double rate, sampleFormat format,
                   double startTime, double endTime,
                   WaveTrack **newLeft, WaveTrack **newRight);
@@ -147,15 +152,4 @@ class AUDACITY_DLL_API Mixer {
 };
 
 #endif
-
-// Indentation settings for Vim and Emacs and unique identifier for Arch, a
-// version control system. Please do not modify past this point.
-//
-// Local Variables:
-// c-basic-offset: 3
-// indent-tabs-mode: nil
-// End:
-//
-// vim: et sts=3 sw=3
-// arch-tag: 9d4211b3-0241-4689-bc53-3e9460a04cb6
 

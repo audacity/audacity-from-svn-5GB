@@ -657,10 +657,13 @@ void AudacityProject::CreateMenusAndCommands()
 
       //////////////////////////////////////////////////////////////////////////
 
-      //vvv c->AddItem(wxT("Make Track Group"), _("Make Track Group"), FN(OnMakeTrackGroup),
-      //vvv           AudioIONotBusyFlag, AudioIONotBusyFlag);
-
       c->AddSeparator();
+
+      #ifdef IS_TRUSTMEDIA_VERSION 
+         c->AddItem(wxT("TrustMediaMix"), _("TrustMedia Mix"), FN(OnTrustMediaMix),
+                    AudioIONotBusyFlag | WaveTracksSelectedFlag,
+                    AudioIONotBusyFlag | WaveTracksSelectedFlag);
+      #endif
 
       // StereoToMono moves to the Edit menu when in CleanSpeech mode.
       // It belongs here normally, because it is a kind of mix-down.
@@ -4748,6 +4751,83 @@ void AudacityProject::OnEditMetadata()
    }
 }
 
+#ifdef IS_TRUSTMEDIA_VERSION
+   void AudacityProject::OnTrustMediaMix()
+   {
+      // Much of this is derived from HandleMixAndRender().
+      const bool toNewTrack = true;
+      WaveTrack *newLeft = NULL;
+      WaveTrack *newRight = NULL;
+
+      wxGetApp().SetMissingAliasedFileWarningShouldShow(true);
+
+      if (::TrustMediaMix(mTracks, mTrackFactory, mRate, mDefaultFormat, 0.0, 0.0,
+                          &newLeft, &newRight)) 
+      {
+         // Remove originals, get stats on what tracks were mixed
+
+         TrackListIterator iter(mTracks);
+         Track *t = iter.First();
+         int selectedCount = 0;
+         wxString firstName;
+
+         while (t) {
+            if (t->GetSelected() && (t->GetKind() == Track::Wave)) {
+               if (selectedCount==0)
+                  firstName = t->GetName();
+
+               // Add one to the count if it's an unlinked track, or if it's the first
+               // in a stereo pair
+               if (t->GetLinked() || !t->GetLink())
+                   selectedCount++;
+
+                   if (!toNewTrack) {
+                      t = iter.RemoveCurrent(true);
+                   } else {
+                      t = iter.Next();
+                   };
+            }
+            else
+               t = iter.Next();
+         }
+
+         // Add new tracks
+
+         mTracks->Add(newLeft);
+         if (newRight)
+            mTracks->Add(newRight);
+
+         // If we're just rendering (not mixing), keep the track name the same
+         if (selectedCount==1) {
+            newLeft->SetName(firstName);
+            if (newRight)
+               newRight->SetName(firstName);
+         }
+
+         // Smart history/undo message
+         if (selectedCount==1) {
+            wxString msg;
+            msg.Printf(_("Rendered all audio in track '%s'"), firstName.c_str());
+            PushState(msg, _("Render"));
+         }
+         else {
+            wxString msg;
+            if (newRight)
+               msg.Printf(_("Mixed and rendered %d tracks into one new stereo track"),
+                          selectedCount);
+            else
+               msg.Printf(_("Mixed and rendered %d tracks into one new mono track"),
+                          selectedCount);
+            PushState(msg, _("Mix and Render"));
+         }
+
+         mTrackPanel->SetFocusedTrack(newLeft);
+         mTrackPanel->EnsureVisible(newLeft);
+         RedrawProject();
+      }
+   }
+#endif // IS_TRUSTMEDIA_VERSION
+
 void AudacityProject::HandleMixAndRender(bool toNewTrack)
 {
    WaveTrack *newLeft = NULL;
@@ -5370,12 +5450,6 @@ void AudacityProject::OnNewTimeTrack()
    RedrawProject();
    mTrackPanel->EnsureVisible(t);
 }
-
-//vvv void AudacityProject::OnMakeTrackGroup()
-//vvv {
-//vvv    mTrackPanel->MakeTrackGroup();
-//vvv }
-
 
 void AudacityProject::OnTimerRecord()
 {

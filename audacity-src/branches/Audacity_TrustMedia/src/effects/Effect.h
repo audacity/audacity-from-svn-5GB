@@ -277,6 +277,7 @@ class AUDACITY_DLL_API Effect {
    wxArrayPtrVoid mIMap;
    wxArrayPtrVoid mOMap;
 
+   // These are used only in Track*Progress() methods.
    int mNumTracks; //v This is really mNumWaveTracks, per CountWaveTracks() and GetNumWaveTracks().
    int mNumGroups;
 
