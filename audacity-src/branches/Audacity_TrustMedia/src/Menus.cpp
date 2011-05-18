@@ -4755,6 +4755,7 @@ void AudacityProject::OnEditMetadata()
    void AudacityProject::OnTrustMediaMix()
    {
       // Much of this is derived from HandleMixAndRender().
+      //vvvvv Currently identical to HandleMixAndRender().
       const bool toNewTrack = true;
       WaveTrack *newLeft = NULL;
       WaveTrack *newRight = NULL;
