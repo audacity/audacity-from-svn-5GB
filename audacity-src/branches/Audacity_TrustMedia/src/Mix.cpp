@@ -41,131 +41,6 @@
 #include "Resample.h"
 #include "float_cast.h"
 
-#ifdef IS_TRUSTMEDIA_VERSION
-   bool TrustMediaMix(TrackList *tracks, TrackFactory *trackFactory,
-                        double rate, sampleFormat format,
-                        double startTime, double endTime,
-                        WaveTrack **newLeft, WaveTrack **newRight)
-   {
-      // Derived from MixAndRender().
-      // Takes project tracks as input, mixes as per specification in GT-PI_API doc.
-      // For all Parts specified by the arrays, it mixes
-      // them together, applying any envelopes, amplitude gain, panning,
-      // and real-time effects in the process.  The resulting pair of
-      // tracks (stereo) are "rendered" and have no effects, gain, panning,
-      // or envelopes.
-
-      WaveTrack **waveArray;
-      Track *t;
-      int numWaves = 0;
-      int numMono = 0;
-      bool mono = false;
-      int w;
-
-      TrackListIterator iter(tracks);
-
-      t = iter.First();
-      while (t) {
-         if (t->GetSelected() && t->GetKind() == Track::Wave) {
-            numWaves++;
-            float pan = ((WaveTrack*)t)->GetPan();
-            if (t->GetChannel() == Track::MonoChannel && pan == 0)
-               numMono++;
-         }
-         t = iter.Next();
-      }
-
-      if (numMono == numWaves)
-         mono = true;
-
-      double totalTime = 0.0;
-
-      waveArray = new WaveTrack *[numWaves];
-      w = 0;
-      t = iter.First();
-      while (t) {
-         if (t->GetSelected() && t->GetKind() == Track::Wave) {
-            waveArray[w++] = (WaveTrack *) t;
-            if (t->GetEndTime() > totalTime)
-               totalTime = t->GetEndTime();
-         }
-         t = iter.Next();
-      }
-
-      WaveTrack *mixLeft = trackFactory->NewWaveTrack(format, rate);
-      mixLeft->SetName(_("Mix"));
-      WaveTrack *mixRight = 0;
-      if (mono) {
-         mixLeft->SetChannel(Track::MonoChannel);
-      }
-      else {
-         mixRight = trackFactory->NewWaveTrack(format, rate);
-         mixRight->SetName(_("Mix"));
-         mixLeft->SetChannel(Track::LeftChannel);
-         mixRight->SetChannel(Track::RightChannel);
-         mixLeft->SetLinked(true);
-      }
-
-      int maxBlockLen = mixLeft->GetIdealBlockSize();
-
-      if (startTime == endTime) {
-         startTime = 0.0;
-         endTime = totalTime;
-      }
-
-      Mixer *mixer = new Mixer(numWaves, waveArray, tracks->GetTimeTrack(),
-                               startTime, endTime, mono ? 1 : 2, maxBlockLen, false,
-                               rate, format);
-
-      ::wxSafeYield();
-      ProgressDialog *progress = new ProgressDialog(_("Mix and Render"),
-                                                    _("Mixing and rendering tracks"));
-      
-      int updateResult = eProgressSuccess;
-      while(updateResult == eProgressSuccess) {
-         sampleCount blockLen = mixer->Process(maxBlockLen);
-
-         if (blockLen == 0)
-            break;
-
-         if (mono) {
-            samplePtr buffer = mixer->GetBuffer();
-            mixLeft->Append(buffer, format, blockLen);
-         }
-         else {
-            samplePtr buffer;
-            buffer = mixer->GetBuffer(0);
-            mixLeft->Append(buffer, format, blockLen);
-            buffer = mixer->GetBuffer(1);
-            mixRight->Append(buffer, format, blockLen);
-         }
-
-         updateResult = progress->Update(mixer->MixGetCurrentTime(), totalTime);
-      }
-
-      delete progress;
-
-      mixLeft->Flush();
-      if (!mono) 
-         mixRight->Flush();
-      if (updateResult == eProgressCancelled || updateResult == eProgressFailed)
-      {
-         delete mixLeft;
-         if (!mono) 
-            delete mixRight;
-      } else {
-         *newLeft = mixLeft;
-         if (!mono) 
-            *newRight = mixRight;
-      }
-
-      delete[] waveArray;
-      delete mixer;
-
-      return (updateResult == eProgressSuccess || updateResult == eProgressStopped);
-   }
-#endif // IS_TRUSTMEDIA_VERSION
-
 bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
                   double rate, sampleFormat format,
                   double startTime, double endTime,
@@ -803,4 +678,149 @@ MixerSpec& MixerSpec::operator=( const MixerSpec &mixerSpec )
 
    return *this;
 }
+
+#ifdef IS_TRUSTMEDIA_VERSION //vvvvv Split to new file.
+   bool TrustMediaMix(TrackList *tracks, TrackFactory *trackFactory,
+                        double rate, sampleFormat format,
+                        double startTime, double endTime,
+                        WaveTrack **newLeft, WaveTrack **newRight)
+   {
+      // Derived from MixAndRender().
+      //vvvvv Currently functionally identical to MixAndRender().
+      // Takes project tracks as input, mixes as per specification in GT-PI_API doc.
+      // For all Parts specified by the arrays, it mixes
+      // them together, applying any envelopes, amplitude gain, panning,
+      // and real-time effects in the process.  The resulting pair of
+      // tracks (stereo) are "rendered" and have no effects, gain, panning,
+      // or envelopes.
+
+      WaveTrack **waveArray;
+      Track *t;
+      int numWaves = 0;
+      int numMono = 0;
+      bool mono = false;
+      int w;
+
+      TrackListIterator iter(tracks);
+
+      t = iter.First();
+      while (t) {
+         if (t->GetSelected() && t->GetKind() == Track::Wave) {
+            numWaves++;
+            float pan = ((WaveTrack*)t)->GetPan();
+            if (t->GetChannel() == Track::MonoChannel && pan == 0)
+               numMono++;
+         }
+         t = iter.Next();
+      }
+
+      if (numMono == numWaves)
+         mono = true;
+
+      double totalTime = 0.0;
+
+      waveArray = new WaveTrack *[numWaves];
+      w = 0;
+      t = iter.First();
+      while (t) {
+         if (t->GetSelected() && t->GetKind() == Track::Wave) {
+            waveArray[w++] = (WaveTrack *) t;
+            if (t->GetEndTime() > totalTime)
+               totalTime = t->GetEndTime();
+         }
+         t = iter.Next();
+      }
+
+      WaveTrack *mixLeft = trackFactory->NewWaveTrack(format, rate);
+      mixLeft->SetName(_("Mix"));
+      WaveTrack *mixRight = 0;
+      if (mono) {
+         mixLeft->SetChannel(Track::MonoChannel);
+      }
+      else {
+         mixRight = trackFactory->NewWaveTrack(format, rate);
+         mixRight->SetName(_("Mix"));
+         mixLeft->SetChannel(Track::LeftChannel);
+         mixRight->SetChannel(Track::RightChannel);
+         mixLeft->SetLinked(true);
+      }
+
+      int maxBlockLen = mixLeft->GetIdealBlockSize();
+
+      if (startTime == endTime) {
+         startTime = 0.0;
+         endTime = totalTime;
+      }
+
+      Mixer *mixer = new Mixer(numWaves, waveArray, tracks->GetTimeTrack(),
+                               startTime, endTime, mono ? 1 : 2, maxBlockLen, false,
+                               rate, format);
+
+      ::wxSafeYield();
+      ProgressDialog *progress = new ProgressDialog(_("Mix and Render"),
+                                                    _("Mixing and rendering tracks"));
+      
+      int updateResult = eProgressSuccess;
+      while(updateResult == eProgressSuccess) {
+         sampleCount blockLen = mixer->Process(maxBlockLen);
+
+         if (blockLen == 0)
+            break;
+
+         if (mono) {
+            samplePtr buffer = mixer->GetBuffer();
+            mixLeft->Append(buffer, format, blockLen);
+         }
+         else {
+            samplePtr buffer;
+            buffer = mixer->GetBuffer(0);
+            mixLeft->Append(buffer, format, blockLen);
+            buffer = mixer->GetBuffer(1);
+            mixRight->Append(buffer, format, blockLen);
+         }
+
+         updateResult = progress->Update(mixer->MixGetCurrentTime(), totalTime);
+      }
+
+      delete progress;
+
+      mixLeft->Flush();
+      if (!mono) 
+         mixRight->Flush();
+      if (updateResult == eProgressCancelled || updateResult == eProgressFailed)
+      {
+         delete mixLeft;
+         if (!mono) 
+            delete mixRight;
+      } else {
+         *newLeft = mixLeft;
+         if (!mono) 
+            *newRight = mixRight;
+      }
+
+      delete[] waveArray;
+      delete mixer;
+
+      return (updateResult == eProgressSuccess || updateResult == eProgressStopped);
+   }
+
+
+   TrustMedia_AuditionMixer::TrustMedia_AuditionMixer(
+                              int numInputTracks, WaveTrack **inputTracks,
+                              TimeTrack *timeTrack,
+                              double startTime, double stopTime,
+                              int numOutChannels, int outBufferSize, bool outInterleaved,
+                              double outRate, sampleFormat outFormat,
+                              bool highQuality /*= true*/, MixerSpec *mixerSpec /*= NULL*/)
+   : Mixer(numInputTracks, inputTracks,
+            timeTrack,
+            startTime, stopTime,
+            numOutChannels, outBufferSize, outInterleaved,
+            outRate, outFormat,
+            highQuality, mixerSpec)
+{
+   //vvvvv Need to add params for...
+}
+
+#endif // IS_TRUSTMEDIA_VERSION
 

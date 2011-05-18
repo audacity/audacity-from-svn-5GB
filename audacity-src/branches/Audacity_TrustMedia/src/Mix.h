@@ -19,13 +19,6 @@
 #include "TimeTrack.h"
 #include "Resample.h"
 
-#ifdef IS_TRUSTMEDIA_VERSION
-   bool TrustMediaMix(TrackList *tracks, TrackFactory *trackFactory,
-                        double rate, sampleFormat format,
-                        double startTime, double endTime,
-                        WaveTrack **newLeft, WaveTrack **newRight);
-#endif
-
 bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
                   double rate, sampleFormat format,
                   double startTime, double endTime,
@@ -151,5 +144,26 @@ class AUDACITY_DLL_API Mixer {
    double           mRate;
 };
 
-#endif
+#ifdef IS_TRUSTMEDIA_VERSION
+   //vvvvvv
+
+   // TrustMediaMix is derived from MixAndRender.
+   bool TrustMediaMix(TrackList *tracks, TrackFactory *trackFactory,
+                        double rate, sampleFormat format,
+                        double startTime, double endTime,
+                        WaveTrack **newLeft, WaveTrack **newRight);
+
+   class TrustMedia_AuditionMixer : public Mixer
+   {
+      TrustMedia_AuditionMixer(int numInputTracks, WaveTrack **inputTracks,
+                                 TimeTrack *timeTrack,
+                                 double startTime, double stopTime,
+                                 int numOutChannels, int outBufferSize, bool outInterleaved,
+                                 double outRate, sampleFormat outFormat,
+                                 bool highQuality = true, MixerSpec *mixerSpec = NULL);
+      virtual ~TrustMedia_AuditionMixer() {}; 
+   };
+#endif // IS_TRUSTMEDIA_VERSION
+
+#endif // __AUDACITY_MIX__
 
