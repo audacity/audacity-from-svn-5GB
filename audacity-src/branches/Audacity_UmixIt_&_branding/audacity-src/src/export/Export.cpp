@@ -410,10 +410,11 @@ bool ExportLossy(AudacityProject *project,
    if (success && actualName != fName)
       ::wxRenameFile(FILENAME(fName), FILENAME(actualName));
 
-   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      if (success)
-         project->OnClose();
-   #endif
+   // Remove for A_V 1.2.6a11.
+   //#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   //   if (success)
+   //      project->OnClose();
+   //#endif
 
    return success;
 }
