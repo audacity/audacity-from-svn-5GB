@@ -3,7 +3,7 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=Audacity_Voice-win-1.2.6a10
+OutputBaseFilename=Audacity_Voice-win-1.2.6a11
 SetupIconFile=Audacity.ico
 
 WizardImageFile=audacity_InnoWizardImage.bmp
