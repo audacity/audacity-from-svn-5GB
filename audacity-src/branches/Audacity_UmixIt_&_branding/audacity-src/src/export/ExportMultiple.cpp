@@ -333,8 +333,13 @@ bool ExportMultipleByTrack(AudacityProject *project,
          if (byName) {
             name = tr->GetName();
          }
-         else {
-            if (numTracks > 9)
+         else 
+         {
+            if (numTracks > 999)
+               name.Printf("%s-%04d", prefix.c_str(), i+1);
+            else if (numTracks > 99)
+               name.Printf("%s-%03d", prefix.c_str(), i+1);
+            else if (numTracks > 9)
                name.Printf("%s-%02d", prefix.c_str(), i+1);
             else
                name.Printf("%s-%d", prefix.c_str(), i+1);

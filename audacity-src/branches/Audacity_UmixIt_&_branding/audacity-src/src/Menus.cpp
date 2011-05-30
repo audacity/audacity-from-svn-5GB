@@ -156,7 +156,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("ExportAndExit",  _("Save As and Exit...\tCtrl+S"), FN(OnExportMixAndExit));
    c->AddItem("Export",         _("Save As"),                     FN(OnExportMix));
    // per R Barr, Mar 1, 2010    c->AddItem("ExportSel",      _("Save Selection As...\tCtrl+Shift+S"),         FN(OnExportSelection));
-   c->AddItem("Open",           _("&Email...\tCtrl+E"),           FN(OnEmail)); //vvv Set enable flags.
+   c->AddItem("Email",          _("&Email...\tCtrl+E"),           FN(OnEmail)); //vvv Set enable flags.
    c->AddItem("Open",           _("&Open...\tCtrl+O"),            FN(OnOpen));
    c->AddItem("[blank]",        _(""),                            NULL);
    c->AddSeparator();
@@ -176,11 +176,11 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("ExportMP3",      _("Save As MP3...\tCtrl+M"),         FN(OnExportMP3Mix));
    // per R Barr, Mar 1, 2010    c->AddItem("ExportMP3Sel",   _("Save Selection As MP3...\tCtrl+Shift+M"),     FN(OnExportMP3Selection));
    c->AddSeparator();
-   c->AddItem("Save",           _("&Save Project and Exit\tCtrl+P"), FN(OnSave));
+   c->AddItem("Save",           _("&Save Project\tCtrl+P"), FN(OnSave));
    c->SetCommandFlags("Save",
                      AudioIONotBusyFlag | UnsavedChangesFlag,
                      AudioIONotBusyFlag | UnsavedChangesFlag);
-   c->AddItem("SaveAs",         _("Save Project &As and Exit...\tCtrl+Shift+P"), FN(OnSaveAs));
+   c->AddItem("SaveAs",         _("Save Project &As...\tCtrl+Shift+P"), FN(OnSaveAs));
    c->AddSeparator();
    c->AddItem("New",            _("&New\tCtrl+N"),                   FN(OnNew));
    c->SetCommandFlags("New", 0, 0);
@@ -221,11 +221,11 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem("ExportOgg",      _("Export As Ogg Vorbis..."),        FN(OnExportOggMix));
       c->AddItem("ExportOggSel",   _("Export Selection As Ogg Vorbis..."), FN(OnExportOggSelection));
    #endif
-#endif
+#endif // (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
 
    c->AddSeparator();
    c->AddItem("ExportLabels",   _("Export &Labels..."),              FN(OnExportLabels));
-   c->AddItem("ExportMultiple",   _("Export &Multiple..."),              FN(OnExportMultiple));
+   c->AddItem("ExportMultiple",   _("Export &Multiple...\tCtrl+Shift+X"), FN(OnExportMultiple));
    // Enable Export commands only when there are tracks
    c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
                         AudioIONotBusyFlag | TracksExistFlag,
@@ -433,7 +433,7 @@ void AudacityProject::CreateMenusAndCommands()
                FN(OnPlayAfterRecord));
    c->AddSeparator();
 
-   // Vaughan, 2011-01-12: Removed per Robert Barr's email. 
+	// Vaughan, 2011-01-12: Removed per Robert Barr's email. 
    //gPrefs->Read("/Transport/bWantLockedRecording", &m_bWantLockedRecording, false); // Default is unlocked.
    //c->AddItem("Lock/Unlock", 
    //            m_bWantLockedRecording ? 
@@ -686,10 +686,11 @@ void AudacityProject::CreateMenusAndCommands()
    #endif
    c->AddItem("About",          _("&About Audacity..."),          FN(OnAbout));
    
-   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      //c->AddItem("Help", _("Differences in Audacity_Voice..."), FN(OnDifferences));
-      c->AddItem("Help", _("Get Audiotouch..."), FN(OnGetAudiotouch));
-   #endif
+   // Remove "Get Audiotouch..." for A_V 1.2.6a11.
+   //#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   //   //c->AddItem("Help", _("Differences in Audacity_Voice..."), FN(OnDifferences));
+   //   c->AddItem("Help", _("Get Audiotouch..."), FN(OnGetAudiotouch));
+   //#endif
 
 #if 0 // No Benchmark in stable release
    c->AddSeparator();   
@@ -780,7 +781,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
       c->AddCommand("Play/Stop",   _("Play/Stop\tEnter"),            FN(OnPlayStop));
-      // Vaughan, 2011-01-12: Removed per Robert Barr's email
+		// Vaughan, 2011-01-12: Removed per Robert Barr's email
       //c->AddCommand("Stop",        _("Stop\tS"),                     FN(OnStop));
       c->AddCommand("Pause",       _("Pause\tP"),                    FN(OnPause));
       c->AddCommand("Record",      _("Record\tSpacebar"),            FN(OnRecord));
@@ -1601,10 +1602,13 @@ void AudacityProject::OnNew()
 
       dlog.GetPaths(selectedFiles);
 
-      wxString body = _("The attached audio file was generated in Audiotouch.\n\n"); 
-      body += _("http://www.audiotouch.com.au/files/email_options.pdf\n\n"); 
-      body += _("If the attached audio file is in .wav or .mp3 formats, it should play on your computer with your installed software.\n\n"); 
-      body += _("If the attached audio file is .ogg (open source) format, you may need to download free software to play it. Try http://www.vorbis.com/.");
+      wxString body = _("This email has an attached audio file generated with Audacity_Voice. \
+Audacity_Voice is a free version of Audacity for Windows. \
+Audacity_Voice has been optimised for the needs of multi-start voice recording.\n\n"); 
+      body += _("Find Audacity (various platforms) at http://audacity.sourceforge.net\n\n"); 
+      body += _("Find Audacity_Voice at: http://www.audiotouch.com.au.\n\n"); 
+      body += _("If the attached audio file is in .wav or .mp3 formats, it should play on your computer with your installed software.");
+      body += _("If the attached audio file is .ogg (open source) format, you may need to download free software to play it. Best of all, get a free version of Audacity (above)..");
       wxMailMessage msg(
          _("Audiotouch audio file attached"), // const wxString& subject
          _("replace.me@somewhere.com"), // const wxString& to
@@ -1655,24 +1659,12 @@ void AudacityProject::OnClose()
 
 void AudacityProject::OnSave()
 {
-   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      // Close only if actually completed Save, i.e., user didn't cancel.
-      if (this->Save())
-         this->OnClose();
-   #else
-      Save();
-   #endif
+   Save();
 }
 
 void AudacityProject::OnSaveAs()
 {
-   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      // Close only if actually completed Save, i.e., user didn't cancel.
-      if (this->SaveAs())
-         this->OnClose();
-   #else
-      SaveAs();
-   #endif
+   SaveAs();
 }
 
 void AudacityProject::OnExit()
@@ -1797,13 +1789,14 @@ void AudacityProject::OnExportOggSelection()
 
 void AudacityProject::OnExportMultiple()
 {
-   #if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
-      // Close only if actually completed Save, i.e., user didn't cancel.
-      if (::ExportMultiple(this))
-         this->OnClose();
-   #else
+   // per Robert Barr, 2011-05-13: No longer exit. 
+   //#if (AUDACITY_BRANDING == BRAND_AUDIOTOUCH)
+   //   // Close only if actually completed Save, i.e., user didn't cancel.
+   //   if (::ExportMultiple(this))
+   //      this->OnClose();
+   //#else
       ::ExportMultiple(this);
-   #endif
+   //#endif
 }
 
 void AudacityProject::OnPreferences()
