@@ -2,7 +2,7 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
- * Copyright 2006-10 Vaughan Johnson
+ * Copyright 2006-11 Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -15,7 +15,7 @@
 <h2><?=$pageTitle?></h2>
 
 <p>
-  <?=_('Audacity raises money via <a href="#donate">donations</a>, <a href="http://audacityteam.org/sponsor.php">sponsorships</a>, product sales through <a href="http://audacitystore.com/">Audacity Store</a> and <a href="../contact/privacy#advertising">advertisements</a> on our web pages.')?>
+  <?=_('Audacity raises money via <a href="#donate">donations</a>, <a href="http://audacityteam.org/sponsor.php">sponsorships</a> and <a href="../contact/privacy#advertising">advertisements</a> on our web pages.')?>
 </p>
 
 <p>
@@ -43,7 +43,7 @@
   do more of these.
   Our long-term goal is to bring in enough money to hire a full-time developer who could 
   devote all of his/her time to the project and take over some of the administrative, 
-  maintenance, and release tasks, freeing volunteers to spend more time on code.')?>
+  maintenance and release tasks, freeing volunteers to spend more time on code.')?>
 </p>
 
 <p>
@@ -56,29 +56,17 @@
 
 <p>
   <?=_('There are many ways to support Audacity, and many degrees of doing so.  
-  We have always welcomed users whose only contribution is simply using Audacity, 
-  giving us feedback on how to improve it, and telling others about it. 
-  Thank you for supporting Audacity.')?>
+  Besides donating money, you can <a href="http://wiki.audacityteam.org/wiki/Contribute">
+  contribute</a> by helping us with <a href="../community/developers">programming</a>,
+  <a href="../contact#feedback">testing</a>, <a href="http://manual.audacityteam.org/">
+  documentation</a>,<a href="../community/translation">translations</a> or by anwering
+  questions on our <a href="http://forum.audacityteam.org/">Forum</a>. We have always 
+  welcomed users whose only contribution is simply using Audacity, giving us feedback
+  on how to improve it and telling others about it. Thank you for supporting Audacity.')?>
 </p>
-
-
-<h2>
-  <?=_('Purchase from the <a href="http://audacitystore.com/">Audacity Store</a>')?>
-</h2>
-<p>
-  <?=_('Please visit <a href="http://audacitystore.com/">Audacity Store</a> for  
-  high quality Audacity-logo items (T-shirts, embroidered polo shirts, embroidered messenger bags and ceramic mugs).')?>
-</p>
-<p class="logo">
-  <a title="<?=_('Audacity Store, for Audacity-logo shirts, bags and ceramic mugs')?>"
-     href="http://audacitystore.com/">
-    <img src="../images/Audacity Store_banner_50pct.jpg" alt="<?=_('Audacity Store, for Audacity-logo shirts, bags and ceramic mugs')?>" />
-  </a>
-</p>
-
 
 <h2 id="donate"><?=_('Make a Donation')?></h2>
-<p id="paypal"><?=_('Alternatively, click the button below to donate securely by Paypal. You can send any amount, using either your credit card or your Paypal account:')?></p>
+<p id="paypal"><?=_('Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:')?></p>
 
 <!-- Begin Paypal button Form --> 
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -87,7 +75,7 @@
    <input type="hidden" name="item_name" value="Thank you for your donation to Audacity!">
    <input type="hidden" name="return" value="http://audacity.sourceforge.net/">
    <input type="hidden" name="cancel_return" value="http://audacity.sourceforge.net/community/donate">
-   <input type="image" src="../images/Paypal_large_blue.png" border="0" name="submit" alt="Paypal logo">
+   <input type="image" src="../images/Paypal_large_blue.png" border="0" name="submit" alt="Paypal logo" title="Donate securely using your credit card or Paypal account">
    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----">
 </p>
 </form>

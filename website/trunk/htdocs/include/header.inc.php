@@ -1,10 +1,10 @@
 <?php
 /*
- * Copyright 2006 Vaughan Johnson
+ * Copyright 2006 - 11 Vaughan Johnson
  * Copyright 2005 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -73,12 +73,12 @@
   }
 ?>
 
-<div align="right">
+<!--<div align="right">
 	<a title="<?=_('Audacity Store, for Audacity-logo shirts, bags and ceramic mugs')?>" href="http://audacitystore.com/">
    <img src="../images/Audacity Store_banner_50pct.jpg" alt="<?=_('Audacity Store, for Audacity-logo shirts, bags and ceramic mugs')?>" />
 	</a>
 	<br>
-</div>
+</div>-->
 
 <div id="sitenav">
   <h2><?=_("Site Navigation")?></h2>
