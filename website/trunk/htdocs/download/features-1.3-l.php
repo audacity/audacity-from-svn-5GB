@@ -1,8 +1,8 @@
 <?php
 /*
- * Copyright 2006 Dominic Mazzoni
+ * Copyright 2006 - 11 Dominic Mazzoni, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "features-1.3-l";
@@ -21,13 +21,14 @@ and prompt you to recover it.
 ")?></p>
 
 <p><?=_("One common source of confusion with Audacity is that when you
-open or import an uncompressed file (e.g. WAV or AIFF), Audacity saves
-time and memory by only linking to the file, not copying it.  But if you
-move, modify or delete the original file, your Audacity project will not
-work anymore.  Starting with version 1.3.2, Audacity will prompt you every
-time you save if your project is dependent on other audio files, and give
-you the option of copying them into the project at that time, so it is
-self-contained.")?></p>
+open or import an uncompressed file (e.g. WAV or AIFF), Audacity by 
+default saves time and memory by only linking to the file, not copying it.
+But if you move, rename or delete the original file, your Audacity project
+will not work anymore.  Starting with version 1.3.2, Audacity prompts
+the first time you save your project, and on exiting, if the project 
+depends on other audio files. If there is a dependency, Audacity gives 
+you the option of copying the required files into the project, making
+it self-contained.")?></p>
 
 <style type="text/css">
 .navbox {
