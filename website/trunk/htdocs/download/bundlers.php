@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2007, 2009  Vaughan Johnson, Gale Andrews
+ * Copyright 2007 - 2011  Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -13,9 +13,9 @@
 
 <h2><?=$pageTitle?></h2>
 
-<p><?=_('Audacity is free to download, but vendors are also free to bundle copies of the program with their products, or resell or distribute Audacity, thanks to the <a href="../about/license">GNU General Public License</a>. The following are legitimate, legal offerings. We are happy and proud that they chose to bundle Audacity with their products.')?></p>
+<p><?=_('Audacity is free to download, but many vendors bundle copies of the program with their products, or resell or distribute Audacity, thanks to the <a href="../about/license">GNU General Public License</a>. The following are legitimate, legal offerings from companies that have worked with us. We are happy and proud that they chose to bundle Audacity with their products.')?></p>
 
-<p><?=_('Some vendors, <a href="http://umixit.com/aboutus.html">Umixit</a>, <a href="http://www.thinklabsmedical.com">Thinklabs</a>, and <a href="http://audiotouch.com.au/">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href="#others">custom versions</a>. The UmixIt custom version adds a mixer board interface and karaoke window. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Audiotouch is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Many of these improvements will be incorporated in future versions of Audacity.')?></p>
+<p><?=_('Some vendors, Umixit, <a href="http://www.thinklabsmedical.com">Thinklabs</a>, and <a href="http://audiotouch.com.au/">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href="#others">custom versions</a>. The UmixIt custom version added a mixer board interface and karaoke window which are now incorporated in Audacity Beta. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Voice is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Some of these improvements will be incorporated in future versions of Audacity.')?></p>
 
 <p>
   <?php echo _('To be considered for addition to this list, please first review our <a href="../about/license">License, and Advice for Vendors and Distributors</a> page. If you are distributing Audacity under those terms ');?>
@@ -62,7 +62,7 @@
    <a href="http://www.behringer.com">Behringer</a>
    </td>
    <td class="col2">
-   <a href="http://www.behringer.com/PODCASTUDIO-FIREWIRE">PODCASTUDIO FIREWIRE</a>
+   <a href="http://www.behringer.com/EN/Products/PODCASTUDIO-FIREWIRE.aspx">PODCASTUDIO FIREWIRE</a>
    </td>
    <td class="col3">
    <?=_("FireWire&reg; audio interface with 8-input mixer, plus headphones, studio microphone with stand, cables and software.")?></td>
@@ -72,7 +72,7 @@
    <a href="http://www.behringer.com">Behringer</a>
    </td>
    <td>
-   <a href="http://www.behringer.com/PODCASTUDIO-USB">PODCASTUDIO USB</a>
+   <a href="http://www.behringer.com/EN/Products/PODCASTUDIO-USB.aspx">PODCASTUDIO USB</a>
    </td>
    <td><?=_("USB audio interface with 8-input mixer, plus headphones, studio microphone with stand, cables and software.")?></td>
   </tr>
@@ -132,7 +132,7 @@
    <a href="http://www.behringer.com">Behringer</a>
    </td>
    <td>
-   <a href="http://www.behringer.com/FCA202">F-CONTROL AUDIO FCA202</a>
+   <a href="http://www.behringer.com/EN/Products/FCA202.aspx">F-CONTROL AUDIO FCA202</a>
    </td>
    <td><?=_("2 In/2 Out 24-Bit/96 kHz FireWire&reg; audio interface.")?></td>
   </tr>
@@ -141,7 +141,7 @@
    <a href="http://www.citronic.co.uk">Citronic</a>
    </td>
    <td>
-   <a href="http://www.citronic.co.uk/product/product.php?s=128.515">AC-1USB Audio Capture Device</a>
+   <a href="http://citronic.com/en/product/128.515UK">AC-1USB Audio Capture Device</a>
    </td>
    <td><?=_("USB interface to connect turntable, mixer or CD player to USB or analog.")?></td>
   </tr>
@@ -171,7 +171,7 @@
    <a href="http://www.kam.co.uk">KAM</a>
    </td>
    <td>
-   <a href="http://www.google.co.uk/search?q=kam+usbh100">USBH100</a>
+   <a href="http://www.kam.co.uk/index.php?action=product&product_id=24">USBH100</a>
    </td>
    <td>
    <?=_("USB Audio Capture Device.")?>
@@ -204,7 +204,7 @@
    <a href="http://westek.com">Westek</a>
    </td>
    <td>
-   <a href="http://www.google.com/search?q=Westek+TeleTool+2000">Westek TeleTool 2000 PC/Telephone Recorder</a>
+   <a href="http://www.westek.com/Tele-Tool-2000-pr-16462.html">Westek Tele-Tool 2000 PC/Telephone Recorder</a>
    </td>
    <td><?=_("Record conversations to PC from any phone with a modular handset.")?></td>
   </tr>
@@ -222,7 +222,7 @@
    <a href="http://www.behringer.com">Behringer</a>
    </td>
    <td class="col2">
-   <a href="http://www.behringer.com/UCG102">GUITAR LINK UCG102</a>
+   <a href="http://www.behringer.com/EN/Products/UCG102.aspx">GUITAR LINK UCG102</a>
    </td>
    <td class="col3"><?=_("Guitar-to-USB interface with modeling amps and effects.")?></td>
   </tr>
@@ -231,11 +231,9 @@
    <a href="http://www.behringer.com">Behringer</a>
    </td>
    <td>
-   <a href="http://www.behringer.com/IAXE393">iAXE393</a><br>
-   <a href="http://www.behringer.com/IAXE393-BK">iAXE393-BK</a><br>
-   <a href="http://www.behringer.com/IAXE624-BD">iAXE624-BD CENTARI</a><br>
-   <a href="http://www.behringer.com/IAXE624-BK">iAXE624-BK CENTARI</a><br>
-   <a href="http://www.behringer.com/IAXE629-BKLS">iAXE629-BKLS METALIEN</a>
+   <a href="http://www.behringer.com/EN/Products/IAXE393.aspx">iAXE393</a><br>
+   <a href="http://www.behringer.com/EN/Products/IAXE624-BK.aspx">iAXE624-BK</a><br>
+   <a href="http://www.behringer.com/EN/Products/IAXE629-BKLS.aspx">iAXE629-BKLS</a>
    </td>
    <td><?=_("Various models of electric guitar with built-in USB port, modeling amps and effects.")?></td>
   </tr>
@@ -244,7 +242,7 @@
    <a href="http://www.behringer.com">Behringer</a>
    </td>
    <td>
-   <a href="http://www.behringer.com/UMA25S">U-CONTROL UMA25S</a>
+   <a href="http://www.behringer.com/EN/Products/UMA25S.aspx">U-CONTROL UMA25S</a>
    </td>
    <td><?=_("Ultra-slim 25-Key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition.")?></td>
   </tr>
@@ -253,9 +251,9 @@
    <a href="http://www.behringer.com">Behringer</a>
    </td>
    <td>
-   <a href="http://www.behringer.com/UMX25">U-CONTROL UMX25</a><br>
-   <a href="http://www.behringer.com/UMX49">U-CONTROL UMX49</a><br>
-   <a href="http://www.behringer.com/UMX61">U-CONTROL UMX61</a>
+   <a href="http://www.behringer.com/EN/Products/UMX25.aspx">U-CONTROL UMX25</a><br>
+   <a href="http://www.behringer.com/EN/Products/UMX49.aspx">U-CONTROL UMX49</a><br>
+   <a href="http://www.behringer.com/EN/Products/UMX61.aspx">U-CONTROL UMX61</a>
    </td>
    <td><?=_("25-, 49- or 61-key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition.")?></td>
   </tr>
@@ -264,7 +262,7 @@
    <a href="http://www.behringer.com">Behringer</a>
    </td>
    <td>
-   <a href="http://www.behringer.com/V-AMP2">V-AMP 2</a>
+   <a href="http://www.behringer.com/EN/Products/V-AMP2.aspx">V-AMP 2</a>
    </td>
    <td><?=_("Virtual guitar amplifier with tube simulation and 24-bit effects.")?></td>
   </tr>
@@ -291,14 +289,11 @@
    <a href="http://www.ion-audio.com">Ion Audio</a>
    </td>
    <td>
-   <a href="http://www.ion-audio.com/ittusb.php">iTTUSB</a><br>
-   <a href="http://www.ion-audio.com/ionttusb05">iTTUSB05</a><br>
-   <a href="http://www.ion-audio.com/ionttusb10">iTTUSB10</a><br>
-   <a href="http://www.ion-audio.com/extras/miscfiles/turntable_comparison.php?tp=VE1HUj0xLHRpZD05MjUwLA%3D%3D">(Feature comparison)</a>
-   <br><br>
-   <a href="http://www.ion-audio.com/iptusb">iPTUSB battery operated</a>
+   USB <a href="http://www.ionaudio.com/products/audio-conversion/turntables">
+   Turntables</a> and <a href="http://www.ionaudio.com/products/audio-conversion/cassette-players">
+   Cassette Players</a>
    </td>
-   <td><?=_('USB turntables. NOTE: In January 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what was stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and simultaneously export multiple files for each track. Ion have corrected their documentation, and are currently still bundling Audacity with the listed products. Please see our Wiki page on <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB turntables</a> for more information.')?>
+   <td><?=_('As one of the major manufacturers of USB playback equipment, Ion bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs and cassettes. NOTE: In January 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Ion later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track. See our Wiki page about <a href="http://wiki.audacityteam.org/wiki/USB_turntables">USB turntables</a> for more information.')?>
    </td>
   </tr>
   <tr>
@@ -306,16 +301,16 @@
    <a href="http://www.kam.co.uk">KAM</a>
    </td>
    <td>
-   <a href="http://www.kam.co.uk/products/turntables/bx900usb.htm">BDX900 USB</a>
+   <a href="http://www.kam.co.uk/index.php?action=product&product_id=20">BDX900 USB</a>
    </td>
    <td><?=_("USB turntable")?></td>
   </tr>
   <tr>
    <td>
-   <a href="http://www.lenco.de/language.php">Lenco</a>
+   <a href="http://www.lenco.eu/index.php?lang=en">Lenco</a>
    </td>
    <td>
-   <a href="http://www.lenco.de/en/products/7/Turntable/444/TURNTABLE_WITH_USB_CONNECTION">L-3866 USB</a>
+   <a href="http://www.lenco.eu/index.php?option=com_content&view=article&id=3%3Al-3866-usb&catid=1%3Aplatenspelers&Itemid=3&lang=en">L-3866 USB</a>
    </td>
    <td><?=_("USB turntable")?></td>
   </tr>
@@ -324,9 +319,9 @@
    <a href="http://www.numark.com">Numark</a>
    </td>
    <td>
-   <a href="http://www.numark.com/ttusb">TTUSB</a>
+   <a href="http://www.numark.com/turntables3">USB Turntables</a>
    </td>
-   <td><?=_('USB turntables. NOTE: In January 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what was stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and simultaneously export multiple files for each track. Numark have corrected their documentation, and are currently still bundling Audacity with the listed product. Please see our Wiki page on <a href="http://audacityteam.org/wiki/index.php?title=USB_turntables">USB turntables</a> for more information.')?>
+   <td><?=_('As one of the major manufacturers of USB turntables, Numark bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs. NOTE: In January 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Numark later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track.  See our Wiki page about <a href="http://wiki.audacityteam.org/wiki/USB_turntables">USB turntables</a> for more information.')?>
    </td>
   </tr>
 </table>
@@ -388,7 +383,7 @@
    <a href="http://audiotouch.com.au/">Audiotouch</a>
    </td>
    <td class="col3">
-   <?=_("Audiotouch is sound recording and playback software, designed for ease of use. It features one-touch recording and saving, quickly recording multiple audio files directly to disk without the need to interact with save dialog boxes. Audacity_Audiotouch is a customized version of Audacity which can be added to Audiotouch, offering simple editing with reduced menu dialogs.")?>
+   <?=_("Audiotouch is sound recording and playback software, designed for ease of use. It features one-touch recording and saving, quickly recording multiple audio files directly to disk without the need to interact with save dialog boxes. Audacity_Voice is a customized version of Audacity which can be added to Audiotouch, offering simple editing with reduced menu dialogs.")?>
    </td>
   </tr>
   <tr>
@@ -420,12 +415,14 @@
   </tr>
   <tr>
    <td>
-   <a href="http://umixit.com/aboutus.html">Umixit</a>
+   Umixit
    </td>
    <td>
-   <a href="http://www.umixit.com/download.html">Umixit powered by Audacity</a>
+   UmixIt powered by Audacity
    </td>
-   <td><?=_('A customized version of Audacity for Microsoft Windows and Mac OS X that lets the fan share the studio experience with an artist. Add a Umixit-enabled CD or song, then record your own vocals or instruments, create remixes, mash-ups, sing karaoke and more...')?></td>
+   <td>
+   <?=_('A now discontinued, customized version of Audacity for Microsoft Windows and Mac OS X. Umixit-enabled multi-track CDs or songs were available, enabling the user to record their own vocals or instruments to create remixes, mash-ups, sing karaoke and more.')?>
+   </td>
   </tr>
   <tr>
    <td>
