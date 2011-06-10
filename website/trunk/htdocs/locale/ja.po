@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity website translation 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-12 02:31+0100\n"
-"PO-Revision-Date: 2011-04-24 14:10+0900\n"
+"POT-Creation-Date: 2011-06-01 22:28+0100\n"
+"PO-Revision-Date: 2011-06-05 14:50+0900\n"
 "Last-Translator: Atsushi YOSHIDA <ayoshida.pub@gmail.com>\n"
 "Language-Team: kuzunet <kuzu@mpd.biglobe.ne.jp>\n"
 "MIME-Version: 1.0\n"
@@ -5765,8 +5765,8 @@ msgid "How Does Audacity Raise Money?"
 msgstr "Audacityはどのようにして資金を集めているのですか？"
 
 #: community/donate.php:18
-msgid "Audacity raises money via <a href=\"#donate\">donations</a>, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a>, product sales through <a href=\"http://audacitystore.com/\">Audacity Store</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
-msgstr "Audacityは<a href=\"#donate\">寄付</a>、 <a href=\"http://audacityteam.org/sponsor.php\">スポンサーシップ</a>、 <a href=\"http://audacitystore.com/\">Audacity Store</a>を通じた製品発売 、および私たちのWebサイトでの <a href=\"../contact/privacy#advertising\">広告</a>によって資金を調達しています。"
+msgid "Audacity raises money via <a href=\"#donate\">donations</a>, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
+msgstr "Audacityは<a href=\"#donate\">寄付</a>、 <a href=\"http://audacityteam.org/sponsor.php\">スポンサーシップ</a>、および私たちのWebサイトでの <a href=\"../contact/privacy#advertising\">広告</a>によって資金を調達しています。"
 
 #: community/donate.php:22
 msgid ""
@@ -5804,7 +5804,7 @@ msgid ""
 "  do more of these.\n"
 "  Our long-term goal is to bring in enough money to hire a full-time developer who could \n"
 "  devote all of his/her time to the project and take over some of the administrative, \n"
-"  maintenance, and release tasks, freeing volunteers to spend more time on code."
+"  maintenance and release tasks, freeing volunteers to spend more time on code."
 msgstr ""
 "むしろ、Audacityの開発リーダーたちはプロジェクト遂行のための種々の物品や \n"
 "  サービスのためにお金を使っています。 \n"
@@ -5812,10 +5812,10 @@ msgstr ""
 "  開発ツールやオーディオハードウェアに役立っています。\n"
 "  これまで、私たちは寄付でいただいた資金を、Audacity商標の購入、\n"
 "  開発者たちがプログラマーのイベントに出席するための出張費の補助などに使いました。\n"
-"  そしてこれらの活動をさらに行う計画でます。\n"
+"  そしてこれらの活動をさらに行う計画です。\n"
 "  私たちの長期的な目標は専従の開発者を雇うために十分な資金をもたらすことです。 \n"
 "  専従開発者はこのプロジェクトのためにフルタイムで働き、保守やリリース作業などの管理業務も \n"
-"  引き継ぐことでボランティアーたちがより多くの時間をコード開発に使えるようにすることが目的です。"
+"  引き継ぐことでボランティアたちがより多くの時間をコード開発に使えるようにすることが目的です。"
 
 #: community/donate.php:50
 msgid ""
@@ -5834,51 +5834,39 @@ msgstr ""
 #: community/donate.php:58
 msgid ""
 "There are many ways to support Audacity, and many degrees of doing so.  \n"
-"  We have always welcomed users whose only contribution is simply using Audacity, \n"
-"  giving us feedback on how to improve it, and telling others about it. \n"
-"  Thank you for supporting Audacity."
+"  Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">\n"
+"  contribute</a> by helping us with <a href=\"../community/developers\">programming</a>,\n"
+"  <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\">\n"
+"  documentation</a>,<a href=\"../community/translation\">translations</a> or by anwering\n"
+"  questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always \n"
+"  welcomed users whose only contribution is simply using Audacity, giving us feedback\n"
+"  on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr ""
-"Audacityをサポートするには多くの方法とさまざまなレベルでのやりかたがあります。  \n"
-"  単純にAudacityを使うことで貢献してくださるユーザーの方々を歓迎します。 \n"
-"  そしてどうすれば改良できるか私たちにフィードバックをいただく、またAudacityを他の人に知らせていただくことも歓迎です。\n"
-"  Audacityをサポートいただき、ありがとうございます。"
+"さまざまな方法でみなさんがAudacityプロジェクトに参加しサポートすることができます。\n"
+"お金の寄付以外にも、たとえば <a href=\"../community/developers\">プログラミング</a>、\n"
+"  <a href=\"../contact#feedback\">テスト</a>、 <a href=\"http://manual.audacityteam.org/\">\n"
+"  ドキュメント作成</a>、<a href=\"../community/translation\">翻訳</a> あるいは\n"
+"  <a href=\"http://forum.audacityteam.org/\">Forum</a>にて質問に答えることでも <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">貢献</a> いただくことができます。私たちは\n"
+" Audacityをご使用いただき改善点をご提案いただいたり、Audacityのことを他の方々に広めていただく\n"
+"だけでも大変意義のある貢献だと考えており歓迎いたします。 Audacityへにサポートに感謝いたします。"
 
-#: community/donate.php:66
-msgid "Purchase from the <a href=\"http://audacitystore.com/\">Audacity Store</a>"
-msgstr "<a href=\"http://audacitystore.com/\">Audacityストア</a>でのショッピング"
-
-#: community/donate.php:69
-msgid ""
-"Please visit <a href=\"http://audacitystore.com/\">Audacity Store</a> for  \n"
-"  high quality Audacity-logo items (T-shirts, embroidered polo shirts, embroidered messenger bags and ceramic mugs)."
-msgstr ""
-"私たちの新しい<a href=\"http://audacitystore.com/\">Audacity ストア</a>にお越しください。\n"
-"  Audacityロゴ入り商品（Tシャツ、刺繍入りポロシャツ、刺繍入りメッセンジャーバッグやマグカップ）などをお求めいただけます。"
-
-#: community/donate.php:73
-#: community/donate.php:75
-#: include/header.inc.php:77
-#: include/header.inc.php:78
-msgid "Audacity Store, for Audacity-logo shirts, bags and ceramic mugs"
-msgstr "Audacity Store - Audacityロゴ入りシャツ、バッグやマグカップなど"
-
-#: community/donate.php:80
+#: community/donate.php:68
 msgid "Make a Donation"
 msgstr "寄付について"
 
-#: community/donate.php:81
-msgid "Alternatively, click the button below to donate securely by Paypal. You can send any amount, using either your credit card or your Paypal account:"
-msgstr "別の方法として下のボタンを押すことでPaypalにより安全に送金できます。クレジットカードあるいはPaypal口座よりどんな金額でも送金できます。"
+#: community/donate.php:69
+msgid "Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:"
+msgstr "別の方法として下のボタンを押すことでPaypalにより安全に送金できます（Paypalアカウントをお持ちでなくても可能）。またクレジットカードあるいはお持ちのPaypal口座よりどんな金額でも送金できます。"
 
 #. i18n-hint: the encoding inside the <a href> tag between the two
 #. "echo" strings obscures the e-mail address from (at least some)
 #. harvesting bots. Please translate the strings above and below
 #. the <a href> tag, and ignore the line with the <a href> tag itself.
-#: community/donate.php:102
+#: community/donate.php:90
 msgid "If you prefer to send a personal check or another form of payment, please write to our "
 msgstr "もしパーソナルチェックまたは他の方法による送金をご希望の場合は、"
 
-#: community/donate.php:105
+#: community/donate.php:93
 msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
 msgstr "フィードバックe-mailアドレス</a>にお住まいの国をご希望の支払方法をお知らせください。 "
 
@@ -6282,6 +6270,11 @@ msgstr "コンテンツのページへジャンプ"
 #: include/header.inc.php:65
 msgid "Audacity: Free Sound Editor and Recording Software"
 msgstr "Audacity: フリーのサウンドエディタ・レコーディングソフトウェア"
+
+#: include/header.inc.php:77
+#: include/header.inc.php:78
+msgid "Audacity Store, for Audacity-logo shirts, bags and ceramic mugs"
+msgstr "Audacity Store - Audacityロゴ入りシャツ、バッグやマグカップなど"
 
 #: include/header.inc.php:84
 msgid "Site Navigation"
@@ -8788,6 +8781,37 @@ msgstr "Audacityはインターオペラビリティを確保するためにオ�
 #: xml/index.php:22
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "Audacityプロジェクトファイル形式に関するドキュメントは今後提供される予定です。"
+
+#~ msgid ""
+#~ "There are many ways to support Audacity, and many degrees of doing so.  \n"
+#~ "  We have always welcomed users whose only contribution is simply using "
+#~ "Audacity, \n"
+#~ "  giving us feedback on how to improve it, and telling others about it. \n"
+#~ "  Thank you for supporting Audacity."
+#~ msgstr ""
+#~ "Audacityをサポートするには多くの方法とさまざまなレベルでのやりかたがありま"
+#~ "す。  \n"
+#~ "  単純にAudacityを使うことで貢献してくださるユーザーの方々を歓迎しま"
+#~ "す。 \n"
+#~ "  そしてどうすれば改良できるか私たちにフィードバックをいただく、また"
+#~ "Audacityを他の人に知らせていただくことも歓迎です。\n"
+#~ "  Audacityをサポートいただき、ありがとうございます。"
+
+#~ msgid ""
+#~ "Purchase from the <a href=\"http://audacitystore.com/\">Audacity Store</a>"
+#~ msgstr ""
+#~ "<a href=\"http://audacitystore.com/\">Audacityストア</a>でのショッピング"
+
+#~ msgid ""
+#~ "Please visit <a href=\"http://audacitystore.com/\">Audacity Store</a> "
+#~ "for  \n"
+#~ "  high quality Audacity-logo items (T-shirts, embroidered polo shirts, "
+#~ "embroidered messenger bags and ceramic mugs)."
+#~ msgstr ""
+#~ "私たちの新しい<a href=\"http://audacitystore.com/\">Audacity ストア</a>に"
+#~ "お越しください。\n"
+#~ "  Audacityロゴ入り商品（Tシャツ、刺繍入りポロシャツ、刺繍入りメッセン"
+#~ "ジャーバッグやマグカップ）などをお求めいただけます。"
 
 #~ msgid ""
 #~ "A detailed, illustrated tutorial explaining this process is available on "
