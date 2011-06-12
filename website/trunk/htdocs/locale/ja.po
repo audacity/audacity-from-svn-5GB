@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity website translation 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-01 22:28+0100\n"
-"PO-Revision-Date: 2011-06-05 14:50+0900\n"
+"POT-Creation-Date: 2011-06-10 20:44+0100\n"
+"PO-Revision-Date: 2011-06-12 09:57+0900\n"
 "Last-Translator: Atsushi YOSHIDA <ayoshida.pub@gmail.com>\n"
 "Language-Team: kuzunet <kuzu@mpd.biglobe.ne.jp>\n"
 "MIME-Version: 1.0\n"
@@ -1880,23 +1880,25 @@ msgstr ""
 #: download/features-1.3-l.php:23
 msgid ""
 "One common source of confusion with Audacity is that when you\n"
-"open or import an uncompressed file (e.g. WAV or AIFF), Audacity saves\n"
-"time and memory by only linking to the file, not copying it.  But if you\n"
-"move, modify or delete the original file, your Audacity project will not\n"
-"work anymore.  Starting with version 1.3.2, Audacity will prompt you every\n"
-"time you save if your project is dependent on other audio files, and give\n"
-"you the option of copying them into the project at that time, so it is\n"
-"self-contained."
+"open or import an uncompressed file (e.g. WAV or AIFF), Audacity by \n"
+"default saves time and memory by only linking to the file, not copying it.\n"
+"But if you move, rename or delete the original file, your Audacity project\n"
+"will not work anymore.  Starting with version 1.3.2, Audacity prompts\n"
+"the first time you save your project, and on exiting, if the project \n"
+"depends on other audio files. If there is a dependency, Audacity gives \n"
+"you the option of copying the required files into the project, making\n"
+"it self-contained."
 msgstr ""
 "Audacityを使う上であまり知られていないことの１つは、Audacityは非圧縮ファイル\n"
 "（たとえばWAVやAIFF）を開いたり読み込む際に時間とメモリ節約のためにそのファイル\n"
 "とリンクを張るだけで実際にコピーをしないということです。したがってもしそれらのオリジナル\n"
 "ファイルを移動させたり変更したり消去してしまった場合、Audacityプロジェクトは正しく\n"
-"動作しなくなります。バージョン1.3.2以降ではAudacityはプロジェクトを保存する際に、\n"
-"もし他のオーディオファイルとの依存性がある場合に、そのファイルをプロジェクト内にコピー\n"
-"して自立可能にするかどうかユーザーに聞く機能が追加されました。"
+"動作しなくなります。バージョン1.3.2以降ではAudacityはプロジェクトを保存する際、\n"
+"または終了する場合に、もし他のオーディオファイルとの依存性があるかどうかを尋ねる\n"
+"機能が追加されました。ユーザは、もし依存性がある場合にそれらのファイルを\n"
+"プロジェクト内にコピーして自立可能にすることもことできるようになりました。"
 
-#: download/features-1.3-l.php:45
+#: download/features-1.3-l.php:46
 #: download/features-1.3-b.php:49
 #: download/features-1.3-d.php:55
 #: download/features-1.3-f.php:39
@@ -1909,13 +1911,13 @@ msgstr ""
 msgid "Back: "
 msgstr "戻る:"
 
-#: download/features-1.3-l.php:46
+#: download/features-1.3-l.php:47
 #: download/features-1.3-a.php:891
 #: download/features-1.3-j.php:71
 msgid "Timer Recording"
 msgstr "タイマー録音"
 
-#: download/features-1.3-l.php:52
+#: download/features-1.3-l.php:53
 #: download/features-1.3-b.php:55
 #: download/features-1.3-d.php:62
 #: download/features-1.3-f.php:46
@@ -1928,13 +1930,13 @@ msgstr "タイマー録音"
 msgid "Next: "
 msgstr "次へ："
 
-#: download/features-1.3-l.php:53
+#: download/features-1.3-l.php:54
 #: download/features-1.3-a.php:893
 #: download/features-1.3-f.php:40
 msgid "Selection Bar"
 msgstr "選択バー"
 
-#: download/features-1.3-l.php:61
+#: download/features-1.3-l.php:62
 #: download/features-1.3-b.php:62
 #: download/features-1.3-f.php:54
 #: download/features-1.3-k.php:51
@@ -1945,7 +1947,7 @@ msgstr "選択バー"
 msgid "Top: "
 msgstr "上へ:"
 
-#: download/features-1.3-l.php:62
+#: download/features-1.3-l.php:63
 #: download/features-1.3-b.php:63
 #: download/features-1.3-a.php:9
 #: download/features-1.3-f.php:55
@@ -1990,12 +1992,12 @@ msgid "Multiple clips per track"
 msgstr "１つのトラックに複数クリップ"
 
 #: download/bundlers.php:16
-msgid "Audacity is free to download, but vendors are also free to bundle copies of the program with their products, or resell or distribute Audacity, thanks to the <a href=\"../about/license\">GNU General Public License</a>. The following are legitimate, legal offerings. We are happy and proud that they chose to bundle Audacity with their products."
-msgstr "Audacityはダウンロード自由ですが、<a href=\"../about/license\">GNU General Public License</a>のおかげで、ベンダーが自由にAudacityを自社製品にバンドルして販売したり、再販や配布することができます。  以下は正式かつ法的なオファーです。私たちはAudacityをお選びいただきましたことを誇りに思うと同時に感謝いたします。"
+msgid "Audacity is free to download, but many vendors bundle copies of the program with their products, or resell or distribute Audacity, thanks to the <a href=\"../about/license\">GNU General Public License</a>. The following are legitimate, legal offerings from companies that have worked with us. We are happy and proud that they chose to bundle Audacity with their products."
+msgstr "Audacityはダウンロード自由ですが、<a href=\"../about/license\">GNU General Public License</a>のおかげで、ベンダーが自由にAudacityを自社製品にバンドルして販売したり、再販や配布することができます。  以下はそれらのベンダーからの正式かつ法的に提供されているものです。私たちはAudacityをお選びいただきましたことを誇りに思うと同時に感謝いたします。"
 
 #: download/bundlers.php:18
-msgid "Some vendors, <a href=\"http://umixit.com/aboutus.html\">Umixit</a>, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, and <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href=\"#others\">custom versions</a>. The UmixIt custom version adds a mixer board interface and karaoke window. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Audiotouch is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Many of these improvements will be incorporated in future versions of Audacity."
-msgstr "いくつかのベンダー、 <a href=\"http://umixit.com/aboutus.html\">Umixit</a>、 <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>、 および <a href=\"http://audiotouch.com.au/\">Audiotouch</a>は<a href=\"#others\">カスタムバージョン</a>を提供することでAudacityをサポートいただいています。  UmixItカスタムバージョンはミキサー盤インタフェースとカラオケウィンドウを加えています。 ThinkLabsバージョンはディジタル聴診器を使う心電計にカスタマイズされています。Audacity_AudiotouchはAudiotouchと統合することで、多くの録音を行う学生に使いやすいようにカスタマイズされています。これらの多くの改良はAudacityの将来バージョンに組み込まれる予定です。"
+msgid "Some vendors, Umixit, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, and <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href=\"#others\">custom versions</a>. The UmixIt custom version added a mixer board interface and karaoke window which are now incorporated in Audacity Beta. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Voice is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Some of these improvements will be incorporated in future versions of Audacity."
+msgstr "いくつかのベンダー、 Umixit、 <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>、 および <a href=\"http://audiotouch.com.au/\">Audiotouch</a>は<a href=\"#others\">カスタムバージョン</a>を提供することでAudacityをサポートいただいています。  UmixItカスタムバージョンはミキサーボードインタフェースとカラオケウィンドウを加えており、これは現在Audacityベータ版に取り込まれています。 ThinkLabsバージョンはディジタル聴診器を使う心電計にカスタマイズされています。Audacity_VoiceはAudiotouchと統合することで、多くの録音を行う学生に使いやすいようにカスタマイズされています。これらの多くの改良はAudacityの将来バージョンに組み込まれる予定です。"
 
 #: download/bundlers.php:21
 msgid "To be considered for addition to this list, please first review our <a href=\"../about/license\">License, and Advice for Vendors and Distributors</a> page. If you are distributing Audacity under those terms "
@@ -2029,44 +2031,44 @@ msgid "Musical Instruments"
 msgstr "楽器"
 
 #: download/bundlers.php:43
-#: download/bundlers.php:273
+#: download/bundlers.php:271
 msgid "Playback Devices"
 msgstr "再生機器"
 
 #: download/bundlers.php:46
-#: download/bundlers.php:334
+#: download/bundlers.php:329
 msgid "Open Source CD Bundles"
 msgstr "オープンソースCDバンドル"
 
 #: download/bundlers.php:49
-#: download/bundlers.php:376
+#: download/bundlers.php:371
 msgid "Others"
 msgstr "その他"
 
 #: download/bundlers.php:56
 #: download/bundlers.php:117
 #: download/bundlers.php:216
-#: download/bundlers.php:276
-#: download/bundlers.php:337
-#: download/bundlers.php:379
+#: download/bundlers.php:274
+#: download/bundlers.php:332
+#: download/bundlers.php:374
 msgid "Vendor"
 msgstr "ベンダー"
 
 #: download/bundlers.php:57
 #: download/bundlers.php:118
 #: download/bundlers.php:217
-#: download/bundlers.php:277
-#: download/bundlers.php:338
-#: download/bundlers.php:380
+#: download/bundlers.php:275
+#: download/bundlers.php:333
+#: download/bundlers.php:375
 msgid "Product"
 msgstr "製品"
 
 #: download/bundlers.php:58
 #: download/bundlers.php:119
 #: download/bundlers.php:218
-#: download/bundlers.php:278
-#: download/bundlers.php:339
-#: download/bundlers.php:381
+#: download/bundlers.php:276
+#: download/bundlers.php:334
+#: download/bundlers.php:376
 msgid "Description"
 msgstr "説明"
 
@@ -2130,69 +2132,69 @@ msgstr "モジュラーハンドセットを持つ電話機から会話をPCに�
 msgid "Guitar-to-USB interface with modeling amps and effects."
 msgstr "ギター-to-USBインタフェース。モデリングアンプおよびエフェクト付き"
 
-#: download/bundlers.php:240
+#: download/bundlers.php:238
 msgid "Various models of electric guitar with built-in USB port, modeling amps and effects."
 msgstr "USBポート内蔵のエレクトリックギター各種モデル。モデリングアンプおよびエフェクト付き"
 
-#: download/bundlers.php:249
+#: download/bundlers.php:247
 msgid "Ultra-slim 25-Key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition."
 msgstr "ウルトラスリム25-Key USB/MIDIコントローラーキーボード。オーディオインタフェース、100以上のソフトウェアプラグインおよびAbleton Live Lite 4 BEHRINGER Edition."
 
-#: download/bundlers.php:260
+#: download/bundlers.php:258
 msgid "25-, 49- or 61-key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition."
 msgstr "25-, 49- or 61-key USB/MIDIコントローラーキーボード。オーディオインタフェース、100以上のソフトウェアプラグインおよびAbleton Live Lite 4 BEHRINGER Edition."
 
-#: download/bundlers.php:269
+#: download/bundlers.php:267
 msgid "Virtual guitar amplifier with tube simulation and 24-bit effects."
 msgstr "バーチャルギターアンプ。チューブシミュレータおよび24-bitエフェクト内蔵"
 
-#: download/bundlers.php:287
-#: download/bundlers.php:311
-#: download/bundlers.php:320
+#: download/bundlers.php:285
+#: download/bundlers.php:306
+#: download/bundlers.php:315
 msgid "USB turntable"
 msgstr "USBターンテーブル"
 
-#: download/bundlers.php:301
-msgid "USB turntables. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what was stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and simultaneously export multiple files for each track. Ion have corrected their documentation, and are currently still bundling Audacity with the listed products. Please see our Wiki page on <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">USB turntables</a> for more information."
-msgstr "USBターンテーブル 注意: 2007年1月に<a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">これらのターンテーブルに関する記事</a>がNew York Timesに掲載され、Audacityに制限があるという誤った内容が含まれていました。 この記事は正しくなく、AudacityはLP全部を録音することができ、無音検出により曲間を検出し、それぞれの曲を別々のファイルに書き出すことができます。Ion社は製品説明書を修正し、今でもこれら製品にAudacityをバンドルしています。詳しい情報については私たちのWikiページ<a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">USB turntables</a> をご覧ください。"
+#: download/bundlers.php:296
+msgid "As one of the major manufacturers of USB playback equipment, Ion bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs and cassettes. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Ion later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track. See our Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB turntables</a> for more information."
+msgstr "USB再生機器の主要なメーカの１つであるIon社はLPやカセットテープのディジタル化に広く使われている製品にAudacityをバンドルしています。注意: 2007年1月に<a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">これらのターンテーブルに関する記事</a>がNew York Timesに掲載され、Audacityに制限があるという誤った内容が含まれていました。 Ion社は後にドキュメントを修正し、AudacityがLP全部を録音することができ、無音検出により曲間を検出し、それぞれの曲を別々のファイルに書き出すことができることを明確化しました。詳しい情報については私たちのWikiページ<a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">USB turntables</a> をご覧ください。"
 
-#: download/bundlers.php:329
-msgid "USB turntables. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what was stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and simultaneously export multiple files for each track. Numark have corrected their documentation, and are currently still bundling Audacity with the listed product. Please see our Wiki page on <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">USB turntables</a> for more information."
-msgstr "USBターンテーブル 注意: 2007年1月に<a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">これらのターンテーブルに関する記事</a>がNew York Timesに掲載され、Audacityに制限があるという誤った内容が含まれていました。 この記事は正しくなく、AudacityはLP全部を録音することができ、無音検出により曲間を検出し、それぞれの曲を別々のファイルに書き出すことができます。Numark社は製品説明書を修正し、今でもこの製品にAudacityをバンドルしています。詳しい情報については私たちのWikiページ<a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">USB turntables</a> をご覧ください。"
+#: download/bundlers.php:324
+msgid "As one of the major manufacturers of USB turntables, Numark bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Numark later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track.  See our Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB turntables</a> for more information."
+msgstr "USBターンテーブルの主要なメーカの１つであるNumark社はLPのディジタル化に広く使われている製品にAudacityをバンドルしています。注意: 2007年1月に<a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">これらのターンテーブルに関する記事</a>がNew York Timesに掲載され、Audacityに制限があるという誤った内容が含まれていました。 Numark社は後にドキュメントを修正し、AudacityがLP全部を録音することができ、無音検出により曲間を検出し、それぞれの曲を別々のファイルに書き出すことができることを明確化しました。詳しい情報については私たちのWikiページ<a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">USB turntables</a> をご覧ください。"
 
-#: download/bundlers.php:349
+#: download/bundlers.php:344
 msgid "FreedomSampler&trade; is a collection of free, open source software with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you."
 msgstr "FreedomSampler&trade; はフリーおよびオープンソースソフトウェアのコレクションで、ソースコードを含んでおり GNU General Public Licenseisの下で容易に再配布できます。 ISOイメージが無料でダウンロードできます。またはCDを<a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">購入</a>することが可能です"
 
-#: download/bundlers.php:360
+#: download/bundlers.php:355
 msgid "TheOpenCD is a now-discontinued collection of high quality free and open source software. Currently, you can still <a href=\"http://releases.theopencd.org/\">download archived CD images</a> or <a href=\"http://ztechshop.net/disks/opencd/\">purchase a CD online</a> for worldwide shipping."
 msgstr "TheOpenCDは高品質なフリーおよびオープンソースソフトウェアのコレクションですが、現在販売中止しています。  現時点では<a href=\"http://releases.theopencd.org/\">アーカイブCDイメージのダウンロード</a>を行うか、または世界中に出荷可能な <a href=\"http://ztechshop.net/disks/opencd/\">CDのオンライン購入</a> にて入手可能です。"
 
-#: download/bundlers.php:371
+#: download/bundlers.php:366
 msgid "OpenDisc is a similar collection of high quality free and open source software. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. The project hopes to make available a purchasable CD shortly."
 msgstr "OpenDiscも類似の高品質なフリーおよびオープンソースソフトウェアのコレクションです。現時点では、<a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CDイメージ</a>がダウンロード可能です。CDの販売が近いうちに可能になると期待されています。"
 
-#: download/bundlers.php:391
-msgid "Audiotouch is sound recording and playback software, designed for ease of use. It features one-touch recording and saving, quickly recording multiple audio files directly to disk without the need to interact with save dialog boxes. Audacity_Audiotouch is a customized version of Audacity which can be added to Audiotouch, offering simple editing with reduced menu dialogs."
-msgstr "Audiotouchは使いやすく設計されたサウンドの録音再生のソフトウェアであり、ワンタッチで録音と保存、またダイアログの操作なしに複数オーディオファイルをディスクに保存できます。 Audacity_AudiotouchはAudacityをメニューを減らし簡単な編集ができるようにカスタマイズしてAudiotouchに付加できるようにしたバージョンです。"
+#: download/bundlers.php:386
+msgid "Audiotouch is sound recording and playback software, designed for ease of use. It features one-touch recording and saving, quickly recording multiple audio files directly to disk without the need to interact with save dialog boxes. Audacity_Voice is a customized version of Audacity which can be added to Audiotouch, offering simple editing with reduced menu dialogs."
+msgstr "Audiotouchは使いやすく設計されたサウンドの録音再生のソフトウェアであり、またダイアログの操作なしに複数オーディオファイルをディスクに保存できるワンタッチ録音保存機能が特徴です。 Audacity_VoiceはAudacityをメニューを減らし簡単な編集ができるようにカスタマイズしてAudiotouchに付加できるようにしたバージョンです。"
 
-#: download/bundlers.php:401
+#: download/bundlers.php:396
 msgid "Software allowing users to create their own custom comic books with included clipart, backgrounds, word balloons, sound files and other  assets."
 msgstr "クリップアート、背景、吹き出し、サウンドファイルなどを使って自分だけのコミックブックを作るソフトウェア。"
 
-#: download/bundlers.php:410
+#: download/bundlers.php:405
 msgid "The Thinklabs <a href=\"http://www.thinklabsmedical.com/content/view/17/157/\">ds32a digital stethoscope</a> has enhanced sound quality with 50x amplification. Volume can be adjusted for faint heart sounds, obese patients or noisy work environments. The stethoscope's waveforms and spectrograms can be analyzed in Thinklabs Phonocardiography (a customized version of Audacity for Microsoft Windows and Mac OS X)."
 msgstr "Thinklabs <a href=\"http://www.thinklabsmedical.com/content/view/17/157/\">ds32a digital stethoscope</a> は50倍もの増幅を可能にする高い音声品質を持っています。ボリュームはかすかな心音、肥満の患者あるいは騒がしい環境などに応じて調整できます。聴診器の音声波形およびスペクトログラムはThinklabs Phonocardiography (Audacityのカスタムバージョン。Microsoft WindowsおよびMac OS X用)によって解析可能です。"
 
-#: download/bundlers.php:419
+#: download/bundlers.php:414
 msgid "Portable recording studio or digital audio workstation (DAW), featuring \"walk and mix\" technology."
 msgstr "\"walk and mix\"テクノロジをもつポータブルレコーディングスタジオあるいはディジタルオーディオワークステーション(DAW)"
 
-#: download/bundlers.php:428
-msgid "A customized version of Audacity for Microsoft Windows and Mac OS X that lets the fan share the studio experience with an artist. Add a Umixit-enabled CD or song, then record your own vocals or instruments, create remixes, mash-ups, sing karaoke and more..."
-msgstr "Microsoft WindowsおよびMac OS X対応のカスタムバージョンのAudacityで、アーティストと一緒にスタジオの体験を共有できるものです。 Umixit対応CD または楽曲を加えることであなたのボーカルや楽器演奏の録音、リミックスの制作、マッシュアップ、カラオケなどができます"
+#: download/bundlers.php:424
+msgid "A now discontinued, customized version of Audacity for Microsoft Windows and Mac OS X. Umixit-enabled multi-track CDs or songs were available, enabling the user to record their own vocals or instruments to create remixes, mash-ups, sing karaoke and more."
+msgstr "Microsoft WindowsおよびMac OS X対応のカスタムバージョンのAudacityで、販売終了製品です。Umixit対応CD または楽曲は、アーティストと一緒あなたのボーカルや楽器演奏の録音、リミックスの制作、マッシュアップ、カラオケなどができるものでした。"
 
-#: download/bundlers.php:437
+#: download/bundlers.php:434
 msgid "Mirror site for Audacity downloads, from webzine about Windows software at Impress Watch Corporation, Tokyo, Japan."
 msgstr "Audacityダウンロードのミラーサイト。インプレスウォッチ（東京）のWindowsソフトウェア関係のWeb雑誌のサイト。"
 
@@ -8781,6 +8783,28 @@ msgstr "Audacityはインターオペラビリティを確保するためにオ�
 #: xml/index.php:22
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "Audacityプロジェクトファイル形式に関するドキュメントは今後提供される予定です。"
+
+#~ msgid ""
+#~ "USB turntables. NOTE: In January 2007, an <a href=\"http://select.nytimes."
+#~ "com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article "
+#~ "about these turntables</a> appeared in the New York Times, containing "
+#~ "erroneous statements about limitations of Audacity. Despite what was "
+#~ "stated, Audacity can record a whole LP, detect split points between LP "
+#~ "tracks based on silences, and simultaneously export multiple files for "
+#~ "each track. Numark have corrected their documentation, and are currently "
+#~ "still bundling Audacity with the listed product. Please see our Wiki page "
+#~ "on <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables"
+#~ "\">USB turntables</a> for more information."
+#~ msgstr ""
+#~ "USBターンテーブル 注意: 2007年1月に<a href=\"http://select.nytimes.com/"
+#~ "gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">これらのターン"
+#~ "テーブルに関する記事</a>がNew York Timesに掲載され、Audacityに制限があると"
+#~ "いう誤った内容が含まれていました。 この記事は正しくなく、AudacityはLP全部"
+#~ "を録音することができ、無音検出により曲間を検出し、それぞれの曲を別々のファ"
+#~ "イルに書き出すことができます。Numark社は製品説明書を修正し、今でもこの製品"
+#~ "にAudacityをバンドルしています。詳しい情報については私たちのWikiページ<a "
+#~ "href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">USB "
+#~ "turntables</a> をご覧ください。"
 
 #~ msgid ""
 #~ "There are many ways to support Audacity, and many degrees of doing so.  \n"
