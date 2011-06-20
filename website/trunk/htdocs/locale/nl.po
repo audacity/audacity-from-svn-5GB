@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-12 02:31+0100\n"
-"PO-Revision-Date: 2011-06-06 21:33-0000\n"
-"Last-Translator: Gale <gale@audacityteam.org>\n"
+"POT-Creation-Date: 2011-06-10 20:44+0100\n"
+"PO-Revision-Date: 2011-06-20 20:22-0000\n"
+"Last-Translator: Thomas De Rocker <thomasderocker.at.h0tmail.d0t.c0m>\n"
 "Language-Team: Nederlands\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1884,23 +1884,26 @@ msgstr ""
 #: download/features-1.3-l.php:23
 msgid ""
 "One common source of confusion with Audacity is that when you\n"
-"open or import an uncompressed file (e.g. WAV or AIFF), Audacity saves\n"
-"time and memory by only linking to the file, not copying it.  But if you\n"
-"move, modify or delete the original file, your Audacity project will not\n"
-"work anymore.  Starting with version 1.3.2, Audacity will prompt you every\n"
-"time you save if your project is dependent on other audio files, and give\n"
-"you the option of copying them into the project at that time, so it is\n"
-"self-contained."
+"open or import an uncompressed file (e.g. WAV or AIFF), Audacity by \n"
+"default saves time and memory by only linking to the file, not copying it.\n"
+"But if you move, rename or delete the original file, your Audacity project\n"
+"will not work anymore.  Starting with version 1.3.2, Audacity prompts\n"
+"the first time you save your project, and on exiting, if the project \n"
+"depends on other audio files. If there is a dependency, Audacity gives \n"
+"you the option of copying the required files into the project, making\n"
+"it self-contained."
 msgstr ""
-"Een veelvoorkomende bron van verwarring bij Audacity is dat wanneer u een ongecompresseerd\n"
-"bestand opent of importeert (bijvoorbeeld WAV of AIFF), Audacity tijd en geheugen spaart\n"
-"door alleen te linken naar dat bestand en het niet te kopiëren. Indien u dan het originele bestand\n"
-"verplaatst, wijzigt of wist, zal uw Audacity-project niet meer werken. Beginnend bij versie 1.3.2\n"
-"zal Audacity u bij het opslaan elke keer vragen of uw project afhankelijk is van andere\n"
-"audiobestanden, en u de mogelijkheid geven om ze op dat moment te kopiëren naar het project\n"
+"Een veelvoorkomende bron van verwarring bij Audacity is dat wanneer u\n"
+"een niet-gecomprimeerd bestand opent of importeert (bijvoorbeeld WAV of AIFF), Audacity standaard \n"
+"tijd en geheugen spaart door alleen te linken naar dat bestand en het niet te kopiëren.\n"
+"Indien u dan het originele bestand verplaatst, wijzigt of wist, zal uw Audacity-project\n"
+"niet meer werken. Beginnend bij versie 1.3.2 zal Audacity u bij het opslaan\n"
+"en afsluiten elke keer vragen of uw project afhankelijk is van andere\n"
+"audiobestanden. Als er een afhankelijkheid is, geeft Audacity \n"
+"u de mogelijkheid om de benodigde bestanden te kopiëren naar het project\n"
 "zodat het zelf-bevattend is."
 
-#: download/features-1.3-l.php:45
+#: download/features-1.3-l.php:46
 #: download/features-1.3-b.php:49
 #: download/features-1.3-d.php:55
 #: download/features-1.3-f.php:39
@@ -1913,13 +1916,13 @@ msgstr ""
 msgid "Back: "
 msgstr "Terug:"
 
-#: download/features-1.3-l.php:46
+#: download/features-1.3-l.php:47
 #: download/features-1.3-a.php:891
 #: download/features-1.3-j.php:71
 msgid "Timer Recording"
 msgstr "Timer-opnemen"
 
-#: download/features-1.3-l.php:52
+#: download/features-1.3-l.php:53
 #: download/features-1.3-b.php:55
 #: download/features-1.3-d.php:62
 #: download/features-1.3-f.php:46
@@ -1932,13 +1935,13 @@ msgstr "Timer-opnemen"
 msgid "Next: "
 msgstr "Volgende:"
 
-#: download/features-1.3-l.php:53
+#: download/features-1.3-l.php:54
 #: download/features-1.3-a.php:893
 #: download/features-1.3-f.php:40
 msgid "Selection Bar"
 msgstr "Selectiebalk"
 
-#: download/features-1.3-l.php:61
+#: download/features-1.3-l.php:62
 #: download/features-1.3-b.php:62
 #: download/features-1.3-f.php:54
 #: download/features-1.3-k.php:51
@@ -1949,7 +1952,7 @@ msgstr "Selectiebalk"
 msgid "Top: "
 msgstr "Naar boven:"
 
-#: download/features-1.3-l.php:62
+#: download/features-1.3-l.php:63
 #: download/features-1.3-b.php:63
 #: download/features-1.3-a.php:9
 #: download/features-1.3-f.php:55
@@ -1994,12 +1997,12 @@ msgid "Multiple clips per track"
 msgstr "Meerdere clips per spoor"
 
 #: download/bundlers.php:16
-msgid "Audacity is free to download, but vendors are also free to bundle copies of the program with their products, or resell or distribute Audacity, thanks to the <a href=\"../about/license\">GNU General Public License</a>. The following are legitimate, legal offerings. We are happy and proud that they chose to bundle Audacity with their products."
-msgstr "Audacity is gratis te downloaden, maar verkopers zijn ook vrij om kopiën van het programma te bundelen bij hun producten, of Audacity te herverkopen of verdelen, dankzij de <a href=\"../about/license\">GNU General Public License</a>. De volgende zijn gelegitimeerde, legale aanbiedingen. We zijn blij en trots dat zij gekozen hebben om Audacity te bundelen met hun eigen producten."
+msgid "Audacity is free to download, but many vendors bundle copies of the program with their products, or resell or distribute Audacity, thanks to the <a href=\"../about/license\">GNU General Public License</a>. The following are legitimate, legal offerings from companies that have worked with us. We are happy and proud that they chose to bundle Audacity with their products."
+msgstr "Audacity is gratis te downloaden, maar verkopers zijn ook vrij om kopiën van het programma te bundelen bij hun producten, of Audacity te herverkopen of verdelen, dankzij de <a href=\"../about/license\">GNU General Public License</a>. De volgende zijn gelegitimeerde, legale aanbiedingen van bedrijven die met ons samengewerkt hebben. We zijn blij en trots dat zij gekozen hebben om Audacity te bundelen met hun eigen producten."
 
 #: download/bundlers.php:18
-msgid "Some vendors, <a href=\"http://umixit.com/aboutus.html\">Umixit</a>, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, and <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href=\"#others\">custom versions</a>. The UmixIt custom version adds a mixer board interface and karaoke window. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Audiotouch is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Many of these improvements will be incorporated in future versions of Audacity."
-msgstr "Sommige verkopers, <a href=\"http://umixit.com/aboutus.html\">Umixit</a>, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, en <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, hebben Audacity bijkomend ondersteund door <a href=\"#others\">custom-versies</a> te sponsoren. De UmixIt custom-versie voegt een mixerbord-interface en een karaoke-venster toe. De ThinkLabs-versie is gepersonaliseerd voor cardiogrammen van digitale stethoscopen. Audacity_Audiotouch is gepersonaliseerd voor integratie in Audiotouch, voor het gebruiksgemak van studenten die vele opnames nodig hebben. Veel van deze verbeteringen zullen opgenomen worden in de toekomstige versies van Audacity."
+msgid "Some vendors, Umixit, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, and <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href=\"#others\">custom versions</a>. The UmixIt custom version added a mixer board interface and karaoke window which are now incorporated in Audacity Beta. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Voice is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Some of these improvements will be incorporated in future versions of Audacity."
+msgstr "Sommige verkopers, Umixit, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, en <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, hebben Audacity bijkomend ondersteund door <a href=\"#others\">custom-versies</a> te sponsoren. De UmixIt custom-versie voegt een mixerbord-interface en een karaoke-venster toe, die nu geïntegreerd zijn in Audacity bèta. De ThinkLabs-versie is gepersonaliseerd voor cardiogrammen van digitale stethoscopen. Audacity_Voice is gepersonaliseerd voor integratie in Audiotouch, voor het gebruiksgemak van studenten die vele opnames nodig hebben. Een aantal van deze verbeteringen zullen opgenomen worden in de toekomstige versies van Audacity."
 
 #: download/bundlers.php:21
 msgid "To be considered for addition to this list, please first review our <a href=\"../about/license\">License, and Advice for Vendors and Distributors</a> page. If you are distributing Audacity under those terms "
@@ -2033,44 +2036,44 @@ msgid "Musical Instruments"
 msgstr "Muziekinstrumenten"
 
 #: download/bundlers.php:43
-#: download/bundlers.php:273
+#: download/bundlers.php:271
 msgid "Playback Devices"
 msgstr "Afspeelapparaten"
 
 #: download/bundlers.php:46
-#: download/bundlers.php:334
+#: download/bundlers.php:329
 msgid "Open Source CD Bundles"
 msgstr "Open source cd-bundels"
 
 #: download/bundlers.php:49
-#: download/bundlers.php:376
+#: download/bundlers.php:371
 msgid "Others"
 msgstr "Andere"
 
 #: download/bundlers.php:56
 #: download/bundlers.php:117
 #: download/bundlers.php:216
-#: download/bundlers.php:276
-#: download/bundlers.php:337
-#: download/bundlers.php:379
+#: download/bundlers.php:274
+#: download/bundlers.php:332
+#: download/bundlers.php:374
 msgid "Vendor"
 msgstr "Verkoper"
 
 #: download/bundlers.php:57
 #: download/bundlers.php:118
 #: download/bundlers.php:217
-#: download/bundlers.php:277
-#: download/bundlers.php:338
-#: download/bundlers.php:380
+#: download/bundlers.php:275
+#: download/bundlers.php:333
+#: download/bundlers.php:375
 msgid "Product"
 msgstr "Product"
 
 #: download/bundlers.php:58
 #: download/bundlers.php:119
 #: download/bundlers.php:218
-#: download/bundlers.php:278
-#: download/bundlers.php:339
-#: download/bundlers.php:381
+#: download/bundlers.php:276
+#: download/bundlers.php:334
+#: download/bundlers.php:376
 msgid "Description"
 msgstr "Beschrijving"
 
@@ -2134,69 +2137,69 @@ msgstr "Neem conversaties op met pc van elke telefoon met een modulaire handset.
 msgid "Guitar-to-USB interface with modeling amps and effects."
 msgstr "Gitaar-naar-usb-interface met modeling amps en effecten."
 
-#: download/bundlers.php:240
+#: download/bundlers.php:238
 msgid "Various models of electric guitar with built-in USB port, modeling amps and effects."
 msgstr "Verschillende modellen van elektrische gitaren met ingebouwde usb-poort, modeling amps en effecten."
 
-#: download/bundlers.php:249
+#: download/bundlers.php:247
 msgid "Ultra-slim 25-Key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition."
 msgstr "Ultradun 25-key USB/MIDI controller toetsenbord met interne audio-interface, meer dan 100 softwareplugins en Ableton Live Lite 4 BEHRINGER Edition."
 
-#: download/bundlers.php:260
+#: download/bundlers.php:258
 msgid "25-, 49- or 61-key USB/MIDI controller keyboard with internal audio interface, more than 100 software plug-ins and Ableton Live Lite 4 BEHRINGER Edition."
 msgstr "25-, 49 of 61-key USB/MIDI controller toetsenbord met interne audio-interface, meer dan 100 softwareplugins en Ableton Live Lite 4 BEHRINGER Edition."
 
-#: download/bundlers.php:269
+#: download/bundlers.php:267
 msgid "Virtual guitar amplifier with tube simulation and 24-bit effects."
 msgstr "Virtuele gitaarversterker met buis-simulatie en 24-bit effecten."
 
-#: download/bundlers.php:287
-#: download/bundlers.php:311
-#: download/bundlers.php:320
+#: download/bundlers.php:285
+#: download/bundlers.php:306
+#: download/bundlers.php:315
 msgid "USB turntable"
 msgstr "Usb-draaitafel"
 
-#: download/bundlers.php:301
-msgid "USB turntables. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what was stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and simultaneously export multiple files for each track. Ion have corrected their documentation, and are currently still bundling Audacity with the listed products. Please see our Wiki page on <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">USB turntables</a> for more information."
-msgstr "Usb-draaitafels. OPMERKING: in januari 2007 verscheen een <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">artikel over deze draaitafels</a> in de New York Times, dat foutieve stellingen bevatte over de limitaties van Audacity. Ondanks wat gesteld was, can Audacity een hele lp opnemen, split points detecteren tussen lp-tracks gebaseerd op stiltes, en meerdere bestanden simultaan exporteren voor elke track. Ion heeft zijn documentatie gecorrigeerd, en bundelt op dit moment nog steeds Audacity met de genoemde producten. Zie onze Wiki-pagina op <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">Usb-draaitafels</a> voor meer informatie."
+#: download/bundlers.php:296
+msgid "As one of the major manufacturers of USB playback equipment, Ion bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs and cassettes. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Ion later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track. See our Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB turntables</a> for more information."
+msgstr "Als een van de grote fabrikanten van usb-afspeelmateriaal, bundelde Ion Audacity met de opgesomde producten voor vele jaren, waardoor het digitaliseren van lp's en cassette's enorm populair werd. OPMERKING: in januari 2007 verscheen een <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">artikel over deze draaitafels</a> in de New York Times, dat foutieve stellingen bevatte over de limitaties van Audacity. Ion corrigeerde later hun documentatie om duidelijk te maken dat Audacity een hele lp kan opnemen, split points detecteren tussen lp-tracks gebaseerd op stiltes, en meerdere bestanden simultaan exporteren voor elke track. Zie onze Wiki-pagina op <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">Usb-draaitafels</a> voor meer informatie."
 
-#: download/bundlers.php:329
-msgid "USB turntables. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Despite what was stated, Audacity can record a whole LP, detect split points between LP tracks based on silences, and simultaneously export multiple files for each track. Numark have corrected their documentation, and are currently still bundling Audacity with the listed product. Please see our Wiki page on <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">USB turntables</a> for more information."
-msgstr "Usb-draaitafels. OPMERKING: in januari 2007 verscheen een <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">artikel over deze draaitafels</a> in de New York Times, dat foutieve stellingen bevatte over de limitaties van Audacity. Ondanks wat gesteld was, can Audacity een hele lp opnemen, split points detecteren tussen lp-tracks gebaseerd op stiltes, en meerdere bestanden simultaan exporteren voor elke track. Numark heeft zijn documentatie gecorrigeerd, en bundelt op dit moment nog steeds Audacity met het genoemde product. Zie onze Wiki-pagina op <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">Usb-draaitafels</a> voor meer informatie."
+#: download/bundlers.php:324
+msgid "As one of the major manufacturers of USB turntables, Numark bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Numark later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track.  See our Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB turntables</a> for more information."
+msgstr "Als een van de grootste fabrikatnen van usb-draaitafels, bundelde Numark Audacity met de opgesomde producten voor verschillende jaren, waardoor ze meehielpen aan de enorme populariteit om lp's te digitaliseren. OPMERKING: in januari 2007 verscheen een <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">artikel over deze draaitafels</a> in de New York Times, dat foutieve stellingen bevatte over de limitaties van Audacity. Numark corrigeerde hun documentatie om te verduidelijken dat Audacity een hele lp kan opnemen, split points detecteren tussen lp-tracks gebaseerd op stiltes, en meerdere bestanden simultaan exporteren voor elke track. Zie onze Wiki-pagina op <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\"\">Usb-draaitafels</a> voor meer informatie."
 
-#: download/bundlers.php:349
+#: download/bundlers.php:344
 msgid "FreedomSampler&trade; is a collection of free, open source software with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you."
 msgstr "FreedomSampler&trade; is een verzameling gratis, open source software met volledige broncode die gemakkelijke verspreiding toestaat onder de GNU General Public License. ISO-images kunnen gratis gedownload worden, of u kan een kopie <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">bestellen</a> om naar u te laten sturen."
 
-#: download/bundlers.php:360
+#: download/bundlers.php:355
 msgid "TheOpenCD is a now-discontinued collection of high quality free and open source software. Currently, you can still <a href=\"http://releases.theopencd.org/\">download archived CD images</a> or <a href=\"http://ztechshop.net/disks/opencd/\">purchase a CD online</a> for worldwide shipping."
 msgstr "TheOpenCD is een nu niet-voortgezette collectie van hogekwaliteits- gratis en open source software. Op dit moment kan u nog steeds <a href=\"http://releases.theopencd.org/\">gearchiveerde cd-archieven downloaden</a> of <a href=\"http://ztechshop.net/disks/opencd/\">on line een cd bestellen</a> voor het wereldwijd verschepen."
 
-#: download/bundlers.php:371
+#: download/bundlers.php:366
 msgid "OpenDisc is a similar collection of high quality free and open source software. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. The project hopes to make available a purchasable CD shortly."
 msgstr "OpenDisc is een gelijkaardige verzameling van hogekwaliteits- gratis en open source software. Op dit moment is een <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">cd-image</a> beschikbaar om te downloaden. Het project hoopt binnenkort een cd beschikbaar te maken die kan aangekocht worden."
 
-#: download/bundlers.php:391
-msgid "Audiotouch is sound recording and playback software, designed for ease of use. It features one-touch recording and saving, quickly recording multiple audio files directly to disk without the need to interact with save dialog boxes. Audacity_Audiotouch is a customized version of Audacity which can be added to Audiotouch, offering simple editing with reduced menu dialogs."
-msgstr "Audiotouch is software om geluid op te nemen en af te spelen, ontworpen voor het gebruiksgemak. Het bevat opnemen en opslaan met 1 enkele druk op de knop, snel meerdere audiobestanden direct op schijf opnemen zonder te moeten gebruik maken van opslaan-vensters. Audacity_Audiotouch is een gepersonaliseerde versie van Audacity die kan toegevoegd worden aan Audiotouch en die simpel bewerken met minder menu-vensters aanbiedt."
+#: download/bundlers.php:386
+msgid "Audiotouch is sound recording and playback software, designed for ease of use. It features one-touch recording and saving, quickly recording multiple audio files directly to disk without the need to interact with save dialog boxes. Audacity_Voice is a customized version of Audacity which can be added to Audiotouch, offering simple editing with reduced menu dialogs."
+msgstr "Audiotouch is software om geluid op te nemen en af te spelen, ontworpen voor het gebruiksgemak. Het bevat opnemen en opslaan met 1 enkele druk op de knop, snel meerdere audiobestanden direct op schijf opnemen zonder te moeten gebruik maken van opslaan-vensters. Audacity_Voice is een gepersonaliseerde versie van Audacity die kan toegevoegd worden aan Audiotouch en die simpel bewerken met minder menu-vensters aanbiedt."
 
-#: download/bundlers.php:401
+#: download/bundlers.php:396
 msgid "Software allowing users to create their own custom comic books with included clipart, backgrounds, word balloons, sound files and other  assets."
 msgstr "Software die gebruikers toestaat om hun eigen stripboeken te maken met clipart, achtergronden, tekstballonnen, geluidsbestanden en andere dingen geïntegreerd."
 
-#: download/bundlers.php:410
+#: download/bundlers.php:405
 msgid "The Thinklabs <a href=\"http://www.thinklabsmedical.com/content/view/17/157/\">ds32a digital stethoscope</a> has enhanced sound quality with 50x amplification. Volume can be adjusted for faint heart sounds, obese patients or noisy work environments. The stethoscope's waveforms and spectrograms can be analyzed in Thinklabs Phonocardiography (a customized version of Audacity for Microsoft Windows and Mac OS X)."
 msgstr "De Thinklabs <a href=\"http://www.thinklabsmedical.com/content/view/17/157/\">ds32a digitale stethoscoop</a> heeft een verbeterde geluidskwaliteit met 50x versterking. Het volume kan bijgesteld worden voor zwakke hartgeluiden, dikkere mensen of luidruchtige werkomgevingen. De golfvormen en spectrogrammen van de stethoscoop kunnen geanalyseerd worden in Thinklab's Phonocardiography (een gepersonaliseerde versie van Audacity voor Microsoft Windows en Mac OS X)."
 
-#: download/bundlers.php:419
+#: download/bundlers.php:414
 msgid "Portable recording studio or digital audio workstation (DAW), featuring \"walk and mix\" technology."
 msgstr "Draagbare opnamestudio of digitaal audio-werkstation (DAW), met de eigenschap van \"walk and mix\"-technologie."
 
-#: download/bundlers.php:428
-msgid "A customized version of Audacity for Microsoft Windows and Mac OS X that lets the fan share the studio experience with an artist. Add a Umixit-enabled CD or song, then record your own vocals or instruments, create remixes, mash-ups, sing karaoke and more..."
-msgstr "Een gepersonaliseerde versie van Audacity voor Microsoft Windows en Mac OS X die de fan de mogelijkheid geeft om de studio-ervaring te delen met een arties. Voeg een Umixit-geactiveerde cd of song toe, neem daarna uw eigen stemmen of instrumenten op, creëer remixes, mash-ups, zing karaoke en meer..."
+#: download/bundlers.php:424
+msgid "A now discontinued, customized version of Audacity for Microsoft Windows and Mac OS X. Umixit-enabled multi-track CDs or songs were available, enabling the user to record their own vocals or instruments to create remixes, mash-ups, sing karaoke and more."
+msgstr "Een niet langer voortgezette gepersonaliseerde versie van Audacity voor Microsoft Windows en Mac OS X. er waren Umuxit-geactiveerde multitrack-cd's of songs beschikbaar die gebruiker de mogelijkheid gaven om hun eigen stemmen of instrumenten op te nemen om remixes of mash-ups te maken, karaoke te zingen en meer."
 
-#: download/bundlers.php:437
+#: download/bundlers.php:434
 msgid "Mirror site for Audacity downloads, from webzine about Windows software at Impress Watch Corporation, Tokyo, Japan."
 msgstr "Mirror-site voor Audacity-downloads, van webzine over Windows-software in Impress Watch Corporation, Tokio, Japan."
 
@@ -5777,8 +5780,8 @@ msgid "How Does Audacity Raise Money?"
 msgstr "Hoe brengt Audacity geld op?"
 
 #: community/donate.php:18
-msgid "Audacity raises money via <a href=\"#donate\">donations</a>, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a>, product sales through <a href=\"http://audacitystore.com/\">Audacity Store</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
-msgstr "Audacity verdient geld via <a href=\"#donate\">donaties</a>, <a href=\"http://audacityteam.org/sponsor.php\">sponsoring</a>, productverkoop door middel van de <a href=\"http://audacitystore.com/\">Audacity Store</a> en <a href=\"../contact/privacy#advertising\">advertenties</a> op onze webpagina's."
+msgid "Audacity raises money via <a href=\"#donate\">donations</a>, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
+msgstr "Audacity verdient geld door <a href=\"#donate\">donaties</a>, <a href=\"http://audacityteam.org/sponsor.php\">sponsoring</a> en <a href=\"../contact/privacy#advertising\">advertenties</a> op onze webpagina's."
 
 #: community/donate.php:22
 msgid ""
@@ -5813,7 +5816,7 @@ msgid ""
 "  do more of these.\n"
 "  Our long-term goal is to bring in enough money to hire a full-time developer who could \n"
 "  devote all of his/her time to the project and take over some of the administrative, \n"
-"  maintenance, and release tasks, freeing volunteers to spend more time on code."
+"  maintenance and release tasks, freeing volunteers to spend more time on code."
 msgstr ""
 "Het team van leidende Audacity-ontwikkelaars zal het geld eerder spenderen aan items en \n"
 "  diensten die het project als geheel ten goede komen. \n"
@@ -5843,47 +5846,40 @@ msgstr ""
 #: community/donate.php:58
 msgid ""
 "There are many ways to support Audacity, and many degrees of doing so.  \n"
-"  We have always welcomed users whose only contribution is simply using Audacity, \n"
-"  giving us feedback on how to improve it, and telling others about it. \n"
-"  Thank you for supporting Audacity."
-msgstr "Er zijn vele manieren om Audacity te ondersteunen, en vele graden om het te doen. We hebben altijd gebruikers verwelkomd wiens enige bijdrage het gebruik van Audacity is, door ons feedback te geven over hoe het te verbeteren, en door anderen erover te vertellen. Bedankt om Audacity te ondersteunen."
-
-#: community/donate.php:66
-msgid "Purchase from the <a href=\"http://audacitystore.com/\">Audacity Store</a>"
-msgstr "Kopen via de <a href=\"http://audacitystore.com/\">Audacity-winkel</a>"
-
-#: community/donate.php:69
-msgid ""
-"Please visit <a href=\"http://audacitystore.com/\">Audacity Store</a> for  \n"
-"  high quality Audacity-logo items (T-shirts, embroidered polo shirts, embroidered messenger bags and ceramic mugs)."
+"  Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">\n"
+"  contribute</a> by helping us with <a href=\"../community/developers\">programming</a>,\n"
+"  <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\">\n"
+"  documentation</a>,<a href=\"../community/translation\">translations</a> or by anwering\n"
+"  questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always \n"
+"  welcomed users whose only contribution is simply using Audacity, giving us feedback\n"
+"  on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr ""
-"Bezoek de <a href=\"http://audacitystore.com/\">Audacity-winkel</a> voor  \n"
-"  Audacity-logo items van hoge kwaliteit (T-shirts, geborduurde polo-shirts, geborduurde boodschaptassen en keramische koppen)."
+"Er zijn verschillende manieren om Audacity te ondersteunen, en verschillende gradaties daarin.  \n"
+"  Naast het doneren van geld, kan u ook <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">\n"
+"  bijdragen</a> door ons te helpen met <a href=\"../community/developers\">programmeren</a>,\n"
+"  <a href=\"../contact#feedback\">testen</a>, <a href=\"http://manual.audacityteam.org/\">\n"
+"  documentatie</a>,<a href=\"../community/translation\">vertalingen</a> of door het beantwoorden\n"
+"  van vragen op ons <a href=\"http://forum.audacityteam.org/\">forum</a>. We hebben altijd gebruikers \n"
+"  verwelkomd wiens enige bijdrage is om Audacity gewoon te gebruiken, door ons feedback te geven \n"
+"  over hoe het te verbeteren en door er anderen over te vertellen. Bedankt om Audacity te ondersteunen."
 
-#: community/donate.php:73
-#: community/donate.php:75
-#: include/header.inc.php:77
-#: include/header.inc.php:78
-msgid "Audacity Store, for Audacity-logo shirts, bags and ceramic mugs"
-msgstr "Audacity-winkel voor t-shirts, rugzakken en kopjes met het Audacity-logo"
-
-#: community/donate.php:80
+#: community/donate.php:68
 msgid "Make a Donation"
 msgstr "Een donatie geven"
 
-#: community/donate.php:81
-msgid "Alternatively, click the button below to donate securely by Paypal. You can send any amount, using either your credit card or your Paypal account:"
-msgstr "Als alternatief kan u op onderstaande knop klikken om veilig te doneren door middel van Paypal. U kan elk bedrag zenden door ofwel uw kredietkaart of uw Paypal-account te gebruiken:"
+#: community/donate.php:69
+msgid "Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:"
+msgstr "Klik op onderstaande knop om veilig te doneren via Paypal (een Paypal-account is niet vereist). U kan elk bedrag zenden, door gebruik te maken van uw kredietkaart of uw Paypal-account:"
 
 #. i18n-hint: the encoding inside the <a href> tag between the two
 #. "echo" strings obscures the e-mail address from (at least some)
 #. harvesting bots. Please translate the strings above and below
 #. the <a href> tag, and ignore the line with the <a href> tag itself.
-#: community/donate.php:102
+#: community/donate.php:90
 msgid "If you prefer to send a personal check or another form of payment, please write to our "
 msgstr "Indien u verkiest om een persoonlijke cheque of een andere vorm van betaling te zenden, gelieve te mailen naar ons "
 
-#: community/donate.php:105
+#: community/donate.php:93
 msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
 msgstr "feedback e-mailadres</a> om ons te vertellen in welk land u woont en hoe u wil betalen."
 
@@ -6284,6 +6280,11 @@ msgstr "Ga naar pagina-inhoud"
 #: include/header.inc.php:65
 msgid "Audacity: Free Sound Editor and Recording Software"
 msgstr "Audacity: vrije geluidseditor en opnamesoftware"
+
+#: include/header.inc.php:77
+#: include/header.inc.php:78
+msgid "Audacity Store, for Audacity-logo shirts, bags and ceramic mugs"
+msgstr "Audacity-winkel voor t-shirts, rugzakken en kopjes met het Audacity-logo"
 
 #: include/header.inc.php:84
 msgid "Site Navigation"
@@ -8830,6 +8831,59 @@ msgstr "Audacity gebruikt een open XML-bestandsformaat om interoperabiliteit aan
 #: xml/index.php:22
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "Meer informatie over het Audacity-projectformaat komt eraan."
+
+#~ msgid ""
+#~ "USB turntables. NOTE: In January 2007, an <a href=\"http://select.nytimes."
+#~ "com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article "
+#~ "about these turntables</a> appeared in the New York Times, containing "
+#~ "erroneous statements about limitations of Audacity. Despite what was "
+#~ "stated, Audacity can record a whole LP, detect split points between LP "
+#~ "tracks based on silences, and simultaneously export multiple files for "
+#~ "each track. Numark have corrected their documentation, and are currently "
+#~ "still bundling Audacity with the listed product. Please see our Wiki page "
+#~ "on <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables"
+#~ "\">USB turntables</a> for more information."
+#~ msgstr ""
+#~ "Usb-draaitafels. OPMERKING: in januari 2007 verscheen een <a href="
+#~ "\"http://select.nytimes.com/gst/abstract.html?"
+#~ "res=F40E1EFA35540C728EDDA80894DF404482\">artikel over deze draaitafels</"
+#~ "a> in de New York Times, dat foutieve stellingen bevatte over de "
+#~ "limitaties van Audacity. Ondanks wat gesteld was, can Audacity een hele "
+#~ "lp opnemen, split points detecteren tussen lp-tracks gebaseerd op "
+#~ "stiltes, en meerdere bestanden simultaan exporteren voor elke track. "
+#~ "Numark heeft zijn documentatie gecorrigeerd, en bundelt op dit moment nog "
+#~ "steeds Audacity met het genoemde product. Zie onze Wiki-pagina op <a href="
+#~ "\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">Usb-"
+#~ "draaitafels</a> voor meer informatie."
+
+#~ msgid ""
+#~ "There are many ways to support Audacity, and many degrees of doing so.  \n"
+#~ "  We have always welcomed users whose only contribution is simply using "
+#~ "Audacity, \n"
+#~ "  giving us feedback on how to improve it, and telling others about it. \n"
+#~ "  Thank you for supporting Audacity."
+#~ msgstr ""
+#~ "Er zijn vele manieren om Audacity te ondersteunen, en vele graden om het "
+#~ "te doen. We hebben altijd gebruikers verwelkomd wiens enige bijdrage het "
+#~ "gebruik van Audacity is, door ons feedback te geven over hoe het te "
+#~ "verbeteren, en door anderen erover te vertellen. Bedankt om Audacity te "
+#~ "ondersteunen."
+
+#~ msgid ""
+#~ "Purchase from the <a href=\"http://audacitystore.com/\">Audacity Store</a>"
+#~ msgstr ""
+#~ "Kopen via de <a href=\"http://audacitystore.com/\">Audacity-winkel</a>"
+
+#~ msgid ""
+#~ "Please visit <a href=\"http://audacitystore.com/\">Audacity Store</a> "
+#~ "for  \n"
+#~ "  high quality Audacity-logo items (T-shirts, embroidered polo shirts, "
+#~ "embroidered messenger bags and ceramic mugs)."
+#~ msgstr ""
+#~ "Bezoek de <a href=\"http://audacitystore.com/\">Audacity-winkel</a> "
+#~ "voor  \n"
+#~ "  Audacity-logo items van hoge kwaliteit (T-shirts, geborduurde polo-"
+#~ "shirts, geborduurde boodschaptassen en keramische koppen)."
 
 #~ msgid ""
 #~ "A detailed, illustrated tutorial explaining this process is available on "
