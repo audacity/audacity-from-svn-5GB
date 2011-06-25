@@ -1,9 +1,9 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2003 Dominic Mazzoni
+ * Copyright 2003 - 11 Dominic Mazzoni, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "nyquist";
@@ -31,7 +31,7 @@ printf(_('%sCreating a plug-in for Audacity using Nyquist is as simple as creati
   (mult (ramp) s)
 </pre>
 <?php
-printf('<p>%s</p>', _('The first two lines of a Nyquist plug-in must be exactly as in the example above, or Audacity will not load it.  (The version number is to support future expansions of the plug-in format.) The next line is the type of plug-in, which is discussed below.  Then comes the name of the plug-in, which is what is displayed in the menu bar, and then the "action", which is what Audacity displays while it is busy processing the plug-in.  There are other optional lines that may follow.  Any line that does not begin with a semicolon (;) is assumed to contain Nyquist code and will be executed.'));
+printf('<p>%s</p>', _('The first line of a Nyquist plug-in must be exactly as in the example above, and the second line must indicate a version number. Version 2 and 3 plug-ins support more widgets, but version 3 plug-ins are not supported in Audacity 1.3.3 or earlier. The next line is the type of plug-in, which is discussed below.  Then comes the name of the plug-in, which is what is displayed in the menu bar, and then the "action", which is what Audacity displays while it is busy processing the plug-in.  There are other optional lines that may follow.  Any line that does not begin with a semicolon (;) is assumed to contain Nyquist code and will be executed.'));
 printf('<p>%s</p>', _('Audacity has support for three types of plug-ins that can be written in Nyquist:'));
 ?>
 <pre>
@@ -121,11 +121,11 @@ printf('<h3>%s</h3>', _('Where to go from here'));
 
 printf('<p>%s</p>', _('Audacity comes with some sample plug-ins that you can examine or modify as a starting point.  The best way to learn Nyquist is to try it.  If you\'re having trouble debugging, consider downloading the standalone version of Nyquist (see the link in Part 1).'));
 //i18n-hint: All the %s are HTML tags which makes "contact us" into a link
-printf(_('%sIf you\'re having trouble getting Nyquist to work at all, please %scontact us%s.%s'), '<p>', '<a href="../contact/">', '</a>', '</p>');
-//i18n-hint: All the %s are HTML tags which makes "audacity-nyquist mailing list" into a link
-printf(_('%sIf you are working on Nyquist plug-in effects and would like to share them with others, or if you would like to discuss general details of how to achieve certain effects in Nyquist, please join the %saudacity-nyquist mailing list%s.%s'), '<p>', '<a href="../contact/lists#nyquist">', '</a>', '</p>');
+printf(_('%sIf you\'re having trouble getting Nyquist to work at all, please %scontact us%s.%s'), '<p>', '<a href="../contact/#feedback">', '</a>', '</p>');
+//i18n-hint: All the %s are HTML tags which makes the text into links.
+printf(_('%sIf you are working on Nyquist plug-in effects and would like to share them with others, or if you would like to discuss how to achieve certain effects in Nyquist, please post on the %sNyquist board of the Forum%s or join the %saudacity-nyquist mailing list%s.%s'), '<p>', '<a href="http://forum.audacityteam.org/viewforum.php?f=39">', '</a>', '<a href="../contact/lists#nyquist">', '</a>', '</p>');
 //i18n-hint: All the %s are HTML tags which makes "Nyquist Reference Manual" into a link
-printf(_('%sDon\'t forget to consult the full %sNyquist Reference Manual%s for more details of how Nyquist works.%s'), '<p>', '<a href="http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html">', '</a>', '</p>');
+printf(_('%sDon\'t forget to consult the full %sNyquist 2.37 Reference Manual%s for more details of Lisp and Nyquist.%s'), '<p>', '<a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">', '</a>', '</p>');
 
 
   include "../include/footer.inc.php";
