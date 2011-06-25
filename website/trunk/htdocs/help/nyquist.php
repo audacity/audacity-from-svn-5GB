@@ -2,9 +2,9 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
- * Copyright 2009 Richard Ash
+ * Copyright 2009 - 2011 Richard Ash, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "nyquist";
@@ -29,13 +29,13 @@ printf('<p>%s</p>', _('Beginning with version 1.1.1, Audacity allows you to use 
 printf(_('%sNyquist was written by %sRoger B. Dannenberg%s and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging and more.  Audacity uses only a subset of Nyquist\'s functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn\'t include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project: %sCMU Computer Music Project Software%s - download the full Nyquist here%s'),
 	'<p>', '<a href="http://www-2.cs.cmu.edu/~rbd/">', '</a>',
   	'</p><ul><li><a href="http://www-2.cs.cmu.edu/~music/music.software.html">',
-   	'</a>', '</li></ul>' );
+   	'</a>', '.</li></ul>' );
+// 18n-hint: All The references to Lisp in the strings following are to the programming language.
+// So you probably don't want to translate it.
+printf(_('%sNyquist supports both a Lisp syntax and a more conventional syntax called SAL. Audacity versions prior to 1.3.8 Beta only support Lisp, but versions after that support both Lisp and SAL. To write plug-ins for use with Audacity, choose the appropriate Nyquist Manual for your version of Audacity and preferred syntax: %sNyquist version 2.37 Manual%s - entirely using Lisp syntax %s Nyquist 3.0x Reference Manual%s - the latest Nyquist Manual (mostly using SAL syntax)%s'), '<p>', '</p><ul><li><a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">', '</a>', '</li><li><a href="http://www.cs.cmu.edu/~rbd/doc/nyquist/">', '</a>', '.</li></ul>');
 
-printf(_('%sTo write plug-ins for use with Audacity, you will need the older %sNyquist version 2.37 Manual%s, not the version 3 manual available from CMU. This is because in Nyquist version 3 the code notation has changed to SAL instead of LISP. We will investigate integrating SAL with the Audacity implementation of Nyquist in the future.'), '<p>', '<a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">', '</a>', '</p>' );
+printf(_('%sNote that you don\'t need to download Nyquist in order to write simple plug-ins to use with Audacity. All the basic instructions you need to work with Lisp and the 2.37 Manual are below. If you want to explore SAL as well, and for the latest Nyquist features in Audacity Beta, see %sNyquist Plug-ins Reference%s on the %sWiki%s'), '<p>', '<a href="http://wiki.audacityteam.org/wiki/Nyquist_Plug-ins_Reference">', '</a>', '<a href="http://wiki.audacityteam.org/">', '</a>.</p>');
 
-printf('<p>%s</p>', _('Note that you don\'t need to download Nyquist in order to write simple plug-ins to use with Audacity.  All of the instructions you need are below.'));
-// 18n-hint: This is Lisp as in the programming language. So you probably don't
-// want to translate it.
 printf('<h3>%s</h3>', _('Lisp'));
 printf(_('%sNyquist is based on Lisp.  If you have programmed in Lisp before, you can skim this section or go directly to the %snext page%s.  Otherwise, here\'s an extremely brief introduction to Lisp:'), '<p>', '<a href="nyquist2">', '</a>', '</p>');
 printf('<p>%s</p>', _('In Lisp (and therefore Nyquist), everything is an S-Expression, which is just a list of tokens (words) separated by whitespace and enclosed in parentheses.  The name of the function is always the first token in an S-Expression, and all of the other tokens are arguments to this function.  Here\'s a simple example:'));
