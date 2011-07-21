@@ -47,7 +47,7 @@
       <?=_("Windows")?></a><span class="downloads_smaller">&nbsp;&nbsp;1.3.13<br><img src="../images/download_spacer.png"><b><i>&nbsp;<?=_("best version for <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista")?></i></b></span></h3>
   
       <h3><a href="beta_mac"><img alt="Mac" src="../images/mac.png">
-      <?=_("Mac OS X")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.13 (Universal Binary)&nbsp")?><br><img src="../images/download_spacer.png"><b><i>&nbsp;<?=_("best version for OS X 10.6")?></i></b></span></h3>
+      <?=_("Mac OS X")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.13 (Universal Binary)&nbsp")?><br><img src="../images/download_spacer.png"><b><i>&nbsp;<?=_("best version for OS X 10.6/10.7")?></i></b></span></h3>
   
       <h3><a href="beta_linux"><img alt="Linux" src="../images/unix.png">
       <?=_("Linux/Unix")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.13 (in source code)")?></span></h3>
