@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity website translation 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-10 20:44+0100\n"
-"PO-Revision-Date: 2011-06-12 09:57+0900\n"
+"POT-Creation-Date: 2011-09-09 21:34+0100\n"
+"PO-Revision-Date: 2011-09-10 13:44+0900\n"
 "Last-Translator: Atsushi YOSHIDA <ayoshida.pub@gmail.com>\n"
 "Language-Team: kuzunet <kuzu@mpd.biglobe.ne.jp>\n"
 "MIME-Version: 1.0\n"
@@ -972,14 +972,15 @@ msgstr "Audacityではバージョン1.1.1よりNyquistプログラム言語を�
 msgid "%sNyquist was written by %sRoger B. Dannenberg%s and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging and more.  Audacity uses only a subset of Nyquist's functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn't include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project: %sCMU Computer Music Project Software%s - download the full Nyquist here%s"
 msgstr "%sNyquistは%sRoger B. Dannenberg%sによって音声合成および解析のための完全なプログラミング言語として使われることを意図して開発されました。NyquistはMIDIサポート、オーディオ録音・再生、ファイルI/O、オブジェクト指向プログラミング、プロファイリング、デバッグ他の機能を備えています。 AudacityはNyquistの一部の機能を使っており、これによりユーザはNyquist の簡単な関数を使ってオーディオデータの処理を行うことができます。 AudacityはNyquistコードのデバッグ機能を持っていません。したがって、もしユーザーが複雑なプラグインを作成したい場合はフルバージョンのNyquistを入手しそこで開発を行い、その後Audacityのプラグインとして使うのがいいでしょう。 Nyquistはカーネギー・メロン大学（CMU)コンピュータ音楽プロジェクトで入手可能です: %sCMU Computer Music Project Software%s - フルNyquistのダウンロード%s"
 
-#: help/nyquist.php:34
+#: help/nyquist.php:35
 #, php-format
-msgid "%sTo write plug-ins for use with Audacity, you will need the older %sNyquist version 2.37 Manual%s, not the version 3 manual available from CMU. This is because in Nyquist version 3 the code notation has changed to SAL instead of LISP. We will investigate integrating SAL with the Audacity implementation of Nyquist in the future."
-msgstr "%sAudacityで使うためのプラグインを作成するには、CMUから提供されているバージョン3マニュアルではなく、古い%sNyquist version 2.37 Manual%sが必要です。これはNyquist バージョン3ではコード記法がLISPからSALに変更されたからです。 私たちはAudacityでのNyquist実装に関し、将来SALを融合することについて調査することにしています。"
+msgid "%sNyquist supports both a Lisp syntax and a more conventional syntax called SAL. Audacity versions prior to 1.3.8 Beta only support Lisp, but versions after that support both Lisp and SAL. To write plug-ins for use with Audacity, choose the appropriate Nyquist Manual for your version of Audacity and preferred syntax: %sNyquist version 2.37 Manual%s - entirely using Lisp syntax %s Nyquist 3.0x Reference Manual%s - the latest Nyquist Manual (mostly using SAL syntax)%s"
+msgstr "%sNyquistはLisp記述法および 標準的なSALと呼ばれる記述法の両方をサポートします。 Audacity 1.3.8 Betaより前のバージョンではLisp記述方だけでしたがそれ以降のバージョンではこれら両方をサポートします。 Audacityで使用するプラグインを書くには、それぞれのAudacityバージョンと記述法に合った適切なNyquistマニュアルを選んでください: %sNyquist version 2.37 Manual%s - 全面的にLisp記述法を使用 %s Nyquist 3.0x Reference Manual%s - 最新のNyquistマニュアル (SAL記述法が中心)%s"
 
-#: help/nyquist.php:36
-msgid "Note that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity.  All of the instructions you need are below."
-msgstr "簡単なAudacity用プラグインを作成するのであればNyquistをダウンロードする必要ありません。以下の手順のみで作成可能です。"
+#: help/nyquist.php:37
+#, php-format
+msgid "%sNote that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity. All the basic instructions you need to work with Lisp and the 2.37 Manual are below. If you want to explore SAL as well, and for the latest Nyquist features in Audacity Beta, see %sNyquist Plug-ins Reference%s on the %sWiki%s"
+msgstr "%sAudacityで使用する簡単なプラグインを書くのならNyquistをダウンロードする必要はありません。以下のインストラクションさえ理解すればLispおよび2.37マニュアルを使ってプラグイン作成ができます。もしSALについても学習しAudacityベータの最新Nyquist機能を使いこなすなら%sNyquist Plug-ins Reference%sが%sWiki%s上に公開されていますのでご覧ください。"
 
 #: help/nyquist.php:39
 msgid "Lisp"
@@ -1396,8 +1397,8 @@ msgid "%sCreating a plug-in for Audacity using Nyquist is as simple as creating 
 msgstr "%sNiquistでAudaciyのプラグインを作成するには、Niquistコードとプラグインのタイプ等を示すコメントを書いた、拡張子\".ny\" のテキストファイルを作成し、Audacityの %sディレクトリに置くだけで簡単にできます。 ここでは非常に簡単なプラグインのサンプルを示します:%s"
 
 #: help/nyquist3.php:34
-msgid "The first two lines of a Nyquist plug-in must be exactly as in the example above, or Audacity will not load it.  (The version number is to support future expansions of the plug-in format.) The next line is the type of plug-in, which is discussed below.  Then comes the name of the plug-in, which is what is displayed in the menu bar, and then the \"action\", which is what Audacity displays while it is busy processing the plug-in.  There are other optional lines that may follow.  Any line that does not begin with a semicolon (;) is assumed to contain Nyquist code and will be executed."
-msgstr "Nyquistプラグインの最初の2行はこの例とまったく同じにしておかなくてはAudacityが読み込みません。 （Version番号はプラグイン書式の将来拡張を考慮してあります） 次の行はこのプラグインのタイプで、これは後ほど説明します。その次はこのプラグインの名前でメニューバーに表示されるもので、その次は \"action\"で、これはAudacityがプラグインを実行中に表示されるものです。  さらにその他の行が続くこともあります。セミコロン (;) で始まる行以外はすべてNyquistコードを含んでおり実行されるものとして取り扱われます。"
+msgid "The first line of a Nyquist plug-in must be exactly as in the example above, and the second line must indicate a version number. Version 2 and 3 plug-ins support more widgets, but version 3 plug-ins are not supported in Audacity 1.3.3 or earlier. The next line is the type of plug-in, which is discussed below.  Then comes the name of the plug-in, which is what is displayed in the menu bar, and then the \"action\", which is what Audacity displays while it is busy processing the plug-in.  There are other optional lines that may follow.  Any line that does not begin with a semicolon (;) is assumed to contain Nyquist code and will be executed."
+msgstr "Nyquistプラグインの1行目はこの例とまったく同じにする必要があります。2行目はVersion番号でなければなりません。Version 2および3プラグインはより多くのウィジットをサポートしますが、Audacityの1.3.3およびそれ以前のバージョンではVersion 3はサポートされません。次の行はこのプラグインのタイプで、これは後ほど説明します。その次はこのプラグインの名前でメニューバーに表示されるもので、その次は \"action\"で、これはAudacityがプラグイン実行中に表示されるものです。  さらにその他の行が続くこともあります。セミコロン (;) で始まる行以外はすべてNyquistコードを含んでおり実行されるものとして取り扱われます。"
 
 #: help/nyquist3.php:35
 msgid "Audacity has support for three types of plug-ins that can be written in Nyquist:"
@@ -1546,17 +1547,17 @@ msgstr "Audacityにはいくつかのプラグインのサンプルが含まれ�
 msgid "%sIf you're having trouble getting Nyquist to work at all, please %scontact us%s.%s"
 msgstr "%sもしNyquistがまったく動作しない場合は%scontact us%sにご連絡ください。%s"
 
-#. i18n-hint: All the %s are HTML tags which makes "audacity-nyquist mailing list" into a link
+#. i18n-hint: All the %s are HTML tags which makes the text into links.
 #: help/nyquist3.php:126
 #, php-format
-msgid "%sIf you are working on Nyquist plug-in effects and would like to share them with others, or if you would like to discuss general details of how to achieve certain effects in Nyquist, please join the %saudacity-nyquist mailing list%s.%s"
-msgstr "%sもしあなたがNyquistプラグインを開発していて、他の人たちと共有したい場合、またNyquistである効果を得るにはどうすべきかとう議論を行いたい場合は、%saudacity-nyquist mailing list%sにご参加ください。%s"
+msgid "%sIf you are working on Nyquist plug-in effects and would like to share them with others, or if you would like to discuss how to achieve certain effects in Nyquist, please post on the %sNyquist board of the Forum%s or join the %saudacity-nyquist mailing list%s.%s"
+msgstr "%sもしあなたがNyquistプラグインを開発していて、他の人たちと共有したい場合、またNyquistである効果を得るにはどうすべきかとう議論を行いたい場合は、%sNyquist board of the Forum%sに投稿されるか、あるいは%saudacity-nyquist mailing list%sにご参加ください。%s"
 
 #. i18n-hint: All the %s are HTML tags which makes "Nyquist Reference Manual" into a link
 #: help/nyquist3.php:128
 #, php-format
-msgid "%sDon't forget to consult the full %sNyquist Reference Manual%s for more details of how Nyquist works.%s"
-msgstr "%sNyquistのプログラミングについてより詳細に知りたい場合は、完全な%sNyquist Reference Manual%sを参照することを忘れないでください。%s"
+msgid "%sDon't forget to consult the full %sNyquist 2.37 Reference Manual%s for more details of Lisp and Nyquist.%s"
+msgstr "%sNyquistのプログラミングについてより詳細に知りたい場合は、完全な%sNyquist 2.37 Reference Manual%sを参照することを忘れないでください。%s"
 
 #: download/beta_nightly.inc.php:10
 msgid "\"Nightly Builds\" are Alpha builds from our latest development code that we work on between releases. Your help in testing and <a href=\"http://audacity.sourceforge.net/contact#feedback\">reporting bugs</a> in these builds will be invaluable as we move towards a new 2.0 Stable release. <b>Note:</b>&nbsp;These builds may by definition be more unstable than any other releases. They should not be used as your production version of Audacity."
@@ -1652,8 +1653,8 @@ msgid "Mac OS X: Shortcut keys may activate when typing in file open or save win
 msgstr "Mac OS X: ファイルオープンまたは保存ウインドウで文字入力中にショートカットキーが有効になることがあります。"
 
 #: download/release-notes.php:30
-msgid "<a href=\"../download\">Audacity Beta (1.3 Series)</a> is now the recommended version on Windows 7, Windows Vista and Mac OS X 10.6."
-msgstr "Windows 7、Windows Vista およびMac OS X 10.6向けには<a href=\"../download\">Audacity ベータ版 (1.3 シリーズ)</a> をお勧めします。"
+msgid "<a href=\"../download\">Audacity Beta (1.3 Series)</a> is now the recommended version on Windows 7, Windows Vista and Mac OS X 10.6/10.7."
+msgstr "Windows 7、Windows Vista およびMac OS X 10.6/10.7向けには<a href=\"../download\">Audacity ベータ版 (1.3 シリーズ)</a> をお勧めします。"
 
 #: download/release-notes.php:33
 msgid ""
@@ -4737,8 +4738,8 @@ msgid "&nbsp;1.3.13 (Universal Binary)&nbsp"
 msgstr "&nbsp;1.3.13 (Universal Binary)&nbsp"
 
 #: download/index.php:50
-msgid "best version for OS X 10.6"
-msgstr "Mac OS X 10.6向けのバージョン"
+msgid "best version for OS X 10.6/10.7"
+msgstr "Mac OS X 10.6/10.7向けのバージョン"
 
 #: download/index.php:53
 msgid "&nbsp;1.3.13 (in source code)"
@@ -5292,16 +5293,16 @@ msgid "Other Things Named “Audacity” (not related to us)"
 msgstr "「Audacity」という名前の他の製品や会社など (私たちとは無関係です)"
 
 #: about/links.php:16
-msgid "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is a digital voice recorder for Palm OS and Treo handheld computers"
-msgstr "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> はPalm OS およびTreoハンドヘルド用のディジタルボイスレコーダーです。"
+msgid "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is a digital voice recorder for smartphones."
+msgstr "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> はスマートフォン向けディジタルボイスレコーダーです。"
 
 #: about/links.php:17
 msgid "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company for construction industry professionals."
 msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a>は建設産業の研究会社です。"
 
 #: about/links.php:18
-msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides janitorial services for businesses and individuals in the Seattle, WA metro area."
-msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> はワシントン州シアトル地域での業務向けおよび個人向けの清掃サービス会社です。"
+msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides software consulting services for businesses in Washington, Arizona and California."
+msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> はワシントン、アリゾナ、およびカリフォルニア州にてソフトウェアコンサルティングを提供する会社です。"
 
 # New
 #: about/links.php:19
@@ -5309,8 +5310,8 @@ msgid "Two different rock bands from <a href=\"http://www.myspace.com/audacityro
 msgstr "<a href=\"http://www.myspace.com/audacityrocks\">フィンランド</a> および <a href=\"http://www.unsigned.com/audacity\">英国</a> の2つのロックバンドが \"Audacity\"という名前を使っています。"
 
 #: about/links.php:22
-msgid "Other Audio Software"
-msgstr "他のオーディオソフトウェア"
+msgid "Other Open Source Audio Software"
+msgstr "他のオープンソースのオーディオソフトウェア"
 
 #: about/links.php:23
 msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux and Mac OS X."
@@ -5325,20 +5326,76 @@ msgid "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile
 msgstr "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> はLPレコードから録音し処理するフリーツールです。"
 
 #: about/links.php:26
-msgid "More free software at SourceForge.net:"
-msgstr "SourceForge.netにおけるもっと多くのフリーソフトウェア"
+msgid "<a href=\"http://www.mixxx.org/\">Mixxx</a> is free cross-platform digital DJ mixing software with features like automatic BPM matching and seamless looping."
+msgstr "<a href=\"http://www.mixxx.org/\">Mixxx</a> はフリーでクロスプラットフォームのディジタルDJミキシングソフトウェアで、BPMマッチング機能やシームレスルーピング機能を持っています。"
 
-#: about/links.php:28
+#: about/links.php:27
+msgid "More free audio software at SourceForge.net:"
+msgstr "SourceForge.netにおけるその他のオーディオソフトウェア"
+
+#: about/links.php:29
 msgid "Audio Editors"
 msgstr "オーディオエディタ"
 
-#: about/links.php:29
+#: about/links.php:30
 msgid "Audio Capture/Recording"
 msgstr "オーディオキャプター／レコーディング"
 
-#: about/links.php:30
+#: about/links.php:31
 msgid "Audio Analysis"
 msgstr "オーディオ解析"
+
+#: about/links.php:34
+msgid "Open Source Audio-Visual Software"
+msgstr "オープンソースのオーディオビジュアルソフトウェア"
+
+#: about/links.php:35
+msgid "<a href=\"http://www.blender.org/\">Blender</a> is a free, cross-platform 3D content creation suite for animations, interactive applications and video games."
+msgstr "<a href=\"http://www.blender.org/\">Blender</a>はフリーでクロスプラットフォームの3Dコンテンツ作成スイートで、アニメーション、インタラクティブなアプリあるいはビデオゲーム等向けです。"
+
+#: about/links.php:36
+msgid "<a href=\"http://mediainfo.sourceforge.net/\">MediaInfo</a> is a free, cross-platform tag and codec analyzer for audio and video files."
+msgstr "<a href=\"http://mediainfo.sourceforge.net/\">MediaInfo</a>はフリーでクロスプラットフォームのオーディオおよびビデオファイル用のタグとコーデック分析ソフトウェアです。"
+
+#: about/links.php:37
+msgid "<a href=\"http://www.videolan.org/vlc/\">VLC media player</a> is a free, cross-platform media player for most audio and video files as well as DVD, Audio CD and VCD. VLC also can also send, save and convert <a href=\"http://www.videolan.org/streaming-features.html\">audio and video streams<a/>."
+msgstr "<a href=\"http://www.videolan.org/vlc/\">VLC media player</a> はフリーでクロスプラットフォームのメディアプレーヤーで、多くの形式のオーディオおよびビデオファイル、DVD、オーディオCDおよびVCDに対応しています。さらにVLCは<a href=\"http://www.videolan.org/streaming-features.html\">audio and video streams<a/>を送信、保存および変換することができます。"
+
+#: about/links.php:38
+msgid "CD/DVD burning:"
+msgstr "CD/DVD書き込み:"
+
+#: about/links.php:40
+msgid "<a href=\"http://infrarecorder.org/\">InfraRecorder</a> for Windows"
+msgstr "Windows版<a href=\"http://infrarecorder.org/\">InfraRecorder</a>"
+
+#: about/links.php:41
+msgid "<a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a> for Mac OS X"
+msgstr "Mac OS X版<a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a> "
+
+#: about/links.php:42
+msgid "<a href=\"http://k3b.org/\">K3b</a> or <a href=\"http://www.xfce.org/projects/xfburn\">Xfburn</a> for Linux"
+msgstr "Linux版<a href=\"http://k3b.org/\">K3b</a> または <a href=\"http://www.xfce.org/projects/xfburn\">Xfburn</a>"
+
+#: about/links.php:44
+msgid "Video editing/capture:"
+msgstr "ビデオ編集/キャプチャ:"
+
+#: about/links.php:46
+msgid "<a href=\"http://www.virtualdub.org/\">VirtualDub</a> for Windows"
+msgstr "Windows版<a href=\"http://www.virtualdub.org/\">VirtualDub</a>"
+
+#: about/links.php:47
+msgid "<a href=\"http://avidemux.sourceforge.net/\">Avidemux</a> for Windows, Mac OS X (Intel) and Linux"
+msgstr " Windows、 Mac OS X (Intel)およびLinux版<a href=\"http://avidemux.sourceforge.net/\">Avidemux</a>"
+
+#: about/links.php:48
+msgid "<a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a> for Mac OS X"
+msgstr "Mac OS X版<a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a>"
+
+#: about/links.php:49
+msgid "<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> or <a href=\"http://www.kinodv.org/article/static/2\">Kino</a> for Linux"
+msgstr "Linux版<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> または <a href=\"http://www.kinodv.org/article/static/2\">Kino</a> for Linux"
 
 #: about/index.php:15
 msgid ""
@@ -8729,8 +8786,8 @@ msgid "The latest release of Audacity is <a href=\"download/\">%s (Beta)"
 msgstr "Audacityの最新リリースは <a href=\"download/\">%s (Beta)です。"
 
 #: index.php:58
-msgid "This is our active version with the latest features and fixes.</b> We recommend this version for more advanced users, and for everyone on Windows 7, Windows Vista and Mac OS X 10.6. Documentation and translations into different languages may not be quite complete. See <a href=\"download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3 Beta series."
-msgstr "これは私たちの現在アクティブなバージョンで、最新の機能や修正を含んでいます。</b>このバージョンは上級ユーザーおよびWindows 7、Windows VistaとMac OS X 10.6をお使いの全ユーザー向けです。ドキュメントや他言語へ翻訳もまだ完全ではないかもしれません。1.3 Betaシリーズのより詳しい情報は<a href=\"/download/features-1.3-a\">1.3での新機能</a> をご覧ください。"
+msgid "This is our active version with the latest features and fixes.</b> We recommend this version for more advanced users, and for everyone on Windows 7, Windows Vista and Mac OS X 10.6/10.7. Documentation and translations into different languages may not be quite complete. See <a href=\"download/features-1.3-a\">New Features in 1.3</a> for more information about the 1.3 Beta series."
+msgstr "これは私たちの現在アクティブなバージョンで、最新の機能や修正を含んでいます。</b>このバージョンは上級ユーザーおよびWindows 7、Windows VistaとMac OS X 10.6/10.7をお使いの全ユーザー向けです。ドキュメントや他言語へ翻訳もまだ完全ではないかもしれません。1.3 Betaシリーズのより詳しい情報は<a href=\"/download/features-1.3-a\">1.3での新機能</a> をご覧ください。"
 
 #: index.php:60
 msgid "<a href=\"download/\">Audacity 1.2.6</a> is our main release, complete and fully documented, but no longer under development."
@@ -8783,6 +8840,27 @@ msgstr "Audacityはインターオペラビリティを確保するためにオ�
 #: xml/index.php:22
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "Audacityプロジェクトファイル形式に関するドキュメントは今後提供される予定です。"
+
+#~ msgid ""
+#~ "%sTo write plug-ins for use with Audacity, you will need the older %"
+#~ "sNyquist version 2.37 Manual%s, not the version 3 manual available from "
+#~ "CMU. This is because in Nyquist version 3 the code notation has changed "
+#~ "to SAL instead of LISP. We will investigate integrating SAL with the "
+#~ "Audacity implementation of Nyquist in the future."
+#~ msgstr ""
+#~ "%sAudacityで使うためのプラグインを作成するには、CMUから提供されているバー"
+#~ "ジョン3マニュアルではなく、古い%sNyquist version 2.37 Manual%sが必要です。"
+#~ "これはNyquist バージョン3ではコード記法がLISPからSALに変更されたからで"
+#~ "す。 私たちはAudacityでのNyquist実装に関し、将来SALを融合することについて"
+#~ "調査することにしています。"
+
+#~ msgid ""
+#~ "Note that you don't need to download Nyquist in order to write simple "
+#~ "plug-ins to use with Audacity.  All of the instructions you need are "
+#~ "below."
+#~ msgstr ""
+#~ "簡単なAudacity用プラグインを作成するのであればNyquistをダウンロードする必"
+#~ "要ありません。以下の手順のみで作成可能です。"
 
 #~ msgid ""
 #~ "USB turntables. NOTE: In January 2007, an <a href=\"http://select.nytimes."
