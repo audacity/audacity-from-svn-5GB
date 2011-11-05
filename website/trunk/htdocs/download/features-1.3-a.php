@@ -585,7 +585,7 @@ echo _('<dl>
                                        mode, quality and length, with improved 
                                        metadata visibility in player applications 
                                        (Windows users will require the
-                                       <a href="http://lame.buanzo.com.ar/">
+                                       <a href="http://lame1.buanzo.com.ar/">
                                        latest version of the LAME encoder</a>) 
                                   <li>WMA exports containing metadata are now correct</li> 
                             </ul>

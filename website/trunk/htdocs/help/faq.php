@@ -84,10 +84,10 @@
       array(
         "lame-mp3" => array(
           _("How do I download and install the LAME MP3 encoder?"),
-          sprintf(_('<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.
+          _('<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.
 <h3 id="win">Windows</h3>
 <ol>
-  <li>Go to the <a href="http://lame.buanzo.com.ar/">LAME download page</a>.</li>
+  <li>Go to the <a href="http://lame1.buanzo.com.ar/">LAME download page</a>.</li>
   <li>Under "For Audacity on Windows", left-click the link <b>"Lame v3.98.3 for Audacity on Windows.exe"</b> and save the file anywhere on your computer. <b>Do not right-click the link to the .exe file.</b> </li> 
   <li>Double-click <b>"Lame v3.98.3 for Audacity on Windows.exe"</b> to launch it (you can safely ignore any warnings that the "publisher could not be verified").</li> 
   <li>Follow the "Setup" instructions to install LAME for Audacity. Do not change the offered destination location of "C:\Program Files\Lame for Audacity".</li>
@@ -97,7 +97,7 @@
 </ol>
 <h3 id="mac">Mac OS 9 or X</h3>
 <ol>
-  <li>Go to the <a href="http://lame.buanzo.com.ar/">LAME download page</a>.</li>
+  <li>Go to the <a href="http://lame1.buanzo.com.ar/">LAME download page</a>.</li>
   <li>Click to download either <b>"Lame Library v3.98.2 for Audacity on OSX.dmg"</b> or <b>"LameLib-Carbon.sit"</b>, according to your operating system.</li>
   <li>Double-click the .dmg to extract "Lame Library v3.98.2 for Audacity on OSX.pkg" to Finder, or use Stuffit to extract "LameLib" from the .sit (either of these may happen automatically).</li>
   <li>Double-click the .pkg to install <b>"libmp3lame.dylib"</b> in /usr/local/lib/audacity, or save <b>"LameLib"</b> anywhere on your computer.</li>
@@ -105,7 +105,7 @@
   <li>In case of difficulty, please view our <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#Mac_Instructions">more detailed instructions</a> on the <a href="http://audacityteam.org/wiki/index.php">Audacity Wiki</a>.</li> 
 </ol>
 <h3 id="nix">Linux/Unix</h3>
-Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions">these instructions</a> on our <a href="http://audacityteam.org/wiki/">Wiki</a> to download and install a suitable LAME package from the internet.'),  "http://lame.buanzo.com.ar/", "http://lame.buanzo.com.ar/")
+Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions">these instructions</a> on our <a href="http://audacityteam.org/wiki/">Wiki</a> to download and install a suitable LAME package from the internet.')
         ),
         "vst-enabler" => array(
           _("How do I install VST plug-ins?"),
