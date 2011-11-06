@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
  * This file contains code to set up and use the gettext-based localization
  * system.
@@ -20,13 +20,14 @@ $cookie_days = 90;
 $available_locales = array(
   // Language code => Full locale name, Human-readable name.
   "af" => array("af_ZA", "Afrikaans"),
+  "eu" => array("eu_ES", "Basque"),
   "cs" => array("cs_CZ", "Česky"),
   "de" => array("de_DE", "Deutsch"),
   "el" => array("el_GR", "Ελληνικά"),
   "en" => array("en_US", "English"),
   "es" => array("es_ES", "Español"),
-  "eu" => array("eu_ES", "Basque"),
   "fr" => array("fr_FR", "Français"),
+  "hi" => array("hi_IN", "हिन्दी"),
   "it" => array("it_IT", "Italiano"),
   "hu" => array("hu_HU", "Magyar"),
   "nb" => array("nb_NO", "Norsk (Bokmål)"),
@@ -34,6 +35,7 @@ $available_locales = array(
   "pl" => array("pl_PL", "Polski"),
   "pt" => array("pt_BR", "Português"),
   "ro" => array("ro_RO", "Română"),
+  "ru" => array("ru_RU", "Русский"),
   "sk" => array("sk_SK", "Slovak"),
   "sl" => array("sl_SI", "Slovenščina"),
   "fi" => array("fi_FI", "Suomi"),
@@ -42,7 +44,6 @@ $available_locales = array(
   "uk" => array("uk_UA", "Ukrainian"),
   "vi" => array("vi_VN", "Vietnamese"),
   "ja" => array("ja_JP", "日本語"),
-  "ru" => array("ru_RU", "Русский"),
   "zh-CN" => array("zh_CN.UTF-8", "中文(简)"),
   "zh-TW" => array("zh_TW.UTF-8", "中文(繁)"),
 );
