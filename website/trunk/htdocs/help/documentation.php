@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 2008 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 2011 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -28,7 +28,8 @@
 	<li><a href="../manual-1.2/"><?=_('Read the Audacity 1.2 manual online.')?></a></li>
 	<li><a href="../audacity-manual-1.2.zip"><?=_('Download the Audacity 1.2 manual in HTML format.')?></a> <?=_('(To use the manual, unzip it and open the "index.html" file.)')?></li>
 	<li><a href="audacity-manual-1.2.pdf"><?=_('Download the Audacity 1.2 manual in PDF format.')?></a></li>
-	<li><a href="http://manual.audacityteam.org/index.php?title=Main_Page"><?=_('Read the latest Audacity 1.3 Beta manual online.')?></a> <?=_('(You can also access a built-in copy of the manual through the "Help" menu in the Audacity program.)')?></li>
+	<li><a href="http://manual.audacityteam.org/man/Unzipping_the_Manual"><?=_('Download the latest Audacity 1.3 Beta manual in HTML format')?></a> <?=_('(The Audacity Beta installers for Windows and Mac already include a built-in copy of the Manual accessed through the "Help" menu in the Audacity program.)')?></li>
+	<li><a href="http://manual.audacityteam.org/index.php?title=Main_Page"><?=_('Read the latest Audacity 1.3 alpha manual online.</a>')?> <?=_('(The latest Audacity 1.3 alpha Nightly Builds for testing purposes can be downloaded <a href="http://wiki.audacityteam.org/wiki/Nightly_Builds">here</a>.)')?></li>
 </ul>
 
 <?php
@@ -53,8 +54,8 @@
   <ul>
     <li><a href="../localhelp/de/audacity-1.2-help.htb">Deutsche Hilfedatei (htb)</a> (Ersetzen Sie audacity-1.2-help.htb im Audacity Installation-Heft mit diesem Download.)</li>
     <li><a href="../localhelp/de/audacity-deutsch-handbuch-23-Jan-2005.pdf">Deutsches Handbuch (PDF)</a></li>
-    <li><a href="http://www.audacity-buch.de/buch.php?partner=homepage">Markus Priemer - Audacity kompakt</a> Das deutschsprachige Anwenderhandbuch zu Audacity. 
-Herausgegeben vom bomots Verlag. Mit Unterst&uuml;tzung und einem Vorwort von Audacity-Entwickler Markus Meyer.</li>
+    <li><a href="http://www.brain-media.de/index.php/catalogsearch/result/?q=audacity">Markus Priemer - Audacity kompakt</a> Das deutschsprachige Anwenderhandbuch zu Audacity. 
+Herausgegeben vom brain-media.de. Mit Unterst&uuml;tzung und einem Vorwort von Audacity-Entwickler Markus Meyer.</li>
  </ul>
 </div>
 
