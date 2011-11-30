@@ -12,6 +12,24 @@
   include "../include/header.inc.php";
 ?>
 
+<h2 id="donate">
+  <?=_('Make a Donation')?>
+</h2>
+<p id="paypal">
+  <?=_('Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:')?>
+</p>
+
+<!-- Begin Paypal button Form -->
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+  <input type="hidden" name="cmd" value="_s-xclick">
+    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+      <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+<!-- End Paypal button Form -->
+
+
 <h2><?=$pageTitle?></h2>
 
 <p>
@@ -64,22 +82,6 @@
   welcomed users whose only contribution is simply using Audacity, giving us feedback
   on how to improve it and telling others about it. Thank you for supporting Audacity.')?>
 </p>
-
-<h2 id="donate"><?=_('Make a Donation')?></h2>
-<p id="paypal"><?=_('Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:')?></p>
-
-<!-- Begin Paypal button Form --> 
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-<p class="logo">
-   <input type="hidden" name="cmd" value="_s-xclick">
-   <input type="hidden" name="item_name" value="Thank you for your donation to Audacity!">
-   <input type="hidden" name="return" value="http://audacity.sourceforge.net/">
-   <input type="hidden" name="cancel_return" value="http://audacity.sourceforge.net/community/donate">
-   <input type="image" src="../images/Paypal_large_blue.png" border="0" name="submit" alt="Paypal logo" title="Donate securely using your credit card or Paypal account">
-   <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----">
-</p>
-</form>
-<!-- End Paypal button Form -->
 
 <p>
 <?php
