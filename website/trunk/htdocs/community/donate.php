@@ -15,10 +15,12 @@
 <h2 id="donate">
   <?=_('Make a Donation')?>
 </h2>
-<p id="paypal">
+<p>
   <?=_('Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:')?>
 </p>
 
+<p>
+<div style="margin-left:3em">
 <!-- Begin Paypal button Form -->
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
   <input type="hidden" name="cmd" value="_s-xclick">
@@ -28,12 +30,25 @@
         <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
 </form>
 <!-- End Paypal button Form -->
+</div>
+</p>
 
+<p>
+<?php
+   // i18n-hint: the encoding inside the <a href> tag between the two 
+   // "echo" strings obscures the e-mail address from (at least some) 
+   // harvesting bots. Please translate the strings above and below
+   // the <a href> tag, and ignore the line with the <a href> tag itself.   
+   echo _('If you prefer to send a personal check or another form of payment, please write to our ')?>
+   <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;"> 
+<?php
+   echo _('feedback e-mail address</a> telling us what country you are in and how you\'d like to pay.');?>
+</p>
 
 <h2><?=$pageTitle?></h2>
 
 <p>
-  <?=_('Audacity raises money via <a href="#donate">donations</a>, <a href="http://audacityteam.org/sponsor.php">sponsorships</a> and <a href="../contact/privacy#advertising">advertisements</a> on our web pages.')?>
+  <?=_('Audacity raises money via donations, <a href="http://audacityteam.org/sponsor.php">sponsorships</a> and <a href="../contact/privacy#advertising">advertisements</a> on our web pages.')?>
 </p>
 
 <p>
@@ -77,23 +92,11 @@
   Besides donating money, you can <a href="http://wiki.audacityteam.org/wiki/Contribute">
   contribute</a> by helping us with <a href="../community/developers">programming</a>,
   <a href="../contact#feedback">testing</a>, <a href="http://manual.audacityteam.org/">
-  documentation</a>,<a href="../community/translation">translations</a> or by anwering
+  documentation</a>, <a href="../community/translation">translations</a> or by anwering
   questions on our <a href="http://forum.audacityteam.org/">Forum</a>. We have always 
   welcomed users whose only contribution is simply using Audacity, giving us feedback
   on how to improve it and telling others about it. Thank you for supporting Audacity.')?>
 </p>
-
-<p>
-<?php
-   // i18n-hint: the encoding inside the <a href> tag between the two 
-   // "echo" strings obscures the e-mail address from (at least some) 
-   // harvesting bots. Please translate the strings above and below
-   // the <a href> tag, and ignore the line with the <a href> tag itself.   
-   echo _('If you prefer to send a personal check or another form of payment, please write to our ')?>
-   <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;"> 
-<?php
-   echo _('feedback e-mail address</a> telling us what country you are in and how you\'d like to pay.');?></p>
-
 
 <?php
   include "../include/footer.inc.php";
