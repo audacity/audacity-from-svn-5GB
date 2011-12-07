@@ -29,13 +29,10 @@
   <li>Arturo "Buanzo" Busleiman, <?=_("system administration")?></li>
   <li>Michael Chinen, <?=_("developer")?></li>
   <li>James Crook, <?=_("developer")?></li>
-  <li><a href="http://www.cs.cmu.edu/~rbd">Roger Dannenberg</a>, <?=_("developer")?></li>
+  <li><a href="http://www.cs.cmu.edu/~rbd">Roger Dannenberg</a>, <?=_("developer and co-founder of Audacity")?></li>
   <li>Steve Daulton, <?=_("documentation and support")?></li>
-  <li>Al Dimond, <?=_("developer")?></li>
-  <li>Ruslan Ijbulatov, <?=_("developer")?></li>
   <li>Vaughan Johnson, <?=_("developer")?></li>
   <li>Greg Kozikowski, <?=_("documentation and support")?></li>
-  <li>Dominic Mazzoni, <?=_("developer")?></li>
   <li>Alexandre Prokoudine, <?=_("documentation and support")?></li>
   <li>Peter Sampson, <?=_("documentation and support")?></li>
   <li>Martyn Shaw, <?=_("developer")?></li>
@@ -44,7 +41,6 @@
 
 <h3><?=_("Technical Leadership Council")?></h3>
 <ul>
-  <li><a href="http://dominic-mazzoni.com/">Dominic Mazzoni</a> - originator of Audacity</li>
   <li>Richard Ash</li>
   <li>James Crook</li>
   <li>Vaughan Johnson</li>
@@ -54,8 +50,11 @@
 <h3><?=_("Emeritus: distinguished Audacity Team members, not currently active")?></h3>
 <ul>
   <li><a href="http://limpet.net/mbrubeck/">Matt Brubeck</a>, <?=_("developer")?></li>
+  <li>Al Dimond, <?=_("developer")?></li>
   <li><a href="http://www.reverberate.org/">Joshua Haberman</a>, <?=_("developer")?></li>
+  <li>Ruslan Ijbulatov, <?=_("developer")?></li>
   <li>Leland Lucius, <?=_("developer")?></li>
+  <li><a href="http://dominic-mazzoni.com/">Dominic Mazzoni</a>, <?=_("developer and co-founder of Audacity")?></li>
   <li>Markus Meyer, <?=_("developer")?></li>
   <li>Monty Montgomery, <?=_("developer")?></li>
   <li>Shane Mueller, <?=_("developer")?></li>
