@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity website translation 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-09 21:34+0100\n"
-"PO-Revision-Date: 2011-09-10 13:44+0900\n"
+"POT-Creation-Date: 2011-12-07 20:41+0000\n"
+"PO-Revision-Date: 2011-12-12 16:49-0000\n"
 "Last-Translator: Atsushi YOSHIDA <ayoshida.pub@gmail.com>\n"
 "Language-Team: kuzunet <kuzu@mpd.biglobe.ne.jp>\n"
 "MIME-Version: 1.0\n"
@@ -191,7 +191,7 @@ msgid "Developers"
 msgstr "開発者"
 
 #: main.inc.php:69
-#: about/credits.php:88
+#: about/credits.php:87
 #: community/translation.php:9
 #: community/index.php:25
 msgid "Translators"
@@ -339,34 +339,31 @@ msgid "How do I download and install the LAME MP3 encoder?"
 msgstr "どのようにしてLAME MP3エンコーダーをダウンロードしてインストールするのですか？"
 
 #: help/faq.php:87
-#, php-format
 msgid ""
-"<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.</p>\n"
-"\n"
+"<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.\n"
 "<h3 id=\"win\">Windows</h3>\n"
 "<ol>\n"
-"  <li>Go to the <a href=\"http://lame.buanzo.com.ar/\">LAME download page</a>.</li>\n"
+"  <li>Go to the <a href=\"http://lame1.buanzo.com.ar/\">LAME download page</a>.</li>\n"
 "  <li>Under \"For Audacity on Windows\", left-click the link <b>\"Lame v3.98.3 for Audacity on Windows.exe\"</b> and save the file anywhere on your computer. <b>Do not right-click the link to the .exe file.</b> </li> \n"
 "  <li>Double-click <b>\"Lame v3.98.3 for Audacity on Windows.exe\"</b> to launch it (you can safely ignore any warnings that the \"publisher could not be verified\").</li> \n"
 "  <li>Follow the \"Setup\" instructions to install LAME for Audacity. Do not change the offered destination location of \"C:\\Program Files\\Lame for Audacity\".</li>\n"
-"  <li>The first time you choose \"File > Export as MP3\", Audacity will ask for the location of <b>\"lame_enc.dll\"</b>. Navigate to \"C:\\Program Files\\Lame for Audacity\", select \"lame_enc.dll\", then click \"Open\" and \"OK\". In Audacity Beta, choose \"File > Export\", select \"MP3 Files\" in \"Save as type\", then export should proceed immediately.</li>\n"
+"  <li>The first time you use the \"Export as MP3\" command, Audacity will ask for the location of <b>\"lame_enc.dll\"</b>. Navigate to \"C:\\Program Files\\Lame for Audacity\", select \"lame_enc.dll\", then click \"Open\" and \"OK\".</li>\n"
 "  <li>If you prefer the Zip option for the LAME download, save the zip file to anywhere on your computer, extract \"lame_enc.dll\" to any location, then show Audacity where to find it as in Step 5 above.</li>\n"
 "  <li>In case of difficulty, please view our <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#Windows_Instructions\">more detailed instructions</a> on the <a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a>.</li>\n"
 "</ol>\n"
 "<h3 id=\"mac\">Mac OS 9 or X</h3>\n"
 "<ol>\n"
-"  <li>Go to the <a href=\"http://lame.buanzo.com.ar/\">LAME download page</a>.</li>\n"
+"  <li>Go to the <a href=\"http://lame1.buanzo.com.ar/\">LAME download page</a>.</li>\n"
 "  <li>Click to download either <b>\"Lame Library v3.98.2 for Audacity on OSX.dmg\"</b> or <b>\"LameLib-Carbon.sit\"</b>, according to your operating system.</li>\n"
 "  <li>Double-click the .dmg to extract \"Lame Library v3.98.2 for Audacity on OSX.pkg\" to Finder, or use Stuffit to extract \"LameLib\" from the .sit (either of these may happen automatically).</li>\n"
 "  <li>Double-click the .pkg to install <b>\"libmp3lame.dylib\"</b> in /usr/local/lib/audacity, or save <b>\"LameLib\"</b> anywhere on your computer.</li>\n"
-"  <li>The first time you choose \"File > Export as MP3\", Audacity will ask for the location of \"libmp3lame.dylib\" or \"LameLib\". Navigate to that location, then open the file and click \"OK\".  In Audacity Beta, choose \"File > Export\", select \"MP3 Files\" in the list of file types, then export should proceed immediately.</li>\n"
+"  <li>The first time you use the \"Export as MP3\" command, Audacity will ask for the location of \"libmp3lame.dylib\" or \"LameLib\". Navigate to that location, then open the file and click \"OK\".</li>\n"
 "  <li>In case of difficulty, please view our <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#Mac_Instructions\">more detailed instructions</a> on the <a href=\"http://audacityteam.org/wiki/index.php\">Audacity Wiki</a>.</li> \n"
 "</ol>\n"
 "<h3 id=\"nix\">Linux/Unix</h3>\n"
 "Follow <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions\">these instructions</a> on our <a href=\"http://audacityteam.org/wiki/\">Wiki</a> to download and install a suitable LAME package from the internet."
 msgstr ""
-"<p>ソフトウェア特許上の理由から、私たちはMP3エンコーダソフトウェア配布することができません。以下に、フリーのLAMEエンコーダを使って、AudacityでMP3ファイルを書き出す方法を示します。</p>\n"
-"\n"
+"<p>ソフトウェア特許上の理由から、私たちはMP3エンコーダソフトウェア配布することができません。以下に、フリーのLAMEエンコーダを使って、AudacityでMP3ファイルを書き出す方法を示します。\n"
 "<h3 id=\"win\">Windows</h3>\n"
 "<ol>\n"
 "  <li><a href=\"http://lame.buanzo.com.ar/\">LAME ダウンロードページ</a>へ行ってください。</li>\n"
@@ -390,11 +387,11 @@ msgstr ""
 "<h3 id=\"nix\">Linux/Unix</h3>\n"
 "<a href=\"http://audacityteam.org/wiki/\">Wiki</a>の<a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions\">these instructions</a>にしたがい、適切なLAMEパッケージをダウンロードしインストールしてください。  "
 
-#: help/faq.php:112
+#: help/faq.php:111
 msgid "How do I install VST plug-ins?"
 msgstr "どのようにしてVSTプラグインをインストールするのですか？"
 
-#: help/faq.php:113
+#: help/faq.php:112
 #, php-format
 msgid ""
 "<ol>\n"
@@ -413,11 +410,11 @@ msgstr ""
 "<p><b>Note:</b> 現状のベータ(1.3)版ではVSTイネーブラーをインストールしなくてもVSTプラグインを自動的に表示します。Audacityベータ版にて新規追加されたプラグインを表示するには、設定メニューのエフェクトタブへ行き、\"Audacityが次回起動された時点でVSTエフェクトを再スキャン\"をチェックし、Audacityを再起動してください。</p>    \n"
 "<p>こちらも参考にしてください。： <a href=\"faq?s=install&amp;i=vst-bugs\">なぜいくつかのVSTプラグインは誤って表示されるのですか、又は、正常に動作しないのですか？</a></p>"
 
-#: help/faq.php:122
+#: help/faq.php:121
 msgid "Why do some VST plug-ins look wrong, or not work?"
 msgstr "なぜいくつかのVSTプラグインは誤って表示されるのですか、又は、正常に動作しないのですか？"
 
-#: help/faq.php:123
+#: help/faq.php:122
 msgid ""
 "<p>1.2 versions of Audacity require the <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> in order to display VST plug-ins. The Enabler can only display a generic, tabular interface for plug-ins, so they may look or act differently than they do in other programs, or not function at all.\n"
 "<p>Current Beta (1.3) versions of Audacity will by default display VST effect plug-ins with their full interface, without the need of an Enabler.</p>  \n"
@@ -429,31 +426,31 @@ msgstr ""
 "<p>現状のベータ (1.3) バージョンではイネーブラーなしにVSTプラグインをフルインタフェースで表示できる機能がデフォルトで入っています。もしAudacity BetaにてVSTプラグインで問題が発生した場合は、 <a href=\"http://forum.audacityteam.org/viewtopic.php?f=37&t=11534&p=45667#p45667\">Forum topic</a>をお読みください。 ここに書かれていないような問題を報告するには、こちらに<a href=\"../contact#feedback\">ご連絡ください</a> </p>                \n"
 "<p>なおAudacityではVSTインストゥルメント (VSTi) プラグインはサポートされていません。 </p>"
 
-#: help/faq.php:130
+#: help/faq.php:129
 msgid "What should I do if I have problems downloading or installing Audacity?"
 msgstr "Audacityをダウンロードしたりインストールしたりできないのですが、私はどうすべきでしょうか？"
 
-#: help/faq.php:131
+#: help/faq.php:130
 msgid "<p>If you can't download Audacity, or if the downloaded setup file is corrupt, try downloading it from our <a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">alternate servers</a>.</p>"
 msgstr "<p>もしあなたがAudacityをダウンロードできないのでしたら、又は、ダウンロードしたセットアップファイルが正しく動かないのでしたら、私たちの<a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">オルタネートサーバー</a>からそれをダウンロードすることを試してください。</p>"
 
-#: help/faq.php:136
+#: help/faq.php:135
 msgid "<div id=\"record\">Recording</div>"
 msgstr "<div id=\"record\">レコーディング</div>"
 
-#: help/faq.php:139
+#: help/faq.php:138
 msgid "How can I record in stereo?"
 msgstr "どのようにステレオで録音するのですか？"
 
-#: help/faq.php:140
+#: help/faq.php:139
 msgid "<p>To record in stereo, open the Audacity preferences.  In the “Audio I/O” section, change the number of recording channels from 1 (mono) to 2 (stereo).</p>"
 msgstr "<p>ステレオで録音するには、 Audacity preferencesを開きます。「Audio I/O」セクションの中で, 録音チャンネル数を1(モノラル)から2(ステレオ)に変更してください。</p>"
 
-#: help/faq.php:143
+#: help/faq.php:142
 msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
 msgstr "どのようにしてレコードやカセットテープやミニディスクの音を録音するのですか？"
 
-#: help/faq.php:144
+#: help/faq.php:143
 msgid ""
 "<p>First, set Audacity to <a href=\"faq?s=recording&amp;i=stereo\">record in stereo</a>.</p>\n"
 "<p>Next, plug one end of a stereo cable into the “Line Out” or “Headphone” connector on your tape deck, minidisc player, or stereo system.  Plug the other end into your computer’s “Line In” connector.  If you do not have a cable that fits both of these connectors, you can find one at an electronics store.</p>\n"
@@ -481,23 +478,23 @@ msgstr ""
 "</ul>\n"
 "<p>参考: <a href=\"faq?s=files&amp;i=split\">長時間録音を複数ファイルに分割する方法</a>.</p>"
 
-#: help/faq.php:156
-#: help/faq.php:233
-#: help/faq.php:300
+#: help/faq.php:155
+#: help/faq.php:232
+#: help/faq.php:299
 msgid "See also:"
 msgstr "こちらもご覧ください："
 
-#: help/faq.php:156
-#: help/faq.php:273
-#: help/faq.php:300
+#: help/faq.php:155
+#: help/faq.php:272
+#: help/faq.php:299
 msgid "How do I save my recording on an audio CD?"
 msgstr "どのようにして録音したものをCDに保存するのですか？"
 
-#: help/faq.php:159
+#: help/faq.php:158
 msgid "Why doesn't the Mixer Toolbar input selector work properly, for example on Windows 7?"
 msgstr "たとえばWindows 7ではどうしてミキサーツールバー入力セレクターが正しく動作しないのでしょう？"
 
-#: help/faq.php:160
+#: help/faq.php:159
 msgid ""
 "<p>The Input selector may be greyed-out, lacking the expected choices, or apparently not recording from the indicated source.</p>\n"
 "<p>The cause varies by operating system and sound card driver. For example, on Windows Vista or 7, you must use the \"Recording Device\" dropdown in the \"Audio I/O\" tab of Preferences (\"Devices\" tab in Audacity Beta) to select input sources. For more help, see the <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixer Toolbar Issues</a> page on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>\n"
@@ -505,15 +502,15 @@ msgstr ""
 "<p>入力セレクタがグレーになり選択肢が不足するか明らかに目的のソースからのレコーディングができなくなるかも知れません。</p>\n"
 "<p>その原因はオペレーティングシステムおよびサウンドカードドライバにより異なります。たとえばWindows Vistaまたは7では設定のオーディオI/Oタブの中の \"Recording Device\"メニュー (Audacity Betaでは\"デバイス\")を使う必要があります。より詳しいヘルプは<a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a> の中の<a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">ミキサーツールバーの問題</a>をご覧ください。</p>\n"
 
-#: help/faq.php:165
+#: help/faq.php:164
 msgid "Why can’t I hear what I’m recording?"
 msgstr "なぜ私は、現在録音している音を聞くことができないのですか？"
 
-#: help/faq.php:166
+#: help/faq.php:165
 msgid ""
 "<h3>Windows and Linux</h3>\n"
 "<p>To monitor your recording, open your computer's volume control panel.  Turn up the playback volume and turn off the “mute” checkbox for your recording source (usually “microphone” or “line in”).</p>\n"
-"<p>If this does not work, open the Audacity preferences.  In the “Audio I/O” section (\"Recording\" section in Audacity Beta), turn on the “Software Playthrough” option.</p>\n"
+"<p>If this does not work, open the Audacity preferences.  In the “Audio I/O” section (\"Devices\" in Audacity Beta), turn on the “Software Playthrough” option.</p>\n"
 "<h3>Mac OS X</h3>\n"
 "<p>Open the Audacity preferences.  In the “Audio I/O” section (\"Devices\" in Audacity Beta), turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead, or try the free LineIn application from <a href=\"http://www.rogueamoeba.com/freebies\">Rogue Amoeba</a>.</p>\n"
 "<h3>Monitoring while Recording from a Microphone</h3>\n"
@@ -527,11 +524,11 @@ msgstr ""
 "<h3>マイクロフォンによる録音時のモニターについて</h3>\n"
 "<p>マイクロフォンから録音している場合は、スルー再生の音がマイクロフォンに拾われて録音されるのを防ぐために常にヘッドフォンを使用してください。</p>\n"
 
-#: help/faq.php:176
+#: help/faq.php:175
 msgid "Can I play a track while recording a new one on top of it?"
 msgstr "新しいトラックを録音しているときに、トラックを再生することはできますか？"
 
-#: help/faq.php:177
+#: help/faq.php:176
 msgid ""
 "<p>This is called multi-track recording.  It makes it possible to record harmonies with yourself, or add new instruments or vocals to an existing recording.  To do this in Audacity, follow these instructions:</p>\n"
 "<ol>\n"
@@ -563,11 +560,11 @@ msgstr ""
 "\t</ul>\n"
 "</p>"
 
-#: help/faq.php:193
+#: help/faq.php:192
 msgid "Why isn’t my new track in sync with the previous ones?"
 msgstr "なぜ新しいトラックは、もともとあるトラックと同期しないのですか？"
 
-#: help/faq.php:194
+#: help/faq.php:193
 msgid ""
 "<p>When you make a <a href=\"faq?s=recording&amp;i=multi-track\">multi-track recording</a>, there is an unpredictable delay between playback and recording.  Audacity tries to correct for this automatically, but this doesn't yet work on all computers.</p>\n"
 "<p>If a new track is not synchronized with the others, you can zoom in and use the Time Shift tool to drag it to the correct location.</p>"
@@ -575,11 +572,11 @@ msgstr ""
 "<p>あなたが<a href=\"faq?s=recording&amp;i=multi-track\">マルチトラックレコーディング</a>を行っているとき、再生と録音の間でわずかな遅延があります。 Audacityはこれを自動的に修正しようとしますが、すべてのコンピュータ上でこれが正しく機能するわけではありません。</p>\n"
 "<p>もし新しいトラックが他のトラックと同期していないのでしたら、拡大表示をして、タイムシフトツールを使って手動で正しい位置に移動することができます。</p>"
 
-#: help/faq.php:198
+#: help/faq.php:197
 msgid "Can Audacity record RealAudio or other streaming audio?"
 msgstr "AudacityでRealAudioや他のストリーミングオーディオを録音することはできますか？"
 
-#: help/faq.php:199
+#: help/faq.php:198
 msgid ""
 "<h3>Windows and Linux</h3>\n"
 "<p>With most Windows and Linux audio devices, it is possible to record whatever sound the computer is currently playing, including internet radio streams.</p>\n"
@@ -596,11 +593,11 @@ msgstr ""
 "<h3 id=\"mac\">Mac OS X</h3>\n"
 "<p>Mac OS X のユーザーは<a href=\"http://www.cycling74.com/products/soundflower\">Soundflower</a> (free, open source), <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>などのプログラムを使用することでストリーミングオーディオを録音することができます。</p>\n"
 
-#: help/faq.php:209
+#: help/faq.php:208
 msgid "Can I set Audacity to record at a certain time?"
 msgstr "Audacityで予約された時刻に録音することはできますか？"
 
-#: help/faq.php:210
+#: help/faq.php:209
 msgid ""
 "<p>Audacity 1.2 does not support scheduled recording, but Audacity <a href=\"../download/features-1.3-a\">1.3 Beta</a> has a <a href=\"http://audacity.sourceforge.net/download/features-1.3-k.php\">Timer Record</a> feature to start and stop recording at a particular time. </p>\n"
 "<p>In 1.2, you can make Audacity <b>stop</b> recording after a certain time limit, by following these steps:</p>\n"
@@ -620,16 +617,16 @@ msgstr ""
 "  <li>録音を開始します。Audacityは選択範囲の最後に達したとき自動的に録音を停止します。</li>\n"
 "</ol>"
 
-#: help/faq.php:222
+#: help/faq.php:221
 msgid "<div id=\"opensave\">Opening and Saving Files</div>"
 msgstr "<div id=\"opensave\">ファイルのオープンと保存</div>"
 
-#: help/faq.php:225
-#: help/faq.php:233
+#: help/faq.php:224
+#: help/faq.php:232
 msgid "How do I open an Audacity project (AUP file) in another program?"
 msgstr "どのようにして私はAudacityプロジェクト(AUPファイル)を他のプログラムで開くことができますか？"
 
-#: help/faq.php:226
+#: help/faq.php:225
 msgid ""
 "<p>Audacity project files are saved in a special format that only Audacity can open. To open your project in another program or <a href=\"faq?s=files&amp;i=burn-cd\">burn it to CD</a>, firstly open the .aup file in Audacity if you have already saved one (if you saved it recently it will be in the File > Recent Files menu). Then use the <b>Export</b> commands further down the File menu to save the audio in a standard format like WAV or AIFF.</p>\n"
 "<p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>   \n"
@@ -637,22 +634,22 @@ msgstr ""
 "<p>AudacityプロジェクトはAudacityだけが開くことが出来る特別な形式のプロジェクトファイルとして保存されます。 保存されたプロジェクトを別のプログラムで開いたり、<a href=\"faq?s=files&amp;i=burn-cd\">CDに焼く</a>場合は、まず .aupファイルをAudacityで開きます。(最近保存されたものであればファイル > 最近のファイルで開くことができます)  次に ファイルメニューの中の<b>書き出し</b> コマンドを使い、オーディオを標準フォーマットたとえばWAVやAIFF形式で保存します。</p>\n"
 "<p>より詳しい情報についてはAudacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>の中の<a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> をご覧ください。</p>   \n"
 
-#: help/faq.php:231
+#: help/faq.php:230
 msgid "Why does Audacity create a folder full of .au files when I save a project?"
 msgstr "なぜAudacityは、プロジェクトを保存したときに、.auファイルの入ったフォルダを生成するのですか？"
 
-#: help/faq.php:232
+#: help/faq.php:231
 msgid "<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently. When you save an .aup project file, Audacity stores all the pieces in a _data folder that has the same name as the .aup file. For example, \"song.aup\" will open the pieces inside the \"song_data\" folder.</p>  <p><b>You should not touch the .au files yourself, or move or rename the _data folder</b>. Simply open the .aup file, then Audacity will load the .au files in the correct sequence automatically.</p> <p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>"
 msgstr "<p>Audacityは長いトラックを複数の小さな部分に分けることができ、より効率的に編集することができます。.aupプロジェクトファイルを保存する際に、Audacityはすべての部分を .aupファイルと同じ名前で_dataフォルダに保存します。 たとえば\"song.aup\" は\"song_data\" フォルダの中で複数の部分を開きます。</p>  <p><b>決して .auファイルを加工したり _dataフォルダを移動させたリネームしないでください。</b>. 単純に .aup を開いてください。そうするとAudacityは複数の.auファイルを自動的に正しい順序で読み込みます。</p> <p>より詳しい情報については、Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>の中の <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> をご覧ください。</p>"
 
-#: help/faq.php:236
+#: help/faq.php:235
 msgid "Audacity crashed!  Can I recover any unsaved data?"
 msgstr "Audacityがクラッシュしました。保存されてないデータを回復することはできますか。"
 
 #. i18n-hint: Sorry, these links are in English only.  If you would
 #. like to make more information available, please create a page on
 #. the wiki for now.
-#: help/faq.php:240
+#: help/faq.php:239
 msgid ""
 "<p>You may be able to recover your project automatically with the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> page for more information.</p>\n"
 "<p>Please note the .au files need to be numbered consecutively when input to the Crash Recovery Utility or errors will occur in the program. If this problem occurs you can open Audacity's temporary folder in your system File Manager (e.g., Windows Explorer) and try resorting the .au files by time modified and then batch renaming them using a numeric sequence whilst they are sorted by time modified. An arrangement looking something like this should work:</p>\n"
@@ -674,11 +671,11 @@ msgstr ""
 "</ul>\n"
 "<p>もしお使いのファイルマネージャが適切なファイル名変更ツールを持っていない場合、インターネットから適切なフリーツールをダウンロードにより入手できるでしょう。</p>\n"
 
-#: help/faq.php:252
+#: help/faq.php:251
 msgid "Can Audacity import additional formats like M4A, WMA or FLAC?"
 msgstr "AudacityはM4A、WMA、FLACなどのフォーマットのデータを読み込むことはできますか?"
 
-#: help/faq.php:253
+#: help/faq.php:252
 msgid ""
 "<p>Audacity 1.2 <b>cannot</b> import or export <b>AC3, AMR(NB), M4A, WMA</b> or most other proprietary file formats due to licensing and patent restrictions. However, the <a href=\"../download/features-1.3-a\">Beta 1.3</a> version of Audacity can import or export these and many additional formats, if you install the optional <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg</a> library. FFmpeg also allows Audacity to import audio from video files. Note that on Mac, Audacity Beta has built-in support for M4A import without installing FFmpeg, using the QuickTime components supplied by the operating system.</p>\n"
 "<p><b>Digital Rights Management (DRM) protected</b> files, such as those purchased from iTunes prior to 2009, <b>cannot</b> be imported into any version of Audacity. If you use Windows Media Player to extract (rip) a CD track to WMA, ensure the option to copy-protect the WMA file is turned off.</p>\n"
@@ -694,19 +691,19 @@ msgstr ""
 "<p>サポートされている形式についての詳しい情報については<a href=\"../about/features\">機能リスト</a>をご覧ください。</p>\n"
 "<p><a href=\"faq?s=files&amp;i=midi\">MIDIファイルを再生できない</a>もご覧ください。</p>\n"
 
-#: help/faq.php:262
+#: help/faq.php:261
 msgid "Why can’t I play MIDI files?"
 msgstr "なぜMIDIファイルの再生ができないのですか？"
 
-#: help/faq.php:263
+#: help/faq.php:262
 msgid "<p>Audacity cannot play MIDI files, or convert between MIDI files and audio files. MIDI files can be imported for visual comparison with recorded sounds. Additionally, the <a href=\"../download/features-1.3-a\">Beta 1.3</a> version of Audacity can edit MIDI files by cut-and-paste, then export them as another MIDI file. Audacity cannot record MIDI input, only audio input. More MIDI funtionality may be added to Audacity in future. For more information, see the article about <a href=\"http://wiki.audacityteam.org/wiki/Midi\">MIDI</a> on our <a href=\"http://wiki.audacityteam.org\">Wiki</a>.</p>"
 msgstr "<p>AudacityはMIDIファイルを再生したりMIDIとオーディオを変換することはできません。実際のオーディオとの比較のためなどのためにMIDIファイルを取り込んで表示することはできます。さらに<a href=\"../download/features-1.3-a\">Beta 1.3</a> では MIDIファイルを切り取り、コピー、ペーストなどにより編集し、べつのMIDIファイルに書き出すことができます。AudacityはMIDI入力を録音することはできません。あくまでオーディオのみ録音可能です。将来のバージョンではさらに多くのMIDI機能が追加されるかもしません。より詳しい情報については<a href=\"http://wiki.audacityteam.org\">Wiki</a>の中にある<a href=\"http://wiki.audacityteam.org/wiki/Midi\">MIDI</a>をご覧ください。</p>"
 
-#: help/faq.php:266
+#: help/faq.php:265
 msgid "How do I import a track from an audio CD?"
 msgstr "どのようにしてオーディオCDからトラックを読み込むのですか？"
 
-#: help/faq.php:267
+#: help/faq.php:266
 msgid ""
 "<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>\n"
 "<p>On Mac OS X computers, CD tracks appear in Finder as AIFF files so can be imported directly into Audacity. For more help on importing audio from CD tracks on both Windows and OS X, see our Wiki help page on <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How_to_import_CDs</a>.</p>\n"
@@ -716,11 +713,11 @@ msgstr ""
 "<p>Mac OS X コンピュータではCDトラックはFinderの中でAIFFファイルとして表示されますので直接Audacityで読み込むことができます。WindowsおよびOS XでのCDトラックの読み込みについてより詳しいヘルプが必要な場合は、私たちにWikiヘルプページ <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How_to_import_CDs</a>をご覧ください。</p>\n"
 "<p>もっと見る: <a href=\"faq?s=files&amp;i=burn-cd\">録音した作品をオーディオCDに保存するには？</a></p>\n"
 
-#: help/faq.php:274
+#: help/faq.php:273
 msgid "After making a recording or editing a file in Audacity, follow these steps to save your work on an audio CD:"
 msgstr "Audacityで録音や編集が終わったら、次のステップであなたの作品をオーディオCDに保存することができます。"
 
-#: help/faq.php:275
+#: help/faq.php:274
 msgid ""
 "<ol>\n"
 "  <li>Use the “Export as WAV” or “Export as AIFF” command to save your Audacity recording in a sound file.</li>\n"
@@ -750,11 +747,11 @@ msgstr ""
 "<p>ウィンドウズメディアプレーヤーおよびiTunesによるCD書き込みのヒントおよびより長い\"データ\"CDに書き込むヒントについては  Audacity Wiki の<a href=\"http://audacityteam.org/wiki/index.php?title=How_to_burn_CDs\">How_to_burn_CDs</a> をご覧ください。</p>\n"
 "<p>もっと見る: <a href=\"faq?s=files&amp;i=split\">長時間録音を複数ファイルに分割する方法</a></p>"
 
-#: help/faq.php:290
+#: help/faq.php:289
 msgid "How can I split a long recording into multiple files or CD tracks?"
 msgstr "どのようにして長い録音を複数のトラックに分割するのですか？"
 
-#: help/faq.php:291
+#: help/faq.php:290
 msgid ""
 "<p>Follow these steps to create a separate file for each song or segment of a long recording.  This is particularly useful if you are creating a CD, since each file will appear as a separate track on the CD.</p>\n"
 "<ol>\n"
@@ -772,7 +769,7 @@ msgstr ""
 "  <li>すべて終わったら、ファイルメニューの「複数ファイルの書き出し」を選びます。「書き出し」ボタンを押せば、Audacityは、あなたが選んだフォーマットと位置にしたがって、それぞれの曲を分割されたファイルとして保存します。</li>\n"
 "</ol>"
 
-#: help/faq.php:298
+#: help/faq.php:297
 msgid ""
 "Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically.</p>\n"
 "<p>Full instructions for both methods are in the illustrated tutorial"
@@ -780,19 +777,19 @@ msgstr ""
 "別の方法として、Audacityはトラック間の無音区間を検出して自動的にラベルを付けます。</p>\n"
 "<p>これらの方法についての詳細についてはAudacity Wikiのチュートリアル"
 
-#: help/faq.php:299
+#: help/faq.php:298
 msgid "on the Audacity Wiki."
 msgstr "をご覧ください。"
 
-#: help/faq.php:305
+#: help/faq.php:304
 msgid "<div id=\"editing\">Editing</div>"
 msgstr "<div id=\"about\">編集</div>"
 
-#: help/faq.php:308
+#: help/faq.php:307
 msgid "Why can’t I use the effects or other menu items?"
 msgstr "なぜエフェクトメニューや他のメニューが使えないのですか？"
 
-#: help/faq.php:309
+#: help/faq.php:308
 msgid ""
 "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>\n"
 "<p>Also, many menu items are disabled while playing, recording, or pausing a track. To enable them, press the yellow <b>Stop</b> button.</p>"
@@ -800,11 +797,11 @@ msgstr ""
 "<p>いくつかのメニューアイテムは使用可能になるまでの間はグレーになっているか無効になっています。 効果を使用する前に、対象となるオーディオを選択する必要があります。 オーディオを選択するには選択ツールを使ってそのオーディオトラックをクリック/ドラッグしてハイライトするか、編集メニューから\"全て選択\"を選んでください。</p>\n"
 "<p>また、再生中、録音中まはポーズ中は多くのメニューアイテムが無効になっています。それらを有効にするには、黄色の<b>停止</b>ボタンを押してください。</p>"
 
-#: help/faq.php:313
+#: help/faq.php:312
 msgid "How do I combine two files into one longer file?"
 msgstr "どのようにして2つのファイルを1つの長いファイルに結合するのですか？"
 
-#: help/faq.php:314
+#: help/faq.php:313
 msgid ""
 "<p>Follow these steps to splice two files together:</p>\n"
 "<ol>\n"
@@ -828,19 +825,19 @@ msgstr ""
 "</ol>\n"
 "<p> <b>再生</b>ボタンを押すことで結果を聴くことができます。そして書き出しコマンド（ファイルメニューの中）で１つのサウンドファイルとして保存してください。</p>"
 
-#: help/faq.php:326
+#: help/faq.php:325
 msgid "How do I mix two tracks together?"
 msgstr "どのようにして2つのトラックをミックスするのですか？"
 
-#: help/faq.php:327
+#: help/faq.php:326
 msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the <b>Play</b> button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
 msgstr "<p>2つのファイルをミックスするには、まずAudacityに両方のファイルを読み込みます。それらは別々のトラックとして現れますので、再生ボタンを押せばミックスされます。あなたはタイムシフトツールを使って異なる時刻にスタートするように移動したり、他の編集コマンドを使ってそれぞれのトラックを作り変えたりすることができます。</p>"
 
-#: help/faq.php:330
+#: help/faq.php:329
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
 msgstr "カラオケトラックを作るために録音したものからボーカルを消すことはできますか？"
 
-#: help/faq.php:331
+#: help/faq.php:330
 msgid ""
 "<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals are exactly the same on both stereo channels, you can remove them by “subtracting” one channel from the other.  This works for many studio recordings, where the vocal track is mixed exactly in the center.</p>\n"
 "<p>To do this in Audacity:</p>\n"
@@ -866,15 +863,15 @@ msgstr ""
 "<p><b>再生</b> ボタンを押し、結果を聴いてみてください。  運がよければボーカルは消え去り、その他の楽器は残っておりカラオケのようになっているでしょう。ファイルメニューの書き出しコマンドを使いこの結果を保存することができます。</p>\n"
 "<p>もしボーカルが正確に両チャンネルで等しくない場合、いくつかの他のテクニックがあります。またオプションのプラグインもありますので試してみる価値があります。 詳細はWikiページの <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Vocal Removal</a> をご覧ください。</p>\n"
 
-#: help/faq.php:361
+#: help/faq.php:360
 msgid "Other frequently asked questions..."
 msgstr "他のよくある質問..."
 
-#: help/faq.php:365
+#: help/faq.php:364
 msgid "Frequently Asked Questions"
 msgstr "よくある質問"
 
-#: help/faq.php:369
+#: help/faq.php:368
 msgid "These are some of the most common questions about Audacity.  If your question isn’t answered here, see the <a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">contact us</a> for help."
 msgstr "これらはAudacityに関する質問で最も一般的なものをいくつか取り上げたものです。もしあなたの質問がここに載っていないのでしたら、<a href=\"documentation\">ドキュメンテーション</a>をご覧になるか、<a href=\"../contact/\">私たちに連絡をとってください(英語)</a>。"
 
@@ -926,16 +923,24 @@ msgid "Download the Audacity 1.2 manual in PDF format."
 msgstr "Audacity 1.2のマニュアルをPDF形式でダウンロードする"
 
 #: help/documentation.php:31
-msgid "Read the latest Audacity 1.3 Beta manual online."
-msgstr "Audacity 1.3 Betaのマニュアルをオンラインで読む"
+msgid "Download the latest Audacity 1.3 Beta manual in HTML format"
+msgstr "最新のAudacity 1.3ベータのマニュアルをHTML形式でダウンロードする。"
 
 #: help/documentation.php:31
-msgid "(You can also access a built-in copy of the manual through the \"Help\" menu in the Audacity program.)"
-msgstr "(Audacityプログラムの\"ヘルプ\" メニューよりこのマニュアルにアクセスすることもできます。)"
+msgid "(The Audacity Beta installers for Windows and Mac already include a built-in copy of the Manual accessed through the \"Help\" menu in the Audacity program.)"
+msgstr "(WindowsおよびMac版Audacityベータ版インストーラーはマニュアルを含んでおり、それはAudacityプログラムの\"ヘルプ\" メニューよりアクセスすることができます。)"
+
+#: help/documentation.php:32
+msgid "Read the latest Audacity 1.3 alpha manual online.</a>"
+msgstr "最新のAudacity 1.3 alphaのマニュアルをオンラインで読む"
+
+#: help/documentation.php:32
+msgid "(The latest Audacity 1.3 alpha Nightly Builds for testing purposes can be downloaded <a href=\"http://wiki.audacityteam.org/wiki/Nightly_Builds\">here</a>.)"
+msgstr "(テスト用として最新のAudacity 1.3 alpha Nightly Buildsは、<a href=\"http://wiki.audacityteam.org/wiki/Nightly_Builds\">ここ</a>からダウンロードできます。)"
 
 #. i18n-hint: Text below this hint is local help for
 #. specific languages and should be left untranslated.
-#: help/documentation.php:38
+#: help/documentation.php:39
 msgid " "
 msgstr " "
 
@@ -3266,7 +3271,7 @@ msgid ""
 "                                       mode, quality and length, with improved \n"
 "                                       metadata visibility in player applications \n"
 "                                       (Windows users will require the\n"
-"                                       <a href=\"http://lame.buanzo.com.ar/\">\n"
+"                                       <a href=\"http://lame1.buanzo.com.ar/\">\n"
 "                                       latest version of the LAME encoder</a>) \n"
 "                                  <li>WMA exports containing metadata are now correct</li> \n"
 "                            </ul>\n"
@@ -4030,7 +4035,7 @@ msgid "The <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-i
 msgstr "Audacityの<a href=\"http://wiki.audacityteam.org/\">Wiki<a/>の中の <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-ins</a>ページにはAudacity上で動作する非常に多くのVSTプラグインがリストされています。"
 
 #: download/plugins.php:40
-#: about/credits.php:135
+#: about/credits.php:134
 msgid "Libraries"
 msgstr "ライブラリ"
 
@@ -5198,45 +5203,43 @@ msgstr "Audacityチーム"
 #: about/credits.php:26
 #: about/credits.php:28
 #: about/credits.php:33
+#: about/credits.php:35
+#: about/credits.php:36
 #: about/credits.php:37
 #: about/credits.php:39
-#: about/credits.php:40
-#: about/credits.php:42
-#: about/credits.php:62
+#: about/credits.php:61
 msgid "documentation and support"
 msgstr "ドキュメンテーションとサポート"
 
 #: about/credits.php:27
 #: about/credits.php:30
 #: about/credits.php:31
-#: about/credits.php:32
 #: about/credits.php:34
-#: about/credits.php:35
-#: about/credits.php:36
 #: about/credits.php:38
-#: about/credits.php:41
+#: about/credits.php:52
+#: about/credits.php:53
+#: about/credits.php:54
+#: about/credits.php:55
 #: about/credits.php:56
-#: about/credits.php:57
 #: about/credits.php:58
 #: about/credits.php:59
 #: about/credits.php:60
-#: about/credits.php:61
-#: about/credits.php:67
+#: about/credits.php:66
+#: about/credits.php:68
 #: about/credits.php:69
 #: about/credits.php:70
 #: about/credits.php:71
 #: about/credits.php:72
 #: about/credits.php:73
-#: about/credits.php:74
+#: about/credits.php:75
 #: about/credits.php:76
 #: about/credits.php:77
 #: about/credits.php:78
 #: about/credits.php:79
-#: about/credits.php:80
+#: about/credits.php:81
 #: about/credits.php:82
 #: about/credits.php:83
 #: about/credits.php:84
-#: about/credits.php:85
 msgid "developer"
 msgstr "開発者"
 
@@ -5248,43 +5251,48 @@ msgstr "フランス語"
 msgid "system administration"
 msgstr "システム管理"
 
-#: about/credits.php:45
+#: about/credits.php:32
+#: about/credits.php:57
+msgid "developer and co-founder of Audacity"
+msgstr "Audacityの開発者と創始者"
+
+#: about/credits.php:42
 msgid "Technical Leadership Council"
 msgstr "技術リーダーシップカウンシル"
 
-#: about/credits.php:54
+#: about/credits.php:50
 msgid "Emeritus: distinguished Audacity Team members, not currently active"
 msgstr "名誉チームメンバー：顕著な功績のあったAudacityチームメンバー。現在は活動休止中"
 
-#: about/credits.php:65
+#: about/credits.php:64
 msgid "Contributors"
 msgstr "貢献者"
 
-#: about/credits.php:68
+#: about/credits.php:67
 msgid "accessibility advisor"
 msgstr "アクセシビリティアドバイザ"
 
-#: about/credits.php:75
+#: about/credits.php:74
 msgid "graphic artist"
 msgstr "グラフィックアーティスト"
 
-#: about/credits.php:81
+#: about/credits.php:80
 msgid "Nyquist plug-ins"
 msgstr "Nyquistプラグイン"
 
-#: about/credits.php:136
+#: about/credits.php:135
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacityは下記のプロジェクトのソースコードを用いています。"
 
-#: about/credits.php:156
+#: about/credits.php:155
 msgid "Thanks"
 msgstr "感謝"
 
-#: about/credits.php:157
+#: about/credits.php:156
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "他にも私たちが感謝したい人々や組織が多くあります。これらの多くはコードやパッチやフィードバックやお金や時間やその他諸々の点においてプロジェクトに貢献してきました。ほかにも、これらの作業全体を可能にするツールを作っていただいた人もいます。"
 
-#: about/credits.php:182
+#: about/credits.php:181
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(もし誰か忘れている人がいたら私たちに知らせてください！)"
 
@@ -5823,11 +5831,31 @@ msgstr ""
 msgid "How Does Audacity Raise Money?"
 msgstr "Audacityはどのようにして資金を集めているのですか？"
 
-#: community/donate.php:18
-msgid "Audacity raises money via <a href=\"#donate\">donations</a>, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
+#: community/donate.php:16
+msgid "Make a Donation"
+msgstr "寄付について"
+
+#: community/donate.php:19
+msgid "Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:"
+msgstr "別の方法として下のボタンを押すことでPaypalにより安全に送金できます（Paypalアカウントをお持ちでなくても可能）。またクレジットカードあるいはお持ちのPaypal口座よりどんな金額でも送金できます。"
+
+#. i18n-hint: the encoding inside the <a href> tag between the two
+#. "echo" strings obscures the e-mail address from (at least some)
+#. harvesting bots. Please translate the strings above and below
+#. the <a href> tag, and ignore the line with the <a href> tag itself.
+#: community/donate.php:42
+msgid "If you prefer to send a personal check or another form of payment, please write to our "
+msgstr "もしパーソナルチェックまたは他の方法による送金をご希望の場合は、"
+
+#: community/donate.php:45
+msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
+msgstr "フィードバックe-mailアドレス</a>にお住まいの国をご希望の支払方法をお知らせください。 "
+
+#: community/donate.php:51
+msgid "Audacity raises money via donations, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
 msgstr "Audacityは<a href=\"#donate\">寄付</a>、 <a href=\"http://audacityteam.org/sponsor.php\">スポンサーシップ</a>、および私たちのWebサイトでの <a href=\"../contact/privacy#advertising\">広告</a>によって資金を調達しています。"
 
-#: community/donate.php:22
+#: community/donate.php:55
 msgid ""
 "As of March 2007, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, \n"
 "  which hosts the Audacity site and downloads, is allowing us to also post \n"
@@ -5838,7 +5866,7 @@ msgstr ""
 "  は収入を分配する画期的なプログラムのもとで私たちが広告を掲載することを許可いただきました。\n"
 "  <a href=\"http://sourceforge.net/\">SourceForge.net</a>に感謝いたします!"
 
-#: community/donate.php:29
+#: community/donate.php:62
 msgid ""
 "Income to Audacity is not distributed among previous contributors to Audacity. \n"
 "  There are too many people and it would be difficult to do so fairly. \n"
@@ -5852,7 +5880,7 @@ msgstr ""
 "  Audacityは空いた時間に活動するボランティアによって開発されています。 \n"
 "  Audacityはシェアウェアではありません。私たちはこの活動からお金を得ることを期待していません。"
 
-#: community/donate.php:37
+#: community/donate.php:70
 msgid ""
 "Rather, the team of Audacity lead developers will spend the money on items and \n"
 "  services that benefit the project as a whole. \n"
@@ -5876,7 +5904,7 @@ msgstr ""
 "  専従開発者はこのプロジェクトのためにフルタイムで働き、保守やリリース作業などの管理業務も \n"
 "  引き継ぐことでボランティアたちがより多くの時間をコード開発に使えるようにすることが目的です。"
 
-#: community/donate.php:50
+#: community/donate.php:83
 msgid ""
 "These are all things that help us provide Audacity for free and continue to make it better. \n"
 "  The Audacity Team is completely committed to keeping Audacity free and open source.\n"
@@ -5890,13 +5918,13 @@ msgstr ""
 "  <a href=\"http://audacity.sourceforge.net/about/license\">\n"
 "      GNU General Public LicenseのもとでのAudacityのライセンスについて</a>の中で述べています。"
 
-#: community/donate.php:58
+#: community/donate.php:91
 msgid ""
 "There are many ways to support Audacity, and many degrees of doing so.  \n"
 "  Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">\n"
 "  contribute</a> by helping us with <a href=\"../community/developers\">programming</a>,\n"
 "  <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\">\n"
-"  documentation</a>,<a href=\"../community/translation\">translations</a> or by anwering\n"
+"  documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering\n"
 "  questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always \n"
 "  welcomed users whose only contribution is simply using Audacity, giving us feedback\n"
 "  on how to improve it and telling others about it. Thank you for supporting Audacity."
@@ -5908,26 +5936,6 @@ msgstr ""
 "  <a href=\"http://forum.audacityteam.org/\">Forum</a>にて質問に答えることでも <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">貢献</a> いただくことができます。私たちは\n"
 " Audacityをご使用いただき改善点をご提案いただいたり、Audacityのことを他の方々に広めていただく\n"
 "だけでも大変意義のある貢献だと考えており歓迎いたします。 Audacityへにサポートに感謝いたします。"
-
-#: community/donate.php:68
-msgid "Make a Donation"
-msgstr "寄付について"
-
-#: community/donate.php:69
-msgid "Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:"
-msgstr "別の方法として下のボタンを押すことでPaypalにより安全に送金できます（Paypalアカウントをお持ちでなくても可能）。またクレジットカードあるいはお持ちのPaypal口座よりどんな金額でも送金できます。"
-
-#. i18n-hint: the encoding inside the <a href> tag between the two
-#. "echo" strings obscures the e-mail address from (at least some)
-#. harvesting bots. Please translate the strings above and below
-#. the <a href> tag, and ignore the line with the <a href> tag itself.
-#: community/donate.php:90
-msgid "If you prefer to send a personal check or another form of payment, please write to our "
-msgstr "もしパーソナルチェックまたは他の方法による送金をご希望の場合は、"
-
-#: community/donate.php:93
-msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
-msgstr "フィードバックe-mailアドレス</a>にお住まいの国をご希望の支払方法をお知らせください。 "
 
 #: community/index.php:16
 msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:"
