@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007-2010 Vaughan Johnson, Gale Andrews
+ * 2007-2011 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -38,11 +38,11 @@
 <p><?=_('The SVN repository may also be accessed using many different GUI and IDE <a href="http://subversion.tigris.org/links.html#clients">clients and plug-ins</a>. If using GUI or IDE tools, please use the commands indicated in the tool\'s documentation.')?></p>
 
 <h3 id="bugs"><?=_('Bug Tracking')?></h3>
-<p><?=_('The Audacity developers now use a <a href="http://www.bugzilla.org/">Bugzilla</a> installation to track bugs and enhancements. To find issues to work on, please view our categorized <a href="http://wiki.audacityteam.org/wiki/Bug_Lists">Bug Lists</a>.')?></p>
+<p><?=_('The Audacity developers use bugzilla to track bugs and enhancements. To find issues to work on, please view our categorized <a href="http://wiki.audacityteam.org/wiki/Bug_Lists">Bug Lists</a>.')?></p>
 <p><?=_('If you are a user reporting a new bug, please e-mail our <a href="../contact#feedback">feedback address</a>.')?></p>
 
 <h3><?=_('Submitting Patches')?></h3>
-<p><?=_('We welcome patches from developers. Please see our <a href="http://audacityteam.org/wiki/index.php?title=SubmittingPatches">Submitting Patches</a> page on the <a href="http://audacityteam.org/wiki/index.php?title=Audacity_Wiki_Home_Page">Wiki</a>.')?></p>
+<p><?=_('We welcome patches from developers. Please see our <a href="http://wiki.audacityteam.org/wiki/SubmittingPatches">Submitting Patches</a> page on the <a href="http://wiki.audacityteam.org/wiki">Wiki</a>.')?></p>
 
 <?php
   include "../include/footer.inc.php";
