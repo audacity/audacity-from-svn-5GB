@@ -112,7 +112,7 @@ Known Issues at Release</a> (also viewable in the included README.txt).
 ')?>
 
 
-<?=_("Changes in Audacity 1.3.13")?></h3>
+<h3><?=_("Changes in Audacity 1.3.13")?></h3>
 
 <?=_('
 <dl>
