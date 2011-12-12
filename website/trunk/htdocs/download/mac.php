@@ -17,11 +17,15 @@
 <h2><?=$pageTitle?></h2>
 <p><?=$downloadTagline?></p>
 
+<div class="advice">
+<?=_('<b>Mac OS X 10.4 and later are not supported in Audacity 1.2. Please use</b> <a href="../download/beta_mac">Audacity Beta</a><b> for these operating systems.</b>')?>
+</div>
+
 <h3><?=_("Recommended Download")?></h3>
 <p><a href="#sysreq">System Requirements</a></p>
 <ul>
-  <li><p><?php printf(_('For Mac OS X (<b>Intel</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url($macosx_intel_url), macosx_intel_version, macosx_intel_size)?></p></li>
-  <li><p><?php printf(_('For Mac OS X (<b>PPC</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url ($macosx_url), macosx_version, macosx_size)?></p></li>
+  <li><p><?php printf(_('For Mac OS X 10.0 to 10.3 (<b>Intel</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url($macosx_intel_url), macosx_intel_version, macosx_intel_size)?></p></li>
+  <li><p><?php printf(_('For Mac OS X 10.0 to 10.3 (<b>PPC</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url ($macosx_url), macosx_version, macosx_size)?></p></li>
   <li><p><?php printf(_('For Mac OS 9: <a href="%s">Audacity %s</a> (.sit file, %.1lf MB)'), download_url($mac_classic_url), mac_classic_version, mac_classic_size)?></p></li>
   <p><?=_("(Unfortunately, we no longer have the resources to provide new versions of Audacity for Mac OS 9.)")?></p></li>
 </ul>
@@ -44,8 +48,8 @@
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
 <ul>
-  <li><?=_("Audacity 1.2 requires Mac OS X 10.1 or later.")?></li>
-  <li><?=_("Audacity 1.0 requires Mac OS 9.0 or later.")?></li>
+  <li><?=_("Audacity 1.2 supports Mac OS X 10.0 to 10.3 only.")?></li>
+  <li><?=_("Audacity 1.0 supports Mac OS 9.0 only.")?></li>
   <li><?=_("Audacity runs best with at least 64 MB RAM and a 300 MHz processor.")?></li>
 </ul>
 

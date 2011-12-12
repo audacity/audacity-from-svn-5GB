@@ -28,13 +28,13 @@
     </div>
     <div>
       <h3><a href="windows"><img alt="Windows" src="../images/new_win.png">
-      <?=_("Windows")?></a><span class="downloads_smaller">&nbsp;<br><img src="../images/download_spacer.png"><?=_("1.2.6")?></span></h3>  
+      Windows</a><span class="downloads_smaller"><br>&nbsp;<img src="../images/download_spacer.png">1.2.6 (Windows 98/ME/2000/XP)</span></h3>  
 
       <h3><a href="mac"><img alt="Mac" src="../images/mac.png">
-      <?=_("Mac OS X")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.2.5 (Intel)<br><img src=\"../images/download_spacer.png\"> or 1.2.6 (PPC)")?></span></h3>
+      Mac OS X</a><br>&nbsp;<img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("1.2.5 (Intel) and 1.2.6 (PPC)")?><br>&nbsp;<img src="../images/download_spacer.png">(OS X 10.0 to 10.3)</span></h3>
 
       <h3><a href="linux"><img alt="Linux" src="../images/unix.png">
-      <?=_("Linux/Unix")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.2.6 (in source code)")?></span></h3>
+      Linux/Unix</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.2.6 (in source code)")?></span></h3>
   </div>
 </div>
   <div class="downloads" id="beta_downloads">
@@ -44,13 +44,13 @@
     </div>
     <div>
       <h3><a href="beta_windows"><img alt="Windows" src="../images/new_win.png" >
-      <?=_("Windows")?></a><span class="downloads_smaller">&nbsp;&nbsp;1.3.13<br><img src="../images/download_spacer.png"><b><i>&nbsp;<?=_("best version for <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista")?></i></b></span></h3>
+      Windows</a>&nbsp;<span class="downloads_smaller"><i>&rarr;&nbsp;<?=_("Read about <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>")?></i><br><img src="../images/download_spacer.png">&nbsp;1.3.14 (Windows 98/ME/2000/XP/Vista/7)</span></h3>
   
       <h3><a href="beta_mac"><img alt="Mac" src="../images/mac.png">
-      <?=_("Mac OS X")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.13 (Universal Binary)&nbsp")?><br><img src="../images/download_spacer.png"><b><i>&nbsp;<?=_("best version for OS X 10.6/10.7")?></i></b></span></h3>
+      Mac OS X</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.14 (Universal Binary)&nbsp")?><br><img src="../images/download_spacer.png">&nbsp;<?=_("(OS X 10.4 or later)")?></span></h3>
   
       <h3><a href="beta_linux"><img alt="Linux" src="../images/unix.png">
-      <?=_("Linux/Unix")?></a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.13 (in source code)")?></span></h3>
+      Linux/Unix</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.14 (in source code)")?></span></h3>
   </div>
 </div>
 

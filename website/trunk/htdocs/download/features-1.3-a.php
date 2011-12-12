@@ -14,7 +14,7 @@
 
 <h3><?=_('Beta version')?></h3>
 <p>
-<?=_('Audacity 1.3 Beta is our new, not quite finished, development version which will be the basis of our next "stable" version.')?></p>
+<?=_('Audacity 1.3 Beta is our active version with the latest features and fixes. It is a mature Beta, intended to become the new 2.0 stable version in the near future.')?></p>
 
 <p><?=_('
  <ul>
@@ -24,7 +24,95 @@
  </ul>
 ')?></p>
 
-<h3 id="details"><?=_("Changes in Audacity 1.3.13")?></h3>
+<h3 id="details"><?=_("Changes in Audacity 1.3.14")?></h3>
+
+<?=_('
+<dl>
+   <dt> Bug fixes for: </dt>
+	       <dd> Interface: 
+                 <ul>   
+                       <li>Excessive delay occurred when typing into labels in long projects.</li> 
+                       <li>Last digit of TimeText controls could not be manipulated in some formats.</li>
+                       <li><i>(Windows, OS X)</i> Play and Record shortcuts did not work after
+                            clicking in Device Toolbar.</li>
+                       <li><i>(OS X, Linux)</i> Crash occurred if Toolbars were reset during playback 
+                            or recording.</li>
+                 </ul>
+              </dd>
+')?>
+
+<?=_('
+	       <dd> Imports and Exports: 
+                 <ul>
+                       <li>MP2 files were not importable without FFmpeg library or an import rule.</li> 
+                       <li>Files that could only be imported using FFmpeg imported as noise with
+                            no error message if FFmpeg was not available.</li> 
+                       <li>Files containing PCM audio but an incorrect extension (such as MP3) 
+                            caused a freeze.</li>
+                 </ul>
+              </dd>
+')?>
+
+<?=_('
+	       <dd> Effects and Analysis: 
+                 <ul>
+                       <li>An empty command could be added to a Chain which then displayed a 
+                            Nyquist error message when run.</li>  
+                       <li>Plot Spectrum didn\'t preserve signal level if multiple tracks were 
+                            analyzed.</li>  
+                 </ul>
+              </dd>
+')?>
+
+<?=_('
+	       <dd> Other bug fixes: 
+                 <ul>
+                       <li>Audacity has been provisionally fixed so that it can no longer create
+                            block files longer than the sample format or project format allows, 
+                            and can no longer delete these, which led to data loss. Any overlong 
+                            blocks found are preserved but "orphaned", so will appear as silence.</li>
+                       <li>Orphan block files were wrongly reported if cutting or copying to the 
+                            clipboard then reopening the project in the same session.</li>
+                       <li>Fixed some crashes and incorrect movement of audio when dragging tracks.</li>
+                       <li><i>(Windows)</i> Data loss is now prevented when encountering a corrupted
+                            .aup file created in ANSI builds.</li>
+                       <li><i>(Linux)</i> Restore building if USE_PORTMIXER is not defined.</li>
+                 </ul>
+              </dd>
+')?>
+ 
+<?=_('
+	       <dd>Changes and Improvements:
+                 <ul>
+                       <li>Normalize: Faster processing and improved interface. Left-right balance 
+                            in unsplit stereo tracks is now preserved by default, with a checkbox 
+                            option provided to process stereo channels independently.</li>   
+                       <li>Spectrograms now allow window sizes up to 32768 and frequencies up to
+                            half the sample rate (the maximum possible).</li>   
+                       <li>Mix and Render now preserves clip length by not rendering white space 
+                            between time zero and first audio, and preserves audio before time zero.
+                            To retain silence before the audio starts, generate silence after render. </li>      
+                       <li>Grouped some Edit Menu items into "Remove Audio" and "Clip Boundaries".  
+                       <li>CleanSpeech Mode removed from Interface Preferences (it still runs if it
+                            was enabled in a previous Audacity but can only be turned off there). </li> 
+                       <li><i>(OS X)</i> Added support for AudioUnit MusicEffects (but no MIDI support).</li> 
+                       <li><i>(Linux)</i> Set the per-user files directory per the program name 
+                               set in configure.</li> 
+                       <li><i>(Linux)</i> Changed the default location of the Audacity temporary
+                               directory to be in /var/tmp not /tmp, so preserving the directory 
+                               between reboots.</li>  
+                 </ul>
+              </dd>
+</dl>
+<p>
+Please be aware of 
+<a href="http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.14#Known_Issues_at_Release">
+Known Issues at Release</a> (also viewable in the included README.txt).
+</p>
+')?>
+
+
+<?=_("Changes in Audacity 1.3.13")?></h3>
 
 <?=_('
 <dl>

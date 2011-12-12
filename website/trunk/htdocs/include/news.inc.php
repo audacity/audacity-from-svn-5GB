@@ -39,6 +39,74 @@ function most_recent_news_item() {
 // Add news items below in reverse-chronological order
 // (most recent first).
 
+add_news_item(
+  "December 11, 2011",
+  	"1.3.14-release",
+  _("Audacity 1.3.14 released"),
+  _("
+<p>
+The Audacity Team is pleased to announce the release of
+<a href=\"/download\">Audacity 1.3.14 (Beta)</a> for Windows, 
+Mac and Linux/Unix. 1.3.14 contains important fixes for data 
+loss problems when reopening saved projects. 
+</p>
+<p>1.3.14 is now the only version that supports <b>Windows 7</b>,
+<b>Windows Vista</b> and <b>Mac OS X 10.4 to 10.7</b>. Please 
+upgrade to 1.3.14 if you are using Audacity 1.2 on those systems.
+</p>
+<p>Please help us progress to a new Audacity 2.0 by 
+<a href=\"http://audacity.sourceforge.net/contact/#feedback\">
+reporting</a> any problems you find in 1.3.14, especially with project
+stability. Advanced users are encouraged to test our subsequent
+changes as we make them by downloading our 
+<a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">
+Nightly Builds</a>. Please <a href=\"http://audacity.sourceforge.net/#announce\">
+subscribe</a> to receive news of all our future releases.    
+</p>
+<p>
+<div style=\"width:75%;padding-left:4em\">
+
+<b>Summary of Changes in 1.3.14:</b>
+
+<dl>
+	<dt> Bug fixes: </dt>
+       <dd>   
+           <ul>  
+               <li>Fixes for data loss when encountering corrupted project files. Steps 
+                    taken to prevent writing of overlong audio data block files.</li>   
+               <li>Excessive delay occurred when typing into labels in long projects.</li> 
+               <li>MP2 files could not be imported natively. File types requiring FFmpeg
+                    library imported as noise if FFmpeg was unavailable. </li>    
+               <li>Crashes fixed when dragging tracks. Crash fixed when resetting 
+                    Toolbars when an audio stream was present.</li>      
+               <li>Plot Spectrum didn't preserve signal level if multiple tracks were 
+                    analyzed.</li>
+           </ul>
+       </dd>  
+
+   <dt> Changes and Improvements:</dt>
+       <dd>   
+           <ul>
+               <li>Normalize now preserves left-right balance in stereo tracks by default 
+                    with an option to normalize stereo channels independently.</li>  
+               <li>Spectrograms now allow window sizes up to 32768 and frequencies up to
+                    half the sample rate (the maximum possible).</li>
+               <li>Mix and Render now preserves clip length by not rendering white space 
+                    before the start of audio, and preserves audio before time zero.</li>
+               <li>CleanSpeech Mode has been removed from Preferences but can be run or 
+                    disabled in 1.3.14 by changing Preferences in a previous Audacity version.</li> 
+               <li><i>(OS X)</i> Added support for AudioUnit MusicEffects (but no MIDI support).</li> 
+           </ul>
+       </dd>
+</dl>
+</div>
+</p>
+<p>Please see 
+<a href=\"http://audacity.sourceforge.net/download/features-1.3-a#details\">   
+Changes in Audacity 1.3.14</a> for more on 1.3.14 and the Beta series.
+</p>
+"));
+
 
 add_news_item(
   "April 11, 2011",
