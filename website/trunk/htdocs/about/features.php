@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 Matt Brubeck
+ * Copyright 2004 -11 Matt Brubeck
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -21,17 +21,16 @@
   <li>Level meters can monitor volume levels before, during, and after recording.</li>
 </ul>');
 
-  // TODO: Link to LAME info?
   echo _('<h3>Import and Export</h3>
 <p>Import sound files, edit them, and combine them with other files or new recordings.  Export your recordings in several common file formats.</p>
 <ul>
   <li>Import and export WAV, AIFF, AU, and <a href="http://vorbis.com">Ogg Vorbis</a> files.</li>
   <li>Import MPEG audio (including MP2 and MP3 files) with <a href="http://www.underbit.com/products/mad/">libmad</a>.</li>
-  <li>Export MP3s with the optional LAME encoder library.</li>
+  <li>Export MP3 files with the optional <a href="http://audacity.sourceforge.net/help/faq?s=install&i=lame-mp3">LAME encoder library</a>.</li>
   <li>Create WAV or AIFF files suitable for burning to CD.</li>
   <li>Import and export all file formats supported by <a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a>.</li>
   <li>Open raw (headerless) audio files using the “Import Raw” command.</li>
-  <li><strong>Note:</strong>  Audacity does not currently support WMA, AAC, or most other proprietary or restricted file formats.</li>
+  <li><strong>Note:</strong>  To import or export AC3, AMR(NB), M4A, WMA or and other proprietary formats, use <a href="http://audacity.sourceforge.net/download/features-1.3-a">Audacity Beta</a> with the optional <a href="http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary">FFmpeg library</a>.</li>
 </ul>');
 
   echo _('<h3>Editing</h3>
