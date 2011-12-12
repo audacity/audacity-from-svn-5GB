@@ -27,7 +27,7 @@
   }
   else if ($download == "mac") {
     $download_version = macosx_version;
-    $download_desc = _("for Mac OS X 10.1 or later");
+    $download_desc = _("for Mac OS X 10.0 to 10.3");
     $download_page = "mac";
     $beta_download_desc = _("for Mac OS X 10.4 or later");
     $beta_download_page = "beta_mac";
@@ -55,9 +55,9 @@
   <p>
 <b>   <?=_('Audacity&reg; is free, open source software for recording and editing sounds.</b> It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href="about/">Learn more about Audacity...</a> Also check our <a href="http://audacityteam.org/wiki/">Wiki</a> and <a href="http://audacityteam.org/forum/">Forum</a> for more information.')?></p>
   <p>
-<b><?php printf(_('The latest release of Audacity is <a href="download/">%s (Beta)'), beta_version)?></a></b>. <?=_('This is our active version with the latest features and fixes.</b> We recommend this version for more advanced users, and for everyone on Windows 7, Windows Vista and Mac OS X 10.6/10.7. Documentation and translations into different languages may not be quite complete. See <a href="download/features-1.3-a">New Features in 1.3</a> for more information about the 1.3 Beta series.')?></p>
+<b><?php printf(_('The latest release of Audacity is <a href="download/">%s (Beta)'), beta_version)?></a></b>. <?=_('This is our active version with the latest features and fixes.</b> It is a mature Beta, intended to become the new 2.0 stable version in the near future. Most users should download the Beta. Documentation and translations into different languages may not be quite complete. See <a href="download/features-1.3-a">New Features in 1.3</a> for more information about the 1.3 Beta series.')?></p>
   <p>
-    <?=_('<a href="download/">Audacity 1.2.6</a> is our main release, complete and fully documented, but no longer under development.')?> <?php printf(_('You may install Audacity %s and %s on the same machine.'), $download_version, beta_version)?></p>
+    <?=_('<a href="download/">Audacity 1.2</a> is our older release series, complete and fully documented, but no longer under development. <b>1.2 does not support Windows 7, Windows Vista or Mac OS X 10.4 or later.</b>')?> <?php printf(_('You may install Audacity %s and %s on the same machine.'), $download_version, beta_version)?></p>
 </div>
 
 <div id="download">

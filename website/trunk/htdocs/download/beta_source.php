@@ -46,7 +46,7 @@
 <h3 id="instructions"><?=_("How to Compile Audacity")?></h3>
 
 <h4><?=_("Dependencies")?></h4>
-<p><?php printf(_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity %s requires wxGTK 2.8.11.'), src_version)?></p>
+<p><?php printf(_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity %s requires wxGTK 2.8.12.'), src_version)?></p>
 <p><?=_('Installation of the following libraries is <b>optional</b> - they are included in Audacity obtained from <a href="../community/developers#svn">SVN</a>.')?></p>
 <ul>
   <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>

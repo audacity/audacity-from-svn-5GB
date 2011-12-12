@@ -19,11 +19,10 @@
 <?=_('<a href="http://wiki.audacityteam.org/wiki/Windows_Vista_OS">Windows Vista</a> and <a href="http://wiki.audacityteam.org/wiki/Windows_7_OS">Windows 7</a> <b>are not supported in Audacity 1.2.6. Please use</b> <a href="../download/beta_windows">Audacity Beta</a><b> for these operating systems.</b>')?>
 </div>
 
+<h3><?=_("Recommended Download")?></h3>
 <p>
 <a href="#sysreq">System Requirements</a>
 </p>
-
-<h3><?=_("Recommended Download")?></h3>
 <ul>
   <li><p><?php printf(_('Windows 98/ME/2000/XP: <a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url($win_exe_url), win_exe_version, win_exe_size)?></p></li>
 </ul>
