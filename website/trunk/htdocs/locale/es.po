@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity website Spanish\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-28 06:56+0000\n"
-"PO-Revision-Date: 2011-12-01 06:41-0000\n"
-"Last-Translator: Antonio Paniagua <aplist en gmail.com>\n"
+"POT-Creation-Date: 2011-12-07 20:41+0000\n"
+"PO-Revision-Date: 2011-12-13 02:20-0000\n"
+"Last-Translator: Antonio Paniagua Navarro <aplist@gmail.com>\n"
 "Language-Team: Spanish <audacity-translation@lists.sourceforge.net>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -202,7 +202,7 @@ msgid "Developers"
 msgstr "Desarrolladores"
 
 #: main.inc.php:69
-#: about/credits.php:88
+#: about/credits.php:87
 #: community/translation.php:9
 #: community/index.php:25
 msgid "Translators"
@@ -4019,7 +4019,7 @@ msgid "The <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-i
 msgstr "La página de <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\"> plug-in VST</a> de nuestro <a href=\"http://wiki.audacityteam.org/\"> Wiki<a/> contiene una larga lista de plug-ins VST que han sido probados con éxito en Audacity."
 
 #: download/plugins.php:40
-#: about/credits.php:135
+#: about/credits.php:134
 msgid "Libraries"
 msgstr "Bibliotecas"
 
@@ -5185,45 +5185,43 @@ msgstr "Miembros del equipo de Audacity"
 #: about/credits.php:26
 #: about/credits.php:28
 #: about/credits.php:33
+#: about/credits.php:35
+#: about/credits.php:36
 #: about/credits.php:37
 #: about/credits.php:39
-#: about/credits.php:40
-#: about/credits.php:42
-#: about/credits.php:62
+#: about/credits.php:61
 msgid "documentation and support"
 msgstr "documentación y asistencia técnica"
 
 #: about/credits.php:27
 #: about/credits.php:30
 #: about/credits.php:31
-#: about/credits.php:32
 #: about/credits.php:34
-#: about/credits.php:35
-#: about/credits.php:36
 #: about/credits.php:38
-#: about/credits.php:41
+#: about/credits.php:52
+#: about/credits.php:53
+#: about/credits.php:54
+#: about/credits.php:55
 #: about/credits.php:56
-#: about/credits.php:57
 #: about/credits.php:58
 #: about/credits.php:59
 #: about/credits.php:60
-#: about/credits.php:61
-#: about/credits.php:67
+#: about/credits.php:66
+#: about/credits.php:68
 #: about/credits.php:69
 #: about/credits.php:70
 #: about/credits.php:71
 #: about/credits.php:72
 #: about/credits.php:73
-#: about/credits.php:74
+#: about/credits.php:75
 #: about/credits.php:76
 #: about/credits.php:77
 #: about/credits.php:78
 #: about/credits.php:79
-#: about/credits.php:80
+#: about/credits.php:81
 #: about/credits.php:82
 #: about/credits.php:83
 #: about/credits.php:84
-#: about/credits.php:85
 msgid "developer"
 msgstr "desarrollo"
 
@@ -5235,43 +5233,48 @@ msgstr "Francés"
 msgid "system administration"
 msgstr "administración del sistema"
 
-#: about/credits.php:45
+#: about/credits.php:32
+#: about/credits.php:57
+msgid "developer and co-founder of Audacity"
+msgstr "desarrollado y cofundador de Audacity"
+
+#: about/credits.php:42
 msgid "Technical Leadership Council"
 msgstr "Consejo de Dirección Técnica"
 
-#: about/credits.php:54
+#: about/credits.php:50
 msgid "Emeritus: distinguished Audacity Team members, not currently active"
 msgstr "Eméritos: miembros distinguidos del equipo de Audacity, actualmente no activos"
 
-#: about/credits.php:65
+#: about/credits.php:64
 msgid "Contributors"
 msgstr "Colaboradores"
 
-#: about/credits.php:68
+#: about/credits.php:67
 msgid "accessibility advisor"
 msgstr "asesor de accesibilidad"
 
-#: about/credits.php:75
+#: about/credits.php:74
 msgid "graphic artist"
 msgstr "artista gráfico"
 
-#: about/credits.php:81
+#: about/credits.php:80
 msgid "Nyquist plug-ins"
 msgstr "Plug-ins Nyquist"
 
-#: about/credits.php:136
+#: about/credits.php:135
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity está basado en código de los siguientes proyectos:"
 
-#: about/credits.php:156
+#: about/credits.php:155
 msgid "Thanks"
 msgstr "Agradecimientos"
 
-#: about/credits.php:157
+#: about/credits.php:156
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "Hay mucha otra gente y organizaciones a las que nos gustaría dar agradecimientos. Muchas de ellas han contribuido con código, parches, comentarios, dinero, tiempo u otras cosas al proyecto. Otros simplemente producen herramientas que han hecho todo esto posible."
 
-#: about/credits.php:182
+#: about/credits.php:181
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Haganos saber si nos hemos olvidado de alguien)"
 
@@ -5817,11 +5820,31 @@ msgstr ""
 msgid "How Does Audacity Raise Money?"
 msgstr "¿Cómo obtiene fondos Audacity?"
 
-#: community/donate.php:18
-msgid "Audacity raises money via <a href=\"#donate\">donations</a>, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
-msgstr "Audacity se financia mediante <a href=\"#donate\">donaciones</a>, <a href=\"http://audacityteam.org/sponsor.php\">patrocinado</a> y <a href=\"../contact/privacy#advertising\">anuncios comerciales</a> en nuestro sitio web."
+#: community/donate.php:16
+msgid "Make a Donation"
+msgstr "Realizar una donación"
 
-#: community/donate.php:22
+#: community/donate.php:19
+msgid "Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:"
+msgstr "También puede hacer clic en el siguiente botón para donar de forma segura a través de Paypal (no se requiere cuenta). Puede enviarnos cualquier cantidad, bien por tarjeta de crédito o con su saldo Paypal:"
+
+#. i18n-hint: the encoding inside the <a href> tag between the two
+#. "echo" strings obscures the e-mail address from (at least some)
+#. harvesting bots. Please translate the strings above and below
+#. the <a href> tag, and ignore the line with the <a href> tag itself.
+#: community/donate.php:42
+msgid "If you prefer to send a personal check or another form of payment, please write to our "
+msgstr "Si prefiere utilizar un cheque personal o algún otro medio de pago, por favor, escriba a nuestra"
+
+#: community/donate.php:45
+msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
+msgstr "dirección de correo de comentarios</a> indicándonos en qué lugar se encuentra y como le gustaría pagar."
+
+#: community/donate.php:51
+msgid "Audacity raises money via donations, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
+msgstr "Audacity se financia mediante donaciones, <a href=\"http://audacityteam.org/sponsor.php\">patrocinado</a> y <a href=\"../contact/privacy#advertising\">anuncios comerciales</a> en nuestro sitio web."
+
+#: community/donate.php:55
 msgid ""
 "As of March 2007, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, \n"
 "  which hosts the Audacity site and downloads, is allowing us to also post \n"
@@ -5833,7 +5856,7 @@ msgstr ""
 "  mantener publicidad, en un innovador programa desde el que obtenemos algunos beneficios.\n"
 "  ¡Gracias, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
 
-#: community/donate.php:29
+#: community/donate.php:62
 msgid ""
 "Income to Audacity is not distributed among previous contributors to Audacity. \n"
 "  There are too many people and it would be difficult to do so fairly. \n"
@@ -5847,7 +5870,7 @@ msgstr ""
 "  Audacity está desarrollado por voluntarios que trabajan en su tiempo libre. \n"
 "  Audacity no es sahreware y no esperamos obtener dinero de el. "
 
-#: community/donate.php:37
+#: community/donate.php:70
 msgid ""
 "Rather, the team of Audacity lead developers will spend the money on items and \n"
 "  services that benefit the project as a whole. \n"
@@ -5870,7 +5893,7 @@ msgstr ""
 " completo que se dedique plenamente al proyecto y realice parte de las tareas administrativas, \n"
 "de mantenimiento  y de publicación de nuevas versiones, para descargar  de trabajo a los voluntarios para que puedan dedicar más tiempo al desarrollo del código."
 
-#: community/donate.php:50
+#: community/donate.php:83
 msgid ""
 "These are all things that help us provide Audacity for free and continue to make it better. \n"
 "  The Audacity Team is completely committed to keeping Audacity free and open source.\n"
@@ -5884,43 +5907,24 @@ msgstr ""
 " <a href=\"http://audacity.sourceforge.net/about/license\">\n"
 "      Licencia y recomendaciones para proveedores y distribuidores</a>."
 
-#: community/donate.php:58
+#: community/donate.php:91
 msgid ""
 "There are many ways to support Audacity, and many degrees of doing so.  \n"
 "  Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">\n"
 "  contribute</a> by helping us with <a href=\"../community/developers\">programming</a>,\n"
 "  <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\">\n"
-"  documentation</a>,<a href=\"../community/translation\">translations</a> or by anwering\n"
+"  documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering\n"
 "  questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always \n"
 "  welcomed users whose only contribution is simply using Audacity, giving us feedback\n"
 "  on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr ""
 "Hay varias maneras de apoyar a Audacity, y diferentes niveles de compromiso. \n"
-"Además de la donación económica, puede <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">contribuir</a> ayudándonos con la  <a href=\"../community/developers\">programación</a>n\n"
+"Además de la donación económica, puede <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">contribuir</a>\n"
+" ayudándonos con la  <a href=\"../community/developers\">programación</a>n\n"
 "<a href=\"../contact#feedback\">pruebas</a> , <a href=\"http://manual.audacityteam.org/\">\n"
-"  documentación</a>,<a href=\"../community/translation\">traducciones</a> o respondiendo a \n"
-"  consultas en el <a href=\"http://forum.audacityteam.org/\">foro</a>. Los usuarios que símplemente utilizan Audacity también son bienvenidos, gracias a sus comentarios \n"
+"  documentación</a>, <a href=\"../community/translation\">traducciones</a> o respondiendo a \n"
+"  consultas en el <a href=\"http://forum.audacityteam.org/\">foro</a>. Los usuarios que simplemente utilizan Audacity también son bienvenidos, gracias a sus comentarios \n"
 "sobre como mejorar el programa y hablándole a otras personas del mismo. Gracias por apoyar a Audacity."
-
-#: community/donate.php:68
-msgid "Make a Donation"
-msgstr "Realizar una donación"
-
-#: community/donate.php:69
-msgid "Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:"
-msgstr "También puede hacer clic en el siguiente botón para donar de forma segura a través de Paypal (no se requiere cuenta). Puede enviarnos cualquier cantidad, bien por tarjeta de crédito o con su saldo Paypal:"
-
-#. i18n-hint: the encoding inside the <a href> tag between the two
-#. "echo" strings obscures the e-mail address from (at least some)
-#. harvesting bots. Please translate the strings above and below
-#. the <a href> tag, and ignore the line with the <a href> tag itself.
-#: community/donate.php:90
-msgid "If you prefer to send a personal check or another form of payment, please write to our "
-msgstr "Si prefiere utilizar un cheque personal o algún otro medio de pago, por favor, escriba a nuestra"
-
-#: community/donate.php:93
-msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
-msgstr "dirección de correo de comentarios</a> indicándonos en qué lugar se encuentra y como le gustaría pagar."
 
 #: community/index.php:16
 msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:"
