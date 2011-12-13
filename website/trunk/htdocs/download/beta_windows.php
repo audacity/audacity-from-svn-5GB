@@ -7,7 +7,7 @@
  * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
-  require_once "../beta/versions.inc1.php";
+  require_once "../beta/versions.inc.php";
   require_once "../beta/mirror.inc.php";
   $pageId = "beta_windows";
   $pageTitle = _("Windows");
