@@ -33,7 +33,7 @@ define('win_exe_unicode_version', beta_win_version);
 define('win_exe_unicode_size',    18.4);
 // version and size for Win Unicode zip
 define('win_zip_unicode_version', beta_win_version);
-define('win_zip_unicode_size',    17.2);
+define('win_zip_unicode_size',    7.8);
 
 // version for source code releases (should always track beta_version)
 define('src_version', beta_version);
