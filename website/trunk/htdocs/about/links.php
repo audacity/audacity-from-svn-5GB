@@ -34,7 +34,7 @@
 <h3><?=_("Open Source Audio-Visual Software")?></h3>
 <p><?=_('<a href="http://www.blender.org/">Blender</a> is a free, cross-platform 3D content creation suite for animations, interactive applications and video games.')?></p>
 <p><?=_('<a href="http://mediainfo.sourceforge.net/">MediaInfo</a> is a free, cross-platform tag and codec analyzer for audio and video files.')?></p>
-<p><?=_('<a href="http://www.videolan.org/vlc/">VLC media player</a> is a free, cross-platform media player for most audio and video files as well as DVD, Audio CD and VCD. VLC can also send, save and convert <a href="http://www.videolan.org/streaming-features.html">audio and video streams<a/>.')?></p>
+<p><?=_('<a href="http://www.videolan.org/vlc/">VLC media player</a> is a free, cross-platform media player for most audio and video files as well as DVD, Audio CD and VCD. VLC can also send, save and convert <a href="http://www.videolan.org/streaming-features.html">audio and video streams</a>.')?></p>
 <p><?=_('CD/DVD burning:')?></p>
 <ul>
   <li><?=_('<a href="http://infrarecorder.org/">InfraRecorder</a> for Windows')?>  
