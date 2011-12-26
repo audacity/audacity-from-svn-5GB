@@ -42,7 +42,7 @@
     <td>2 GB / 1 GHz</td>
   </tr>
   <tr>
-    <td>&para; Windows Vista / 7 are not supported in Audacity 1.2.6.
+    <td>&para;<?=_("Windows Vista / 7 are not supported in Audacity 1.2.6.")?>
   </tr> 
 </table>
 
