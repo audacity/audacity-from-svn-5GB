@@ -53,7 +53,7 @@
     <a title="<?=_("Screenshots")?>" href="about/screenshots"><img alt="<?=_("Screenshots")?>" src="about/images/audacity-linux-small.jpg"></a>
   </div>
   <p>
-<b>   <?=_('Audacity&reg; is free, open source software for recording and editing sounds.</b> It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href="about/">Learn more about Audacity...</a> Also check our <a href="http://audacityteam.org/wiki/">Wiki</a> and <a href="http://audacityteam.org/forum/">Forum</a> for more information.')?></p>
+<?=_('<b>Audacity&reg; is free, open source software for recording and editing sounds.</b> It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href="about/">Learn more about Audacity...</a> Also check our <a href="http://audacityteam.org/wiki/">Wiki</a> and <a href="http://audacityteam.org/forum/">Forum</a> for more information.')?></p>
   <p>
 <b><?php printf(_('The latest release of Audacity is <a href="download/">%s (Beta)'), beta_version)?></a></b>. <?=_('This is our active version with the latest features and fixes.</b> It is a mature Beta, intended to become the new 2.0 stable version in the near future. Most users should download the Beta. Documentation and translations into different languages may not be quite complete. See <a href="download/features-1.3-a">New Features in 1.3</a> for more information about the 1.3 Beta series.')?></p>
   <p>
