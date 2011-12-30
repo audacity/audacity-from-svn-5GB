@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: website-fr-20090721\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-27 00:08+0000\n"
-"PO-Revision-Date: 2011-12-29 20:23+0800\n"
+"PO-Revision-Date: 2011-12-30 15:57-0000\n"
 "Last-Translator: Olivier Humbert <humbert.olivier.1@free.fr>\n"
 "Language-Team:  <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -8574,7 +8574,9 @@ msgstr "pour Windows&reg; 98/Me/2000/XP"
 msgid ""
 "for Windows&reg; 98/ME/2000/XP/Vista/7\n"
 "<!--<p>or <a href=\"http://audacity.sourceforge.net/download/beta_windows#ansi\">Audacity 1.3.7</a> <b>(Beta)</b> for Windows&reg; 98/ME</i></p>-->"
-msgstr "pour Windows&reg; 98/ME/2000/XP/Vista/7<1--<p>ou <a href=\"http://audacity.sourceforge.net/download/beta_windows#ansi\">Audacity 1.3.7</a> <b>(Bêta)</b> pour Windows&reg; 98/ME</i></p>"
+msgstr ""
+"pour Windows&reg; 98/ME/2000/XP/Vista/7\n"
+"<!--<p>ou <a href=\"http://audacity.sourceforge.net/download/beta_windows#ansi\">Audacity 1.3.7</a> <b>(Bêta)</b> pour Windows&reg; 98/ME</i></p>-->"
 
 #: index.php:30
 msgid "for Mac OS X 10.0 to 10.3"
@@ -8666,8 +8668,10 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "Pour tous les utilisateurs, <a href=\"/download\">Audacity 1.2.6</a> est "
 #~ "une version stable, complète et entièrement documentée. Vous pouvez "
 #~ "installer Audacity 1.2.6 et 1.3.9 sur le même ordinateur."
+
 #~ msgid "Stable"
 #~ msgstr "Stable"
+
 #~ msgid ""
 #~ "There are many ways to support Audacity, and many degrees of doing so.  \n"
 #~ "  We have always welcomed users whose only contribution is simply using "
@@ -8682,6 +8686,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "l'améliorer \n"
 #~ "  et en le faisant savoir à d'autres. \n"
 #~ "  Merci de soutenir Audacity."
+
 #~ msgid ""
 #~ "You are invited to try out the new <a href=\"http://audacitystore.com/"
 #~ "\">Audacity Store</a>, which features \n"
@@ -8692,16 +8697,20 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "com/\">boutique Audacity</a>, qui propose  \n"
 #~ "des articles portant le logo  Audacity (T-shirts, polos et sacs brodés), "
 #~ "et des produits électroniques."
+
 #~ msgid "Audacity Store"
 #~ msgstr "La boutique d'Audacity"
+
 #~ msgid "CVS"
 #~ msgstr "CVS"
+
 #~ msgid ""
 #~ "You can get the latest Audacity stable or development code from our CVS "
 #~ "repository."
 #~ msgstr ""
 #~ "Vous pouvez aussi obtenir le dernier code de développement à partir du "
 #~ "dépôt CVS."
+
 #~ msgid ""
 #~ "Browse the source code online sorted by <a href=\"http://audacity.cvs."
 #~ "sourceforge.net/audacity/audacity-src/\">file name</a> or <a href="
@@ -8712,6 +8721,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "cvs.sourceforge.net/audacity/audacity-src/\">nom de fichier</a> ou par <a "
 #~ "href=\"http://audacity.cvs.sourceforge.net/audacity/audacity-src/?"
 #~ "sortby=date#dirlist\">date</a>."
+
 #~ msgid ""
 #~ "For more information, read the <a href=\"http://sourceforge.net/cvs/?"
 #~ "group_id=6235\">SourceForge CVS instructions</a>. If using an interface "
@@ -8722,6 +8732,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "group_id=6235\">instructions SourceForge CVS</a>.Si vous utilisez un "
 #~ "outil d'interface CVS comme TortoiseCVS ou WinCVS, utilisez la commande "
 #~ "indiquée dans la documentation de cet outil."
+
 #~ msgid ""
 #~ "The Audacity developers now use <a href=\"http://audacityteam.org/wiki/"
 #~ "index.php?title=Release_Checklist\">Release Checklist</a> on the <a href="
@@ -8737,6 +8748,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "liste des <a href=\"http://audacityteam.org/wiki/index.php?"
 #~ "title=Release_Checklist#Release_Issues\">problèmes des versions</a> sur "
 #~ "cette page si vous recherchez quelque chose pour travailler dessus."
+
 #~ msgid ""
 #~ "<strong>Note:</strong> This Checklist is for development use only. If you "
 #~ "are a user reporting new bugs, please <a href=\"../contact/\">use our "
@@ -8746,8 +8758,10 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "développement uniquement. Si vous êtes un utilisateur qui reporte un bug, "
 #~ "veuillez plutôt <a href=\"../contact/\">utiliser nos Forums ou nous "
 #~ "envoyer un email </a>."
+
 #~ msgid "Be a Beta Tester"
 #~ msgstr "Devenir un Bêta testeur"
+
 #~ msgid ""
 #~ "In addition to the latest stable version of Audacity, we usually have "
 #~ "beta versions available.  These versions usually contain new features "
@@ -8757,12 +8771,16 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "habituellement des versions bêta disponibles. Ces versions contiennent "
 #~ "habituellement de nouvelles fonctionnalités qui n'ont pas été totalement "
 #~ "testées. Si vous voulez nous aider,"
+
 #~ msgid "download"
 #~ msgstr "téléchargement"
+
 #~ msgid " the Beta version and play with it."
 #~ msgstr "la version bêta et jouer avec."
+
 #~ msgid "Let us know"
 #~ msgstr "Faites nous savoir"
+
 #~ msgid ""
 #~ " what you like and don't like, and how you think it should be improved.  "
 #~ "Tell us if you find any <em>regressions</em> - things that used to work "
@@ -8772,6 +8790,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "amélioré.  Dites nous si vous trouvez n'importe quelle <em>régression</"
 #~ "em> - des choses qui normalement fonctionnent mais qui ne fonctionnent "
 #~ "plus."
+
 #~ msgid ""
 #~ "Developers may also subscribe to automated notifications of <a href="
 #~ "\"http://lists.sourceforge.net/lists/listinfo/audacity-cvs\">latest "
@@ -8793,6 +8812,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "index.php?title=Release_Checklist\">les notes de versions</a> de notre <a "
 #~ "href=\"http://audacityteam.org/wiki/\">Wiki</a> sont, à présent, "
 #~ "utilisées pour nos recherches internes de bugs."
+
 #~ msgid ""
 #~ "When reporting a problem or apparent bug to the Forum, please include "
 #~ "full details of what you are trying to do. If there is a crash or error "
@@ -8804,12 +8824,14 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "de faire. S'il y a un plantage ou un message d'erreur, merci d'indiquer "
 #~ "ce qui toutes les actions qui ont mené à ce plantage/message et indiquez "
 #~ "exactement ce qui est indiqué dans le(s) message(s) d'erreur."
+
 #~ msgid ""
 #~ "To give us feedback that does <b>not</b> require a personal response, "
 #~ "please "
 #~ msgstr ""
 #~ "Si vous désirez effectuer un retour d'expérience qui <b>ne</b> requiert "
 #~ "<b>pas</b> de réponse personnelle, merci"
+
 #~ msgid ""
 #~ "e-mail us</a> in <b>English language only.</b> Please tell us your "
 #~ "experiences of the Audacity program, documentation or web site. We "
@@ -8821,9 +8843,11 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "documentation ou le site web. Nous apprécions particulièrement les "
 #~ "rapports des bogues possibles du programme et les demandes pour de "
 #~ "nouvelles fonctionnalités pour Audacity."
+
 #~ msgid "<a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB)"
 #~ msgstr ""
 #~ "Pour Mac OS 9 : <a href=\"%s\">Audacity %s</a> (fichier .sit, %.1lf MB)"
+
 #~ msgid ""
 #~ "USB turntables. NOTE: In January 2007, an <a href=\"http://select.nytimes."
 #~ "com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article "
@@ -8847,12 +8871,14 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "d'Audacity avec leurs produits. Merci de lire notre page Wiki sur <a href="
 #~ "\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">les "
 #~ "platines USB</a> pour plus d'information."
+
 #~ msgid ""
 #~ "<a href=\"%s\">Sourceforge</a> (older versions can be viewed by clicking "
 #~ "on the appropriate package)"
 #~ msgstr ""
 #~ "<a href=\"%s\">Sourceforge</a> (les versions anciennes peuvent être vues "
 #~ "en cliquant sur le paquet approprié)"
+
 #~ msgid ""
 #~ "\n"
 #~ "<ul>\n"
@@ -8887,6 +8913,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "listinfo/audacity-devel\">audacity-devel</a>, notre mailing liste pour "
 #~ "dévellopeur, puis envoyez-nous un e-mail.</li>\n"
 #~ "</ul>\n"
+
 #~ msgid ""
 #~ "Audacity 1.3 Beta is our new, not quite finished, development version "
 #~ "which will be the basis of our next \"stable\" version."
@@ -8894,6 +8921,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "Audacity 1.3 Bêta est la nouvelle version de développement, pas "
 #~ "totalement terminée mais qui sera la base de notre prochaine version "
 #~ "\"stable\"."
+
 #~ msgid ""
 #~ "If you are new to Audacity or computer audio programs, you may prefer the "
 #~ "fully finished Audacity 1.2. Otherwise, please help our development "
@@ -8902,16 +8930,22 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "Si vous débutez avec Audacity ou les logiciels d'édition audio, il est "
 #~ "certainement préférable d'utiliser la version 1.2 qui est éprouvée. "
 #~ "Sinon, aidez nos développements en testant la version Bêta et"
+
 #~ msgid "Stable: 1.2 - for all users"
 #~ msgstr "Version stable : 1.2 - pour tous les utilisateurs"
+
 #~ msgid "&nbsp;&nbsp;1.2.6"
 #~ msgstr "&nbsp;&nbsp;1.2.6"
+
 #~ msgid "Beta: 1.3 - for advanced users"
 #~ msgstr "Beta: 1.3 - pour utilisateurs avertis"
+
 #~ msgid "&nbsp;&nbsp;1.3.9"
 #~ msgstr "&nbsp;&nbsp;1.3.9"
+
 #~ msgid "LAME MP3 Encoder"
 #~ msgstr "Encodeur MP3 LAME"
+
 #~ msgid ""
 #~ "<p>Because of software patents, we cannot distribute MP3 encoding "
 #~ "software ourselves.  Follow these instructions to use the free LAME "
@@ -8964,6 +8998,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ " <li>La première fois que vous exporterez en MP3, Audacity vous demandera "
 #~ "où est stocké LameLib.</li>\n"
 #~ "</ol>"
+
 #~ msgid ""
 #~ "Audacity 1.3 has an experimental new dialog for uploading files to a "
 #~ "server via FTP.  Currently it is just a simple FTP client; in the future "
@@ -8976,6 +9011,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "fonctionnalité à Audacity de manière à ce que la publication sur un site "
 #~ "soit possible directement à partir d'Audacity comme avec un PodCast par "
 #~ "exemple."
+
 #~ msgid ""
 #~ "If you have trouble with your download, or need an older version of "
 #~ "Audacity, try our <a href=\"%s\">alternate download links</a>."
@@ -8983,6 +9019,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "Si vous rencontrez des difficultés lors du téléchargement, ou si vous "
 #~ "avez besoin d'une version plus ancienne de Audacity, essayez notre <a "
 #~ "href=\"%s\">serveur alternatif de téléchargement</a>."
+
 #~ msgid ""
 #~ "Audacity can load VST effects on Windows and Mac using the optional <a "
 #~ "href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  VST "
@@ -8992,6 +9029,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>. Les "
 #~ "effets VST peuvent être trouvés sur de nombreux site de modules (plugins) "
 #~ "tels que:"
+
 #~ msgid ""
 #~ "Click the appropriate link below, which takes you to the SourceForge "
 #~ "download page - don't \"save link as..\" or \"save target as..\". The "
@@ -9009,6 +9047,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "sourceforge proposent les versions autorisées d'Audacity</b>. Désactivez "
 #~ "tout gestionnaire automatique de téléchargement si le résultat est "
 #~ "incorrect."
+
 #~ msgid ""
 #~ "Windows 98/ME/2000/XP/Vista: <a href=\"%s\">Audacity %s installer</a> (."
 #~ "exe file, %.1lf MB) - The latest version of the free Audacity audio "
@@ -9018,12 +9057,14 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "Windows 98/ME/2000/XP/Vista: <a href=\"%s\">Audacity %s installer</a> (."
 #~ "exe file, %.1lf MB) - La dernière version du logiciel libre de montage "
 #~ "audio Audacity."
+
 #~ msgid ""
 #~ "<p><b>Still need help?</b> Please <a href=\"../contact/\">contact us</a>."
 #~ "</p>"
 #~ msgstr ""
 #~ "<p><b>Besoin d'aide supplémentaire ?</b> Alors <a href=\"../contact/"
 #~ "\">contactez-nous</a>.</p>"
+
 #~ msgid ""
 #~ "<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not "
 #~ "yet able to display custom interfaces for plug-ins.  Instead, it uses "
@@ -9043,6 +9084,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "bogues dans VST Enabler. Merci de nous <a href=\"../contact/\">signaler</"
 #~ "a> un module défaillant.</p>\n"
 #~ "<p>Audacity ne supporte pas les modules VST instrument (VSTi).</p>"
+
 #~ msgid ""
 #~ "<p>Audacity <b>cannot</b> import or export files in <b>WMA, AAC, "
 #~ "RealAudio, Shorten (SHN)</b>, or most other proprietary formats, or any "
@@ -9102,6 +9144,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "\"../about/features\">liste des fonctionnalités</a>.</p>\n"
 #~ "<p>Vous pouvez aussi lire : <a href=\"faq?s=files&amp;i=midi\">Pourquoi "
 #~ "ne puis-je pas lire de fichiers MIDI ?</a></p>\n"
+
 #~ msgid ""
 #~ "<p>Sorry, Audacity cannot play, edit, or convert MIDI files.  It can only "
 #~ "display them visually (for comparison with recorded sounds).  We might "
@@ -9114,12 +9157,14 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "l'édition de fichiers MIDI dans une prochaine version d'Audacity, bien "
 #~ "qu'Audacity se consacre pour l'heure au son échantillonné (comme dans le "
 #~ "format WAV).</p>"
+
 #~ msgid ""
 #~ "A detailed, illustrated tutorial explaining this process is available on "
 #~ "the "
 #~ msgstr ""
 #~ "Un tutoriel détaillé et illustré, explicitant le processus est disponible "
 #~ "sur la"
+
 #~ msgid ""
 #~ "%sTo write plug-ins for use with Audacity, you will need the older %"
 #~ "sNyquist version 2.37 Manual%s, not the version 3 manual available from "
@@ -9133,6 +9178,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "la version 3 de Nyquist est passée de LISP à SAL. Nous étudierons la "
 #~ "possibilité d'intégrer dans le futur SAL dans l'implémentation de Nyquist "
 #~ "d'Audacity."
+
 #~ msgid ""
 #~ "Note that you don't need to download Nyquist in order to write simple "
 #~ "plug-ins to use with Audacity.  All of the instructions you need are "
@@ -9141,8 +9187,10 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "Remarquez bien que vous n'avez pas besoin d'installer la version complète "
 #~ "de Nyquist si vous n'écrivez que des modules simples pour Audacity. Vous "
 #~ "trouverez ci-dessous toutes les instructions dont vous avez besoin."
+
 #~ msgid "feedback e-mail address</a> and we'll get back to you."
 #~ msgstr "adresse mail de retour</a> et nous vous recontacterons."
+
 #~ msgid ""
 #~ "The translation effort is now focused on Audacity 1.3.  Translations from "
 #~ "previous versions of Audacity have been imported and need to be updated."
@@ -9150,6 +9198,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "L'effort de traduction porte sur Audacity 1.3.3 et ultérieur. Les "
 #~ "traductions des précédentes versions d'Audacity ont été importées et "
 #~ "demandent à être mises à jour."
+
 #~ msgid ""
 #~ "<h3>Translation Instructions</h3>\n"
 #~ "\n"
@@ -9312,6 +9361,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ " <blockquote><p><b>\"The buffer underrun near %%2$lf seconds was the last "
 #~ "of %%1$d.\"</b></p></blockquote>\n"
 #~ "</ul>"
+
 #~ msgid ""
 #~ "You can download and install plug-ins to add extra effects to Audacity, "
 #~ "or to add more audio generation and analysis capability. Plug-ins appear "
@@ -9328,12 +9378,14 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "les dans le répertoire <b>Plug-ins</b> du dossier d'installation de "
 #~ "Audacity. Sous Windows, il se trouve habituellement dans \"Program Files"
 #~ "\". Sous Mac OS X, c'est généralement \"Applications\"."
+
 #~ msgid ""
 #~ "<b>Note:</b> You must restart Audacity to make newly added plug-ins "
 #~ "appear in the menus."
 #~ msgstr ""
 #~ "<b>Note:</b> Vous devez redémarrer Audacity pour faire apparaître le "
 #~ "nouveau module dans les menus."
+
 #~ msgid ""
 #~ "<p>Because of software patents, we cannot distribute MP3 encoding "
 #~ "software ourselves.  Follow these instructions to use the free LAME "
@@ -9418,6 +9470,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "instructions</a> sur notre <a href=\"http://audacityteam.org/wiki/"
 #~ "\">Wiki</a> pour télécharger et installer le package LAME adéquat sur "
 #~ "internet."
+
 #~ msgid ""
 #~ "<p>Audacity project files are saved in a special format that only "
 #~ "Audacity can open.  To open your project in another program or burn it to "
@@ -9430,6 +9483,7 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "CD, vous devez ouvrir le fichier \"projet.aup\" dans Audacity et utiliser "
 #~ "les commandes d'exportation (dans le menu Fichier) pour l'enregistrer "
 #~ "dans un format standard WAV ou AIFF.</p>"
+
 #~ msgid ""
 #~ "<p>Audacity breaks long tracks into small pieces so it can edit them more "
 #~ "efficiently.  When you save a project, Audacity stores all of the pieces "
@@ -9445,4 +9499,3 @@ msgstr "Sous peu, davantage de documentation sur le format de fichier de projet 
 #~ "<p>Vous n'avez pas besoin de les ouvrir un à un. Audacity se charge de "
 #~ "les ouvrir automatiquement à l'ouverture du projet placé dans le même "
 #~ "répertoire que \"projet_donnees\".</p>"
-
