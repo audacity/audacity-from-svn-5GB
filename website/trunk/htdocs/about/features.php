@@ -30,7 +30,7 @@
   <li>Create WAV or AIFF files suitable for burning to CD.</li>
   <li>Import and export all file formats supported by <a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a>.</li>
   <li>Open raw (headerless) audio files using the “Import Raw” command.</li>
-  <li><strong>Note:</strong>  To import or export AC3, AMR(NB), M4A, WMA or and other proprietary formats, use <a href="http://audacity.sourceforge.net/download/features-1.3-a">Audacity Beta</a> with the optional <a href="http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary">FFmpeg library</a>.</li>
+  <li><strong>Note:</strong>  To import or export AC3, AMR(NB), M4A, WMA and other proprietary formats, use <a href="http://audacity.sourceforge.net/download/features-1.3-a">Audacity Beta</a> with the optional <a href="http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary">FFmpeg library</a>.</li>
 </ul>');
 
   echo _('<h3>Editing</h3>
@@ -71,7 +71,7 @@
 <ul>
   <li>Add new effects with <a href="http://www.ladspa.org/">LADSPA plug-ins</a>.</li>
   <li>Audacity includes some sample plug-ins by <a href="http://plugin.org.uk/">Steve Harris</a>.</li>
-  <li>Load VST plug-ins for Windows and Mac, with the optional <a href="http://audacityteam.org/vst/">VST Enabler</a>.</li>
+  <li>Load VST plug-ins for Windows and Mac (please read this <a href="../help/faq?s=install&i=vst-enabler">Frequently Asked Question</a>).</li>
   <li>Write new effects with the built-in <a href="../help/nyquist">Nyquist</a> programming language.</li>
 </ul>');
 
