@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2008 - 2011 Gale Andrews, Vaughan Johnson
+ * 2008 - 2012 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -44,13 +44,13 @@
     </div>
     <div>
       <h3><a href="beta_windows"><img alt="Windows" src="../images/new_win.png" >
-      Windows</a>&nbsp;<span class="downloads_smaller"><i>&rarr;&nbsp;<?=_("Read about <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>")?></i><br><img src="../images/download_spacer.png">&nbsp;1.3.14 (Windows 98/ME/2000/XP/Vista/7)</span></h3>
+      Windows</a>&nbsp;<span class="downloads_smaller"><i>&rarr;&nbsp;<?=_("Read about <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>")?></i><br><img src="../images/download_spacer.png"><?php printf('%s (Windows 98/ME/2000/XP/Vista/7)', $beta_version)?> </span></h3>
   
       <h3><a href="beta_mac"><img alt="Mac" src="../images/mac.png">
-      Mac OS X</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.14 (Universal Binary)&nbsp")?><br><img src="../images/download_spacer.png">&nbsp;<?=_("(OS X 10.4 or later)")?></span></h3>
+      Mac OS X</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?php printf(_("&nbsp;%s (Universal Binary)"), $beta_version)?><br><img src="../images/download_spacer.png">&nbsp;<?=_("(OS X 10.4 or later)")?></span></h3>
   
       <h3><a href="beta_linux"><img alt="Linux" src="../images/unix.png">
-      Linux/Unix</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.3.14 (in source code)")?></span></h3>
+      Linux/Unix</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?php printf(_("&nbsp;%s (in source code)"), $beta_version)?></span></h3>
   </div>
 </div>
 
