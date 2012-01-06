@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2005 Matt Brubeck
- * 2007 - 11 Vaughan Johnson, Gale Andrews
+ * 2007 - 12 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -86,7 +86,10 @@
 <div id="news">
   <?php
     global $news_items;
-    for ($i = 0; $i < 2; $i++)
+    /* Revert to showing only one news item on front page.
+      for ($i = 0; $i < 2; $i++) 
+      */
+    for ($i = 0; $i < 1; $i++)
     {
         $item = array_shift($news_items);
         $dateStr = $item->dateStr();
