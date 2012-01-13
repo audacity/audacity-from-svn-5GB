@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 -10 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 12 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -67,8 +67,8 @@ $siteNavItems = array(
       array(_("Users"), "users"),
       array(_("Developers"), "developers"),
       array(_("Translators"), "translation"),
-      array(_("Donate"), "donate"),
     )
   ),
+  array(_("Donate"), "donate/", 0),
 );
 ?>
