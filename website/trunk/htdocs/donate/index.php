@@ -87,7 +87,7 @@
       licensing Audacity under the GNU General Public License</a>.')?>
 </p>
 
-<h2><?=_('Other ways to contribute')?></h2>
+<h2><?=_('Other Ways to Contribute')?></h2>
 
 <p>
   <?=_('Besides donating money, you can <a href="http://wiki.audacityteam.org/wiki/Contribute">
