@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2007 - 2011  Vaughan Johnson, Gale Andrews
+ * Copyright 2007 - 2012  Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -277,12 +277,21 @@
   </tr>
   <tr>
    <td class="col1">
+   <a href="http://www.area-powers.jp/">Area Co.Ltd.</a>
+   </td>
+   <td class="col2">
+   <a href="http://www.u-lexnet.info/items/others/UL-TAPPfeature.html">UL-TAPP</a>
+   </td>
+   <td class="col3"><?=_("USB Cassette Player.")?></td>
+  </tr>
+  <tr>
+   <td class="col1">
    <a href="http://www.goldsound.com.hk/index.php">Goldsound</a>
    </td>
    <td class="col2">
    <a href="http://www.goldsound.com.hk/product318672.html">TT-990PC</a>
    </td>
-   <td class="col3"><?=_("USB turntable")?></td>
+   <td class="col3"><?=_("USB Turntable.")?></td>
   </tr>
   <tr>
    <td>
@@ -303,7 +312,7 @@
    <td>
    <a href="http://www.kam.co.uk/index.php?action=product&product_id=20">BDX900 USB</a>
    </td>
-   <td><?=_("USB turntable")?></td>
+   <td><?=_("USB Turntable.")?></td>
   </tr>
   <tr>
    <td>
@@ -312,7 +321,7 @@
    <td>
    <a href="http://www.lenco.eu/index.php?option=com_content&view=article&id=3%3Al-3866-usb&catid=1%3Aplatenspelers&Itemid=3&lang=en">L-3866 USB</a>
    </td>
-   <td><?=_("USB turntable")?></td>
+   <td><?=_("USB Turntable.")?></td>
   </tr>
   <tr>
    <td>
@@ -341,7 +350,7 @@
    <a href="http://www.freedomsampler.com/">FreedomSampler&trade;</a>
    </td>
    <td class="col3">
-   <?=_('FreedomSampler&trade; is a collection of free, open source software with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href="http://www.twistedlincoln.com/shop/catalog/products/freedomsampler">purchase</a> a copy to be shipped to you.')?>
+   <?=_('FreedomSampler&trade; is a collection of free, open source software for Windows and Linux with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href="http://www.twistedlincoln.com/shop/catalog/products/freedomsampler">purchase</a> a copy to be shipped to you.')?>
    </td>
   </tr>
   <tr>
@@ -352,7 +361,7 @@
    <a href="http://www.theopencd.org/">TheOpenCD</a>
    </td>
    <td class="col3">
-   <?=_('TheOpenCD is a now-discontinued collection of high quality free and open source software. Currently, you can still <a href="http://releases.theopencd.org/">download archived CD images</a> or <a href="http://ztechshop.net/disks/opencd/">purchase a CD online</a> for worldwide shipping.')?>
+   <?=_('TheOpenCD is a now-discontinued collection of high quality free and open source software for Windows. Currently, you can still <a href="http://releases.theopencd.org/">download archived CD images</a> or <a href="http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189">purchase a CD online</a> for worldwide shipping.')?>
    </td>
   </tr>
   <tr>
@@ -363,7 +372,7 @@
    <a href="http://theopendisc.com/">OpenDisc</a>
    </td>
    <td class="col3">
-   <?=_('OpenDisc is a similar collection of high quality free and open source software. Currently, a downloadable <a href="http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn">CD image</a> is available. The project hopes to make available a purchasable CD shortly.')?>
+   <?=_('OpenDisc is a similar collection of high quality free and open source software for Windows. Currently, a downloadable <a href="http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn">CD image</a> is available. The project hopes to make available a purchasable CD shortly.')?>
    </td>
   </tr>
 </table>
