@@ -19,20 +19,13 @@
 <p><?=_('Join the <a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel">audacity-devel</a> mailing list to discuss current and future development, or to get help modifying the Audacity source code.')?></p>
 
 <h3 id="svn"><?=_('SVN')?></h3>
-<p><?=_('You can now get both the Audacity Stable and latest Beta development code from our <a href="http://code.google.com/p/audacity/source/browse/audacity-src/trunk">SVN repository</a>.')?>
+<p><?=_('You can get the latest Audacity code from our <a href="http://code.google.com/p/audacity/source/browse/audacity-src/trunk">SVN repository</a>.  We aren\'t currently working on any other version.')?>
 
 <ul>
-  <li><p><?=_('Type this at the command line to check out the latest Stable source code from SVN:')?> (1.2)</p>
-  <p><kbd>svn checkout http://audacity.googlecode.com/svn/audacity-src/branches/AUDACITY_1_2/  audacity-read-only</kbd></p>
-  <p><?=_('See our Stable source code page for <a href="../download/source#instructions">compilation instructions</a>.')?></p>
-  </li>
-</ul>
-
-<ul>
-  <li><p><?=_('Type this at the command line to check out the latest Beta development source code from SVN:')?> (1.3)</p>
+  <li><p><?=_('Type this at the command line to check out the latest source code from SVN:')?></p>
   <p><kbd>svn checkout http://audacity.googlecode.com/svn/audacity-src/trunk/ audacity-read-only</kbd></p>
   <p><?=_('See our development source code page for <a href="../download/beta_source#instructions">compilation instructions</a>.')?></p>
-</li>
+  </li>
 </ul>
 
 <p><?=_('The SVN repository may also be accessed using many different GUI and IDE <a href="http://subversion.tigris.org/links.html#clients">clients and plug-ins</a>. If using GUI or IDE tools, please use the commands indicated in the tool\'s documentation.')?></p>
