@@ -52,51 +52,25 @@
 </p>
 
 <p>
-  <?=_('As of March 2007, <a href="http://sourceforge.net/">SourceForge.net</a>, 
-  which hosts the Audacity site and downloads, is allowing us to also post 
-  advertisements, in an innovative program whereby we split the revenues.
-  Thank you, <a href="http://sourceforge.net/">SourceForge.net</a>!')?>
+<?=_('As of March 2007, <a href="http://sourceforge.net/">SourceForge.net</a>, which hosts the Audacity site and downloads, is allowing us to also post advertisements, in an innovative program whereby we split the revenues. Thank you, <a href="http://sourceforge.net/">SourceForge.net</a>!')?>
 </p>
 
 <p>
-  <?=_('Income to Audacity is not distributed among previous contributors to Audacity. 
-  There are too many people and it would be difficult to do so fairly. 
-  Also, nobody contributed code to Audacity expecting money in return. 
-  Audacity is developed by volunteers, working in our spare time. 
-  Audacity is not shareware, and we do not expect to make any money from it.')?>
+<?=_('Income to Audacity is not distributed among previous contributors to Audacity. There are too many people and it would be difficult to do so fairly. Also, nobody contributed code to Audacity expecting money in return. Audacity is developed by volunteers, working in our spare time. Audacity is not shareware, and we do not expect to make any money from it.')?>
 </p>
 
 <p>
-  <?=_('Rather, the team of Audacity lead developers will spend the money on items and 
-  services that benefit the project as a whole. 
-  Money that comes in to the project helps us pay for bandwidth and web hosting, 
-  development tools, and audio hardware.
-  In the past we used funds from donations to purchase the Audacity trademark and to
-  subsidize travel costs for Audacity developers to meet for a hackathon, and we plan to
-  do more of these.
-  Our long-term goal is to bring in enough money to hire a full-time developer who could 
-  devote all of his/her time to the project and take over some of the administrative, 
-  maintenance and release tasks, freeing volunteers to spend more time on code.')?>
+<?=_('Rather, the team of Audacity lead developers will spend the money on items and services that benefit the project as a whole. Money that comes in to the project helps us pay for bandwidth and web hosting, development tools, and audio hardware. In the past we used funds from donations to purchase the Audacity trademark and to subsidize travel costs for Audacity developers to meet for a hackathon, and we plan to do more of these. Our long-term goal is to bring in enough money to hire a full-time developer who could devote all of his/her time to the project and take over some of the administrative,  maintenance and release tasks, freeing volunteers to spend more time on code.')?>
 </p>
 
 <p>
-  <?=_('These are all things that help us provide Audacity for free and continue to make it better. 
-  The Audacity Team is completely committed to keeping Audacity free and open source.
-  We made that commitment in
-  <a href="http://audacity.sourceforge.net/about/license">
-      licensing Audacity under the GNU General Public License</a>.')?>
+<?=_('These are all things that help us provide Audacity for free and continue to make it better. The Audacity Team is completely committed to keeping Audacity free and open source. We made that commitment in <a href="http://audacity.sourceforge.net/about/license">licensing Audacity under the GNU General Public License</a>.')?>
 </p>
 
 <h2><?=_('Other Ways to Contribute')?></h2>
 
 <p>
-  <?=_('Besides donating money, you can <a href="http://wiki.audacityteam.org/wiki/Contribute">
-  contribute your time</a> by helping us with <a href="../community/developers">programming</a>,
-  <a href="../contact#feedback">testing</a>, <a href="http://manual.audacityteam.org/">
-  documentation</a>, <a href="../community/translation">translations</a> or by anwering
-  questions on our <a href="http://forum.audacityteam.org/">Forum</a>. We have always 
-  welcomed users whose only contribution is simply using Audacity, giving us feedback
-  on how to improve it and telling others about it. Thank you for supporting Audacity.')?>
+<?=_('Besides donating money, you can <a href="http://wiki.audacityteam.org/wiki/Contribute"> contribute your time</a> by helping us with <a href="../community/developers">programming</a>, <a href="../contact#feedback">testing</a>, <a href="http://manual.audacityteam.org/"> documentation</a>, <a href="../community/translation">translations</a> or by anwering questions on our <a href="http://forum.audacityteam.org/">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity.')?>
 </p>
 
 <?php
