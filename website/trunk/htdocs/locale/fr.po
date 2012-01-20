@@ -6,13 +6,13 @@
 # Ch. Karypidis <ch_karypidis@yahoo.com>, 2008.
 # Christian Brochec <christian.brochec@ac-rennes.fr>, 2009.
 # Pascal Audoux <paudoux@chez.com>, 2009.
-# Olivier Humbert <humbert.olivier.1@free.fr>, 2009, 2010, 2011.
+# Olivier Humbert <humbert.olivier.1@free.fr>, 2009, 2010, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: website-fr-20090721\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-06 18:28+0000\n"
-"PO-Revision-Date: 2012-01-15 15:26+0800\n"
+"POT-Creation-Date: 2012-01-19 23:00+0000\n"
+"PO-Revision-Date: 2012-01-20 18:51+0800\n"
 "Last-Translator: Olivier Humbert <humbert.olivier.1@free.fr>\n"
 "Language-Team: Olivier <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -175,20 +175,17 @@ msgstr "Politique de confidentialité"
 
 #: main.inc.php:65
 #: community/main.inc.php:11
-#: community/ind_gale.php:10
-#: community/index.php:10
+#: community/index.php:9
 msgid "Get Involved"
 msgstr "Participez!"
 
 #: main.inc.php:67
-#: community/ind_gale.php:22
-#: community/index.php:19
+#: community/index.php:18
 msgid "Users"
 msgstr "Utilisateurs"
 
 #: main.inc.php:68
-#: community/ind_gale.php:25
-#: community/index.php:22
+#: community/index.php:21
 #: community/developers.php:10
 msgid "Developers"
 msgstr "Développeurs"
@@ -196,14 +193,11 @@ msgstr "Développeurs"
 #: main.inc.php:69
 #: about/credits.php:87
 #: community/translation.php:9
-#: community/ind_gale.php:28
-#: community/index.php:25
+#: community/index.php:24
 msgid "Translators"
 msgstr "Traducteurs"
 
-#: main.inc.php:70
-#: community/ind_gale.php:19
-#: community/index.php:28
+#: main.inc.php:72
 msgid "Donate"
 msgstr "Faire un don"
 
@@ -2050,12 +2044,12 @@ msgid "Playback Devices"
 msgstr "Périphériques de Lecture"
 
 #: download/bundlers.php:46
-#: download/bundlers.php:329
+#: download/bundlers.php:338
 msgid "Open Source CD Bundles"
 msgstr "CD de lots Open source"
 
 #: download/bundlers.php:49
-#: download/bundlers.php:371
+#: download/bundlers.php:380
 msgid "Others"
 msgstr "Autres"
 
@@ -2063,8 +2057,8 @@ msgstr "Autres"
 #: download/bundlers.php:117
 #: download/bundlers.php:216
 #: download/bundlers.php:274
-#: download/bundlers.php:332
-#: download/bundlers.php:374
+#: download/bundlers.php:341
+#: download/bundlers.php:383
 msgid "Vendor"
 msgstr "Vendeur"
 
@@ -2072,8 +2066,8 @@ msgstr "Vendeur"
 #: download/bundlers.php:118
 #: download/bundlers.php:217
 #: download/bundlers.php:275
-#: download/bundlers.php:333
-#: download/bundlers.php:375
+#: download/bundlers.php:342
+#: download/bundlers.php:384
 msgid "Product"
 msgstr "Produit"
 
@@ -2081,8 +2075,8 @@ msgstr "Produit"
 #: download/bundlers.php:119
 #: download/bundlers.php:218
 #: download/bundlers.php:276
-#: download/bundlers.php:334
-#: download/bundlers.php:376
+#: download/bundlers.php:343
+#: download/bundlers.php:385
 msgid "Description"
 msgstr "Description"
 
@@ -2163,52 +2157,56 @@ msgid "Virtual guitar amplifier with tube simulation and 24-bit effects."
 msgstr "Amplificateur de guitare virtuel à tube et effets 24 bits."
 
 #: download/bundlers.php:285
-#: download/bundlers.php:306
-#: download/bundlers.php:315
-msgid "USB turntable"
-msgstr "platine USB"
+msgid "USB Cassette Player."
+msgstr "Lecteur cassette USB"
 
-#: download/bundlers.php:296
+#: download/bundlers.php:294
+#: download/bundlers.php:315
+#: download/bundlers.php:324
+msgid "USB Turntable."
+msgstr "platine USB."
+
+#: download/bundlers.php:305
 msgid "As one of the major manufacturers of USB playback equipment, Ion bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs and cassettes. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Ion later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track. See our Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB turntables</a> for more information."
 msgstr "En tant qu'un des fabricants majeurs d'équipement de lecture USB, Ion a empaqueté Audacity avec les produits listés depuis plusieurs années, aidant à établir la large popularité de numérisation des LPs et des cassettes. NOTE : En Janvier 2007, un <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article à propos de ces platines</a> est paru dans le New York Times, contenant des déclarations erronées à propos de limitations d'Audacity. Plus tard, Ion a corrigé leurs documentations pour clarifier le fait qu'Audacity peut enregistrer un LP entier, détecter les points de coupures des pistes du LP, basé sur les silences, et exporter simultanément plusieurs fichiers pour chaque piste. Lire notre page Wiki sur <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">les platines USB (lien en anglais)</a> pour plus d'information."
 
-#: download/bundlers.php:324
+#: download/bundlers.php:333
 msgid "As one of the major manufacturers of USB turntables, Numark bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Numark later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track.  See our Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB turntables</a> for more information."
 msgstr "En tant qu'un des fabricants majeurs de platines USB, Numark a empaqueté Audacity avec les produits listés depuis plusieurs années, aidant à établir la large popularité de numérisation des LPs. NOTE : En Janvier 2007, un <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article à propos de ces platines (lien en anglais)</a> est paru dans le New York Times, contenant des déclarations erronées à propos de limitations d'Audacity. Plus tard, Numark a corrigé leurs documentations pour clarifier le fait qu'Audacity peut enregistrer un LP entier, détecter les points de coupures des pistes du LP basé sur les silences, et exporter simultanément plusieurs fichiers pour chaque piste. Voir notre page Wiki sur <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">les platines USB (lien en anglais)</a> pour plus d'information."
 
-#: download/bundlers.php:344
-msgid "FreedomSampler&trade; is a collection of free, open source software with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you."
-msgstr "FreedomSampler&trade; est une collection de logiciels gratuits et open sources avec leur code source complet, permettant une redistribution facile sous une licence GNU General Public License. Une image ISO peut être téléchargée gratuitement, ou bien , vous pouvez en<a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">acheter</a> une copie qui vous sera expédiée."
+#: download/bundlers.php:353
+msgid "FreedomSampler&trade; is a collection of free, open source software for Windows and Linux with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you."
+msgstr "FreedomSampler&trade; est une collection de logiciels gratuits et open-sources, pour Windows et Linux, avec leur code source complet, permettant une redistribution facile sous la licence GNU General Public License. Des images ISO peuvent être téléchargées gratuitement ou bien , vous pouvez en<a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">acheter (lien en anglais)</a> une copie qui vous sera expédiée."
 
-#: download/bundlers.php:355
-msgid "TheOpenCD is a now-discontinued collection of high quality free and open source software. Currently, you can still <a href=\"http://releases.theopencd.org/\">download archived CD images</a> or <a href=\"http://ztechshop.net/disks/opencd/\">purchase a CD online</a> for worldwide shipping."
-msgstr "TheOpenCD est une collection maintenant arrêtée de logiciels libres et ouverts. Actuellement, vous pouvez <a href=\"http://releases.theopencd.org/\">télécharger un image CD archivée</a> ou <a href=\"http://ztechshop.net/disks/opencd/\">acheter un CD en ligne</a> pour une expédition internationale."
+#: download/bundlers.php:364
+msgid "TheOpenCD is a now-discontinued collection of high quality free and open source software for Windows. Currently, you can still <a href=\"http://releases.theopencd.org/\">download archived CD images</a> or <a href=\"http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">purchase a CD online</a> for worldwide shipping."
+msgstr "TheOpenCD est une collection à présent interrompue de logiciels de haute qualité, libres et ouverts pour Windows. Actuellement, vous pouvez toujours <a href=\"http://releases.theopencd.org/\">télécharger une image CD archivée (lien en anglais)</a> ou <a href=\"http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">acheter un CD en ligne</a> pour une expédition internationale."
 
-#: download/bundlers.php:366
-msgid "OpenDisc is a similar collection of high quality free and open source software. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. The project hopes to make available a purchasable CD shortly."
-msgstr "OpenDisc est une collection similaire de logiciels libre et open source de grande qualité. Actuellement, une <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">image CD</a> téléchargeable est disponible. Le projet espère fabriquer un CD physique prochainement."
+#: download/bundlers.php:375
+msgid "OpenDisc is a similar collection of high quality free and open source software for Windows. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. The project hopes to make available a purchasable CD shortly."
+msgstr "OpenDisc est une collection similaire de logiciels libres et open source de haute qualité pour Windows. Actuellement, une <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">image CD</a> téléchargeable est disponible. Le projet espère rendre disponible un CD physique commandable sous peu."
 
-#: download/bundlers.php:386
+#: download/bundlers.php:395
 msgid "Audiotouch is sound recording and playback software, designed for ease of use. It features one-touch recording and saving, quickly recording multiple audio files directly to disk without the need to interact with save dialog boxes. Audacity_Voice is a customized version of Audacity which can be added to Audiotouch, offering simple editing with reduced menu dialogs."
 msgstr "Audiotouch est un logiciel d'enregistrement et de lecture de audio, conçu pour être facile à utiliser. Il dispose d'un enregistrement et sauvegarde en une touche, de l'enregistrement rapide de plusieurs fichiers audio directement sur le disque sans avoir besoin d'interagir avec des fenêtres de sauvegarde. Audacity_Voice est une version personnalisée d'Audacity qui peut être ajoutée à Audiotouch, proposant une édition simple avec des dialogues de menus réduits."
 
-#: download/bundlers.php:396
+#: download/bundlers.php:405
 msgid "Software allowing users to create their own custom comic books with included clipart, backgrounds, word balloons, sound files and other  assets."
 msgstr "Logiciel permettant aux utilisateurs de créer leurs propres magazines de bandes dessinées personnalisés avec clipart, arrière-plans, bulles de mots, fichiers sons inclus et d'autres choses."
 
-#: download/bundlers.php:405
+#: download/bundlers.php:414
 msgid "The Thinklabs <a href=\"http://www.thinklabsmedical.com/content/view/17/157/\">ds32a digital stethoscope</a> has enhanced sound quality with 50x amplification. Volume can be adjusted for faint heart sounds, obese patients or noisy work environments. The stethoscope's waveforms and spectrograms can be analyzed in Thinklabs Phonocardiography (a customized version of Audacity for Microsoft Windows and Mac OS X)."
 msgstr "Le stéthoscope <a href=\"http://www.thinklabsmedical.com/content/view/17/157/\">numérique Thinklabs ds32a</a> a amélioré la qualité du son avec une amplification de 50x. Le volume peut être ajusté pour des sons faibles du cœur, des patients obèses ou des environnements de travail bruyants. Les formes d'onde et spectrogrammes du stéthoscope peuvent être analysés dans Thinklabs Phonocardiography (une version personnalisée d'Audacity pour Microsoft Windows et Mac OS X)."
 
-#: download/bundlers.php:414
+#: download/bundlers.php:423
 msgid "Portable recording studio or digital audio workstation (DAW), featuring \"walk and mix\" technology."
 msgstr "Studio d'enregistrement portable ou poste de travail audio numérique (DAW), disposant de la technologie \"walk and mix\"."
 
-#: download/bundlers.php:424
+#: download/bundlers.php:433
 msgid "A now discontinued, customized version of Audacity for Microsoft Windows and Mac OS X. Umixit-enabled multi-track CDs or songs were available, enabling the user to record their own vocals or instruments to create remixes, mash-ups, sing karaoke and more."
 msgstr "Une version personnalisée, discontinue, d'Audacity pour Microsoft Windows et Mac OS X. Des CD multi-pistes avec Umixit activé ou des chansons sont disponibles, permettant à l'utilisateur d'enregistrer ces propres voix ou instrumentales pour créer des remixes, des recomposition, des versions karaoké et plus."
 
-#: download/bundlers.php:434
+#: download/bundlers.php:443
 msgid "Mirror site for Audacity downloads, from webzine about Windows software at Impress Watch Corporation, Tokyo, Japan."
 msgstr "Site miroir pour les téléchargements d'Audacity, du webzine à propos du logiciel Windows chez Impress Watch Coporation, Tokyo, Japon."
 
@@ -4298,20 +4296,20 @@ msgstr "Audacity peut charger des effets VST (mais pas des instruments VST) sur 
 msgid "VST effects can be found on many plug-in sites such as:"
 msgstr "Les effets VST peuvent être trouvés sur plusieurs sites de greffon comme :"
 
-#: download/plugins.php:38
+#: download/plugins.php:37
 msgid "The <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-ins</a> page on our <a href=\"http://wiki.audacityteam.org/\">Wiki<a/> contains further help for VST plug-ins, and lists a large number of VST plug-ins that have been reported to work well in Audacity."
 msgstr "La page des <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">greffons VST (lien en anglais)</a> sur notre <a href=\"http://wiki.audacityteam.org/\">Wiki (lien en anglais)<a/> contient davantage d'information pour les greffons VST et liste un grand nombre de greffons VST qui sont réputés fonctionner correctement avec Audacity."
 
-#: download/plugins.php:40
+#: download/plugins.php:39
 #: about/credits.php:134
 msgid "Libraries"
 msgstr "Bibliothèques"
 
-#: download/plugins.php:41
+#: download/plugins.php:40
 msgid "At present, the only library you can add to the 1.2 version of Audacity is the <b>LAME MP3 encoding</b> library. This allows Audacity to export audio in the popular <a href=\"http://wiki.audacityteam.org/index.php?title=MP3\">MP3</a> format. To install the LAME library, please read our <a href=\"../help/faq?s=install&i=lame-mp3\">LAME FAQ</a>."
 msgstr "À présent, la seule bibliothèque que vous pouvez ajouter à la version 1.2 d'Audacity est la bibliothèque <b>d'encodage LAME MP3</b>. Elle permet à Audacity d'exporter l'audio dans le format populaire <a href=\"http://wiki.audacityteam.org/index.php?title=MP3\">MP3 (lien en anglais)</a>. Pour installer la bibliothèque LAME, veuillez lire notre <a href=\"../help/faq?s=install&i=lame-mp3\">FAQ LAME</a>."
 
-#: download/plugins.php:42
+#: download/plugins.php:41
 msgid "In addition to supporting LAME, the <a href=\"../download/features-1.3-a\">Beta 1.3</a> version of Audacity has experimental support for the <b>FFmpeg import/export</b> library. This allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg FAQ.</a> The next 2.0 Stable version of Audacity is expected to support the FFmpeg library.</a>"
 msgstr "De plus, pour supporter LAME, la version <a href=\"../download/features-1.3-a\">Bêta 1.3</a> d'Audacity possède un support expérimental de la bibliothèque d'<b>import/export FFmpeg</b>. Celle-ci permet à Audacity d'importer et exporter plusieurs formats audio supplémentaire comme AC3, AMR(NB), M4A et WMA, et autorise aussi l'import de l'audio depuis les fichiers vidéos. Pour installer la bibliothèque FFmpeg, veuillez lire notre <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FAQ FFmpeg.</a> La prochaine version stable 2.0 d'Audacity est prévue pour supporter la bibliothèque FFmpeg.</a>"
 
@@ -5055,21 +5053,21 @@ msgstr "Audacity est libre, mais il peut néanmoins être vendu en accord avec l
 
 #: download/buy.php:15
 msgid ""
-"<h3>Windows</h3>\n"
+"<h3>Windows or Linux </h3>\n"
 "  <p>\n"
 "   <ul>\n"
-"    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</a> is a collection of free, open source software with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you (US only).</li>\n"
-"    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software. Currently, you can still <a href=\"http://releases.theopencd.org/\">download archived CD images</a> or <a href=\"http://ztechshop.net/disks/opencd/\">purchase a CD online</a> for worldwide shipping.</li>\n"
-"    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> is a similar collection of high quality free and open source software. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. The project hopes to make available a purchasable CD shortly.</li>\n"
+"    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</a> is a collection of free, open source software for <b>Windows and Linux</b> with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you (US only).</li>\n"
+"    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software for <b>Windows</b>. Currently, you can still <a href=\"http://releases.theopencd.org/\">download archived CD images</a> or <a href=\"http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">purchase a CD online</a> for worldwide shipping.</li>\n"
+"    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> is a similar collection of high quality free and open source software for <b>Windows</b>. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. The project hopes to make available a purchasable CD shortly.</li>\n"
 "   </ul>\n"
 "  </p>"
 msgstr ""
-"<h3>Windows</h3>\n"
+"<h3>Windows ou Linux</h3>\n"
 "  <p>\n"
 "   <ul>\n"
-"    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</a> est un ensemble de logiciels libres et ouverts avec code source disponible, permettant une redistribution sous licence GNU GPL. Des images ISO peuvent être téléchargées gratuitement ou vous pouvez <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">acheter</a> une copie qui vous sera expédiée (uniquement aux états-unis).</li>\n"
-"    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> est une collection maintenant interrompue de logiciels libres et ouverts de grande qualité. Actuellement, vous pouvez toujours <a href=\"http://releases.theopencd.org/\">télécharger les images CD archivées</a> ou <a href=\"http://ztechshop.net/disks/opencd/\">acheter un CD en ligne</a> livré dans le monde entier.</li>\n"
-"    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> est une collection similaire de logiciels libres et ouverts. Une version téléchargeable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">de l'image CD</a> est disponible. L'équipe projet espère rendre disponible une version achetable bientôt.</li>\n"
+"    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade; (lien en anglais)</a> est un ensemble de logiciels gratuits et ouverts pour <b>Windows et Linux</b> avec le code source entier, permettant une redistribution facile sous licence GNU GPL. Des images ISO peuvent être téléchargées gratuitement ou vous pouvez <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">commander (lien en anglais)</a> une copie qui vous sera expédiée (uniquement aux états-unis d'Amérique).</li>\n"
+"    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> est une collection maintenant interrompue de logiciels libres et ouverts de grande qualité pour <b>Windows</b>. Actuellement, vous pouvez toujours <a href=\"http://releases.theopencd.org/\">télécharger les images CD archivées (lien en anglais)</a> ou <a href=\"http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">acheter un CD en ligne (lien en anglais)</a> livré dans le monde entier.</li>\n"
+"    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> est une collection similaire de logiciels libres et ouverts pour <b>Windows</b>. Actuellement, une version téléchargeable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">de l'image CD</a> est disponible. Le projet espère rendre disponible une version commandable sous peu.</li>\n"
 "   </ul>\n"
 "  </p>"
 
@@ -6098,150 +6096,33 @@ msgstr ""
 "  <li>Veuillez lire <a href=\"http://wiki.audacityteam.org/index.php?title=Translating_Audacity\">Traduire Audacity (lien en anglais)</a> pour davantage d'astuces concernant la traduction du code source d'Audacity, et pour apprendre comment le logiciel Audacity et le site web sont traduits.</li>\n"
 "</ul>"
 
-#: community/ind_gale.php:16
-#: community/index.php:16
-msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:"
-msgstr "Audacity est un logiciel libre développé par des volontaires. Vous pouvez contribuer au projet Audacity de plusieurs manières :"
+#: community/index.php:15
+msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute your time to the Audacity project:"
+msgstr "Audacity est un logiciel libre développé par des volontaires. Voici comment vous pouvez donner de votre temps au projet Audacity :"
 
-#: community/ind_gale.php:20
-#: community/index.php:29
-msgid "We welcome donations to support Audacity development."
-msgstr "Nous acceptons volontiers les donations pour le développement d'Audacity."
+#: community/index.php:19
+msgid "Give us <a href=\"../contact#feedback\">suggestions or bug reports</a>, join the Audacity user community and help other users."
+msgstr "Donnez nous des <a href=\"../contact#feedback\">suggestions ou des rapport de bogue avis, signalez-nous des bogues</a>, rejoignez la communauté des utilisateurs d'Audacity et aidez les autres utilisateurs."
 
-#: community/ind_gale.php:23
-#: community/index.php:20
-msgid "Give us feedback, report bugs, join the Audacity user community and help other users."
-msgstr "Donnez vos avis, signalez-nous des bogues, rejoignez la communauté des utilisateurs d'Audacity et aidez les autres utilisateurs."
+#: community/index.php:22
+msgid "If you are a C++ programmer, join the development team and help us improve Audacity.  We also welcome documentation and other contributions, and can help with questions on modifying the Audacity source code. To get started, please join the <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a> mailing list."
+msgstr "Si vous êtes un développeur C++, vous pouvez rejoindre l'équipe de développement et nous aider à améliorer Audacity. Nous encourageons les initiatives de documentation et les autres contributions, et pouvons aider avec des questions de modifications du code source d'Audacity. Pour commencer, veuillez rejoindre la liste de discussion <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel (lien en anglais)</a>."
 
-#: community/ind_gale.php:26
-#: community/index.php:23
-msgid "If you are a C++ programmer, join the development team and help us improve Audacity.  We also welcome documentation and other contributions, and can help with questions on building and modifying the Audacity source code."
-msgstr "Si vous développez en C++, vous pouvez rejoindre l'équipe de développement et nous aider à améliorer Audacity. Nous encourageons les initiatives de documentation et les autres contributions, et pouvons aider avec des questions de constructions et de modifications du code source d'Audacity."
-
-#: community/ind_gale.php:29
-#: community/index.php:26
+#: community/index.php:25
 msgid "If you are fluent in both English and another language, you can help translate the Audacity software, web site and <a href=\"http://manual.audacityteam.org/index.php?title=Main_Page\">Beta Manual</a>. We also need people to help provide support for Audacity in different languages."
 msgstr "Si vous parlez Anglais et une autre langue couramment, vous pouvez aider à la traduction du logiciel Audacity, de son site internet et de son <a href=\"http://manual.audacityteam.org/index.php?title=Main_Page/fr\">Manuel Bêta</a>. Nous avons également besoin de gens pour aider à fournir du support pour Audacity dans différents langages."
 
-#: community/donate.php:11
-msgid "How Does Audacity Raise Money?"
-msgstr "Comment Audacity collecte des fonds ?"
-
-#: community/donate.php:16
-msgid "Make a Donation"
-msgstr "Faire un Don"
-
-#: community/donate.php:19
-msgid "Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:"
-msgstr "Cliquez sur le bouton ci-dessous pour effectuer un don sécurisé par Paypal (un compte Paypal n'est pas nécessaire). Vous pouvez envoyer le montant de votre choix, en utilisant soit votre carte de crédit soit votre compte Paypal :"
-
-#. i18n-hint: the encoding inside the <a href> tag between the two
-#. "echo" strings obscures the e-mail address from (at least some)
-#. harvesting bots. Please translate the strings above and below
-#. the <a href> tag, and ignore the line with the <a href> tag itself.
-#: community/donate.php:42
-msgid "If you prefer to send a personal check or another form of payment, please write to our "
-msgstr "Si vous préférez payer par chèque ou une autre forme de paiement, merci d'écrire à notre"
-
-#: community/donate.php:45
-msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
-msgstr "addresse mail de retour</a> dites-nous de quel pays vous êtes et combien vous voulez payer."
-
-#: community/donate.php:51
-msgid "Audacity raises money via donations, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
-msgstr "Audacity collecte des fonds via des donations, <a href=\"http://audacityteam.org/sponsor.php\">du mécénat</a>, et de <a href=\"../contact/privacy#advertising\">la publicité</a> sur nos pages web."
-
-#: community/donate.php:55
-msgid ""
-"As of March 2007, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, \n"
-"  which hosts the Audacity site and downloads, is allowing us to also post \n"
-"  advertisements, in an innovative program whereby we split the revenues.\n"
-"  Thank you, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
-msgstr ""
-"À partir de mars 2007, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, \n"
-"  qui héberge le site et les téléchargements d'Audacity, nous a aussi permis de passer des \n"
-" publicités, dans un programme innovant avec lequel nous partageons les revenus.\n"
-"  Merci, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
-
-#: community/donate.php:62
-msgid ""
-"Income to Audacity is not distributed among previous contributors to Audacity. \n"
-"  There are too many people and it would be difficult to do so fairly. \n"
-"  Also, nobody contributed code to Audacity expecting money in return. \n"
-"  Audacity is developed by volunteers, working in our spare time. \n"
-"  Audacity is not shareware, and we do not expect to make any money from it."
-msgstr ""
-"Les recettes ne sont pas réparties entre les personnes ayant contribué à Audacity. \n"
-"  Il y a trop de gens pour pouvoir le faire équitablement\n"
-"  De plus, personne n'ayant contribué à la programmation d'Audacity n'attend d'argent en retour. \n"
-"  Audacity est développé par des bénévoles, travaillant sur leur temps libre. \n"
-"  Audacity n'est pas un partagiciel (shareware),  et nous ne cherchons pas à en tirer de profits."
-
-#: community/donate.php:70
-msgid ""
-"Rather, the team of Audacity lead developers will spend the money on items and \n"
-"  services that benefit the project as a whole. \n"
-"  Money that comes in to the project helps us pay for bandwidth and web hosting, \n"
-"  development tools, and audio hardware.\n"
-"  In the past we used funds from donations to purchase the Audacity trademark and to\n"
-"  subsidize travel costs for Audacity developers to meet for a hackathon, and we plan to\n"
-"  do more of these.\n"
-"  Our long-term goal is to bring in enough money to hire a full-time developer who could \n"
-"  devote all of his/her time to the project and take over some of the administrative, \n"
-"  maintenance and release tasks, freeing volunteers to spend more time on code."
-msgstr ""
-"Plutôt, l'équipe des développeurs principaux d'Audacity qui dépense de l'argent \n"
-"pour des items et services qui bénéficient au projet tout entier. \n"
-"L'argent versé au projet nous aide à payer la bande passante et l'hébergement internet, \n"
-"les outils de développement et du matériel audio. \n"
-"Dans le passé, nous avons utilisé les dons pour acheter la marque commerciale Audacity et pour participer \n"
-"au coût des déplacements pour un sprint de programmation entre les développeurs d'Audacity, \n"
-"et nous comptons développer ceci. \n"
-"Notre but à long terme est de récolter suffisamment d'argent pour engager un développeur à temps complet \n"
-"qui puisse donner tout son temps au projet et se charger d'une partie des charges administratives, \n"
-"de la maintenance, et des taches de nouvelles versions, libérant les bénévoles pour passer davantage de temps sur le code."
-
-#: community/donate.php:83
-msgid ""
-"These are all things that help us provide Audacity for free and continue to make it better. \n"
-"  The Audacity Team is completely committed to keeping Audacity free and open source.\n"
-"  We made that commitment in\n"
-"  <a href=\"http://audacity.sourceforge.net/about/license\">\n"
-"      licensing Audacity under the GNU General Public License</a>."
-msgstr ""
-"Tout ceci nous aide à fournir gratuitement Audacity et à l'améliorer.\n"
-"  L'équipe d'Audacity est décidée à le maintenir gratuit et libre. \n"
-"  Nous en avons pris l'engagement \n"
-"  <a href=\"http://audacity.sourceforge.net/about/license\">\n"
-"      en plaçant Audacity sous licence GNU GPL</a>."
-
-#: community/donate.php:91
-msgid ""
-"There are many ways to support Audacity, and many degrees of doing so.  \n"
-"  Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">\n"
-"  contribute</a> by helping us with <a href=\"../community/developers\">programming</a>,\n"
-"  <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\">\n"
-"  documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering\n"
-"  questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always \n"
-"  welcomed users whose only contribution is simply using Audacity, giving us feedback\n"
-"  on how to improve it and telling others about it. Thank you for supporting Audacity."
-msgstr ""
-"Il y a plusieurs manières différentes de supporter  Audacity, et plusieurs degrés pour le faire.  \n"
-"  Hormis donner de l'argent, vous pouvez <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">\n"
-"  contribuer (lien en anglais)</a> en nous aidant en <a href=\"../community/developers\">programmant</a>,\n"
-"  <a href=\"../contact#feedback\">testant</a>, <a href=\"http://manual.audacityteam.org/man/Main_Page/fr\">\n"
-"  documentant</a>, <a href=\"../community/translation\">traduisant</a> ou en répondant aux\n"
-"  questions sur notre <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">Forum</a>. Nous avons \n"
-"  toujours accueillis les utilisateurs qui contribuent simplement en utilisant Audacity, nous donnant des retours\n"
-"  sur comment l'améliorer et en parlant aux autres. Merci pour votre support d'Audacity."
+#: community/index.php:28
+msgid "We also welcome <a href=\"../donate/\">donations</a> to support Audacity development."
+msgstr "Nous acceptons volontiers les <a href=\"../donate/\">donations</a> pour soutenir le développement d'Audacity."
 
 #: community/developers.php:16
 msgid "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses. The <a href=\"http://www.ohloh.net/projects/59/analyses/latest\">Code tab</a> on the Ohloh site shows the progress of code development."
 msgstr "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> a des statistiques sur la valeur du développement d'Audacity. Le &quot;badge&quot; Ohloh, en bas de chaque page de ce site, montre des valeurs basiques actualisées. Nous paramétrons les pages Ohloh à propos d'Audacity ainsi, les statistiques montrent uniquement les valeurs liées au développement spécifique d'Audacity, ceci excluant les codes des bibliothèques tierces qu'Audacity utilise. L'<a href=\"http://www.ohloh.net/projects/59/analyses/latest\">onglet Code</a> sur le site Ohloh montre l'avancée du code de développement."
 
 #: community/developers.php:19
-msgid "Join the <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a> mailing list to discuss current and future development, or to get help building and modifying the Audacity source code."
-msgstr "Rejoignez la liste de diffusion <a href=\"../contact/lists#devel\">audacity-devel</a> pour discuter des développements actuels et futurs, ou pour aider à la modification du code source d'Audacity."
+msgid "Join the <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a> mailing list to discuss current and future development, or to get help modifying the Audacity source code."
+msgstr "Rejoignez la liste de diffusion <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a> pour discuter des développements actuels et futurs, ou pour aider à la modification du code source d'Audacity."
 
 #: community/developers.php:21
 msgid "SVN"
@@ -9322,6 +9203,59 @@ msgstr "Audacity encourage l'interopérabilité avec l'utilisation d'un format d
 #: xml/index.php:22
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "Sous peu, davantage de documentation sur le format de fichier de projet Audacity."
+
+#: donate/main.inc.php:11
+#: donate/index.php:11
+msgid "How Does Audacity Raise Money?"
+msgstr "Comment Audacity collecte des fonds ?"
+
+#: donate/index.php:16
+msgid "Make a Donation"
+msgstr "Faire un Don"
+
+#: donate/index.php:19
+msgid "Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:"
+msgstr "Cliquez sur le bouton ci-dessous pour effectuer un don sécurisé par Paypal (un compte Paypal n'est pas nécessaire). Vous pouvez envoyer le montant de votre choix, en utilisant soit votre carte de crédit soit votre compte Paypal :"
+
+#. i18n-hint: the encoding inside the <a href> tag between the two
+#. "echo" strings obscures the e-mail address from (at least some)
+#. harvesting bots. Please translate the strings above and below
+#. the <a href> tag, and ignore the line with the <a href> tag itself.
+#: donate/index.php:42
+msgid "If you prefer to send a personal check or another form of payment, please write to our "
+msgstr "Si vous préférez payer par chèque ou une autre forme de paiement, merci d'écrire à notre"
+
+#: donate/index.php:45
+msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
+msgstr "addresse mail de retour</a> dites-nous de quel pays vous êtes et combien vous voulez payer."
+
+#: donate/index.php:51
+msgid "Audacity raises money via donations, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
+msgstr "Audacity collecte des fonds via des donations, <a href=\"http://audacityteam.org/sponsor.php\">du mécénat</a>, et de <a href=\"../contact/privacy#advertising\">la publicité</a> sur nos pages web."
+
+#: donate/index.php:55
+msgid "As of March 2007, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, which hosts the Audacity site and downloads, is allowing us to also post advertisements, in an innovative program whereby we split the revenues. Thank you, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
+msgstr "À partir de mars 2007, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, qui héberge le site et les téléchargements d'Audacity, nous a aussi permis de passer des publicités, dans un programme innovant avec lequel nous partageons les revenus.  Merci, <a href=\"http://sourceforge.net/\">SourceForge.net</a> !"
+
+#: donate/index.php:59
+msgid "Income to Audacity is not distributed among previous contributors to Audacity. There are too many people and it would be difficult to do so fairly. Also, nobody contributed code to Audacity expecting money in return. Audacity is developed by volunteers, working in our spare time. Audacity is not shareware, and we do not expect to make any money from it."
+msgstr "Les recettes ne sont pas réparties entre les contributeurs précédents d'Audacity. Il y a trop de gens et il serait difficile de le faire équitablement. De plus, personne n'ayant contribué à la programmation d'Audacity n'attend d'argent en retour. Audacity est développé par des bénévoles, travaillant sur leur temps libre. Audacity n'est pas un partagiciel (shareware), et nous ne cherchons pas à en tirer de profits."
+
+#: donate/index.php:63
+msgid "Rather, the team of Audacity lead developers will spend the money on items and services that benefit the project as a whole. Money that comes in to the project helps us pay for bandwidth and web hosting, development tools, and audio hardware. In the past we used funds from donations to purchase the Audacity trademark and to subsidize travel costs for Audacity developers to meet for a hackathon, and we plan to do more of these. Our long-term goal is to bring in enough money to hire a full-time developer who could devote all of his/her time to the project and take over some of the administrative,  maintenance and release tasks, freeing volunteers to spend more time on code."
+msgstr "Plutôt que ceci, l'équipe des développeurs principaux d'Audacity dépensera l'argent pour des items et services qui bénéficient au projet tout entier. L'argent versé au projet nous aide à payer la bande passante et l'hébergement internet, les outils de développement et du matériel audio. Dans le passé, nous avons utilisé les dons pour acheter la marque commerciale Audacity et pour participer au coût des déplacements pour une course de programmation entre les développeurs d'Audacity, et nous comptons en faire davantage. Notre but à long terme est de récolter suffisamment d'argent pour engager un/une développeur/euse à temps complet qui puisse donner tout son temps au projet et se charger d'une partie des charges administratives, de la maintenance, et des taches de nouvelles versions, libérant les bénévoles pour passer davantage de temps sur le code."
+
+#: donate/index.php:67
+msgid "These are all things that help us provide Audacity for free and continue to make it better. The Audacity Team is completely committed to keeping Audacity free and open source. We made that commitment in <a href=\"http://audacity.sourceforge.net/about/license\">licensing Audacity under the GNU General Public License</a>."
+msgstr "Tout ceci nous aide à fournir gratuitement Audacity et à continuer à l'améliorer. L'équipe d'Audacity est complètement déterminée à le maintenir gratuit et libre. Nous en avons pris l'engagement <a href=\"http://audacity.sourceforge.net/about/license\">en plaçant Audacity sous licence GNU GPL</a>."
+
+#: donate/index.php:70
+msgid "Other Ways to Contribute"
+msgstr "Autres moyens de contribuer"
+
+#: donate/index.php:73
+msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
+msgstr "Hormis donner de l'argent, vous pouvez <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">donner votre temps (lien en anglais)</a> en nous aidant en <a href=\"../community/developers\">programmant</a>, <a href=\"../contact#feedback\">testant</a>, <a href=\"http://manual.audacityteam.org/man/Main_Page/fr\">documentant</a>, <a href=\"../community/translation\">traduisant</a> ou en répondant aux questions sur notre <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">Forum (Français)</a>. Nous avons toujours accueillis les utilisateurs dont la contribution est simplement d'utiliser Audacity, nous donnant des retours sur comment l'améliorer et en parlant aux autres. Merci pour votre soutient d'Audacity."
 
 #~ msgid "&nbsp;1.3.14 (in source code)"
 #~ msgstr "&nbsp;1.3.14 (en code source)"
