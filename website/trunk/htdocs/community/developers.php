@@ -28,7 +28,7 @@
   </li>
 </ul>
 
-<p><?=_('The SVN repository may also be accessed using many different GUI and IDE <a href="http://subversion.tigris.org/links.html#clients">clients and plug-ins</a>. If using GUI or IDE tools, please use the commands indicated in the tool\'s documentation.')?></p>
+<p><?=_('The SVN repository may also be accessed using GUI and IDE <a href="http://wiki.audacityteam.org/wiki/SVN_Clients">clients or plug-ins</a>. If using GUI or IDE tools, please use the commands indicated in the tool\'s documentation.')?></p>
 
 <h3 id="bugs"><?=_('Bug Tracking')?></h3>
 <p><?=_('The Audacity developers use bugzilla to track bugs and enhancements. To find issues to work on, please view our categorized <a href="http://wiki.audacityteam.org/wiki/Bug_Lists">Bug Lists</a>.')?></p>
