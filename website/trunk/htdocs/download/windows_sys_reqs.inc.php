@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2007, 2011 by Vaughan Johnnson
+ * Copyright 2007, 2012 by Vaughan Johnnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -48,5 +48,5 @@
 
 <p>&nbsp;</p>
 <p>
-  <?=_("Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows 2000, XP or Vista running on machines of substantially higher specification than the minimum stated above.")?>
+  <?=_("Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista or 7 running on machines of substantially higher specification than the minimum stated above.")?>
 </p>
