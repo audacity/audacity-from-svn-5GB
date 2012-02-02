@@ -2,7 +2,7 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2005 Matt Brubeck
- * Copyright 2007 - 11 Gale Andrews, Vaughan Johnson
+ * Copyright 2007 - 12 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -88,8 +88,8 @@
 <h3 id="win">Windows</h3>
 <ol>
   <li>Go to the <a href="http://lame1.buanzo.com.ar/">LAME download page</a>.</li>
-  <li>Under "For Audacity on Windows", left-click the link <b>"Lame v3.98.3 for Audacity on Windows.exe"</b> and save the file anywhere on your computer. <b>Do not right-click the link to the .exe file.</b> </li> 
-  <li>Double-click <b>"Lame v3.98.3 for Audacity on Windows.exe"</b> to launch it (you can safely ignore any warnings that the "publisher could not be verified").</li> 
+  <li>Under "For Audacity on Windows", left-click the link <b>"Lame v3.99.3 for Audacity on Windows.exe"</b> and save the file anywhere on your computer. <b>Do not right-click the link to the .exe file.</b> </li> 
+  <li>Double-click <b>"Lame v3.99.3 for Audacity on Windows.exe"</b> to launch it (you can safely ignore any warnings that the "publisher could not be verified").</li> 
   <li>Follow the "Setup" instructions to install LAME for Audacity. Do not change the offered destination location of "C:\Program Files\Lame for Audacity".</li>
   <li>The first time you use the "Export as MP3" command, Audacity will ask for the location of <b>"lame_enc.dll"</b>. Navigate to "C:\Program Files\Lame for Audacity", select "lame_enc.dll", then click "Open" and "OK".</li>
   <li>If you prefer the Zip option for the LAME download, save the zip file to anywhere on your computer, extract "lame_enc.dll" to any location, then show Audacity where to find it as in Step 5 above.</li>
