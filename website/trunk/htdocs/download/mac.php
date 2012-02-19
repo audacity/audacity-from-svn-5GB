@@ -2,7 +2,7 @@
 /*
  * Copyright 2004 Matt Brubeck
  * Richard Ash 2006
- * Gale Andrews 2009-2011
+ * Gale Andrews 2009-2012
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -22,7 +22,7 @@
 </div>
 
 <h3><?=_("Recommended Download")?></h3>
-<p><a href="#sysreq">System Requirements</a></p>
+<p><a href="#sysreq"><?=_("System Requirements")?></a></p>
 <ul>
   <li><p><?php printf(_('For Mac OS X 10.0 to 10.3 (<b>Intel</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url($macosx_intel_url), macosx_intel_version, macosx_intel_size)?></p></li>
   <li><p><?php printf(_('For Mac OS X 10.0 to 10.3 (<b>PPC</b>): <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), download_url ($macosx_url), macosx_version, macosx_size)?></p></li>
