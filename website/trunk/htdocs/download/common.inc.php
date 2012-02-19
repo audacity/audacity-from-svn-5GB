@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 Matt Brubeck, 2010 Gale Andrews
+ * Copyright 2004 Matt Brubeck, 2012 Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  *
@@ -12,7 +12,7 @@
   <li><p><a href="../help/faq?s=install&amp;item=lame-mp3"><?=_("LAME MP3 encoder")?></a> - <?=_("Allows Audacity to export MP3 files.")?></p></li>
 </ul>
 
-<h4>Alternative Download Links</h4>    
+<h4><?=_("Alternative Download Links")?></h4>    
 <ul>
   <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our alternate download links:')) ?></p>
 	 <ul><li><?php printf(_('<a href="%s">SourceForge</a> (older versions can be viewed by clicking to enter the required folder under "Name")'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
