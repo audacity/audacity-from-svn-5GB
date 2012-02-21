@@ -34,7 +34,7 @@
       Mac OS X</a><br>&nbsp;<img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("1.2.5 (Intel) and 1.2.6 (PPC)")?><br>&nbsp;<img src="../images/download_spacer.png">(OS X 10.0 to 10.3)</span></h3>
 
       <h3><a href="linux"><img alt="Linux" src="../images/unix.png">
-      Linux/Unix</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.2.6 (in source code)")?></span></h3>
+      GNU/Linux</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.2.6 (in source code)")?></span></h3>
   </div>
 </div>
   <div class="downloads" id="beta_downloads">
@@ -50,7 +50,7 @@
       Mac OS X</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?php printf(_("&nbsp;%s (Universal Binary)"), $beta_version)?><br><img src="../images/download_spacer.png">&nbsp;<?=_("(OS X 10.4 or later)")?></span></h3>
   
       <h3><a href="beta_linux"><img alt="Linux" src="../images/unix.png">
-      Linux/Unix</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?php printf(_("&nbsp;%s (in source code)"), $beta_version)?></span></h3>
+      GNU/Linux</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?php printf(_("&nbsp;%s (in source code)"), $beta_version)?></span></h3>
   </div>
 </div>
 

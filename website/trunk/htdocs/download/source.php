@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2006 - 2010 Richard Ash, Gale Andrews
+ * 2006 - 2012 Richard Ash, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -59,7 +59,7 @@
 <h4><?=_("Further Help")?></h4>
 <p><? printf('<ul><li>%s</li>',
 	_('On Windows, see the file "compile.txt" inside the "Win" folder in the source code. For OS X, see "compile.txt" inside the "Mac" folder in the code.'));
-  printf(_('%sSee our guides to compiling Audacity for %sWindows%s, %sMac%s and %sLinux/Unix%s on the %sWiki%s.%s'),
+  printf(_('%sSee our guides to compiling Audacity for %sWindows%s, %sMac%s and %sGNU/Linux%s on the %sWiki%s.%s'),
    '<li>',
    '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Windows">',
    '</a>',

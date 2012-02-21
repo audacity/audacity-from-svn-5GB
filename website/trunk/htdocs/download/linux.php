@@ -1,13 +1,13 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2008 Gale Andrews
+ * 2008 - 2012 Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "linux";
-  $pageTitle = _("Linux/Unix");
+  $pageTitle = _("GNU/Linux");
   include "../include/header.inc.php";
 ?>
 
@@ -30,7 +30,7 @@
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
  <ul>
-  <li><?=_("We recommend using the latest version of Linux/Unix from your distribution that is compatible with your hardware specifications. Audacity will run best with at least 64 MB RAM and a 300 MHz processor.")?></li>
+  <li><?=_("We recommend using the latest version of GNU/Linux from your distribution that is compatible with your hardware specifications. Audacity will run best with at least 64 MB RAM and a 300 MHz processor.")?></li>
  </ul>
 
 
