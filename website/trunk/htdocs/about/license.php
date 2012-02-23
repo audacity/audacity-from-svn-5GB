@@ -27,7 +27,7 @@ echo _('<h3 id="license">License</h3>
 
 <p>Audacity is <a href="../help/faq?s=general&amp;i=free">free software</a>. You may use it for any personal, commercial or educational purpose, including installing it on as many different computers as you wish.</p>
 
-<p>You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GNU General Public License (GPL)</a> as published by the Free Software Foundation - either <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">version 2 of the License</a>, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the GPL.');?>
+<p>You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GNU General Public License (GPL)</a> as published by the Free Software Foundation - either <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">version 2 of the License</a>, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the GPL. ');?>
 <?php
    // i18n-hint: the encoding inside the <a href> tag between the two 
    // "echo" strings here and elsewhere on this page obscures the 
