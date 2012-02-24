@@ -55,8 +55,6 @@
 <?=_('Audacity is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href="about/">Learn more about Audacity...</a> Also check our <a href="http://audacityteam.org/wiki/">Wiki</a> and <a href="http://audacityteam.org/forum/">Forum</a> for more information.')?></p>
   <p>
 <b><?php printf(_('The current release of Audacity is <a href="download/">%s (Beta)'), beta_version)?></a></b>. <?=_(' Most users should download this version. We will soon release version 2.0, replacing both this version and 1.2.')?></p>
-  <p>
-    <?=_('<a href="download/">Audacity 1.2</a> is our older release series, no longer under development. <b>1.2 does not support Windows 7, Windows Vista or Mac OS X 10.4 or later.</b>')?> <?php printf(_('You can install Audacity %s and %s on the same machine.'), $download_version, beta_version)?></p>
 </div>
 
 <div id="download">
