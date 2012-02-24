@@ -19,7 +19,6 @@
     $download_desc = _("for Windows&reg; 98/ME/2000/XP");
     $download_page = "windows";
     $beta_download_desc = _("for Windows&reg; 98/ME/2000/XP/Vista/7
-<!--<p>or <a href=\"http://audacity.sourceforge.net/download/beta_windows#ansi\">Audacity 1.3.7</a> <b>(Beta)</b> for Windows&reg; 98/ME</i></p>-->");
     $beta_download_page = "beta_windows";
 
     include "beta/versions.inc.php";
@@ -55,9 +54,9 @@
   <p>
 <?=_('<b>Audacity&reg; is free, open source software for recording and editing sounds.</b> It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href="about/">Learn more about Audacity...</a> Also check our <a href="http://audacityteam.org/wiki/">Wiki</a> and <a href="http://audacityteam.org/forum/">Forum</a> for more information.')?></p>
   <p>
-<b><?php printf(_('The latest release of Audacity is <a href="download/">%s (Beta)'), beta_version)?></a></b>. <?=_('This is our active version with the latest features and fixes.</b> It is a mature Beta, intended to become the new 2.0 stable version in the near future. Most users should download the Beta. Documentation and translations into different languages may not be quite complete. See <a href="download/features-1.3-a">New Features in 1.3</a> for more information about the 1.3 Beta series.')?></p>
+<b><?php printf(_('The current release of Audacity is <a href="download/">%s (Beta)'), beta_version)?></a></b>. <?=_(' Most users should download this version. We will soon release version 2.0, replacing both this version and 1.2.')?></p>
   <p>
-    <?=_('<a href="download/">Audacity 1.2</a> is our older release series, complete and fully documented, but no longer under development. <b>1.2 does not support Windows 7, Windows Vista or Mac OS X 10.4 or later.</b>')?> <?php printf(_('You may install Audacity %s and %s on the same machine.'), $download_version, beta_version)?></p>
+    <?=_('<a href="download/">Audacity 1.2</a> is our older release series, no longer under development. <b>1.2 does not support Windows 7, Windows Vista or Mac OS X 10.4 or later.</b>')?> <?php printf(_('You can install Audacity %s and %s on the same machine.'), $download_version, beta_version)?></p>
 </div>
 
 <div id="download">
