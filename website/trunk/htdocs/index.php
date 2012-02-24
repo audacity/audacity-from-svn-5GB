@@ -62,10 +62,12 @@
   <h3><a href="download/<?=$beta_download_page?>"><?php printf(_("Download Audacity %s"), $beta_version)?></a> (<?=_("Beta")?>)</h3>
   <p><?=$beta_download_desc?></p>
   </div> 
+/*
   <div id="download_sub">
   <h3><a href="download/<?=$download_page?>"><?php printf(_("Download Audacity %s"), $download_version)?></a></h3>	
   <p><?=$download_desc?></p>
   </div>
+ */
 
   <?php
     if ($download_page) {
