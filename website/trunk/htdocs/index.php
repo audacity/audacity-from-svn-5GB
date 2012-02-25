@@ -18,7 +18,7 @@
     $download_version = win_exe_version;
     $download_desc = _("for Windows&reg; 98/ME/2000/XP");
     $download_page = "windows";
-    $beta_download_desc = _("for Windows&reg; 98/ME/2000/XP/Vista/7
+    $beta_download_desc = _("for Windows&reg; 98/ME/2000/XP/Vista/7");
     $beta_download_page = "beta_windows";
 
     include "beta/versions.inc.php";
@@ -62,12 +62,10 @@
   <h3><a href="download/<?=$beta_download_page?>"><?php printf(_("Download Audacity %s"), $beta_version)?></a> (<?=_("Beta")?>)</h3>
   <p><?=$beta_download_desc?></p>
   </div> 
-/*
-  <div id="download_sub">
+<!--<div id="download_sub">
   <h3><a href="download/<?=$download_page?>"><?php printf(_("Download Audacity %s"), $download_version)?></a></h3>	
   <p><?=$download_desc?></p>
-  </div>
- */
+  </div>-->
 
   <?php
     if ($download_page) {
