@@ -30,7 +30,7 @@
   <li>Create WAV or AIFF files suitable for burning to CD.</li>
   <li>Import and export all file formats supported by <a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a>.</li>
   <li>Open raw (headerless) audio files using the “Import Raw” command.</li>
-  <li><strong>Note:</strong>  To import or export AC3, AMR(NB), M4A, WMA and other proprietary formats, use <a href="http://audacity.sourceforge.net/download/features-1.3-a">Audacity Beta</a> with the optional <a href="http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary">FFmpeg library</a>.</li>
+  <li><strong>Note:</strong>  To import or export AC3, AMR(NB), M4A, WMA and other proprietary formats, use <a href="http://audacity.sourceforge.net/download/features-1.3-a">Audacity</a> with the optional <a href="http://audacity.sourceforge.net/help/faq?s=files&i=wma-proprietary">FFmpeg library</a>.</li>
 </ul>');
 
   echo _('<h3>Editing</h3>

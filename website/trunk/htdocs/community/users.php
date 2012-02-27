@@ -30,7 +30,7 @@
 <p><?=_('If you find a bug in Audacity,')?> <a href="../contact#feedback"><?=_('let us know')?></a>.</p>
 
 <h3><?=_('Help us test our latest versions')?></h3>
-<p><?=_('You can help us by downloading our latest <a href="../download/">Beta version</a> or <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds">Nightly Build<a/> and testing it out. These versions usually contain new features or bug fixes that haven\'t been fully tested yet. Please <a href="../contact#feedback">let us know</a> of any problems you encounter, what you like and what could be improved. Tell us if you find any <em>regressions</em> - things that used to work but don\'t work anymore.')?></p>
+<p><?=_('You can help us by downloading our latest <a href="../download/">version</a> or <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds">Nightly Build<a/> and testing it out. These versions usually contain new features or bug fixes that haven\'t been fully tested yet. Please <a href="../contact#feedback">let us know</a> of any problems you encounter, what you like and what could be improved. Tell us if you find any <em>regressions</em> - things that used to work but don\'t work anymore.')?></p>
 
 <?php
   include "../include/footer.inc.php";

@@ -23,7 +23,7 @@
 
 <h3><?=_("Optional Downloads")?></h3>
 <ul>
-  <li><p><?=_('Get the latest Stable code (incorporating any changes since the release tarball) from <a href="../community/developers#svn">SVN</a>. This is the best choice if you are compiling on Windows.')?></p></li>
+  <li><p><?=_('Get the latest code (incorporating changes since the release tarball) from <a href="../community/developers#svn">SVN</a>.')?></p></li>
 <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our alternate download links:')) ?></p>
    <ul><li><?php printf(_('<a href="%s">SourceForge</a> (older versions can be viewed by clicking to enter the required folder under "Name")'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
        <li><?php printf(_('<a href="%s">Google Code</a> (click on the headings to sort the list)'), "http://code.google.com/p/audacity/downloads/list")?></li>
@@ -40,7 +40,7 @@
 <h3 id="instructions"><?=_("How to Compile Audacity")?></h3>
 
 <h4><?=_("Dependencies")?></h4>
-<p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the unicode options. The next Stable version of Audacity will support newer wxWidgets and GTK libraries.')?></p>
+<p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the unicode options. The next version of Audacity will support newer wxWidgets and GTK libraries.')?></p>
 <p><?=_('Installation of the following libraries is <b>optional</b> - they are included in Audacity obtained from <a href="../community/developers#svn">SVN</a>.')?></p>
 <ul>
   <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>

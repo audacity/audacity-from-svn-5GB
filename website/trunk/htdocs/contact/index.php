@@ -56,7 +56,7 @@
 </ul>
 </p>
 
-<p><?=_('<b>Bug reports:</b> Please check the latest Release Notes for Audacity <a href="http://audacity.sourceforge.net/download/release-notes">1.2<a/> or <a href="http://wiki.audacityteam.org/wiki/Release_Notes">1.3 (Beta)</a> series, and <a href="http://wiki.audacityteam.org/wiki/Reporting_Bugs">Reporting Bugs</a> <b>before</b> making a report. We are no longer fixing bugs in the 1.2 series - please try <a href="/../download">1.3 (Beta)</a> if you have a problem with a 1.2 version of Audacity.');?></p>
+<p><?=_('<b>Bug reports:</b> Please check the latest Release Notes for Audacity <a href="http://audacity.sourceforge.net/download/release-notes">1.2<a/> or <a href="http://wiki.audacityteam.org/wiki/Release_Notes">1.3</a> series, and <a href="http://wiki.audacityteam.org/wiki/Reporting_Bugs">Reporting Bugs</a> <b>before</b> making a report. We are no longer fixing bugs in the 1.2 series - please try <a href="/../download">1.3</a> if you have a problem with a 1.2 version of Audacity.');?></p>
 
 <div class="advice">
 <p><?=_('Reports of apparent bugs should be as specific as possible, including:</p>
