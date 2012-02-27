@@ -14,7 +14,7 @@
 
 <h3><?=_('Beta version')?></h3>
 <p>
-<?=_('Audacity 1.3 Beta is our active version with the latest features and fixes. It is a mature Beta, intended to become the new 2.0 stable version in the near future.')?></p>
+<?=_('Audacity 1.3 Beta is our current version. It will become the new 2.0 version in the near future.')?></p>
 
 <p><?=_('
  <ul>
@@ -464,7 +464,7 @@ Known Issues at Release</a> (also viewable in the included README.txt).
    <dt> Changes and improvements:</dt>
            <dd>
                  <ul>
-                       <li> Linked audio and label tracks disabled until a future Beta
+                       <li> Linked audio and label tracks disabled until a future 
                              version so they can be bug fixed</li>
                        <li> Input volume slider will be disabled if it doesn't have proper
                              control of system slider; use the system slider instead</li>

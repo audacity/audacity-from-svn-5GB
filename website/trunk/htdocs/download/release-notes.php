@@ -27,7 +27,7 @@
   <li><p><?=_("Labels do not accept lower case \"z\". To use \"z\" in labels, go to the Keyboard Preferences and change the shortcut for \"Find Zero Crossings\" to something other than z.")?></p></li>
   <li><p><?=_("Windows Vista or 7: Pressing Stop after recording may cause a crash.")?></p></li>
   <li><p><?=_("Mac OS X: Shortcut keys may activate when typing in file open or save windows.")?></p></li>
-  <li><p><?=_("<a href=\"../download\">Audacity Beta (1.3 Series)</a> is now the recommended version on Windows 7, Windows Vista and Mac OS X 10.6/10.7.")?></p></li>
+  <li><p>See <?=_("<a href=\"../download\">Audacity</a> for the recommended version on Windows 7, Windows Vista and Mac OS X 10.6/10.7.")?></p></li>
 </ul>
 
 <?=_("<h3>Changes in Audacity 1.2.6</h3>

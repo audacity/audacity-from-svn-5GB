@@ -10,7 +10,7 @@
 <h3><?=_('Beta version')?></h3>
 
 <p>
-<?=_('Audacity 1.3 Beta is our active version with the latest features and fixes. It is a mature Beta, intended to become the new 2.0 stable version in the near future. Because the current 1.2 stable version is now old, most users should download the Beta version. Please check the Beta <a href="#sysreq">System Requirements</a>.')?></p>
+<?=_('Audacity 1.3 will become the 2.0 version. Please check its <a href="#sysreq">System Requirements</a>.')?></p>
 
 <p><?=_('
  <ul>

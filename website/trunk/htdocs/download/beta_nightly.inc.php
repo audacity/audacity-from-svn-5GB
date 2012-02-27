@@ -7,4 +7,4 @@
  * This file contains text shared by "beta_mac.php" and "beta_windows.php".
  */
 ?>
-  <?=_('"Nightly Builds" are Alpha builds from our latest development code that we work on between releases. Your help in testing and <a href="http://audacity.sourceforge.net/contact#feedback">reporting bugs</a> in these builds will be invaluable as we move towards a new 2.0 Stable release. <b>Note:</b>&nbsp;These builds may by definition be more unstable than any other releases. They should not be used as your production version of Audacity.')?>     
+  <?=_('"Nightly Builds" are Alpha builds from latest development code. Your help in testing and <a href="http://audacity.sourceforge.net/contact#feedback">reporting bugs</a> in these builds is invaluable. <b>Note:</b>&nbsp;These builds will definitely be less reliable than officical releases. They should not be used as your production version of Audacity.')?>     
