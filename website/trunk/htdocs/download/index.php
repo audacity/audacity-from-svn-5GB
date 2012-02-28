@@ -21,22 +21,6 @@
 <p><?=_("Select your operating system to download the latest version of the free Audacity sound editor.")?></p>
 
 <div class="download_container">
-  <div class="downloads" id="stable_downloads">
-    <div class="downloads_header">
-      <h3><?=_("1.2 Series")?></h3>
-      <p><?=_("Latest versions:")?></p>
-    </div>
-    <div>
-      <h3><a href="windows"><img alt="Windows" src="../images/new_win.png">
-      Windows</a><span class="downloads_smaller"><br>&nbsp;<img src="../images/download_spacer.png">1.2.6 (Windows 98/ME/2000/XP)</span></h3>  
-
-      <h3><a href="mac"><img alt="Mac" src="../images/mac.png">
-      Mac OS X</a><br>&nbsp;<img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("1.2.5 (Intel) and 1.2.6 (PPC)")?><br>&nbsp;<img src="../images/download_spacer.png">(OS X 10.0 to 10.3)</span></h3>
-
-      <h3><a href="linux"><img alt="Linux" src="../images/unix.png">
-      GNU/Linux</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.2.6 (in source code)")?></span></h3>
-  </div>
-</div>
   <div class="downloads" id="beta_downloads">
     <div class="downloads_header">
       <h3><a href="features-1.3-a"><?=_("1.3 Series (Beta)")?></a></h3>
@@ -57,7 +41,25 @@
 <div class="under_downloads">
 
 <h3><?=_("Legacy Downloads")?></h3>
- <p><?=_("For users of <b>Mac OS 9</b>, a legacy 1.0.0 version of Audacity is also available on the ")?><a href="mac"><?=_("Mac downloads page.")?></a></p>
+<div class="download_container">
+  <div class="downloads" id="stable_downloads">
+    <div class="downloads_header">
+      <h3><?=_("1.2 Series")?></h3>
+      <p><?=_("Latest versions:")?></p>
+    </div>
+    <div>
+      <h3><a href="windows"><img alt="Windows" src="../images/new_win.png">
+      Windows</a><span class="downloads_smaller"><br>&nbsp;<img src="../images/download_spacer.png">1.2.6 (Windows 98/ME/2000/XP)</span></h3>  
+
+      <h3><a href="mac"><img alt="Mac" src="../images/mac.png">
+      Mac OS X</a><br>&nbsp;<img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("1.2.5 (Intel) and 1.2.6 (PPC)")?><br>&nbsp;<img src="../images/download_spacer.png">(OS X 10.0 to 10.3)</span></h3>
+
+      <h3><a href="linux"><img alt="Linux" src="../images/unix.png">
+      GNU/Linux</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.2.6 (in source code)")?></span></h3>
+  </div>
+</div>
+
+  <p><?=_("For users of <b>Mac OS 9</b>, a legacy 1.0.0 version of Audacity is also available on the ")?><a href="mac"><?=_("Mac downloads page.")?></a></p>
 
 <h3><?=_("Further information")?></h3>
    <ul>
