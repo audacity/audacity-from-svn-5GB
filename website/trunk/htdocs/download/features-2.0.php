@@ -12,7 +12,6 @@
 
 <h2><?=$pageTitle?></h2>
 
-<h3><?=_('Beta version')?></h3>
 <p>
 <?=_('Audacity 2.0 is our current version. It has dozens of new features, developed in the 1.3 series. It replaces all prior versions')?></p>
 
@@ -21,9 +20,12 @@
 <?=_('
 <dl>
   <dt> Bug fixes for: </dt>
-    <dd> Interface: (Windows) Removed a crash risk where shortcuts could be 
-      used to record or import in one project while importing or 
-      exporting in another.
+    <dd>Interface: 
+    <ul> 
+      <li>(Windows) Removed a crash risk where shortcuts could 
+        be used to record or import in one project while importing or 
+        exporting in another.</li>
+    </ul>
     </dd>
 ')?>
 
