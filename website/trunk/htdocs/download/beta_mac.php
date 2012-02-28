@@ -46,12 +46,12 @@
 </ul>
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
-<ul>
-  <li><?php printf(_('OS X 10.3 and earlier are not supported, however the previous %s 1.3.3 Beta</a> (.dmg file, 7.2 MB) supports OS X 10.3.'),
-'<a href="http://audacity.googlecode.com/files/audacity-macosx-ub-1.3.3.dmg">')?></li>
-  <li><?=_("Audacity runs best with at least 64 MB RAM and a 300 MHz processor.")?></li>
-</ul>
-
+<p>
+<div class="advice">
+<b><?=_("Audacity runs best with at least 1 GB RAM and a 1 GHz processor (2 GB RAM/2 GHz on OS X 10.7 or later).")?></b> 
+<p><?=_("Where Audacity is to be used for lengthy multi-track projects, we recommend a minimum of 2 GB RAM and 2 GHz processor (4 GB RAM on OS X 10.7 or later).")?></p>
+</div>
+</p>
 
 <?php
   include "../include/footer.inc.php";

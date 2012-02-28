@@ -47,12 +47,21 @@
 <?php include "common.inc.php"; ?>
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
+<?=_("Audacity 2.0 series requires Mac OS X 10.4 or later.")?>
+<p>
 <ul>
-  <li><?=_("Audacity 1.2 supports Mac OS X 10.0 to 10.3 only.")?></li>
-  <li><?=_("Audacity 1.0 supports Mac OS 9.0 only.")?></li>
-  <li><?=_("Audacity runs best with at least 64 MB RAM and a 300 MHz processor.")?></li>
+<li><?=_("Audacity 1.2.5 is a legacy version for Mac OS X 10.0 to 10.3 (Intel) only.")?></li>
+<li><?=_("Audacity 1.2.6a is a legacy version for Mac OS X 10.0 to 10.3 (PPC) only.")?></li>
+<li><?=_("Audacity 1.0.0 is a legacy version for Mac OS 9 only.")?></li>
 </ul>
+</p>
 
+<p>
+<div class="advice">
+<b><?=_("Audacity runs best with at least 1 GB RAM and a 1 GHz processor (2 GB RAM/2 GHz on OS X 10.7 or later).")?></b> 
+<p><?=_("Where Audacity is to be used for lengthy multi-track projects, we recommend a minimum of 2 GB RAM and 2 GHz processor (4 GB RAM on OS X 10.7 or later).")?></p>
+</div>
+</p>
 
 <?php
   include "../include/footer.inc.php";
