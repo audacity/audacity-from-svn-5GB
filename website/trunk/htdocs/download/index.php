@@ -39,10 +39,9 @@
 </div>
 
 <div class="under_downloads">
-
 <h3><?=_("Legacy Downloads")?></h3>
 <div class="download_container">
-  <div class="downloads" id="stable_downloads">
+<div class="downloads" id="stable_downloads">
     <div class="downloads_header">
       <h3><?=_("1.2 Series")?></h3>
       <p><?=_("Latest versions:")?></p>
@@ -59,7 +58,8 @@
   </div>
 </div>
 
-  <p><?=_("For users of <b>Mac OS 9</b>, a legacy 1.0.0 version of Audacity is also available on the ")?><a href="mac"><?=_("Mac downloads page.")?></a></p>
+<div style="float:right; width:48%">
+<p><?=_("For users of <b>Mac OS 9</b>, a legacy 1.0.0 version of Audacity is also available on the ")?><a href="mac"><?=_("Mac downloads page.")?></a></p>
 
 <h3><?=_("Further information")?></h3>
    <ul>
@@ -67,6 +67,7 @@
    <li><p><?=_('If you wish to compile Audacity yourself, please download the <a href="source">source code</a>.')?></p></li>
    <li><p><?=_('You may copy, distribute, modify and/or resell Audacity, under the terms of the  <a href="../about/license">GNU GPL</a>.')?></p></li>
   </ul>
+</div>
 
 <p>&nbsp;</p>
 </div>
