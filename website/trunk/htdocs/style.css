@@ -254,6 +254,10 @@ span.downloads_smaller { font-size:85%; font-weight:300; }
   margin-left: 1em;
 }
 
+#legacy_downloads {
+  float: left;
+}
+
 .downloads_header {
   text-align: center;
   background: #eee;
