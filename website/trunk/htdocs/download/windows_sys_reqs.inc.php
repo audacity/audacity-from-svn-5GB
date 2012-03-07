@@ -16,10 +16,22 @@
     <th><?=_("Recommended RAM/<br>processor speed")?></th>
     <th><?=_("Minimum RAM/<br>processor speed")?></th>
   </tr>
+
   <tr>
-    <td class="version">Windows 98, ME</td>
-    <td class="ramspeed">128 MB / 500 MHz</td>
-    <td class="ramspeed">64 MB / 300 MHz</td>
+    <td>Windows 7 (64-bit)</td>
+    <td>4 GB / 2 GHz</td>
+    <td>2 GB / 1 GHz</td>
+  </tr>
+  <tr>
+    <td>
+      Windows Vista Home Premium/<br>Business/Ultimate/7 (32-bit)</td>
+    <td>4 GB / 2 GHz</td>
+    <td>1 GB / 1 GHz</td>
+  </tr>
+  <tr>
+    <td>Windows Vista Home Basic</td>
+    <td>2 GB / 1 GHz</td>
+    <td>512 MB / 1 GHz</td>
   </tr>
   <tr>
     <td>Windows 2000, XP</td>
@@ -27,23 +39,10 @@
     <td>128 MB/300 MHz</td>
   </tr>
   <tr>
-    <td>Windows Vista Home Basic &para;</td>
-    <td>2 GB / 1 GHz</td>
-    <td>512 MB / 1 GHz</td>
+    <td class="version">Windows 98, ME</td>
+    <td class="ramspeed">128 MB / 500 MHz</td>
+    <td class="ramspeed">64 MB / 300 MHz</td>
   </tr>
-  <tr>
-    <td>Windows Vista Home Premium/<br>Business/Ultimate/7 (32-bit) &para;</td>
-    <td>4 GB / 2 GHz</td>
-    <td>1 GB / 1 GHz</td>
-  </tr>
-  <tr>
-    <td>Windows 7 (64-bit) &para; </td>
-    <td>4 GB / 2 GHz</td>
-    <td>2 GB / 1 GHz</td>
-  </tr>
-  <tr>
-    <td>&para;<?=_("Windows Vista / 7 are not supported in Audacity 1.2.6.")?>
-  </tr> 
 </table>
 
 <p>&nbsp;</p>
