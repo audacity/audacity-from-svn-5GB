@@ -7,7 +7,7 @@
 define('beta_version', '1.3.14');
 
 /* Specific download versions below. Only define these if the version for that
- * download is different to the current beta above. You do need to go
+ * download is different to the value above. You do need to go
  * through and set the correct sizes for each download however. */
 // Note: Sizes are in MB.
 
