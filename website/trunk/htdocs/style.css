@@ -239,7 +239,6 @@ span.downloads_smaller { font-size:85%; font-weight:300; }
 }
 
 .downloads {
-  width: 48%;
   border: 2px solid;
   border-color: #009;
   margin-top: 0px;
