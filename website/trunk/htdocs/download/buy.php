@@ -10,7 +10,7 @@
   include "../include/header.inc.php";
 
   echo "<h2>$pageTitle</h2>";
-  echo "<p>"._('Audacity is always free to download from us, but third parties can also sell or otherwise distribute our program, thanks to the <a href="../about/license#license">GNU General Public License</a>. If you want a copy of Audacity on CD-ROM, we encourage you to use the options listed below.')."</p>";
+  echo "<p>"._('Audacity is always free to download from us, but third parties can also sell or otherwise distribute our program, thanks to the <a href="../about/license#license">GNU General Public License</a>. Note that these are often not the latest version of Audacity, so we suggest you check before purchasing.')."</p>";
 
   echo _('<h3>Windows or Linux </h3>
   <p>
