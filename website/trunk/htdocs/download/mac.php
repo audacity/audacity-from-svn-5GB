@@ -15,7 +15,6 @@
 ?>
 
 <h2><?=$pageTitle?></h2>
-<p><?=$downloadTagline?></p>
 
 <div class="advice">
 <?=_('<b>Mac OS X 10.4 and later are not supported in Audacity 1.2. Please use</b> <a href="../download/beta_mac">Audacity Beta</a><b> for these operating systems.</b>')?>
