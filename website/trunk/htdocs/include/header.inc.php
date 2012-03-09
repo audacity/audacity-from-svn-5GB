@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2006 - 11 Vaughan Johnson
+ * Copyright 2006 - 12 Vaughan Johnson
  * Copyright 2005 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
  * This file is licensed under a Creative Commons license:
@@ -16,6 +16,10 @@
   <meta name="keywords" content="Audacity audio software recording editing sounds">
   <link rel="shortcut icon" href="<?=$sitePath?>/favicon.ico">
   <link rel="stylesheet" href="<?=$sitePath?>/style.css" type="text/css">
+
+  <!-- Google+ : This part needs to be within <head>. The badge is shown in the footer. -->
+	<link href="https://plus.google.com/108226440145001840649" rel="Audacity Team" />
+  <!-- end Google+ -->
 </head>
 <body>
 <p><a class="skip" href="#content"><?=_("Jump to page content")?></a></p>
@@ -59,7 +63,7 @@
 <input type="hidden" name="hl" value="en"></input>
 </td></tr></table>
 </form>
-<!-- SiteSearch Google -->
+<!-- end SiteSearch Google -->
 
 <?php
   $titleStr = _("Audacity: Free Sound Editor and Recording Software");
@@ -186,19 +190,13 @@
 		<script type="text/javascript" src="http://genweb.ostg.com/google/sfproject.js"></script>
 	*/
 	?>
-	
+
 	<script type="text/javascript"><!--
-	google_ad_client = "pub-2386514291404644";
+	google_ad_client = "ca-pub-2386514291404644";
+	/* AdSense_under_navbar */
+	google_ad_slot = "4949551373";
 	google_ad_width = 160;
 	google_ad_height = 600;
-	google_ad_format = "160x600_as";
-	google_ad_type = "text";
-	google_ad_channel = "";
-	google_color_border = "336699";
-	google_color_bg = "FFFFFF";
-	google_color_link = "0000FF";
-	google_color_text = "000000";
-	google_color_url = "008000";
 	//-->
 	</script>
 	<script type="text/javascript"
@@ -206,7 +204,7 @@
 	</script>
 	
 	<center>
-		<a href="http://audacity.sourceforge.net/contact/privacy#advertising"><font size="-2"><?=_("Advertisements Policy")?></font></a>  
+		<a href="/contact/privacy#advertising"><font size="-2"><?=_("Advertisements Policy")?></font></a>  
 	</center>
   </div>
 
