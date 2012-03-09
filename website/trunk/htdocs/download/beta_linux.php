@@ -16,8 +16,6 @@
 
 <?php include "betawarning.inc.php" ?>
 
-<p><?=$downloadTagline?></p>
-
 <h3 id="recdown"><?=_("Downloads")?></h3>
 
 <p><?=_('Installation packages for Audacity on GNU/Linux and other Unix-like systems are provided by individual distributions. However the Beta version has not yet been packaged for very many distributions. The following distributions are known to have Beta packages:')?></p>
