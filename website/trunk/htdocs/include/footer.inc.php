@@ -19,9 +19,14 @@
     | <a href="<?=$sitePath?>/site-map"><?=_("Site Map")?></a>
   </p>
   <p>
-	<SCRIPT type='text/javascript' language='JavaScript' src='http://www.ohloh.net/projects/59/badge_js'></SCRIPT>
-    <a title="<?=_("This site is under a Creative Commons Attribution 3.0 License")?>" href="http://creativecommons.org/licenses/by/3.0/"><img alt="<?=_("Creative Commons Attribution License")?>" src="<?=$sitePath?>/images/creative-commons3.png"></a>
-    <a title="<?=_("Development hosted by SourceForge")?>" href="http://sourceforge.net/projects/audacity/"><img alt="SourceForge.net" src="http://sflogo.sourceforge.net/sflogo.php?group_id=6235&amp;type=1"></a></p>
+	  <SCRIPT type='text/javascript' language='JavaScript' src='http://www.ohloh.net/projects/59/badge_js'></SCRIPT>
+    <a title="<?=_("This site is under a Creative Commons Attribution 3.0 License.")?>" href="http://creativecommons.org/licenses/by/3.0/"><img alt="<?=_("Creative Commons Attribution License")?>" src="<?=$sitePath?>/images/creative-commons3.png"></a>
+    <a title="<?=_("Website hosted by SourceForge.")?>" href="http://sourceforge.net/projects/audacity/"><img alt="SourceForge.net" src="http://sflogo.sourceforge.net/sflogo.php?group_id=6235&amp;type=1"></a>
+    &nbsp;&nbsp;&nbsp;
+    <a href="https://plus.google.com/108226440145001840649?prsrc=3" style="text-decoration:none;">
+      <img src="https://ssl.gstatic.com/images/icons/gplus-32.png" alt="" style="border:0;width:32px;height:32px;"/>
+    </a>
+  </p>
   <h2><?=_("View this page in a different language")?></h2>
   <p>
     <?php
