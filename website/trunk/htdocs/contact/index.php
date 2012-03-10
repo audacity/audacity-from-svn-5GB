@@ -3,7 +3,7 @@
  * Copyright 2004 Matt Brubeck
  * 2006 Richard Ash
  * 2007 Vaughan Johnson
- * 2008-11 Gale Andrews
+ * 2008-12 Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -32,7 +32,7 @@
   // translate this link text unless there is a sub-forum in your language.
   echo _('Forum</a>.');?>
 <?php
-  echo _(' To post a question, <a href="http://forum.audacityteam.org/ucp.php?mode=register">register</a>, confirm your registration then log in. Choose the correct subforum (for example, "Windows" in the Audacity 1.2.x Forum), click "New Topic" top left, then submit your message.  Foreign language subforums are available for <a href="http://forum.audacityteam.org/viewforum.php?f=7">French</a>, <a href="http://audacity-forum.de/">German</a>, <a href="http://forum.audacityteam.org/viewforum.php?f=10">Russian</a> and <a href="http://forum.audacityteam.org/viewforum.php?f=8">Spanish</a>.');?>
+  echo _(' To post a question, <a href="http://forum.audacityteam.org/ucp.php?mode=register">register</a>, confirm your registration then log in. Choose the correct subforum (for example, "Windows" in the Audacity 2.X Forum), click "New Topic" top left, then submit your message.  Foreign language subforums are available for <a href="http://forum.audacityteam.org/viewforum.php?f=7">French</a>, <a href="http://audacity-forum.de/">German</a>, <a href="http://forum.audacityteam.org/viewforum.php?f=10">Russian</a> and <a href="http://forum.audacityteam.org/viewforum.php?f=8">Spanish</a>.');?>
 </p>
 <p><?=_('Always give plenty of information when asking questions on the Forum. You can find more help with joining and using the Forum <a href="http://wiki.audacityteam.org/wiki/Asking_Questions">here</a>.')?></p>
 
@@ -56,13 +56,13 @@
 </ul>
 </p>
 
-<p><?=_('<b>Bug reports:</b> Please check the latest Release Notes for Audacity <a href="http://audacity.sourceforge.net/download/release-notes">1.2<a/> or <a href="http://wiki.audacityteam.org/wiki/Release_Notes">1.3</a> series, and <a href="http://wiki.audacityteam.org/wiki/Reporting_Bugs">Reporting Bugs</a> <b>before</b> making a report. We are no longer fixing bugs in the 1.2 series - please try <a href="/../download">1.3</a> if you have a problem with a 1.2 version of Audacity.');?></p>
+<p><?=_('<b>Bug reports:</b> Please check both the <a href="http://wiki.audacityteam.org/wiki/Release_Notes">Release Notes</a> for your specific version of Audacity 2.0 and <a href="http://wiki.audacityteam.org/wiki/Reporting_Bugs">Reporting Bugs</a> <b>before</b> making a report. We are not fixing bugs in the legacy 1.2 or 1.3 series - please upgrade to the <a href="/download">latest 2.0 version</a> of Audacity instead.');?></p>
 
 <div class="advice">
-<p><?=_('Reports of apparent bugs should be as specific as possible, including:</p>
+<p><?=_('<b>Please include the following information.</b> This is important.</p>
 <ol>
-  <li><b>The exact three-digit version number of Audacity</b> (for example, 1.3.12) - you can check this at Help > About Audacity, or Audacity > About Audacity on Mac</li>
-  <li><b>Your operating system</b> (for example, Windows XP Service Pack 2 or Intel Mac OS X 10.4)</li>
+  <li><b>The exact three-section version number of Audacity</b> (for example, 2.0.0) - you can check this at Help > About Audacity, or Audacity > About Audacity on Mac</li>
+  <li><b>Your operating system</b> (for example, Windows 7 Service Pack 1 or Intel Mac OS X 10.4)</li>
   <li><b>Details of what you were trying to do</b>, including what steps led to the problem occurring, and the text of any error messages.</li>
 </ol>
 </div>
