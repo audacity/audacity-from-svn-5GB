@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 11 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 12 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -25,7 +25,7 @@
 <p><?=_('Audacity has built-in support for Nyquist effects on all operating systems. You can download additional <a href="nyquistplugins">Nyquist plug-ins</a>, or create your own using the <a href="../help/nyquist">Nyquist programming language</a>. Nyquist code can be tested using "Nyquist Prompt" under the Effect menu, or code for Nyquist plug-ins that generate audio can be quickly tested with <a href="http://audacity.sourceforge.net/nyquist/generate.zip">Nyquist Generate Prompt</a>.')?>
 
 <h3><?=_("VST Plug-Ins")?></h3>
-<p><?=_('Audacity can load VST effects (but not VST instruments) on Windows and Mac. Audacity 1.2 only has <a href="../help/faq?s=install&i=vst-bugs">limited</a> support for VST effects. This support can be added by downloading the optional <a href="../help/faq?s=install&amp;i=vst-enabler">VST Enabler</a>. Audacity 1.3.8 onwards supports a much wider range of VST effects with full GUI interface (where provided by the plug-in). The VST Enabler is not required.')?></p>
+<p><?=_('Audacity can load VST effects (but not VST instruments) on Windows and Mac. The VST Enabler is no longer required. See <a href="http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#vst_install">"How do I install VST plug-ins?"</a> for more information.')?></p>
 
 <p><?=_('VST effects can be found on many plug-in sites such as:')?></p>
 <ul>
@@ -37,9 +37,9 @@
 <p><?=_('The <a href="http://wiki.audacityteam.org/wiki/VST_Plug-ins">VST Plug-ins</a> page on our <a href="http://wiki.audacityteam.org/">Wiki<a/> contains further help for VST plug-ins, and lists a large number of VST plug-ins that have been reported to work well in Audacity.')?></p>
 
 <h3><?=_("Libraries")?></h3>
-<p><?=_('At present, the only library you can add to the 1.2 version of Audacity is the <b>LAME MP3 encoding</b> library. This allows Audacity to export audio in the popular <a href="http://wiki.audacityteam.org/index.php?title=MP3">MP3</a> format. To install the LAME library, please read our <a href="../help/faq?s=install&i=lame-mp3">LAME FAQ</a>.')?></p>    
-<p>
-  <?=_('Audacity also has experimental support for <b>FFmpeg import/export</b>. This allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href="http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg">FFmpeg FAQ.</a>')?></p>
+<p><?=_('The <b>LAME MP3 encoding</b> library allows Audacity to export audio in the popular <a href="http://wiki.audacityteam.org/index.php?title=MP3">MP3</a> format. To install the LAME library, please read our <a href="http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#lame">LAME FAQ</a>.')?></p>    
+
+<p><?=_('The <b>FFmpeg import/export</b> library allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href="http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown">FFmpeg FAQ</a>.')?></p>
 
 <?php
   include "../include/footer.inc.php";
