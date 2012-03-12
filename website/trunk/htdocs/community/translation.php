@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2002-2011 Dominic Mazzoni, Matt Brubeck, Gale Andrews
+ * Copyright 2002-2012 Dominic Mazzoni, Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -40,7 +40,7 @@ printf(_('We are grateful that volunteers translate Audacity into many different
 		'</a>', $web_year, $web_month, $web_day);
 ?></a></li>
   <li><a href="http://wxwidgets.org/i18n.php"><?=_("wxWidgets i18n")?></a></li>
-  <li><a href="http://manual.audacityteam.org/index.php?title=Main_Page"><?=_("Audacity User Manual</a> - The Audacity Beta User Manual also requires translating. This is done online using Wiki software. To create an account and start translating, please contact")?> 
+  <li><a href="http://manual.audacityteam.org/index.php?title=Main_Page"><?=_("Audacity Manual</a> - The Audacity Manual also requires translating. This is done online using Wiki software. To create an account and start translating, please contact")?> 
 <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#103;&#x61;&#x6c;&#101;&#x40;&#x61;&#x75;&#x64;&#x61;&#x63;&#105;&#x74;&#x79;&#x74;&#x65;&#97;&#109;&#46;&#111;&#114;&#x67;&#x3f;&#115;&#x75;&#x62;&#106;&#101;&#x63;&#x74;&#61;&#x4d;&#x61;&#x6e;&#x75;&#x61;&#x6c;&#95;&#87;&#105;&#107;&#105;&#95;&#97;&#x63;&#99;&#x6f;&#117;&#110;&#116;">Gale</a>.</li>  
 </ul>
 
