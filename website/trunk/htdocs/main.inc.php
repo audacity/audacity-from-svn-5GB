@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 12 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 12 Matt Brubeck, Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -30,18 +30,13 @@ $siteNavItems = array(
   ),
   array(_("Download"), "download/",
     array(
-      array(_("1.2 Series")."", ""),
-      array($ind._("Windows"), "windows"),
-      array($ind._("Mac"), "mac"),
-      array($ind._("GNU/Linux"), "linux"),
-      array($ind._("Source Code"), "source"),
-      array($ind._("Release Notes"), "release-notes"),
-      array(_("1.3 Series (Beta)")."", ""),
-      array($ind._("New Features in 1.3"), "features-1.3-a"),
-      array($ind._("Windows"), "beta_windows"),
-      array($ind._("Mac"), "beta_mac"),
-      array($ind._("GNU/Linux"), "beta_linux"),
-      array($ind._("Source Code"), "beta_source"),
+      array(_("Audacity 2.0")."", ""),
+      array($ind._("Windows"), "windows-v"),
+      array($ind._("Mac"), "mac-v"),
+      array($ind._("GNU/Linux"), "linux-v"),
+      array($ind._("Source Code"), "source-v"),
+      array($ind._("<a class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.0\" target=\"_blank\">Release Notes</a>")."", ""),
+
       array(_("Plug-Ins and Libraries"), "plugins"),
       array(_("Obtain a CD"), "buy"),
       array(_("Vendors and Distributors of Audacity"), "bundlers"),

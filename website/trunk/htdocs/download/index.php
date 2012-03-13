@@ -11,67 +11,148 @@
   include "../include/header.inc.php";
 
   include "../latest/versions.inc.php";
-  include "../beta/versions.inc.php";
+  // include "../beta/versions.inc.php";
+  // include "../legacy/versions.inc.php";
   $stable_version = stable_version;
   $beta_version = beta_version;
 ?>
 
 <h2><?=$pageTitle?></h2>
 
-<p><?=_("Select your operating system to download the latest version of the free Audacity sound editor.")?></p>
-
 <div class="download_container">
-  <div class="downloads" id="beta_downloads">
+  <div class="downloads" id="stable_downloads">
     <div class="downloads_header">
-      <h3><a href="features-1.3-a"><?=_("1.3 Series (Beta)")?></a></h3>
-      <p><?=_("Latest versions:")?></p>
+      <h3><?=_("Audacity 2.0")?></h3>
     </div>
     <div>
-      <h3><a href="beta_windows"><img alt="Windows" src="../images/new_win.png" >
-      Windows</a>&nbsp;<span class="downloads_smaller"><i>&rarr;&nbsp;<?=_("Read about <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>")?></i><br><img src="../images/download_spacer.png"><?php printf('%s (Windows 98/ME/2000/XP/Vista/7)', $beta_version)?> </span></h3>
-  
-      <h3><a href="beta_mac"><img alt="Mac" src="../images/mac.png">
-      Mac OS X</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?php printf(_("&nbsp;%s (Universal Binary)"), $beta_version)?><br><img src="../images/download_spacer.png">&nbsp;<?=_("(OS X 10.4 or later)")?></span></h3>
-  
-      <h3><a href="beta_linux"><img alt="Linux" src="../images/unix.png">
-      GNU/Linux</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?php printf(_("&nbsp;%s (in source code)"), $beta_version)?></span></h3>
+      <h3>
+        <a href="windows-v">
+          <img alt="Windows" src="../images/new_win.png">
+          &nbsp;
+          <?=_("Audacity for Windows&reg;")?>
+          &nbsp;
+        </a>
+        &nbsp;
+        <span class="downloads_smaller">
+          <br>
+          <img src="../images/download_spacer.png">
+          <?=_("(Windows 98/ME/2000/XP/Vista/7)")?>
+        </span>
+      </h3>
+
+      <h3>
+        <a href="mac-v">
+          <img alt="Mac" src="../images/mac.png">
+          &nbsp;
+          <?=_("Audacity for Mac&reg;")?>
+          &nbsp;
+        </a>
+        &nbsp;
+        <span class="downloads_smaller">
+          <br>
+          <img src="../images/download_spacer.png">
+          <?=_("(Universal Binary for Mac OS X 10.4 or later)")?>
+        </span>
+      </h3>
+
+      <h3>
+        <a href="linux-v">
+          <img alt="Linux" src="../images/unix.png">
+          &nbsp;
+          <?=_("Audacity for GNU/Linux&reg;")?>
+          &nbsp;
+        </a>
+        &nbsp;
+        <span class="downloads_smaller">
+          <br>
+          <img src="../images/download_spacer.png">
+            <?=_("(source code)")?>
+        </span>
+      </h3>
+    </div>
   </div>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
 </div>
 
 <div class="under_downloads">
-<h3><?=_("Legacy Downloads")?></h3>
-<div class="download_container">
-<div class="downloads" id="stable_downloads">
-    <div class="downloads_header">
-      <h3><?=_("1.2 Series")?></h3>
-      <p><?=_("Latest versions:")?></p>
-    </div>
-    <div>
-      <h3><a href="windows"><img alt="Windows" src="../images/new_win.png">
-      Windows</a><span class="downloads_smaller"><br>&nbsp;<img src="../images/download_spacer.png">1.2.6 (Windows 98/ME/2000/XP)</span></h3>  
+  <h3><?=_("Further Information")?></h3>
+  <ul>
+    <li><p><?=_("For users of <b>Mac OS 9</b> and <b>Mac OS 10.0 through 10.3</b>, legacy versions of Audacity are available on the ")?><a href="legacy_mac"><?=_("Legacy Mac downloads page")?></a>.</p></li>
+    <li><p><?=_('You can also obtain Audacity as a <a href="buy">CD image file or purchasable CD</a>. Note that these are often not the latest version of Audacity.')?></p></li>
+    <li><p><a href="features-2.0"><?=_("New Features")?></a></p></li>
+    
+    <!-- Note that release notes link will need to change to "http://wiki.audacityteam.org/wiki/Release_Notes" for next release after 2.0.0, but there's too little there, currently. -->
+    <li><p><a href="http://wiki.audacityteam.org/wiki/Release_Notes_2.0.0"><?=_("Release Notes")?></a></p></li>
 
-      <h3><a href="mac"><img alt="Mac" src="../images/mac.png">
-      Mac OS X</a><br>&nbsp;<img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("1.2.5 (Intel) and 1.2.6 (PPC)")?><br>&nbsp;<img src="../images/download_spacer.png">(OS X 10.0 to 10.3)</span></h3>
-
-      <h3><a href="linux"><img alt="Linux" src="../images/unix.png">
-      GNU/Linux</a><br><img src="../images/download_spacer.png"><span class="downloads_smaller"><?=_("&nbsp;1.2.6 (in source code)")?></span></h3>
-  </div>
-</div>
-
-<div style="float:right; width:48%">
-<p><?=_("For users of <b>Mac OS 9</b>, a legacy 1.0.0 version of Audacity is also available on the ")?><a href="mac"><?=_("Mac downloads page.")?></a></p>
-
-<h3><?=_("Further information")?></h3>
-   <ul>
-   <li><p><?=_('You can also obtain Audacity as a <a href="buy">CD image file or purchasable CD</a>.')?></p></li>
-   <li><p><?=_('If you wish to compile Audacity yourself, please download the <a href="source">source code</a>.')?></p></li>
-   <li><p><?=_('You may copy, distribute, modify and/or resell Audacity, under the terms of the  <a href="../about/license">GNU GPL</a>.')?></p></li>
+    <li>
+      <p>
+        <?=_('<a href="http://sourceforge.net/projects/audacity">Older Versions of Audacity</a>')?>
+      </p>
+    </li>
+    <li><p><?=_('To build Audacity yourself, download the <a href="source-v">source code</a>.')?>
+      </p></li>
+    <li><p><?=_('You may copy, distribute, modify and/or resell Audacity, under the terms of the  <a href="../about/license">GNU GPL</a>.')?></p></li>
   </ul>
+  <p>&nbsp;</p>
 </div>
 
-<p>&nbsp;</p>
-</div>
+<!-- No longer show either betas or legacy downloads. -->
+<!--<div class="under_downloads">
+  <h3>
+    <?=_("Legacy Downloads")?>
+  </h3>
+  <p>The following are obsolete, but are maintained for people with older operating systems.</p>
 
+  <div class="under_downloads">
+    <div class="download_container">
+      <div class="downloads" id="beta_downloads">
+        <div class="downloads_header">
+          <h3>
+            <a href="features-1.3-a">
+              <?=_("1.3 Series (Beta)")?>
+            </a>
+          </h3>
+        </div>
+        <div>
+          <h3>
+            <img alt="Windows" src="../images/new_win.png">
+              &nbsp;
+              <a href="beta_windows-v">Audacity for Windows</a>
+            </h3>
+
+          <h3>
+            <img alt="Mac" src="../images/mac.png">
+              &nbsp;
+              <a href="beta_mac">Audacity for Mac</a>
+            </h3>
+
+          <h3>
+            <img alt="Linux" src="../images/unix.png">
+              &nbsp;
+              <a href="beta_linux">Audacity for GNU/Linux</a>
+            </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="download_container">
+    <div class="downloads" id="legacy_downloads">
+      <div class="downloads_header">
+        <h3>
+          <?=_("Audacity 1.2")?>
+        </h3>
+      </div>
+      <div>
+        <h3><img alt="Windows" src="../images/new_win.png">&nbsp;<a href="legacy_windows">Audacity for Windows</a></h3>
+        <h3><img alt="Mac" src="../images/mac.png">&nbsp;<a href="legacy_mac">Audacity for Mac</a></h3>
+        <h3><img alt="Linux" src="../images/unix.png">&nbsp;<a href="legacy_linux">Audacity for GNU/Linux</a></h3>
+        --><!--<h3><a href="legacy_source">Source Code</a></h3>--><!--
+      </div>
+    </div>
+  </div>
+</div>-->
 
 <?php
   include "../include/footer.inc.php";
