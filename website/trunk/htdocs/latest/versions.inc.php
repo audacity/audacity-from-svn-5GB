@@ -33,8 +33,8 @@ define('src_suffix',  '.tar.bz');
  * The leading part of URLs is not stored here but rather in mirror.inc.php 
  * which provides the download_url() function to which these variables should
  * be passed as the sole argument */
-$win_exe_url = "audacity-win-" .macosx_version.".exe";
-$win_zip_url = "audacity-win-" .macosx_version.".zip";
+$win_exe_url = "audacity-win-" .win_exe_version.".exe";
+$win_zip_url = "audacity-win-" .win_zip_version.".zip";
 $win_ansi_exe_url = "audacity-win-" .win_exe_version."-ansi.exe";
 $win_ansi_zip_url = "audacity-win-" .win_zip_version."-ansi.zip";
 
