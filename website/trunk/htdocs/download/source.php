@@ -48,8 +48,13 @@
 <h3 id="instructions"><?=_("How to Compile Audacity")?></h3>
 
 <h4><?=_("Dependencies")?></h4>
-<p><?php printf(_('The <a href="http://wxwidgets.org">wxWidgets</a> library is required. Audacity %s requires wxGTK 2.8.12. The <a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a> library is also required and is included in Audacity obtained from <a href="/community/developers#svn">SVN</a>. Installation of other libraries is <a href="http://wiki.audacityteam.org/wiki/Developing_On_Linux#Optional_Packages_and_Features">optional</a>.'), src_version)?></p>
-
+<p><?php printf(_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity %s requires wxGTK 2.8.12.'), src_version)?></p>
+<p><?=_('Audacity also requires <a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a>.')?></p>
+<p><?=_('The following libraries are <b>optional</b> - they are included in Audacity obtained from <a href="../community/developers#svn">SVN</a>.')?></p>
+<ul>
+  <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>
+  <li><a href="http://vorbis.com/">Ogg Vorbis</a></li>
+</ul>
 <p><?=_('If you install libraries using a package management system like Apt or RPM, you need to install the "dev" (development) packages for each library.')?></p>
 
 <h4><?=_("Compilation")?></h4>
@@ -78,7 +83,7 @@
   '<a href="http://forum.audacityteam.org/viewforum.php?f=19">',
   '</a>',
   '<a href="http://forum.audacityteam.org">',
-  '</a>', 
+  '</a>',
   '</li></ul>');
 
 ?></p>
