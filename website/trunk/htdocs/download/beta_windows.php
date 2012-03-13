@@ -2,7 +2,7 @@
 /*
  * Copyright 2005 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
- * Copyright 2007-11 Vaughan Johnson, Gale Andrews
+ * Copyright 2007 - 2012 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -10,13 +10,15 @@
   require_once "../beta/versions.inc.php";
   require_once "../beta/mirror.inc.php";
   $pageId = "beta_windows";
-  $pageTitle = _("Windows");
+  $pageTitle = _("Windows Beta");
   include "../include/header.inc.php";
 ?>
 
 <h2><?=$pageTitle?></h2>
 
 <?php include "betawarning.inc.php" ?>
+
+<?=_("Read about Audacity on Windows <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>.")?>
 
 <h3 id="recdown"><?=_("Recommended Download")?></h3>
 <ul>

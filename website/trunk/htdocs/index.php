@@ -1,5 +1,7 @@
 <?php
 /*
+ * index.php for audacity home
+ *
  * Copyright 2005 Matt Brubeck
  * 2007 - 12 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
@@ -10,72 +12,73 @@
   $pageTitle = _("Free Audio Editor and Recorder");
   include "include/header.inc.php";
   include "include/news.inc.php";
+  // include "beta/versions.inc.php";
   include "latest/versions.inc.php";
   include "include/detect-os.inc.php";
 
   $download = which_download();
   if ($download == "windows") {
     $download_version = win_exe_version;
-    $download_desc = _("for Windows&reg; 98/ME/2000/XP");
+    $download_desc = _("for Windows");
     $download_page = "windows";
-    $beta_download_desc = _("for Windows&reg; 98/ME/2000/XP/Vista/7");
-    $beta_download_page = "beta_windows";
-
-    include "beta/versions.inc.php";
-    $beta_version = beta_version;
+    /*
+      $beta_version = beta_version;
+      $beta_download_desc = _("for Windows");
+      $beta_download_page = "beta_windows";
+      */
   }
   else if ($download == "mac") {
     $download_version = macosx_version;
-    $download_desc = _("for Mac OS X 10.0 to 10.3");
+    $download_desc = _("for Mac");
     $download_page = "mac";
-    $beta_download_desc = _("for Mac OS X 10.4 or later");
-    $beta_download_page = "beta_mac";
-
-    include "beta/versions.inc.php";
-    $beta_version = beta_version;
+    /*
+      $beta_version = beta_version;
+      $beta_download_desc = _("for Mac");
+      $beta_download_page = "beta_mac";
+      */
   }
   else {
     $download_version = src_version;
-    $download_desc = _("for Windows&reg;, Mac or GNU/Linux");
+    $download_desc = _("for Windows&reg;, Mac, or GNU/Linux");
     $download_page = "";
-    $beta_download_desc = _("for Windows&reg;, Mac or GNU/Linux"); 
-    $beta_download_page = "";
-
-    include "beta/versions.inc.php";
-    $beta_version = beta_version;
+    /*
+      $beta_version = beta_version;
+      $beta_download_desc = _("for Windows, Mac, or GNU/Linux"); 
+      $beta_download_page = "";
+      */
   }
 ?>
+
 <div id="about">
-  <h2><?=_("Audacity&reg; is free, open source, cross-platform software for recording & editing sounds.")?></h2>
+  <h2><?=_("Audacity&reg; is free, open source, cross-platform software for recording and editing sounds.")?></h2>
   <div id="screenshot">
     <!-- TODO: Auto-select or randomly rotate screenshot? -->
     <a title="<?=_("Screenshots")?>" href="about/screenshots"><img alt="<?=_("Screenshots")?>" src="about/images/audacity-linux-small.jpg"></a>
   </div>
   <p>
-<?=_('Audacity is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems. <a href="about/">Learn more about Audacity...</a> Also check our <a href="http://audacityteam.org/wiki/">Wiki</a> and <a href="http://audacityteam.org/forum/">Forum</a> for more information.')?></p>
+    <?=_('Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg;, and other operating systems. <a href="about/">Learn more about Audacity...</a> Also check our <a href="http://audacityteam.org/wiki/">Wiki</a> and <a href="http://audacityteam.org/forum/">Forum</a> for more information.')?></p>
   <p>
-<b><?php printf(_('The current release of Audacity is <a href="download/">%s'), beta_version)?></a></b>. <?=_(' Most users should download this version. See <a href="download/features-1.3-a">New Features</a> for more information. We will soon release version 2.0, replacing both this version and 1.2.')?></p>
+<b><?php printf(_('The current release of Audacity is <a href="download/">%s'), $download_version)?></a></b>. <?=_(' It replaces all previous versions. It is derived from version 1.3.14, but is no longer a Beta version, and has major improvements over 1.2.6. See <a href="download/features-2.0">New Features</a> for more information.')?></p>
 </div>
 
 <div id="download">
   <div id="download_sub">
-  <h3><a href="download/<?=$beta_download_page?>"><?php printf(_("Download Audacity %s"), $beta_version)?></a></h3>
-  <p><?=$beta_download_desc?></p>
-  </div> 
-<!--<div id="download_sub">
-  <h3><a href="download/<?=$download_page?>"><?php printf(_("Download Audacity %s"), $download_version)?></a></h3>	
-  <p><?=$download_desc?></p>
-  </div>-->
+    <h3><a href="download/<?=$download_page?>"><?php printf(_("Download Audacity %s %s"), $download_version, $download_desc)?></a></h3>	
+    </div>
 
   <?php
     if ($download_page) {
       echo '<div id="download_sub">';
 
-      echo '<p><a href="download/">'._("Other downloads").'</a></p>';
+      echo '<p><a href="download/">'._("All Audacity Downloads").'</a></p>';
       echo '</div>';
     }
   ?>
 
+  <!--<div id="download_sub">
+    <h3><a href="download/<?=$beta_download_page?>"><?php printf(_("Download Audacity %s %s"), $beta_version, $beta_download_desc)?></a></h3>
+    <p><?=$beta_download_desc?></p>
+  </div>-->
 </div>
 
 <div style="clear: both;"> </div>
@@ -120,6 +123,35 @@
   <input type="submit" name="unsub" value="<?=_("Remove")?>">
   </p>
 </form>
+
+</div>
+<hr>
+<div id="adsense_home_page">
+  <center>
+    <!-- Google AdSense -->
+    <script type="text/javascript">
+    <!--
+    google_ad_client = "ca-pub-2386514291404644";
+    /* AdSense_home_page */
+    google_ad_slot = "7680997128";
+    google_ad_width = 728;
+    google_ad_height = 90;
+    //-->
+    </script>
+    <script type="text/javascript"
+    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+    <!-- end Google AdSense -->
+
+    <p>
+      <a href="/contact/privacy#advertising">
+        <font size="-2">
+          <?=_("Audacity Team's Advertisements Policy")?>
+        </font>
+      </a>
+    </p>
+  </center>
+<!-- NO </div> here! footer.inc.php has it at top. -->
 
 <?php
   include "include/footer.inc.php";

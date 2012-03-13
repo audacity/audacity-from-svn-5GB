@@ -10,7 +10,7 @@
 <h3><?=_('Beta version')?></h3>
 
 <p>
-<?=_('Audacity 1.3 will become the 2.0 version. Please check its <a href="#sysreq">System Requirements</a>.')?></p>
+<?=_('Audacity 1.3 has become the 2.0 version. Please check its <a href="#sysreq">System Requirements</a>.')?></p>
 
 <p><?=_('
  <ul>

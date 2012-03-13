@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007 - 2011 Vaughan Johnson, Gale Andrews
+ * 2007 - 2012 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -40,6 +40,25 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "March 10, 2012",
+  	"2.0-release",
+  _("Audacity 2.0 Released!"),
+  _("
+<p>
+  The Audacity Team is elated to announce the release of
+  <a href=\"/download\">Audacity 2.0</a> 
+  for Windows, Mac, GNU/Linux, and other operating systems. 
+  Audacity 2.0 replaces all previous versions. 
+  It is derived from version 1.3.14, but is no longer a Beta version, and has major improvements over 1.2.6. 
+  See 
+  <a href=\"/download/features-2.0\">New Features</a> and 
+  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.0\">Release Notes</a>
+  for detailed information.
+</p>
+"));
+
+
+add_news_item(
   "December 11, 2011",
   	"1.3.14-release",
   _("Audacity 1.3.14 released"),
@@ -55,13 +74,13 @@ loss problems when reopening saved projects.
 upgrade to 1.3.14 if you are using Audacity 1.2 on those systems.
 </p>
 <p>Please help us progress to a new Audacity 2.0 by 
-<a href=\"http://audacity.sourceforge.net/contact/#feedback\">
+<a href=\"/contact/#feedback\">
 reporting</a> any problems you find in 1.3.14, especially with project
 stability. Advanced users are encouraged to test our subsequent
 changes as we make them by downloading our 
 <a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">
-Nightly Builds</a>. Please <a href=\"http://audacity.sourceforge.net/#announce\">
-subscribe</a> to receive news of all our future releases.    
+Nightly Builds</a>. Please <a href=\"#announce\">subscribe</a> 
+to receive news of future releases.    
 </p>
 <p>
 <div style=\"width:75%;padding-left:4em\">
