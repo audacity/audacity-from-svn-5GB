@@ -26,7 +26,7 @@ define('ladspa_size',    1.5);
 define('src_version', '2.0.0');
 define('full_src_size',    17.9);
 define('min_src_size',    6.3);
-define('src_suffix',  '.tar.bz');
+define('src_suffix',  '.tar.bz2');
 
 /* from here on, build up variables with the URLs in them. These shouldn't need
  * to be edited when new releases are made.
