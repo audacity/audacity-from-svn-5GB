@@ -90,7 +90,7 @@
         <?=_('<a href="http://sourceforge.net/projects/audacity">Older Versions of Audacity</a>')?>
       </p>
     </li>
-    <li><p><?=_('To build Audacity yourself, download the <a href="source-v">source code</a>.')?>
+    <li><p><?=_('To build Audacity yourself, download the <a href="source">source code</a>.')?>
       </p></li>
     <li><p><?=_('You may copy, distribute, modify and/or resell Audacity, under the terms of the  <a href="../about/license">GNU GPL</a>.')?></p></li>
   </ul>
@@ -118,7 +118,7 @@
           <h3>
             <img alt="Windows" src="../images/new_win.png">
               &nbsp;
-              <a href="beta_windows-v">Audacity for Windows</a>
+              <a href="beta_windows">Audacity for Windows</a>
             </h3>
 
           <h3>

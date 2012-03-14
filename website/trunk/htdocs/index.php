@@ -64,7 +64,7 @@
 <div id="download">
   <div id="download_sub">
     <h3><a href="download/<?=$download_page?>"><?php printf(_("Download Audacity %s %s"), $download_version, $download_desc)?></a></h3>	
-    </div>
+  </div>
 
   <?php
     if ($download_page) {

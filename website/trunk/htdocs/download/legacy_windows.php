@@ -16,7 +16,7 @@
 <h2><?=$pageTitle?></h2>
 
 <div class="advice">
-<?=_('<a href="http://wiki.audacityteam.org/wiki/Windows_Vista_OS">Windows Vista</a> and <a href="http://wiki.audacityteam.org/wiki/Windows_7_OS">Windows 7</a> <b>are not supported in Audacity 1.2.6. Please use</b> <a href="../download/windows-v">the latest Windows version</a><b> for these operating systems.</b>')?>
+<?=_('<a href="http://wiki.audacityteam.org/wiki/Windows_Vista_OS">Windows Vista</a> and <a href="http://wiki.audacityteam.org/wiki/Windows_7_OS">Windows 7</a> <b>are not supported in Audacity 1.2.6. Please use</b> <a href="../download/windows">the latest Windows version</a><b> for these operating systems.</b>')?>
 </div>
 
 <h3><?=_("Download")?></h3>
@@ -51,7 +51,7 @@
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
 <p>
-  <?=_("Windows 95 and NT are not supported. Windows Vista and 7 are supported in <a href=\"windows-v\">the latest version of Audacity</a>.")?>
+  <?=_("Windows 95 and NT are not supported. Windows Vista and 7 are supported in <a href=\"windows\">the latest version of Audacity</a>.")?>
 </p>
 <?php include "windows_sys_reqs.inc.php" ?>
 

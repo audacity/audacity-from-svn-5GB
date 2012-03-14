@@ -17,7 +17,7 @@
 <h2><?=$pageTitle?></h2>
 
 <div class="advice">
-<?=_('<b>Mac OS X 10.4 and later are not supported in Audacity 1.2. Please use</b> <a href="../download/mac-v">the latest Mac version</a><b> for these operating systems.</b>')?>
+<?=_('<b>Mac OS X 10.4 and later are not supported in Audacity 1.2. Please use</b> <a href="../download/mac">the latest Mac version</a><b> for these operating systems.</b>')?>
 </div>
 
 <h3><?=_("Download")?></h3>
