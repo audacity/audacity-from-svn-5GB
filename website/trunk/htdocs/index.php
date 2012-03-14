@@ -11,6 +11,7 @@
   $sectionId = "";
   $pageTitle = _("Free Audio Editor and Recorder");
   include "include/header.inc.php";
+  include "latest/mirror.inc.php";
   include "include/news.inc.php";
   // include "beta/versions.inc.php";
   include "latest/versions.inc.php";
@@ -19,31 +20,37 @@
   $download = which_download();
   if ($download == "windows") {
     $download_version = win_exe_version;
-    $download_desc = _("for Windows");
+    $download_OS = _("for Windows");
+    $download_OS_versions = _("2000/XP/Vista/7");
     $download_page = "windows";
+    $recommended_download = $win_exe_url;
     /*
       $beta_version = beta_version;
-      $beta_download_desc = _("for Windows");
+      $beta_download_OS_versions = _("2000/XP/Vista/7");
       $beta_download_page = "beta_windows";
       */
   }
   else if ($download == "mac") {
     $download_version = macosx_version;
-    $download_desc = _("for Mac");
+    $download_OS = _("for Mac");
+    $download_OS_versions = _("OS X 10.4 or later");
     $download_page = "mac";
+    $recommended_download = $macosx_url;
     /*
       $beta_version = beta_version;
-      $beta_download_desc = _("for Mac");
+      $beta_download_OS_versions = _("Mac OS X 10.4 or later");
       $beta_download_page = "beta_mac";
       */
   }
   else {
     $download_version = src_version;
-    $download_desc = _("for Windows&reg;, Mac, or GNU/Linux");
-    $download_page = "";
+    $download_OS = _("for Windows, Mac, or GNU/Linux");
+    $download_OS_versions = "";
+    $download_page = "source";
+    $recommended_download = $min_src_url;
     /*
       $beta_version = beta_version;
-      $beta_download_desc = _("for Windows, Mac, or GNU/Linux"); 
+      $beta_download_OS_versions = _("Windows, Mac, or GNU/Linux"); 
       $beta_download_page = "";
       */
   }
@@ -63,21 +70,27 @@
 
 <div id="download">
   <div id="download_sub">
-    <h3><a href="download/<?=$download_page?>"><?php printf(_("Download Audacity %s %s"), $download_version, $download_desc)?></a></h3>	
+    <a href="<?=download_url($recommended_download)?>"><?php printf(_("<h3>Download Audacity %s</h3></a>%s %s"), $download_version, $download_OS, $download_OS_versions)?>
   </div>
 
   <?php
     if ($download_page) {
       echo '<div id="download_sub">';
-
-      echo '<p><a href="download/">'._("All Audacity Downloads").'</a></p>';
+        echo '<p><a href="download/';
+        printf(_("%s\">Other Audacity Downloads %s</a></p>"), $download_page, $download_OS);
       echo '</div>';
     }
   ?>
 
+  <div id="download_sub">
+    <p>
+      <a href="download/">All Audacity Downloads</a>
+    </p>
+  </div>
+
   <!--<div id="download_sub">
-    <h3><a href="download/<?=$beta_download_page?>"><?php printf(_("Download Audacity %s %s"), $beta_version, $beta_download_desc)?></a></h3>
-    <p><?=$beta_download_desc?></p>
+    <h3><a href="download/<?=$beta_download_page?>"><?php printf(_("Download Audacity %s %s"), $beta_version, $beta_download_OS_versions)?></a></h3>
+    <p><?=$beta_download_OS_versions?></p>
   </div>-->
 </div>
 
