@@ -26,7 +26,7 @@
     </div>
     <div>
       <h3>
-        <a href="windows-v">
+        <a href="windows">
           <img alt="Windows" src="../images/new_win.png">
           &nbsp;
           <?=_("Audacity for Windows&reg;")?>
@@ -41,7 +41,7 @@
       </h3>
 
       <h3>
-        <a href="mac-v">
+        <a href="mac">
           <img alt="Mac" src="../images/mac.png">
           &nbsp;
           <?=_("Audacity for Mac&reg;")?>
@@ -56,7 +56,7 @@
       </h3>
 
       <h3>
-        <a href="linux-v">
+        <a href="linux">
           <img alt="Linux" src="../images/unix.png">
           &nbsp;
           <?=_("Audacity for GNU/Linux&reg;")?>
