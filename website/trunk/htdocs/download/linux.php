@@ -25,7 +25,7 @@
 </ul>
 ')?></p>
 
-<p><?=_('Otherwise, we recommend either searching the web pages of your distribution for the latest information, or compiling Audacity from <a href="source-v">source code</a>.')?></p>
+<p><?=_('Otherwise, we recommend either searching the web pages of your distribution for the latest information, or compiling Audacity from <a href="source">source code</a>.')?></p>
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
 <?=_("We recommend using the latest version of GNU/Linux from your distribution that is compatible with your hardware specifications. Audacity will run best with at least 64 MB RAM and a 300 MHz processor.")?></li>
