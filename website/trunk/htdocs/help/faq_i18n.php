@@ -273,7 +273,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
     echo "<h2>$question</h2>";
     echo $answer;
 
-    echo "<h3><a href=\"faq\">"._("Other frequently asked questions...")."</a></h3>";
+    echo "<h3><a href=\"faq_i18n\">"._("Other frequently asked questions...")."</a></h3>";
   }
   else {
     // Print the list of sections and questions.
@@ -296,7 +296,7 @@ echo "<p>"._('Additional help in French, German, Russian or Spanish can be obtai
         $question = $item[0];
         $answer   = $item[1];
 
-        echo "<li><a href=\"faq?s=$faqSectionId&amp;i=$itemId\">$question</a></li>";
+        echo "<li><a href=\"faq_i18n?s=$faqSectionId&amp;i=$itemId\">$question</a></li>";
       }
       echo "</ol>";
     }
