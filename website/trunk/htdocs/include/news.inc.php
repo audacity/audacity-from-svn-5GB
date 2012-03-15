@@ -46,7 +46,7 @@ add_news_item(
   _("
 <p>
   The Audacity Team is elated to announce the release of
-  <a href=\"/download\">Audacity 2.0</a> 
+  <a href=\"/download/\">Audacity 2.0</a> 
   for Windows, Mac, GNU/Linux, and other operating systems. 
   Audacity 2.0 replaces all previous versions. 
   It is derived from version 1.3.14, but is no longer a Beta version, and has major improvements over 1.2.6. 
