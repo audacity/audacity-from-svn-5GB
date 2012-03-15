@@ -32,9 +32,9 @@ $siteNavItems = array(
     array(
       array(_("Audacity 2.0")."", ""),
       array($ind._("Windows"), "windows"),
-      array($ind._("Mac"), "mac),
-      array($ind._("GNU/Linux"), "linux),
-      array($ind._("Source Code"), "source),
+      array($ind._("Mac"), "mac"),
+      array($ind._("GNU/Linux"), "linux"),
+      array($ind._("Source Code"), "source"),
       array($ind._("<a class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.0\" target=\"_blank\">Release Notes</a>")."", ""),
 
       array(_("Plug-Ins and Libraries"), "plugins"),
