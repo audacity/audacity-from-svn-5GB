@@ -30,7 +30,7 @@
 
 <ul>
 <li><p><?php printf(_('<a href="%s">Audacity %s source tarball</a> (%s file, %.1lf MB)'), download_url($full_src_url), src_version, src_suffix, full_src_size)?> 
-<?php printf(_('Full source tarball, for Windows and Mac machines that lack necessary dependencies to compile Audacity.'))?></p></li>
+<?php printf(_('full source tarball: Primarily for use on Windows and Mac, as they typically lack necessary dependencies to compile Audacity. Also needed on a GNU/Linux system configured as an end-user.'))?></p></li>
 <li><p><?php printf(_('<a href="%s">Latest SVN Development Code</a>'), "../community/developers#svn")?></p></li>
 <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try:')) ?></p>
    <ul><li><?php printf(_('<a href="%s">SourceForge</a> (older versions can be viewed by clicking to enter the required folder under "Name")'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
