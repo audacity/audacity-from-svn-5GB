@@ -60,7 +60,7 @@
   <h2><?=_("Audacity&reg; is free, open source, cross-platform software for recording and editing sounds.")?></h2>
   <div id="screenshot">
     <!-- TODO: Auto-select or randomly rotate screenshot? -->
-    <a title="<?=_("Screenshots")?>" href="about/screenshots"><img alt="<?=_("Screenshots")?>" src="about/images/audacity-linux-small.jpg"></a>
+    <a title="<?=_("Screenshots")?>" href="about/screenshots"><img alt="<?=_("Screenshots")?>" src="about/images/audacity-windows-small.jpg"></a>
   </div>
   <p>
     <?=_('Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg;, and other operating systems. <a href="about/">Learn more about Audacity...</a> Also check our <a href="http://audacityteam.org/wiki/">Wiki</a> and <a href="http://audacityteam.org/forum/">Forum</a> for more information.')?></p>
