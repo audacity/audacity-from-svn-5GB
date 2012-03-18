@@ -375,6 +375,17 @@
    <?=_('OpenDisc is a similar collection of high quality free and open source software for Windows. Currently, a downloadable <a href="http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn">CD image</a> is available. The project hopes to make available a purchasable CD shortly.')?>
    </td>
   </tr>
+  <tr>
+   <td class="col1">
+   <a href="http://www.valo-cd.net/">VALO-CD.net</a>
+   </td>
+   <td class="col2">
+   <a href="http://www.valo-cd.net/get/">VALO-CD</a>
+   </td>
+   <td class="col3">
+   <?=_('VALO-CD contains twenty-two open-source Windows programs on a single CD. You can download and burn the ISO image, or purchase the CD for wordwide shipping.')?>
+   </td> 
+  </tr>
 </table>
 
 <h3 id="others"><?=_('Others')?></h3>
