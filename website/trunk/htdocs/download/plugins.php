@@ -30,7 +30,7 @@
 <p><?=_('VST effects can be found on many plug-in sites such as:')?></p>
 <ul>
 <li><a href="http://www.hitsquad.com">Hitsquad</a>: &nbsp;<a href="http://www.hitsquad.com/smm/win95/PLUGINS_VST/">Windows</a>, <a href="http://www.hitsquad.com/smm/mac/PLUGINS_VST/">Mac</a></li>
-<li><a href="http://www.kvraudio.com/">KVR Audio</a>: &nbsp;<a href="http://www.kvraudio.com/get.php?mode=results&st=q&s=6">Windows</a>, <a href="http://www.kvraudio.com/get.php?mode=results&st=q&s=8">Mac</a></li>
+<li><a href="http://www.kvraudio.com/">KVR Audio</a>: &nbsp;<a href="http://www.kvraudio.com/q.php?search=1&os[]=win32&ty[]=e&f1[]=vst&pr[]=f&sh[]=s">Windows</a>, <a href="http://www.kvraudio.com/q.php?search=1&os[]=mac32&ty[]=e&f1[]=vst&pr[]=f&sh[]=s">Mac</a></li>
 <li><a href="http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/">Open Directory</a> (Windows, Mac).</li>
 </ul>
 
