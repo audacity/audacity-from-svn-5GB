@@ -18,6 +18,7 @@
     <li><a href="http://www.freedomsampler.com/">FreedomSampler&trade;</a> is a collection of free, open source software for <b>Windows and Linux</b> with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href="http://www.twistedlincoln.com/shop/catalog/products/freedomsampler">purchase</a> a copy to be shipped to you (US only).</li>
     <li><a href="http://www.theopencd.org/">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software for <b>Windows</b>. Currently, you can still <a href="http://releases.theopencd.org/">download archived CD images</a> or <a href="http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189">purchase a CD online</a> for worldwide shipping.</li>
     <li><a href="http://theopendisc.com/">OpenDisc</a> is a similar collection of high quality free and open source software for <b>Windows</b>. Currently, a downloadable <a href="http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn">CD image</a> is available. The project hopes to make available a purchasable CD shortly.</li>
+    <li><a href="http://www.valo-cd.net/">VALO-CD</a> contains twenty-two open-source <b>Windows</b> programs on a single CD. You can download and burn the ISO image, or purchase the CD for worldwide shipping.</li>
    </ul>
   </p>');
 
