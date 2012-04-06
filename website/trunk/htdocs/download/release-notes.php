@@ -9,7 +9,6 @@
   $pageId = "release-notes";
   $pageTitle = _("Release Notes");
   include "../include/header.inc.php";
-  include "../latest/versions.inc.php";
 ?>
 
 <h2><?=$pageTitle?></h2>
