@@ -53,11 +53,12 @@ $(INC_FILE): $(POT_FILE) $(PROG_POT_FILE)
 	echo "\$$prog_day = $$(date -r $(PROG_POT_FILE) +%-d);" >> $(INC_FILE)
 	echo "?>" >> $(INC_FILE)
 
-# Update the PO files (translated message catalogs).
+# Created updated copies of the PO files (translated message catalogs), which we will then
+# compile into .mo files for use on the web server. We do not update the SVN copies of the .po
+# files, we leave that for the translators to manage.
 %/LC_MESSAGES/audacity_website.po: %.po $(POT_FILE)
 	mkdir -p $(@:%/audacity_website.po=%)
 	locale/smartmsgmerge.py $< $(POT_FILE) $@
-	cp -f $@ $<
 
 # Compile the PO files into MO files.
 # -f is for fuzzy string matching
