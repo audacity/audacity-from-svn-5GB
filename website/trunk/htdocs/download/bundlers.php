@@ -123,7 +123,7 @@
    <a href="http://www.artproaudio.com">Applied Research and Technology</a>
    </td>
    <td class="col2">
-   <a href="http://www.artproaudio.com/products.asp?type=90&cat=13&id=128">USBPhonoPlus v2</a>
+   <a href="http://artproaudio.com/discontinued_products/discontinued_products/product/usb_phono_plus_v2/">USBPhonoPlus v2</a>
    </td>
    <td class="col3"><?=_("USB Interface for transferring an analog or digital audio source into computer via USB.")?></td>
   </tr>
@@ -204,7 +204,7 @@
    <a href="http://westek.com">Westek</a>
    </td>
    <td>
-   <a href="http://www.westek.com/Tele-Tool-2000-pr-16462.html">Westek Tele-Tool 2000 PC/Telephone Recorder</a>
+   Westek Tele-Tool 2000 PC/Telephone Recorder
    </td>
    <td><?=_("Record conversations to PC from any phone with a modular handset.")?></td>
   </tr>
@@ -420,9 +420,9 @@
    <a href="http://www.thinklabsmedical.com">ThinkLabs</a>
    </td>
    <td>
-   <a href="http://www.thinklabsmedical.com/content/view/72/161/">Thinklabs Phonocardiography</a>
+   <a href="http://www.thinklabsmedical.com/software-download.html">Thinklabs Phonocardiography</a>
    </td>
-   <td><?=_('The Thinklabs <a href="http://www.thinklabsmedical.com/content/view/17/157/">ds32a digital stethoscope</a> has enhanced sound quality with 50x amplification. Volume can be adjusted for faint heart sounds, obese patients or noisy work environments. The stethoscope\'s waveforms and spectrograms can be analyzed in Thinklabs Phonocardiography (a customized version of Audacity for Microsoft Windows and Mac OS X).')?></td>
+   <td><?=_('The Thinklabs <a href="http://www.thinklabsmedical.com/electronic-stethoscope.html">ds32a digital stethoscope</a> has enhanced sound quality with 50x amplification. Volume can be adjusted for faint heart sounds, obese patients or noisy work environments. The stethoscope\'s waveforms and spectrograms can be analyzed in Thinklabs Phonocardiography (a customized version of Audacity for Microsoft Windows and Mac OS X).')?></td>
   </tr>
   <tr>
    <td>
