@@ -383,7 +383,7 @@
    <a href="http://www.valo-cd.net/get/">VALO-CD</a>
    </td>
    <td class="col3">
-   <?=_('VALO-CD contains twenty-two open-source Windows programs on a single CD. You can download and burn the ISO image, or purchase the CD for wordwide shipping.')?>
+   <?=_('VALO-CD contains twenty-two open-source Windows programs on a single CD. You can download and burn the ISO image, or purchase the CD for worldwide shipping.')?>
    </td> 
   </tr>
 </table>
