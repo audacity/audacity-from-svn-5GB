@@ -48,7 +48,7 @@
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
 <h4><?=_("Plug-ins and Libraries")?></h4>
 <ul>
-  <li><p><a href="http://ardour.org/files/releases/swh-plugins-0.4.15.dmg">LADSPA plug-ins installer</a> - over 90 plug-ins.</p></li>
+  <li><p><a href="http://ardour.org/files/releases/swh-plugins-0.4.15.dmg"><?=_("LADSPA plug-ins installer</a> - over 90 plug-ins.")?></p></li>
   <li>
     <p>
       <a href="plugins">
