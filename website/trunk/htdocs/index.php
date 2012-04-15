@@ -84,7 +84,7 @@
 
   <div id="download_sub">
     <p>
-      <a href="download/">All Audacity Downloads</a>
+      <a href="download/"><?=_('All Audacity Downloads')?></a>
     </p>
   </div>
 
