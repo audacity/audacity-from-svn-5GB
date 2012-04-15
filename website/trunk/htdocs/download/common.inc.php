@@ -14,10 +14,10 @@
 <h4><?=_("Alternative Download Links")?></h4>    
 <ul>
   <li>
-    <p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try our alternative download links:')) ?></p>
+    <p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try:')) ?></p>
     <ul>
-      <li><?php printf(_('<a href="%s">SourceForge</a>: View older versions by clicking to enter the required folder under "Name.")'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
-      <li><?php printf(_('<a href="%s">Google Code</a>: Click on the headings to sort the list.)'), "http://code.google.com/p/audacity/downloads/list")?></li>
+      <li><?php printf(_('<a href="%s">SourceForge</a>: View older versions by clicking to enter the required folder under "Name."'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
+      <li><?php printf(_('<a href="%s">Google Code</a>: Click on the headings to sort the list.'), "http://code.google.com/p/audacity/downloads/list")?></li>
     </ul>
   </li>
 </ul>
