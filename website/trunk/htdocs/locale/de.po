@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Audacity Deutsch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-04-08 09:29+0100\n"
-"PO-Revision-Date: 2012-04-14 09:27-0000\n"
+"PO-Revision-Date: 2012-04-28 00:39-0000\n"
 "Last-Translator: gale <gale@audacityteam.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1352,9 +1352,9 @@ msgid "<a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Windows Vi
 msgstr ""
 
 #: download/legacy_windows.php:27
-#, fuzzy, php-format
+#, php-format
 msgid "Windows 98/ME/2000/XP: <a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB)"
-msgstr "Windows 98/ME/2000/XP: <a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - Die neueste Version des kostenlosen Audio-Editor Audacity. "
+msgstr "Windows 98/ME/2000/XP: <a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) "
 
 #: download/legacy_windows.php:30
 #: download/legacy_source.php:24
@@ -1401,11 +1401,13 @@ msgid "Audacity Zip file"
 msgstr ""
 
 #: download/legacy_windows.php:48
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Windows 98/ME/2000/XP: <a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
 "  - If you cannot run the installer because of restricted permissions, download and unzip this file instead."
-msgstr "Windows 98/ME/2000/XP: <a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - Die neueste Version des kostenlosen Audio-Editor Audacity. "
+msgstr ""
+"Windows 98/ME/2000/XP: <a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
+"  - Wenn Sie nicht das Installationsprogramm verwenden, weil der eingeschränkten Berechtigungen, downloaden und entpacken Sie diese Datei statt."
 
 #: download/legacy_windows.php:52
 #: download/legacy_source.php:34
@@ -3171,14 +3173,14 @@ msgid "Recommended Downloads - Latest Version of Audacity"
 msgstr ""
 
 #: download/windows.php:26
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB, including help files) for Windows 2000/XP/Vista/7"
-msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) -  Die neueste Version des kostenlosen Audio-Editor Audacity, einschließlich der Hilfe-Dateien.</a>"
+msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB, einschließlich der Hilfe-Dateien)  für Windows 2000/XP/Vista/7"
 
 #: download/windows.php:32
 #, php-format
 msgid "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for Windows 2000/XP/Vista/7 - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions."
-msgstr ""
+msgstr "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for Windows 2000/XP/Vista/7 - Verwenden Sie diese, für ein kleineres Download (ohne Hilfe-Dateien), oder wenn Sie das Installationsprogramm wegen eingeschränkten Berechtigungen nicht verwenden kann. "
 
 #: download/windows.php:54
 #, fuzzy, php-format
@@ -3195,14 +3197,14 @@ msgid "Version 2.0.0 of Audacity is the last that will support Windows 98/ME."
 msgstr ""
 
 #: download/windows.php:87
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) for Windows 98/ME"
-msgstr "<a href=\"%s\">LADSPA plugins %s installer</a> (.exe file, %.1lf MB) - über 90 Effekt-Plug-ins"
+msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe, %.1lf MB) für Windows 98/ME"
 
 #: download/windows.php:93
 #, php-format
 msgid "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for Windows 98/ME - If you cannot run the installer because of restricted permissions, download and unzip this file instead."
-msgstr ""
+msgstr "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for Windows 98/ME   - Wenn Sie nicht das Installationsprogramm verwenden, weil der eingeschränkten Berechtigungen, downloaden und entpacken Sie diese Datei statt."
 
 #: download/windows.php:119
 #: download/mac.php:94
@@ -3216,9 +3218,8 @@ msgstr ""
 
 #: download/windows.php:132
 #: download/beta_windows.php:21
-#, fuzzy
 msgid "Read about Audacity on Windows <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>."
-msgstr "Die beste Version für <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> und <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista"
+msgstr "Lesen Sie mehr über Audacity für <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> und <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a>."
 
 #: download/windows.php:133
 #: download/beta_windows.php:59
@@ -3346,6 +3347,8 @@ msgid ""
 "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
 "  - If you want a download without help files, or cannot run the installer because of restricted permissions, download and unzip this or the Windows 98/ME file below instead."
 msgstr ""
+"<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
+"- Für ein kleineres Download (ohne Hilfe-Dateien), oder wenn Sie das Installationsprogramm wegen eingeschränkten Berechtigungen nicht verwenden kann, verwenden Sie diese, oder das Windows 98/ME Datei hierunter statt.   "
 
 #: download/beta_windows.php:53
 msgid "<b>For advanced users</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Nightly Builds</a> are available for testing purposes."
@@ -3383,14 +3386,14 @@ msgid "Mac OS X"
 msgstr ""
 
 #: download/mac.php:26
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB, including help files) for OS X 10.4 or later (Universal Binary)"
-msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) -  Die neueste Version des kostenlosen Audio-Editor Audacity, einschließlich der Hilfe-Dateien.</a>"
+msgstr "<a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB, einschließlich der Hilfe-Dateien) für OS X 10.4 oder später  (Universal Binary)"
 
 #: download/mac.php:32
 #, php-format
 msgid "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for OS X 10.4 or later (Universal Binary) - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions."
-msgstr ""
+msgstr "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) für OS X 10.4 oder später (Universal Binary) -   Verwenden Sie diese, für ein kleineres Download (ohne Hilfe-Dateien), oder wenn Sie das Installationsprogramm wegen eingeschränkten Berechtigungen nicht verwenden kann. "
 
 #: download/mac.php:41
 #: download/beta_mac.php:26
@@ -3992,9 +3995,9 @@ msgid "Turning this feature on in the Tracks Preferences means that cutting audi
 msgstr ""
 
 #: download/beta_mac.php:23
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB, including help files)"
-msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) -  Die neueste Version des kostenlosen Audio-Editor Audacity, einschließlich der Hilfe-Dateien.</a>"
+msgstr "<a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB,  einschließlich der Hilfe-Dateien.)"
 
 #: download/beta_mac.php:39
 #: download/beta_mac.php:42
@@ -4002,11 +4005,13 @@ msgid "OS X 10.4 or later (Universal Binary)"
 msgstr ""
 
 #: download/beta_mac.php:39
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
 "  - If you want a download without help files, or prefer not to use .dmg files, download and unzip this file instead."
-msgstr "Windows 98/ME/2000/XP: <a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - Die neueste Version des kostenlosen Audio-Editor Audacity. "
+msgstr ""
+"<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
+"- Wenn Sie einen Download ohne Hilfedateien möchten, oder dmg-Dateien nicht möchten, downloaden und entpacken Sie diese Datei statt."
 
 #: download/beta_mac.php:42
 msgid "<b>For advanced users</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Macintosh_Binaries\">Nightly Builds</a> are available for testing purposes."
@@ -4851,9 +4856,8 @@ msgid "Submitting Patches"
 msgstr ""
 
 #: community/developers.php:38
-#, fuzzy
 msgid "We welcome patches from developers. Please see our <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Submitting Patches</a> page on the <a href=\"http://wiki.audacityteam.org/wiki\">Wiki</a>."
-msgstr "Die beste Version für <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> und <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista"
+msgstr ""
 
 #: community/users.php:10
 msgid "User Community"
