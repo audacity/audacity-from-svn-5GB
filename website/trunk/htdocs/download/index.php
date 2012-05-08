@@ -87,7 +87,7 @@
 
     <li>
       <p>
-        <?=_('<a href="http://sourceforge.net/projects/audacity">Older Versions of Audacity</a>')?>
+        <?=_('<a href="http://sourceforge.net/projects/audacity/files/">All Previous Versions of Audacity</a>')?>
       </p>
     </li>
     <li><p><?=_('To build Audacity yourself, download the <a href="source">source code</a>.')?>
