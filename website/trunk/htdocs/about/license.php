@@ -1,10 +1,9 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2006 Dominic Mazzoni,Vaughan Johnson
- * Copyright 2008 Gale Andrews
+ * Copyright 2006 - 12 Dominic Mazzoni,Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
- * http://creativecommons.org/licenses/by/2.0/
+ * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
   $pageId = "license";
@@ -25,7 +24,7 @@
    //
 echo _('<h3 id="license">License</h3>
 
-<p>Audacity is <a href="../help/faq?s=general&amp;i=free">free software</a>. You may use it for any personal, commercial or educational purpose, including installing it on as many different computers as you wish.</p>
+<p>Audacity is <a href="http://manual.audacityteam.org/help/manual/man/faq_about_audacity.html#free">free software</a>. You may use it for any personal, commercial or educational purpose, including installing it on as many different computers as you wish.</p>
 
 <p>You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GNU General Public License (GPL)</a> as published by the Free Software Foundation - either <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html">version 2 of the License</a>, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the GPL. ');?>
 <?php
@@ -71,7 +70,7 @@ echo _('<h4 >Updating and Documenting Audacity</h4>
 
 <p>We would appreciate your linking to our web site: <a href="http://audacity.sourceforge.net">http://audacity.sourceforge.net</a> so your users can download updated versions of Audacity when released. Also, please subscribe to the notifications list at the bottom of <a href="http://audacity.sourceforge.net">http://audacity.sourceforge.net</a> to ensure you receive advice of and can distribute the latest version of Audacity.</p>');
 
-echo _('<p>If possible, please include the <a href="http://audacity.sourceforge.net/help/documentation">Audacity documentation</a> with your distribution, to reduce the number of queries we receive. ');?>
+echo _('<p>If you bundle the .exe or .dmg Audacity installers, the Audacity <a href="http://manual.audacityteam.org/help/manual/">Manual</a> is included. If you provide the Audacity zip file or source tarball, please consider including the <a href="http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html">standalone Manual</a> with your distribution to reduce the number of queries we receive.');?>
 
 <?php
    echo _('IMPORTANT: If you write your own documentation for Audacity, please ');?>
