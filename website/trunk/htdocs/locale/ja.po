@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Audacity website translation 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-21 05:10+0100\n"
-"PO-Revision-Date: 2012-05-26 14:21+0900\n"
+"PO-Revision-Date: 2012-05-27 08:56+0900\n"
 "Last-Translator: Atsushi Yoshida <ayoshida.pub@gmail.com>\n"
 "Language-Team: kuzunet <kuzu@mpd.biglobe.ne.jp>\n"
 "MIME-Version: 1.0\n"
@@ -218,7 +218,7 @@ msgstr "<b>フランス語:</b> <a href=\"http://manual.audacityteam.org/man/FAQ
 
 #: help/faq.php:28
 msgid "For languages other than the above, please read <a href=\"faq_i18n\">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0. The Manual will be updated for other languages in due course. Volunteers to help with <a href=\"http://manual.audacityteam.org/man/Help:Translating\">translating the Manual<a/> are welcomed."
-msgstr "For languages other than the above, please read <a href=\"faq_i18n\">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0. The Manual will be updated for other languages in due course. Volunteers to help with <a href=\"http://manual.audacityteam.org/man/Help:Translating\">translating the Manual<a/> are welcomed."
+msgstr "その他の言語については、<a href=\"faq_i18n\">英語以外言語の過去のFAQ (よくある質問）</a>をご覧下さい。 これはAudacity 2.0でも多くの部分が適用できます。 他言語のマニュアルもいずれ更新される予定です。<a href=\"http://manual.audacityteam.org/man/Help:Translating\">マニュアルの翻訳<a/>をしてくださるボランティアーの方々がいらっしゃれば大歓迎です。"
 
 #: help/faq.php:30
 msgid "Still need help?"
