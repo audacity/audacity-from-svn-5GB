@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Audacity Deutsch\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-04-08 09:29+0100\n"
-"PO-Revision-Date: 2012-04-28 00:39-0000\n"
+"PO-Revision-Date: 2012-05-28 22:23-0000\n"
 "Last-Translator: gale <gale@audacityteam.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3100,9 +3100,8 @@ msgid "The <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-i
 msgstr ""
 
 #: download/plugins.php:39
-#, fuzzy
 msgid "Audio Unit Plug-Ins"
-msgstr "Nyquist-Plugins"
+msgstr "Audio Unit-Plugins"
 
 #: download/plugins.php:40
 msgid "On Mac OS X only, Audacity loads <a href=\"http://manual.audacityteam.org/help/manual/man/effect_menu.html#audio_unit\">Audio Unit</a> plug-ins automatically from system plug-in directories. Audacity will not recognize any Audio Units in its own \"plug-ins\" folder."
