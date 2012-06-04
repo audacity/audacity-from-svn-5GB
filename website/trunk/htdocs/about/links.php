@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004-11 Matt Brubeck, Gale Andrews
+ * Copyright 2004-12 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -31,7 +31,7 @@
   <li><a href="http://sourceforge.net/search/?&fq[]=trove%3A99&fq[]=trove%3A113&fq[]=trove%3A120&fq[]=trove%3A114"><?=_("Audio Analysis")?></a>
 </ul>
 
-<h3><?=_("Open Source Audio-Visual Software")?></h3>
+<h3 id="av"><?=_("Open Source Audio-Visual Software")?></h3>
 <p><?=_('<a href="http://www.blender.org/">Blender</a> is a free, cross-platform 3D content creation suite for animations, interactive applications and video games.')?></p>
 <p><?=_('<a href="http://mediainfo.sourceforge.net/">MediaInfo</a> is a free, cross-platform tag and codec analyzer for audio and video files.')?></p>
 <p><?=_('<a href="http://www.videolan.org/vlc/">VLC media player</a> is a free, cross-platform media player for most audio and video files as well as DVD, Audio CD and VCD. VLC can also send, save and convert <a href="http://www.videolan.org/streaming-features.html">audio and video streams</a>.')?></p>
