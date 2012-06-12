@@ -33,7 +33,6 @@
   <li>Steve Daulton, <?=_("documentation and support")?></li>
   <li>Vaughan Johnson, <?=_("developer")?></li>
   <li>Greg Kozikowski, <?=_("documentation and support")?></li>
-  <li>Alexandre Prokoudine, <?=_("documentation and support")?></li>
   <li>Peter Sampson, <?=_("documentation and support")?></li>
   <li>Martyn Shaw, <?=_("developer")?></li>
   <li>Bill Wharrie, <?=_("documentation and support")?></li>
@@ -59,6 +58,7 @@
   <li>Monty Montgomery, <?=_("developer")?></li>
   <li>Shane Mueller, <?=_("developer")?></li>
   <li>Tony Oetzmann, <?=_("documentation and support")?></li>
+  <li>Alexandre Prokoudine, <?=_("documentation and support")?></li>
 </ul>
 
 <h3><?=_("Contributors")?></h3>
