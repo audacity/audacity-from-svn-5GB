@@ -23,13 +23,13 @@
 <ul>
   <li>
     <p>
-      <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB, including help files) for <b>OS X 10.4 or later</b> (Universal Binary)'), 
+      <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB, including help files) for OS X 10.4 or later (Universal Binary)'), 
                     download_url($macosx_url), macosx_version, macosx_size)?>
     </p>
   </li>
   <li>
     <p>
-      <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB) for <b>OS X 10.4 or later</b> (Universal Binary) - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions.'),
+      <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB) for OS X 10.4 or later (Universal Binary) - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions.'),
                     download_url($macosx_zip_url), macosx_version, macosx_zip_size)?>
     </p>
   </li>
@@ -58,7 +58,7 @@
   </li>
   <li>
     <p>
-      <a href="http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#maclame">
+      <a href="http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#lame">
         <?=_("LAME MP3 encoder")?>
       </a> - <?=_("Allows Audacity to export MP3 files.")?>
     </p>
@@ -94,7 +94,7 @@
   <?=_("Audacity Nightly Builds")?>
 </h4>
 <ul>
-  <li><p><?php echo _('<b>For advanced users</b>, <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds#mac">Nightly Builds</a> for <b>OS X 10.4 or later</b> (Universal Binary) are available for testing purposes.')?>
+  <li><p><?php echo _('<b>For advanced users</b>, <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Macintosh_Binaries">Nightly Builds</a> for OS X 10.4 or later (Universal Binary) are available for testing purposes.')?>
     <?php include "beta_nightly.inc.php"; ?></p></li>
 </ul>
 
