@@ -4,29 +4,28 @@
  * only need to update this number and the various sizes for a new beta release.
  * Versions only need coding for specific platforms if they are lagging behind
  * the current release version. */
-define('stable_version', '2.0.1');
+define('stable_version', '2.0.0');
 
 /* Specific download versions below. Only define these if the version for that
  * download is different to the value above. You do need to go
- * through and set the correct sizes for each download however. 
- * Gale 27June12: the above statement seems incorrect - version has to be set.*/
+ * through and set the correct sizes for each download however. */
 // Note: Sizes are in MB.
-define('macosx_version', '2.0.1');
-define('macosx_size',    27.9);
-define('macosx_zip_size',    13.3);
+define('macosx_version', '2.0.0');
+define('macosx_size',    27.5);
+define('macosx_zip_size',    12.8);
 
-define('win_exe_version', '2.0.1');
-define('win_exe_size',    20.0);
-define('win_zip_version', '2.0.1');
-define('win_zip_size',    7.9);
+define('win_exe_version', '2.0');
+define('win_exe_size',    19.8);
+define('win_zip_version', '2.0');
+define('win_zip_size',    7.7);
 
 
 define('ladspa_version', '0.4.15');
 define('ladspa_size',    1.5);
 
-define('src_version', '2.0.1');
-define('full_src_size',    18.1);
-define('min_src_size',    6.5);
+define('src_version', '2.0.0');
+define('full_src_size',    17.9);
+define('min_src_size',    6.3);
 define('src_suffix',  '.tar.bz2');
 
 /* from here on, build up variables with the URLs in them. These shouldn't need

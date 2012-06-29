@@ -15,14 +15,14 @@
      // i18n-hint:  Please add a note that the manuals below are in English.
      // If there is documentation for Audacity 2.x available in your language
      // but not already linked to at the bottom of this page, please add the links.
-	echo "<p>"._('This page contains links to Manuals (with Tutorials) for the free Audacity audio editor. For additional help, see the <a href="/faq">Frequently Asked Questions</a> and additional <a href="http://wiki.audacityteam.org/wiki/Category:Tutorial">Tutorials</a> and <a href="http://wiki.audacityteam.org/wiki/Category:Tips">Tips</a> on the Audacity <a href="http://wiki.audacityteam.org/">Wiki</a>.')."</p>";
+	echo "<p>"._('This page contains links to Manuals for the free Audacity audio editor. For additional help, see the <a href="/faq">Frequently Asked Questions</a> and additional <a href="http://wiki.audacityteam.org/wiki/Category:Tutorial">Tutorials</a> and <a href="http://wiki.audacityteam.org/wiki/Category:Tips">Tips</a> on the Audacity <a href="http://wiki.audacityteam.org/">Wiki</a>.')."</p>";
 ?>
 
 <p><?=_('Legacy documentation for old versions of Audacity can be found <a href="/help/legacy_documentation">here</a>.')?></p>
 
 <h3><?=_('Audacity Manuals (with Tutorials)')?></h3>
 
-<p><?=_('The <a href="/download/windows">Windows .exe</a> and <a href="/download/mac">Mac OS X .dmg</a> installers already include a built-in copy of the Manual. To access it, click <b>Help > Manual (in web browser)</b> in the Audacity program.')?></p>
+<p><?=_('The <a href="/download/windows">Windows .exe</a> and <a href="/download/mac">Mac OS X .dmg</a> installers already include a built-in copy of the Manual. To access it, click Help > Manual (in web browser) in the Audacity program.')?></p>
 
 <p>
 <ul>

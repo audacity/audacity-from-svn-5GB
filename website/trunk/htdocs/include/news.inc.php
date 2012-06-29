@@ -40,24 +40,6 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
-  "June 29, 2012",
-  	"2.0.1-release",
-  _("Audacity 2.0.1 Released"),
-  _("
-<p>
-  The Audacity Team is delighted to announce the release of
-  <a href=\"/download\">Audacity 2.0.1</a> 
-  for Windows, Mac, GNU/Linux and other operating systems. 
-  It replaces 2.0.0 and all previous 1.2 and 1.3 versions.
-  Among several improvements, keyboard shortcuts can now 
-  be allocated to effects, and Nyquist plug-ins can be added 
-  to Chains. See the
-  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.1\">
-  2.0.1 Release Notes</a> for detailed changes.
-</p>
-"));
-
-add_news_item(
   "March 13, 2012",
   	"2.0-release",
   _("Audacity 2.0 Released!"),

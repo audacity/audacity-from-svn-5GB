@@ -23,13 +23,13 @@
 <ul>
   <li>
     <p>
-      <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB, including help files) for <b>Windows 2000/XP/Vista/7</b>'), 
+      <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB, including help files) for Windows 2000/XP/Vista/7'), 
                     download_url($win_exe_url), win_exe_version, win_exe_size)?>
     </p>
   </li>
   <li>
     <p>
-      <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB) for <b>Windows 2000/XP/Vista/7</b> - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions.'),
+      <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB) for Windows 2000/XP/Vista/7 - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions.'),
                     download_url($win_zip_url), win_zip_version, win_zip_size)?>
     </p>
   </li>
@@ -76,6 +76,27 @@
 </ul>
 
 <h4>
+  <?=_("Audacity for Windows 98/ME")?>
+</h4>
+<p>
+  <?=_("Version 2.0.0 of Audacity is the last that will support Windows 98/ME.")?>
+</p>
+<ul>
+  <li>
+    <p>
+      <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) for Windows 98/ME'), 
+                  download_url($win_ansi_exe_url), win_exe_version, win_exe_size)?>
+    </p>
+  </li>
+  <li>
+    </p>
+    <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB) for Windows 98/ME - If you cannot run the installer because of restricted permissions, download and unzip this file instead.'), 
+                  download_url($win_ansi_zip_url), win_zip_version, win_zip_size)?>
+    </p>
+  </li>
+</ul>
+
+<h4>
   <?=_("Alternative Download Links")?>
 </h4>
 <ul>
@@ -100,7 +121,7 @@
 <ul>
   <li>
     <p>
-      <?php echo _('<b>For advanced users</b>, <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries">Nightly Builds</a> for <b>Windows 2000/XP/Vista/7</b> are available for testing purposes.')?>
+      <?php echo _('<b>For advanced users</b>, <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries">Nightly Builds</a> for Windows 2000/XP/Vista/7 are available for testing purposes.')?>
       <?php include "beta_nightly.inc.php"; ?>
     </p>
   </li>

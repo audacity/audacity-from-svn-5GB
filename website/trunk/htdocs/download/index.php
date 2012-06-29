@@ -22,9 +22,8 @@
 <div class="download_container">
   <div class="downloads" id="stable_downloads">
     <div class="downloads_header">
-      <h3><?php printf("Audacity %s", src_version)?></h3>
+      <h3><?=_("Audacity 2.0")?></h3>
     </div>
-
     <div>
       <h3>
         <a href="windows">
@@ -37,7 +36,7 @@
         <span class="downloads_smaller">
           <br>
           <img src="../images/download_spacer.png">
-          <?=_("(Windows 2000/XP/Vista/7)")?>
+          <?=_("(Windows 98/ME/2000/XP/Vista/7)")?>
         </span>
       </h3>
 
@@ -70,16 +69,6 @@
             <?=_("(source code)")?>
         </span>
       </h3>
-
-      <h3>
-        <div class="downloads_notes">
-          <?php printf('<a href="http://wiki.audacityteam.org/wiki/Release_Notes_%s">', src_version)?>
-          <img src="../images/download_spacer.png">
-          <?php printf(_("View Release Notes for Audacity %s"), src_version)?>
-        </a>
-        </div>
-      </h3>
-
     </div>
   </div>
   <p>&nbsp;</p>
@@ -87,17 +76,20 @@
 </div>
 
 <div class="under_downloads">
-  <h3><?=_("Legacy Downloads")?></h3>
-  <ul>
-    <li><p><?=_("For users of <b>Windows 98 and ME</b>, a legacy 2.0.0 version of Audacity is available on the <a href=\"legacy_windows\">Legacy Windows downloads page")?></a>.</p></li>
-    <li><p><?=_("For users of <b>Mac OS 9</b> and <b>Mac OS 10.0 through 10.3</b>, legacy versions of Audacity are available on the <a href=\"legacy_mac\">Legacy Mac downloads page")?></a>.</p></li>
-    <li><p><?=_('<a href="http://sourceforge.net/projects/audacity/files/">All Previous Versions of Audacity</a>')?></p></li>
-  </ul>
-
   <h3><?=_("Further Information")?></h3>
-<ul>
+  <ul>
+    <li><p><?=_("For users of <b>Mac OS 9</b> and <b>Mac OS 10.0 through 10.3</b>, legacy versions of Audacity are available on the ")?><a href="legacy_mac"><?=_("Legacy Mac downloads page")?></a>.</p></li>
     <li><p><?=_('You can also obtain Audacity as a <a href="buy">CD image file or purchasable CD</a>. Note that these are often not the latest version of Audacity.')?></p></li>
-    <li><p><a href="features-2.0"><?=_("New Features in Audacity 2.0")?></a></p></li>
+    <li><p><a href="features-2.0"><?=_("New Features")?></a></p></li>
+    
+    <!-- Note that release notes link will need to change to "http://wiki.audacityteam.org/wiki/Release_Notes" for next release after 2.0.0, but there's too little there, currently. -->
+    <li><p><a href="http://wiki.audacityteam.org/wiki/Release_Notes_2.0.0"><?=_("Release Notes")?></a></p></li>
+
+    <li>
+      <p>
+        <?=_('<a href="http://sourceforge.net/projects/audacity/files/">All Previous Versions of Audacity</a>')?>
+      </p>
+    </li>
     <li><p><?=_('To build Audacity yourself, download the <a href="source">source code</a>.')?>
       </p></li>
     <li><p><?=_('You may copy, distribute, modify and/or resell Audacity, under the terms of the  <a href="../about/license">GNU GPL</a>.')?></p></li>

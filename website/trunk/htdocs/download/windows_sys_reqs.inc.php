@@ -7,7 +7,7 @@
 ?>
 
 <p>
-  <?=_('The values in the "Recommended RAM/processor speed" column below are for tasks like recording for an hour, or editing three 20-minute tracks simultaneously. The values in the "Minimum RAM/processor speed" column will be fine for smaller/shorter tasks, especially if unnecessary programs are closed.')?>
+  <?=_('The values in the "Recommended RAM/processor speed" column below are for tasks like recording for an hour, or editing three 20 minute tracks simultaneously. The values in the "Minimum RAM/processor speed" column will be fine for smaller/shorter tasks, especially if unnecessary programs are closed.')?>
 </p>
 
 <table class="winsysreq">
@@ -16,10 +16,11 @@
     <th><?=_("Recommended RAM/<br>processor speed")?></th>
     <th><?=_("Minimum RAM/<br>processor speed")?></th>
   </tr>
+
   <tr>
-    <td class="version">Windows 7 (64-bit)</td>
-    <td class="ramspeed">4 GB / 2 GHz</td>
-    <td class="ramspeed">2 GB / 1 GHz</td>
+    <td>Windows 7 (64-bit)</td>
+    <td>4 GB / 2 GHz</td>
+    <td>2 GB / 1 GHz</td>
   </tr>
   <tr>
     <td>
@@ -36,6 +37,11 @@
     <td>Windows 2000, XP</td>
     <td>512 MB/1 GHz</td>
     <td>128 MB/300 MHz</td>
+  </tr>
+  <tr>
+    <td class="version">Windows 98, ME</td>
+    <td class="ramspeed">128 MB / 500 MHz</td>
+    <td class="ramspeed">64 MB / 300 MHz</td>
   </tr>
 </table>
 
