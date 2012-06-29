@@ -10,7 +10,7 @@
  * http://creativecommons.org/licenses/by/3.0/
  */
   require_once "main.inc.php";
-  require_once "../latest/versions.inc1.php";
+  require_once "../latest/versions.inc.php";
   require_once "../latest/mirror.inc.php";
   $pageId = "windows";
   $pageTitle = _("Windows");
