@@ -43,7 +43,20 @@
 <h4><?=_("Plug-ins and Libraries")?></h4>
 <ul>
   <li><p><a href="http://ardour.org/files/releases/swh-plugins-0.4.15.dmg"><?=_("LADSPA plug-ins installer</a> - over 90 plug-ins.")?></p></li>
-<?php include "common.inc.php"; ?>
+  <li><p><a href="plugins"><?=_("Plug-Ins")?></a> - <?=_("Download additional effects and filters.")?></p></li>
+  <li><p><a href="../help/faq?s=install&amp;item=lame-mp3"><?=_("LAME MP3 encoder")?></a> - <?=_("Allows Audacity to export MP3 files.")?></p></li>
+</ul>
+
+<h4><?=_("Alternative Download Links")?></h4>    
+<ul>
+  <li>
+    <p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try:')) ?></p>
+    <ul>
+      <li><?php printf(_('<a href="%s">SourceForge</a>: View older versions by clicking to enter the required folder under "Name".'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
+      <li><?php printf(_('<a href="%s">Google Code</a>: Click on the headings to sort the list.'), "http://code.google.com/p/audacity/downloads/list")?></li>
+    </ul>
+  </li>
+</ul>
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
 <?=_("Audacity 2.0 series requires Mac OS X 10.4 or later.")?>

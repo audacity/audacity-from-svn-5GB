@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2003 Dominic Mazzoni
- * Copyright 2004-11 Matt Brubeck, Vaughan Johnson
+ * Copyright 2004-12 Matt Brubeck, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -23,7 +23,7 @@
 
 <h3><?=_("Audacity Team Members")?></h3>
 <ul>
-  <li>Gale Andrews, <?=_("documentation and support")?></li>
+  <li>Gale Andrews, <?=_("quality assurance")?></li>
   <li>Richard Ash, <?=_("developer")?></li>
   <li>Christian Brochec, <?=_("documentation and support")?>, <?=_("French")?></li>
   <li>Arturo "Buanzo" Busleiman, <?=_("system administration")?></li>

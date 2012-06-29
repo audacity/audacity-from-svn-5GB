@@ -6,6 +6,7 @@ body {
 :link { color:#00d; }
 :visited { color:#116; }
 :link:hover, :visited:hover { color:black; }
+a.ext { position:relative; left: 7px; }
 a.ext:link {color: #00d; font-weight: normal; }
 a.ext:visited {color: #116; font-weight:normal; }
 a.ext:link:hover, a.ext:visited:hover { color:#663300; font-weight:normal; }
@@ -227,10 +228,12 @@ table.winsysreq td.ramspeed { width:22%; }
 .downloads img { position:relative; /* safari fix */ }
 
 .download_container {  
-  margin-top: 0px;
+  margin-top: -4px;
 }
 
 span.downloads_smaller { font-size:85%; font-weight:300; }
+
+.downloads_notes { font-size:85%; font-weight:300; margin-top: -1em; }
 
 .under_downloads {
   float: left;

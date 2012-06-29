@@ -23,7 +23,7 @@
 
 <ul>
 <li><p><?php printf(_('<a href="%s">Audacity %s source tarball</a> (%s file, %.1lf MB)'), download_url($min_src_url), src_version, src_suffix, min_src_size)?> 
-<?php printf(_('Standard source tarball. Assumes your system has necessary dependencies/libraries installed (see below).'))?></p></li>
+<?php printf(_('standard source tarball. Assumes your system has necessary dependencies/libraries installed (see below).'))?></p></li>
 </ul>
 
 <h3><?=_("Optional Downloads")?></h3>
