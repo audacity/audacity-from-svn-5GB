@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Effect Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+
+<body>
+<!--top table-->
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Zur Inhaltsangabe</a></td>
+    <td width="50%" align=center><a class="ss" href="reference.html">Zur Referenzseite</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<BR>
+<table cellpadding=0 cellspacing=0 width="98%">
+	<tr>
+	  <td align=center>
+	  	<table cellpadding=0 cellspacing=0><tr>
+	  	<td><a class=menuref href="menu_file.html">Datei</a></td>
+	  	<td><a class=menuref href="menu_edit.html">Ändern</a></td>
+	  	<td><a class=menuref href="menu_view.html">Anzeige</a></td>
+	  	<td><a class=menuref href="menu_project.html">Projekt</a></td>
+	  	<td><a class=menuref href="menu_generate.html">Generieren</a></td>
+	  	<td><a class=menuref_current href="menu_effects.html">Effekte</a></td>
+	  	<td><a class=menuref href="menu_analyze.html">Analyse</a></td>
+	  	</tr></table>
+	  </td>
+	</tr>
+	<tr>
+	  <td class=bg_r align=center><font size="+3">Erzeugen</font></td>
+	</tr>
+</table>
+
+<center>
+  <table width="100%"><tr>
+    <td valign=top width="50%">
+
+<a name="silence"></a>
+<p class=menuref_item>Stille</p>
+<p class=a>Fügt <B>Stille</B> ein. Die Länge entspricht der der Auswahl und die Position beginnt
+  <B>an der linken Seite der Auswahl</B>.</p>
+<P class=a>Wenn keine Auswahl getroffen wurde, wird der generelle Wert von <B>30 Sekunden</B> an der Stelle der Cursorpositionierung eingefügt.</P>
+<P class=a>Ein Beispiel: Wenn man 2 Sekunden Stille einfügen möchte, positionieren Sie den Cursor an der Stelle, an der die Stille eingefügt werden soll,
+  drücken die <span class=keybshc_s>SHIFT</span> Taste, klicken und ziehen die Maus über 2 Sekunden des Audiosignal,
+  lassen die Maus los und aktivieren die Silence Funktion im Generieren-Menü. Nun wird Stille für 2 Sekunden
+an der Position des Cursor (linke Seite der Auswahl) eingefügt.</B>.
+  
+
+	</td>
+	<td valign=top width="50%">
+
+<a name="tone"></a>
+<p class=menuref_item>Tone</p>
+<p class=a><B>Fügt</B> eine Wellenform von gewünschtem Typ, Frequenz und Amplitude ein. 
+  Wie bei Stille, wird dieser an der Stelle des Cursors (oder linke Seite der Auswahl) eingefügt, Standard ist <b> 30 Sekunden</b> ausser es wird 
+eine Auswahl getroffen, dann entspricht die Länge des erzeugten Tones, der Länge der Auswahl.</p>
+
+<P class=a><B>Parameter:</B></P>
+<P class=ao>
+	<table>
+	<tr>
+	  <td valign=top class=ss>Waveform</td>
+	  <td valign=top class=ss>Sinus, Square oder Sägezahn</td>
+	</tr>
+	<tr>
+	  <td valign=top class=ss>Frequenz(Hz)</td>
+	  <td valign=top class=ss>1-20000 (Ein Wert unter 1.0 und über 20000 wird automatisch berichtigt!)</td>
+	</tr>
+	<tr>
+	  <td valign=top class=ss>Amplitude</td>
+	  <td valign=top class=ss>0-1 - Das ist die Lautstärke.</td>
+	</tr>
+	</table>
+</P>
+
+	</td>
+    </tr>
+    <tr>
+	<td valign=top width="50%">
+<a name="whitenoise"></a>
+<p class=menuref_item>White Noise</p>
+<p class=a><B>Erzeugt und fügt</b> Weisses Rauschen ein. Wie bei Stille, wird dieser an der Stelle des Cursors (oder linke Seite der Auswahl) eingefügt, Standard ist <b> 30 Sekunden</b> ausser es wird 
+eine Auswahl getroffen, dann entspricht die Länge des erzeugten Tones, der Länge der Auswahl</P>
+	
+	</td>
+	<td valign=top width="50%">
+<a name="pluck"></a>
+<p class=menuref_item>Pluck</p>
+<p class=a><B>Fügt</B> einen synthetischen "Pluck" ??? Ton ein. Wie bei Stille, wird dieser an der Stelle des Cursors (oder linke Seite der Auswahl) eingefügt, Standard ist <b> 30 Sekunden</b> ausser es wird 
+eine Auswahl getroffen, dann entspricht die Länge des erzeugten Tones, der Länge der Auswahl.</p>
+<P class=ao>
+	<table>
+	<tr>
+	  <td valign=top class=ss>Pitch</td>
+	  <td valign=top class=ss>0-127
+	    <BR>
+	    Die Nummer entspricht dem Wert einer Midinote, je höher der Wert, desto höher der Ton.
+	  </td>
+	</tr>
+	</table>
+</P>
+	</td>
+    </tr>
+
+</table>
+</center>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Zur Inhaltsangabe</a></td>
+    <td width="50%" align=center><a class="ss" href="reference.html">Zur Referenzseite</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+
+</body>
+</html>
+
+
+
+
