@@ -13,11 +13,10 @@
 <h2><?=$pageTitle?></h2>
 
 <p>
-<?=_('Audacity 2.0 is our current version. 
-      It has dozens of new features, developed in the 1.3 series. 
+<?=_('Audacity 2.0 is our current release series. 
+      It has dozens of new features, developed in the previous 1.3 series. 
       It replaces all previous versions, especially 1.2.6 and 1.3.14.
-      See <a href="../download/features-1.3-a">New Features in 1.3</a> for changes during the 1.3 series.
-      See also <a href="http://wiki.audacityteam.org/wiki/Release_Notes_2.0.0">Release Notes</a> for more details.
+      See <a href="../download/features-1.3-a">New Features in 1.3</a> for changes during the 1.3 series. See <a href="http://wiki.audacityteam.org/wiki/Release_Notes">Release Notes</a> for changes in the 2.0 series.
 ')?></p>
 
 <?=_('
