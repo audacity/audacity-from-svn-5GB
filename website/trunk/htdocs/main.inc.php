@@ -5,6 +5,8 @@
  * http://creativecommons.org/licenses/by/3.0/
  */
 
+require_once "../latest/versions.inc.php";
+
 // Work around PHP bug on sf.net where include_path gets reset.
 set_include_path(".".PATH_SEPARATOR."/usr/share/pear".PATH_SEPARATOR."/usr/share/php");
 require_once "include/lang.inc.php";
@@ -30,12 +32,12 @@ $siteNavItems = array(
   ),
   array(_("Download"), "download/",
     array(
-      array(_("Audacity 2.0")."", ""),
+      array(_("Audacity 2.0 series")."", ""),
       array($ind._("Windows"), "windows"),
       array($ind._("Mac"), "mac"),
       array($ind._("GNU/Linux"), "linux"),
       array($ind._("Source Code"), "source"),
-      array($ind._("<a class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.0\" target=\"_blank\">Release Notes</a>")."", ""),
+      array($ind._("<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Release_Notes\" target=\"_blank\">Release Notes (Wiki)</a>")."", ""),
 
       array(_("Plug-Ins and Libraries"), "plugins"),
       array(_("Obtain a CD"), "buy"),
@@ -46,7 +48,7 @@ $siteNavItems = array(
     array(
       array(_("FAQ"), "faq"),
       array(_("Documentation"), "documentation"),
-      array(_("<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\" target=\"_blank\">Tutorials (Wiki)</a>")."", ""),
+      array(_("<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\" target=\"_blank\">More Tutorials (Wiki)</a>")."", ""),
       array(_("<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Category:Tips\" target=\"_blank\">Tips (Wiki)</a>")."", ""),
       array(_("Nyquist"), "nyquist"),
     )
