@@ -1,0 +1,286 @@
+body {
+	background:white; color:black;
+	font:87.5%/1.5 sans-serif;
+	margin:0; padding:0;
+}
+:link { color:#00d; }
+:visited { color:#116; }
+:link:hover, :visited:hover { color:black; }
+a.ext { position:relative; left: 7px; }
+a.ext:link {color: #00d; font-weight: normal; }
+a.ext:visited {color: #116; font-weight:normal; }
+a.ext:link:hover, a.ext:visited:hover { color:#663300; font-weight:normal; }
+img { border:0; vertical-align: middle; }
+dt { font-weight:bold; }
+p, ul, ol { margin-top:0; margin-bottom:1em; }
+ul ul, ol ol { margin-bottom:0; }
+
+h1 { font-size:1.714em; margin:.25em; padding:0; }
+h2 { font-size:1.286em; margin:.5em 0; }
+h3 { font-size:1.143em; margin:1.25em 0 .25em 0; }
+h4 { font-size:1em; margin:1em 0 .5em 0; }
+
+
+p.donations { 
+       text-align:center;
+}  
+
+
+table.bundlers {
+       border-width: 2px;
+	border-style: solid;
+	border-color: #9F9F9F;
+	border-collapse: collapse;
+}
+
+table.bundlers th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #EEEEEE;
+       background-color: #EEEEEE;  
+       vertical-align: top;   
+}
+
+table.bundlers td {
+       border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #E5E5E5;
+       vertical-align: top;
+}
+
+
+table.bundlers td.col1 { width:15%; }  
+table.bundlers td.col2 { width:22%; }  
+table.bundlers td.col3 { width:63%; }    
+     
+
+table.winsysreq {
+   	margin-left: auto;
+       margin-right: auto; 
+       border-width: 2px;
+	border-style: solid;
+	border-color: #9F9F9F;
+	border-collapse: collapse;
+}
+
+table.winsysreq th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #EEEEEE;
+       background-color: #EEEEEE;  
+       vertical-align: top;   
+}
+
+table.winsysreq td {
+       border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #E5E5E5;
+       vertical-align: top;
+}
+
+
+table.winsysreq td.version { width:56%; }  
+table.winsysreq td.ramspeed { width:22%; }  
+
+
+.skip {
+	position:absolute;
+	left:-999px; width:990px;
+}
+.skip:focus, .skip:active {
+	background:white;
+	border:.25em solid #d82e39;
+	font-size:large;
+	left:0; top:0;
+	padding:.25em;
+	width:auto;
+}
+
+/* holly hack (ie mac fix) \*/
+#search { float:right; margin:1em; }
+/* end hide */
+.text { border:1px solid #666; width:10em; }
+
+#sitenav { white-space:nowrap; }
+#sitenav h2, #footer h2 {
+	position:absolute;
+	left:-999px; width:990px;
+}
+#sitenav ul {
+	border-bottom:1px solid black;
+	line-height:normal;
+	margin:0; padding:0;
+	width:100%;
+}
+#sitenav li {
+	background:#ddf;
+	border:1px solid black;
+	display:inline;
+	height:100%;
+	margin:.5em;
+	padding:.25em .5em 0 .5em;
+	position:relative; /* ie win fix */
+}
+#sitenav li.selected {
+	background:white;
+	border-top:3px solid blue;
+	border-bottom:1px solid white;
+}
+#sitenav :link, #sitenav :visited { text-decoration:none; }
+#sitenav :link:hover, #sitenav :visited:hover { text-decoration:underline; }
+
+#leftcolumn {
+	float:left;
+}
+
+#subnav {
+	background:#ddd;
+	border:2px solid #666;
+	margin:24px 16px; /* 2em 1em; */
+	width:156px; /* SourceForge/AdSense ads are 160px wide, minus 4px for the border.		11em; */
+}
+#subnav h3 {
+	font-size:1em;
+}
+#subnav ul {
+	font-size:.857em;
+	margin:0; padding:0;
+	list-style:none;
+}
+#subnav li, #subnav h3 {
+	display:block;
+	border:1px solid;
+	border-color:#eee #aaa #999 #eee;
+	margin:0; padding:.25em;
+}
+#subnav .selected {
+	background:#eef;
+	font-weight:bold;
+}
+#subnav .indented_selected {
+        padding-left:2em;
+	background:#eef;
+	font-weight:bold;
+}
+#subnav .indented {
+        padding-left:2em;
+}
+#subnav .heading {
+        font-weight: bold;
+}
+#subnav :link, #subnav :visited {
+	display:block;
+	margin:-.25em; padding:.25em;
+}
+#subnav :link:hover, #subnav :visited:hover {
+	background:#ccc;
+}
+
+#adsense {
+	margin:24px 16px; /* 2em 1em; */
+}
+
+.afternav { margin-left:170px; /* SourceForge/AdSense ads are 160px wide.	12em; */}
+
+#content {
+	max-width:60em;
+	padding:1em 2em;
+}
+
+#footer {
+	clear:both;
+	text-align:center;
+}
+
+#download {
+	border:2px solid #339;
+	background:#ffa;
+	width:45%;
+       margin:0;
+}
+#download h3 { margin:.5em 0 0 0; }
+
+#download p { margin:.5em 0 0.5em 0; }
+
+#download_sub {
+        border:2px solid;
+	border-color:#ffe #bb9 #aa8 #ffe;
+	padding:0 1em;
+}
+
+#screenshot {
+	float:right;
+	margin:0 1em 1em 2em;
+}
+.screenshot {
+	float:left;
+	margin:1em;
+	min-width:250px;
+}
+.screenshot img { display:block; }
+.logo { text-align:center; }
+
+.downloads h3 { margin:1em; }
+.downloads img { position:relative; /* safari fix */ }
+
+.download_container {  
+  margin-top: -4px;
+}
+
+span.downloads_smaller { font-size:85%; font-weight:300; }
+
+.downloads_notes { font-size:85%; font-weight:300; margin-top: -1em; }
+
+.under_downloads {
+  float: left;
+  margin-top: 1em;
+  margin-left: 1em; 
+}
+
+.downloads {
+  border: 2px solid;
+  border-color: #009;
+  margin-top: 0px;
+}
+
+#stable_downloads {
+  float: left;
+}
+
+#beta_downloads {
+  float: left;
+  margin-left: 1em;
+}
+
+#legacy_downloads {
+  float: left;
+}
+
+.downloads_header {
+  text-align: center;
+  background: #eee;
+  border: 1px solid;
+  border-color:  #fff #fff #00c #fff;
+}
+
+.downloads_header h3 {
+  margin: 0;
+}
+
+.downloads_header p {
+  margin: 0;
+}
+
+.advice {
+  border: 1px solid black;
+  padding-top: 6px; 
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 6px;
+  margin: 24px;
+  background:#EEEEEE;
+}

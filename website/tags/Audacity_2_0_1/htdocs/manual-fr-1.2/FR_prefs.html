@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Preferences</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="audacity.css">
+</head>
+<body>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#000080">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+<H1 align=center>Préférences d'Audacity</H1>
+
+<p>
+
+&nbsp;<p class=qy>E/S Audio</p>
+
+<ul>
+<li>Le premier contrôle de ce panneau définit le périphérique qu'Audacity 
+utilisera pour lire les sons. Vous pouvez posséder 2 cartes son et vouloir 
+sélectionner celle à utiliser. 
+<li>Le deuxième précise la source d'enregistrement. Des PC ont des micros 
+incorporés et c'est ici que vous définirez le matériel à mettre en ligne. Pas 
+besoin d'ajuster ces deux options si elles sont correctement pré - chargées par <b>Audacity</b>.<p>
+
+<li><b>Canaux</b>: Permet de définir si l'entrée est mono (1), stéréo (2) ou 
+multiple ( &gt;2). si votre PC supporte plus de deux canaux, pensez que la place 
+disque nécessaire sera importante dans ce cas. L'enregistrement mono n'est pa le 
+même sur tous les systèmes : parfois il n'enregistre que l'entrée gauche, 
+parfois il mixe les deux entrées.<li dir="ltr">
+<p dir="ltr"><b>Lire les autres pistes durant 
+l'enregistrement d'une nouvelle</b>:
+    Cochez la case si vous souhaitez écouter les pistes à l'écran, pendant que 
+vous enregistrez autre chose. Vous n'entendrez pas ce qui est en cours 
+d'enregistrement. Vous pourrez ainsi ajouter votre voix au morceau en cours de 
+lecture, ou lui ajouter un instrument de plus. Vous pourrez constater que les 
+pistes ne sont pas synchronisées; ceci est normal dans <b>Audacity</b>.  pour 
+réparer cela, utilisez l'outil de
+    <a href="FR_toolbar.html#timeshift"><font color="#0000FF">Calage temporel</font></a><font color="#0000FF"> 
+e</font>t séparez une des pistes jusqu'à obtenir le calage voulu.
+<li dir="ltr">
+<p dir="ltr"><b>Passage audio logiciel :</b> Lire la nouvelle piste pendant son 
+enregistrement. Option intéressante pour les entrées en ligne (on entend ce que 
+l'on enregistre), mais à décocher pour les entrées en micro&nbsp; (effet d'écho 
+indésirable).</ul>
+
+
+<a name="quality"></a>
+<p class=qy>Qualité</p>
+
+<p class=a>Ce panneau définit la <b>fréquence</b> d'échantillon (hertz) pour les 
+nouveaux projets et le <b>format</b> (nombre de Bits). Il n'affecte pas les 
+projets existants.
+   Pour changer ces paramètres sur les fichiers existant après les avoir 
+chargés, cliquez sur le bouton en bas à gauche de la fenêtre&nbsp; ou utilisez 
+le menu déroulant. il est recommandé de travailler les pistes en 32 Bits 
+flottant, pour une meilleure qualité de sons, puis d'exporter en 16 bits (WAV 
+par exemple) pour minimiser la place disque. </p>
+
+<p class=a>Convertisseur d'échantillonnage en temps réel : Audacity a plus d'un 
+convertisseur de fréquence qui peut être utilisé quand votre piste n'a pas le 
+même taux que le projet. Cette option permet la conversion durant la lecture, et 
+qui peut être différente de l'export ou du mixage.</p>
+
+<p class=a>Convertisseur d'échantillonnage de haute qualité : idem mais utilisé 
+durant l'export ou le mixage.</p>
+
+<p class=a>Lissage en temps réel : le lissage est utilisé lors de la conversion 
+d'échantillons de haute qualité vers une qualité CD, avec moins de tessitures 
+dynamiques. Une petite valeur de lissage peut améliorer ou détériorer légèrement 
+le son audio. Cette case est utilisée pour l'écoute.</p>
+
+<p class=a>Lissage de haute qualité : Idem mais utilisé pour l'Export et le 
+mixage.</p>
+
+
+<p class=a>
+<img border="0" src="images/FR_preferences_samplesrates.jpg" width="505" height="401"></p>
+
+
+<a name="fileform"></a>
+<p class=qy>Formats</b> de Fichiers<ul>
+<li><b>Lors de l'importation des fichiers audio non compressés ...</b>
+
+   <ul>
+   <li>Faire une copie de fichier avant d'éditer : Sélectionner ce choix rend
+       <b>Audacity</b> plus lent, mais vous aurez votre propre copie des audio 
+   utilisés dans vos projets.&nbsp; Vous pouvez déplacer, modifier ou détruire 
+   vos fichiers source immédiatement après ouverture ou import.
+
+   <li>Lecture directe depuis le fichier original : Sélectionner ce choix 
+   signifie qu'Audacity dépend de vos fichiers d'origine et ne stocke que les 
+   modifications que vous effectuerez.&nbsp; Si Vous déplacez, modifiez ou 
+   détruisez vos fichiers source immédiatement après ouverture ou import, votre 
+   projet peut devenir inutilisable. Mais l'absence de création de copie rend 
+   cette option d'import plus rapide.
+   </ul>
+
+<li dir="ltr"><b>Format d'Exportation non compressé </b>: Cela vous permet de 
+choisir votre format d'export. 11 formats sont proposés mais vous pouvez aussi 
+choisir &quot;Autre&quot; pour exporter dans un format non standard d'Audacity.<li dir="ltr">
+<p dir="ltr"><b>Réglage de l'exportation Ogg  </b>: Utilisé pour obtenir un 
+export de qualité Ogg Vorbis.  Ogg Vorbis est un format audio compressé 
+similaire à MP3, mais libre de droits d'entrée et de licence.  Une qualité normale 
+de fichier Ogg Vorbis est encodée avec un niveau de &quot;5&quot;. Ce qui n'est pas le cas 
+du
+    MP3, Ogg Vorbis ne vous permet pas de définit le taux de Bits, car certains 
+fichiers sont plus facilement compressibles que d'autres. Toutefois, 
+l'amélioration de la qualité prend de la place.
+
+<li dir="ltr">
+<p dir="ltr"><b>Réglage de l'exportation MP3 </b>: Utilisez ces contrôles pour localisez 
+votre encodeur MP3 et définit la qualité de l'encodage MP3.  Les fichiers de 
+qualité tiennent plus de place.
+    Pour plus d'information, voir la section
+    <a href="FR_exportmp3.html"><font color="#000080">Exporter les fichiers MP3</font></a><font color="#000080">.</font>
+
+</ul>
+
+
+
+<a name="spectrograms"></a>
+
+<p class=qy>Spectrogrammes</p>
+
+<p class=a>Vous avez visualisé les pistes sous forme de spectres de hauteur et 
+de formes d'ondes. en sélectionnant l'option correspondante du menu déroulant. 
+Cette boîte de dialogue vous permet,ici, de définir quelques paramètres pour les 
+spectres et formes d'ondes.
+
+<ul>
+<li><b>FFT Size:</b> La taille de la&nbsp; Fast Fourier Transform (FFT)
+    affecte le niveau de détails verticaux que vous pourrez voir (fréquence).  
+Des tailles de
+    FFT plus larges vous donnent une plus basse résolution et moins de 
+résolution temporelle, et sont plus lentes.<li><b>Echelle de gris</b>: Sélectionnez 
+cette option pour afficher les graphes en grisé. Décochée, ils seront en 
+couleur.<li><b>Fréquence Maximum  </b>: Définit la valeur de la fréquence à 
+visualiser, par paliers de 100 hertz ou de sa moitié. (ex :&nbsp; 22050 Hz si le 
+taux est 44100 Hz). Pour plus d'applications, tels que la reconnaissance vocale 
+ou le niveau d'extraction, les très hautes fréquences ne sont pas intéressantes 
+(visuellement) et cela vous permet de les masquer et de vous concentrer sur 
+celles qui méritent votre attention.
+</ul>
+<p>
+<img border="0" src="images/FR_preferences_spectograms.jpg" width="655" height="359"></p>
+</p>
+
+
+<a name="directories"></a>
+<p class=qy>Répertoires</p>
+
+<p class=a>Utilisez ce panneau pour définir le répertoire des fichiers 
+temporaires d'Audacity.  Audacity utilise ce répertoire quand vous travaillez 
+sur un projet non sauvegardé sous forme Audacity
+   (fichier AUP).
+   Vous devrez redémarrer Audacity si vous changez de répertoire, pour que la 
+modification soit prise en compte.</p>
+
+<p class=a>
+<img border="0" src="images/FR_preferences_directories.jpg" width="449" height="381"></p>
+
+<a name="interface"></a>
+
+<p class=qy>Interface</p>
+   <ul>
+     <li><B>Défilement auto de la piste pendant la lecture</B><br>
+       La piste défile vers la droite de l'onde sonore au fur et à mesure de 
+     l'avancement de l'écoute ou de l'enregistrement.<li dir="ltr">
+     <p dir="ltr"><B>Actualiser le Spectrogramme&nbsp; pendant la lecture </B>
+     Cette actualisation nécessite une certaine puissance de calcul (CPU), et 
+     n'est une bonne idée que si vous jouez un petit morceau. Combiné avec le 
+     Défilement auto cela peut occasionner des pauses durant l'exécution du 
+     morceau.
+     <li><B>Activer la barre d'édition</B><br>
+       Vous affiche la barre des fonctions courantes. regardez la <a href="FR_toolbar_edit.html">
+     <font color="#0000FF">Barre d'Edition</font></a><font color="#0000FF">
+     </font>pour plus d'informations.<li><B>Langage</B><br>
+       Installez la langue de votre choix pour les menus et autres écrans de 
+     texte (sauf l'aide) . Puis redémarrez Audacity. Vous pouvez rechercher dans 
+     le répertoire des langues celle qui est utilisable pour vous.<li><b>Autres 
+     options :</b> non documentées.</ul>
+
+<a name="keyboard"></a>
+
+<p class=qy dir="ltr">Clavier / Souris
+
+<a name="audioio"></a>
+
+</p>
+   <ul>
+     <li><B>Liste des combinaisons&nbsp; de Commandes / touches</B><br>
+       Toutes les commandes d'Audacity peuvent être déclenchées par les 
+     raccourcis claviers indiqués ici.
+       Cliquez sur le raccourci et sa commande passe en sur brillance.&nbsp;
+       Cliquez sur effacer pour supprimer le raccourci assigné à la fonction 
+     sélectionnée .
+     <li><B>Ajouter des nouveaux raccourcis /Modifier&nbsp; les raccourcis</B><br>
+       Vous pouvez modifier ou créer de nouvelles combinaisons de raccourcis. 
+     Pour en savoir plus, consultez la page
+   </ul>
+<p class=a dir="ltr">&nbsp;<a href="FR_keyboard_shortcuts_create.html"><font color="#0000FF">Créer Modifier les 
+raccourcis</font></a><font color="#0000FF"> </font>du menu Edition / 
+Préférences.&nbsp;
+</p>
+
+<br>
+
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#0000FF">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<br>&nbsp;
+</body>
+</html>
