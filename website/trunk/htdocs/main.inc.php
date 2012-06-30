@@ -5,8 +5,6 @@
  * http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once "../latest/versions.inc.php";
-
 // Work around PHP bug on sf.net where include_path gets reset.
 set_include_path(".".PATH_SEPARATOR."/usr/share/pear".PATH_SEPARATOR."/usr/share/php");
 require_once "include/lang.inc.php";
