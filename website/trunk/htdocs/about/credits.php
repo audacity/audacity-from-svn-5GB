@@ -94,6 +94,7 @@
   <li>Aleš Tošovský (cs)</li>
   <li>Henrik Clausen (da)</li>
   <li>Christoph Kobe (de)</li>
+  <li>Daniel Winzen (de)</li>
   <li>Karsten Zeller (de)</li>
   <li>Antonio Paniagua (es)</li>
   <li>Ezequiel Plaza (es)</li>
@@ -125,6 +126,7 @@
   <li>Rok Hecl (sl)</li>
   <li>Martin Srebotnjak (sl)</li>
   <li>Lars Carlsson (sv)</li>
+  <li>Kaya Zeren (tr)</li>
   <li>Maxim Dziumanenko (uk)</li>
   <li>XiaoXi Liu (zh_CN)</li>
   <li><a href="http://chido.idv.st/">Chido</a> (zh_TW)</li>
