@@ -45,6 +45,8 @@
    echo _('feedback e-mail address</a> telling us what country you are in and how you\'d like to pay.');?>
 </p>
 
+<p>Please note that donations to Audacity are not deductible for income taxes in the United States of America.</p>
+
 <h2><?=$pageTitle?></h2>
 
 <p>
