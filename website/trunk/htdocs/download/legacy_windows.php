@@ -21,7 +21,7 @@
 
 <h3><?=_("Download")?></h3>
 <p>
-<a href="#sysreq">System Requirements</a>
+<a href="#sysreq"><?=_("System Requirements")?></a>
 </p>
 <h4><?=_("Audacity 2.0.0 for Windows 98/ME")?></h4>
 <p>
