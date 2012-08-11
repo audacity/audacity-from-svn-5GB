@@ -35,8 +35,8 @@ $siteNavItems = array(
       array($ind._("Mac"), "mac"),
       array($ind._("GNU/Linux"), "linux"),
       array($ind._("Source Code"), "source"),
-      array($ind._("<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Release_Notes\" target=\"_blank\">Release Notes (Wiki)</a>")."", ""),
 
+      array(_("<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Release_Notes\" target=\"_blank\">Release Notes (Wiki)</a>")."", ""),
       array(_("Plug-Ins and Libraries"), "plugins"),
       array(_("Obtain a CD"), "buy"),
       array(_("Vendors and Distributors of Audacity"), "bundlers"),

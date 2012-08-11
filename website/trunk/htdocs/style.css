@@ -6,8 +6,7 @@ body {
 :link { color:#00d; }
 :visited { color:#116; }
 :link:hover, :visited:hover { color:black; }
-a.ext { position:relative; left: 7px; }
-a.ext:link {color: #00d; font-weight: normal; }
+a.ext:link {color: #00d; font-weight: normal; text-indent:7px;}
 a.ext:visited {color: #116; font-weight:normal; }
 a.ext:link:hover, a.ext:visited:hover { color:#663300; font-weight:normal; }
 img { border:0; vertical-align: middle; }
