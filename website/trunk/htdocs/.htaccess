@@ -4,7 +4,11 @@ ErrorDocument 404 /404.php
 
 RewriteEngine On
 RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} ^(.+)/$
+RewriteRule ^(.+)/$ $1 [R=301,L]
 RewriteRule ^/blog - [L]
+
 # Redirect URLs for LAME 
 RewriteRule ^lame.html help/faq?s=install&i=lame-mp3 [R=permanent]
 RewriteRule ^lame help/faq?s=install&i=lame-mp3 [R=permanent]
