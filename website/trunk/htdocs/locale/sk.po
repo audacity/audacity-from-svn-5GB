@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Web\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-26 20:16+0000\n"
-"PO-Revision-Date: 2009-06-26 21:28-0000\n"
-"Last-Translator: g <g@g>\n"
+"PO-Revision-Date: 2012-08-18 08:56-0000\n"
+"Last-Translator: gale <gale@audacityteam.org>\n"
 "Language-Team: SK <martinveselovsky@centrum.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -627,7 +627,7 @@ msgstr ""
 "<h4 >Právne požiadavky</h4>\n"
 "\n"
 "<p>Vy <b>musíte</b>spĺňať nasledujúce údaje v súlade s verziou 2 alebo inou neskoršou verziou\n"
-"<a href=\"http://www.gnu.org/licencií/licenses.html#GPL\">GPL</a>:\n"
+"<a href=\"http://www.gnu.org/licences/licenses.html#GPL\">GPL</a>:\n"
 "  <ol>\n"
 "    <li>doslovnú kópiu <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> a </li>\n"
 "    <li><a href=\"http://audacity.sourceforge.net/download/source\">Audacity zdrojový kód</a> (alebo ak distribujete a meníte verziu Audacity,tak  že meníte kód). Ak tak nevykonáte, musíte napísať požiadavku na \n"
@@ -639,7 +639,7 @@ msgstr ""
 msgid "<p>If you distribute our <a href=\"http://audacity.sourceforge.net/download/\">installers</a> and do not modify them, this will fully comply, because the installers include the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> and an offer in README.txt for users to obtain the source code from us. Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog.</p>"
 msgstr ""
 "<p>Ak distribujete naše<a href=\"http://audacity.sourceforge.net/download/\">inštalačky</a> nemeníte ich, úplne to vyhovuje, pretože inštalačky zahŕňajú <a \n"
-"href=\"http://www.gnu.org/licencie/licenses.html#GPL\">GPL</a> a umožňujú ich užívateľom získať v README.txt pre zdrojový kód od nás. Neskoršie verzie Audacity ako 1.3.3 zahŕňajú  GPL v samostatnej aplikácii, v okne O Audacity.</p>"
+"href=\"http://www.gnu.org/licences/licenses.html#GPL\">GPL</a> a umožňujú ich užívateľom získať v README.txt pre zdrojový kód od nás. Neskoršie verzie Audacity ako 1.3.3 zahŕňajú  GPL v samostatnej aplikácii, v okne O Audacity.</p>"
 
 #: about/license.php:68
 msgid "<p>Additionally, the name <b>Audacity</b>&reg; is a <b>registered trademark</b> of Dominic Mazzoni. Therefore you <b>may not</b> advertise yourself or your business as an authorized distributor of Audacity, and you <b>may not</b> modify Audacity then continue to use the Audacity name without the express permission of the Audacity Team.</p>"
@@ -6437,6 +6437,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "</table> \n"
 #~ "\n"
 #~ "<h3> <a href=\"nyquist2\"> Ďalšie: Programovanie v Nyquist </a> </h3>"
+
 #~ msgid ""
 #~ "<p>What makes Nyquist distinct from Lisp is that it is designed to work "
 #~ "with sound, and has lots of built-in primitives and functions that "
@@ -6839,6 +6840,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ " </table>\n"
 #~ "\n"
 #~ "<h3> <a href=\"nyquist3\"> Next: Vytváranie Nyquist Plug-Ins </a> </h3>"
+
 #~ msgid ""
 #~ "<p>Creating a plug-in for Audacity using Nyquist is as simple as creating "
 #~ "a text file with the extension \".ny\" with some Nyquist code, adding a "
@@ -7179,14 +7181,17 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "<p>Nezabudnite konzultovať celú <a href=\"http://www-2.cs.cmu.edu/~rbd/"
 #~ "doc/nyquist/root.html\">Nyquist referenčnú príručku</a> pre viac "
 #~ "informácií o tom ako  Nyquist pracuje.</p>"
+
 #~ msgid "Suggestions and Comments for the Audacity Developers"
 #~ msgstr "Pripomienky a poznámky pre vývojárov Audacity"
+
 #~ msgid ""
 #~ "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> is a "
 #~ "street-rock band from Finland."
 #~ msgstr ""
 #~ "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> je "
 #~ "street-rocková kapela z Fínska."
+
 #~ msgid ""
 #~ "Audacity raises money via donations, advertisements on our web pages, "
 #~ "and \n"
@@ -7197,6 +7202,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "webových stránkach, a \n"
 #~ "  predaja produktov prostredníctvom <a href=\"http://audacitystore.com/"
 #~ "\">Audacity Store</a>."
+
 #~ msgid ""
 #~ "We can accept donations via the Amazon Honor System, or by Paypal. To use "
 #~ "Amazon, click the button below. You can make a donation securely by "
@@ -7205,6 +7211,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "V súčasnej dobe prijímame dary cez Amazon Honor System, alebo Paypal. Ak "
 #~ "chcete používať Amazon, kliknite na tlačidlo nižšie.Použite vašu kreditnú "
 #~ "kartu a darujte nám od US$1.00, alebo až US$50.00:"
+
 #~ msgid ""
 #~ "If you prefer to send a personal check or another form of payment, please "
 #~ "visit the <a href=\"../about/credits\">credits</a> page and contact one "
@@ -7213,82 +7220,110 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "Ak uprednosťňujete poslanie osobného šeku alebo inej formy platby, prosím "
 #~ "navštívte  <a href=\"../about/credits\">stránku</a> kreditov a "
 #~ "kontaktujte niektorého z naších vedúcich vyvojárov."
+
 #~ msgid "POP3 connect:"
 #~ msgstr "POP3 spojiť:"
+
 #~ msgid "No server specified"
 #~ msgstr "Nešpecifikovaný server"
+
 #~ msgid "Error "
 #~ msgstr "Chyba"
+
 #~ msgid "POP3 user:"
 #~ msgstr "POP3 používateľ:"
+
 #~ msgid "no login ID submitted"
 #~ msgstr "žiadne prístupové ID"
+
 #~ msgid "connection not established"
 #~ msgstr "spojenie neplatné"
+
 #~ msgid "POP3 pass:"
 #~ msgstr "POP3 prijať:"
+
 #~ msgid "No password submitted"
 #~ msgstr "Nezadané heslo"
+
 #~ msgid "Authentication failed "
 #~ msgstr "Chybná autorizácia"
 
 #, fuzzy
 #~ msgid "POP3 apop:"
 #~ msgstr "POP3 apop:"
+
 #~ msgid "No connection to server"
 #~ msgstr "Žiadne spojenie so serverom"
+
 #~ msgid "No login ID submitted"
 #~ msgstr "Žiadne prístupové ID"
+
 #~ msgid "No server banner"
 #~ msgstr "Žiadny titulok serveru"
+
 #~ msgid "abort"
 #~ msgstr "ukončiť"
 
 #, fuzzy
 #~ msgid "apop authentication failed"
 #~ msgstr "apop authentication failed"
+
 #~ msgid "POP3 login:"
 #~ msgstr "POP3 prihlásiť:"
+
 #~ msgid "POP3 top:"
 #~ msgstr "POP3 začať:"
+
 #~ msgid "POP3 pop_list:"
 #~ msgstr "POP3 otvárací zoznam:"
+
 #~ msgid "Premature end of list"
 #~ msgstr "Predčasé ukončenie zoznamu"
 
 #, fuzzy
 #~ msgid "POP3 get:"
 #~ msgstr "POP3 get:"
+
 #~ msgid "POP3 last:"
 #~ msgstr "POP3 ukončiť:"
+
 #~ msgid "POP3 reset:"
 #~ msgstr "POP3 reset:"
 
 #, fuzzy
 #~ msgid "POP3 send_cmd:"
 #~ msgstr "POP3 send_cmd:"
+
 #~ msgid "Empty command string"
 #~ msgstr "Prázdny riadiaci reťazec"
+
 #~ msgid "POP3 quit:"
 #~ msgstr "POP3 ukončiť:"
+
 #~ msgid "connection does not exist"
 #~ msgstr "spojenie neexistuje"
 
 #, fuzzy
 #~ msgid "POP3 uidl:"
 #~ msgstr "POP3 uidl:"
+
 #~ msgid "POP3 delete:"
 #~ msgstr "POP3 vymazať:"
+
 #~ msgid "No msg number submitted"
 #~ msgstr "Žiadne prístupové číslo"
+
 #~ msgid "Command failed "
 #~ msgstr "Chybný príkaz"
+
 #~ msgid "Recording"
 #~ msgstr "Nahrávanie"
+
 #~ msgid ""
 #~ "Why is the Input selector in the Mixer Toolbar not working as expected?"
 #~ msgstr ""
 #~ "Prečo nepracuje Vstupný volič v Mixážny panel nátrojov ako sa očakávalo?"
+
 #~ msgid ""
 #~ "If you have feedback for us that does <b>not</b> require a personal "
 #~ "response, please <a href=\"&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#97;"
@@ -7309,6 +7344,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "vašich skúsenostiach s programom Audacity, dokumentáciou a webovými "
 #~ "stránkami. Uvítame správy o možných programových chybách a návrhoch na "
 #~ "nové funkcie Audacity."
+
 #~ msgid ""
 #~ "To give us feedback that does not require a personal response, send an "
 #~ "email to the <a\n"
@@ -7332,6 +7368,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "alebo webovou stránkou, uvítame tiež správy o možných chybách alebo "
 #~ "návrhy na nové funkcie Audacity. Pri odosielaní tejto správy sa nemusíte "
 #~ "prihlásiť."
+
 #~ msgid ""
 #~ "<h3 id=\"advice\">Advice for Vendors and Distributors</h3>\n"
 #~ "\n"
@@ -7368,6 +7405,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "</a> pre možné zahrnutie na našu <a href=\"../download/bundlers\">stránku "
 #~ "pre predajcov a </a> \n"
 #~ "distribútorov.</p>"
+
 #~ msgid ""
 #~ "<p>If possible, please include the <a href=\"http://audacity.sourceforge."
 #~ "net/help/documentation\">Audacity \n"
@@ -7394,6 +7432,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "&#121;&#x20;&#68;&#x6f;&#99;&#x75;&#x6d;&#101;&#110;&#x74;&#97;&#116;"
 #~ "&#105;&#111;&#110;\">pošlite \n"
 #~ "nám ju</a> na preskúmanie <em>predtým ako</em> ju publikujete.</p>"
+
 #~ msgid ""
 #~ "<h4>For vendors selling a hardware product, with Audacity included:</h4>\n"
 #~ "\n"
@@ -7471,6 +7510,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "sourceforge.net/contact/</a>.</li>\n"
 #~ "  </ol>\n"
 #~ "</p>"
+
 #~ msgid ""
 #~ "<h4>For those wishing to resell Audacity, or a rebranded version of it:</"
 #~ "h4>\n"
@@ -7535,6 +7575,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "a>.</li>\n"
 #~ "  </ol>\n"
 #~ "</p>"
+
 #~ msgid ""
 #~ "<p><b>Note:</b> All e-mails sent to lists.sourceforge.net addresses will "
 #~ "be seen by subscribers to the list\n"
@@ -7547,13 +7588,17 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "a sú uverejnené na niekoľkých webových stránkach, kde sú správy "
 #~ "archivované. Pre detaily, pozri našu <a \n"
 #~ "href=\"../contact/privacy\">Ochranu súkromia</a>.</p>"
+
 #~ msgid ""
 #~ "We also accept PayPal donations through the SourceForge donation system:"
 #~ msgstr "Tiež príjmeme PayPal dary cez SourceForge systém darov:"
+
 #~ msgid "Donate via PayPal"
 #~ msgstr "Darovať cez PayPal"
+
 #~ msgid "Browse the source code online"
 #~ msgstr "Prezrite si zdrojový kód on-line"
+
 #~ msgid ""
 #~ "<h3 id=\"bugzilla\">Bugzilla</h3>\n"
 #~ "<p>The Audacity developers use <a href=\"%s/\">Bugzilla</a> to keep track "
@@ -7573,6 +7618,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "<p><strong>Poznámka:</strong> Vkladanie do Bugzilly je prístupné len "
 #~ "vývojárom. Ak ste užívateľ a chcete nahlásiť chybu, prosíme <a href=\"../"
 #~ "contact/\">pošlite nám e-mail</a>. Ďakujeme!</p>"
+
 #~ msgid ""
 #~ "If you are new to Audacity or computer audio programs, you may prefer the "
 #~ "fully finished Audacity 1.2. Otherwise, please help our development "
@@ -7599,6 +7645,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "operačný systém, úplné informácie o všetkých problémoch, a všetky "
 #~ "funkcie, ktoré je potrebné zmeniť aby pracovali správne. Môžete "
 #~ "inštalovať 1.3 a 1.2 na rovnakom stroji, inštalovaním do rôznych dresárov."
+
 #~ msgid ""
 #~ "<b>Note:</b> In line with our <a href=\"../contact/privacy\">Privacy "
 #~ "Policy</a>, feedback you give about the Beta is sent to a public mailing "
@@ -7609,6 +7656,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "\">ochranou súkromia </a>, pošlite nám spätnú väzbu o Beta verzii, do "
 #~ "diskusie - správy môžu vidieť všetci účastníci konferencie, a archivujú "
 #~ "sa na viacerých webových stránkach."
+
 #~ msgid ""
 #~ "For Mac OS X (<b>PPC</b>, English language): <a href=\"%s\">Audacity %s</"
 #~ "a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio "
@@ -7617,6 +7665,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "Pre Mac OS X (<b>PPC</b>, Anglický jazyk): <a href=\"%s\">Audacity %s</a> "
 #~ "(.dmg file, %.1lf MB) -Najnovšia verzia programu Audacity,voľného "
 #~ "zvukového editora."
+
 #~ msgid ""
 #~ "Get the latest development code (incorporating changes since the release "
 #~ "tarball) from <a href=\"../community/developers#cvs\">CVS</a>. This is "
@@ -7625,6 +7674,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "Získajte najnovší vývojový kód (obsahujúci zmeny, ktoré nastali od "
 #~ "vydania tarball) z <a href=\"../community/developers#cvs\"> CVS </a>. To "
 #~ "je najlepšia voľba, ak ste kompiláciou na Windows."
+
 #~ msgid ""
 #~ "Now discontinued, but archived CD images are still available from the "
 #~ "link to left, and CDs can currently still be <a href=\"./buy\">purchased</"
@@ -7639,6 +7689,7 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "Audacity) pre Microsoft Windows. Produkty z TheOpenCD sa teraz používajú "
 #~ "v alternatívnych  projektoch vrátane <a href=\"http://ubuntu.com/\">Linux "
 #~ "Ubuntu."
+
 #~ msgid ""
 #~ "Successor to TheOpenCD, a collection of high quality free and open source "
 #~ "<a href=\"http://theopendisc.com/programs\">software</a> (including "
@@ -7649,10 +7700,12 @@ msgstr "Daľšie dokumentácie k súborovému formátu Audacity sa pripravuje."
 #~ "\"http://theopendisc.com/programs\">software</a> (vrátane Audacity) pre "
 #~ "Microsoft Windows.  Disky budú dostupné na predaj v budúcnosti - pozrite "
 #~ "webovú stránku."
+
 #~ msgid "for Microsoft Windows"
 #~ msgstr "pre Microsoft Windows"
+
 #~ msgid "for Mac OS X"
 #~ msgstr "pre Mac OS X"
+
 #~ msgid "Creative Commons: Some rights reserved."
 #~ msgstr "Creative Commons: niektoré práva vyhradené."
-

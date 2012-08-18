@@ -141,7 +141,7 @@
    <a href="http://www.citronic.co.uk">Citronic</a>
    </td>
    <td>
-   <a href="http://citronic.com/en/product/128.515UK">AC-1USB Audio Capture Device</a>
+   <a href="http://avsl-citronic.com/product/128.515UK">AC-1USB Audio Capture Device</a>
    </td>
    <td><?=_("USB interface to connect turntable, mixer or CD player to USB or analog.")?></td>
   </tr>
@@ -182,10 +182,10 @@
    <a href="http://www.presonus.com">Presonus Audio Electronics</a>
    </td>
    <td>
-   <a href="http://www.presonus.com/products/Detail.aspx?ProductId=7">Inspire 1394</a>
+   <a href="http://www.presonus.com/products/Inspire-1394">Inspire 1394</a>
    </td>
    <td>
-   <?=_("FireWire&reg; recording system featuring 24-bit/96k analog to digital conversion rate, four simultaneous inputs, software control panel, audio recording and production software.")?>
+   <?=_("Now discontinued FireWire&reg; recording system featuring 24-bit/96k analog to digital conversion rate, four simultaneous inputs, software control panel, audio recording and production software.")?>
    </td>
   </tr>
   <tr>
