@@ -26,9 +26,9 @@
 <p><?=_('<a href="http://www.mixxx.org/">Mixxx</a> is free cross-platform digital DJ mixing software with features like automatic BPM matching and seamless looping.')?></p>
 <p><?=_('More free audio software at SourceForge.net:')?></p>
 <ul>
-  <li><a href="http://sourceforge.net/search/?&fq[]=trove%3A99&fq[]=trove%3A113&fq[]=trove%3A120"><?=_("Audio Editors")?></a>
-  <li><a href="http://sourceforge.net/search/?&fq[]=trove%3A99&fq[]=trove%3A113&fq[]=trove%3A120&fq[]=trove%3A115"><?=_("Audio Capture/Recording")?></a>
-  <li><a href="http://sourceforge.net/search/?&fq[]=trove%3A99&fq[]=trove%3A113&fq[]=trove%3A120&fq[]=trove%3A114"><?=_("Audio Analysis")?></a>
+  <li><a href="http://sourceforge.net/directory/audio-video/sound/audio-editors/freshness:recently-updated/"><?=_("Audio Editors")?></a>
+  <li><a href="http://sourceforge.net/directory/audio-video/sound/audio-capture/freshness:recently-updated/"><?=_("Audio Capture/Recording")?></a>
+  <li><a href="http://sourceforge.net/directory/audio-video/sound/analysis/freshness:recently-updated/"><?=_("Audio Analysis")?></a>
 </ul>
 
 <h3 id="av"><?=_("Open Source Audio-Visual Software")?></h3>
@@ -39,7 +39,7 @@
 <ul>
   <li><?=_('<a href="http://infrarecorder.org/">InfraRecorder</a> for Windows')?>  
   <li><?=_('<a href="http://burn-osx.sourceforge.net/Pages/English/home.html">Burn</a> for Mac OS X')?>  
-  <li><?=_('<a href="http://k3b.org/">K3b</a> or <a href="http://www.xfce.org/projects/xfburn">Xfburn</a> for Linux')?>  
+  <li><?=_('<a href="http://k3b.org/">K3b</a> or <a href="http://archive.xfce.org/src/apps/xfburn/0.4">Xfburn</a> for Linux')?>  
 </ul>
 <p><?=_('Video editing/capture:')?></p>
 <ul>
