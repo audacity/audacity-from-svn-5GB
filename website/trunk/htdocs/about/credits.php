@@ -99,6 +99,7 @@
   <li>Antonio Paniagua (es)</li>
   <li>Ezequiel Plaza (es)</li>
   <li>Waldo Ramirez (es)</li>
+  <li>Xabier Aramendi (eu)</li>
   <li>Petri Vuorio (fi)</li>
   <li>Lionel Allorge (fr)</li>
   <li>Olivier Ballestraz (fr)</li>
