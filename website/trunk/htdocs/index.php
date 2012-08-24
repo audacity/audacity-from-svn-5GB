@@ -65,7 +65,7 @@
   <p>
     <?=_('Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. <a href="about/">Learn more about Audacity...</a> Also check our <a href="http://wiki.audacityteam.org/">Wiki</a> and <a href="http://forum.audacityteam.org/">Forum</a> for more information.')?></p>
   <p>
-<b><?php printf(_('The current release of Audacity is <a href="download/">%s'), $download_version)?></a></b>. <?=_('It replaces 2.0.0 and all previous 1.2 and 1.3 versions. See <a href="download/features-2.0">New Features</a> for more information.')?></p>
+<b><?php printf(_('The current release of Audacity is <a href="download/">%s'), $download_version)?></a></b>. <?=_('It replaces all previous 1.2, 1.3 and 2.x versions. See <a href="download/features-2.0">New Features</a> for more information.')?></p>
 </div>
 
 <div id="download">

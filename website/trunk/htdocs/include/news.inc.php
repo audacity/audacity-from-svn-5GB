@@ -40,6 +40,25 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "August 24, 2012",
+  	"2.0.2-release",
+  _("Audacity 2.0.2 Released"),
+  _("
+<p>
+  The Audacity Team is delighted to announce the release of
+  <a href=\"/download\">Audacity 2.0.2</a> 
+  for Windows, Mac, GNU/Linux and other operating systems. 
+  It replaces all previous 1.2, 1.3 and 2.x versions. A 
+  significant bug that caused clicks on split lines has been
+  fixed, and there are improvements to several toolbars and
+  to some Nyquist effects. See the
+  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.2\">
+  2.0.2 Release Notes</a> for detailed changes.
+</p>
+"));
+
+
+add_news_item(
   "June 29, 2012",
   	"2.0.1-release",
   _("Audacity 2.0.1 Released"),
@@ -1095,7 +1114,7 @@ add_news_item(
 			especially from <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_student_apply\">'How does a student apply?'</a>.</li>
 		<li>Make sure you are <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_eligibility\">eligible</a>.</li>
 		<li>On the Audacity Wiki, check the <a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Ideas\">project ideas page</a>.</li>
-		<li>If you find an interesting idea, or have one of your own, check <a href=\"http://www.audacityteam.org/wiki/index.php?title=Writing_GSoC_Proposals\">Writing GSoC Proposals</a>.</li>
+		<li>If you find an interesting idea, or have one of your own, check <a href=\"http://wiki.audacityteam.org/wiki/GSoC_FAQ\">GSoC FAQ</a>.</li>
 		<li>Then <a href=\"mailto:summerofcode@audacityteam.org\">email us</a>. Far better to discuss plans with us before applying.</li>
 	</ol>
 </p>
@@ -1127,7 +1146,7 @@ If you are an interested student, please follow these steps:
 		especially from <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_student_apply\">'How does a student apply?'</a>.</li>
 	<li>Make sure you are <a href=\"http://code.google.com/opensource/gsoc/2008/faqs.html#0.1_eligibility\">eligible</a>.</li>
 	<li>On the Audacity Wiki, check the <a href=\"http://www.audacityteam.org/wiki/index.php?title=GSoC_Ideas\">project ideas page</a>.</li>
-	<li>If you find an interesting idea, or have one of your own, then check <a href=\"http://www.audacityteam.org/wiki/index.php?title=Writing_GSoC_Proposals\">Writing GSoC Proposals</a>.</li>
+	<li>If you find an interesting idea, or have one of your own, then check our <a href=\"http://wiki.audacityteam.org/wiki/GSoC_FAQ\">GSoC FAQ</a>.</li>
 	<li>Then be in touch with us -- far better to discuss plans with us before applying.</li>
 </ol>
 </p>
