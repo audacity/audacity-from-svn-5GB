@@ -1,0 +1,1924 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Audacity Reference</title>
+	<style type="text/css" media="all">
+		h1, h2, h3 { font-family: sans-serif; }
+		h1 { font-size: 1.5em; }
+		h2 { font-size: 1.2em; }
+		h3 { font-size: 1em; }
+	</style>
+</head>
+<body>
+	<p style="text-align: center">
+	<img src="images/audacity-blue-flat.png" alt="Audacity Logo"/>
+
+<br/>
+A Free, Open Source, Cross-Platform Audio Editor
+<br/>
+Version 1.2.4
+</p>
+<p>
+This is the online help for Audacity.  It is meant to be a quick reference, not
+a complete manual.  There is also a <a href="http://audacity.sourceforge.net/manual-1.2/">complete manual available online<a>. For downloadable versions of the manual, see our <a href="http://audacity.sourceforge.net/help/documentation">documentation page</a>.  
+</p>
+
+<hr/>
+<h1>Table of Contents</h1>
+
+<p>
+Toolbars:
+</p>
+<ul>
+<li><a href="#toolbar_control">Control Toolbar</a>
+    (tools, play button, etc.)</li>
+
+<li><a href="#toolbar_mixer">Mixer Toolbar</a>
+    (volume controls, input device)</li>
+
+    <li><a href="#toolbar_meter">Meter Toolbar</a>
+    (Input and Output level meters)</li>
+
+<li><a href="#toolbar_edit">Edit Toolbar</a>
+    (editing shortcuts)</li>
+</ul>
+
+<p>
+Menu Bar:
+</p>
+<ul>
+<li><a href="#menu_track">Track Pop-Down Menu</a>
+    </li>
+
+<li><a href="#menu_file">File Menu</a>
+</li>
+
+<li><a href="#menu_edit">Edit Menu</a>
+</li>
+
+<li><a href="#menu_view">View Menu</a>
+</li>
+
+<li><a href="#menu_project">Project Menu</a>
+</li>
+
+<li><a href="#menu_generate">Generate Menu</a>
+</li>
+
+<li><a href="#menu_effect">Effect Menu</a>
+</li>
+
+<li><a href="#menu_analyze">Analyze Menu</a>
+</li>
+
+<li><a href="#menu_help">Help Menu</a>
+</li>
+
+</ul>
+
+<p>
+Tracks:
+</p>
+
+<ul>
+<li><a href="#track_audio">Audio Track</a>
+    </li>
+
+<li><a href="#track_label">Label Track</a>
+    </li>
+
+<li><a href="#track_time">Time Track</a>
+    </li>
+
+<li><a href="#track_midi">MIDI Track</a> (incomplete)
+    </li>
+</ul>
+
+<p>
+Other:
+</p>
+
+<ul>
+<li><a href="#prefs">Preferences</a>
+    </li>
+
+<li><a href="#fileformats">Sound File Formats</a>
+    </li>
+
+<li><a href="#envelope">Envelope Editing</a>
+    </li>
+
+<li><a href="#exportmp3">MP3 Exporting</a>
+    </li>
+
+<li><a href="#license">General Public License</a>
+</li>
+</ul>
+
+<hr/>
+<h1>Toolbars</h1>
+
+<hr/>
+<h2><a id="toolbar_control">Control Toolbar</a></h2>
+<p>
+<img src="images/toolbar_control.png" alt="Control Toolbar"/></p>
+
+<hr style="width: 50%"/>
+
+<h3>Editing Tools</h3>
+
+<table style="border: 0">
+<tr>
+	<td style="width: 3%"><img src="images/tool_select.png"
+		style="text-align: center" alt="Selection Tool" /></td>
+<td>Selection tool - for selecting the range of audio you want to edit
+    or listen to.
+</td></tr>
+
+<tr>
+	<td><img src="images/tool_envelope.png" alt="Envelope Tool" /></td>
+<td>Envelope tool - for changing the volume over time.
+</td></tr>
+
+<tr>
+<td><img src="images/tool_draw.png" alt="Draw Tool" /></td>
+<td>Draw tool - for modifying individual samples.
+</td></tr>
+
+<tr>
+<td><img src="images/tool_zoom.png" alt="Zoom Tool" /></td>
+<td>Zoom tool - for zooming in and out.
+</td></tr>
+
+<tr>
+	<td><img src="images/tool_timeshift.png" alt="Time Shift Tool"/></td>
+<td>Timeshift tool - for sliding tracks left or right.
+</td></tr>
+
+<tr>
+<td><img src="images/tool_multi.png" alt="Multi Tool" /></td>
+<td>Multi tool - lets you access all of these tools at once depending
+    on the location of the mouse and the keys you are holding down.
+</td></tr>
+
+</table>
+
+<hr style="width: 50%"/>
+
+<h3>Audio Control Buttons</h3>
+
+<table style="border: 0">
+
+<tr>
+	<td style="width: 5%"><img src="images/button_skipstart.png" 
+	alt="Rewind Button" /></td>
+<td>Skip to Start - moves the cursor to time 0.  If you press Play
+	at this point, your project will play from the beginning.
+</td></tr>
+
+<tr>
+	<td><img src="images/button_play.png" alt="Play Button" /></td>
+<td>Play - starts playing audio at the cursor position.  If some audio
+    is selected, only the selection is played.
+</td></tr>
+
+<tr>
+<td><img src="images/button_loop.png" alt="Loop Button" /></td>
+<td>Loop - if you hold down the Shift key, the Play button changes to
+    a Loop button, which lets you keep playing the selection over and
+    over again.
+</td></tr>
+
+<tr>
+	<td><img src="images/button_record.png" alt="Record Button"/></td>
+<td>Record - starts recording audio at the project sample rate
+    (the sample rate in the lower-left corner of the window).
+    The new track will begin at the current cursor position, so
+    click the "Skip to Start" button first if you want the track to
+    begin at time 0.
+</td></tr>
+
+<tr>
+<td><img src="images/button_pause.png" alt="Pause Button"/></td>
+<td>Pause - temporarily stops playback or recording until you
+    press pause again.
+</td></tr>
+
+<tr>
+	<td><img src="images/button_stop.png" alt="Stop Button"/></td>
+	<td>Stop - stops recording or playing. You must do this before
+		applying <a href="#menu_effect">effects</a>,
+		saving or exporting.
+</td></tr>
+
+<tr>
+	<td><img src="images/button_skipend.png" alt="Fast Forward Button"/></td>
+<td>Skip to End - moves the cursor to the end of the last track.
+</td></tr>
+
+</table>
+
+
+<hr/>
+<h2><a id="toolbar_mixer">Mixer Toolbar</a></h2>
+
+<p>
+<img src="images/toolbar_mixer.png" alt="Mixer Toolbar" />
+<br/>
+The Mixer Toolbar has three controls, used to set the volume levels of
+your audio device and choose the input source.  The leftmost slider
+controls the playback volume, the other slider controls the recording
+volume, and the control on the right lets you choose the input
+source (such as "Microphone", "Line In", "Audio CD", etc.). Use the
+<a href="#toolbar_meter">Record Level Meter</a> to set the correct
+level.
+<br/>
+Changing these controls has no effect on the audio data in your
+project - in other words it doesn't matter what the output volume
+level is when you Export or Save a project - the end result is the
+same.
+</p>
+<hr/>
+<h2><a id="toolbar_edit">Edit Toolbar</a></h2>
+<p>
+<img src="images/toolbar_edit.png" alt="Edit Toolbar" />
+<br/>
+All of the buttons on this toolbar perform actions - and with a couple of
+exceptions, they're all just shortcuts of existing menu items to save you
+time.
+<br/>
+Holding the mouse over a tool will show a "tooltip" in case you forget
+which one is which.
+</p>
+
+<table style="border: 0">
+<tr>
+	<td style="width: 3%"><img src="images/etool_cut.png" alt="Cut Button" /></td>
+<td>Cut
+</td></tr>
+
+<tr>
+	<td><img src="images/etool_copy.png" alt="Copy Button" /></td>
+<td>Copy
+</td></tr>
+
+<tr>
+<td><img src="images/etool_paste.png" alt="Paste Button"/></td>
+<td>Paste
+</td></tr>
+
+<tr>
+	<td><img src="images/etool_trimoutside.png" alt="Trim Button"/></td>
+<td>Trim away the audio outside the selection
+</td></tr>
+
+<tr>
+	<td><img src="images/etool_silence.png" alt="Silence Button"/></td>
+<td>Silence the selected audio
+</td></tr>
+
+<tr>
+	<td><img src="images/etool_undo.png" alt="Undo Button" /></td>
+<td>Undo
+</td></tr>
+
+<tr>
+	<td><img src="images/etool_redo.png" alt="Redo Button"/></td>
+<td>Redo (repeat last command).
+</td></tr>
+
+<tr>
+<td><img src="images/etool_zoomin.png" alt="Zoom In Button"/></td>
+<td>Zoom In
+</td></tr>
+
+<tr>
+	<td><img src="images/etool_zoomout.png" alt="Zoom Out Button"/></td>
+<td>Zoom Out
+</td></tr>
+
+<tr>
+	<td><img src="images/etool_fitselection.png" alt="Zoom to Selection Button"/></td>
+<td>Fit selection in window - zooms until the selection just fits inside the window.
+</td></tr>
+
+<tr>
+	<td><img src="images/etool_fitproject.png" alt="Zoom to Project Button"/></td>
+<td>Fit project in window - zooms until all of the audio just fits inside the window.
+</td></tr>
+
+</table>
+
+<hr/>
+
+<h2><a id="toolbar_meter">Meter Toolbar</a></h2>
+<p>
+<img src="images/toolbar_meter.png" alt="Meter Toolbar" />
+<br/>
+The Meter Toolbar is used for monitoring the input and output audio
+levels.  Typically it is used to make sure that the loudest volume
+is as loud as possible (for maximum fidelity) without clipping or 
+distorting it. The output (playback) meter is the green one, on the
+left in the picture above, and the input (recording) meter is in red,
+on the right.</p>
+<p>The meters provide a visual indication of the current audio levels going
+in and out of audacity.</p>
+<p>
+If you float the Meter Toolbar, either by dragging it out of the toolbar
+or by selecting "Float Meter Toolbar" from the View menu, you can resize it
+and even orient it vertically.
+</p>
+<p>Normally the meters are only active when you are playing or recording audio.
+However, you can also monitor input when you're not recording - to do this,
+either select "Monitor Input" from the input meter's pop-up menu, or else
+just click on the input meter.  If you have a microphone or other input
+source attached, you will be able to watch the level of the audio before
+you start recording.</p>
+<p>Each meter shows several characteristics of the audio level at once:
+<ul>
+	<li>The right hand end of the meter corresponds to the point at
+	which the audio will be clipped, and the left hand end is silence</li>
+	<li>For stereo, the top bar shows the left channel, and the bottom
+	bar shows the right channel.</li>
+	<li>The brightest part of the bar shows the average audio
+	level (related to the loudness) and the darker part of the 
+	bar shows the peak audio level.</li>
+	<li>The peak-hold line to the right of this shows the maximum
+	audio level achieved in the last 3 seconds.</li>
+	<li>Finally, the clipping indicators on the far right of
+	each meter will light up if clipping is detected (meaning that
+	the audio was too loud and will sound distorted).</li></ul>
+<p>
+If clipping is detected when you are recording, you should stop, lower
+the volume of your input source, and start recording again from the start.
+If the output meter clips then you need to make some or all of your tracks
+quieter using the track <a href="#track_audio">gain control</a>.
+<br>
+If the level of the input (recording) source is too high, you can try
+to lower the input level using the <a href="#toolbar_mixer">Mixer
+Toolbar</a>, but if this doesn't work, you should try to lower the volume
+of the external input source (e.g., your microphone, cassette player, or
+record player).</p>
+
+<p>It is possible, especially if you have an older, slower computer, that
+the Meter Toolbar may interfere with Audacity's ability to record or play
+audio with the highest quality, because your computer is so busy redrawing
+the meters that it doesn't have time to process enough audio.  In this is the
+case for you, you can disable the Meter Toolbar in the Interface tab of
+the <a href="#prefs_ui">Preferences</a> dialog.</p>
+
+<hr/>
+<h1>Menu Bar</h1>
+
+<hr/>
+<h2><a id="menu_track">Track Pop-Down Menu</a></h2>
+
+<p>
+<img src="images/track-popdown.png" alt="Track Pop-Down Menu"/>
+<br/>
+The Track Pop-Down Menu appears when you click in a track's title.
+This lets you access a few special commands that apply to individual
+tracks.
+</p>
+<p><b>Name...</b> - lets you change the name of the track.
+</p>
+<p><b>Move Track Up</b> - exchange places with the track above this one.
+</p>
+<p><b>Move Track Down</b> - exchange places with the track below this one.
+</p>
+<p><b>Waveform</b> - sets the display to Waveform - this is the default way
+   of visualizing audio.
+   </p>
+   <p><b>Waveform (dB)</b> - similar to Waveform, but on a logarithmic scale,
+   measured in decibels (dB).
+   </p>
+   <p><b>Spectrum</b> - display the track as a spectrogram, showing the amount
+   of energy in different frequency bands.
+   </p>
+   <p><b>Pitch (EAC)</b> - highlights the contour of the fundamental frequency
+   (musical pitch) of the audio, using the Enhanced Autocorrelation
+   (EAC) algorithm.
+   </p>
+   <p><b>Mono</b> - makes this track a mono track, meaning it is played out of
+   just one speaker, or played out of the left and right speakers
+   equally.
+   </p>
+   <p><b>Left Channel</b> - makes this track come out of only the left speaker.
+   </p>
+   <p><b>Right Channel</b> - makes this track come out of only the right speaker.
+   </p>
+   <p><b>Make Stereo Track</b> - if there is another track below this one,
+   joins them to make a single stereo track, with the top track
+   representing the left speaker, and the bottom track representing
+   the right speaker.  When tracks are joined into a stereo pair,
+   all edits automatically apply to both the left and right channel.
+   </p>
+   <p><b>Split Stereo Track</b> - if the selected track is a stereo track
+   (a pair of left and right tracks joined together as a single track),
+   this operation splits them into two separate tracks that you can
+   modify and edit independently.
+</p>
+<p><b>Set Sample Format</b> - this determines the quality of the audio
+   data and the amount of space it takes up. 16-bit is the quality used
+   by audio CD's and is the minimum quality that Audacity uses internally
+   (8-bit audio files are automatically converted when you open them). 
+   24-bit is used in higher-end audio hardware. 32-bit <i>float</i> is the
+   highest quality that Audacity supports, and it is recommended that you
+   use 32-bit float unless you have a slow computer or are running out of
+   disk space.
+   </p>
+   <p><b>Set Rate</b> - sets the number of samples per second of the track.
+   44100 Hz is used by audio CDs.  Tracks can have different sample
+   rates in Audacity; they are automatically resampled to the project
+   sample rate (in the lower-left corner of the window).
+   </p>
+<hr/>
+<h2><a id="menu_file">File Menu</a></h2>
+<p>
+<b>New</b> - creates a new empty window
+</p>
+
+<p><b>Open...</b> - opens an audio file or an Audacity project in a new
+window (unless the current window is empty).  To add audio files to
+an existing project window, use one of the Import commands in the
+<a href="#menu_project">Project</a> menu.
+</p>
+
+<p><b>Close</b> - closes the current window, asking you if you want to
+save changes.  On Windows and Unix, closing the last window will
+quit Audacity, unless you modify this behavior in the 
+<a href="#prefs_ui">Interface</a> <a href="#prefs">Preferences</a>.
+</p>
+
+<p><b>Save Project</b> - saves everything in the window into an
+	Audacity-specific format so that you can save and quickly continue your
+	work later.  An Audacity project consists of a project file, ending in
+	<tt>".aup"</tt>, and a project data folder, ending in <tt>"_data"</tt>.
+	For example, if you name your project "Composition", then Audacity will
+	create a file called <tt>"Composition.aup"</tt> and a folder called 
+	<tt>Composition_data</tt>.
+	Audacity project files are not meant to be shared with other programs 
+	- use one of the Export commands (below) when you are finished editing
+	a file.
+</p>
+
+<p><b>Save Project As...</b> - same as Save Project (above), but lets you
+save a project as a new name.
+</p>
+
+<p><b>Recent Files ...</b> - brings up a list of files you have recently 
+opened in audacity to be re-opened quickly.</p>
+
+<p><b>Export As WAV...</b> - exports all of the audio in your project as a
+WAV file, an industry-standard format for uncompressed audio.  You can
+change the standard file format used for exporting from Audacity by
+opening the <a href="#prefs_fmt">File Format</a> <a href="#prefs">Preferences
+</a>.
+Note that exporting will automatically mix and resample if you have
+more than one track, or varying sample rates.  See also
+<a href="#fileformats">File Formats</a>.
+</p>
+
+<p><b>Export Selection As WAV...</b> - same as above, but only exports
+the current selection.
+</p>
+
+<p><b>Export as MP3...</b> - exports all of the audio as an MP3 file.
+MP3 files are compressed and therefore take up much less disk space,
+but they lose some audio quality.  Another compressed alternative
+is Ogg Vorbis (below).  You can set the quality of MP3 compression
+in the <a href="#prefs_fmt">File Format</a> <a href="#prefs">Preferences</a>.
+See also<a href="#exportmp3">MP3 Exporting</a>.
+</p>
+
+<p><b>Export Selection As MP3...</b> - same as above, but only exports
+the current selection.
+</p>
+
+<p><b>Export as Ogg Vorbis...</b> - exports all of the audio as an Ogg Vorbis
+file.  Ogg Vorbis files are compressed and therefore take up much less
+disk space, but they lose some audio quality.  Ogg Vorbis files tend to
+take up a little less disk space than MP3 for similar compression quality,
+and Ogg Vorbis is free from patents and licensing restrictions, but
+Ogg Vorbis files are not as widespread.  You can set the quality of
+Ogg compression in the <a href="#prefs_fmt">File Format</a> 
+<a href="#prefs">Preferences</a>.
+</p>
+
+<p><b>Export Selection As Ogg Vorbis...</b> - same as above, but only exports
+the current selection.
+</p>
+
+<p><b>Export Labels...</b> - if you have a 
+	<a href="#track_label">Label Track</a> in your project, this lets
+	you export the labels as a text file.  You can import labels in the
+	same text format using the "Import Labels..." command in the
+	<a href="#menu_project">Project Menu</a>.
+</p>
+<p>
+<b>Export Multiple...</b> - lets you split your project into multiple files
+all in one step.  You can either split them vertically (one new file per
+track), or horizontally (using labels in a 
+<a href="#track_label">Label Track</a> to indicate the breaks between
+exported files.</p>
+
+
+<p><b>Page Setup</b> - configure how Audacity will print out the track
+waveforms using the Print option, and what printer to use.</p>
+
+<p><b>Print</b> - Print out the main window view from audacity showing the
+tracks and waveforms.</p>
+
+<p><b>Exit (Quit)</b> - closes all windows and exits Audacity, prompting you
+to save any unsaved changes first.
+</p>
+
+
+<hr/>
+<h2><a id="menu_edit">Edit Menu</a></h2>
+
+<p><b>Undo</b> - This will undo the last editing operation you performed to your
+project.  Audacity supports full unlimited undo - meaning
+you can undo every editing operation back to when you opened the window.
+</p>
+
+<p><b>Redo</b> - This will redo any editing operations that were just undone.
+After you perform a new editing operation,
+you can no longer redo the operations that were undone.
+</p>
+
+<p><b>Cut</b> - Removes the selected audio data and places it on the clipboard.
+Only one "thing" can be on the clipboard at a time, but it may
+contain multiple tracks.
+</p>
+
+<p><b>Copy</b> - Copies the selected audio data to the clipboard without
+removing it from the project.
+</p>
+
+<p><b>Paste</b> - Inserts whatever is on the clipboard at the position of the
+selection or cursor in the project, replacing whatever audio data
+is currently selected, if any.
+</p>
+
+<p><b>Trim</b> - Removes everything to the left and right of the selection.
+</p>
+
+<p><b>Delete</b> - Removes the audio data that is currently selected without
+copying it to the clipboard.</p>
+
+<p><b>Silence</b> - Erases the audio data currently selected, replacing it with
+silence instead of removing it.</p>
+
+<p><b>Split</b> - Moves the selected region into its own track or tracks,
+replacing the affected portion of the original track with silence.
+See the figure below:</p>
+<p style="text-align: center"><img src="images/split.png" style="border: 0"
+	alt="Split function illustration"/>
+</p>
+
+<p><b>Duplicate</b> - Makes a copy of all or part of a track or set of tracks
+into new tracks.  See the figure below:</p>
+<p style="text-align: center"><img style="border: 0" src="images/duplicate.png"
+	alt="Duplicate function illustration"/>
+	</p>
+	<p><b>Select ... >  All</b> - Selects all of the audio in all of the
+	tracks in the project.</p>
+
+	<p><b>Select ... > Start to Cursor</b> - Selects from the beginning of
+	the selected tracks to the cursor position.</p>
+
+	<p><b>Select ... > Cursor to End</b> - Selects from the cursor position
+	to the end of the selected tracks.</p>
+
+<p><b>Find Zero Crossings</b> - Modifies the selection slightly so that both
+the left and right edge of the selection appear on a positive-slope
+zero crossing.  This makes it easier to cut and paste audio without resulting
+in an audible clicking sound.</p>
+
+<p><b>Selection Save</b> - Remembers the current selection (or cursor position),
+allowing you to restore it later.</p>
+
+<p><b>Selection Restore</b> - Restores the cursor position to the last position
+saved by "Selection Save".</p>
+
+<p><b>Move Cursor ... > to Track Start</b> - Moves the cursor to the start
+	of the current track.</p>
+	<p><b>Move Cursor ... > to Track End</b> - Move the cursor to the
+	end of the currently selected track.</p>
+	<p><b>Move Cursor ... > to Selection Start</b> - Moves the cursor
+	to the start of the current selection.</p>
+	<p><b>Move Cursor ... > to Selection End</b> - Moves the cursor to the
+	end of the current selection.</p>
+
+	<p><b>Snap-To ... > Snap On</b> - Enable Snap-To mode. When Snap-To
+	mode is enabled, the selection will be
+	constrained to the nearest interval on the time scale, by default the
+	nearest second. So if you click and drag from 4.2 seconds to 9.8
+	seconds, it will result in a selection from 4 seconds to 10 seconds,
+	exactly.  You can change the units that are snapped to using the
+	"Set Selection Format" option in the <a href="#menu_view">View Menu</a>
+	.</p>
+
+	<p><b>Snap-To ... > Snap Off</b> - Turns Snap-To mode off letting you
+	select arbitrary ranges of time</p>
+	
+	<p><b>Preferences...</b> - opens the <a href="#prefs">Preferences</a>
+	dialog.</p>
+
+<hr/>
+<h2><a id="menu_view">View Menu</a></h2>
+
+<p><b>Zoom In</b> - Zooms in on the horizontal axis of the audio,
+displaying more detail about less time.  You can also use the zoom
+tool to zoom in on a particular part of the window.
+</p>
+
+<p><b>Zoom Normal</b> - Zooms to the default view, which displays about
+one inch per second.</p>
+
+<p><b>Zoom Out</b> - Zooms out, displaying less detail about more time.</p>
+
+<p><b>Fit in Window</b> - Zooms out until the entire project just
+fits in the window.</p>
+
+<p><b>Fit Vertically</b> - Resizes all of the tracks vertically so they
+all fit inside of the window (if possible).</p>
+
+<p><b>Zoom to Selection</b> - Zooms in or out so that the selection fills
+the window.</p>
+
+<p><b>Set Selection Format</b> - lets you choose the formatting that is
+displayed at the bottom of the window indicating the current selection
+time.  Options include film, video, and audio CD frames, seconds + samples,
+or pure time.  If you turn on Snap-To mode in the
+<a href="#menu_edit">Edit Menu</a>, the selection will snap to the
+frames or other quantization you have selected in this menu.</p>
+
+<p><b>History...</b> - Brings up the history window.
+It shows all the actions you have performed during the current session,
+including importing.  The right-hand column shows the amount of hard disk
+space your operations used.  You can jump back and forth between editing
+steps quite easily by simply clicking on the entries in the window, the
+same as selecting Undo or Redo many times in a row.  You can also discard
+Undo history to save disk space.
+The history window can be kept open while you work.</p>
+
+
+<p><b>Float Control Toolbar</b> - moves the
+<a href="#toolbar_control">Control Toolbar</a> out of the window and
+into its own
+floating window, so you can position it wherever you want.  The menu
+item changes to <b>Dock Control Toolbar</b>, which you can use to
+put the toolbar back into the main window.</p>
+
+<p><b>Float Edit Toolbar</b> - moves the
+<a href="#toolbar_edit">Edit Toolbar</a> out of the window and into its own
+floating window, so you can position it wherever you want.  The menu
+item changes to <b>Dock Edit Toolbar</b>, which you can use to
+put the toolbar back into the main window.</p>
+
+<p><b>Float Meter Toolbar</b> - does the same thing for audacity's 
+<a href="#toolbar_meter">VU meters</a> which you use to set recording levels
+and adjust playback.</p>
+
+<p><b>Float Mixer Toolbar</b> - moves the
+<a href="#toolbar_mixer">Mixer Toolbar</a> out of the
+window and into its own floating window as above.</p>
+
+<hr/>
+<h2><a id="menu_project">Project Menu</a></h2>
+
+<p><b>Import Audio...</b> - 
+This command is used to import audio from a standard audio format into
+your project.  Use this command if you already have a couple of tracks
+and you want to add another track to the same project, maybe to mix
+them together.
+You cannot use this option to import Audacity Projects.  The only way
+to combine two Audacity Projects is to open them in separate windows,
+then copy and paste the tracks.
+</p>
+
+<p><b>Import Labels...</b> - 
+This command takes a text file which contains time codes and labels,
+and turns them into a <a href="#track_label">Label Track</a>.</p>
+
+<p><b>Import MIDI...</b> - 
+This menu command imports MIDI files and puts them into a 
+<a href="#track_midi">MIDI Track</a>.  Audacity can display
+MIDI files, but <i>cannot play, edit, or save them yet.</i></p>
+
+<p><b>Import Raw Data...</b> - 
+This menu command allows you to open a file in virtually any
+uncompressed format.  When you select the file,
+Audacity will analyze it and try to guess its format.
+It will guess correctly about 90% of the time, so you can try just
+pressing "OK" and listening to the result.  If it is not correct, however,
+you can use the options in the dialog to try some other possible
+encodings.<br/>
+
+At the beginning of your imported track(s), you may notice a little
+bit of noise.  This is probably the file's header, which Audacity
+was not able to parse.  Just zoom in and select the noise with the
+<a href="#toolbar_control">Selection Tool</a>, and then
+choose Delete from the <a href="#menu_edit">Edit Menu</a>.</p>
+
+<p><b>Edit ID3 Tags...</b> - 
+Opens a dialog allowing you to edit the ID3 tags associated with
+a project, for MP3 exporting.
+</p>
+
+<p><b>Quick Mix</b> - 
+This command mixes all of the selected tracks together.  If you are
+mixing stereo tracks, or mixing tracks that are marked as Left or
+Right channel, the result will be a stereo track (two channels), otherwise
+the result will be mono.
+<br/>
+Your tracks are implicitly mixed whenever you hit the Play
+button and whenever you export. This command offers a way to do it
+permanently and
+save the results to disk, saving on playback resources.<br/>
+Note that if you try to mix two very loud tracks together, you may
+get clipping (it will sound like pops, clicks, and noise).
+To avoid this, drag the gain slider on the tracks down to reduce their
+volume before mixing.
+</p>
+
+<p><b>New Audio Track</b> - 
+This creates a new empty <a href="#track_audio">Audio Track</a>.
+This command is rarely needed,since importing, recording, and mixing
+automatically create new tracks
+as needed.  But you can use this to cut or copy data from an existing
+track and paste it into a blank track.
+If that track was at a non-default rate then you may need to use Set Rate
+from the <a href="#menu_track">Track Pop-Down</a> menu to set the correct
+sample rate.
+</p>
+
+<p><b>New Stereo Track</b> - same as above, but creates a stereo track.
+You can also create a stereo track by joining two tracks using the
+<a href="#menu_track">track pop-down</a> menu.</p>
+
+<p><b>New Label Track</b> - 
+This creates a new <a href="#track_label">Label Track</a>,
+which can be very useful for textual annotation.</p>
+
+<p><b>New Time Track</b> - 
+This creates a new <a href="#track_time">Time Track</a>,
+which is used to vary the speed of playback over time.
+</p>
+
+<p><b>Remove Tracks</b> - 
+This command removes the selected track or tracks from the project.
+Even if only part of a track is selected, the entire track is removed.
+You can also delete a track by clicking the X in its upper-left corner.
+To cut out only part of the audio in a track, use
+<a href="#menu_file">Delete</a> or 
+<a href="#menu_file">Silence</a>.
+</p>
+
+<p><b>Align Tracks...</b> - 
+All the Align functions work on whole tracks or groups of tracks,
+not on selections, even if they span across multiple tracks.
+They all operate by time-shifting tracks (moving them left or
+right), making it easier to synchronize tracks or get rid of silence
+at the beginning.  The cursor or selection stays in the same place
+unless you use "Align and move cursor...", below:</p>
+
+<p><b>Align and move cursor...</b> - same as the functions above, except
+that the cursor or selection is moved along with the tracks.  That
+allows you to shift the tracks without losing your relative place.
+</p>
+
+<p><b>Add Label at Selection</b> - 
+This menu item lets you create a new label at the current selection.
+You can title the label by typing with the keyboard and then hitting "Enter"
+when you're done.</p>
+<p><b>Add Label at Playback Position</b> - 
+This menu item lets you create a new label at the current location where
+you are playing or recording.  Do this if you want to mark a certain
+passage while you're listening to it.  You can title the label by typing
+with the keyboard and then hitting "Enter" or "Return" when you're done.
+Only available whilst audacity is playing.</p>
+<hr/>
+<h2><a id="menu_generate">Generate Menu</a></h2>
+
+<p>If you choose an item from the Generate menu when there are no tracks 
+in a project, a new track is created. Otherwise, the current track is used.
+<br/>
+If a track is selected and the cursor is placed in a single place
+in the track audio is inserted at the cursor position. The default duration 
+is 30 seconds.<br/>
+
+The audio created will replace the any selection, otherwise it is inserted into
+the track, shifting up later parts of the track.</p>
+
+<hr style="width: 50%"/>
+
+<p><b>Silence</b> - inserts silence
+</p>
+
+<p><b>Tone...</b> - you can create a Sine wave, Square wave, or Sawtooth wave.
+</p>
+
+<p><b>White Noise</b> - inserts random audio samples, which sounds like
+pure static.</p>
+
+<p>Any items which appear after these three built-ins are VST,
+Ladspa, or Nyquist plug-ins.  It is possible for a poorly written
+plug-in to crash Audacity, so always save your work before using a
+plug-in.  Note that any effect that doesn't take any audio as input
+will automatically be placed in the Generate menu.</p>
+<hr/>
+<h2><a id="menu_effect">Effect Menu</a></h2>
+
+<p>The items in this menu only work when you have audio selected.
+Audacity does not have any real-time effects; you must select the
+audio, apply the effect, and then listen to the results.<br/>
+Most effects have a Preview button.  Clicking on this button plays
+up to three seconds of audio, allowing you to hear what it will sound
+like after the effect is applied.  This is useful for fine-tuning the
+effect parameters.</p>
+
+<p><b>Repeat Last Effect</b> - selecting this command is a shortcut to
+applying the most recent effect with the same settings.  This is a
+convenient way to quickly apply the same effect to many different parts of
+a file.</p>
+
+<hr style="width: 50%"/>
+<p><b>Amplify</b> - changes the volume of the selected audio.  If you
+click the "Allow clipping" checkbox, it will let you amplify
+so much that the audio ends up beyond the range of the waveform, and is 
+clipped (distorted). The
+default value when you open the effect is to amplifiy so that the loudest
+part of the selection is as loud as possible without distortion.
+</p>
+
+<p><b>Bass Boost</b> - enhances the bass frequencies in the audio.</p>
+
+<p><b>Change Pitch</b> - changes the pitch/frequency of the selected audio
+without changing the tempo.  When you open the dialog, the starting
+frequency is set to Audacity's best guess as to the frequency of the
+selection.  This works well for recordings of singing or musical
+instruments without background noise.  You can specify the pitch change
+in one of four different ways: musical note, semitones, frequency, or
+percent change.</p>
+
+<p><b>Change Speed</b> - changes the speed of the audio by resampling.
+Making the speed higher will also increase the pitch, and vice versa.
+This will change the length of the selection.</p>
+
+<p><b>Change Tempo</b> - changes the tempo (speed) of the audio without
+changing the pitch.  This will change the length of the selection.</p>
+
+<p><b>Compressor</b> - compresses the dynamic range of the selection so
+that the loud parts are softer while keeping the volume of the soft
+parts the same.  You can optionally normalise the recording afterwards,
+resulting in the entire piece having higher perceived volume.</p>
+
+<p><b>Echo</b> - very simple effect that repeats the selection with a
+decay, sounding like a series of echos.  This effect does not change
+the length of the selection, so you may want to add silence to the end
+of the track before applying it (using the
+<a href="#menu_generate">Generate Menu</a>).</p>
+
+<p><b>Equalization</b> - Boost or reduce arbitrary frequencies.  You can
+select one of a number of different curves designed to equalize the
+sound of some popular record manufacturers, or draw your own curve.</p>
+
+<p><b>Fade In</b> - fades the selection in linearly</p>
+
+<p><b>Fade Out</b> - fades the selection out linearly</p>
+
+<p><b>FFT Filter</b> - similar to Equalization, lets you enhance or reduce
+arbitrary frequencies.  The curve here uses a linear scale for
+frequency.</p>
+
+<p><b>Invert</b> - Flips the waveform vertically,  the same as a phase
+inversion in the analogue domain.</p>
+
+<p><b>Noise Removal</b> - This effect lets you clean up noise from a recording.
+First, select a small piece of audio that is silent except for the noise,
+select "Noise Removal", and click on the "Get Noise Profile" button.
+Then select all of the audio you want filtered select "Noise Removal"
+again, and click the "Remove Noise" button.  You can experiment with
+the slider to try to remove more or less noise.  It is normal for
+Noise Removal to result in some distortion.  It works best when the
+audio signal is much louder than the noise.</p>
+
+<p><b>Normalize</b> - allows you to correct for DC offset (a vertical
+displacement of the track) and/or amplify such that the maximum
+amplitude is a fixed amount, -3 dB.  It's useful to normalize all
+of your tracks before mixing. If you have a lot of tracks, you may then
+need to use the track gain sliders to turn some down. </p>
+
+<p><b>Nyquist Prompt</b> - for advanced users only.  Allows you to
+express arbitrary transormations using a powerful functional
+programming language.  See the Nyquist section of the Audacity
+website for more information.</p>
+
+<p><b>Phaser</b> - the name "Phaser" comes from "Phase Shifter", because it
+works by combining phase-shifted signals with the original
+signal.  The movement of the phase-shifted signals is
+controlled using a Low Frequency Oscillator (LFO).</p>
+
+<p><b>Repeat</b> - repeats the selection a certain number of times.
+This operation is quite fast and space-efficient, so it is practical
+to use it to create nearly-infinite loops.</p>
+
+<p><b>Reverse</b> - This effect reverses the selected audio temporally;
+after the effect the end of the audio will be heard first and the
+beginning last.</p>
+
+<p><b>Wahwah</b> - uses a moving bandpass filter to create its
+sound.  A low frequency oscillator (LFO) is used to
+control the movement of the filter throughout the
+frequency spectrum.  Adjusts the phase of the left and right
+channels when given a stereo selection, so that the effect seems
+to travel across the speakers.</p>
+
+<p><b>Plugins 1 to 15 ...</b> etc. These submenus contain any 
+VST, Ladspa, or Nyquist plug-ins loaded by audacity.
+It is possible for a poorly written
+plug-in to crash Audacity, so always save your work before using a
+plug-in effect.</p>
+
+<hr/>
+<h2><a id="menu_analyze">Analyze Menu</a></h2>
+
+<p><b>Plot Spectrum</b> -
+To use this feature, first select a region of audio from a single
+track, then select "Plot Spectrum".
+It opens up a window that
+displays the Power Spectrum of the audio over that region, calculated
+using the Fast Fourier Transform.  The graph represents how much
+energy is in each frequency.  As you move the mouse over the display,
+it shows you the nearest peak frequency.
+This window can also display other common
+functions that are calculated using the Fast Fourier Transform, including
+three versions of the Autocorrelation function.
+The Enhanced Autocorrelation function is very good at identifying the
+pitch of a note.</p>
+<hr style="width: 50;"/>
+<p>The Analyze menu is intended for effects and plug-in effects that
+do not modify the audio, but simply open a dialog with some
+descriptive information.  Audacity also supports Analyze commands that
+create annotations in a <a href="#track_label">Label Track</a>.</p>
+
+<hr/>
+<h2><a id="menu_help">Help Menu</a></h2>
+<p><b>About Audacity</b> - displays the version number and credits.
+If you compiled Audacity yourself, check here to verify which
+optional modules were successfully compiled in.
+</p>
+
+<p><b>Contents ...</b> - opens this reference guide in a searchable form.</p>
+<hr/>
+<h1>Tracks</h1>
+
+<h2><a id="track_audio">Audio Track</a></h2>
+<p><img src="images/track.png" alt="Audio Track Image"/></p>
+
+<hr style="width: 50%"/>
+
+<h3>Waveform display</h3>
+
+<p><img src="images/track-waveform.png" alt="Waveform Display"/></p>
+
+<p>This is the waveform display part of the track, although it is also
+possible to display a spectrogram instead of a waveform here.<br/>
+This image shows a stereo track, which is a group of two tracks - the
+top one is for the left channel, and the bottom one is for the right
+channel.  If you need to edit the two channels as separate tracks,
+you can split them using the <a href="#menu_track">Track Pop-Down Menu</a>.
+</p>
+
+<hr style="width: 50%"/>
+
+<h3>Controls</h3>
+<p><img src="images/track-label.png" alt="Track Control Image"/></p>
+<p>The track Control Panel appears directly to the left of every track.
+Clicking in the panel outside of one of its buttons or controls selects the
+entire track.  Shift-clicking a track label adds or removes that
+track from the selection.  Also, clicking and dragging a track label
+is one way to rearrange the order of tracks.<br/>
+At the top-left of the label is the close box.  Click here to
+delete the track (though you can Undo this operation).<br/>
+To the right of the close box is the track's title.  Clicking on the
+title brings up the <a href="#menu_track">Track Pop-Down Menu</a>,
+allowing you to rearrange tracks and change various track options:</p>
+<p>
+The next line in the label tells you the channel of the track
+(left, right, mono, or stereo) and the sample rate (e.g. 44100 Hz is
+the audio CD rate).  Beneath that is the quality - 32-bit float is
+high quality but takes up more disk space, and 16-bit is the same
+quality as an audio CD.<br/>
+The Mute button stops this track from playing.  The Solo button
+plays only this track (or other solo tracks) and overrides the
+Mute button.  Muting and soloing doesn't affect mixing or exporting,
+just playback within Audacity.<br/>
+The top slider is the gain control - it affects the relative volume
+of the track.  By default it only lets you select multiples of 3 dB,
+but if you hold down shift you can choose any level.  Be careful not
+to set it too high, or you can exceed the maximum volume of a track,
+which results in clipping.<br/>
+The bottom slider is the pan control - it affects the balance between
+the left and right speakers.</p>
+
+<hr style="width: 50%"/>
+
+<h3>Vertical Ruler</h3>
+<p><img src="images/track-vruler.png" alt="Track Vertical Ruler"/></p>
+
+<p>The Vertical Ruler is a guide to the levels you see in the waveforms.
+A level of 1.0 or -1.0 is the maximum supported by the audio file -
+anything beyond these levels will be clipped, which can sound like
+distortion.
+<br/>
+When the mouse is over the vertical ruler, it changes to a magnifying
+glass.  By clicking, you can zoom in vertically, and by shift-clicking
+(or right-clicking) you can zoom back out.  You can zoom out as much as
+a factor of 2, which can be useful for editing envelopes.
+<br/>
+When zooming vertically, Audacity will automatically "snap" to the
+normal range of -1...1 when you get close.  If you are having trouble
+resetting the vertical ruler, shift-click a bunch of times until the
+range is -2...2, then click once to zoom back to -1...1.</p>
+<p>If you change the display on the <a href="#menu_track">
+	Track Pop-Down menu</a> then the units of the vertical scale
+will change to reflect this.</p>
+
+<hr/>
+<h2><a id="track_label">Label Track</a></h2>
+<p><img src="images/labeltrack_1.png" alt="Label Track Image"/></p>
+<p>Label Tracks can be used to annotate an audio file.  They can be used
+for lyrics, markers, or notes, and they can even be used to save
+selections.</p>
+
+<p>To create a Label Track, select New Label Track from the
+<a href="#menu_project">Project Menu</a>.  Alternatively, simply
+click or select where you would like to place a label, and choose
+Add Label at Selection from the <a href="#menu_project">Project Menu</a>,
+and a Label Track will be created automatically if one doesn't already
+exist.<br/>
+To add a new label, click or select where you want the new label to appear,
+then select Add Label at Selection from the
+<a href="#menu_project">Project Menu</a>, then type the name of the
+label, and finally press Enter or click outside of the label.</p>
+
+<p>In addition, you can use the Add Label at Playback Position command
+from the <a href="menu_project.htm">Project Menu</a> if you want to
+add a label at a certain place while you are listening.  By default, this
+command has a shortcut of Control+M.
+</p>
+
+
+<p>To edit the name of a label, click anywhere in it.
+Zoom in first if there are too many labels crowded together and you
+are unable to click on the one you want.  When a label is selected
+for editing, it looks like the first label below:<br/>
+<img src="images/labeltrack_2.png" alt="Labels on the track"/>
+<br/>
+When editing the name of a label, you are limited to using just
+the backspace key for editing.  There is currently no way to move the
+insertion point to append a letter to the beginning of a label.</p>
+
+<p>Once a label is selected, you can move to the next label by pressing
+Tab, and move to the previous label by pressing Shift-Tab.<br/>
+To delete a label or multiple labels, select the area containing the
+label flags you wish to delete, and choose Silence from the
+<a href="#menu_edit">Edit Menu</a>.  Alternatively you can delete
+an individual label by clicking on it and pressing Backspace until you
+have deleted all of the characters in the label, then pressing Enter.<br/>
+
+To move labels, use the normal editing commands like Cut, Copy,
+Paste, Delete, and Silence.</p>
+
+<p>You can save a selection in a label.  When you create a new
+label, the left selection edge determines the position of the label's
+flag.  However, the right selection edge is also stored in the label,
+and when you click on it, the full original selection will be restored.
+If you wish to apply this selection to only a subset of the tracks,
+shift-click in the label area to the left of each track's waveform
+to change whether each track is part of the selection or not.</p>
+
+<h3>Exporting and Importing label tracks</h3>
+
+<p>Label Tracks are saved when you save an Audacity Project, so if you
+just want to continue using the labels along with the same file,
+just save a project.  But you can also export the labels to a simple
+text file, and import them.  This allows you to save information about
+the locations of events in an audio file for use in another program,
+and also provides a way to mass-edit the labels if necessary.<br/>
+
+To export a Label Track, choose Export Labels... from the
+<a href="#menu_file">File Menu</a>.  The exported file will
+contain one line per label, starting with the time offset in
+seconds, then a tab, and then the name of the label, for example:
+</p>
+<pre>
+1.217995    Bass intro
+3.921073    Guitar enters
+7.584454    Drums enter
+11.070002   Chorus
+</pre>
+<p>
+To import a Label Track, choose Import Labels... from the
+<a href="#menu_file">File Menu</a>.</p>
+
+<hr/>
+<h2><a id="track_time">Time Track</a></h2>
+<p>The Time Track is a new feature that lets you change
+the rate of playback over time.  Start by choosing
+New Time Track from the <a href="#menu_project">Project Menu</a>.
+Then change the range of time warping by clicking on the
+<a href="#menu_track">Track Pop-Down Menu</a> and choosing
+Set Range (an option which only appears for Time Tracks).
+Older computers may be incapable of playing audio in real-time
+that makes use of a Time Track, however you can always Export the
+file as a WAV and then playback the WAV file later.</p>
+
+<p>To edit the time warping, choose the envelope tool from the
+<a href="#toolbar_control">Control Toolbar</a> - the same tool
+you use to edit amplitude envelopes in Audio Tracks.  Click to
+create and edit control points.  Drag points off-screen to
+delete them.<br/>
+The Time Track has a ruler.  As you edit the warping, the ruler will
+warp to show you at what time playback will reach each place in the
+audio.</p>
+
+<hr/>
+<h2><a id="track_midi">MIDI Track</a> (incomplete)</h2>
+<p>Audacity currently supports displaying MIDI files if you import
+them using Import MIDI in the Project menu.<br/>
+Audacity does not support playing, recording, or editing MIDI files.
+It does not even support saving MIDI Tracks in a project file.
+<br/>
+The current functionality is useful to only a small group of people who
+are studying algorithms that relate MIDI data to audio data and simply
+wish to see the visual representation of the MIDI data and how it lines
+up with the audio data.</p>
+
+<hr/>
+<h1>Other</h1>
+
+<h2><a id="prefs">Preferences</a></h2>
+<h3>Audio I/O</h3>
+
+<ul>
+<li><b>Playback Device</b> - Use this control to select the device
+    that will be used for playback / audio output.  This is usually
+    only applicable if your computer has more than one sound card.
+    </li>
+
+<li><b>Recording Device</b> - Select the devce that will be used
+    for recording / audio input.  Note that many devices have
+    multiple <i>sources</i> such as Microphone and Line in - to
+    select the input source you will need to use the 
+    <a href="#toolbar_mixer">Mixer Toolbar</a>.<br/>
+    For finer control over audio I/O, open your system's Sound
+    control panel or the control panel software that came with your
+    sound card.</li>
+
+<li><b>Recording Channels</b> - Use this to select the number of
+    channels to record simultaneously.  Select 1 for mono and
+    2 for stereo.  Audacity will support recording more simultaneous
+    channels, but note that most sound cards only support stereo, and
+    even if your sound card supports more than 2 inputs, you need a
+    fast computer and a large, fast hard disk to record many channels
+    for a long time.<br/>
+    Mono recording is not the same on all computers or sound cards.
+    Sometimes recording mono only records the left channel, and sometimes
+    it mixes the left and right channels.</li>
+
+<li><b>Play other tracks while recording new one</b> - 
+    When this box is checked, Audacity will play existing tracks
+    when you press record - otherwise it simply records the new
+    track without letting you hear what you've already recorded.
+    You can use this option to record harmonies with yourself or
+    add a voiceover.<br/>
+    You may notice that when you play the two tracks you recorded
+    together, they aren't synchronized.  This is unavoidable to a
+    certain extent, although Audacity tries to minimize it. 
+    To fix it, you will need to grab the
+    <a href="#toolbar_control">Time Shift</a> tool and slide one
+    of the tracks around until it sounds right.</li>
+    <li><b>Hardware Playthrough</b> (Mac Only) - plays the audio you are
+    recording straight back out to your headphones or speakers so you can
+    hear it. This option is done in harware, so it is fast and doesn't
+    consume resources. However, it is only possibly if input and output
+    are on the same sound device.
+    <br/>PC users can do the same thing in their volume control
+    settings, turning up the relevant audio input.</li>
+    <li><b>Software Playthrough</b> - Does the same thing as hardware
+    playthrough, but in software. This means that the audio you hear may be
+    slightly delayed relative to the input, and activating this option
+    will use some more system resources. However, it works on all systems, 
+    even if you are recording from one device and playing back through
+    another.</li>
+</ul>
+
+<h3><a id="prefs_qual">Quality</a></h3>
+
+<ul>
+
+<li><b>Default Sample Rate</b> - This controls the sample rate of new
+    projects.  To change the sample rate of an existing project,
+    use the control in the lower-left corner of the main project window.
+    </li>
+
+<li><b>Default Sample Format</b> - This controls the default format used
+    to store audio samples.  16-bit takes up the least space and is
+    equivalent to audio CD quality.  32-bit float takes up twice as
+    much space but is much more flexible.<br/>
+    If you have a fast computer and enough disk space, you should always
+    use 32-bit float samples while editing, and then export your final
+    mix as a 16-bit WAV file (the default).
+    </li>
+
+<li><b>Real-time sample rate converter</b> - Audacity has more than one
+    sample rate converter that's used when you have a track that's not
+    the same sample rate as the project.  This option lets you set the
+    converter used during real-time playback, which can be different than
+    the one you use during Export or mixing.</li>
+
+<li><b>High-quality sample rate converter</b> - Audacity has more than one
+    sample rate converter that's used when you have a track that's not
+    the same sample rate as the project.  This option lets you set the
+    converter used during Export and mixing, which can be different than
+    the one you use for real-time playback.</li>
+
+<li><b>Real-time dither</b> - Dithering is used when converting
+    high-quality samples with a lot of dynamic range, to CD-quality
+    samples, with less dynamic range.  A small amount of dithering
+    can make the audio sound a little bit better, but it can also
+    slow down processing a little bit.  This option lets you set the
+    dithering used for real-time playback.</li>
+
+<li><b>High-quality dither</b> - Dithering is used when converting
+    high-quality samples with a lot of dynamic range, to CD-quality
+    samples, with less dynamic range.  A small amount of dithering
+    can make the audio sound a little bit better, but it can also
+    slow down processing a little bit.  This option lets you set the
+    dithering used during Export and mixing.</li>
+
+</ul>
+
+<h3><a id="prefs_fmt">File Formats</a></h3>
+
+<ul>
+<li><b>When importing uncompressed audio files into Audacity</b>
+
+   <ul>
+   <li><b>Make a copy of the file before editing (safer)</b> -
+       Selecting this means that Audacity will take longer to
+       import files, but it will always have its own copy of any
+       audio you are using in a project.  You can move, change,
+       or throw away your files immediately after you open or
+       import them into Audacity.</li>
+
+   <li><b>Read directly from the original file (faster)</b> -
+       Selecting this means 
+       that Audacity depends on your original audio files
+       being there, and only stores changes you make to these
+       files.  If you move, change, or throw away one of the files
+       you imported into Audacity, your project may become
+       unusable.  However, because Audacity doesn't need to
+       make copies of everything first, it can import files
+       in much less time.</li></ul></li>
+
+<li><b>Uncompressed Export Format</b> - This lets you select the
+    format that Audacity will use when you export uncompressed
+    files.  11 common options are displayed in the list, but you 
+    can also select "Other" and choose a nonstandard file format
+    for Audacity to export.</li>
+
+<li><b>Ogg Export Setup</b> - Use this control to set the
+    quality of Ogg Vorbis exporting.  Ogg Vorbis is a compressed
+	 audio format similar to MP3, but free of patents and
+	 licensing fees.  A normal quality Ogg Vorbis file is
+	 encoded with a quality setting of "5".  Note that unlike
+	 MP3 encoding, Ogg Vorbis does not let you set a bitrate,
+	 because some audio clips are easier to compress than
+	 others.  Increasing the quality will always increase the
+	 file size, however.</li>
+
+<li><b>MP3 Export Setup</b> - Use these controls to locate your
+    MP3 encoder and set the quality of MP3 encoding.  Higher
+    quality files take up more space, so you will need to find
+    the level of quality you feel is the best compromise.
+    For more information, see
+    <a href="#exportmp3">Exporting MP3 Files</a>.</li>
+
+</ul>
+
+<h3><a id="prefs_spec">Spectrograms</a></h3>
+
+<p>You can view any audio track as a Spectrogram instead of a
+Waveform by selecting one of the Spectral views from the
+<a href="#menu_track">Track Pop-Down Menu</a>.
+This dialog lets you adjust some of the settings for these spectrograms.
+</p>
+
+<ul>
+<li><b>FFT Size</b> - The size of the Fast Fourier Transform (FFT)
+    affects how much vertical (frequency) detail you see.  Larger
+    FFT sizes give you more bass resolution and less temporal (timing)
+    resolution, and they are slower.</li>
+
+<li><b>Grayscale</b> - Select this for gray spectrograms instead of
+colored ones.</li>
+
+<li><b>Maximum Frequency</b> - Set this value anywhere from a couple
+    of hundred hertz to half the sample rate (i.e. 22050 Hz if the
+    sample rate is 44100 Hz).  For some applications, such as speech
+    recognition or pitch extraction, very high frequencies are not
+    important (visually), so this allows you to hide these and only
+    focus on the ones you care about.</li>
+</ul>
+
+<h3><a id="prefs_dir">Directories</a></h3>
+
+<p>Use this panel to set the location of Audacity's temporary
+   directory (folder).  Audacity uses this directory whenever
+   you work on a project that you haven't saved as an Audacity Project
+   (AUP file) yet.
+   You have to restart Audacity (close and open it again) for
+   changes to the temporary directory to take effect.
+</p>
+
+<h3><a id="prefs_ui">Interface</a></h3>
+
+<ul>
+
+<li><b>Autoscroll while playing</b> - Scrolls the window for you
+    while playing, so that the playback cursor is always in the window.
+    This can hurt playback performance on slower computers.</li>
+
+<li><b>Always allow pausing</b> - Normally the Pause button is only
+    enabled while you are playing or recording.  Checking this box
+    allows you to set the pause button anytime, which allows you
+    to press Record and not have the recording start until you
+    unpause it.  Sometimes starting a paused recording can be faster
+    than starting to record in the first place.</li>
+
+<li><b>Update spectrogram while playing</b> - Because spectrograms are
+    slower to draw, normally they are not drawn during playback, but this
+    option lets you draw the spectrograms anyway.</li>
+
+<li><b>Enable Edit Toolbar</b> - Sets whether or not you want to display
+    the <a href="#toolbar_edit">Edit Toolbar</a>, which has some
+    common shortcuts for editing commands.</li>
+
+<li><b>Enable Mixer Toolbar</b> - Sets whether or not you want to display
+    the <a href="#toolbar_mixer">Mixer Toolbar</a>, which lets you
+    set the volume levels and input source.</li>
+<li><b>Enable Meter Toolbar</b> - Sets whether or not you want to display
+the <a href="#toolbar_meter">Meter Toolbar</a> for setting audio recording
+and playback levels.</li>
+
+<li><b>Quit Audacity upon closing last window</b> - By default on Windows
+    and X-Windows (but not Mac OS), Audacity quits when you close the
+    last project window.  If you uncheck this box, Audacity will open a
+    new blank document instead of quitting.  To quit Audacity in this case,
+    you must specifically select Exit (or Quit) from the File menu.
+    </li>
+
+<li><b>Enable dragging of left and right selection edges</b> - Normally,
+   when you move the mouse over the left and right edge of a selection,
+   the cursor changes to a left or right pointer, and you can adjust
+   that edge of the selection independently.  If you don't like this
+   feature, uncheck this box, and then clicking will always create
+   a new selection (unless you hold down Shift to extend an existing
+   selection).</li>
+
+<li><b>Language</b> - sets the language used by Audacity.  Language
+    files are named "audacity.mo" and are found in the "Languages"
+    folder on Windows and Mac OS X, or in /usr/share/locale or
+    /usr/local/share/locale on most Unix systems.  Audacity will detect
+    new languages the next time you start it.</li>
+</ul>
+
+<h3><a id="prefs_kbd">Keyboard</a></h3>
+
+<p>This panel lets you change keyboard shortcuts.  All of the commands
+that appear in Audacity menus appear on the left, along with a few
+other buttons that can get keyboard shortcuts.  To change a command,
+first click on the command you want to change.  Then type the new
+keyboard shortcut on your keyboard.  Verify that the correct shortcut
+appears in the box below.  If it's what you want, press the <b>Set</b>
+button.  Or to get rid of a keyboard shortcut, press <b>Clear</b>.
+<br/>
+To reset to Audacity's defaults, press the <b>Defaults</b> button.
+This will get rid of any changes you have made.
+<br/>
+If you have customized your keyboard layout and want to share it
+with someone else, you can press <b>Save...</b> and save your complete
+keyboard layout as an XML file that you can share.  To load an existing
+layout, press the <b>Load...</b> button and locate the XML file.
+</p>
+
+<h3><a id="prefs_ms">Mouse</a></h3>
+
+<p>This panel doesn't let you change anything, but it lets you view
+all of the commands and actions that you can do using the mouse,
+many by holding down extra modifier keys.</p>
+
+<hr/>
+<h2><a id="fileformats">Sound File Formats</a></h2>
+<h3>Audacity Project format (AUP)</h3>
+
+<p>Audacity projects are stored in an AUP file, which is a format that
+has been highly optimized for Audacity so that it can open and save
+projects quickly.  In order to achieve this speed, Audacity
+breaks larger audio files into several smaller pieces and stores these
+pieces in a directory with a similar name as the project.
+For example, if you name a project "chanson", then Audacity will create a
+project file called <tt>chanson.aup</tt> to store the general
+information about your project, and it will store your audio in several
+files inside a directory called <tt>chanson_data</tt>.
+While the Audacity Project format is based on XML and is meant to be
+open, it is not currently compatible with any other audio
+programs, so when you are finished working on a project and you
+want to be able to edit the audio in another program, select
+Export from the <a href="#menu_file">File Menu</a>.
+</p>
+
+<h3>WAV (Windows Wave format)</h3>
+
+<p>This is the default uncompressed audio format on Windows, and is supported
+on almost all computer systems.  Audacity can read and write this format.
+People working with multichannel audio at very high quality settings, or with
+very long recordings, should note that the maximum size of a wav file is
+2GB.</p>
+
+<h3>AIFF (Audio Interchange File Format)</h3>
+
+<p>This is the default uncompressed audio format on the Macintosh, and it
+is supported by most computer systems, but it is not quite as common as
+the WAV format.  Audacity can read and write this format.</p>
+
+<h3>Sun Au / NeXT</h3>
+
+<p>This is the default audio format on Sun and NeXT computers, and
+usually u-law compressed, so it is not a very high quality
+format.  U-law compression is a very simple, fast but low quality way to reduce the size of the audio by about 50%. This format was one of the first audio
+formats supported by
+Web browsers, and it is still often used for short sound effects where
+quality is not as important.<br/>
+Audacity exports both 8-bit u-law files, and 16-bit uncompressed files, which
+are the same quality as wav or aiff files.
+</p>
+
+<h3>MP3 (MPEG I, Layer 3)</h3>
+
+<p>This is a compressed audio format that is a very popular way to
+store music.  It can compress audio by a factor of 10:1 with very
+little degradation in quality.  Audacity can both import and export
+this format.  For more information on how to export MP3 files from
+within Audacity, see <a href="#exportmp3">Exporting MP3 Files</a>.
+</p>
+
+<h3>Ogg Vorbis</h3>
+
+<p>This compressed audio format was designed to be a free
+alternative to MP3.  Ogg Vorbis files are not as common, but
+they are about the same size as MP3 with better quality to rival
+AAC or WMA.  Audacity can import and export this format.</p>
+
+<hr/>
+<h2><a id="envelope">Envelope Editing</a></h2>
+<p>Audacity lets you edit the amplitude envelope of a track directly
+using the Envelope Tool:</p>
+<table style="border: 0">
+<tr>
+	<td><img src="images/tool_envelope.png" alt="Envelope Tool"/></td>
+<td>Envelope tool
+</td></tr>
+</table>
+
+<p>
+Editing the amplitude envelope lets you change the volume of a track
+gradually over time by adding a number of <b>control points</b> to
+the track.  Each control point sets the amplitude (volume) at that
+point in time, which can be as low as zero, and as high as 150% of the
+normal maximum volume, and the volume is interpolated smoothly
+between the points.
+<br/>
+The image below shows a track with an amplitude envelope, with the
+Envelope Tool selected:
+<img src="images/envelope_editing.png" alt="Track With Volume Envelope"/>
+</p>
+
+<p>
+In the figure above, there are five control points, at 1.0, 3.0,
+5.0, 7.0, and 9.0 seconds.
+Each control point has up to four "handles" arranged vertically.
+The top and bottom handles are positioned at the target volume, and the
+middle handles are positioned a quarter-screen down, giving you a way
+to move the envelope above the 1.0 level.
+<br/>
+Note the dotted line at the top and bottom between 5.0 and 8.0 seconds.
+This indicates that the actual envelope is above the screen.  You can
+see the entire contour by zooming vertically - position the cursor over
+the vertical ruler to the left of the track and shift-click to zoom out.
+<br/>
+To create a new control point, just click.  To move a point, just drag.
+To remove a point, click on it and drag it outside of the track, then
+let go.</p>
+
+<hr/>
+<h2><a id="exportmp3">MP3 Exporting</a></h2>
+<p>Audacity cannot encode MP3 files by itself, because
+the MP3 encoding algorithm is patented and cannot legally
+be used in free programs.  However, Audacity has been
+programmed to recognize other existing MP3 encoders that you
+can download separately.  All you have to do is obtain the
+appropriate MP3 encoder for your computer and then show
+Audacity where it is located.</p>
+
+<table style="border: 0; cellpadding: 4; text-align: left">
+<tr>
+	<th style="align: left">If you use...</th>
+  <th style="align: left">You need to...</th>
+</tr>
+
+<tr>
+  <td>Windows</td>
+  <td>Download <b>LAME</b> and
+    look for the file called <b>lame_enc.dll</b></td>
+</tr>
+
+<tr>
+  <td>Linux/Unix</td>
+  <td>Download <b>LAME</b> and compile it as a shared object,
+    then look for the file called <b>libmp3lame.so</b></td>
+</tr>
+
+<tr>
+  <td>Macintosh</td>
+  <td>Download <b>LAMELib</b> (see our website for more info).</td>
+</tr>
+</table>
+
+<p>For links to these MP3 encoders, go to the Audacity web page
+(http://audacity.sourceforge.net/) and go to the page for
+your operating system.<br/>
+
+The first time you try to export an MP3 file, Audacity
+will ask you to locate your MP3 encoder.  Locate the file
+indicated above.  From then on, Audacity will not
+need to ask you again and you will be able to export MP3
+files easily.</p>
+
+<hr/>
+<h2><a id="license">General Public License</a></h2>
+<p><i>Note: Audacity is distributed under the terms of the GNU
+General Public License (GPL) - the full text of the license is below.
+All of the source code to Audacity is available from
+<tt>http://audacity.sourceforge.net</tt>.  However, some of the
+libraries that Audacity is based on are distributed under the
+terms of different (but GPL-compatible) licenses.</i></p>
+
+<p style="text-align: center">
+Version 2, June 1991
+</p>
+<pre>
+Copyright (C) 1989, 1991 Free Software Foundation, Inc.
+59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
+
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+</pre>
+
+<h3>Preamble</h3>
+
+<p>
+  The licenses for most software are designed to take away your
+freedom to share and change it.  By contrast, the GNU General Public
+License is intended to guarantee your freedom to share and change free
+software--to make sure the software is free for all its users.  This
+General Public License applies to most of the Free Software
+Foundation's software and to any other program whose authors commit to
+using it.  (Some other Free Software Foundation software is covered by
+the GNU Library General Public License instead.)  You can apply it to
+your programs, too.
+
+</p>
+<p>
+  When we speak of free software, we are referring to freedom, not
+price.  Our General Public Licenses are designed to make sure that you
+have the freedom to distribute copies of free software (and charge for
+this service if you wish), that you receive source code or can get it
+if you want it, that you can change the software or use pieces of it
+in new free programs; and that you know you can do these things.
+
+</p>
+<p>
+  To protect your rights, we need to make restrictions that forbid
+anyone to deny you these rights or to ask you to surrender the rights.
+These restrictions translate to certain responsibilities for you if you
+distribute copies of the software, or if you modify it.
+</p>
+<p>
+  For example, if you distribute copies of such a program, whether
+gratis or for a fee, you must give the recipients all the rights that
+you have.  You must make sure that they, too, receive or can get the
+source code.  And you must show them these terms so they know their
+rights.
+</p>
+<p>
+  We protect your rights with two steps: (1) copyright the software, and
+(2) offer you this license which gives you legal permission to copy,
+distribute and/or modify the software.
+
+</p>
+<p>
+  Also, for each author's protection and ours, we want to make certain
+that everyone understands that there is no warranty for this free
+software.  If the software is modified by someone else and passed on, we
+want its recipients to know that what they have is not the original, so
+that any problems introduced by others will not reflect on the original
+authors' reputations.
+</p>
+<p>
+  Finally, any free program is threatened constantly by software
+patents.  We wish to avoid the danger that redistributors of a free
+program will individually obtain patent licenses, in effect making the
+program proprietary.  To prevent this, we have made it clear that any
+patent must be licensed for everyone's free use or not licensed at all.
+</p>
+<p>
+  The precise terms and conditions for copying, distribution and
+modification follow.
+</p>
+
+
+<h3>TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION</h3>
+
+<p><strong>0.</strong>
+ This License applies to any program or other work which contains
+a notice placed by the copyright holder saying it may be distributed
+under the terms of this General Public License.  The "Program", below,
+refers to any such program or work, and a "work based on the Program"
+means either the Program or any derivative work under copyright law:
+that is to say, a work containing the Program or a portion of it,
+either verbatim or with modifications and/or translated into another
+language.  (Hereinafter, translation is included without limitation in
+the term "modification".)  Each licensee is addressed as "you".
+</p>
+<p>
+Activities other than copying, distribution and modification are not
+covered by this License; they are outside its scope.  The act of
+running the Program is not restricted, and the output from the Program
+is covered only if its contents constitute a work based on the
+Program (independent of having been made by running the Program).
+Whether that is true depends on what the Program does.
+</p>
+<p><strong>1.</strong>
+ You may copy and distribute verbatim copies of the Program's
+source code as you receive it, in any medium, provided that you
+conspicuously and appropriately publish on each copy an appropriate
+copyright notice and disclaimer of warranty; keep intact all the
+notices that refer to this License and to the absence of any warranty;
+and give any other recipients of the Program a copy of this License
+along with the Program.
+</p>
+<p>
+You may charge a fee for the physical act of transferring a copy, and
+you may at your option offer warranty protection in exchange for a fee.
+</p>
+<p><strong>2.</strong>
+ You may modify your copy or copies of the Program or any portion
+of it, thus forming a work based on the Program, and copy and
+distribute such modifications or work under the terms of Section 1
+above, provided that you also meet all of these conditions:
+</p>
+
+<ul>
+<li><strong>a)</strong>
+     You must cause the modified files to carry prominent notices
+     stating that you changed the files and the date of any change.
+     </li>
+<li><strong>b)</strong>
+     You must cause any work that you distribute or publish, that in
+     whole or in part contains or is derived from the Program or any
+     part thereof, to be licensed as a whole at no charge to all third
+     parties under the terms of this License.</li>
+<li><strong>c)</strong>
+     If the modified program normally reads commands interactively
+     when run, you must cause it, when started running for such
+     interactive use in the most ordinary way, to print or display an
+     announcement including an appropriate copyright notice and a
+     notice that there is no warranty (or else, saying that you provide
+     a warranty) and that users may redistribute the program under
+     these conditions, and telling the user how to view a copy of this
+     License.  (Exception: if the Program itself is interactive but
+     does not normally print such an announcement, your work based on
+     the Program is not required to print an announcement.)</li>
+</ul>
+
+<p>These requirements apply to the modified work as a whole.  If
+identifiable sections of that work are not derived from the Program,
+and can be reasonably considered independent and separate works in
+themselves, then this License, and its terms, do not apply to those
+sections when you distribute them as separate works.  But when you
+distribute the same sections as part of a whole which is a work based
+on the Program, the distribution of the whole must be on the terms of
+this License, whose permissions for other licensees extend to the
+entire whole, and thus to each and every part regardless of who wrote it.
+</p>
+<p>Thus, it is not the intent of this section to claim rights or contest
+your rights to work written entirely by you; rather, the intent is to
+exercise the right to control the distribution of derivative or
+collective works based on the Program.
+</p>
+<p>
+In addition, mere aggregation of another work not based on the Program
+with the Program (or with a work based on the Program) on a volume of
+a storage or distribution medium does not bring the other work under
+the scope of this License.
+</p>
+<p>
+<strong>3.</strong>
+ You may copy and distribute the Program (or a work based on it,
+under Section 2) in object code or executable form under the terms of
+Sections 1 and 2 above provided that you also do one of the following:</p>
+
+
+<!-- we use this doubled UL to get the sub-sections indented, -->
+<!-- while making the bullets as unobvious as possible. -->
+<ul>
+<li><strong>a)</strong>
+     Accompany it with the complete corresponding machine-readable
+     source code, which must be distributed under the terms of Sections
+     1 and 2 above on a medium customarily used for software interchange; or,
+	</li>
+<li><strong>b)</strong>
+     Accompany it with a written offer, valid for at least three
+     years, to give any third party, for a charge no more than your
+     cost of physically performing source distribution, a complete
+     machine-readable copy of the corresponding source code, to be
+     distributed under the terms of Sections 1 and 2 above on a medium
+     customarily used for software interchange; or,
+     </li>
+<li><strong>c)</strong>
+     Accompany it with the information you received as to the offer
+     to distribute corresponding source code.  (This alternative is
+     allowed only for noncommercial distribution and only if you
+     received the program in object code or executable form with such
+     an offer, in accord with Subsection b above.)</li>
+</ul>
+
+<p>The source code for a work means the preferred form of the work for
+making modifications to it.  For an executable work, complete source
+code means all the source code for all modules it contains, plus any
+associated interface definition files, plus the scripts used to
+control compilation and installation of the executable.  However, as a
+special exception, the source code distributed need not include
+anything that is normally distributed (in either source or binary
+form) with the major components (compiler, kernel, and so on) of the
+operating system on which the executable runs, unless that component
+itself accompanies the executable.
+</p>
+
+<p>If distribution of executable or object code is made by offering
+access to copy from a designated place, then offering equivalent
+access to copy the source code from the same place counts as
+distribution of the source code, even though third parties are not
+compelled to copy the source along with the object code.
+</p>
+<p>
+<strong>4.</strong>
+ You may not copy, modify, sublicense, or distribute the Program
+except as expressly provided under this License.  Any attempt
+otherwise to copy, modify, sublicense or distribute the Program is
+void, and will automatically terminate your rights under this License.
+However, parties who have received copies, or rights, from you under
+this License will not have their licenses terminated so long as such
+parties remain in full compliance.
+</p>
+<p>
+<strong>5.</strong>
+ You are not required to accept this License, since you have not
+signed it.  However, nothing else grants you permission to modify or
+distribute the Program or its derivative works.  These actions are
+prohibited by law if you do not accept this License.  Therefore, by
+modifying or distributing the Program (or any work based on the
+Program), you indicate your acceptance of this License to do so, and
+all its terms and conditions for copying, distributing or modifying
+the Program or works based on it.</p>
+
+<p>
+<strong>6.</strong>
+ Each time you redistribute the Program (or any work based on the
+Program), the recipient automatically receives a license from the
+original licensor to copy, distribute or modify the Program subject to
+these terms and conditions.  You may not impose any further
+restrictions on the recipients' exercise of the rights granted herein.
+You are not responsible for enforcing compliance by third parties to
+this License.</p>
+<p>
+<strong>7.</strong>
+ If, as a consequence of a court judgment or allegation of patent
+infringement or for any other reason (not limited to patent issues),
+conditions are imposed on you (whether by court order, agreement or
+otherwise) that contradict the conditions of this License, they do not
+excuse you from the conditions of this License.  If you cannot
+distribute so as to satisfy simultaneously your obligations under this
+License and any other pertinent obligations, then as a consequence you
+may not distribute the Program at all.  For example, if a patent
+license would not permit royalty-free redistribution of the Program by
+all those who receive copies directly or indirectly through you, then
+the only way you could satisfy both it and this License would be to
+refrain entirely from distribution of the Program.
+</p>
+<p>
+If any portion of this section is held invalid or unenforceable under
+any particular circumstance, the balance of the section is intended to
+apply and the section as a whole is intended to apply in other
+circumstances.
+</p>
+<p>
+It is not the purpose of this section to induce you to infringe any
+patents or other property right claims or to contest validity of any
+such claims; this section has the sole purpose of protecting the
+integrity of the free software distribution system, which is
+implemented by public license practices.  Many people have made
+generous contributions to the wide range of software distributed
+through that system in reliance on consistent application of that
+system; it is up to the author/donor to decide if he or she is willing
+to distribute software through any other system and a licensee cannot
+impose that choice.
+</p>
+<p>
+This section is intended to make thoroughly clear what is believed to
+be a consequence of the rest of this License.</p>
+
+<p>
+<strong>8.</strong>
+ If the distribution and/or use of the Program is restricted in
+certain countries either by patents or by copyrighted interfaces, the
+original copyright holder who places the Program under this License
+may add an explicit geographical distribution limitation excluding
+those countries, so that distribution is permitted only in or among
+countries not thus excluded.  In such case, this License incorporates
+the limitation as if written in the body of this License.</p>
+
+<p>
+<strong>9.</strong>
+ The Free Software Foundation may publish revised and/or new versions
+of the General Public License from time to time.  Such new versions will
+be similar in spirit to the present version, but may differ in detail to
+address new problems or concerns.</p>
+<p>
+Each version is given a distinguishing version number.  If the Program
+specifies a version number of this License which applies to it and "any
+later version", you have the option of following the terms and conditions
+either of that version or of any later version published by the Free
+Software Foundation.  If the Program does not specify a version number of
+this License, you may choose any version ever published by the Free Software
+Foundation.
+</p>
+
+<p>
+<strong>10.</strong>
+ If you wish to incorporate parts of the Program into other free
+programs whose distribution conditions are different, write to the author
+to ask for permission.  For software which is copyrighted by the Free
+Software Foundation, write to the Free Software Foundation; we sometimes
+make exceptions for this.  Our decision will be guided by the two goals
+of preserving the free status of all derivatives of our free software and
+of promoting the sharing and reuse of software generally.
+</p>
+
+
+<p><strong>NO WARRANTY</strong></p>
+
+<p>
+<strong>11.</strong>
+ BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
+FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.  EXCEPT WHEN
+OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK AS
+TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU.  SHOULD THE
+PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING,
+REPAIR OR CORRECTION.</p>
+
+<p>
+<strong>12.</strong>
+ IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+REDISTRIBUTE THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES,
+INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING
+OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED
+TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY
+YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
+PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGES.</p>
+
+</body>
+</html>

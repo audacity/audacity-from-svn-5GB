@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+	<title>File Menu</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+
+<body>
+<!--top table-->
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="reference.html">Back to the Reference page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<BR>
+<table cellpadding=0 cellspacing=0 width="98%">
+	<tr>
+	  <td align=center>
+	  	<table cellpadding=0 cellspacing=0><tr>
+	  	<td><a class=menuref_current href="menu_file.html">File</a></td>
+	  	<td><a class=menuref href="menu_edit.html">Edit</a></td>
+	  	<td><a class=menuref href="menu_view.html">View</a></td>
+	  	<td><a class=menuref href="menu_project.html">Project</a></td>
+	  	<td><a class=menuref href="menu_generate.html">Generate</a></td>
+	  	<td><a class=menuref href="menu_effects.html">Effect</a></td>
+	  	<td><a class=menuref href="menu_analyze.html">Analyze</a></td>
+	  	</tr></table>
+	  </td>
+	</tr>
+	<tr>
+	  <td class=bg_r align=center><font size="+3">File Menu</font></td>
+	</tr>
+</table>
+
+<center>
+  <table width="100%"><tr>
+    <td valign=top width="50%">
+
+
+<a name="new"></a>
+<p class=menuref_item>New...</p>
+<p class=a>Creates a new empty project window.</p>
+
+<a name="open"></a>
+<p class=menuref_item>Open...</p>
+<p class=a>Selecting <i>Open</i> presents you with a dialog where you
+can choose a file to open.  If the current project window
+is empty, the new file will take over the current window,
+otherwise a new project window will be opened.</P>
+<p class=a>The file formats recognized by Audacity are<br>
+<a href="fileformats.html#wav">WAV</a>,&nbsp;&nbsp;
+<a href="fileformats.html#aiff">AIFF</a>,&nbsp;&nbsp;
+<a href="fileformats.html#au">NeXT/AU</a>,&nbsp;&nbsp;
+<a href="fileformats.html#ircam">IRCAM</a>,&nbsp;&nbsp;
+<a href="fileformats.html#mp3">MP3</a>,&nbsp;&nbsp;
+<a href="fileformats.html#ogg">Ogg Vorbis</a>,&nbsp;&nbsp;
+<a href="fileformats.html#midi">MIDI</a>,
+and the Audacity Project file format 
+(<a href="fileformats.html#aup">AUP</a>).</p>
+
+<p class=a>In addition, Audacity can also attempt to open an audio file in
+a different format, as long as it is uncompressed - to do this,
+use the <a href="menu_project.html#importraw">Import Raw Data</a> command.</p>
+
+<a name="close"></a>
+<p class=menuref_item>Close</p>
+<p class=a>Closes the current project window.</p>
+
+<a name="save"></a>
+<p class=menuref_item>Save Project</p>
+<p class=a>Saves the current Audacity project (<a href="fileformats.html#aup">AUP</a>)
+file.  Audacity projects are <i>not</i> intended to be read by other
+programs, but they are extremely fast to load and save within Audacity.
+When you are finished working on a project and you want to be able to
+use it in another program, select one of the
+<a href="#export">Export</a> commands instead.</p>
+<p class=a>Note that most of the audio data for an Audacity project is not
+stored in the <a href="fileformats.html#aup">AUP</a> file, but in a
+directory (folder) with the same name as the project.  For example,
+if you save a project as <tt>chanson.aup</tt>, there will be a directory
+called <tt>chanson_data</tt> created to store the actual audio tracks
+of the project.  For more information on the project file format,
+see <a href="fileformats.html#aup">the file formats page</a>.</p>
+
+<a name="saveas"></a>
+<p class=menuref_item>Save Project As...</p>
+<p class=a>Saves the current Audacity project (<a href="fileformats.html#aup">AUP</a>)
+file, allowing you to give it a different name or move it to a new location
+if you have already saved it in one location.</p>
+<p class=a>Audacity projects are <i>not</i> intended to be read by other
+programs, but they are extremely fast to load and save within Audacity.
+When you are finished working on a project and you want to be able to
+use it in another program, select one of the <a href="#export">Export</a>
+commands instead.</p>
+<p class=a>For more information on the project file format,
+see <a href="fileformats.html#aup">the file formats page</a>.</p>
+
+<a name="export"></a>
+<p class=menuref_item>Export As WAV...</p>
+<p class=a>Exports the current Audacity project as a standard audio file format such as
+<a href="fileformats.html#wav">WAV</a>&nbsp;or&nbsp;<a href="fileformats.html#aiff">AIFF</a>.</p>
+<p class=a>You can change the format of exported files in the
+<a href="prefs.html">Preferences</a> dialog.</p>
+
+<p class=a>If there are multiple tracks in your project,
+they will be automatically mixed in the exported data.  For more
+information about mixing, see <a href="menu_project.html#quickmix">Quick Mix</a>.</p>
+
+<p class=a>To export only a single track or part of a track,
+use <a href="#exportsel">Export Selection</a>.</p>
+
+
+<!-- end of first column -->
+	</td>
+	<td valign=top width="50%">
+		<!-- start of second column -->
+
+<a name="exportsel"></a>
+<p class=menuref_item>Export Selection As WAV...</p>
+<p class=a>This is the same as <a href="#export">Export</a>, but it only
+exports the part of the project that is selected.  This is very
+useful if you want to save a small clip from part of a track as
+a separate file.</p>
+
+<a name="exportmp3"></a>
+<p class=menuref_item>Export As MP3...</p>
+<p class=a>Exports the current Audacity project as an MP3 file.
+Audacity does not encode MP3 files directly, but instead
+requires that you download a separate MP3 encoder.
+See <a href="exportmp3.html">Exporting MP3 Files</a> for
+details.</p>
+<p class=a>To export only a single track or part of track,
+use <a href="#exportselmp3">Export Selection as MP3</a>.</p>
+
+<a name="exportselmp3"></a>
+<p class=menuref_item>Export Selection As MP3...</p>
+<p class=a>This is the same as <a href="#exportmp3">Export MP3</a>, but it only
+exports the part of the project that is selected.  This is very
+useful if you want to save a small clip from part of a track as
+a separate file.  See <a href="exportmp3.html">Exporting MP3 Files</a>.</p>
+
+<a name="exportogg"></a>
+<p class=menuref_item>Export As OGG...</p>
+<p class=a>Exports the current Audacity project as an Ogg Vorbis file.
+
+<p class=a>To export only a single track or part of track,
+use <a href="#exportselogg">Export Selection as Ogg</a>.</p>
+
+<a name="exportselogg"></a>
+<p class=menuref_item>Export Selection As OGG...</p>
+<p class=a>This is the same as <a href="#exportogg">Export As OGG</a>, but it only
+exports the part of the project that is selected.  This is very
+useful if you want to save a small clip from part of a track as
+a separate file.
+
+<a name="exportlabels"></a>
+<p class=menuref_item>Export Labels...</p>
+<p class=a>If you have any <a href="tracks_label.html">Label Tracks</a>, this
+command will export them as a text file.  This feature is commonly
+used in Speech Recognition research to annotate a speech utterance
+and export the annotation to be later processed by another program.</p>
+<p class=a>To import these labels into a different project later, use the
+<a href="menu_project.html#importlabels">Import Labels</a> command.</p>
+
+<a name="exportmultiple"></a>
+<p class=menuref_item>Export Multiple...</p>
+<a class=a>This allows you to do multiple exports from audacity with one command
+	based either on multiple tracks in the project or labels in a single
+	audio track. It's great for splitting up long recordings into CD tracks
+	<!-- need to add link to instructions to here --></p>
+
+<a name="prefs"></a>
+<p class=menuref_item>Preferences</p>
+<p class=a>Opens a dialog window that lets you configure Audacity.
+For more information on the different preferences, see
+the section on <a href="prefs.html">Audacity Preferences</a>.</p>
+
+<a name="exit"></a>
+<p class=menuref_item>Exit/Quit</p>
+<p class=a>Closes all project windows and exits Audacity.
+It will ask you if you want to save changes to your project. 
+It is not necessary for
+you to save changes if you just exported your file as WAV or MP3 and
+you are finished working with it.  On the other hand, if you are
+working on a mix and plan to continue where you left off, saving an
+Audacity Project will let you restore everything as it is later.
+</p>
+
+	</td>
+    </tr>
+</table>
+</center>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="reference.html">Back to the Reference page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+
+</body>
+</html>
+
+
+
