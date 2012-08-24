@@ -14,7 +14,7 @@
 
 <h2><?=$pageTitle?></h2>
 
-<p><?=_('Installation packages for Audacity on GNU/Linux and other Unix-like systems are provided by individual distributions. These distributions maintain regularly updated Audacity packages:')?></p>
+<p><?=_('Installation packages for Audacity on GNU/Linux and other Unix-like systems are provided by individual distributions. The following distributions maintain regularly updated Audacity packages:')?></p>
 
 <p><?=_('
 <ul>

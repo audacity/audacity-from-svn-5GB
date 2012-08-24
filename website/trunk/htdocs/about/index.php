@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007-9 Gale Andrews, Vaughan Johnson. 
+ * 2007-12 Gale Andrews, Vaughan Johnson. 
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -39,7 +39,7 @@
 
 <p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href="http://www.mozilla.com/">Firefox</a> web browser, the <a href="http://www.openoffice.org/">OpenOffice.org</a> office suite and entire Linux-based operating systems such as <a href="http://www.ubuntulinux.org/">Ubuntu</a>.</p>
 
-<p>We welcome <a href="../community/donate">donations</a> to support Audacity development. Anyone can <a href="http://audacityteam.org/wiki/index.php?title=Contribute">contribute</a> to Audacity by helping us with <a href="http://www.audacityteam.org/manual/index.php?title=Main_Page">documentation</a>, <a href="../community/translation">translations</a>, user <a href="http://audacityteam.org/forum/index.php">support</a> and by <a href="http://audacityteam.org/wiki/index.php?title=Nightly_Builds">testing<a/> our latest code.</p>');
+<p>We welcome <a href="/donate/">donations</a> to support Audacity development. Anyone can <a href="http://audacityteam.org/wiki/index.php?title=Contribute">contribute</a> to Audacity by helping us with <a href="http://www.audacityteam.org/manual/index.php?title=Main_Page">documentation</a>, <a href="../community/translation">translations</a>, user <a href="http://audacityteam.org/forum/index.php">support</a> and by <a href="http://audacityteam.org/wiki/index.php?title=Nightly_Builds">testing<a/> our latest code.</p>');
 
 echo _('<p><a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses.</p>');
 

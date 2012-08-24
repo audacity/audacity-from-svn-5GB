@@ -56,7 +56,7 @@
 </ul>
 </p>
 
-<p><?=_('<b>Bug reports:</b> Please check both the <a href="http://wiki.audacityteam.org/wiki/Release_Notes">Release Notes</a> for your specific version of Audacity 2.0 and <a href="http://wiki.audacityteam.org/wiki/Reporting_Bugs">Reporting Bugs</a> <b>before</b> making a report. We are not fixing bugs in the legacy 1.2 or 1.3 series - please upgrade to the <a href="/download">latest 2.0 version</a> of Audacity instead.');?></p>
+<p><?=_('<b>Bug reports:</b> Please check both the <a href="http://wiki.audacityteam.org/wiki/Release_Notes">Release Notes</a> for your specific version of Audacity 2.0 and <a href="http://wiki.audacityteam.org/wiki/Reporting_Bugs">Reporting Bugs</a> <b>before</b> making a report. We are not fixing bugs in the legacy 1.2 or 1.3 series - please upgrade to the <a href="/download/">latest 2.0 version</a> of Audacity instead.');?></p>
 
 <div class="advice">
 <p><?=_('<b>Please include the following information.</b> This is important.</p>

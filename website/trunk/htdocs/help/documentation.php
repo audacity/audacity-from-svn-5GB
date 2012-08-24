@@ -26,7 +26,7 @@
 
 <p>
 <ul>
-<li><a href="http://manual.audacityteam.org/help/manual/
+<li><a href="http://manual.audacityteam.org/o/
 "><?php printf(_('View the latest Audacity %s Manual online'), src_version)?></a>.</li>
 <li><a href="http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html"><?php printf(_('Download and install the latest Audacity %s Manual in HTML format'), src_version)?></a>  <?=_('(Most users on <a href="/download/linux">GNU/Linux</a> will need this if they want a built-in Manual).')?></li>
 <li><a href="http://manual.audacityteam.org/index.php?title=Main_Page"><?=_('View the latest Audacity alpha development Manual online.</a>')?> <?=_('(This Manual is only for the latest Audacity alpha <a href="http://wiki.audacityteam.org/wiki/Nightly_Builds">Nightly Builds</a>).')?></li>
