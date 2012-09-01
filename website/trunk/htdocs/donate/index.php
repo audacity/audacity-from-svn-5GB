@@ -16,7 +16,7 @@
   <?=_('Make a Donation')?>
 </h2>
 <p>
-  <?=_('Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:')?>
+  <?=_('Click the button below to donate securely by PayPal (a PayPal account is not required). You can send any amount, using either your credit card or your PayPal account:')?>
 </p>
 
 <p>
@@ -26,7 +26,7 @@
   <input type="hidden" name="cmd" value="_s-xclick">
     <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----MIIHNwYJKoZIhvcNAQcEoIIHKDCCByQCAQExggEwMIIBLAIBADCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwDQYJKoZIhvcNAQEBBQAEgYAAmcszm/EjivKs7n8XCn3R6QPJ8hHgGfAxyvQLyw7oPLHTOdrDpNyrQ2b87j9ugPJacZ6aznRl6Cgm6TyEfJiPRXIDSbEvzCMWtPfITdO7bsJdGKZCDy6b+iVlqivaOh0CsxVeIlXoDTGfFxoOgBvlNGnz4ZI5C6II9oabg2nTZDELMAkGBSsOAwIaBQAwgbQGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQI1CIc/1pWO3WAgZDlrh9JmN+r2EzOnNx4G4UsLbiCHG3qXSLtYf9gPXREbY5Jg/Hlttt3mcZa5ueGPzdbjr93vgWyQy1bOad8W318JuuisZ01GXpCRJWs/JnOu665ABv+xmWepdz+IeZgp+Y7tqGwfwmdtCotuOFmCQyFvIpg+BpbbeC2cDotKNicUmjRjIEPEl/7rC7UWQ0E2N6gggOHMIIDgzCCAuygAwIBAgIBADANBgkqhkiG9w0BAQUFADCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20wHhcNMDQwMjEzMTAxMzE1WhcNMzUwMjEzMTAxMzE1WjCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMFHTt38RMxLXJyO2SmS+Ndl72T7oKJ4u4uw+6awntALWh03PewmIJuzbALScsTS4sZoS1fKciBGoh11gIfHzylvkdNe/hJl66/RGqrj5rFb08sAABNTzDTiqqNpJeBsYs/c2aiGozptX2RlnBktH+SUNpAajW724Nv2Wvhif6sFAgMBAAGjge4wgeswHQYDVR0OBBYEFJaffLvGbxe9WT9S1wob7BDWZJRrMIG7BgNVHSMEgbMwgbCAFJaffLvGbxe9WT9S1wob7BDWZJRroYGUpIGRMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbYIBADAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBQUAA4GBAIFfOlaagFrl71+jq6OKidbWFSE+Q4FqROvdgIONth+8kSK//Y/4ihuE4Ymvzn5ceE3S/iBSQQMjyvb+s2TWbQYDwcp129OPIbD9epdr4tJOUNiSojw7BHwYRiPh58S1xGlFgHFXwrEBb3dgNbMUa+u4qectsMAXpVHnD9wIyfmHMYIBmjCCAZYCAQEwgZQwgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tAgEAMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xMTExMzAwODM1NDhaMCMGCSqGSIb3DQEJBDEWBBS0murwiSfWyz6Q4sRJMBNvsefBgjANBgkqhkiG9w0BAQEFAASBgB4pKCrb24h2oEyRohVzcJg+n9nUhbUkMsDCKc+R2x0Mkl1/xY1ryaNZop5NV4R58uUh46UBC6HuyaSlQjKieQbjio/LZOe/9duM5TK5KgoYb8znIBtqzrvCeCQIehD3BS6ukq98bLsZY7Ry34JYgo+lGGgedw+IAhvUrlRdjkdV-----END PKCS7-----
 ">
-      <input type="image" src="../images/Paypal_US_btn_donateCC_LG.gif" border="0" name="submit" alt ="Donate securely by Paypal, using your credit card or your Paypal account!" title="Donate securely by Paypal, using your credit card or your Paypal account!">
+      <input type="image" src="../images/Paypal_US_btn_donateCC_LG.gif" border="0" name="submit" alt ="Donate securely by PayPal, using your credit card or your PayPal account!" title="Donate securely by PayPal, using your credit card or your PayPal account!">
         <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
 </form>
 <!-- End Paypal button Form -->
@@ -35,17 +35,19 @@
 
 <p>
 <?php
-   // i18n-hint: the encoding inside the <a href> tag between the two 
-   // "echo" strings obscures the e-mail address from (at least some) 
-   // harvesting bots. Please translate the strings above and below
-   // the <a href> tag, and ignore the line with the <a href> tag itself.   
-   echo _('If you prefer to send a personal check or another form of payment, please write to our ')?>
-   <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;"> 
-<?php
-   echo _('feedback e-mail address</a> telling us what country you are in and how you\'d like to pay.');?>
+/*
+ * // i18n-hint: the encoding inside the <a href> tag between the two 
+ * // "echo" strings obscures the e-mail address from (at least some) 
+ * // harvesting bots. Please translate the strings above and below
+ * // the <a href> tag, and ignore the line with the <a href> tag itself.   
+ *  echo _('If you prefer to send a personal check or another form of payment, please write to our        ')?>
+ * <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;"> 
+ * <?php
+ * echo _('feedback e-mail address</a> telling us what country you are in and how you\'d like to pay.');?>
+ * </p>
+ */
+echo _('Please note that we cannot accept other forms of payment such as checks or bank transfers. Also, donations to Audacity are not deductible for income taxes in the United States of America.');?>
 </p>
-
-<p>Please note that donations to Audacity are not deductible for income taxes in the United States of America.</p>
 
 <h2><?=$pageTitle?></h2>
 
