@@ -2,7 +2,7 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
- * Copyright 2009 - 2011 Richard Ash, Gale Andrews
+ * Copyright 2009 - 2012 Richard Ash, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -32,9 +32,9 @@ printf(_('%sNyquist was written by %sRoger B. Dannenberg%s and was intended to b
    	'</a>', '.</li></ul>' );
 // 18n-hint: All The references to Lisp in the strings following are to the programming language.
 // So you probably don't want to translate it.
-printf(_('%sNyquist supports both a Lisp syntax and a more conventional syntax called SAL. Audacity versions prior to 1.3.8 Beta only support Lisp, but versions after that support both Lisp and SAL. To write plug-ins for use with Audacity, choose the appropriate Nyquist Manual for your version of Audacity and preferred syntax: %sNyquist version 2.37 Manual%s - entirely using Lisp syntax %s Nyquist 3.0x Reference Manual%s - the latest Nyquist Manual (mostly using SAL syntax)%s'), '<p>', '</p><ul><li><a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">', '</a>', '</li><li><a href="http://www.cs.cmu.edu/~rbd/doc/nyquist/">', '</a>', '.</li></ul>');
+printf(_('%sNyquist supports both a Lisp syntax and a more conventional syntax called SAL. Audacity versions prior to 1.3.8 only support Lisp, but the current Audacity 2.0 series supports both Lisp and SAL. To write plug-ins for use with Audacity, choose the appropriate Nyquist Manual for your version of Audacity and preferred syntax: %sNyquist version 2.37 Manual%s - entirely using Lisp syntax %s Nyquist 3.0x Reference Manual%s - the latest Nyquist Manual (mostly using SAL syntax)%s'), '<p>', '</p><ul><li><a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">', '</a>', '</li><li><a href="http://www.cs.cmu.edu/~rbd/doc/nyquist/">', '</a>', '.</li></ul>');
 
-printf(_('%sNote that you don\'t need to download Nyquist in order to write simple plug-ins to use with Audacity. All the basic instructions you need to work with Lisp and the 2.37 Manual are below. If you want to explore SAL as well, and for the latest Nyquist features in Audacity Beta, see %sNyquist Plug-ins Reference%s on the %sWiki%s'), '<p>', '<a href="http://wiki.audacityteam.org/wiki/Nyquist_Plug-ins_Reference">', '</a>', '<a href="http://wiki.audacityteam.org/">', '</a>.</p>');
+printf(_('%sNote that you don\'t need to download Nyquist in order to write simple plug-ins to use with Audacity. All the basic instructions you need to work with Lisp and the 2.37 Manual are below. If you want to explore SAL as well, and for the latest Nyquist features in Audacity, see %sNyquist Documentation%s on the %sWiki%s'), '<p>', '<a href="http://wiki.audacityteam.org/wiki/Nyquist_Documentation">', '</a>', '<a href="http://wiki.audacityteam.org/">', '</a>.</p>');
 
 printf('<h3>%s</h3>', _('Lisp'));
 printf(_('%sNyquist is based on Lisp.  If you have programmed in Lisp before, you can skim this section or go directly to the %snext page%s.  Otherwise, here\'s an extremely brief introduction to Lisp:'), '<p>', '<a href="nyquist2">', '</a>', '</p>');
