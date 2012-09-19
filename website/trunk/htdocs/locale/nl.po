@@ -8,15 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity\n"
 "Report-Msgid-Bugs-To: http://wiki.audacityteam.org/wiki/Reporting_Bugs\n"
-"POT-Creation-Date: 2012-08-24 04:12+0100\n"
-"PO-Revision-Date: 2012-09-01 10:59-0000\n"
-"Last-Translator: Thomas de Rocker\n"
+"POT-Creation-Date: 2012-09-16 07:07+0100\n"
+"PO-Revision-Date: 2012-09-19 07:30-0000\n"
+"Last-Translator: Thomas De Rocker <thomasderocker@hotmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/audacity/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: nl\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: main.inc.php:20
 msgid "Home"
@@ -814,13 +814,13 @@ msgstr "%sNyquist is geschreven door %sRoger B. Dannenberg%s en is bedoeld om ge
 
 #: help/nyquist.php:35
 #, php-format
-msgid "%sNyquist supports both a Lisp syntax and a more conventional syntax called SAL. Audacity versions prior to 1.3.8 Beta only support Lisp, but versions after that support both Lisp and SAL. To write plug-ins for use with Audacity, choose the appropriate Nyquist Manual for your version of Audacity and preferred syntax: %sNyquist version 2.37 Manual%s - entirely using Lisp syntax %s Nyquist 3.0x Reference Manual%s - the latest Nyquist Manual (mostly using SAL syntax)%s"
-msgstr "%sNyquist ondersteunt Lisp syntax en een meer conventionele syntax die SAL genoemd wordt. Audacity-versies vóór 1.3.8 bèta ondersteunen alleen Lisp, maar nieuwere versies ondersteunen beide. Om plugins te schrijven voor gebruik met Audacity, kiest u de overeenkomstige Nyquist-handleiding voor uw versie van Audacity en voorkeursyntax: %sNyquist versie 2.37 handleiding%s - gebruikt volledig syntax %s Nyquist 3.0x referentiehandleiding%s - de laatste Nyquist-handleiding (gebruikt vooral de SAL-syntax)%s"
+msgid "%sNyquist supports both a Lisp syntax and a more conventional syntax called SAL. Audacity versions prior to 1.3.8 only support Lisp, but the current Audacity 2.0 series supports both Lisp and SAL. To write plug-ins for use with Audacity, choose the appropriate Nyquist Manual for your version of Audacity and preferred syntax: %sNyquist version 2.37 Manual%s - entirely using Lisp syntax %s Nyquist 3.0x Reference Manual%s - the latest Nyquist Manual (mostly using SAL syntax)%s"
+msgstr "%sNyquist ondersteunt Lisp syntax en een meer conventionele syntax die SAL genoemd wordt. Audacity-versies vóór 1.3.8 ondersteunen alleen Lisp, maar de huidige 2.0-reeks ondersteunt beide. Om plugins te schrijven voor gebruik met Audacity, kiest u de overeenkomstige Nyquist-handleiding voor uw versie van Audacity en voorkeursyntax: %sNyquist versie 2.37 handleiding%s - gebruikt volledig syntax %s Nyquist 3.0x referentiehandleiding%s - de laatste Nyquist-handleiding (gebruikt vooral de SAL-syntax)%s"
 
 #: help/nyquist.php:37
 #, php-format
-msgid "%sNote that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity. All the basic instructions you need to work with Lisp and the 2.37 Manual are below. If you want to explore SAL as well, and for the latest Nyquist features in Audacity Beta, see %sNyquist Plug-ins Reference%s on the %sWiki%s"
-msgstr "%sMerk op dat u Nyquist niet moet downloaden om simpele plugins voor Audacity te schrijven. Alle basisinstructies die u nodig heeft om te kunnen werken met Lisp en de 2.37 handleiding staan hieronder. Als u ook SAL wilt uitproberen, en voor de laatste Nyquist-functies in Audacity bèta, zie %sNyquist plugins referentie%s op de %sWiki%s"
+msgid "%sNote that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity. All the basic instructions you need to work with Lisp and the 2.37 Manual are below. If you want to explore SAL as well, and for the latest Nyquist features in Audacity, see %sNyquist Documentation%s on the %sWiki%s"
+msgstr "%sMerk op dat u Nyquist niet moet downloaden om simpele plugins voor Audacity te schrijven. Alle basisinstructies die u nodig heeft om te kunnen werken met Lisp en de 2.37 handleiding staan hieronder. Als u ook SAL wilt uitproberen, en voor de laatste Nyquist-functies in Audacity bèta, zie %sNyquist-documentatie%s op de %sWiki%s"
 
 #: help/nyquist.php:39
 msgid "Lisp"
@@ -4886,26 +4886,28 @@ msgid "Audacity is always free to download from us, but third parties can also s
 msgstr "Audacity is altijd gratis om te downloaden van ons, maar derden kunnen ook ons programma verkopen of verdelen op een andere manier, dankzij de <a href=\"../about/license#license\">GNU General Public License</a>. Merk op dat deze versies dikwijls niet de laatste versie van Audacity zijn, dus we raden u aan om dit te controleren voordat u ze koopt."
 
 #: download/buy.php:15
-msgid ""
-"<h3>Windows or Linux </h3>\n"
-"  <p>\n"
-"   <ul>\n"
-"    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</a> is a collection of free, open source software for <b>Windows and Linux</b> with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you (US only).</li>\n"
-"    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software for <b>Windows</b>. Currently, you can still <a href=\"http://releases.theopencd.org/\">download archived CD images</a> or <a href=\"http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">purchase a CD online</a> for worldwide shipping.</li>\n"
-"    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> is a similar collection of high quality free and open source software for <b>Windows</b>. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. The project hopes to make available a purchasable CD shortly.</li>\n"
-"    <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a> contains twenty-two open-source <b>Windows</b> programs on a single CD. You can download and burn the ISO image, or purchase the CD for worldwide shipping.</li>\n"
-"   </ul>\n"
-"  </p>"
-msgstr ""
-"<h3>Windows of Linux</h3>\n"
-"  <p>\n"
-"   <ul>\n"
-"    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</a> is een verzameling gratis, open source software met de volledige broncode, die gemakkelijke verspreiding toestaat onder de GNU General Public License. Iso-images kunnen gratis gedownload worden, of u kunt een kopie <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">bestellen</a> zodat ze verscheept wordt naar u (alleen VS).</li>\n"
-"    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is een op dit moment niet-voortgezette verzameling van hogekwaliteits- gratis en open source software. Op dit moment kan u nog steeds <a href=\"http://releases.theopencd.org/\">gearchiveerde cd-images downloaden</a> of <a href=\"http://ztechshop.net/disks/opencd/\">on line een cd bestellen</a> voor het wereldwijd verschepen.</li>\n"
-"    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> is een gelijkaardige verzameling van hogekwaliteits- gratis en open source software. Op dit moment is een <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">cd-image</a> beschikbaar om te downloaden. Het project hoopt om binnenkort een aankoopbare cd te maken.</li>\n"
-"<li><a href=\"http://www.valo-cd.net/\">VALO-CD</a> bevat 22 open source <b>Windows</b> programma's op één cd. U kan de iso-image downloaden en branden, of de cd aankopen voor wereldwijd verschepen.</li>\n"
-"   </ul>\n"
-"  </p>"
+msgid "<h3>Windows or Linux </h3>"
+msgstr "<h3>Windows of Linux </h3>"
+
+#: download/buy.php:19
+#, php-format
+msgid "<li><a href=\"%s\">OpenDisc</a> is a collection of high quality free and open source software for <b>Windows</b>. You can download the latest CD image for free, or donate to receive a CD copy anywhere in the world.</li>"
+msgstr "<li><a href=\"%s\">OpenDisc</a> is een verzameling gratis en opensource software van hoge kwaliteit voor <b>Windows</b>. U kunt de laatste cd-image gratis downloaden, of doneren om overal ter wereld een cd-kopie te ontvangen.</li>"
+
+#: download/buy.php:20
+#, php-format
+msgid "<li><a href=\"%s\">FreedomSampler&trade;</a> is a collection of free, open source software for <b>Windows and Linux</b> with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you (US only)</li>"
+msgstr "<li><a href=\"%s\">FreedomSampler&trade;</a> is een verzameling gratis, open source software voor <b>Windows en Linux</b> met volledige broncode die gemakkelijke verspreiding toestaat onder de GNU General Public License. ISO-images kunnen gratis gedownload worden, of u kunt een kopie <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">bestellen</a> om naar u te laten sturen (alleen VS)</li>"
+
+#: download/buy.php:21
+#, php-format
+msgid "<li><a href=\"%s\">VALO-CD</a> contains twenty-two open-source <b>Windows</b> programs on a single CD. You can download and burn the ISO image for free, or purchase the CD for worldwide shipping.</li>"
+msgstr "<li><a href=\"%s\">VALO-CD</a> bevat 22 open source <b>Windows</b>-programma's op een enkele cd. U kunt de iso-image downloaden en op cd branden, of de cd bestellen voor wereldwijd verzenden.</li>"
+
+#: download/buy.php:22
+#, php-format
+msgid "<li><a href=\"%s\">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software for <b>Windows</b>. Currently, you can still <a href=\"%s\">download archived CD images for free</a>, or <a href=\"%s\">purchase a CD online</a> for worldwide shipping.</li>"
+msgstr "<li><a href=\"%s\">TheOpenCD</a> is een nu niet-voortgezette collectie van hogekwaliteits- gratis en open source software voor <b>Windows</b>. Op dit moment kunt u nog steeds <a href=\"%s\">gearchiveerde cd-archieven downloaden</a> of <a href=\"%s\">online een cd bestellen</a> voor het wereldwijd verschepen."
 
 #: download/beta_linux.php:19
 msgid "Downloads"
@@ -6159,7 +6161,7 @@ msgstr "Reclamebeleid"
 
 #: contact/privacy.php:18
 msgid ""
-"<p>On some pages on our main site, we show advertisements from Google's AdSense program. See our &ldquo;<a href=\"http://audacity.sourceforge.net/donate/\">How Does Audacity Raise Money?</a>&rdquo; page for the reasons we show advertisements.</p>\n"
+"<p>On some pages on this site, we show advertisements from Google's AdSense program. See our &ldquo;<a href=\"http://audacity.sourceforge.net/donate/\">How Does Audacity Raise Money?</a>&rdquo; page for the reasons we show advertisements.</p>\n"
 "\n"
 "<p>As of April 8, 2009, this includes \"interest-based\" advertising, which utilizes cookies to try to determine users' areas of interest (for example, audio editing), to show advertisements of likelier interest. Please see Google's <a href=\"http://www.google.com/policies/privacy/ads/\">Advertising privacy FAQ</a> for information regarding your privacy including how to <a href=\"http://www.google.com/policies/privacy/ads/#toc-optout\">opt out</a> of this tracking.</p>"
 msgstr ""
@@ -6368,8 +6370,8 @@ msgstr "Website Copyright en Trademark"
 #. if you wish.
 #: copyright.php:22
 #, php-format
-msgid "This web site is Copyright &copy; %s members of the Audacity development team.  Except where otherwise noted, all text and images on this site are licensed under the <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, version 2.0</a>.  You may modify, copy, distribute, and display this material, but you must give credit to the original authors.  Please see the license for details."
-msgstr "Deze website is Copyright &copy; %s leden van het Audacity-ontwikkelingsteam. Uitgezonderd waar anders gezegd, zijn alle tekst en afbeeldingen op deze site gelicentieerd onder de <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, versie 2.0</a>. U mag dit materiaal wijzigen, kopiëren, verdelen en tonen, maar u moet de originele auteurs vermelden. Zie de licentie voor details."
+msgid "This web site is Copyright &copy; %s members of the Audacity development team.  Except where otherwise noted, all text and images on this site are licensed under the <a href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons Attribution License, version 3.0</a>.  You may modify, copy, distribute, and display this material, but you must give credit to the original authors.  Please see the license for details."
+msgstr "Deze website is Copyright &copy; %s leden van het Audacity-ontwikkelingsteam. Uitgezonderd waar anders gezegd, zijn alle tekst en afbeeldingen op deze site gelicentieerd onder de <a href=\"http://creativecommons.org/licenses/by/3.0/deed.nl\">Creative Commons Attribution License, versie 3.0</a>. U mag dit materiaal wijzigen, kopiëren, verdelen en tonen, maar u moet de originele auteurs vermelden. Zie de licentie voor details."
 
 #: copyright.php:24
 msgid "\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a trademark of Google, Inc."
@@ -9168,46 +9170,38 @@ msgid "Make a Donation"
 msgstr "Een donatie geven"
 
 #: donate/index.php:19
-msgid "Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:"
-msgstr "Klik op onderstaande knop om veilig te doneren via Paypal (een Paypal-account is niet vereist). U kunt elk bedrag zenden, door gebruik te maken van uw kredietkaart of uw Paypal-account:"
+msgid "Click the button below to donate securely by PayPal (a PayPal account is not required). You can send any amount, using either your credit card or your PayPal account:"
+msgstr "Klik op onderstaande knop om veilig te doneren via Paypal (een PayPal-account is niet vereist). U kunt elk bedrag zenden, door gebruik te maken van uw kredietkaart of uw PayPal-account:"
 
-#. i18n-hint: the encoding inside the <a href> tag between the two
-#. "echo" strings obscures the e-mail address from (at least some)
-#. harvesting bots. Please translate the strings above and below
-#. the <a href> tag, and ignore the line with the <a href> tag itself.
-#: donate/index.php:42
-msgid "If you prefer to send a personal check or another form of payment, please write to our "
-msgstr "Indien u verkiest om een persoonlijke cheque of een andere vorm van betaling te zenden, gelieve te mailen naar ons "
+#: donate/index.php:49
+msgid "Please note that we cannot accept other forms of payment such as checks or bank transfers. Also, donations to Audacity are not deductible for income taxes in the United States of America."
+msgstr "Merk op dat we geen andere vormen van betaling zoals cheques of overschrijvingen kunnen accepteren. Donaties aan Audacity zijn ook niet af te trekken van de inkomstenbeslastingen in de Verenigde Staten van Amerika."
 
-#: donate/index.php:45
-msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
-msgstr "feedback e-mailadres</a> om ons te vertellen in welk land u woont en hoe u wil betalen."
-
-#: donate/index.php:53
+#: donate/index.php:55
 msgid "Audacity raises money via donations, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
 msgstr "Audacity verdient geld door donaties, <a href=\"http://audacityteam.org/sponsor.php\">sponsoring</a> en <a href=\"../contact/privacy#advertising\">advertenties</a> op onze webpagina's."
 
-#: donate/index.php:57
+#: donate/index.php:59
 msgid "As of March 2007, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, which hosts the Audacity site and downloads, is allowing us to also post advertisements, in an innovative program whereby we split the revenues. Thank you, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
 msgstr "Sinds maart 2007 staat <a href=\"http://sourceforge.net/\">SourceForge.net</a>, dat de Audacity site en downloads host, ons toe om ook advertenties te plaatsen, volgens een vernieuwend programma waarbij we de winst delen. Bedankt, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
 
-#: donate/index.php:61
+#: donate/index.php:63
 msgid "Income to Audacity is not distributed among previous contributors to Audacity. There are too many people and it would be difficult to do so fairly. Also, nobody contributed code to Audacity expecting money in return. Audacity is developed by volunteers, working in our spare time. Audacity is not shareware, and we do not expect to make any money from it."
 msgstr "Inkomen van Audacity wordt niet verdeeld onder mensen die vroeger bijdroegen aan Audacity. Er zijn te veel mensen en het zou moeilijk zijn om het op een faire manier te doen. Niemand droeg daarenboven code bij aan Audacity terwijl hij daarvoor geld in ruil verwachtte. Audacity wordt ontwikkeld door vrijwilligers die in hun vrije tijd werken. Audacity is geen shareware, en we verwachten niet er geld mee te verdienen."
 
-#: donate/index.php:65
+#: donate/index.php:67
 msgid "Rather, the team of Audacity lead developers will spend the money on items and services that benefit the project as a whole. Money that comes in to the project helps us pay for bandwidth and web hosting, development tools, and audio hardware. In the past we used funds from donations to purchase the Audacity trademark and to subsidize travel costs for Audacity developers to meet for a hackathon, and we plan to do more of these. Our long-term goal is to bring in enough money to hire a full-time developer who could devote all of his/her time to the project and take over some of the administrative,  maintenance and release tasks, freeing volunteers to spend more time on code."
 msgstr "Het team van leidende Audacity-ontwikkelaars zal het geld eerder spenderen aan items en diensten die het project als geheel ten goede komen. Geld dat binnenkomt via het project helpt ons te betalen voor bandbreedte en web-hosting, ontwikkelingsgereedschap en audio-hardware. In het verleden gebruikten we fondsen van donaties om het Audacity trademark aan te kopen en om reiskosten te subsidiëren voor Audacity-ontwikkelaars die elkaar ontmoetten op een hackaton, en we zijn van plan om er zo meer te doen. Ons doel op lange termijn is om genoeg geld binnen te brengen om een fulltime ontwikkelaar te huren die al zijn/haar tijd kan wijden aan het project en een aantal administratieve, onderhouds- en uitgave-taken kan overnemen, waardoor vrijwilligers meer tijd kunnen spenderen aan de code zelf."
 
-#: donate/index.php:69
+#: donate/index.php:71
 msgid "These are all things that help us provide Audacity for free and continue to make it better. The Audacity Team is completely committed to keeping Audacity free and open source. We made that commitment in <a href=\"http://audacity.sourceforge.net/about/license\">licensing Audacity under the GNU General Public License</a>."
 msgstr "Dit zijn allemaal dingen die ons helpen om Audacity gratis te voorzien en het beter te blijven maken. Het Audacity-team is volledig toegewijd om Audacity vrij (en gratis) en open source te houden. We maakten deze belofte door<a href=\"http://audacity.sourceforge.net/about/license\">Audacity te licensiëren onder de GNU General Public License</a>."
 
-#: donate/index.php:72
+#: donate/index.php:74
 msgid "Other Ways to Contribute"
 msgstr "Andere manieren om bij te dragen"
 
-#: donate/index.php:75
+#: donate/index.php:77
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr "Naast het doneren van geld kan u ook <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">uw tijd bijdragen</a> door ons te helpen met <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testen</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">vertalingen</a> of door vragen te beantwoorden op ons <a href=\"http://forum.audacityteam.org/\">Forum</a>. We hebben altijd gebruikers verwelkomd wiens enige bijdrage gewoon het gebruiken van Audacity is, door ons feedback te geven over hoe het te verbeteren en door anderen erover te vertellen. Bedankt om Audacity te ondersteunen."
 
