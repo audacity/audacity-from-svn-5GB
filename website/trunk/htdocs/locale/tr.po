@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Website\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-24 04:12+0100\n"
-"PO-Revision-Date: 2012-08-25 22:21-0000\n"
+"POT-Creation-Date: 2012-09-16 07:07+0100\n"
+"PO-Revision-Date: 2012-09-19 07:34-0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
 "Language-Team: Audacity\n"
 "MIME-Version: 1.0\n"
@@ -419,7 +419,7 @@ msgid ""
 "</ul>\n"
 "<p>See also: <a href=\"faq_i18n?s=files&amp;i=split\">How to split a long recording into multiple files</a>.</p>"
 msgstr ""
-"<p>İlk olarak, Audacity ayarlarını <a href=\"faq?s=recording&amp;i=stereo\">çift kanal olarak kaydetmeye</a> göre yapın.</p>\n"
+"<p>İlk olarak, Audacity ayarlarını <a href=\"faq_i18n?s=recording&amp;i=stereo\">çift kanal olarak kaydetmeye</a> göre yapın.</p>\n"
 "<p>Sonra, çift kanallı kablonun bir ucunu kaset çalarınız, minidisc oynatıcınız ya da ses sisteminizin “Line Out” ya da “Headphone” yazan çıkışına, diğer ucunu bilgisayarınızın “Line In” girişine takın. Eğer bu iki giriş ve çıkışlara uygun bir kablonuz yoksa, elektronikçilerden satın alabilirsiniz.</p>\n"
 "<p>Giriş kaynağını Audacity araç çubuğundan ya da Audacity Ayarlarından (Windows Vista ve 7) ya da Apple Audio-MIDI Kurulumu (OS X) içinden “Line In” olarak seçin.</p>\n"
 "<p>Daha sonra <b>Kayıt</b> tuşuna basın. Audacity kayıda başladığında, kaset ya da diski oynatmaya başlayın. Tüm kayıdı yaptıktan sonra <b>Dur</b> tuşuna basın.</p>\n"
@@ -587,7 +587,7 @@ msgid ""
 "<p>On Mac OS X computers, CD tracks appear in Finder as AIFF files so can be imported directly into Audacity. For more help on importing audio from CD tracks on both Windows and OS X, see our Wiki help page on <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How to import CDs</a>.</p>\n"
 "<p>See also: <a href=\"faq_i18n?s=files&amp;i=burn-cd\">How do I save my recording on an audio CD?</a></p>\n"
 msgstr ""
-"<p>Audacity, doğrudan bir müzik CD'si üzerinden bir izi alamaz. Bunun için CD izleri, <a href=\"http://cdexos.sourceforge.net/\">CDex</a> ya da <a href=\"http://www.apple.com/itunes/\">iTunes</a> gibi yazılımlar kullanılarak Audacity'nin okuyabileceği WAV ya da AIFF gibi biçimlere dönüştürülmelidir.</p>\n"
+"<p>Audacity, bir müzik CD'si üzerinden bir izi doğrudan alamaz. Bunun için CD izleri, <a href=\"http://cdexos.sourceforge.net/\">CDex</a> ya da <a href=\"http://www.apple.com/itunes/\">iTunes</a> gibi yazılımlar kullanılarak Audacity'nin okuyabileceği WAV ya da AIFF gibi biçimlere dönüştürülmelidir.</p>\n"
 "<p>Mac OS X kullanan bilgisayarlarda, CD izleri Finder içinde AIFF dosyaları olarak görünür. Böylece doğrudan Audacity içine alınabilirler. Windows ve OS X üzerinde CD izlerinden sesleri almak hakkındaki bilgiler için, Wiki sayfasındaki <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">CD'ler nasıl alınır?</a> bölümüne bakabilirsiniz.</p>\n"
 "<p>Ek bilgi: <a href=\"faq_i18n?s=files&amp;i=burn-cd\">Yaptığım kaydı nasıl bir müzik CD'si olarak kaydedebilirim?</a></p>\n"
 
@@ -623,7 +623,7 @@ msgstr ""
 "  <li>Projenizde çift kanallı bir iz yoksa Proje menüsünden “Yeni Çift Kanallı İz” komutunu seçin. (Böylece Audacity kaydınızı çift kanallı bir dosya olarak verir.)</li>\n"
 "</ol>\n"
 "<p>Windows Media Player ve iTunes ile CD kaydetme ip uçları ya da daha uzun süreli “veri” CD'leri kaydetmek için, Audacity Wiki sayfasındaki <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_burn_CDs\">Nasıl CD yazılır</a> bölümüne bakın.</p>\n"
-"<p>Ayrıca: <a href=\"faq_i18n?s=files&amp;i=split\">Uzun bir kayıt, birden fazla ize nasıl bölünür?</a> bölümüne bakın.</p>"
+"<p>Ayrıca: <a href=\"faq_i18n?s=files&amp;i=split\">Uzun bir kayıt, nasıl birden fazla ize bölünür?</a> bölümüne bakın.</p>"
 
 #: help/faq_i18n.php:218
 msgid "How can I split a long recording into multiple files or CD tracks?"
@@ -818,13 +818,13 @@ msgstr "%sNyquist %sRoger B. Dannenberg%s tarafından geliştirilerek, ses sente
 
 #: help/nyquist.php:35
 #, php-format
-msgid "%sNyquist supports both a Lisp syntax and a more conventional syntax called SAL. Audacity versions prior to 1.3.8 Beta only support Lisp, but versions after that support both Lisp and SAL. To write plug-ins for use with Audacity, choose the appropriate Nyquist Manual for your version of Audacity and preferred syntax: %sNyquist version 2.37 Manual%s - entirely using Lisp syntax %s Nyquist 3.0x Reference Manual%s - the latest Nyquist Manual (mostly using SAL syntax)%s"
-msgstr "%sNyquist Lisp ve daha yaygın kullanılan SAL yazım şekillerini destekler. Audacity 1.3.8 Beta öncesindeki sürümler yalnız Lisp yazım biçimini destekliyor. Bu sürümden sonra Lisp ve SAL desteği verildi. Audacity ile kullanılacak eklentiler yazmak için, kullandığınız Audacity sürümüne uygun Nyquist Kitabını ve yazım şeklini seçin: %sNyquist version 2.37 Kitabı%s - tamamen Lisp yazım şeklini kullanır%s Nyquist 3.0x Referans Kitabı%s - en yeni Nyquist Kitabı (çoğunlukla SAL yazım şeklini kullanır)%s"
+msgid "%sNyquist supports both a Lisp syntax and a more conventional syntax called SAL. Audacity versions prior to 1.3.8 only support Lisp, but the current Audacity 2.0 series supports both Lisp and SAL. To write plug-ins for use with Audacity, choose the appropriate Nyquist Manual for your version of Audacity and preferred syntax: %sNyquist version 2.37 Manual%s - entirely using Lisp syntax %s Nyquist 3.0x Reference Manual%s - the latest Nyquist Manual (mostly using SAL syntax)%s"
+msgstr "%sNyquist, Lisp ve daha yaygın kullanılan SAL yazım şekillerini destekler. Audacity 1.3.8 Beta öncesindeki sürümler yalnız Lisp yazım biçimini desteklerken, güncel Audacity 2.0 serisi hem Lisp hem SAL yazım biçimlerini destekler. Audacity ile kullanılacak eklentiler yazmak için, kullandığınız Audacity sürümüne uygun Nyquist Kitabını ve yazım şeklini seçin: %sNyquist version 2.37 Kitabı%s - tamamen Lisp yazım şeklini kullanır%s Nyquist 3.0x Referans Kitabı%s - güncel Nyquist Kitabı (çoğunlukla SAL yazım şeklini kullanır)%s"
 
 #: help/nyquist.php:37
 #, php-format
-msgid "%sNote that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity. All the basic instructions you need to work with Lisp and the 2.37 Manual are below. If you want to explore SAL as well, and for the latest Nyquist features in Audacity Beta, see %sNyquist Plug-ins Reference%s on the %sWiki%s"
-msgstr "%sAudacity üzerine basit eklentiler yazmak için Nyquist indirmeniz şart değildir. Lisp ile çalışmak için tüm temel bilgiler ve 2.37 kullanım kitabını aşağıda bulabilirsiniz. SAL hakkında bilgi edinmek ve Audacity Beta içindeki en son Nyquist özelliklerini görmek için %sWiki%s sayfasındaki %sNyquist Eklentileri Referansı%s bölümüne bakabilirsiniz."
+msgid "%sNote that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity. All the basic instructions you need to work with Lisp and the 2.37 Manual are below. If you want to explore SAL as well, and for the latest Nyquist features in Audacity, see %sNyquist Documentation%s on the %sWiki%s"
+msgstr "%sAudacity üzerinde basit eklentiler yazmak için Nyquist yazılımını indirmeniz şart değildir. Lisp ile çalışmak için tüm temel bilgileri ve 2.37 kullanım kitabını aşağıda bulabilirsiniz. SAL hakkında bilgi edinmek ve Audacity içindeki güncel Nyquist özelliklerini görmek için %sWiki%s sayfasındaki %sNyquist Eklentileri Referansı%s bölümüne bakabilirsiniz."
 
 #: help/nyquist.php:39
 msgid "Lisp"
@@ -4886,26 +4886,28 @@ msgid "Audacity is always free to download from us, but third parties can also s
 msgstr "Audacity yazılımı, web sitemizden, her zaman, özgürce ve ücretsiz olarak indirilebilir. Fakat bazı üçüncü şahıslar da <a href=\"../about/license#license\">GNU Genel Kamu Lisansı</a> sayesinde yazılımımızı dağıtabilir ya da satabilirler. Bunların son Audacity sürümü olmayabileceğini unutmayın. Bu nedenle satın almadan önce sürümü denetlemenizi öneriyoruz."
 
 #: download/buy.php:15
-msgid ""
-"<h3>Windows or Linux </h3>\n"
-"  <p>\n"
-"   <ul>\n"
-"    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</a> is a collection of free, open source software for <b>Windows and Linux</b> with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you (US only).</li>\n"
-"    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software for <b>Windows</b>. Currently, you can still <a href=\"http://releases.theopencd.org/\">download archived CD images</a> or <a href=\"http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">purchase a CD online</a> for worldwide shipping.</li>\n"
-"    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> is a similar collection of high quality free and open source software for <b>Windows</b>. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. The project hopes to make available a purchasable CD shortly.</li>\n"
-"    <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a> contains twenty-two open-source <b>Windows</b> programs on a single CD. You can download and burn the ISO image, or purchase the CD for worldwide shipping.</li>\n"
-"   </ul>\n"
-"  </p>"
-msgstr ""
-"<h3>Windows ya da Linux </h3>\n"
-"  <p>\n"
-"   <ul>\n"
-"    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</a>; <b>Windows ve Linux</b> için, GNU Genel kamu Lisansı ile özgürce ve ücretsiz olarak dağıtılan, tüm kaynak koduyla birlikte açık kaynak kodlu yazılımlar içeren, bir derlemedir. ISO kalıplarını ücretsiz olarak indirebilir ya da adresinize gönderilmek üzere bir fiziksel medya kopyasını <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">satın alabilirsiniz (yalnızca ABD için)</a>.</li>\n"
-"    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a>, Windows için yüksek kaliteli ücretsiz ve açık kaynak kodlu yazılımlar derlemesidir. Artık güncellenmemekle birlikte, hala <a href=\"http://releases.theopencd.org/\">arşivlenmiş CD kalıplarını indirebilir</a> ya da adresinize gönderilecek <a href=\"http://ztechshop.net/disks/opencd/\">bir CD'yi çevrim içi satın alabilirsiniz</a>.</li>\n"
-"    <li><a href=\"http://theopendisc.com/\">OpenDisc</a>, Windows için benzer bir yüksek kaliteli ücretsiz ve açık kaynak kodlu yazılımlar derlemesidir. <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD kalıbını</a> indirebilirsiniz. Proje yakında CD satışı yapmayı da umuyor.</li>\n"
-"    <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a> bir CD üzerinde 22 açık kaynak kodlu <b>Windows</b> programı içerir. ISO kalıbını indirip CD üzerine yazabilir ya da tüm Dünya'ya gönderilen fiziksel CD şeklinde satın alabilirsiniz.</li>\n"
-"   </ul>\n"
-"  </p>"
+msgid "<h3>Windows or Linux </h3>"
+msgstr "<h3>Windows ya da Linux </h3>"
+
+#: download/buy.php:19
+#, php-format
+msgid "<li><a href=\"%s\">OpenDisc</a> is a collection of high quality free and open source software for <b>Windows</b>. You can download the latest CD image for free, or donate to receive a CD copy anywhere in the world.</li>"
+msgstr "<li><a href=\"%s\">OpenDisc</a> <b>Windows</b> için yüksek klaliteli özgür ve açık kaynak kodlu bir yazılım derlemesidir. Güncel CD kalıbını ücretsiz olarak indirebilir ya da bağışta bulunarak Dünya'nın herhangi bir yerine gönderilmesini isteyebilirsiniz.</li>"
+
+#: download/buy.php:20
+#, php-format
+msgid "<li><a href=\"%s\">FreedomSampler&trade;</a> is a collection of free, open source software for <b>Windows and Linux</b> with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you (US only)</li>"
+msgstr "<li><a href=\"%s\">FreedomSampler&trade;</a> <b>Windows ve Linux</b> için, GNU Genel kamu Lisansı ile özgürce ve ücretsiz dağıtılan, tüm kaynak koduyla birlikte açık kaynak kodlu yazılımlar içeren, bir derlemedir. ISO kalıplarını ücretsiz olarak indirebilir ya da adresinize gönderilmek üzere bir fiziksel medya kopyasını <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">satın alabilirsiniz (yalnız ABD için)</a>."
+
+#: download/buy.php:21
+#, php-format
+msgid "<li><a href=\"%s\">VALO-CD</a> contains twenty-two open-source <b>Windows</b> programs on a single CD. You can download and burn the ISO image for free, or purchase the CD for worldwide shipping.</li>"
+msgstr "<li><a href=\"%s\">VALO-CD</a>, bir CD içinde 22 açık kaynak kodlu Windows programı içerir. ISO kalıbını indirip CD üzerine yazabilir ya da CD şeklinde satın alarak Dünya'nın herhangi bir yerine gönderilmesini isteyebilirsiniz."
+
+#: download/buy.php:22
+#, php-format
+msgid "<li><a href=\"%s\">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software for <b>Windows</b>. Currently, you can still <a href=\"%s\">download archived CD images for free</a>, or <a href=\"%s\">purchase a CD online</a> for worldwide shipping.</li>"
+msgstr "<li><a href=\"%s\">OpenCD</a>, <b>Windows</b> için yüksek kaliteli özgür ve ücretsiz dağıtılan açık kaynak kodlu bir yazılımlar derlemesidir. Artık güncellenmemekle birlikte, <a href=\"%s\">arşivlenmiş CD kalıplarını indirebilir</a> ya da çevrimiçi olarak satın alarak, adresinize <a href=\"%s\">CD olarak</a> gönderilmesini isteyebilirsiniz."
 
 #: download/beta_linux.php:19
 msgid "Downloads"
@@ -6159,7 +6161,7 @@ msgstr "Reklam Politikası"
 
 #: contact/privacy.php:18
 msgid ""
-"<p>On some pages on our main site, we show advertisements from Google's AdSense program. See our &ldquo;<a href=\"http://audacity.sourceforge.net/donate/\">How Does Audacity Raise Money?</a>&rdquo; page for the reasons we show advertisements.</p>\n"
+"<p>On some pages on this site, we show advertisements from Google's AdSense program. See our &ldquo;<a href=\"http://audacity.sourceforge.net/donate/\">How Does Audacity Raise Money?</a>&rdquo; page for the reasons we show advertisements.</p>\n"
 "\n"
 "<p>As of April 8, 2009, this includes \"interest-based\" advertising, which utilizes cookies to try to determine users' areas of interest (for example, audio editing), to show advertisements of likelier interest. Please see Google's <a href=\"http://www.google.com/policies/privacy/ads/\">Advertising privacy FAQ</a> for information regarding your privacy including how to <a href=\"http://www.google.com/policies/privacy/ads/#toc-optout\">opt out</a> of this tracking.</p>"
 msgstr ""
@@ -6364,8 +6366,8 @@ msgstr "Web Sitesi Telif Hakkı ve Tescilli Markası"
 #. if you wish.
 #: copyright.php:22
 #, php-format
-msgid "This web site is Copyright &copy; %s members of the Audacity development team.  Except where otherwise noted, all text and images on this site are licensed under the <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, version 2.0</a>.  You may modify, copy, distribute, and display this material, but you must give credit to the original authors.  Please see the license for details."
-msgstr "Bu web sitesinin telif hakları ( Copyright &copy; %s ), Audacity geliştirici takımı üyelerine aittir. Aksi belirtilmediği sürece, bu sitedeki tüm metin ve görseller <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, sürüm 2.0</a> koşulları altında lisanslanmıştır. Bu materyali, özgün yazarlarını anarak, değiştirebilir, kopyalayabilir, dağıtımını yapabilir ve yayınlayabilirsiniz. Ayrıntılar için lisansa bakabilirsiniz."
+msgid "This web site is Copyright &copy; %s members of the Audacity development team.  Except where otherwise noted, all text and images on this site are licensed under the <a href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons Attribution License, version 3.0</a>.  You may modify, copy, distribute, and display this material, but you must give credit to the original authors.  Please see the license for details."
+msgstr "Bu web sitesinin telif hakları ( Copyright &copy; %s ), Audacity geliştirici takımı üyelerine aittir. Aksi belirtilmediği sürece, bu sitedeki tüm metin ve görseller <a href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons Attribution License, sürüm 3.0</a> koşulları altında lisanslanmıştır. Bu materyali, özgün yazarlarını anarak, değiştirebilir, kopyalayabilir, dağıtımını yapabilir ve yayınlayabilirsiniz. Ayrıntılar için lisansa bakabilirsiniz."
 
 #: copyright.php:24
 msgid "\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a trademark of Google, Inc."
@@ -9111,7 +9113,7 @@ msgstr "Son Audacity sürümü <a href=\"download/\">%s"
 
 #: index.php:68
 msgid "It replaces all previous 1.2, 1.3 and 2.x versions. See <a href=\"download/features-2.0\">New Features</a> for more information."
-msgstr "Bu sürüm, tüm önceki 1.2, 1.3 ve 2.x sürümlerinin yerini alıyor. Ek bilgi için: <a href=\"/download/features-2.0\">Yeni Özellikler</a> bölümüne bakın.  "
+msgstr "Bu sürüm, tüm önceki 1.2, 1.3 ve 2.x sürümlerinin yerini alıyor. Ek bilgi için: <a href=\"download/features-2.0\">Yeni Özellikler</a> bölümüne bakın.  "
 
 #: index.php:73
 #, php-format
@@ -9175,48 +9177,108 @@ msgid "Make a Donation"
 msgstr "Bağış Yapın"
 
 #: donate/index.php:19
-msgid "Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:"
-msgstr "Aşağıdaki Paypal düğmesini kullanarak güvenli bir şekilde bağış yapabilirsiniz (bir PayPal hesabınız olması gerekir). Kredi kartınız ya da Paypal hesabınızı kullanarak dilediğiniz miktarda bağış yapabilirsiniz:"
+msgid "Click the button below to donate securely by PayPal (a PayPal account is not required). You can send any amount, using either your credit card or your PayPal account:"
+msgstr "Aşağıdaki Paypal düğmesini kullanarak güvenli bir şekilde bağış yapabilirsiniz (bir PayPal hesabınızın olması gerekir). Kredi kartınız ya da Paypal hesabınızı kullanarak dilediğiniz miktarda bağış yapabilirsiniz:"
 
-#. i18n-hint: the encoding inside the <a href> tag between the two
-#. "echo" strings obscures the e-mail address from (at least some)
-#. harvesting bots. Please translate the strings above and below
-#. the <a href> tag, and ignore the line with the <a href> tag itself.
-#: donate/index.php:42
-msgid "If you prefer to send a personal check or another form of payment, please write to our "
-msgstr "Kişisel çek ya da başka bir ödeme şeklini yeğlerseniz, lütfen"
+#: donate/index.php:49
+msgid "Please note that we cannot accept other forms of payment such as checks or bank transfers. Also, donations to Audacity are not deductible for income taxes in the United States of America."
+msgstr "Çek ya da banka havalesi gibi diğer ödeme şekillerini kabul edemediğimizi unutmayın. Ayrıca Audacity için yapılan bağışlar, ABD içinde gelir vergisinden düşülemez."
 
-#: donate/index.php:45
-msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
-msgstr "geribildirim e-posta adresimize</a> yazarak hangi ülkede bulunduğunuzu ve ne şekilde ödeme yapmak istediğinizi bildirin."
-
-#: donate/index.php:53
+#: donate/index.php:55
 msgid "Audacity raises money via donations, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
 msgstr "Audacity, gelirlerini, bağış, <a href=\"http://audacityteam.org/sponsor.php\">sponsorluk</a> ve web sitemizdeki <a href=\"../contact/privacy#advertising\">reklamlar</a> yoluyla sağlıyor."
 
-#: donate/index.php:57
+#: donate/index.php:59
 msgid "As of March 2007, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, which hosts the Audacity site and downloads, is allowing us to also post advertisements, in an innovative program whereby we split the revenues. Thank you, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
 msgstr "Mart 2007 tarihinden itibaren, Audacity sitesi ve indirmelerini barındıran <a href=\"http://sourceforge.net/\">SourceForge.net</a>, kazancın paylaşılabildiği bir program uygulayarak, reklam yayınlamamıza izin veriyor. Teşekkürler <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
 
-#: donate/index.php:61
+#: donate/index.php:63
 msgid "Income to Audacity is not distributed among previous contributors to Audacity. There are too many people and it would be difficult to do so fairly. Also, nobody contributed code to Audacity expecting money in return. Audacity is developed by volunteers, working in our spare time. Audacity is not shareware, and we do not expect to make any money from it."
 msgstr "Audacity tarafından elde edilen gelirleri, önceki Audacity katılımcılarına paylaştırmıyoruz. Çok fazla hak sahibi kişi olacağından bunu hakkıyla yapabilmek oldukça zor.  Ayrıca, bu projede hiç kimse karşılığında para bekleyerek kod geliştirmiyor. Audacity projesi, boş zamanlarında çalışan gönüllüler tarafından geliştirilior. Bu nedenle yazılımı satmıyoruz ve bu projeden herhangi bir maddi kazanç sağlamayı beklemiyoruz."
 
-#: donate/index.php:65
+#: donate/index.php:67
 msgid "Rather, the team of Audacity lead developers will spend the money on items and services that benefit the project as a whole. Money that comes in to the project helps us pay for bandwidth and web hosting, development tools, and audio hardware. In the past we used funds from donations to purchase the Audacity trademark and to subsidize travel costs for Audacity developers to meet for a hackathon, and we plan to do more of these. Our long-term goal is to bring in enough money to hire a full-time developer who could devote all of his/her time to the project and take over some of the administrative,  maintenance and release tasks, freeing volunteers to spend more time on code."
 msgstr "Bu gelirler, Audacity ana geliştirici takımı tarafından, projeyi tamamen destekleyen araç ve hizmetlere harcanıyor. Gelirler, web barındırma hizmetleri, geliştirme araçları ve ses donanımları yatırımlarının karşılanmasına yardımcı oluyor. Geçmişte bağışlardan toplanan para, Audacity markasını satın almak ve Audacity geliştiricilerinin buluşmaları için yolculuk ücretlerini desteklemek amacıyla kullanıldı, ki bunu daha fazla yapmayı planlıyoruz. Uzun dönemli hedefimiz, tüm zamanını bu projeye ayırarak, yönetim, bakım ve yayınlama işlerini üstlenecek tam zamanlı bir geliştirici çalıştırmak ve böylece gönüllülerin kod üzerinde çalışmaya daha fazla zaman ayırabilmesini sağlamaktır."
 
-#: donate/index.php:69
+#: donate/index.php:71
 msgid "These are all things that help us provide Audacity for free and continue to make it better. The Audacity Team is completely committed to keeping Audacity free and open source. We made that commitment in <a href=\"http://audacity.sourceforge.net/about/license\">licensing Audacity under the GNU General Public License</a>."
 msgstr "Burada anlatılanların tümü, Audacity yazılımının özgürce ve ücretsiz olarak dağıtılmasına ve geliştirilmesine yardımcı oluyor. Audacity takımı, kendisini tümüyle, Audacity yazılımının özgür ve açık kaynaklı kalmasına adamıştır. Bunu göstermek için <a href=\"http://audacity.sourceforge.net/about/license\">Audacity yazılımı GNU Genel Kamu Lisansı</a> koşulları kapsamında sunulmaktadır."
 
-#: donate/index.php:72
+#: donate/index.php:74
 msgid "Other Ways to Contribute"
 msgstr "Katkıda Bulunmanın Diğer Yolları"
 
-#: donate/index.php:75
+#: donate/index.php:77
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr "Bağış yapmanın yanında, <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">zaman ayırarak</a> bize <a href=\"../community/developers\">yazılım geliştirme</a>, <a href=\"../contact#feedback\">deneme</a>, <a href=\"http://manual.audacityteam.org/\">belge hazırlama</a>, <a href=\"../community/translation\">çeviri</a> ya da <a href=\"http://forum.audacityteam.org/\">Forum</a> içinde soruları yanıtlama gibi konularda yardımcı olabilirsiniz. Ayrıca en basit şekilde öneri ve isteklerinizi ileterek, yazılımın geliştirilmesini yönlendirebilir, Audacity hakkında tanıdıklarınıza bilgi vererek tanınmasını sağlayabilirsiniz. Audacity projesini desteklediğiniz için teşekkür ederiz."
+
+#~ msgid ""
+#~ "<h3>Windows or Linux </h3>\n"
+#~ "  <p>\n"
+#~ "   <ul>\n"
+#~ "    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</"
+#~ "a> is a collection of free, open source software for <b>Windows and "
+#~ "Linux</b> with full source code, allowing easy redistribution under the "
+#~ "GNU General Public License. ISO images may be downloaded for free, or you "
+#~ "can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/"
+#~ "freedomsampler\">purchase</a> a copy to be shipped to you (US only).</"
+#~ "li>\n"
+#~ "    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a now-"
+#~ "discontinued collection of high quality free and open source software for "
+#~ "<b>Windows</b>. Currently, you can still <a href=\"http://releases."
+#~ "theopencd.org/\">download archived CD images</a> or <a href=\"http://www."
+#~ "thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">purchase a "
+#~ "CD online</a> for worldwide shipping.</li>\n"
+#~ "    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> is a similar "
+#~ "collection of high quality free and open source software for <b>Windows</"
+#~ "b>. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/"
+#~ "opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. "
+#~ "The project hopes to make available a purchasable CD shortly.</li>\n"
+#~ "    <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a> contains twenty-"
+#~ "two open-source <b>Windows</b> programs on a single CD. You can download "
+#~ "and burn the ISO image, or purchase the CD for worldwide shipping.</li>\n"
+#~ "   </ul>\n"
+#~ "  </p>"
+#~ msgstr ""
+#~ "<h3>Windows ya da Linux </h3>\n"
+#~ "  <p>\n"
+#~ "   <ul>\n"
+#~ "    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</"
+#~ "a>; <b>Windows ve Linux</b> için, GNU Genel kamu Lisansı ile özgürce ve "
+#~ "ücretsiz olarak dağıtılan, tüm kaynak koduyla birlikte açık kaynak kodlu "
+#~ "yazılımlar içeren, bir derlemedir. ISO kalıplarını ücretsiz olarak "
+#~ "indirebilir ya da adresinize gönderilmek üzere bir fiziksel medya "
+#~ "kopyasını <a href=\"http://www.twistedlincoln.com/shop/catalog/products/"
+#~ "freedomsampler\">satın alabilirsiniz (yalnızca ABD için)</a>.</li>\n"
+#~ "    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a>, Windows için "
+#~ "yüksek kaliteli ücretsiz ve açık kaynak kodlu yazılımlar derlemesidir. "
+#~ "Artık güncellenmemekle birlikte, hala <a href=\"http://releases.theopencd."
+#~ "org/\">arşivlenmiş CD kalıplarını indirebilir</a> ya da adresinize "
+#~ "gönderilecek <a href=\"http://ztechshop.net/disks/opencd/\">bir CD'yi "
+#~ "çevrim içi satın alabilirsiniz</a>.</li>\n"
+#~ "    <li><a href=\"http://theopendisc.com/\">OpenDisc</a>, Windows için "
+#~ "benzer bir yüksek kaliteli ücretsiz ve açık kaynak kodlu yazılımlar "
+#~ "derlemesidir. <a href=\"http://downloads.sourceforge.net/opendisc/"
+#~ "OpenDisc-07.10.iso?use_mirror=osdn\">CD kalıbını</a> indirebilirsiniz. "
+#~ "Proje yakında CD satışı yapmayı da umuyor.</li>\n"
+#~ "    <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a> bir CD üzerinde "
+#~ "22 açık kaynak kodlu <b>Windows</b> programı içerir. ISO kalıbını indirip "
+#~ "CD üzerine yazabilir ya da tüm Dünya'ya gönderilen fiziksel CD şeklinde "
+#~ "satın alabilirsiniz.</li>\n"
+#~ "   </ul>\n"
+#~ "  </p>"
+
+#~ msgid ""
+#~ "If you prefer to send a personal check or another form of payment, please "
+#~ "write to our "
+#~ msgstr "Kişisel çek ya da başka bir ödeme şeklini yeğlerseniz, lütfen"
+
+#~ msgid ""
+#~ "feedback e-mail address</a> telling us what country you are in and how "
+#~ "you'd like to pay."
+#~ msgstr ""
+#~ "geribildirim e-posta adresimize</a> yazarak hangi ülkede bulunduğunuzu ve "
+#~ "ne şekilde ödeme yapmak istediğinizi bildirin."
 
 #~ msgid "If you enjoy Audacity,"
 #~ msgstr "Audacity hoşunuza gittiyse,"
