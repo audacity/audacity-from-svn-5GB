@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Website\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-16 07:07+0100\n"
-"PO-Revision-Date: 2012-09-19 07:34-0000\n"
+"POT-Creation-Date: 2012-09-19 07:53+0100\n"
+"PO-Revision-Date: 2012-09-22 08:05-0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
 "Language-Team: Audacity\n"
 "MIME-Version: 1.0\n"
@@ -5689,36 +5689,36 @@ msgstr "Diğer haberler..."
 #. See the bottom of each page for versions in other languages.
 #.
 #: about/license.php:25
-msgid ""
-"<h3 id=\"license\">License</h3>\n"
-"\n"
-"<p>Audacity is <a href=\"http://manual.audacityteam.org/help/manual/man/faq_about_audacity.html#free\">free software</a>. You may use it for any personal, commercial or educational purpose, including installing it on as many different computers as you wish.</p>\n"
-"\n"
-"<p>You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License (GPL)</a> as published by the Free Software Foundation - either <a href=\"http://www.gnu.org/licenses/old-licenses/gpl-2.0.html\">version 2 of the License</a>, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the GPL. "
-msgstr ""
-"<h3 id=\"license\">Lisans</h3>\n"
-"\n"
-"<p>Audacity, <a href=\"http://manual.audacityteam.org/help/manual/man/faq_about_audacity.html#free\">özgür ve ücretsiz bir yazılımdır</a>. Kişisel, ticari ya da eğitim amaçlarına uygun olarak istediğiniz gibi kullanabilir, istediğiniz sayıda bilgisayara kurabilirsiniz.</p>\n"
-"\n"
-"<p>Ayrıca Özgür Yazılım Vakfı tarafından yayınlandığı gibi, <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU Genel Kamu Lisansı (GPL)</a> <a href=\"http://www.gnu.org/licenses/old-licenses/gpl-2.0.html\">sürüm 2 </a> ya da üzeri koşulları altında, kopyalayabilir, dağıtabilir, değiştirebilir ve satabilirsiniz. Bu hakkı korumak için, GPL, dağıttığınız kaynak kodunun da GPL koşulları altında olmasını ister."
+msgid "<h3 id=\"license\">License</h3>"
+msgstr "<h3 id=\"license\">Lisans</h3>"
+
+#: about/license.php:29
+#, php-format
+msgid "Audacity is <a href=\"%s\">free software</a>. You may use it for any personal, commercial or educational purpose, including installing it on as many different computers as you wish."
+msgstr "Audacity is <a href=\"%s\">özgür ve ücretsiz bir yazılımdır</a>. Kişisel, ticari ya da eğitim amaçlarına uygun olarak istediğiniz gibi kullanabilir, istediğiniz sayıda bilgisayara kurabilirsiniz."
+
+#: about/license.php:33
+#, php-format
+msgid "You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href=\"%s\">GNU General Public License (GPL)</a> as published by the Free Software Foundation - either <a href=\"%s\">version 2 of the License</a>, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the GPL. If you distribute or recommend Audacity in any way, please cite our trademark by referring to Audacity as \"Audacity(R)\"."
+msgstr "Ayrıca Özgür Yazılım Vakfı tarafından yayınlandığı gibi, <a href=\"%s\">GNU Genel Kamu Lisansı (GPL)</a> <a href=\"%s\">sürüm 2 </a> ya da (isteğinize göre) daha üst sürümlerin koşulları altında, kopyalayabilir, dağıtabilir, değiştirebilir ve satabilirsiniz. Bu hakkı korumak için, GPL, dağıttığınız kaynak kodunun da GPL koşulları altında olmasını ister."
 
 #. i18n-hint: the encoding inside the <a href> tag between the two
 #. "echo" strings here and elsewhere on this page obscures the
 #. email address from (at least some) harvesting bots. Only the two
 #. strings above and below the <a href> tag need to be translated.
-#: about/license.php:35
+#: about/license.php:42
 msgid "If you have questions, please "
 msgstr "Bu konuda sorularınız varsa, lütfen"
 
-#: about/license.php:38
+#: about/license.php:45
 msgid "e-mail us."
 msgstr "bize e-posta gönderin."
 
-#: about/license.php:42
+#: about/license.php:49
 msgid "See also <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Frequently Asked Questions about the GNU GPL</a>."
 msgstr "Ayrıntılı bilgi için <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">GNU GPL hakkında sık sorulan sorular</a> bölümüne bakın."
 
-#: about/license.php:44
+#: about/license.php:51
 msgid ""
 "<h3 id=\"advice\">Advice for Vendors and Distributors</h3>\n"
 "\n"
@@ -5728,15 +5728,15 @@ msgstr ""
 "\n"
 "<p>Çeşitli kişi ve kurumlar Audacity yazılımını kendi ürünleriyle birlikte satıyor ya da dağıtıyor. Audacity yazılımını bir ürün paketine katma, satma ve dağıtma koşullarını aşağıda bulabilirsiniz. "
 
-#: about/license.php:49
+#: about/license.php:56
 msgid "If you adhere to these, please "
 msgstr "Bu listede yer almak istiyorsanız"
 
-#: about/license.php:52
+#: about/license.php:59
 msgid "e-mail us</a> for possible inclusion on our <a href=\"../download/bundlers\">Vendors and Distributors of Audacity</a> page."
 msgstr "lütfen <a href=\"../download/bundlers\">Audacity Satıcı ve Dağıtıcıları</a> sayfasına katılabilmek için bize e-posta gönderin."
 
-#: about/license.php:56
+#: about/license.php:63
 msgid ""
 "<h4 >Legal Requirements</h4>\n"
 "\n"
@@ -5756,15 +5756,16 @@ msgstr ""
 "  </ol>\n"
 "</p>"
 
-#: about/license.php:65
-msgid "<p>If you distribute our <a href=\"http://audacity.sourceforge.net/download/\">installers</a> and do not modify them, this will fully comply, because the installers include the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> and an offer in README.txt for users to obtain the source code from us. Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog.</p>"
-msgstr "<p>Audacity <a href=\"http://audacity.sourceforge.net/download/\">yükleyicilerini</a> değiştirmeden dağıtıyorsanız, yükleyiciler <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> ve kullanıcıların bizim tarafımızdan geliştirilmiş bir kodu aldığını belirten README.txt dosyasını içerdiğinden, tamamen uyumlu olacaktır. Audacity 1.3.3 üzerindeki sürümlerde, yazılımın kendisi de Audacity Hakkında dialoğunda GPL açıklamasını içerir.</p>"
+#: about/license.php:72
+#, php-format
+msgid "<p>If you distribute our <a href=\"%s\">installers</a> and do not modify them, this will fully comply, because the installers include the <a href=\"%s\">GPL</a> and an offer in README.txt for users to obtain the source code from us. Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog. On this site, we block advertisements from distributors offering modified installers of Audacity, on the expectation that any modification is likely adding unwanted software.</p>"
+msgstr "<p>Audacity <a href=\"%s\">yükleyicilerini</a> değiştirmeden dağıtıyorsanız, yükleyiciler <a href=\"%s\">GPL</a> ve kullanıcıların bizim tarafımızdan geliştirilmiş bir kodu aldığını açıklayan bir README.txt dosyasını içerdiğinden, tamamen uyumlu olacaktır. Audacity 1.3.3 üzerindeki sürümlerde, yazılımın kendisi de Audacity Hakkında dialoğunda GPL açıklamasını içerir. Bu sitede, değiştirilmiş Audacity yükleyicileri oluşturmuş dağıtıcılardan gelen reklamları engelliyoruz. Çünkü yapılmış olan değişiklik, istenmeyen yazılımların yüklenmesine yol açabiliyor.</p>"
 
-#: about/license.php:67
+#: about/license.php:74
 msgid "<p>Additionally, the name <b>Audacity</b>&reg; is a <b>registered trademark</b> of Dominic Mazzoni. Therefore you <b>may not</b> advertise yourself or your business as an authorized distributor of Audacity, and you <b>may not</b> modify Audacity then continue to use the Audacity name without the express permission of the Audacity Team.</p>"
 msgstr "<p>Ek olarak, <b>Audacity</b>&reg; adı Dominic Mazzoni tarafından <b>kaydedilmiş bir markadır</b>. Bu nedenle kendinizi ya da kurumunuzu yetkili Audacity dağıtıcısı olarak <b>tanıtmamalı</b>, ve kod üzerinde değişiklik yaptıysanız Audacity takımından onay almadan Audacity adını kullanmaya devam <b>etmemelisiniz</b>.</p>"
 
-#: about/license.php:69
+#: about/license.php:76
 msgid ""
 "<h4 >Updating and Documenting Audacity</h4>\n"
 "\n"
@@ -5774,39 +5775,39 @@ msgstr ""
 "\n"
 "<p>Web sitemize vereceğiniz bağlantılara minnettar kalırız: <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a>. Böylece kullanıcılarınız yeni Audacity sürümleri yayınlandıkça bunları indirebilirler. Ayrıca <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> sayfasının altındaki uyarılar listesine üye olarak, son Audacity sürümü duyurularını alıp, doğru sürümü dağıttınızdan emin olabilirsiniz.</p>"
 
-#: about/license.php:73
+#: about/license.php:80
 msgid "<p>If you bundle the .exe or .dmg Audacity installers, the Audacity <a href=\"http://manual.audacityteam.org/help/manual/\">Manual</a> is included. If you provide the Audacity zip file or source tarball, please consider including the <a href=\"http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html\">standalone Manual</a> with your distribution to reduce the number of queries we receive."
 msgstr "<p>.exe ya da .dmg Audacity yükleyicilerini dağıtıyorsanız, Audacity <a href=\"http://manual.audacityteam.org/help/manual/\">Kitabı</a> dahildir. Audacity zip dosyası ya da kaynak tarball dağıtıyorsanız, lütfen yanında <a href=\"http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html\">ayrıca kitabı</a> vermeyi de düşünün. Böylece bize sorulacak soruların azalmasını sağlarsınız."
 
-#: about/license.php:76
+#: about/license.php:83
 msgid "IMPORTANT: If you write your own documentation for Audacity, please "
 msgstr "ÖNEMLİ: Audacity için kendi belgelerinizi yazıyorsanız, lütfen <em>yayınlamadan önce</em>"
 
-#: about/license.php:79
+#: about/license.php:86
 msgid "submit it to us</a> for review <em>before</em> you publish it.</p>"
 msgstr "bize iletin</a>. Böylece gözden geçirip önerilerde bulunabiliriz.</p>"
 
-#: about/license.php:81
+#: about/license.php:88
 msgid "<h4>For vendors selling a hardware product, with Audacity included:</h4>"
 msgstr "<h4>Audacity Yazılımını Ürünlerinin Yanında Vermek İsteyen Donanım Satıcıları:</h4>"
 
-#: about/license.php:87
+#: about/license.php:94
 msgid "<li>Thank you for choosing to distribute Audacity with your product! Please "
 msgstr "<li>Ürünlerinizle birlikte Audacity yazılımını dağıtmayı seçtiğiniz için teşekkür ederiz. Lütfen hemen"
 
-#: about/license.php:90
+#: about/license.php:97
 msgid "contact us</a> early so we can work together to make your product a success.</li>"
 msgstr "bize yazın</a>. Böylece ürününüzün başarılı olması için birlikte çalışabiliriz.</li>"
 
-#: about/license.php:93
+#: about/license.php:100
 msgid "<li>Please distribute Audacity unmodified. If you need to modify it to work with your device, please "
 msgstr "<li>Audacity yazılımını lütfen değiştirmeden dağıtın. Aygıtınız ile çalışması için değiştirilmesi gerekiyorsa, lütfen önce"
 
-#: about/license.php:96
+#: about/license.php:103
 msgid "contact us</a> first.</li>"
 msgstr "bize iletin</a>.</li>"
 
-#: about/license.php:99
+#: about/license.php:106
 msgid ""
 "<li>Please test your device with Audacity thoroughly. If there are any specific configuration instructions needed to make your device work with Audacity, please ensure these are included with the device.</li>\n"
 "        <li>Please note that we cannot help your customers with problems specific to your device - these must be dealt with by your own qualified staff. Users needing support with Audacity itself can find assistance at <a href=\"http://audacity.sourceforge.net/contact/\">http://audacity.sourceforge.net/contact/</a>.</li>\n"
@@ -5818,7 +5819,7 @@ msgstr ""
 "  </ol>\n"
 "</p>"
 
-#: about/license.php:104
+#: about/license.php:111
 msgid ""
 "<h4>For those wishing to resell Audacity, or a rebranded version of it:</h4>\n"
 "\n"
@@ -5834,15 +5835,15 @@ msgstr ""
 "    <li>Audacity yazılımını değiştirmeden satıyorsanız, yaptığınız tanıtımlarda, Audacity yazılımının İnternet üzerinden özgürce ve ücretsiz olarak edinilebileceğini açıkça belirtmeli, bunun yerine sizden satın alınmasının avantajlarını vurgulamalısınız.  Örneğin Audacity yazılımını CD üzerinde sunabilir, diğer yazılımlar ya da müzik dosyaları ile bir araya getirebilir ya da basılmış halde bir kullanım kitabı verebilirsiniz.</li>\n"
 "    <li>Değiştirilmiş bir Audacity sürümü dağıtıyorsanız, müşterilieriniz için kendi teknik desteğinizi ve kendi hazırladığınız belgeleri sağlamalısınız. "
 
-#: about/license.php:112
+#: about/license.php:119
 msgid "If you are reselling Audacity exactly as obtained from us and have questions about this, please "
 msgstr "Audacity yazılımını bizden aldığınız şekliyle satıyorsanız ve bu konuyla ilgili sorularınız varsa, lütfen"
 
-#: about/license.php:115
+#: about/license.php:122
 msgid "e-mail us</a>."
 msgstr "bize yazın</a>."
 
-#: about/license.php:117
+#: about/license.php:124
 msgid ""
 "<li>Please read these <a href=\"http://audacityteam.org/wiki/index.php?title=AudacityVendors#General_Advice\">additional guidelines for resellers</a> on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</li>\n"
 "  </ol>\n"
@@ -9212,119 +9213,3 @@ msgstr "Katkıda Bulunmanın Diğer Yolları"
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr "Bağış yapmanın yanında, <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">zaman ayırarak</a> bize <a href=\"../community/developers\">yazılım geliştirme</a>, <a href=\"../contact#feedback\">deneme</a>, <a href=\"http://manual.audacityteam.org/\">belge hazırlama</a>, <a href=\"../community/translation\">çeviri</a> ya da <a href=\"http://forum.audacityteam.org/\">Forum</a> içinde soruları yanıtlama gibi konularda yardımcı olabilirsiniz. Ayrıca en basit şekilde öneri ve isteklerinizi ileterek, yazılımın geliştirilmesini yönlendirebilir, Audacity hakkında tanıdıklarınıza bilgi vererek tanınmasını sağlayabilirsiniz. Audacity projesini desteklediğiniz için teşekkür ederiz."
 
-#~ msgid ""
-#~ "<h3>Windows or Linux </h3>\n"
-#~ "  <p>\n"
-#~ "   <ul>\n"
-#~ "    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</"
-#~ "a> is a collection of free, open source software for <b>Windows and "
-#~ "Linux</b> with full source code, allowing easy redistribution under the "
-#~ "GNU General Public License. ISO images may be downloaded for free, or you "
-#~ "can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/"
-#~ "freedomsampler\">purchase</a> a copy to be shipped to you (US only).</"
-#~ "li>\n"
-#~ "    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a now-"
-#~ "discontinued collection of high quality free and open source software for "
-#~ "<b>Windows</b>. Currently, you can still <a href=\"http://releases."
-#~ "theopencd.org/\">download archived CD images</a> or <a href=\"http://www."
-#~ "thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">purchase a "
-#~ "CD online</a> for worldwide shipping.</li>\n"
-#~ "    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> is a similar "
-#~ "collection of high quality free and open source software for <b>Windows</"
-#~ "b>. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/"
-#~ "opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. "
-#~ "The project hopes to make available a purchasable CD shortly.</li>\n"
-#~ "    <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a> contains twenty-"
-#~ "two open-source <b>Windows</b> programs on a single CD. You can download "
-#~ "and burn the ISO image, or purchase the CD for worldwide shipping.</li>\n"
-#~ "   </ul>\n"
-#~ "  </p>"
-#~ msgstr ""
-#~ "<h3>Windows ya da Linux </h3>\n"
-#~ "  <p>\n"
-#~ "   <ul>\n"
-#~ "    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</"
-#~ "a>; <b>Windows ve Linux</b> için, GNU Genel kamu Lisansı ile özgürce ve "
-#~ "ücretsiz olarak dağıtılan, tüm kaynak koduyla birlikte açık kaynak kodlu "
-#~ "yazılımlar içeren, bir derlemedir. ISO kalıplarını ücretsiz olarak "
-#~ "indirebilir ya da adresinize gönderilmek üzere bir fiziksel medya "
-#~ "kopyasını <a href=\"http://www.twistedlincoln.com/shop/catalog/products/"
-#~ "freedomsampler\">satın alabilirsiniz (yalnızca ABD için)</a>.</li>\n"
-#~ "    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a>, Windows için "
-#~ "yüksek kaliteli ücretsiz ve açık kaynak kodlu yazılımlar derlemesidir. "
-#~ "Artık güncellenmemekle birlikte, hala <a href=\"http://releases.theopencd."
-#~ "org/\">arşivlenmiş CD kalıplarını indirebilir</a> ya da adresinize "
-#~ "gönderilecek <a href=\"http://ztechshop.net/disks/opencd/\">bir CD'yi "
-#~ "çevrim içi satın alabilirsiniz</a>.</li>\n"
-#~ "    <li><a href=\"http://theopendisc.com/\">OpenDisc</a>, Windows için "
-#~ "benzer bir yüksek kaliteli ücretsiz ve açık kaynak kodlu yazılımlar "
-#~ "derlemesidir. <a href=\"http://downloads.sourceforge.net/opendisc/"
-#~ "OpenDisc-07.10.iso?use_mirror=osdn\">CD kalıbını</a> indirebilirsiniz. "
-#~ "Proje yakında CD satışı yapmayı da umuyor.</li>\n"
-#~ "    <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a> bir CD üzerinde "
-#~ "22 açık kaynak kodlu <b>Windows</b> programı içerir. ISO kalıbını indirip "
-#~ "CD üzerine yazabilir ya da tüm Dünya'ya gönderilen fiziksel CD şeklinde "
-#~ "satın alabilirsiniz.</li>\n"
-#~ "   </ul>\n"
-#~ "  </p>"
-
-#~ msgid ""
-#~ "If you prefer to send a personal check or another form of payment, please "
-#~ "write to our "
-#~ msgstr "Kişisel çek ya da başka bir ödeme şeklini yeğlerseniz, lütfen"
-
-#~ msgid ""
-#~ "feedback e-mail address</a> telling us what country you are in and how "
-#~ "you'd like to pay."
-#~ msgstr ""
-#~ "geribildirim e-posta adresimize</a> yazarak hangi ülkede bulunduğunuzu ve "
-#~ "ne şekilde ödeme yapmak istediğinizi bildirin."
-
-#~ msgid "If you enjoy Audacity,"
-#~ msgstr "Audacity hoşunuza gittiyse,"
-
-#~ msgid "write to us"
-#~ msgstr "bize yazın"
-
-#~ msgid "Subscribe to the"
-#~ msgstr ""
-#~ "Diğer Audacity kullanıcıları ve geliştiricileri ile bilgi alış verişinde "
-#~ "bulunmak, soru sormak ve geri bildirimlerinizi iletmek için "
-
-#~ msgid "audacity-users mailing list"
-#~ msgstr "Audacity kullanıcıları e-posta listesine"
-
-#~ msgid "Visit the"
-#~ msgstr "Ziyaret edebileceğiniz,"
-
-#~ msgid "Audacity Wiki"
-#~ msgstr "Audacity Wiki"
-
-#~ msgid "Join our"
-#~ msgstr "Katılabileceğiniz,"
-
-#~ msgid "Audacity Forum"
-#~ msgstr "Audacity Forumu"
-
-#~ msgid "let us know"
-#~ msgstr "bize bildirin"
-
-#~ msgid ""
-#~ "You can help us by downloading our latest <a href=\"../download/"
-#~ "\">version</a> or <a href=\"http://wiki.audacityteam.org/index.php?"
-#~ "title=Nightly_Builds\">Nightly Build<a/> and testing it out. These "
-#~ "versions usually contain new features or bug fixes that haven't been "
-#~ "fully tested yet. Please <a href=\"../contact#feedback\">let us know</a> "
-#~ "of any problems you encounter, what you like and what could be improved. "
-#~ "Tell us if you find any <em>regressions</em> - things that used to work "
-#~ "but don't work anymore."
-#~ msgstr ""
-#~ "Bize yardımcı olmak için son <a href=\"../download/\">sürümü</a> ya da <a "
-#~ "href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds"
-#~ "\">Gecelik Yapımı<a/> indirip deneyebilirsiniz. Bu sürümlerde genellikle "
-#~ "önceki sürümlerdeki hatalar ayıklanmış ve yeni özellikler eklenmiş, ancak "
-#~ "yeterince denenmemiştir. Karşılaşacağınız herhangi bir sorun ya da "
-#~ "beğendiğiniz bölümler ile geliştirilebilecek alanlar hakkında <a href="
-#~ "\"../contact#feedback\">bizi bilgilendirebilirsiniz</a>. Daha önce "
-#~ "çalışıp da artık çalışmayan şeyler gibi herhangi bir <em>gerileme</em> "
-#~ "görürseniz bize iletin."
