@@ -7,7 +7,7 @@
   require_once "main.inc.php";
   require_once "../latest/versions.inc.php";
   $pageId = "documentation";
-  $pageTitle = _("Documentation");
+  $pageTitle = _("Manuals and Documentation");
   include "../include/header.inc.php";
 
 	echo "<h2>$pageTitle</h2>";
