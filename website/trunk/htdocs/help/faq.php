@@ -20,15 +20,20 @@ echo "<b>";
 printf(_('Frequently Asked Questions (FAQ) in English for the current <a href="/download/">Audacity %s</a> version are included in the Manual.'), src_version);
 echo "</b></p>";
 echo "<p><ul>"; 
-echo "<li><a href=\"http://manual.audacityteam.org/help/manual/man/faq.html\">"._('View the FAQ in the online Manual')."</a>.</li>";
+echo "<li><a href=\"http://manual.audacityteam.org/o/man/faq.html\">"._('View the FAQ in the online Manual')."</a>.</li>";
 echo "<li>"._('In Audacity, click Help > Manual (in web browser), then the "FAQ" link in the "Navigation" box on the left. The Manual is included with the <a href="http://audacity.sourceforge.net/download/windows">Windows .exe</a> or <a href="http://audacity.sourceforge.net/download/mac">Mac OS X .dmg</a> Audacity installers.')."</li></ul></p>";
 echo "</div>";
 
 echo "<h3>"._('Other languages')."</h3>";
-echo "<p><ul>"; 
-echo "<li>"._('<b>French:</b> <a href="http://manual.audacityteam.org/man/FAQ/fr"> View the FAQ in French in the online Manual</a>. The translation of the remainder of the Manual is not yet fully complete.')."</li></ul></p>";
+echo "<p>"._('View the localized FAQ in the online Manual:')."</p>";
+echo "<p><ul>";
+echo "<li>"._('<a href="http://manual.audacityteam.org/man/FAQ/fr">French</a>')."</li>";
+echo "<li>"._('<a href="http://manual.audacityteam.org/man/FAQ/it">Italian</a>')."</li>";
+echo "<li>"._('<a href="http://manual.audacityteam.org/man/FAQ/es">Spanish</a>')."</li></ul></p>";
 
-echo "<p>"._('For languages other than the above, please read <a href="faq_i18n">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0.x. The Manual will be updated for other languages in due course. Volunteers to help with <a href="http://manual.audacityteam.org/man/Help:Translating">translating the Manual<a/> are welcomed.')."</p>";
+echo "<p>"._('<b>Note: </b>For the above three locales, the translation of the remainder of the Manual is not yet fully complete.')."</p>";
+
+echo "<p>"._('For all other languages, please check <a href="faq_i18n">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0.x. The Manual will be updated for other languages in due course. Volunteers to help with <a href="http://manual.audacityteam.org/man/Help:Translating">translating the Manual<a/> are welcomed.')."</p>";
 
 echo "<h3>"._('Still need help?')."</h3>";
 
