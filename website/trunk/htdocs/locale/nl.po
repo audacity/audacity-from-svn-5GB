@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity\n"
 "Report-Msgid-Bugs-To: http://wiki.audacityteam.org/wiki/Reporting_Bugs\n"
-"POT-Creation-Date: 2012-09-16 07:07+0100\n"
-"PO-Revision-Date: 2012-09-19 07:30-0000\n"
-"Last-Translator: Thomas De Rocker <thomasderocker@hotmail.com>\n"
+"POT-Creation-Date: 2012-10-21 19:28+0100\n"
+"PO-Revision-Date: 2012-10-22 17:34-0000\n"
+"Last-Translator: gale <gale@audacityteam.org>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/audacity/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -120,8 +120,8 @@ msgstr "FAQ"
 
 #: main.inc.php:48
 #: help/documentation.php:10
-msgid "Documentation"
-msgstr "Documentatie"
+msgid "Manuals and Documentation"
+msgstr "Handleidingen en documentatie"
 
 #: main.inc.php:49
 msgid "<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\" target=\"_blank\">More Tutorials (Wiki)</a>"
@@ -212,19 +212,35 @@ msgstr "In Audacity klikt u op Help > Handleiding (in webbrowser), dan de \"FAQ\
 msgid "Other languages"
 msgstr "Andere talen"
 
-#: help/faq.php:29
-msgid "<b>French:</b> <a href=\"http://manual.audacityteam.org/man/FAQ/fr\"> View the FAQ in French in the online Manual</a>. The translation of the remainder of the Manual is not yet fully complete."
-msgstr "<b>Frans:</b> <a href=\"http://manual.audacityteam.org/man/FAQ/fr\"> De FAQ in het Frans in de online handleiding weergeven</a>. De vertaling van de rest van de handleiding is nog niet helemaal volledig."
+#: help/faq.php:28
+msgid "View the localized FAQ in the online Manual:"
+msgstr "De vertaalde FAQ in de online handleiding weergeven:"
+
+#: help/faq.php:30
+msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/fr\">French</a>"
+msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/fr\">Frans</a>"
 
 #: help/faq.php:31
-msgid "For languages other than the above, please read <a href=\"faq_i18n\">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0.x. The Manual will be updated for other languages in due course. Volunteers to help with <a href=\"http://manual.audacityteam.org/man/Help:Translating\">translating the Manual<a/> are welcomed."
-msgstr "Voor andere talen dan bovenstaande, lees <a href=\"faq_i18n\">oudere veelgestelde vragen voor internationale hulp</a>, die grotendeels geldig blijven voor Audacity 2.0.x. De handleiding zal te zijner tijd voor andere talen bijgewerkt worden. Vrijwilligers om te helpen met <a href=\"http://manual.audacityteam.org/man/Help:Translating\">vertalen van de handleiding<a/> zijn welkom."
+msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/it\">Italian</a>"
+msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/it\">Italiaans</a>"
 
-#: help/faq.php:33
+#: help/faq.php:32
+msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/es\">Spanish</a>"
+msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/es\">Spaans</a>"
+
+#: help/faq.php:34
+msgid "<b>Note: </b>For the above three locales, the translation of the remainder of the Manual is not yet fully complete."
+msgstr "<b>Opmerking: </b>Voor de drie bovenstaande talen is de vertaling van de rest van de handleiding nog niet compleet."
+
+#: help/faq.php:36
+msgid "For all other languages, please check <a href=\"faq_i18n\">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0.x. The Manual will be updated for other languages in due course. Volunteers to help with <a href=\"http://manual.audacityteam.org/man/Help:Translating\">translating the Manual<a/> are welcomed."
+msgstr "Voor alle andere talen, lees <a href=\"faq_i18n\">oudere veelgestelde vragen voor internationale hulp</a>, die grotendeels geldig blijven voor Audacity 2.0.x. De handleiding zal te zijner tijd voor andere talen bijgewerkt worden. Vrijwilligers om te helpen met <a href=\"http://manual.audacityteam.org/man/Help:Translating\">vertalen van de handleiding<a/> zijn welkom."
+
+#: help/faq.php:38
 msgid "Still need help?"
 msgstr "Nog steeds hulp nodig?"
 
-#: help/faq.php:35
+#: help/faq.php:40
 msgid ""
 "If the Frequently Asked Questions don't resolve your query, see the \n"
 "<a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">\n"
@@ -1200,7 +1216,7 @@ msgid ""
 "\n"
 "<p>\n"
 " <ul>\n"
-"   <li><a href=\"documentation\">Documentation</a> - Read the Audacity Manual (with Tutorials). These Tutorials offer step-by-step help with common tasks in Audacity, such as making ringtones, removing vocals, creating podcasts and transferring tapes and records to computer.</li>\n"
+"   <li><a href=\"documentation\">Manuals</a> - Read the Audacity Manual (with Tutorials). These Tutorials offer step-by-step help with common tasks in Audacity, such as making ringtones, removing vocals, creating podcasts and transferring tapes and records to computer.</li>\n"
 "   <li><a href=\"http://wiki.audacityteam.org/\">Audacity Wiki</a> is an extensive user-editable help resource including:\n"
 "    <ul><li><a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">Tutorials</a> - More specialised tutorials, including some <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial#legacy\">legacy tutorials</a> for old versions of Audacity, links to <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial#external\">other tutorials on the web</a> and some tutorials in <a href=\"http://wiki.audacityteam.org/wiki/MultiLingual\">languages other than English</a>.</li>\n"
 "     <li><a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Tips</a> - these articles will help you work with and understand Audacity and your audio hardware.</li>\n"
@@ -1213,7 +1229,7 @@ msgstr ""
 "\n"
 "<p>\n"
 " <ul>\n"
-"   <li><a href=\"documentation\">Documentatie</a> - lees de gebruikershandleiding (met tutorials). Deze tutorials bieden stap-voor-stap hulp aan met de veelvoorkomende taken in Audacity, zoals het maken van ringtones, het verwijderen van stemmen, aanmaken van podcasts en het overzetten van tapes en opnames naar computer.</li>\n"
+"   <li><a href=\"documentation\">Handleidingen</a> - lees de gebruikershandleiding (met tutorials). Deze tutorials bieden stap-voor-stap hulp aan met de veelvoorkomende taken in Audacity, zoals het maken van ringtones, het verwijderen van stemmen, aanmaken van podcasts en het overzetten van tapes en opnames naar computer.</li>\n"
 "   <li><a href=\"http://audacityteam.org/wiki\">Audacity wiki</a> is een uitgebreide hulpbron die door gebruikers kan gewijzigd worden; ze bevat onder andere:\n"
 "    <ul><li><a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">Tutorials</a> - meer gespecialiseerde tutorials, inclusief een aantal <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial#legacy\">oudere tutorials</a> voor oudere versies van Audacity, links naar <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial#external\">andere tutorials op het web</a> en een aantal <a href=\"http://wiki.audacityteam.org/wiki/MultiLingual\">anderstalige tutorials</a>.</li>\n"
 "     <li><a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Tips</a> - deze artikels zullen u helpen om te werken met Audacity en om Audacity en uw audio-hardware te begrijpen.</li>\n"
@@ -3281,7 +3297,7 @@ msgstr ""
 "                            stilte-afkapping en klik-opsporing</li>\n"
 "                        <li>Op bestanden toegepaste opdrachtenreeksen wissen nu tijdelijke data na \n"
 "                            het verwerken van elk bestand</li> \n"
-"                        <li>Geüpdatete Nyquist-implementatie met ondersteuning voor SAL-syntax \n"
+"                        <li>Bijgewerkte Nyquist-implementatie met ondersteuning voor SAL-syntax \n"
 "                            en verbeterd geheugenbeheer</li> \n"
 "                        <li>Spectrum tonen analyseert nu tot 237,8 seconden audio,\n"
 "                            met gescheiden vensters voor elk project en verbeterde \n"
@@ -3684,7 +3700,7 @@ msgstr ""
 "\n"
 "\t<dt> Importeren/Exporteren </dt>\n"
 "\t      <dd>   <ul>\n"
-"                           <li>Geüpdatete versies van de Libogg, Libvorbis, Libflac, Libsndfile en Twolame\n"
+"                           <li>Bijgewerkte versies van de Libogg, Libvorbis, Libflac, Libsndfile en Twolame\n"
 "                               bibliotheken.\n"
 "                           <li>Behandeling van niet-ondersteunde bestandsformaten is meer informatief.</li>\n"
 "                           <li>Behandeling van bestandsnamen met schuine strepen op OS X verbeterd.</li>\n"
@@ -3730,7 +3746,7 @@ msgstr ""
 "\n"
 "\t<dt> Varia </dt>\n"
 "\t      <dd>   <ul>\n"
-"                           <li>Geüpdatete vertalingen voor vele locales.</li>\n"
+"                           <li>Bijgewerkte vertalingen voor vele locales.</li>\n"
 "                           <li>Verschillende stabiliteitsverbeteringen.</li> \n"
 "             </dd>   </ul>\n"
 "       </dt>\n"
@@ -3887,7 +3903,7 @@ msgstr ""
 "\n"
 "      <dt> Opnemen/afspelen </dt>\n"
 "      <dd>Verbeteringen aan vertragingscorrectie.</dd>\n"
-"      <dd>Geüpdatete versie van de portaudio-v19 bibliotheek.</dd>\n"
+"      <dd>Bijgewerkte versie van de portaudio-v19 bibliotheek.</dd>\n"
 "\n"
 "      <dt>\n"
 "        Merk op dat de Help niet langer ingebouwd is, maar toegankelijk is op het web via links in Audacity.\n"
@@ -5380,7 +5396,7 @@ msgstr "Audacity werd gestart door Dominic Mazzoni en Roger Dannenberg in the he
 
 #: about/credits.php:22
 msgid "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, that is, excluding the code libraries Audacity uses. The <a href=\"http://www.ohloh.net/projects/audacity/contributors\">Contributors tab</a> on the Ohloh site shows the contributions of each developer."
-msgstr "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> heeft statistieken over de waarde van Audacity-ontwikkeling. De Ohloh-&quot;badge&quot; onderaan elke pagina van deze site toont geüpdatete waarden. We hebben de Ohloh-pagina's over Audacity zo ingesteld dat de statistieken alleen de waarden van Audacity-specifieke ontwikkeling tonen, wat de third-party codebibliotheken uitsluit die Audacity gebruikt. De <a href=\"http://www.ohloh.net/projects/audacity/contributors\">Contributors-tab</a> op de Ohloh-site geeft de bijdragen van elke ontwikkelaar weer."
+msgstr "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> heeft statistieken over de waarde van Audacity-ontwikkeling. De Ohloh-&quot;badge&quot; onderaan elke pagina van deze site toont bijgewerkte waarden. We hebben de Ohloh-pagina's over Audacity zo ingesteld dat de statistieken alleen de waarden van Audacity-specifieke ontwikkeling tonen, wat de third-party codebibliotheken uitsluit die Audacity gebruikt. De <a href=\"http://www.ohloh.net/projects/audacity/contributors\">Contributors-tab</a> op de Ohloh-site geeft de bijdragen van elke ontwikkelaar weer."
 
 #: about/credits.php:24
 msgid "Audacity Team Members"
@@ -5649,7 +5665,7 @@ msgstr ""
 
 #: about/index.php:44
 msgid "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses.</p>"
-msgstr "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> heeft statistieken over de waarde van Audacity-ontwikkeling. De Ohloh-&quot;badge&quot; onderaan elke pagina van deze site toont geüpdatete waarden. We hebben de Ohloh-pagina's over Audacity zo ingesteld dat de statistieken alleen de waarden van Audacity-specifieke ontwikkeling tonen, wat de third-party codebibliotheken uitsluit die Audacity gebruikt.</p>"
+msgstr "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> heeft statistieken over de waarde van Audacity-ontwikkeling. De Ohloh-&quot;badge&quot; onderaan elke pagina van deze site toont bijgewerkte waarden. We hebben de Ohloh-pagina's over Audacity zo ingesteld dat de statistieken alleen de waarden van Audacity-specifieke ontwikkeling tonen, wat de third-party codebibliotheken uitsluit die Audacity gebruikt.</p>"
 
 #: about/index.php:46
 msgid ""
@@ -5689,36 +5705,36 @@ msgstr "Andere nieuwsberichten"
 #. See the bottom of each page for versions in other languages.
 #.
 #: about/license.php:25
-msgid ""
-"<h3 id=\"license\">License</h3>\n"
-"\n"
-"<p>Audacity is <a href=\"http://manual.audacityteam.org/help/manual/man/faq_about_audacity.html#free\">free software</a>. You may use it for any personal, commercial or educational purpose, including installing it on as many different computers as you wish.</p>\n"
-"\n"
-"<p>You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License (GPL)</a> as published by the Free Software Foundation - either <a href=\"http://www.gnu.org/licenses/old-licenses/gpl-2.0.html\">version 2 of the License</a>, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the GPL. "
-msgstr ""
-"<h3 id=\"license\">Licentie</h3>\n"
-"\n"
-"<p>Audacity is <a href=\"http://manual.audacityteam.org/help/manual/man/faq_about_audacity.html#free\">vrije software</a>. U mag het gebruiken voor elk persoonlijk, commercieel of educatief doel, inclusief het installeren op zoveel computers als u wenst.</p>\n"
-"\n"
-"<p>U mag Audacity ook kopiëren, verdelen, wijzigen en/of opnieuw verkopen onder de voorwaarden van de <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License (GPL)</a> zoals gepubliceerd door de Free Software Foundation - en ook <a href=\"http://www.gnu.org/licenses/old-licenses/gpl-2.0.html\">versie 2 van de License</a>, of (op uw optie) elke latere versie. Door u dit recht te geven, vereist de GPL dat de broncode die u verdeelt ook beschikbaar is onder de GPL. "
+msgid "<h3 id=\"license\">License</h3>"
+msgstr "<h3 id=\"license\">Licentie</h3>"
+
+#: about/license.php:29
+#, php-format
+msgid "Audacity is <a href=\"%s\">free software</a>. You may use it for any personal, commercial or educational purpose, including installing it on as many different computers as you wish."
+msgstr "Audacity is <a href=\"%s\">vrije software</a>. U mag het gebruiken voor persoonlijke, commerciële of educatieve doeleinden, inclusief het installeren op zoveel verschillende computers als u wenst."
+
+#: about/license.php:33
+#, php-format
+msgid "You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href=\"%s\">GNU General Public License (GPL)</a> as published by the Free Software Foundation - either <a href=\"%s\">version 2 of the License</a>, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the GPL. If you distribute or recommend Audacity in any way, please cite our trademark by referring to Audacity as \"Audacity(R)\"."
+msgstr "U mag Audacity ook kopiëren, verdelen, aapassen en/of herverkopen, onder de voorwaarden van de <a href=\"%s\">GNU General Public License (GPL)</a> zoals gepubliceerd door de Free Software Foundation - zowel <a href=\"%s\">versie 2 van de licentie</a>, of (zoals u wilt) elke latere versie. Bij het verlenen van deze rechten vereist de GPL dat de broncode die u verdeelt, zelf beschikbaar is onder de GPL. Als u Audacity verdeelt of aanraadt op om het even welke manier, citeer ons handelsmerk door te verwijzen naar Audacity als \"Audacity(R)\"."
 
 #. i18n-hint: the encoding inside the <a href> tag between the two
 #. "echo" strings here and elsewhere on this page obscures the
 #. email address from (at least some) harvesting bots. Only the two
 #. strings above and below the <a href> tag need to be translated.
-#: about/license.php:35
+#: about/license.php:42
 msgid "If you have questions, please "
 msgstr "Indien u vragen heeft, "
 
-#: about/license.php:38
+#: about/license.php:45
 msgid "e-mail us."
 msgstr "e-mail ons."
 
-#: about/license.php:42
+#: about/license.php:49
 msgid "See also <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Frequently Asked Questions about the GNU GPL</a>."
 msgstr "Zie ook <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">veelvoorkomende vragen over de GNU GPL</a>."
 
-#: about/license.php:44
+#: about/license.php:51
 msgid ""
 "<h3 id=\"advice\">Advice for Vendors and Distributors</h3>\n"
 "\n"
@@ -5728,15 +5744,15 @@ msgstr ""
 "\n"
 "<p>Een verzameling bedrijven en individu's bundelen Audacity met hun producten, verdelen het of verkopen het opnieuw. Het onderstaande zijn vereisten en leidraden voor het bundelen, opnieuw verkopen of verdelen van Audacity. "
 
-#: about/license.php:49
+#: about/license.php:56
 msgid "If you adhere to these, please "
 msgstr "Indien dit op u van toepassing is, "
 
-#: about/license.php:52
+#: about/license.php:59
 msgid "e-mail us</a> for possible inclusion on our <a href=\"../download/bundlers\">Vendors and Distributors of Audacity</a> page."
 msgstr "e-mail ons </a> voor een mogelijke insluiting op onze <a href=\"../download/bundlers\">Verkopers en verdelers van Audacity</a>-pagina."
 
-#: about/license.php:56
+#: about/license.php:63
 msgid ""
 "<h4 >Legal Requirements</h4>\n"
 "\n"
@@ -5756,15 +5772,16 @@ msgstr ""
 "  </ol>\n"
 "</p>"
 
-#: about/license.php:65
-msgid "<p>If you distribute our <a href=\"http://audacity.sourceforge.net/download/\">installers</a> and do not modify them, this will fully comply, because the installers include the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> and an offer in README.txt for users to obtain the source code from us. Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog.</p>"
-msgstr "<p>Indien u onze <a href=\"http://audacity.sourceforge.net/download/\">installers</a> verdeelt en niet wijzigt, zal dit volledig voldoen aan de voorwaarden omdat de installers de <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> bevatten, samen met een aanbieding in README.txt voor gebruikers om de broncode van ons te verkrijgen. Versies van Audacity na 1.3.3 bevatten ook de GPL in de toepassing zelf, in het Over Audacity venster.</p>"
+#: about/license.php:72
+#, php-format
+msgid "<p>If you distribute our <a href=\"%s\">installers</a> and do not modify them, this will fully comply, because the installers include the <a href=\"%s\">GPL</a> and an offer in README.txt for users to obtain the source code from us. Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog. On this site, we block advertisements from distributors offering modified installers of Audacity, on the expectation that any modification is likely adding unwanted software.</p>"
+msgstr "<p>Als u onze <a href=\"%s\">installers</a> verdeelt en ze niet wijzigt, zal dit volledig overeenkomen, omdat de installers de <a href=\"%s\">GPL</a> bevatten en ook een aanbod in README.txt voor gebruikers om de broncode van ons te verkrijgen. Versies van Audacity na 1.3.3 bevatten ook de GPL in de toepassing zelf, in het Over Audacity venster. Op deze site blokkeren we advertenties van verdelers die gewijzigde installers van Audacity aanbieden, omdat we verwachten dat elke wijziging waarschijnlijk een toevoeging van ongewenste software is.</p>"
 
-#: about/license.php:67
+#: about/license.php:74
 msgid "<p>Additionally, the name <b>Audacity</b>&reg; is a <b>registered trademark</b> of Dominic Mazzoni. Therefore you <b>may not</b> advertise yourself or your business as an authorized distributor of Audacity, and you <b>may not</b> modify Audacity then continue to use the Audacity name without the express permission of the Audacity Team.</p>"
 msgstr "<p>Daarbij komt nog dat de naam <b>Audacity</b>&reg; een <b>geregistreerd handelsmerk</b> van Dominic Mazzoni is. Daarom mag u <b>geen</b> reclame maken voor uzelf of uw zaak als een geauthoriseerde verdeler van Audacity, en u mag Audacity <b>niet</b> wijzigen en de naam Audacity blijven gebruiken zonder de expliciete toestemming van het Audacity-team.</p>"
 
-#: about/license.php:69
+#: about/license.php:76
 msgid ""
 "<h4 >Updating and Documenting Audacity</h4>\n"
 "\n"
@@ -5772,41 +5789,41 @@ msgid ""
 msgstr ""
 "<h4 >Updaten en documenteren van Audacity</h4>\n"
 "\n"
-"<p>We zouden appreciëren indien u teruglinkt naar onze website: <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> zodat uw gebruikers geüpdatete versies van Audacity kunnen downloaden wanneer ze uit zijn. Gelieve u ook in te schrijven op de notificatielijst onderaan <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> om u ervan te verzekeren dat u advies krijgt in verband met de laatste versie van Audacity en ze kan verdelen.</p>"
+"<p>We zouden appreciëren indien u teruglinkt naar onze website: <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> zodat uw gebruikers bijgewerkte versies van Audacity kunnen downloaden wanneer ze uit zijn. Gelieve u ook in te schrijven op de notificatielijst onderaan <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> om u ervan te verzekeren dat u advies krijgt in verband met de laatste versie van Audacity en ze kan verdelen.</p>"
 
-#: about/license.php:73
+#: about/license.php:80
 msgid "<p>If you bundle the .exe or .dmg Audacity installers, the Audacity <a href=\"http://manual.audacityteam.org/help/manual/\">Manual</a> is included. If you provide the Audacity zip file or source tarball, please consider including the <a href=\"http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html\">standalone Manual</a> with your distribution to reduce the number of queries we receive."
 msgstr "<p>Als u de Audacity .exe of .dmg installers bundelt, is de Audacity <a href=\"http://manual.audacityteam.org/help/manual/\">handleiding</a> bijgesloten. Als u het Audacity-zipbestand of source-tarball voorziet, overweeg dan om de <a href=\"http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html\">standalone handleiding</a> bij te sluiten in uw distributie om het aantal vragen dat we krijgen te verminderen."
 
-#: about/license.php:76
+#: about/license.php:83
 msgid "IMPORTANT: If you write your own documentation for Audacity, please "
 msgstr "BELANGRIJK: indien u uw eigen documentatie voor Audacity schrijft, "
 
-#: about/license.php:79
+#: about/license.php:86
 msgid "submit it to us</a> for review <em>before</em> you publish it.</p>"
 msgstr "gelieve ze naar ons te sturen</a> zodat we ze kunnen nakijken <em>voordat</em> u ze publiceert.</p>"
 
-#: about/license.php:81
+#: about/license.php:88
 msgid "<h4>For vendors selling a hardware product, with Audacity included:</h4>"
 msgstr "<h4>Voor verkopers die een hardware product verkopen waar Audacity bij inbegrepen is:</h4>"
 
-#: about/license.php:87
+#: about/license.php:94
 msgid "<li>Thank you for choosing to distribute Audacity with your product! Please "
 msgstr "<li>Bedankt om ervoor te kiezen om Audacity te verspreiden samen met uw product! "
 
-#: about/license.php:90
+#: about/license.php:97
 msgid "contact us</a> early so we can work together to make your product a success.</li>"
 msgstr "Contacteer ons</a> op tijd, zodat we kunnen samenwerken om uw product een succes te maken.</li>"
 
-#: about/license.php:93
+#: about/license.php:100
 msgid "<li>Please distribute Audacity unmodified. If you need to modify it to work with your device, please "
 msgstr "<li>Gelieve Audacity onveranderd te verspreiden. Indien u het moet wijzigen om te werken met uw apparaat, "
 
-#: about/license.php:96
+#: about/license.php:103
 msgid "contact us</a> first.</li>"
 msgstr "contacteer ons dan</a> eerst.</li>"
 
-#: about/license.php:99
+#: about/license.php:106
 msgid ""
 "<li>Please test your device with Audacity thoroughly. If there are any specific configuration instructions needed to make your device work with Audacity, please ensure these are included with the device.</li>\n"
 "        <li>Please note that we cannot help your customers with problems specific to your device - these must be dealt with by your own qualified staff. Users needing support with Audacity itself can find assistance at <a href=\"http://audacity.sourceforge.net/contact/\">http://audacity.sourceforge.net/contact/</a>.</li>\n"
@@ -5818,7 +5835,7 @@ msgstr ""
 "  </ol>\n"
 "</p>"
 
-#: about/license.php:104
+#: about/license.php:111
 msgid ""
 "<h4>For those wishing to resell Audacity, or a rebranded version of it:</h4>\n"
 "\n"
@@ -5834,15 +5851,15 @@ msgstr ""
 "    <li>Indien u Audacity ongewijzigd herverkoopt moet uw reclame duidelijk maken dat Audacity gratis verkrijgbaar is op Internet, en de voordelen markeren voor de klant die Audacity koopt van u. U zou bijvoorbeeld kunnen Audacity aanbieden op een cd-rom, andere software of muziekbestanden ermee bundelen of een geprinte handleiding voorzien.</li>\n"
 "    <li>U probeert best om uw eigen technische ondersteuning te voorzien voor uw klanten, en ook uw eigen documentatie indien u Audacity gewijzigd heeft. "
 
-#: about/license.php:112
+#: about/license.php:119
 msgid "If you are reselling Audacity exactly as obtained from us and have questions about this, please "
 msgstr "Als u Audacity opnieuw verkoopt, in exact dezelfde staat als u het van ons verkregen hebt, en indien u hierover vragen heeft, "
 
-#: about/license.php:115
+#: about/license.php:122
 msgid "e-mail us</a>."
 msgstr "e-mail ons dan."
 
-#: about/license.php:117
+#: about/license.php:124
 msgid ""
 "<li>Please read these <a href=\"http://audacityteam.org/wiki/index.php?title=AudacityVendors#General_Advice\">additional guidelines for resellers</a> on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</li>\n"
 "  </ol>\n"
@@ -6037,7 +6054,7 @@ msgstr "We appreciëren ook <a href=\"../donate/\">donaties</a> om de ontwikkeli
 
 #: community/developers.php:16
 msgid "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses. The <a href=\"http://www.ohloh.net/projects/59/analyses/latest\">Code tab</a> on the Ohloh site shows the progress of code development."
-msgstr "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> heeft statistieken over de waarde van Audacity-ontwikkeling. De Ohloh-&quot;badge&quot; onderaan elke pagina van deze site toont geüpdatete waarden. We hebben de Ohloh-pagina's over Audacity zo ingesteld dat de statistieken alleen de waarden van Audacity-specifieke ontwikkeling tonen, wat de third-party codebibliotheken uitsluit die Audacity gebruikt. De <a href=\"http://www.ohloh.net/projects/59/analyses/latest\">Code-tab</a> op de Ohloh-site geeft de voortgang van code-ontwikkeling weer."
+msgstr "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> heeft statistieken over de waarde van Audacity-ontwikkeling. De Ohloh-&quot;badge&quot; onderaan elke pagina van deze site toont bijgewerkte waarden. We hebben de Ohloh-pagina's over Audacity zo ingesteld dat de statistieken alleen de waarden van Audacity-specifieke ontwikkeling tonen, wat de third-party codebibliotheken uitsluit die Audacity gebruikt. De <a href=\"http://www.ohloh.net/projects/59/analyses/latest\">Code-tab</a> op de Ohloh-site geeft de voortgang van code-ontwikkeling weer."
 
 #: community/developers.php:19
 msgid "Join the <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a> mailing list to discuss current and future development, or to get help modifying the Audacity source code."
@@ -7469,7 +7486,7 @@ msgstr ""
 "<p>\n"
 "   <ul>\n"
 "      <li>VST-effecten worden nu standaard in GUI-modus weergegeven</li>  \n"
-"      <li>Geüpdatete Nyquist-implementatie</li> \n"
+"      <li>Bijgewerkte Nyquist-implementatie</li> \n"
 "      <li>Verbeteringen aan equalisatie, ruisverwijdering, afkappen, \n"
 "          stilte, klik-opsporing en effectreeksen</li>\n"
 "      <li>Verbeterde analyse voor spectrumweergave en nieuwe voorkeuren \n"
