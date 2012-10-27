@@ -16,7 +16,7 @@
 <h2><?=$pageTitle?></h2>
 
 <div class="advice">
-<?=_('These are legacy versions of Audacity for Windows 98/ME/2000/XP.<p><a href="http://wiki.audacityteam.org/wiki/Windows_Vista_OS">Windows Vista</a> <b>and</b> <a href="http://wiki.audacityteam.org/wiki/Windows_7_OS">Windows 7</a> <b>are not supported in any Audacity versions on this page</b>. Please use <a href="/download/windows">the latest Windows version</a> for Vista and 7.</p>')?>
+<?=_('These are legacy versions of Audacity for Windows 98/ME/2000/XP.<p><a href="http://wiki.audacityteam.org/wiki/Windows_Vista_OS">Windows Vista</a><b>,</b> <a href="http://wiki.audacityteam.org/wiki/Windows_7_OS">Windows 7</a> <b>and</b> <a href="http://wiki.audacityteam.org/wiki/Windows_8_OS">Windows 8</a> <b>are not supported in any Audacity versions on this page</b>. Please use <a href="/download/windows">the latest Windows version</a> for Vista, 7 and 8.</p>')?>
 </div>
 
 <h3><?=_("Download")?></h3>

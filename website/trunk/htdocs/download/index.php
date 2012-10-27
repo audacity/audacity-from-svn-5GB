@@ -37,7 +37,7 @@
         <span class="downloads_smaller">
           <br>
           <img src="../images/download_spacer.png">
-          <?=_("(Windows 2000/XP/Vista/7)")?>
+          <?=_("(Windows 2000/XP/Vista/Windows 7/Windows 8)")?>
         </span>
       </h3>
 

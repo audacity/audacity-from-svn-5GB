@@ -230,7 +230,7 @@ table.winsysreq td.ramspeed { width:22%; }
   margin-top: -4px;
 }
 
-span.downloads_smaller { font-size:85%; font-weight:300; }
+span.downloads_smaller { font-size:85%; font-weight:300; white-space:nowrap; }
 
 .downloads_notes { font-size:85%; font-weight:300; margin-top: -1em; }
 

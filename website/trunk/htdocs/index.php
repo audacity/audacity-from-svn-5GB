@@ -21,12 +21,12 @@
   if ($download == "windows") {
     $download_version = win_exe_version;
     $download_OS = _("for Windows");
-    $download_OS_versions = _("2000/XP/Vista/7");
+    $download_OS_versions = "2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8";
     $download_page = "windows";
     $recommended_download = $win_exe_url;
     /*
       $beta_version = beta_version;
-      $beta_download_OS_versions = _("2000/XP/Vista/7");
+      $beta_download_OS_versions = "2000/XP/Vista/7";
       $beta_download_page = "beta_windows";
       */
   }
