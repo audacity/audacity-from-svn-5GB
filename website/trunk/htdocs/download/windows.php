@@ -23,13 +23,13 @@
 <ul>
   <li>
     <p>
-      <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB, including help files) for <b>Windows 2000/XP/Vista/7</b>'), 
+      <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB, including help files) for <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b>'), 
                     download_url($win_exe_url), win_exe_version, win_exe_size)?>
     </p>
   </li>
   <li>
     <p>
-      <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB) for <b>Windows 2000/XP/Vista/7</b> - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions.'),
+      <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB) for <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b> - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions.'),
                     download_url($win_zip_url), win_zip_version, win_zip_size)?>
     </p>
   </li>
@@ -100,7 +100,7 @@
 <ul>
   <li>
     <p>
-      <?php echo _('<b>For advanced users</b>, <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries">Nightly Builds</a> for <b>Windows 2000/XP/Vista/7</b> are available for testing purposes.')?>
+      <?php echo _('<b>For advanced users</b>, <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries">Nightly Builds</a> for <b>Windows 2000/XP/Vista/Windows 7/Windows 8</b> are available for testing purposes.')?>
       <?php include "beta_nightly.inc.php"; ?>
     </p>
   </li>
@@ -108,9 +108,10 @@
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
 <p>
-  <?=_("Read about Audacity on Windows <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>.")?>
+  <?php printf(_('Read about Audacity on <a href="%s">Windows Vista</a>, <a href="%s">Windows 7</a> and <a href="%s">Windows 8</a>.'), "http://wiki.audacityteam.org/wiki/Windows_Vista_OS", "http://wiki.audacityteam.org/wiki/Windows_7_OS", "http://wiki.audacityteam.org/wiki/Windows_8_OS")?>
   <?=_("Windows 95 and NT are not supported.")?>
 </p>
+
 <?php include "windows_sys_reqs.inc.php" ?>
 
 <?php
