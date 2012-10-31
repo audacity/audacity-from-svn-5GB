@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity\n"
 "Report-Msgid-Bugs-To: http://wiki.audacityteam.org/wiki/Reporting_Bugs\n"
-"POT-Creation-Date: 2012-10-21 19:28+0100\n"
-"PO-Revision-Date: 2012-10-22 17:34-0000\n"
+"POT-Creation-Date: 2012-10-27 21:39+0100\n"
+"PO-Revision-Date: 2012-10-31 19:45-0000\n"
 "Last-Translator: gale <gale@audacityteam.org>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/audacity/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1475,8 +1475,8 @@ msgid "Legacy Windows"
 msgstr "Oudere Windows"
 
 #: download/legacy_windows.php:19
-msgid "These are legacy versions of Audacity for Windows 98/ME/2000/XP.<p><a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Windows Vista</a> <b>and</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> <b>are not supported in any Audacity versions on this page</b>. Please use <a href=\"/download/windows\">the latest Windows version</a> for Vista and 7.</p>"
-msgstr "These are legacy versions of Audacity for Windows 98/ME/2000/XP.<p><a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Windows Vista</a> <b>and</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> <b>are not supported in any Audacity versions on this page</b>. Please use <a href=\"/download/windows\">the latest Windows version</a> for Vista and 7.</p>"
+msgid "These are legacy versions of Audacity for Windows 98/ME/2000/XP.<p><a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Windows Vista</a><b>,</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> <b>and</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_8_OS\">Windows 8</a> <b>are not supported in any Audacity versions on this page</b>. Please use <a href=\"/download/windows\">the latest Windows version</a> for Vista, 7 and 8.</p>"
+msgstr "Dit zijn oudere versies van Audacity voor Windows 98/ME/2000/XP.<p><a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Windows Vista</a><b>,</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> <b>en</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_8_OS\">Windows 8</a> <b>worden niet ondersteund door de Audacity-versies op deze pagina</b>. Gebruik <a href=\"/download/windows\">de laatste Windows-versie</a> voor Vista, 7 en 8.</p>"
 
 #: download/legacy_windows.php:24
 #: download/legacy_windows.php:75
@@ -1679,7 +1679,6 @@ msgid "Minimum RAM/<br>processor speed"
 msgstr "Minimale RAM/<br>processorsnelheid"
 
 #: download/legacy_windows.php:104
-#: download/windows_sys_reqs.inc.php:44
 msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista or 7 running on machines of substantially higher specification than the minimum stated above."
 msgstr "Over het algemeen werkt Audacity het best op computers die meer hebben dan de minimumvereisten in de tabel hierboven. Waar Audacity gebruikt moet worden voor lange multitrack-projecten raden we aan om Windows XP, Vista of 7 te gebruiken op computers met een aanzienlijk hogere specificatie dan het minimum dat hierboven gesteld werd."
 
@@ -4082,6 +4081,10 @@ msgstr "Verbeterde Labelsporen"
 msgid "Other features"
 msgstr "Andere functies "
 
+#: download/windows_sys_reqs.inc.php:44
+msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista, Windows 7 or Windows 8 running on machines of substantially higher specification than the minimum stated above."
+msgstr "Over het algemeen werkt Audacity het best op computers die meer hebben dan de minimumvereisten in de tabel hierboven. Waar Audacity gebruikt moet worden voor lange multitrack-projecten raden we aan om Windows XP, Vista, Windows 7 of Windows 8 te gebruiken op computers met een aanzienlijk hogere specificatie dan het minimum dat hierboven gesteld werd."
+
 #: download/plugins.php:16
 msgid "You can download and install plug-ins or libraries to add extra functionality to Audacity. Plug-ins can give you extra effects, or more audio generation and analysis capability. Adding libraries can allow you to import or export additional audio formats."
 msgstr "U kunt plugins downloaden en installeren om extra functies aan Audacity toe te voegen. Plugins kunnen u extra effecten of meer mogelijkheden voor audio-generering en -analyse geven. Door bibliotheken toe te voegen kan u bijkomende audioformaten impoteren en exporteren."
@@ -4216,13 +4219,13 @@ msgstr "Aanbevolen downloads - laatste versie van Audacity"
 
 #: download/windows.php:26
 #, php-format
-msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB, including help files) for <b>Windows 2000/XP/Vista/7</b>"
-msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe-bestand, %.1lf MB, inclusief helpbestanden) voor <b>Windows 2000/XP/Vista/7</b>"
+msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB, including help files) for <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b>"
+msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe-bestand, %.1lf MB, inclusief helpbestanden) voor <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b>"
 
 #: download/windows.php:32
 #, php-format
-msgid "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for <b>Windows 2000/XP/Vista/7</b> - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions."
-msgstr "<a href=\"%s\">Audacity %s zipbestand</a> (%.1lf MB) voor <b>Windows 2000/XP/Vista/7</b> - Gebruik dit als u een kleinere download (zonder helpbestanden) wilt of als u de installer niet kunt openen omwille van beperkte toegang."
+msgid "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b> - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions."
+msgstr "<a href=\"%s\">Audacity %s zipbestand</a> (%.1lf MB) voor <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b> - Gebruik dit als u een kleinere download (zonder helpbestanden) wilt of als u de installer niet kunt openen omwille van beperkte toegang."
 
 #: download/windows.php:54
 #, php-format
@@ -4235,13 +4238,13 @@ msgid "Audacity Nightly Builds"
 msgstr "Audacity Nightly Builds"
 
 #: download/windows.php:103
-msgid "<b>For advanced users</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Nightly Builds</a> for <b>Windows 2000/XP/Vista/7</b> are available for testing purposes."
-msgstr "<b>Voor ervaren gebruikers</b> zijn <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Nightly Builds</a> voor <b>Windows 2000/XP/Vista/7</b>  beschikbaar voor testdoeleinden."
+msgid "<b>For advanced users</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Nightly Builds</a> for <b>Windows 2000/XP/Vista/Windows 7/Windows 8</b> are available for testing purposes."
+msgstr "<b>Voor ervaren gebruikers</b> zijn <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Nightly Builds</a> voor <b>Windows 2000/XP/Vista/Windows 7/Windows 8</b> beschikbaar voor testdoeleinden."
 
 #: download/windows.php:111
-#: download/beta_windows.php:21
-msgid "Read about Audacity on Windows <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>."
-msgstr "Lees over Audacity op Windows <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> en <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>"
+#, php-format
+msgid "Read about Audacity on <a href=\"%s\">Windows Vista</a>, <a href=\"%s\">Windows 7</a> and <a href=\"%s\">Windows 8</a>."
+msgstr "Lees over Audacity voor <a href=\"%s\">Windows Vista</a>, <a href=\"%s\">Windows 7</a> en <a href=\"%s\">Windows 8</a>."
 
 #: download/windows.php:112
 #: download/beta_windows.php:59
@@ -4364,6 +4367,10 @@ msgstr "De <a href=\"http://wxwidgets.org\">wxWidgets</a>-bibliotheek is vereist
 #: download/beta_windows.php:13
 msgid "Windows Beta"
 msgstr "Windows bèta"
+
+#: download/beta_windows.php:21
+msgid "Read about Audacity on Windows <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>."
+msgstr "Lees over Audacity op Windows <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> en <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>"
 
 #: download/beta_windows.php:25
 #, php-format
@@ -4823,8 +4830,8 @@ msgid "Audacity for Windows&reg;"
 msgstr "Audacity voor Windows&reg;"
 
 #: download/index.php:40
-msgid "(Windows 2000/XP/Vista/7)"
-msgstr "(Windows 2000/XP/Vista/7)"
+msgid "(Windows 2000/XP/Vista/Windows 7/Windows 8)"
+msgstr "(Windows 2000/XP/Vista/Windows 7/Windows 8)"
 
 #: download/index.php:48
 msgid "Audacity for Mac&reg;"
@@ -9091,10 +9098,6 @@ msgstr "Vrije audio-editor en recorder"
 #: index.php:23
 msgid "for Windows"
 msgstr "voor Windows"
-
-#: index.php:24
-msgid "2000/XP/Vista/7"
-msgstr "2000/XP/Vista/7"
 
 #: index.php:35
 msgid "for Mac"
