@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity website translation 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-24 04:12+0100\n"
-"PO-Revision-Date: 2012-08-25 22:20-0000\n"
-"Last-Translator: Atsushi Yoshida <ayoshida.pub@gmail.com>\n"
+"POT-Creation-Date: 2012-10-31 20:07+0000\n"
+"PO-Revision-Date: 2012-12-06 03:37-0000\n"
+"Last-Translator: Atsushi YOSHIDA\n"
 "Language-Team: Atsushi YOSHIDA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -120,8 +120,8 @@ msgstr "よくある質問"
 
 #: main.inc.php:48
 #: help/documentation.php:10
-msgid "Documentation"
-msgstr "ドキュメント"
+msgid "Manuals and Documentation"
+msgstr "マニュアルおよびドキュメント"
 
 #: main.inc.php:49
 msgid "<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\" target=\"_blank\">More Tutorials (Wiki)</a>"
@@ -212,19 +212,35 @@ msgstr "Audacityで ヘルプ > マニュアル (ブラウザで閲覧)をクリ
 msgid "Other languages"
 msgstr "その他の言語"
 
-#: help/faq.php:29
-msgid "<b>French:</b> <a href=\"http://manual.audacityteam.org/man/FAQ/fr\"> View the FAQ in French in the online Manual</a>. The translation of the remainder of the Manual is not yet fully complete."
-msgstr "<b>フランス語:</b> <a href=\"http://manual.audacityteam.org/man/FAQ/fr\">オンラインマニュアル内のフランス語でのFAQ</a>. このマニュアルの残りの部分の翻訳はまだ不完全です。"
+#: help/faq.php:28
+msgid "View the localized FAQ in the online Manual:"
+msgstr "オンラインマニュアルのFAQをご覧ください。"
+
+#: help/faq.php:30
+msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/fr\">French</a>"
+msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/fr\">フランス語</a>"
 
 #: help/faq.php:31
-msgid "For languages other than the above, please read <a href=\"faq_i18n\">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0.x. The Manual will be updated for other languages in due course. Volunteers to help with <a href=\"http://manual.audacityteam.org/man/Help:Translating\">translating the Manual<a/> are welcomed."
+msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/it\">Italian</a>"
+msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/it\">イタリア語</a>"
+
+#: help/faq.php:32
+msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/es\">Spanish</a>"
+msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/es\">スペイン語</a>"
+
+#: help/faq.php:34
+msgid "<b>Note: </b>For the above three locales, the translation of the remainder of the Manual is not yet fully complete."
+msgstr "<b>注意: </b>上記3言語については、マニュアルの残りの部分の翻訳はまだ不完全です。"
+
+#: help/faq.php:36
+msgid "For all other languages, please check <a href=\"faq_i18n\">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0.x. The Manual will be updated for other languages in due course. Volunteers to help with <a href=\"http://manual.audacityteam.org/man/Help:Translating\">translating the Manual<a/> are welcomed."
 msgstr "その他の言語については、<a href=\"faq_i18n\">英語以外言語の過去のFAQ (よくある質問）</a>をご覧下さい。 これはAudacity 2.0.xでも多くの部分が適用できます。 他言語のマニュアルもいずれ更新される予定です。<a href=\"http://manual.audacityteam.org/man/Help:Translating\">マニュアルの翻訳<a/>をしてくださるボランティアーの方々がいらっしゃれば大歓迎です。"
 
-#: help/faq.php:33
+#: help/faq.php:38
 msgid "Still need help?"
 msgstr "さらにヘルプが必要ですか？"
 
-#: help/faq.php:35
+#: help/faq.php:40
 msgid ""
 "If the Frequently Asked Questions don't resolve your query, see the \n"
 "<a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">\n"
@@ -813,13 +829,13 @@ msgstr "%sNyquistは%sRoger B. Dannenberg%sによって音声合成および解�
 
 #: help/nyquist.php:35
 #, php-format
-msgid "%sNyquist supports both a Lisp syntax and a more conventional syntax called SAL. Audacity versions prior to 1.3.8 Beta only support Lisp, but versions after that support both Lisp and SAL. To write plug-ins for use with Audacity, choose the appropriate Nyquist Manual for your version of Audacity and preferred syntax: %sNyquist version 2.37 Manual%s - entirely using Lisp syntax %s Nyquist 3.0x Reference Manual%s - the latest Nyquist Manual (mostly using SAL syntax)%s"
-msgstr "%sNyquistはLisp記述法および 標準的なSALと呼ばれる記述法の両方をサポートします。 Audacity 1.3.8 Betaより前のバージョンではLisp記述方だけでしたがそれ以降のバージョンではこれら両方をサポートします。 Audacityで使用するプラグインを書くには、それぞれのAudacityバージョンと記述法に合った適切なNyquistマニュアルを選んでください: %sNyquist version 2.37 Manual%s - 全面的にLisp記述法を使用 %s Nyquist 3.0x Reference Manual%s - 最新のNyquistマニュアル (SAL記述法が中心)%s"
+msgid "%sNyquist supports both a Lisp syntax and a more conventional syntax called SAL. Audacity versions prior to 1.3.8 only support Lisp, but the current Audacity 2.0 series supports both Lisp and SAL. To write plug-ins for use with Audacity, choose the appropriate Nyquist Manual for your version of Audacity and preferred syntax: %sNyquist version 2.37 Manual%s - entirely using Lisp syntax %s Nyquist 3.0x Reference Manual%s - the latest Nyquist Manual (mostly using SAL syntax)%s"
+msgstr "%sNyquistはLisp記述法および より会話的なSALと呼ばれる記述法の両方をサポートします。 Audacity 1.3.8以前のバージョンではLisp記述方だけでしたが、現行のAudacity 2.0シリーズではこれらLispとSALの両方をサポートします。 Audacityで使用するプラグインを書くには、それぞれのAudacityバージョンと記述法に合った適切なNyquistマニュアルを選んでください: %sNyquist version 2.37 Manual%s - 全面的にLisp記述法を使用 %s Nyquist 3.0x Reference Manual%s - 最新のNyquistマニュアル (SAL記述法が中心)%s"
 
 #: help/nyquist.php:37
 #, php-format
-msgid "%sNote that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity. All the basic instructions you need to work with Lisp and the 2.37 Manual are below. If you want to explore SAL as well, and for the latest Nyquist features in Audacity Beta, see %sNyquist Plug-ins Reference%s on the %sWiki%s"
-msgstr "%sAudacityで使用する簡単なプラグインを書くのならNyquistをダウンロードする必要はありません。以下のインストラクションさえ理解すればLispおよび2.37マニュアルを使ってプラグイン作成ができます。もしSALについても学習しAudacityベータの最新Nyquist機能を使いこなすなら%sNyquist Plug-ins Reference%sが%sWiki%s上に公開されていますのでご覧ください。"
+msgid "%sNote that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity. All the basic instructions you need to work with Lisp and the 2.37 Manual are below. If you want to explore SAL as well, and for the latest Nyquist features in Audacity, see %sNyquist Documentation%s on the %sWiki%s"
+msgstr "%sAudacityで使用する簡単なプラグインを書くのならNyquistをダウンロードする必要はありません。以下のインストラクションさえ理解すればLispおよび2.37マニュアルを使ってプラグイン作成ができます。もしSALについても学習しAudacityでサポートされている最新Nyquist機能を使いこなすなら%sNyquist Plug-ins Reference%sが%sWiki%s上に公開されていますのでご覧ください。"
 
 #: help/nyquist.php:39
 msgid "Lisp"
@@ -1199,7 +1215,7 @@ msgid ""
 "\n"
 "<p>\n"
 " <ul>\n"
-"   <li><a href=\"documentation\">Documentation</a> - Read the Audacity Manual (with Tutorials). These Tutorials offer step-by-step help with common tasks in Audacity, such as making ringtones, removing vocals, creating podcasts and transferring tapes and records to computer.</li>\n"
+"   <li><a href=\"documentation\">Manuals</a> - Read the Audacity Manual (with Tutorials). These Tutorials offer step-by-step help with common tasks in Audacity, such as making ringtones, removing vocals, creating podcasts and transferring tapes and records to computer.</li>\n"
 "   <li><a href=\"http://wiki.audacityteam.org/\">Audacity Wiki</a> is an extensive user-editable help resource including:\n"
 "    <ul><li><a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">Tutorials</a> - More specialised tutorials, including some <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial#legacy\">legacy tutorials</a> for old versions of Audacity, links to <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial#external\">other tutorials on the web</a> and some tutorials in <a href=\"http://wiki.audacityteam.org/wiki/MultiLingual\">languages other than English</a>.</li>\n"
 "     <li><a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Tips</a> - these articles will help you work with and understand Audacity and your audio hardware.</li>\n"
@@ -1212,7 +1228,7 @@ msgstr ""
 "\n"
 "<p>\n"
 " <ul>\n"
-"   <li><a href=\"documentation\">Documentation</a> - Audacity Manual (with Tutorials)をお読みください。これらのチュートリアルはAudacityの中で共通的なタスクをステップバイステップで解説しています。たとえばリングトーンの作成、ボーカル除去、ポッドキャスト作成、テープ録音からコンピュータへの変換などです。</li>\n"
+"   <li><a href=\"documentation\">Manuals</a> - Audacity Manual (with Tutorials)をお読みください。これらのチュートリアルはAudacityの中で共通的なタスクをステップバイステップで解説しています。たとえばリングトーンの作成、ボーカル除去、ポッドキャスト作成、テープ録音からコンピュータへの変換などです。</li>\n"
 "   <li><a href=\"http://wiki.audacityteam.org\">Audacity Wiki</a> はユーザーが編集できるヘルプ情報で、次の内容を含んでいます:\n"
 "    <ul><li><a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">Tutorials</a> - より詳しいチュートリアルで、Audacityの過去のバージョン向けの<a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial#legacy\">過去のtutorials</a>、<a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial#external\">Web上の他のチュートリアル</a> へのリンク、およびいくつかの<a href=\"http://wiki.audacityteam.org/wiki/MultiLingual\">英語以外の言語</a>によるチュートリアルを含んでいます。</li>\n"
 "     <li><a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Tips</a> - これらの記事はAudacityおよびお使いのハードウェアの理解を助けます。</li>\n"
@@ -1455,8 +1471,8 @@ msgid "Legacy Windows"
 msgstr "以前のWindows"
 
 #: download/legacy_windows.php:19
-msgid "These are legacy versions of Audacity for Windows 98/ME/2000/XP.<p><a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Windows Vista</a> <b>and</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> <b>are not supported in any Audacity versions on this page</b>. Please use <a href=\"/download/windows\">the latest Windows version</a> for Vista and 7.</p>"
-msgstr "これらはWindows 98/ME/2000/XP向けのAudacityの古いバージョンです。<p><a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Windows Vista</a>および <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> <b>はAudacity 1.2.6ではサポートされていません。これらのOSには</b> <a href=\"../download/windows\">最新のWindows版</a><b> をお使いください。</b>"
+msgid "These are legacy versions of Audacity for Windows 98/ME/2000/XP.<p><a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Windows Vista</a><b>,</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> <b>and</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_8_OS\">Windows 8</a> <b>are not supported in any Audacity versions on this page</b>. Please use <a href=\"/download/windows\">the latest Windows version</a> for Vista, 7 and 8.</p>"
+msgstr "これらはWindows 98/ME/2000/XP向けのAudacityの古いバージョンです。<p><a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Windows Vista</a><b>,</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> <b>および</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_8_OS\">Windows 8</a> <b>はこのページのAudacityではサポートされていません。</b> Vista、７および８には <a href=\"../download/windows\">最新のWindows版</a>をお使いください。</p>"
 
 #: download/legacy_windows.php:24
 #: download/legacy_windows.php:75
@@ -1659,7 +1675,6 @@ msgid "Minimum RAM/<br>processor speed"
 msgstr "最低限のRAM/<br>プロセッサ速度"
 
 #: download/legacy_windows.php:104
-#: download/windows_sys_reqs.inc.php:44
 msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista or 7 running on machines of substantially higher specification than the minimum stated above."
 msgstr "一般にAudacityは上表の最低必要条件以上のコンピュータで動作させることが望まれます。Audacityが長時間オーディオや複数トラックを扱うプロジェクトで使われる場合は、最低条件よりずっと高性能のWindows 2000、XP、Vistaまたは７マシンを推奨します"
 
@@ -4056,6 +4071,10 @@ msgstr "改善されたトラックのラベル機能"
 msgid "Other features"
 msgstr "その他の機能"
 
+#: download/windows_sys_reqs.inc.php:44
+msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista, Windows 7 or Windows 8 running on machines of substantially higher specification than the minimum stated above."
+msgstr "一般にAudacityは上表の最低必要条件以上のコンピュータで動作させることが望まれます。Audacityが長時間オーディオや複数トラックを扱うプロジェクトで使われる場合は、最低条件よりずっと高性能のWindows 2000、XP、Vista、７あるいは８マシンを推奨します"
+
 #: download/plugins.php:16
 msgid "You can download and install plug-ins or libraries to add extra functionality to Audacity. Plug-ins can give you extra effects, or more audio generation and analysis capability. Adding libraries can allow you to import or export additional audio formats."
 msgstr "プラグインやライブラリをダウンロードしインストールすることでAudacityに新しい機能を追加することができます。プラグインは追加のエフェクトやオーディオ生成機能を提供します。ライブラリは取り込みや書き出し可能なオーディオ形式を追加します。"
@@ -4190,13 +4209,13 @@ msgstr "お勧めのダウンロード -  Audacityの最新バージョン"
 
 #: download/windows.php:26
 #, php-format
-msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB, including help files) for <b>Windows 2000/XP/Vista/7</b>"
-msgstr "<b>Windows 2000/XP/Vista/7</b>用<a href=\"%s\">Audacity %s インストーラー</a> (.exe ファイル, %.1lf MB, ヘルプファイル含む)"
+msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB, including help files) for <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b>"
+msgstr "<b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b>用<a href=\"%s\">Audacity %s インストーラー</a> (.exe ファイル, %.1lf MB, ヘルプファイル含む) for "
 
 #: download/windows.php:32
 #, php-format
-msgid "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for <b>Windows 2000/XP/Vista/7</b> - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions."
-msgstr "<b>Windows 2000/XP/Vista/7</b>用<a href=\"%s\">Audacity %s zip ファイル</a> (%.1lf MB)  -  ヘルプファイル無しでダウンロードしたい場合、あるいは環境の制限でインストーラを実行できない場合にはこれをお使いください。"
+msgid "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b> - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions."
+msgstr "<b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b>用<a href=\"%s\">Audacity %s zip ファイル</a> (%.1lf MB)  -  ヘルプファイル無しでダウンロードしたい場合、あるいは環境の制限でインストーラを実行できない場合にはこれをお使いください。"
 
 #: download/windows.php:54
 #, php-format
@@ -4209,13 +4228,13 @@ msgid "Audacity Nightly Builds"
 msgstr "Audacity Nightly Builds"
 
 #: download/windows.php:103
-msgid "<b>For advanced users</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Nightly Builds</a> for <b>Windows 2000/XP/Vista/7</b> are available for testing purposes."
-msgstr "<b>上級ユーサー向け</b>に, <b>Windows 2000/XP/Vista/7</b>用の<a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Nightly Builds</a> をテスト目的で使用することができます。"
+msgid "<b>For advanced users</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Nightly Builds</a> for <b>Windows 2000/XP/Vista/Windows 7/Windows 8</b> are available for testing purposes."
+msgstr "<b>上級ユーサー向け</b>に, <b>Windows 2000/XP/Vista/Windows 7/Windows 8</b>用の<a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Nightly Builds</a> をテスト目的で使用することができます。"
 
 #: download/windows.php:111
-#: download/beta_windows.php:21
-msgid "Read about Audacity on Windows <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>."
-msgstr "<a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> および <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>についてお読みください。"
+#, php-format
+msgid "Read about Audacity on <a href=\"%s\">Windows Vista</a>, <a href=\"%s\">Windows 7</a> and <a href=\"%s\">Windows 8</a>."
+msgstr "Audacityの <a href=\"%s\">Windows Vista</a>, <a href=\"%s\">Windows 7</a> および <a href=\"%s\">Windows 8</a>対応についてお読みください。"
 
 #: download/windows.php:112
 #: download/beta_windows.php:59
@@ -4338,6 +4357,10 @@ msgstr "<a href=\"http://wxwidgets.org\">wxWidgets</a> ライブラリが必要�
 #: download/beta_windows.php:13
 msgid "Windows Beta"
 msgstr "Windows ベータ"
+
+#: download/beta_windows.php:21
+msgid "Read about Audacity on Windows <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>."
+msgstr "<a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> および <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>についてお読みください。"
 
 #: download/beta_windows.php:25
 #, php-format
@@ -4797,8 +4820,8 @@ msgid "Audacity for Windows&reg;"
 msgstr "Windows&reg 版Audacity"
 
 #: download/index.php:40
-msgid "(Windows 2000/XP/Vista/7)"
-msgstr "(Windows 2000/XP/Vista/7)"
+msgid "(Windows 2000/XP/Vista/Windows 7/Windows 8)"
+msgstr "(Windows 2000/XP/Vista/Windows 7/Windows 8)"
 
 #: download/index.php:48
 msgid "Audacity for Mac&reg;"
@@ -4876,26 +4899,28 @@ msgid "Audacity is always free to download from us, but third parties can also s
 msgstr "Audacityはいつでも私たちから自由にダウンロードできますが、<a href=\"../about/license#license\">GNU General Public License</a>のおかげでサードパーティが販売したり配布することも可能です。ただしそれらは最新バージョンでないこともありますので、ご購入前に確認されることをお勧めします。"
 
 #: download/buy.php:15
-msgid ""
-"<h3>Windows or Linux </h3>\n"
-"  <p>\n"
-"   <ul>\n"
-"    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</a> is a collection of free, open source software for <b>Windows and Linux</b> with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you (US only).</li>\n"
-"    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software for <b>Windows</b>. Currently, you can still <a href=\"http://releases.theopencd.org/\">download archived CD images</a> or <a href=\"http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">purchase a CD online</a> for worldwide shipping.</li>\n"
-"    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> is a similar collection of high quality free and open source software for <b>Windows</b>. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. The project hopes to make available a purchasable CD shortly.</li>\n"
-"    <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a> contains twenty-two open-source <b>Windows</b> programs on a single CD. You can download and burn the ISO image, or purchase the CD for worldwide shipping.</li>\n"
-"   </ul>\n"
-"  </p>"
-msgstr ""
-"<h3>WindowsまたはLinux</h3>\n"
-"  <p>\n"
-"   <ul>\n"
-"    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</a> は<b>WindowsおよびLinux</b>向けのフリーおよびオープンソースソフトウェアのコレクションで、ソースコードを含んでおり GNU General Public Licenseisの下で容易に再配布できます。 ISOイメージが無料でダウンロードできます。 またはCDを <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">購入</a>することができます（米国内のみ）</li>\n"
-"    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a>は<b>Windows</b>向けの高品質なフリーおよびオープンソースソフトウェアのコレクションですが、現在販売中止しています。  現時点では<a href=\"http://releases.theopencd.org/\">アーカイブCDイメージのダウンロード</a>を行うか、または世界中に出荷可能な  <a href=\"http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">CDのオンライン購入</a> にて入手可能です。</li>\n"
-"    <li><a href=\"http://theopendisc.com/\">OpenDisc</a>も類似の<b>Windows</b>向け高品質なフリーおよびオープンソースソフトウェアのコレクションです。現時点では、<a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CDイメージ</a>がダウンロード可能です。CDの販売が近いうちに可能になると期待されています。</li>\n"
-" <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a>は22のオープンソースの<b>Windows</b>プログラムを1枚のCDに収めたものです。ISOイメージファイルをダウンロードしてCDに書き込むかCDを購入することができます。</li>\n"
-"   </ul>\n"
-"  </p>"
+msgid "<h3>Windows or Linux </h3>"
+msgstr "<h3>WindowsまたはLinux </h3>"
+
+#: download/buy.php:19
+#, php-format
+msgid "<li><a href=\"%s\">OpenDisc</a> is a collection of high quality free and open source software for <b>Windows</b>. You can download the latest CD image for free, or donate to receive a CD copy anywhere in the world.</li>"
+msgstr "<li><a href=\"%s\">OpenDisc</a> は<b>Windows</b>用の高品質フリーソフトウェアおよびオープンソースソフトウェアを集めたCDです。 CDイメージは無料でダウンロードできます。また寄付をいただければCDを世界中どこにでも出荷できます。</li>"
+
+#: download/buy.php:20
+#, php-format
+msgid "<li><a href=\"%s\">FreedomSampler&trade;</a> is a collection of free, open source software for <b>Windows and Linux</b> with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you (US only)</li>"
+msgstr "<li><a href=\"%s\">FreedomSampler&trade;</a> は<b>Windows および Linux</b>用 フリーおよびオープンソースソフトウェアのコレクションで、ソースコードを含んでおり GNU General Public Licenseisの下で容易に再配布できます。 ISOイメージが無料でダウンロードできます。またはCDを<a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">購入</a>することが可能です（米国内のみ）</li>"
+
+#: download/buy.php:21
+#, php-format
+msgid "<li><a href=\"%s\">VALO-CD</a> contains twenty-two open-source <b>Windows</b> programs on a single CD. You can download and burn the ISO image for free, or purchase the CD for worldwide shipping.</li>"
+msgstr "<li><a href=\"%s\">VALO-CD</a>は22のオープンソースの<b>Windows</b>プログラムを1つのCDに収めたものです。ISOイメージファイルをダウンロードしてCDに書き込むかCDを購入することができます。</li>"
+
+#: download/buy.php:22
+#, php-format
+msgid "<li><a href=\"%s\">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software for <b>Windows</b>. Currently, you can still <a href=\"%s\">download archived CD images for free</a>, or <a href=\"%s\">purchase a CD online</a> for worldwide shipping.</li>"
+msgstr "<li><a href=\"%s\">TheOpenCD</a>は高品質な<b>Windows</b>用フリーおよびオープンソースソフトウェアのコレクションですが、現在販売中止しています。  現時点では<a href=\"%s\">アーカイブCDイメージのダウンロード</a>を行うか、または世界中に出荷可能な <a href=\"%s\">CDのオンライン購入</a> にて入手可能です。</li>"
 
 #: download/beta_linux.php:19
 msgid "Downloads"
@@ -5679,36 +5704,36 @@ msgstr "もっとニュースを見る"
 #. See the bottom of each page for versions in other languages.
 #.
 #: about/license.php:25
-msgid ""
-"<h3 id=\"license\">License</h3>\n"
-"\n"
-"<p>Audacity is <a href=\"http://manual.audacityteam.org/help/manual/man/faq_about_audacity.html#free\">free software</a>. You may use it for any personal, commercial or educational purpose, including installing it on as many different computers as you wish.</p>\n"
-"\n"
-"<p>You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License (GPL)</a> as published by the Free Software Foundation - either <a href=\"http://www.gnu.org/licenses/old-licenses/gpl-2.0.html\">version 2 of the License</a>, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the GPL. "
-msgstr ""
-"<h3 id=\"license\">ライセンス</h3>\n"
-"\n"
-"<p>Audacity は <a href=\"http://manual.audacityteam.org/help/manual/man/faq_about_audacity.html#free\">フリーソフトウェア</a>です。どなたでも個人、商業および教育目的に使用することができ、どのような種類のコンピュータにインストールしてもかまいません。</p>\n"
-"\n"
-"<p>Free Software Foundation より発行されている<a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License (GPL)</a>- <a href=\"http://www.gnu.org/licenses/old-licenses/gpl-2.0.html\">version 2 of the License</a>または（必要であれば）その後のバージョン -の条件のもとで、Audacityをコピー、配布、改変、または/および再販することもできます。  この権利が与えられるためには、あなたが配布したコードそのものもGPLのもとで提供されなければなりません。 "
+msgid "<h3 id=\"license\">License</h3>"
+msgstr "<h3 id=\"license\">ライセンス</h3>"
+
+#: about/license.php:29
+#, php-format
+msgid "Audacity is <a href=\"%s\">free software</a>. You may use it for any personal, commercial or educational purpose, including installing it on as many different computers as you wish."
+msgstr "Audacityは<a href=\"%s\">フリーソフトウェア</a>です。 個人、商用あるいは教育目的で使用することができます。さらに複数のコンピュータにインストールすることが可能です。"
+
+#: about/license.php:33
+#, php-format
+msgid "You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href=\"%s\">GNU General Public License (GPL)</a> as published by the Free Software Foundation - either <a href=\"%s\">version 2 of the License</a>, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the GPL. If you distribute or recommend Audacity in any way, please cite our trademark by referring to Audacity as \"Audacity(R)\"."
+msgstr "Free Software Foundation より発行されている<a href=\"%s\">GNU General Public License (GPL)</a>-<a href=\"%s\">version 2 of the License</a>または（必要であれば）その後のバージョン -の条件のもとで、Audacityをコピー、配布、改変、または/および再販することもできます。  この権利が与えられるためには、配布されたコードそのものもGPLのもとで提供されなければなりません。  Audacityを配布したり推薦する際には、私たちの商標を \"Audacity(R)\"として引用してください。"
 
 #. i18n-hint: the encoding inside the <a href> tag between the two
 #. "echo" strings here and elsewhere on this page obscures the
 #. email address from (at least some) harvesting bots. Only the two
 #. strings above and below the <a href> tag need to be translated.
-#: about/license.php:35
+#: about/license.php:42
 msgid "If you have questions, please "
 msgstr "ご質問などのお問い合わせは、"
 
-#: about/license.php:38
+#: about/license.php:45
 msgid "e-mail us."
 msgstr "Eメールをお送りください。"
 
-#: about/license.php:42
+#: about/license.php:49
 msgid "See also <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Frequently Asked Questions about the GNU GPL</a>."
 msgstr "<a href=\"http://www.gnu.org/licenses/gpl-faq.html\">GNU GPLに関するよくある質問</a>もご覧ください。"
 
-#: about/license.php:44
+#: about/license.php:51
 msgid ""
 "<h3 id=\"advice\">Advice for Vendors and Distributors</h3>\n"
 "\n"
@@ -5718,15 +5743,15 @@ msgstr ""
 "\n"
 "<p>さまざまな企業や個人のみなさんがAudacityをバンドル、再販、あるいは配布しています。以下はバンドル、再販、配布に関する要求条件とガイドラインです。 "
 
-#: about/license.php:49
+#: about/license.php:56
 msgid "If you adhere to these, please "
 msgstr "これらの条件とガイドラインに合致している場合、"
 
-#: about/license.php:52
+#: about/license.php:59
 msgid "e-mail us</a> for possible inclusion on our <a href=\"../download/bundlers\">Vendors and Distributors of Audacity</a> page."
 msgstr "私たちにE-mail</a> をお送りください。<a href=\"../download/bundlers\">Audacityのベンダーとディストリビュータ</a>ページに掲載できる可能性があります。"
 
-#: about/license.php:56
+#: about/license.php:63
 msgid ""
 "<h4 >Legal Requirements</h4>\n"
 "\n"
@@ -5746,15 +5771,16 @@ msgstr ""
 "  </ol>\n"
 "</p>"
 
-#: about/license.php:65
-msgid "<p>If you distribute our <a href=\"http://audacity.sourceforge.net/download/\">installers</a> and do not modify them, this will fully comply, because the installers include the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> and an offer in README.txt for users to obtain the source code from us. Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog.</p>"
-msgstr "<p>改変なしであれば私たちの<a href=\"http://audacity.sourceforge.net/download/\">インストーラー</a> を配布することができます。なぜならこのインストーラーは <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a>を含み、私たちよりソースコードを入手する方法がREADME.txtに記載されているからです。バージョン1.3.3以降のAudacityはそれ自身に「Audacityについて」ダイアログの中に含まれています。</p>"
+#: about/license.php:72
+#, php-format
+msgid "<p>If you distribute our <a href=\"%s\">installers</a> and do not modify them, this will fully comply, because the installers include the <a href=\"%s\">GPL</a> and an offer in README.txt for users to obtain the source code from us. Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog. On this site, we block advertisements from distributors offering modified installers of Audacity, on the expectation that any modification is likely adding unwanted software.</p>"
+msgstr "<p>改変なしであれば私たちの<a href=\"%s\">インストーラー</a> を配布することができます。なぜならこのインストーラーは <a href=\"%s\">GPL</a>を含み、私たちよりソースコードを入手する方法がREADME.txtに記載されているからです。バージョン1.3.3以降のAudacityではGPLは「Audacityについて」ダイアログの中に含まれています。 このWebサイトでは改変されたAudacityのインストーラーを提供するディストリビューターの広告はブロックしています。なぜならそのような改変は不必要なソフトウェアを追加していることが多いからです。</p>"
 
-#: about/license.php:67
+#: about/license.php:74
 msgid "<p>Additionally, the name <b>Audacity</b>&reg; is a <b>registered trademark</b> of Dominic Mazzoni. Therefore you <b>may not</b> advertise yourself or your business as an authorized distributor of Audacity, and you <b>may not</b> modify Audacity then continue to use the Audacity name without the express permission of the Audacity Team.</p>"
 msgstr "<p>さらに<b>Audacity</b>&reg; という名前は Dominic Mazzoniによる<b>登録商標（registered trademark）</b> です。したがって、あなたあるいはあなたの会社がAudacityの公認販売者として広告することは<b>できません</b>。またAudacityチームから正式な許可を得ずにAudacityを改造したうえでAudacityの名前を使い続けては<b>なりません</b>。 </p>"
 
-#: about/license.php:69
+#: about/license.php:76
 msgid ""
 "<h4 >Updating and Documenting Audacity</h4>\n"
 "\n"
@@ -5764,39 +5790,39 @@ msgstr ""
 "\n"
 "<p>私たちのWebサイト: <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a>へのリンクによりあなたのユーザーが最新バージョンのAudacityをダウンロードできるようにすることを歓迎いたします。 さらに、<a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> の末尾にある通知リストを購読しAudacityのお知らせを受け取り、最新バージョンを配布できるようにしてください。</p>"
 
-#: about/license.php:73
+#: about/license.php:80
 msgid "<p>If you bundle the .exe or .dmg Audacity installers, the Audacity <a href=\"http://manual.audacityteam.org/help/manual/\">Manual</a> is included. If you provide the Audacity zip file or source tarball, please consider including the <a href=\"http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html\">standalone Manual</a> with your distribution to reduce the number of queries we receive."
 msgstr "<p>exe形式またはdmg形式のAudacityインストーラーをバンドルする際にはAudacity <a href=\"http://manual.audacityteam.org/help/manual/\">マニュアル</a> が含まれます。Audacityのzipファイルやsource tarballを提供する際には、<a href=\"http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html\">standalone マニュアル</a>を同梱することをご検討ください。そうすれば私たちへの問い合わせを減らすことができます。"
 
-#: about/license.php:76
+#: about/license.php:83
 msgid "IMPORTANT: If you write your own documentation for Audacity, please "
 msgstr "重要：もしあなたが独自にAudacityのドキュメンテーションを作成する場合は"
 
-#: about/license.php:79
+#: about/license.php:86
 msgid "submit it to us</a> for review <em>before</em> you publish it.</p>"
 msgstr "私たちに提出してください</a>。発行する<em>前</em>にレビューいたします。</p>"
 
-#: about/license.php:81
+#: about/license.php:88
 msgid "<h4>For vendors selling a hardware product, with Audacity included:</h4>"
 msgstr "<h4>Audacityを同封したハードウェア製品を販売するベンダーの方へ：</h4>"
 
-#: about/license.php:87
+#: about/license.php:94
 msgid "<li>Thank you for choosing to distribute Audacity with your product! Please "
 msgstr "<li>貴社の製品に同封してAudacityを配布いただきありがとうございます! "
 
-#: about/license.php:90
+#: about/license.php:97
 msgid "contact us</a> early so we can work together to make your product a success.</li>"
 msgstr "できるだけ早くご連絡ください</a>。そうすれば貴社の製品の成功のために協業することができます。 </li>"
 
-#: about/license.php:93
+#: about/license.php:100
 msgid "<li>Please distribute Audacity unmodified. If you need to modify it to work with your device, please "
 msgstr "<li>Please distribute Audacity unmodified. If you need to modify it to work with your device, please "
 
-#: about/license.php:96
+#: about/license.php:103
 msgid "contact us</a> first.</li>"
 msgstr "まずご連絡ください</a>。 </li>"
 
-#: about/license.php:99
+#: about/license.php:106
 msgid ""
 "<li>Please test your device with Audacity thoroughly. If there are any specific configuration instructions needed to make your device work with Audacity, please ensure these are included with the device.</li>\n"
 "        <li>Please note that we cannot help your customers with problems specific to your device - these must be dealt with by your own qualified staff. Users needing support with Audacity itself can find assistance at <a href=\"http://audacity.sourceforge.net/contact/\">http://audacity.sourceforge.net/contact/</a>.</li>\n"
@@ -5808,7 +5834,7 @@ msgstr ""
 "  </ol>\n"
 "</p>"
 
-#: about/license.php:104
+#: about/license.php:111
 msgid ""
 "<h4>For those wishing to resell Audacity, or a rebranded version of it:</h4>\n"
 "\n"
@@ -5824,15 +5850,15 @@ msgstr ""
 "    <li>Audacityをそのままで再販しようとする場合、Audacityがインタネット上で無料で入手できること、かつお客様が貴社から購入することのメリットを明記しなくてはなりません。たとえば、AudacityをCD-ROMで提供したり、他のソフトウェアや音楽ファイルにバンドルしたり、印刷されたマニュアルを提供したりすることが可能です。</li>\n"
 "    <li>Audacityを改変したバージョンを再販する場合は、貴社自身による技術サポートやドキュメンテーション に努めねばなりません。 "
 
-#: about/license.php:112
+#: about/license.php:119
 msgid "If you are reselling Audacity exactly as obtained from us and have questions about this, please "
 msgstr "貴社が、私たちから提供を受けたそのままのAudacityを再販しようとしており、それについて質問がある場合、"
 
-#: about/license.php:115
+#: about/license.php:122
 msgid "e-mail us</a>."
 msgstr "Eメールをお送りください</a>。"
 
-#: about/license.php:117
+#: about/license.php:124
 msgid ""
 "<li>Please read these <a href=\"http://audacityteam.org/wiki/index.php?title=AudacityVendors#General_Advice\">additional guidelines for resellers</a> on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</li>\n"
 "  </ol>\n"
@@ -6152,13 +6178,13 @@ msgstr "広告ポリシー"
 # New
 #: contact/privacy.php:18
 msgid ""
-"<p>On some pages on our main site, we show advertisements from Google's AdSense program. See our &ldquo;<a href=\"http://audacity.sourceforge.net/donate/\">How Does Audacity Raise Money?</a>&rdquo; page for the reasons we show advertisements.</p>\n"
+"<p>On some pages on this site, we show advertisements from Google's AdSense program. See our &ldquo;<a href=\"http://audacity.sourceforge.net/donate/\">How Does Audacity Raise Money?</a>&rdquo; page for the reasons we show advertisements.</p>\n"
 "\n"
 "<p>As of April 8, 2009, this includes \"interest-based\" advertising, which utilizes cookies to try to determine users' areas of interest (for example, audio editing), to show advertisements of likelier interest. Please see Google's <a href=\"http://www.google.com/policies/privacy/ads/\">Advertising privacy FAQ</a> for information regarding your privacy including how to <a href=\"http://www.google.com/policies/privacy/ads/#toc-optout\">opt out</a> of this tracking.</p>"
 msgstr ""
 "<p>私たちのWebサイトのページにはGoogleの AdSense プログラムによる広告が掲載されています。その理由については &ldquo;<a href=\"http://audacity.sourceforge.net/donate/\">Audacityはどうやって資金を集めているのですか？</a>&rdquo; のページをご覧ください。</p>\n"
 "\n"
-"<p>2009年4月8日、\"興味ベース\"広告が加わりました。これはcookieを使用してユーザの興味ある分野（たとえばオーディオ編集）に近い広告を表示するものです。 プライバシーに関する情報は<a href=\"http://www.google.com/policies/privacy/ads/\">Google Advertising Cookie and Privacy Policies</a> およびこのサービスを<a href=\"http://www.google.com/policies/privacy/ads/#toc-optout\">オプトアウト（拒否する）</a> 方法についてご参照ください。</p>"
+"<p>2009年4月8日、\"興味ベース\"広告が加わりました。これはcookieを使用してユーザの興味ある分野（たとえばオーディオ編集）に近い広告を表示するものです。 プライバシーに関する情報は<a href=\"http://www.google.com/policies/privacy/ads/\">Advertising privacy FAQ</a> およびこのサービスを<a href=\"http://www.google.com/policies/privacy/ads/#toc-optout\">オプトアウト（拒否する）</a> 方法についてご参照ください。</p>"
 
 #: contact/privacy.php:22
 msgid "Announcement List Policy"
@@ -6359,8 +6385,8 @@ msgstr "ウェブサイトの著作権と商標"
 #. if you wish.
 #: copyright.php:22
 #, php-format
-msgid "This web site is Copyright &copy; %s members of the Audacity development team.  Except where otherwise noted, all text and images on this site are licensed under the <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, version 2.0</a>.  You may modify, copy, distribute, and display this material, but you must give credit to the original authors.  Please see the license for details."
-msgstr "このウェブサイトはAudacity開発チームのメンバーたち%sが著作権を有しています。特記のある場合を除いて、このサイト上の文章と絵は、 <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, version 2.0</a>に基づいています。あなたは、このサイトの部分を変更したり、コピーしたり、再配布したりすることができますが、あなたは原文の作者に功績を讃えなければなりません。詳しくはライセンスをご覧ください。なお、このウェブサイトの日本語翻訳は、<a href=\"mail to:kuzu@mpd.biglobe.ne.jp\">くず</a>、および<a href=\"mail to:ayoshida.pub@gmail.com\">Atsushi YOSHIDA</a>が行いました。"
+msgid "This web site is Copyright &copy; %s members of the Audacity development team.  Except where otherwise noted, all text and images on this site are licensed under the <a href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons Attribution License, version 3.0</a>.  You may modify, copy, distribute, and display this material, but you must give credit to the original authors.  Please see the license for details."
+msgstr "このウェブサイトはAudacity開発チームのメンバーたちが著作権(Copyright &copy; %s)を有しています。特記のある場合を除いて、このサイト上の文章と絵は、 <a href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons Attribution License, version 3.0</a>に基づいています。あなたは、このサイトの部分を変更したり、コピーしたり、再配布したりすることができますが、あなたは原文の作者に功績を讃えなければなりません。詳しくはライセンスをご覧ください。なお、このウェブサイトの日本語翻訳は、<a href=\"mail to:kuzu@mpd.biglobe.ne.jp\">くず</a>、および<a href=\"mail to:ayoshida.pub@gmail.com\">Atsushi YOSHIDA</a>が行いました。"
 
 #: copyright.php:24
 msgid "\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a trademark of Google, Inc."
@@ -9023,10 +9049,6 @@ msgstr "フリーのオーディオエディタ・レコーダー"
 msgid "for Windows"
 msgstr "Windows向け"
 
-#: index.php:24
-msgid "2000/XP/Vista/7"
-msgstr "2000/XP/Vista/7"
-
 #: index.php:35
 msgid "for Mac"
 msgstr "Mac向け"
@@ -9118,48 +9140,110 @@ msgid "Make a Donation"
 msgstr "寄付について"
 
 #: donate/index.php:19
-msgid "Click the button below to donate securely by Paypal (a Paypal account is not required). You can send any amount, using either your credit card or your Paypal account:"
-msgstr "別の方法として下のボタンを押すことでPaypalにより安全に送金できます（Paypalアカウントをお持ちでなくても可能）。またクレジットカードあるいはお持ちのPaypal口座よりどんな金額でも送金できます。"
+msgid "Click the button below to donate securely by PayPal (a PayPal account is not required). You can send any amount, using either your credit card or your PayPal account:"
+msgstr "下のボタンを押すことでPaypalにより安全に送金できます（Paypalアカウントをお持ちでなくても可能）。 またクレジットカードあるいはお持ちのPaypal口座よりどんな金額でも送金できます。"
 
-#. i18n-hint: the encoding inside the <a href> tag between the two
-#. "echo" strings obscures the e-mail address from (at least some)
-#. harvesting bots. Please translate the strings above and below
-#. the <a href> tag, and ignore the line with the <a href> tag itself.
-#: donate/index.php:42
-msgid "If you prefer to send a personal check or another form of payment, please write to our "
-msgstr "もしパーソナルチェックまたは他の方法による送金をご希望の場合は、"
+#: donate/index.php:49
+msgid "Please note that we cannot accept other forms of payment such as checks or bank transfers. Also, donations to Audacity are not deductible for income taxes in the United States of America."
+msgstr "私たちは小切手や銀行送金等の方法では受け付けておりません。またAudacityへの寄付金はアメリカ合衆国での所得税控除対象ではありません。"
 
-#: donate/index.php:45
-msgid "feedback e-mail address</a> telling us what country you are in and how you'd like to pay."
-msgstr "フィードバックe-mailアドレス</a>にお住まいの国をご希望の支払方法をお知らせください。 "
-
-#: donate/index.php:53
+#: donate/index.php:55
 msgid "Audacity raises money via donations, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
 msgstr "Audacityは<a href=\"#donate\">寄付</a>、 <a href=\"http://audacityteam.org/sponsor.php\">スポンサーシップ</a>、および私たちのWebサイトでの <a href=\"../contact/privacy#advertising\">広告</a>によって資金を調達しています。"
 
-#: donate/index.php:57
+#: donate/index.php:59
 msgid "As of March 2007, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, which hosts the Audacity site and downloads, is allowing us to also post advertisements, in an innovative program whereby we split the revenues. Thank you, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
 msgstr "2007年3月、AudacityのWebサイトとダウンロードをホスティングしている<a href=\"http://sourceforge.net/\">SourceForge.net</a> は収入を分配する画期的なプログラムのもとで私たちが広告を掲載することを許可いただきました。 <a href=\"http://sourceforge.net/\">SourceForge.net</a>に感謝いたします!"
 
-#: donate/index.php:61
+#: donate/index.php:63
 msgid "Income to Audacity is not distributed among previous contributors to Audacity. There are too many people and it would be difficult to do so fairly. Also, nobody contributed code to Audacity expecting money in return. Audacity is developed by volunteers, working in our spare time. Audacity is not shareware, and we do not expect to make any money from it."
 msgstr "Audacityへの収入はAudacityへのこれまでの貢献者の間で分配されているわけではありません。大変多くの人が関わっており公平に分配するのは容易ではありません。しかも、貢献者は誰もコード作成の対価としてのお金を期待していません。Audacityは空いた時間に活動するボランティアによって開発されています。Audacityはシェアウェアではありません。私たちはこの活動からお金を得ることを期待していません。"
 
-#: donate/index.php:65
+#: donate/index.php:67
 msgid "Rather, the team of Audacity lead developers will spend the money on items and services that benefit the project as a whole. Money that comes in to the project helps us pay for bandwidth and web hosting, development tools, and audio hardware. In the past we used funds from donations to purchase the Audacity trademark and to subsidize travel costs for Audacity developers to meet for a hackathon, and we plan to do more of these. Our long-term goal is to bring in enough money to hire a full-time developer who could devote all of his/her time to the project and take over some of the administrative,  maintenance and release tasks, freeing volunteers to spend more time on code."
 msgstr "むしろ、Audacityの開発リーダーたちはプロジェクト遂行のための種々の物品やサービスのためにお金を使っています。 私たちのプロジェクトにいただくお金は回線料金やWebホスティング, 開発ツールやオーディオハードウェアに役立っています。これまで、私たちは寄付でいただいた資金を、Audacity商標の購入、開発者たちがプログラマーのイベントに出席するための出張費の補助などに使いました。そしてこれらの活動をさらに行う計画です。私たちの長期的な目標は専従の開発者を雇うために十分な資金をもたらすことです。 専従開発者はこのプロジェクトのためにフルタイムで働き、保守やリリース作業などの管理業務も引き継ぐことでボランティアたちがより多くの時間をコード開発に使えるようにすることが目的です。"
 
-#: donate/index.php:69
+#: donate/index.php:71
 msgid "These are all things that help us provide Audacity for free and continue to make it better. The Audacity Team is completely committed to keeping Audacity free and open source. We made that commitment in <a href=\"http://audacity.sourceforge.net/about/license\">licensing Audacity under the GNU General Public License</a>."
 msgstr "これらすべては私たちがAudacityを無料で提供しさらに改良し続けるために役立っています。 AudacityチームはAudacityがフリーでオープンソースであり続けることを約束します。私たちはこの約束を<a href=\"http://audacity.sourceforge.net/about/license\">GNU General Public LicenseのもとでのAudacityのライセンスについて</a>の中で述べています。"
 
-#: donate/index.php:72
+#: donate/index.php:74
 msgid "Other Ways to Contribute"
 msgstr "その他の貢献方法"
 
-#: donate/index.php:75
+#: donate/index.php:77
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr "さまざまな方法でみなさんがAudacityプロジェクトに参加しサポートすることができます。お金の寄付以外にも、たとえば <a href=\"../community/developers\">プログラミング</a>、<a href=\"../contact#feedback\">テスト</a>、 <a href=\"http://manual.audacityteam.org/\">ドキュメント作成</a>、<a href=\"../community/translation\">翻訳</a> あるいは<a href=\"http://forum.audacityteam.org/\">Forum</a>にて質問に答えることでも <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">貢献</a> いただくことができます。私たちはAudacityをご使用いただき改善点をご提案いただいたり、Audacityのことを他の方々に広めていただくだけでも大変意義のある貢献だと考えており歓迎いたします。 Audacityへにサポートに感謝いたします。"
+
+#~ msgid ""
+#~ "<h3>Windows or Linux </h3>\n"
+#~ "  <p>\n"
+#~ "   <ul>\n"
+#~ "    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</"
+#~ "a> is a collection of free, open source software for <b>Windows and "
+#~ "Linux</b> with full source code, allowing easy redistribution under the "
+#~ "GNU General Public License. ISO images may be downloaded for free, or you "
+#~ "can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/"
+#~ "freedomsampler\">purchase</a> a copy to be shipped to you (US only).</"
+#~ "li>\n"
+#~ "    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a now-"
+#~ "discontinued collection of high quality free and open source software for "
+#~ "<b>Windows</b>. Currently, you can still <a href=\"http://releases."
+#~ "theopencd.org/\">download archived CD images</a> or <a href=\"http://www."
+#~ "thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">purchase a "
+#~ "CD online</a> for worldwide shipping.</li>\n"
+#~ "    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> is a similar "
+#~ "collection of high quality free and open source software for <b>Windows</"
+#~ "b>. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/"
+#~ "opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. "
+#~ "The project hopes to make available a purchasable CD shortly.</li>\n"
+#~ "    <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a> contains twenty-"
+#~ "two open-source <b>Windows</b> programs on a single CD. You can download "
+#~ "and burn the ISO image, or purchase the CD for worldwide shipping.</li>\n"
+#~ "   </ul>\n"
+#~ "  </p>"
+#~ msgstr ""
+#~ "<h3>WindowsまたはLinux</h3>\n"
+#~ "  <p>\n"
+#~ "   <ul>\n"
+#~ "    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</"
+#~ "a> は<b>WindowsおよびLinux</b>向けのフリーおよびオープンソースソフトウェア"
+#~ "のコレクションで、ソースコードを含んでおり GNU General Public Licenseisの"
+#~ "下で容易に再配布できます。 ISOイメージが無料でダウンロードできます。 また"
+#~ "はCDを <a href=\"http://www.twistedlincoln.com/shop/catalog/products/"
+#~ "freedomsampler\">購入</a>することができます（米国内のみ）</li>\n"
+#~ "    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a>は<b>Windows</"
+#~ "b>向けの高品質なフリーおよびオープンソースソフトウェアのコレクションです"
+#~ "が、現在販売中止しています。  現時点では<a href=\"http://releases."
+#~ "theopencd.org/\">アーカイブCDイメージのダウンロード</a>を行うか、または世"
+#~ "界中に出荷可能な  <a href=\"http://www.thelinuxshop.co.uk/catalog/"
+#~ "product_info.php?products_id=189\">CDのオンライン購入</a> にて入手可能で"
+#~ "す。</li>\n"
+#~ "    <li><a href=\"http://theopendisc.com/\">OpenDisc</a>も類似の"
+#~ "<b>Windows</b>向け高品質なフリーおよびオープンソースソフトウェアのコレク"
+#~ "ションです。現時点では、<a href=\"http://downloads.sourceforge.net/"
+#~ "opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CDイメージ</a>がダウンロード"
+#~ "可能です。CDの販売が近いうちに可能になると期待されています。</li>\n"
+#~ " <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a>は22のオープンソースの"
+#~ "<b>Windows</b>プログラムを1枚のCDに収めたものです。ISOイメージファイルをダ"
+#~ "ウンロードしてCDに書き込むかCDを購入することができます。</li>\n"
+#~ "   </ul>\n"
+#~ "  </p>"
+
+#~ msgid "2000/XP/Vista/7"
+#~ msgstr "2000/XP/Vista/7"
+
+#~ msgid ""
+#~ "If you prefer to send a personal check or another form of payment, please "
+#~ "write to our "
+#~ msgstr "もしパーソナルチェックまたは他の方法による送金をご希望の場合は、"
+
+#~ msgid ""
+#~ "feedback e-mail address</a> telling us what country you are in and how "
+#~ "you'd like to pay."
+#~ msgstr ""
+#~ "フィードバックe-mailアドレス</a>にお住まいの国をご希望の支払方法をお知らせ"
+#~ "ください。 "
 
 #~ msgid "If you enjoy Audacity,"
 #~ msgstr "もしAudacityを気に入っていただけましたら、"
