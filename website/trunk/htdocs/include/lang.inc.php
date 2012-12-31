@@ -22,6 +22,7 @@ $available_locales = array(
   "af" => array("af_ZA", "Afrikaans"),
   "eu" => array("eu_ES", "Basque"),
   "cs" => array("cs_CZ", "Česky"),
+  "hr" => array("hr_HR", "Croatian"),
   "de" => array("de_DE", "Deutsch"),
   "el" => array("el_GR", "Ελληνικά"),
   "en" => array("en_US", "English"),
