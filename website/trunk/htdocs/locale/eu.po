@@ -7,9 +7,9 @@ msgstr ""
 "Project-Id-Version: audacity-website.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-31 20:07+0000\n"
-"PO-Revision-Date: 2012-11-01 22:26-0000\n"
-"Last-Translator:(EUS_Xabier Aramendi)\n"
-"Language-Team: (EUS_Xabier Aramendi)\n"
+"PO-Revision-Date: 2013-01-02 23:48-0000\n"
+"Last-Translator: gale <gale@audacityteam.org>\n"
+"Language-Team: (EUS_Xabier Aramendi) <azpidatziak@gmail.com>\n"
 "Language: Euskara (Basque)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -205,7 +205,7 @@ msgstr "Ikusi SEG online Eskuliburuan"
 
 #: help/faq.php:24
 msgid "In Audacity, click Help > Manual (in web browser), then the \"FAQ\" link in the \"Navigation\" box on the left. The Manual is included with the <a href=\"http://audacity.sourceforge.net/download/windows\">Windows .exe</a> or <a href=\"http://audacity.sourceforge.net/download/mac\">Mac OS X .dmg</a> Audacity installers."
-msgstr "Audacityn, klikatu Laguntza > Eskuliburua (web nabigatzailean), orduan \"SEG\" lotura \"Nabigazioa\" kutxaren ezkerrean. Eskuliburua <a href=\"http://audacity.sourceforge.net/download/windows\">Windows .exe</a> edo <a href=\"http://audacity.sourceforge.net/download/mac\">Mac OS X .dmg</a> Audacity ezartzailek barne dago."
+msgstr "Audacityn, klikatu Laguntza > Eskuliburua (web nabigatzailean), orduan \"SEG\" lotura \"Nabigazioa\" kutxaren ezkerrean. Eskuliburua <a href=\"http://audacity.sourceforge.net/download/windows\">Windows .exe</a> edo <a href=\"http://audacity.sourceforge.net/download/mac\">Mac OS X .dmg</a> Audacity ezartzaileen barne dago."
 
 #: help/faq.php:27
 msgid "Other languages"
@@ -229,7 +229,7 @@ msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/es\">Espainiera</a>"
 
 #: help/faq.php:34
 msgid "<b>Note: </b>For the above three locales, the translation of the remainder of the Manual is not yet fully complete."
-msgstr "<b>Oharra: </b>Gaineko hiru hizkuntzetarako, eskuliburaren gainontzeko itzulpenaa ez dago osorik burututa."
+msgstr "<b>Oharra: </b>Gaineko hiru hizkuntzetarako, eskuliburaren gainontzeko itzulpena ez dago osorik burututa."
 
 #: help/faq.php:36
 msgid "For all other languages, please check <a href=\"faq_i18n\">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0.x. The Manual will be updated for other languages in due course. Volunteers to help with <a href=\"http://manual.audacityteam.org/man/Help:Translating\">translating the Manual<a/> are welcomed."
@@ -267,7 +267,7 @@ msgstr ""
 "<p>Bai, Audacity <a href=\"../about/\">iturburu irekiko software erabat askea da</a>. Askatasun osoa duzu programa hau erabiltzeko asmo zilegi orotan, bai pertsonala, merkataritzakoa edo hezkuntzakoa izan, eta nahi bezain ordenagailutan ezarri dezakezu. Askatasuna duzu ere oparitzeko, saltzeko, edo aldatzeko zeure erabilpenerako, <a href=\"../about/license\">GNU Baimen Publiko Orrokorra</a>-ren baldintzetan.</p>\n"
 "<p>Audacityren egileek zergaiti askogaitik erabaki zuten GPL baldintzatan argitaratzea. Gutariko batzuk eskuzabaltasunagaitik egin dugu, zeren sentitzen dugu software oro askea izan behar dela; beste batzuk uste dute bientzat dagoela tokia, software askerako eta jabetzakorako.</p>\n"
 "<p>Audacity askea izatearen zergaitietako bat ezagunagoa eta erabilgarriagoa izango dela da.  Beste zergaiti bat elkarlaguntza sustatzea da. Audacity baimen askekoa izateagaitik, dozenaka norbanakok munduan zehar lagundu du kodearekin, akats zuzenketekin, agiritzarekin eta grafikoekin.</p>\n"
-"<p>Ongi etorriak dira Audacityren garapena sostengatzeko <a href=\"/donate/\">dirulaguntza</a>-k.</p>"
+"<p>Ongi etorriak dira Audacityren garapena sostengatzeko <a href=\"/donate/\">dirulaguntza</a>k.</p>"
 
 #: help/faq_i18n.php:32
 msgid "Does Audacity contain any viruses, spyware or adware?"
@@ -306,12 +306,12 @@ msgid ""
 "          e-mail us</a> in confidence. </p>\n"
 "<p><b>If you want to obtain Audacity on CD</b>, free ISO downloads and inexpensive CDs by post are available from suppliers on our <a href=\"../download/buy\">Audacity on CD page</a>.</p>"
 msgstr ""
-"<p>Legezkoa da Audacity saltzea, baldin eta saltzaileak programa eta iturburu kodea eskuragarri egiten baditu <a href=\"../about/license\">GNU Baimen Publiko Orokorra</a> (GPL).</p>-ren baldintzetan\n"
+"<p>Legezkoa da Audacity saltzea, baldin eta saltzaileak programa eta iturburu kodea eskuragarri egiten baditu <a href=\"../about/license\">GNU Baimen Publiko Orokorra</a> (GPL) baldintzetan.</p>\n"
 "<p>Saltzaile batzuk bezeroak engainatzen saiatzen dira aldatu gabeko Audacity softwarea beste izen batekin salduz. Produktu bat erosi baduzu eta gero Audacity dela aurkitu baduzu, bultzatzen zaitugu <b>diruaren itzulketa bat eskatzera edo kexu bat aurkeztera</b> sentitzen baduzu ez duzula tratu zuzen bat jaso. Saltzaileei eskatzen diegu Audacity egitasmoari sinesgarritasun egokia ematea, eta erabiltzaileei ahalbidetzea hautapena argibideturik egitea.</p>\n"
-"<p>Kezkaturik bazaude Audacity (aldatu gabeo edo bestela) GPL kopia bat gabe saltzen ari dela, edo iturburu kodeaz hornitzeko eskaintzarik gabe, mesedez\n"
+"<p>Kezkaturik bazaude Audacity (aldatu gabea edo bestela) GPL kopia bat gabe saltzen ari dela, edo iturburu kodeaz hornitzeko eskaintzarik gabe, mesedez\n"
 "          <a href=\"&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#97;&#98;&#x75;&#115;&#x65;&#64;&#97;&#x75;&#100;&#97;&#x63;&#x69;&#116;&#x79;&#x74;&#101;&#97;&#x6d;&#x2e;&#x6f;&#114;&#x67;\">\n"
 "          idatzi diezaguzu post@z</a> konfidantzaz. </p>\n"
-"<p><b>Audacity CD batean lortzea nahi baduzu</b>, ISO jeisketa askeak eta CD merkeak eskuragarri daude post@z hornitzaileengandik gure <a href=\"../download/buy\">Audacity CD-an orrialdea</a>-n.</p>"
+"<p><b>Audacity CD batean lortzea nahi baduzu</b>, ISO jeisketa askeak eta CD merkeak eskuragarri daude post@z hornitzaileengandik gure <a href=\"../download/buy\">Audacity CD-an orrialdea</a>n.</p>"
 
 #: help/faq_i18n.php:54
 msgid "How can I change the language displayed in Audacity?"
@@ -322,8 +322,8 @@ msgid ""
 "<p>The language Audacity uses on first run is determined by the language the operating system uses. To change the current Audacity language, go to the Interface tab of Preferences, choose the specific language required from the \"Language\" box, then click OK.</p>\n"
 "<p>If Audacity is already running in an unfamiliar language, you can still navigate the menus sequentially to change the language, or change it in the audacity.cfg settings file. For instructions, please see <a href=\"http://wiki.audacityteam.org/wiki/Changing_the_current_language\">Changing the current language</a> on the Audacity <a href=\"http://wiki.audacityteam.org\">Wiki</a>.</p>"
 msgstr ""
-"<p>Audacityk lehen abiarazpenean erabiltzen duen hizkuntza sistema eragileak erabiltzen duen hizkuntzaren araberakoa da. Audacityren uneko hizkuntza aldatzeko, joan Hobespenen Interfaze hegatsera, hautatu beharrezko hizkuntza bereizia \"Hizkuntza\" kutxatik eta klikatu Ongi.</p>\n"
-"<p>Audacity jadanik jardunean badago hizkuntza ezezagun batean, oraindik menuetan zehar nabigatu dezakezu sekuntzialki hizkuntza aldatzeko, edo aldatu audacity.cfg ezarpenen agirian. Jarraipideetarako, mesedez ikusi <a href=\"http://wiki.audacityteam.org/wiki/Changing_the_current_language\">Uneko hizkuntza aldaketa</a> Audacityren <a href=\"http://wiki.audacityteam.org\">Wikia</a>-n.</p>"
+"<p>Audacityk lehen abiarazpenean erabiltzen duen hizkuntza sistema eragileak erabiltzen duen hizkuntzaren araberakoa da. Audacityren oraingo hizkuntza aldatzeko, joan Hobespenen Interfaze hegatsera, hautatu beharrezko hizkuntza bereizia \"Hizkuntza\" kutxatik eta klikatu Ongi.</p>\n"
+"<p>Audacity jadanik jardunean badago hizkuntza ezezagun batean, oraindik menuetan zehar nabigatu dezakezu sekuntzialki hizkuntza aldatzeko, edo aldatu audacity.cfg ezarpenen agirian. Jarraipideetarako, mesedez ikusi <a href=\"http://wiki.audacityteam.org/wiki/Changing_the_current_language\">Oraingo hizkuntza aldaketa</a> Audacityren <a href=\"http://wiki.audacityteam.org\">Wikia</a>n.</p>"
 
 #: help/faq_i18n.php:59
 msgid "Does Audacity run on 64-bit systems?"
@@ -429,7 +429,7 @@ msgstr "Zergaitik ezin dut grabatu Windows Vista edo 7-an?"
 
 #: help/faq_i18n.php:124
 msgid "<p>You must show and enable all the input devices on the \"Recording\" tab of \"Sound\" in the Windows Control Panel. For more help, see the <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Mixer Toolbar Issues</a> page on the <a href=\"http://audacityteam.org/wiki\">Audacity Wiki</a>.</p>\n"
-msgstr "<p>Sarrera gailu guztiak erakutsi eta gaitu behar dituzu \"Soinua\"-ren  \"Grabaketa\" hegatsean \" Windowsen Aginte Panelean. Laguntza gehiagorako, ikusi <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Nahasketa Tresnabarra Arazoak</a> orrialdea <a href=\"http://audacityteam.org/wiki\">Audacity Wikia</a>-n.</p>\n"
+msgstr "<p>Sarrera gailu guztiak erakutsi eta gaitu behar dituzu \"Soinua\"-ren  \"Grabaketa\" hegatsean \" Windowsen Aginte Panelean. Laguntza gehiagorako, ikusi <a href=\"http://audacityteam.org/wiki/index.php?title=Mixer_Toolbar_Issues\">Nahasketa Tresnabarra Arazoak</a> orrialdea <a href=\"http://audacityteam.org/wiki\">Audacity Wikia</a>n.</p>\n"
 
 #: help/faq_i18n.php:128
 msgid "Can I play a track while recording a new one on top of it?"
@@ -500,6 +500,8 @@ msgid ""
 "<p>Audacity project files are saved in a special format that only Audacity can open. To open your project in another program or <a href=\"faq_i18n?s=files&amp;i=burn-cd\">burn it to CD</a>, firstly open the .aup file in Audacity if you have already saved one (if you saved it recently it will be in the File&nbsp;>&nbsp;Recent Files menu). Then use the <b>Export</b> commands further down the File menu to save the audio in a standard format like WAV or AIFF.</p>\n"
 "<p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>   \n"
 msgstr ""
+"<p>Audacity egitasmo agiriak Audacityk bakarrik ireki ditzakeen heuskarri berezi batean gordetzen dira. Zure egitasmoa beste programa batekin irekitzeko edo <a href=\"faq_i18n?s=files&amp;i=burn-cd\">CD batera erretzeko</a>, lehenik ireki .aup agiria Audacityn jadanik bat gordeta baduzu (berriki gorde baduzu Agiria&nbsp;>&nbsp;Azken Agiriak menuan egongo da). Orduan erabili Agiria menuko <b>Esportatu</b> aginduak audioa WAV edo AIFF bezalako heuskarri estandar batean gordetzeko.</p>\n"
+"<p>Audacity egitasmoekin lan egiteaz gehiago jakiteko, mesedez ikusi gure <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">Agiri Kudeaketa Aholkuak</a> Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wikia</a>n.</p>   \n"
 
 #: help/faq_i18n.php:168
 msgid "Why does Audacity create a folder full of .au files when I save a project?"
@@ -507,7 +509,7 @@ msgstr "Zergaitik sortzen du Audacityk .au agiriz beteriko agiritegi bat egitasm
 
 #: help/faq_i18n.php:169
 msgid "<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently. When you save an .aup project file, Audacity stores all the pieces in a _data folder that has the same name as the .aup file. For example, \"song.aup\" will open the pieces inside the \"song_data\" folder.</p>  <p><b>You should not touch the .au files yourself, or move or rename the _data folder</b>. Simply open the .aup file, then Audacity will load the .au files in the correct sequence automatically.</p> <p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>"
-msgstr ""
+msgstr "<p>Audacityk bide luzeak atal txikietan hausten ditu horrela hauek hobeto editatzeko. .aup egitasmo agiri bat gordetzen duzunean, Audacityk atal guztiak .aup agiriak duen izen bera duen _data agiritegi batean biltegiratzen ditu. Adibidez, \"abestia.aup\"-ek\"abestia_data\" agiritegi barneko atalak irekiko ditu.</p>  <p><b>Ez dituzu .au agiriak ikutu, edo mugitu edo _data agiritegia berreizendatu behar.</b>. Besterik gabe ireki .aup agiria, orduan Audacityk .au agiriak hurrenkera zuzenean gertatuko ditu berezgaitasunez.</p> <p>Audacity egitasmoekin lan egiteaz gehiago jakiteko, mesedez ikusi gure <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">Agiri Kudeaketa Aholkuak</a> Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wikia</a>n.</p>"
 
 #: help/faq_i18n.php:173
 msgid "Audacity crashed!  Can I recover any unsaved data?"
@@ -547,7 +549,7 @@ msgid ""
 "<p>On Mac OS X computers, CD tracks appear in Finder as AIFF files so can be imported directly into Audacity. For more help on importing audio from CD tracks on both Windows and OS X, see our Wiki help page on <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How to import CDs</a>.</p>\n"
 "<p>See also: <a href=\"faq_i18n?s=files&amp;i=burn-cd\">How do I save my recording on an audio CD?</a></p>\n"
 msgstr ""
-"<p>Audacityk ezin du bide bat zuzenean inportatu audio CD batetik. Erabili behar duzu <a href=\"http://cdexos.sourceforge.net/\">CDex</a> edo <a href=\"http://www.apple.com/itunes/\">iTunes</a> bezalako programa bereizi bat  CD bideak Audacityk irakurri ditzakeen heuskarri batera ateratzeko, WAV edo AIFF bezalakoak.</p>\n"
+"<p>Audacityk ezin du bide bat zuzenean inportatu audio CD batetik. <a href=\"http://cdexos.sourceforge.net/\">CDex</a> edo <a href=\"http://www.apple.com/itunes/\">iTunes</a> bezalako programa bereizi bat erabili behar duzu CD bideak Audacityk irakurri ditzakeen heuskarri batera ateratzeko, WAV edo AIFF bezalakoak.</p>\n"
 "<p>Mac OS X ordenagailuetan, Bilatzailean CD bideak AIFF agiri bezala agertzen dira, hortaz zuzenean inportatu daitezke Audacityra. Laguntza gehiagorako audio inportazioa CD bideetatik bietan Windows eta OS X, ikusi gure Wikiko laguntza orrialdea <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">Nola inportatu CD-ak</a>.</p>\n"
 "<p>Ikusi ere: <a href=\"faq_i18n?s=files&amp;i=burn-cd\">Nola gorde dezaket nire grabaketa audio CD batean?</a></p>\n"
 
@@ -571,6 +573,19 @@ msgid ""
 "<p>For helpful tips on CD burning with Windows Media Player and iTunes, and help on burning longer “data” CDs, see <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_burn_CDs\">How to burn CDs</a> on the Audacity Wiki.</p>\n"
 "<p>See also: <a href=\"faq_i18n?s=files&amp;i=split\">How can I split a long recording into multiple tracks?</a></p>"
 msgstr ""
+"<ol>\n"
+"  <li>Erabili “Esportatu WAV bezala” edo “Esportatu AIFF bezala” agindua zure Audacity grabaketa soinu agiri batean gordetzeko.</li>\n"
+"  <li>Erabili CD-grabaketa software bat (iTunes edo Nero, adibidez) agiri hau CD batera erretzeko.</li>\n"
+"</ol>\n"
+"<p>CD irakurgailu arruntetan irakurri daitekeen diska bat egiteko, zihurtatu sortzeaz \"musika\" edo \"audio\" CD bat (ez \"datu\" CD bat). Erabili CD-R diskak, zeren irakurgailu batzuek ezin dute CD-RW-ak irakurri. 74 minutu gutxi-gorabehera bakarrik erre ditzakezu audio CD batean – hau audio CD heuskarriaren muga bat da.</p>\n"
+"<p>CD software batzuek 16-bit, 44.1KHz-ko estereo soinu agiriak bakarrik erre ditzakete. Zure CD grabaketa softwareak ez badu zure soinu agiria irekitzerik nahi, esportatu agiria berriro Audacityn hurrengo ezarpenak hautatuz:</p>\n"
+"<ol>\n"
+"  <li>Audacity leihoaren beherenan, ezarri Egitasmo Neurria honela:  44100 Hz.</li>\n"
+"  <li>Agiri Heuskarri Hobespenetan, hautatu:  WAV (16-bit...) edo AIFF (16-bit...).</li>\n"
+"  <li>Zure egitasmoak jadanik ez badu bide estereo bat, hautatu: “Bide Estereo Berria\" Egitasmo menuan.  (Honek Audacityk zure grabaketa agiri estereo bezala esportatzea eragingo du.)</li>\n"
+"</ol>\n"
+"<p>Windows Media Player eta iTunes-ekin CD erreketa egiteko aholku lagungarriak eta \"datu\" CD erreketa laguntzarako, ikusi <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_burn_CDs\">Nola erre CD-ak</a> Audacity Wikian.</p>\n"
+"<p>Ikusi ere: <a href=\"faq_i18n?s=files&amp;i=split\">Nola banandu dezaket grabaketa luze bat bide anitzetan?</a></p>"
 
 #: help/faq_i18n.php:218
 msgid "How can I split a long recording into multiple files or CD tracks?"
@@ -586,6 +601,13 @@ msgid ""
 "  <li>When you are finished, choose “Export Multiple” from the File menu.  When you click the “Export” button, Audacity will save each song as a separate file, using the format and location you choose.</li>\n"
 "</ol>"
 msgstr ""
+"<p>Jarraitu urrats hauek agiri banandu bat sortzeko abesti bakoitzarentzat edo grabaketa luze baten zati batentzat. Hau bereziki erabilgarria da CD bat sortzen ari bazara, zeren agiri bakoitza bide banandu bezala agertuko da CD-an.</p>\n"
+"<ol>\n"
+"  <li>Klikatu kurtsorea lehen abestiaren hasieran kokatzeko.</li>\n"
+"  <li>Hautatu \"Gehitu Etiketa Hautapenean\" Egitasmoa menutik (edo Bideak menutik Audacity Beta baduzu). Nahi baduzu, abestiaren izena idatzi dezakezu.</li>\n"
+"  <li>Berregin 1 eta 2 urratsak abesti bakoitzarekin.</li>\n"
+"  <li>Amaitzen duzunean, hautatu \"Esportatu Anitz\"  Agiria menutik. \"Esporatu\" botoia klikatzen duzunean, Audacityk abesti bakoitza agiri bananduan gordeko du, zuk hautaturiko heuskarria eta kokalekua erabiliz.</li>\n"
+"</ol>"
 
 #: help/faq_i18n.php:226
 msgid ""
@@ -625,7 +647,7 @@ msgstr "<p>Bi agiri nahasteko, inportatu biak Audacityra.  Bide banandutan agert
 
 #: help/faq_i18n.php:245
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
-msgstr "Kendu ditzaket ahotsak grabaketa bateik Karaoke bide bat egiteko?"
+msgstr "Kendu ditzaket ahotsak grabaketa batetik Karaoke bide bat egiteko?"
 
 #: help/faq_i18n.php:246
 msgid ""
@@ -641,6 +663,17 @@ msgid ""
 "<p>Press the <b>Play</b> button to hear the results.  If you are lucky, the voice will be gone but most of the other instruments will be unaffected, just like a karaoke track.  You can use the Export commands in the File menu to save the results.</p>\n"
 "<p>If the vocals are not exactly the same on both stereo channels, there are some other techniques or optional plug-ins you can try. Please see our <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Vocal Removal</a> Wiki page for more details.</p>\n"
 msgstr ""
+"<p>Hau ahal da <b>zenbait estereo bideetan bakarrik</b>.  Ahotsak berdinak direnean bi estereo bideetan, hauek kendu ditzakezu bide bat bestetik \"kenketatuz\". Honek estudio grabaketa askotan egiten du lan, non ahots bidea erdian zehatz-mehatz nahasturik dagoen</p>\n"
+"<p>Hau Audacityn egiteko:</p>\n"
+"<ol>\n"
+"  <li>Inportatu zure estereo agiria Audacityra.</li>\n"
+"  <li>Ireki bide menua (klikatu bide izenburuaren ondoko gezia), eta hautatu \"Banandu Estereo Bidea.\"</li>\n"
+"  <li>Hautatu behereneko bidea (eskuineko bidea) mututu/soloa botoien inguruko eremuan klikatuz.</li>\n"
+"  <li>Hautatu \"Alderantzizkatu\" Eragina menutik.</li>\n"
+"  <li>Bide menuak erabiliz, aldatu bide bakoitza \"Monoa\"-ra.</li>\n"
+"</ol>\n"
+"<p>Sakatu <b>Irakurri</b> botoia emaitzak entzuteko. Zortea izan baduzu, ahotsa  joana egongo da baina beste tresnetako askorengan ez du eraginik izan, karaoke bide batean bezala. Esportatu aginduak erabili ditzakezu Agiria menutik emaitzak gordetzeko.</p>\n"
+"<p>Ahotsak ez badira berdinak bi estereo bideetan, badaude erabili ditzakezun beste zenbait teknika edo aukerazko plug-in. Mesedez ikusi gure <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Ahotsa Kentzea</a> Wiki orrialdea xehetasun gehiagorako.</p>\n"
 
 #: help/faq_i18n.php:276
 msgid "Other frequently asked questions..."
@@ -663,7 +696,7 @@ msgstr "Laguntza gehigarria lortu daiteke Frantzieraz, Alemanieraz, Errusieraz e
 #. but not already linked to at the bottom of this page, please add the links.
 #: help/documentation.php:18
 msgid "This page contains links to Manuals (with Tutorials) for the free Audacity audio editor. For additional help, see the <a href=\"/faq\">Frequently Asked Questions</a> and additional <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">Tutorials</a> and <a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/\">Wiki</a>."
-msgstr "Orrialde honek loturak ditu Audacity audio editatzaile askerarentzako Eskuliburuetara (Ikasgaiekin). Laguntza gehigarrirako, ikusi <a href=\"/faq\">Sarri Egindako Galderak</a> eta <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">Ikasgaiak</a> gehigarria eta <a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Aholkuak</a> Audacityren <a href=\"http://wiki.audacityteam.org/\">Wikia</a>-n."
+msgstr "Orrialde honek loturak ditu Audacity audio editatzaile askerarentzako Eskuliburuetara (Ikasgaiekin). Laguntza gehigarrirako, ikusi <a href=\"/faq\">Sarri Egindako Galderak</a> eta <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">Ikasgaiak</a> gehigarria eta <a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Aholkuak</a> Audacityren <a href=\"http://wiki.audacityteam.org/\">Wikia</a>n."
 
 #: help/documentation.php:21
 msgid "Legacy documentation for old versions of Audacity can be found <a href=\"/help/legacy_documentation\">here</a>."
@@ -1161,7 +1194,7 @@ msgstr ""
 #. please add links to it at the bottom of \htdocs\help\documentation.php
 #: help/index.php:36
 msgid "<p><b>Still need help?</b> Please read <a href=\"../contact/\">Contact Us</a> for how to ask your question on the Audacity <a href=\"http://forum.audacityteam.org/\">Forum</a>.</p>"
-msgstr "<p><b>Oraindik laguntza beharrean?</b> Mesedez irakurri <a href=\"../contact/\">Harremana</a> zure galderak nola egin jakiteko Audacityren <a href=\"http://forum.audacityteam.org/\">Eztabaidagunean</a>.</p>"
+msgstr "<p><b>Oraindik laguntza beharrean?</b> Mesedez irakurri <a href=\"../contact/\">Harremana</a> Audacityren <a href=\"http://forum.audacityteam.org/\">Eztabaidagunean</a> zure galderak nola egin jakiteko.</p>"
 
 #: help/legacy_documentation.php:9
 msgid "Legacy Documentation"
@@ -1375,7 +1408,7 @@ msgstr ""
 #: help/nyquist3.php:128
 #, php-format
 msgid "%sDon't forget to consult the full %sNyquist 2.37 Reference Manual%s for more details of Lisp and Nyquist.%s"
-msgstr "%sEz ahaztu ikustea %sNyquist 2.37 Xehetasun Eskuliburua%s osoa Lisp eta Nyquist.%s-en xehetasun gehiagorako"
+msgstr "%sEz ahaztu ikustea %sNyquist 2.37 Xehetasun Eskuliburua%s osoa Lisp eta Nyquist xehetasun gehiagorako.%s"
 
 #: download/beta_nightly.inc.php:10
 msgid "\"Nightly Builds\" are Alpha builds from latest development code. Your help in testing and <a href=\"/contact#feedback\">reporting bugs</a> in these builds is invaluable. <b>Note:</b>&nbsp;These builds will definitely be less reliable than official releases. They should not be used as your production version of Audacity."
@@ -1553,7 +1586,7 @@ msgstr "Arazoak badituzu jeisketarekin, edo Audacityren bertsio zaharrago bat be
 #: download/legacy_mac.php:55
 #, php-format
 msgid "<a href=\"%s\">SourceForge</a>: View older versions by clicking to enter the required folder under \"Name\"."
-msgstr "<a href=\"%s\">SourceForge</a>: Ikusi bertsio zaharragoak klikatuz \"Izena\" beharrezko agiritegira sartzeko."
+msgstr "<a href=\"%s\">SourceForge</a>: Ikusi bertsio zaharragoak \"Izena\" klikatuz beharrezko agiritegira sartzeko."
 
 #: download/legacy_windows.php:70
 #: download/common.inc.php:20
@@ -1591,7 +1624,7 @@ msgstr "Gutxienezko RAM/<br>prozesagailu abiadura"
 
 #: download/legacy_windows.php:104
 msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista or 7 running on machines of substantially higher specification than the minimum stated above."
-msgstr "Orokorrean, Audacityk hobeto egiten du lan gaineko taulako gutxienezko betebeharrak baino gehiago ditzuten ordenagailuetan.  Audacity bide-anitzeko egitasmo luzeetan erabili behar bada, gomendatzen dugu Windows XP, Vista edo 7 erabiltzea aurretik adierazitako gutxienezkoak baino ezaugarri nabarmen handiagoak dituzten makinetan."
+msgstr "Orokorrean, Audacityk hobeto egiten du lan gaineko taulako gutxienezko betebeharrak baino gehiago dituzten ordenagailuetan.  Audacity bide-anitzeko egitasmo luzeetan erabili behar bada, gomendatzen dugu Windows XP, Vista edo 7 erabiltzea aurretik adierazitako gutxienezkoak baino ezaugarri nabarmen handiagoak dituzten makinetan."
 
 #: download/common.inc.php:12
 #: download/windows.php:72
@@ -1677,7 +1710,7 @@ msgstr "Hautapen Barra"
 #: download/features-1.3-g.php:62
 #: download/features-1.3-i.php:85
 msgid "Top: "
-msgstr ""
+msgstr "Gora:"
 
 #: download/features-1.3-l.php:63
 #: download/features-1.3-b.php:63
@@ -1689,7 +1722,7 @@ msgstr ""
 #: download/features-1.3-g.php:63
 #: download/features-1.3-i.php:86
 msgid "New features in Audacity 1.3"
-msgstr "Ezaugarri berria Audacity 1.3-an"
+msgstr "Ezaugarri berriak Audacity 1.3-an"
 
 #: download/legacy_source.php:12
 msgid "Legacy Source Code"
@@ -1749,7 +1782,7 @@ msgstr "Elkartokiak"
 
 #: download/legacy_source.php:43
 msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the unicode options. The next version of Audacity will support newer wxWidgets and GTK libraries."
-msgstr "<a href=\"http://wxwidgets.org\">wxWidgets</a> liburuegia <b>beharrezkoa da</b>.  Audacity 1.2-k behar du wxGTK 2.4, bilduta unicode aukera <em>gabe</em>. Audacityren hurrengo bertsioak wxWidgets eta GTK liburutegi berriagoak sostengatuko ditu."
+msgstr "<a href=\"http://wxwidgets.org\">wxWidgets</a> liburuegia <b>beharrezkoa da</b>. Audacity 1.2-k wxGTK 2.4 behar du, unicode aukera <em>gabe</em> bilduta. Audacityren hurrengo bertsioak wxWidgets eta GTK liburutegi berriagoak sostengatuko ditu."
 
 #: download/legacy_source.php:44
 #: download/beta_source.php:50
@@ -1816,7 +1849,7 @@ msgstr ""
 
 #: download/features-1.3-b.php:21
 msgid "Before clicking on the collapse button for the top track"
-msgstr ""
+msgstr "Goiko bidearentzat bildu botoian klikatu aurretik"
 
 #: download/features-1.3-b.php:27
 msgid "After clicking on the collapse button"
@@ -1836,11 +1869,11 @@ msgstr "Mac OS X ezaugarriak"
 #: download/features-1.3-a.php:981
 #: download/features-1.3-e.php:67
 msgid "Multiple clips per track"
-msgstr ""
+msgstr "Ebakin anitz bide bakoitzeko"
 
 #: download/bundlers.php:16
 msgid "Audacity is free to download, but many vendors bundle copies of the program with their products, or resell or distribute Audacity, thanks to the <a href=\"../about/license\">GNU General Public License</a>. The following are legitimate, legal offerings from companies that have worked with us. We are happy and proud that they chose to bundle Audacity with their products."
-msgstr "Audacity dohainik jeistekoa da, baina saltzaile askok Audacity programaren kopiak biltzen edo bersaltzen edo banatzen dituzte beren produktuekin, <a href=\"../about/license\">GNU Baimen Publiko Orokorra</a>-ri esker. Hurregoa hauek gurekin lan egin duten konpainien eskaintza zilegiak eta legezkoak dira. Pozik eta harro gaude Audacity hautatu izanaz beren beren produktuekin biltzeko."
+msgstr "Audacity dohainik jeistekoa da, baina saltzaile askok Audacity programaren kopiak biltzen edo bersaltzen edo banatzen dituzte beren produktuekin, <a href=\"../about/license\">GNU Baimen Publiko Orokorra</a>-ri esker. Hurrengo hauek gurekin lan egin duten konpainien eskaintza zilegiak eta legezkoak dira. Pozik eta harro gaude Audacity hautatu izanaz beren produktuekin biltzeko."
 
 #: download/bundlers.php:18
 msgid "Some vendors, Umixit, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, and <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href=\"#others\">custom versions</a>. The UmixIt custom version added a mixer board interface and karaoke window which are now incorporated in Audacity Beta. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Voice is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Some of these improvements will be incorporated in future versions of Audacity."
@@ -1856,7 +1889,7 @@ msgstr "Zerrenda honetara gehitua izateko, mesedez lehenik ikusi gure <a href=\"
 #. <a href> tag need to be translated.
 #: download/bundlers.php:27
 msgid "and would like to be on this list, please "
-msgstr "eta zerrenda honetan egotea nahiko zenuke, mesedez"
+msgstr "eta zerrenda honetan egotea nahiko bazenuke, mesedez"
 
 #: download/bundlers.php:30
 msgid "contact us"
@@ -1921,7 +1954,7 @@ msgstr "Azalpena"
 
 #: download/bundlers.php:68
 msgid "FireWire&reg; audio interface with 8-input mixer, plus headphones, studio microphone with stand, cables and software."
-msgstr "FireWire&reg; audio interfazea 8-sarrera nahasgailurekin, buruentzungailu gehigarria, estudio mikrofonoa heuskarriarekin, kableak eta softwarea."
+msgstr "FireWire&reg; audio interfazea 8-sarrera nahasgailurekin, buru-entzungailu gehigarria, estudio mikrofonoa heuskarriarekin, kableak eta softwarea."
 
 #: download/bundlers.php:77
 msgid "USB audio interface with 8-input mixer, plus headphones, studio microphone with stand, cables and software."
@@ -1929,15 +1962,15 @@ msgstr "USB audio interfazea 8-sarrera nahasgailu, buru-entzungailu, estudio mik
 
 #: download/bundlers.php:87
 msgid "Now discontinued, but generally still available online from retailers in USA and Canada. Hardware and software to record, edit, and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Currently Podcast Factory will not work with Windows XP Media Center Edition (XP Home and Pro are not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware."
-msgstr ""
+msgstr "Orain jarraipen etenarekin, baina orokorrean eskuragarri online AEB eta Kanadako txikizkalariengandik. Hardwarea eta softwarea podcastak grabatzeko, editatzeko eta argitaratzeko: 24-bit/48kHz-ko audio interfazea, igorpen mikrofono dinamikoa mahai zangoarekin. OHARRA: Orain Podcast Factoryk ez du lan egingo Windows XP Media Center Edition-ekin (XP Home eta Pro-an ez du eraginik). Audacity berak egiten du lan Media Center Edition-ekin, zure ordenagailuak zure hardwarearentzako soinu gailu gidagailuak baditu."
 
 #: download/bundlers.php:98
 msgid "Available in Europe. Hardware and software to record, edit and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Currently Podcast Factory will not work with Windows XP Media Center Edition (XP Home and Pro are not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware."
-msgstr "Eskuragarri Europan. Hardwarea eta softwarea podcastak grabatzeko, editatzeko eta argitaratzeko: 24-bit/48kHz audio interfazea, igorpen dinamikoko mikrofonoa mahi heuskarriarekin. OHARRA: Gaur egun Podcast Factoryk ez dut lanik egingo Windows XP Media Center Edition-ekin (XP Home eta Pro salbu daude). Audacityk egiten du lan Media Center Edition-ekin, zure ordenagailuak soinu gailu gidagailu bereiziak baditu zure hardwarearentzat."
+msgstr "Eskuragarri Europan. Hardwarea eta softwarea podcastak grabatzeko, editatzeko eta argitaratzeko: 24-bit/48kHz audio interfazea, igorpen dinamikoko mikrofonoa mahi heuskarriarekin. OHARRA: Gaur egun Podcast Factoryk ez du lanik egingo Windows XP Media Center Edition-ekin (XP Home eta Pro salbu daude). Audacityk egiten du lan Media Center Edition-ekin, zure ordenagailuak soinu gailu gidagailu bereiziak baditu zure hardwarearentzat."
 
 #: download/bundlers.php:109
 msgid "Twisted Lincoln, Inc. sells reconditioned computers online which are preloaded with Audacity and other open source software from the company's <a href=\"#freedom\">FreedomSampler&trade;</a> CD."
-msgstr ""
+msgstr "Twisted Lincoln, Inc. ordenagailu birgaituak saltzen ditu online Audacity eta beste iturburu irekiko software batzuekin aurregertaturik konpainiaren <a href=\"#freedom\">FreedomSampler&trade;</a> CD-tik."
 
 #: download/bundlers.php:128
 msgid "USB Interface for transferring an analog or digital audio source into computer via USB."
@@ -1969,7 +2002,7 @@ msgstr "Orain etenekin FireWire&reg; grabaketa sistema ezaugarriak 24-bit/96k an
 
 #: download/bundlers.php:199
 msgid "USB 2.0 external audio system for musicians, DJs and gamers, with: high end sound (24 Bit/192 kHz), 4 analog Inputs, 6 analog Outputs, XLR-Microphone-Input with gain control, Instrument-Input with gain control, Phono-Input with RIAA equaliser and gain control, Optical digital I/O, Coaxial digital digitaler I/O, MIDI interface, ASIO 2.0 support, and Stereo to 5.1 Surround Expander."
-msgstr "USB 2.0 kanpo audio sistema musikari, DJ eta jolaslarientzat, du: amaiera soinu handia (24 Bit/192 kHz), 4 Sarrera analogiko 6 Irteera analogiko, XLR-Mikrofono-Sarrera irabazi agintearekin, Tresna-Sarrera irabazi agintearekin, Audio-Sarrera RIAA ekualizagailu eta irabazi agintearekin, S/I Optiko digitala, Ardatzkide digital digitalizatzaile S/I, MIDI interfazea, ASIO 2.0 sostengua, eta Estereoti 5.1 Ingurasoinu Hedatzailea."
+msgstr "USB 2.0 kanpo audio sistema musikari, DJ eta jolas zaleentzat, du: amaiera soinu handia (24 Bit/192 kHz), 4 Sarrera analogiko 6 Irteera analogiko, XLR-Mikrofono-Sarrera irabazi agintearekin, Tresna-Sarrera irabazi agintearekin, Diskagailu-Sarrera RIAA ekualizagailu eta irabazi agintearekin, S/I Optiko digitala, Ardatzkide digital digitalizatzaile S/I, MIDI interfazea, ASIO 2.0 sostengua, eta Estereotik 5.1 Ingurasoinurako Hedatzailea."
 
 #: download/bundlers.php:209
 msgid "Record conversations to PC from any phone with a modular handset."
@@ -1997,7 +2030,7 @@ msgstr "Gitarra birtual handigailua hodi antzezpenarekin eta 24-biteko eraginak.
 
 #: download/bundlers.php:285
 msgid "USB Cassette Player."
-msgstr "USB Kaset Irakurgailua."
+msgstr "USB Kasete Irakurgailua."
 
 #: download/bundlers.php:294
 #: download/bundlers.php:315
@@ -2007,15 +2040,15 @@ msgstr "USB Diskagailua."
 
 #: download/bundlers.php:305
 msgid "As one of the major manufacturers of USB playback equipment, Ion bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs and cassettes. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Ion later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track. See our Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB turntables</a> for more information."
-msgstr ""
+msgstr "USB irakurketa tresneria ekoizle handienetako bat, Ion-ek urte askotan zehar barneratu du Audacity bere gaien zerrendan, ezagupen zabala ezartzen lagunduz LP eta kasete digitalizazioan. OHARRA: 2007-ko Urtarrilean, <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">diskagailu hauei buruzko idazlana</a> bat agertu zen New York Times-ean,  Audacity-ren mugei buruzko adierezpen okerrekin. Ion-ek gero bere agiritza zuzendu zuen argituz Audacityk LP oso bat grabatu zezakeela, LP bideen arteko bananketa puntuak atzeman isiltasunetan ohinarrituz eta aldiberean bide bakoitzeko agiri anitz esportatu zezakeela. Ikusi gure Wiki orrialdea <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB diskagailuak</a> argibide gehiagorako."
 
 #: download/bundlers.php:333
 msgid "As one of the major manufacturers of USB turntables, Numark bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Numark later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track.  See our Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB turntables</a> for more information."
-msgstr ""
+msgstr "USB irakurketa tresneria ekoizle handienetako bat, Numark-ek urte askotan zehar barneratu du Audacity bere gaien zerrendan, ezagupen zabala ezartzen lagunduz LP eta kasete digitalizazioan. OHARRA: 2007-ko Urtarrilean, <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">diskagailu hauei buruzko idazlana</a> bat agertu zen New York Times-ean,  Audacity-ren mugei buruzko adierezpen okerrekin. Numark-ek gero bere agiritza zuzendu zuen argituz Audacityk LP oso bat grabatu zezakeela, LP bideen arteko bananketa puntuak atzeman isiltasunetan ohinarrituz eta aldiberean bide bakoitzeko agiri anitz esportatu zezakeela. Ikusi gure Wiki orrialdea <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB diskagailuak</a> argibide gehiagorako."
 
 #: download/bundlers.php:353
 msgid "FreedomSampler&trade; is a collection of free, open source software for Windows and Linux with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you."
-msgstr "FreedomSampler&trade; iturburu irekiko software bilduma aske bat da Windows eta Linux-rako iturburu kode osoarekin, banaketa erraza ahalbidetuz GNU Baimen Publiko Orrokorra Baimenarekin. ISO irudiak dohainik jeitsi daitezke, edo kopia bat <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">erosi</a> dezakezu zuri bidalia izateko."
+msgstr "FreedomSampler&trade; iturburu irekiko software bilduma aske bat da Windows eta Linux-rako iturburu kode osoarekin, banaketa erraza ahalbidetuz GNU Baimen Publiko Orrokorrarekin. ISO irudiak dohainik jeitsi daitezke, edo kopia bat <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">erosi</a> dezakezu zuri bidalia izateko."
 
 #: download/bundlers.php:364
 msgid "TheOpenCD is a now-discontinued collection of high quality free and open source software for Windows. Currently, you can still <a href=\"http://releases.theopencd.org/\">download archived CD images</a> or <a href=\"http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">purchase a CD online</a> for worldwide shipping."
@@ -2023,15 +2056,15 @@ msgstr "TheOpenCD orain-jarraipen gabeko Windows-rako ontasun handiko iturburu i
 
 #: download/bundlers.php:375
 msgid "OpenDisc is a similar collection of high quality free and open source software for Windows. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. The project hopes to make available a purchasable CD shortly."
-msgstr ""
+msgstr "OpenDisc antzeko Windows-rako ontasun handiko iturburu irekiko software aske bilduma bat da. Orain, <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD irudi</a> bat eskuragarri dago. Egitasmoak itxaroten du laister CD erosgarri bat eskuragarri izatea."
 
 #: download/bundlers.php:386
 msgid "VALO-CD contains twenty-two open-source Windows programs on a single CD. You can download and burn the ISO image, or purchase the CD for worldwide shipping."
-msgstr "VALO-CD hogeita-bi iturburu irekiko Windows programa ditu CD bakar batean. ISO irudia jeitsi eta erre dezakezu, edo CD-a erosi mundu osorako bidalketarekin."
+msgstr "VALO-CD hogeita-bi iturburu irekiko Windows-rako programa ditu CD bakar batean. ISO irudia jeitsi eta erre dezakezu, edo CD-a erosi mundu osorako bidalketarekin."
 
 #: download/bundlers.php:406
 msgid "Audiotouch is sound recording and playback software, designed for ease of use. It features one-touch recording and saving, quickly recording multiple audio files directly to disk without the need to interact with save dialog boxes. Audacity_Voice is a customized version of Audacity which can be added to Audiotouch, offering simple editing with reduced menu dialogs."
-msgstr ""
+msgstr "Audiotouch soinu grabaketa eta irakurketa softwarea da, erabilera errazerako diseinatua. Bere ezaugarriak dira ikutu-bakarreko grabaketa eta gordetzea, diskatik zuzenean audio agiri anitz azkar grabatzea gordetze elkarrizketa behar izan gabe. Audacity_Ahotsa Audacity bertsio norbereratu bat da Audiotouch-era gehitu daitekeena, edizio arrunta eskaintzen du elkarrizketa menu gutxiagorekin."
 
 #: download/bundlers.php:416
 msgid "Software allowing users to create their own custom comic books with included clipart, backgrounds, word balloons, sound files and other  assets."
@@ -2039,7 +2072,7 @@ msgstr "Erabiltzaileei beren komiki liburuak aurrediseinaturiko-irudiekin, barre
 
 #: download/bundlers.php:425
 msgid "The Thinklabs <a href=\"http://www.thinklabsmedical.com/electronic-stethoscope.html\">ds32a digital stethoscope</a> has enhanced sound quality with 50x amplification. Volume can be adjusted for faint heart sounds, obese patients or noisy work environments. The stethoscope's waveforms and spectrograms can be analyzed in Thinklabs Phonocardiography (a customized version of Audacity for Microsoft Windows and Mac OS X)."
-msgstr ""
+msgstr "The Thinklabs <a href=\"http://www.thinklabsmedical.com/electronic-stethoscope.html\">ds32a estetoskopio digitala</a> soinu ontasun hobekuntza du x50-eko handipenarekin. Bolumena zehazgarria da bihotzeko soinu ahulak, jasale gizenak edo zarata duten lan inguruetan entzuteko. Estetoskopioaren uhinerak eta argiltzaerak aztergarriak dira Thinklabs Phonocardiography-an (Audacity-ren bertsio norbereratu bat Microsoft Windows eta Mac OS X-rako)."
 
 #: download/bundlers.php:434
 msgid "Portable recording studio or digital audio workstation (DAW), featuring \"walk and mix\" technology."
@@ -2047,11 +2080,11 @@ msgstr "Grabaketa estudio eramangarria edo audio digital lantegia (DAW),  \"ibil
 
 #: download/bundlers.php:444
 msgid "A now discontinued, customized version of Audacity for Microsoft Windows and Mac OS X. Umixit-enabled multi-track CDs or songs were available, enabling the user to record their own vocals or instruments to create remixes, mash-ups, sing karaoke and more."
-msgstr ""
+msgstr "Orain jarraipen etenarekin, Audacity-ren bertsio norbereratu bat Microsoft Windows eta Mac OS X-rako. Umixit-gaituta bide-anitzeko CD-ak edo abestiak eskuragarri, erabiltzailea gaitzen du bere ahotsak edo tresnak grabatzeko, birnahasketak, nahs-upak, abesti karaokeak eta gehiago sortzeko."
 
 #: download/bundlers.php:454
 msgid "Mirror site for Audacity downloads, from webzine about Windows software at Impress Watch Corporation, Tokyo, Japan."
-msgstr "Audacity jeisketarako ispilu guneak, webzinetik Windows softwareaz, Impress Watch Corporation, Tokio, Japonia."
+msgstr "Audacity jeisketarako ispilu guneak, webzinetik Windows-rako softwareak, Impress Watch Corporation, Tokio, Japonia."
 
 #: download/features-1.3-a.php:15
 #: download/betawarning.inc.php:10
@@ -2060,11 +2093,11 @@ msgstr "Beta bertsioa"
 
 #: download/features-1.3-a.php:17
 msgid "Audacity 1.3 Beta is no longer our current version. It has become the new 2.0 version."
-msgstr "Audacity 1.3 Beta jadanik ez da gure oraingo bertsioa. Hau 2.0 bertsioa bihurtura da."
+msgstr "Audacity 1.3 Beta jadanik ez da gure oraingo bertsioa. Hau 2.0 bertsiora bihurtu da."
 
 #: download/features-1.3-a.php:19
 msgid "Changes in Audacity 1.3.14"
-msgstr "Audacity 1.3.14-ko aldaketak"
+msgstr "Audacity 1.3.14 Aldaketak"
 
 #: download/features-1.3-a.php:21
 msgid ""
@@ -2390,7 +2423,7 @@ msgstr ""
 
 #: download/features-1.3-a.php:309
 msgid "Changes in Audacity 1.3.11"
-msgstr "Berria Audacity 1.3.11-n"
+msgstr "Audacity 1.3.11 Aldaketak"
 
 #: download/features-1.3-a.php:311
 msgid ""
@@ -2480,7 +2513,7 @@ msgstr ""
 
 #: download/features-1.3-a.php:393
 msgid "Changes in Audacity 1.3.10"
-msgstr "Berria Audacity 1.3.10-en"
+msgstr "Audacity 1.3.10 Aldaketak"
 
 #: download/features-1.3-a.php:395
 msgid ""
@@ -2571,7 +2604,7 @@ msgstr ""
 
 #: download/features-1.3-a.php:478
 msgid "New in Audacity 1.3.9"
-msgstr "Berria Audacity 1.3.9-n"
+msgstr "Berria Audacity 1.3.9"
 
 #: download/features-1.3-a.php:480
 msgid ""
@@ -2639,7 +2672,7 @@ msgstr ""
 
 #: download/features-1.3-a.php:543
 msgid "New in Audacity 1.3.8"
-msgstr "Berria Audacity 1.3.8-n"
+msgstr "Berria Audacity 1.3.8"
 
 #: download/features-1.3-a.php:545
 msgid ""
@@ -2719,7 +2752,7 @@ msgstr ""
 
 #: download/features-1.3-a.php:620
 msgid "New in Audacity 1.3.7"
-msgstr "Berria Audacity 1.3.7-n"
+msgstr "Berria Audacity 1.3.7"
 
 #. i18n-hint: The following are new features in
 #. old versions of Audacity, which have never been
@@ -2815,7 +2848,7 @@ msgstr ""
 
 #: download/features-1.3-a.php:709
 msgid "New in Audacity 1.3.6"
-msgstr "Berria Audacity 1.3.6-n"
+msgstr "Berria Audacity 1.3.6"
 
 #. i18n-hint: The following are new features in
 #. old versions of Audacity, which have never been
@@ -2860,7 +2893,7 @@ msgstr ""
 
 #: download/features-1.3-a.php:749
 msgid "New in Audacity 1.3.5"
-msgstr "Berria Audacity 1.3.5-n"
+msgstr "Berria Audacity 1.3.5"
 
 #. i18n-hint: The following are new features in
 #. old versions of Audacity, which have never been
@@ -2937,7 +2970,7 @@ msgstr ""
 
 #: download/features-1.3-a.php:821
 msgid "New in Audacity 1.3.4"
-msgstr "Berria Audacity 1.3.4-n"
+msgstr "Berria Audacity 1.3.4"
 
 #. i18n-hint: The following are new features in
 #. old versions of Audacity, which have never been
@@ -3023,7 +3056,7 @@ msgstr ""
 
 #: download/features-1.3-a.php:902
 msgid "New features in Audacity 1.3.3"
-msgstr "Ezaugarri berriak Audacity 1.3.3-n"
+msgstr "Ezaugarri berriak Audacity 1.3.3"
 
 #. i18n-hint: The following are new features in
 #. old versions of Audacity, which have never been
@@ -3091,7 +3124,7 @@ msgstr ""
 
 #: download/features-1.3-a.php:965
 msgid "New features in Audacity 1.3.1 and 1.3.2"
-msgstr "Ezaugarri berriak Audacity 1.3.1 eta 1.3.2-n"
+msgstr "Ezaugarri berriak Audacity 1.3.1 eta 1.3.2"
 
 #: download/features-1.3-a.php:968
 #: download/features-1.3-i.php:70
@@ -3116,7 +3149,7 @@ msgstr "Egitasmo gordetzea eta berreskuratzea"
 
 #: download/features-1.3-a.php:977
 msgid "New features in Audacity 1.3.0"
-msgstr "Ezaugarri berriak Audacity 1.3.0-ean"
+msgstr "Ezaugarri berriak Audacity 1.3.0"
 
 #: download/features-1.3-a.php:980
 #: download/features-1.3-f.php:47
@@ -3141,7 +3174,7 @@ msgstr "Orokorrean, Audacityk hobeto egiten du lan gaineko taulako gutxienezko b
 
 #: download/plugins.php:16
 msgid "You can download and install plug-ins or libraries to add extra functionality to Audacity. Plug-ins can give you extra effects, or more audio generation and analysis capability. Adding libraries can allow you to import or export additional audio formats."
-msgstr "Plug-inak edo liburutegiak jeitsi eta ezarri ditzakezu Audacitiry eginkizun gehigarriak gehitzeko. Plug-inek eragin gehiago, edo audio sortze eta azterketa gaitasun gehiago eman ahal dizute. Liburutegiak gehitzeak audio heuskarri gehigarriak inportatzea eta esportatzea ahalbidetuko dizute."
+msgstr "Plug-inak edo liburutegiak jeitsi eta ezarri ditzakezu Audacityri eginkizun gehigarriak gehitzeko. Plug-inek eragin gehiago, edo audio sortze eta azterketa gaitasun gehiago eman ahal dizute. Liburutegiak gehitzeak audio heuskarri gehigarriak inportatzea eta esportatzea ahalbidetuko dizute."
 
 #: download/plugins.php:18
 msgid "Plug-In Installation"
@@ -3182,7 +3215,7 @@ msgstr "VST eraginak plug-in gune ugaritan aurkitu daitezke:"
 
 #: download/plugins.php:37
 msgid "The <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-ins</a> page on our <a href=\"http://wiki.audacityteam.org/\">Wiki<a/> contains further help for VST plug-ins, and lists a large number of VST plug-ins that have been reported to work well in Audacity."
-msgstr "<a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-inak</a> orrialdeak gure <a href=\"http://wiki.audacityteam.org/\">Wikia<a/>-n laguntza gehiago du VST plug-inak, eta Audacityn ongi lan egiten dutela jakinarazitako VST plug-in zerrenda luze batez."
+msgstr "<a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-inak</a> orrialdeak gure <a href=\"http://wiki.audacityteam.org/\">Wikia<a/>n laguntza gehiago du VST plug-inak, eta Audacityn ongi lan egiten dutela jakinarazitako VST plug-in zerrenda luze batez."
 
 #: download/plugins.php:39
 msgid "Audio Unit Plug-Ins"
@@ -3215,11 +3248,11 @@ msgstr "Jeitsi Nyquist Plug-Inak"
 
 #: download/nyquistplugins.php:14
 msgid "<p>These are optional generator, effect and analyze plug-ins for the Audacity audio editor, written in the <a href=\"/help/nyquist\">Nyquist programming language</a>. Nyquist plug-ins support Windows, Mac and GNU/Linux.</p>"
-msgstr "<p>Hauek aukerazko sortze, eragin eta azterketa plug-inak dira Audacity audio editatzailearentzat, <a href=\"/help/nyquist\">Nyquist programazio hizkuntza</a>-n idatzita. Nyquist plug-inek Windows, Mac eta GNU/Linux sostengatzen dute.</p>"
+msgstr "<p>Hauek aukerazko sortze, eragin eta azterketa plug-inak dira Audacity audio editatzailearentzat, <a href=\"/help/nyquist\">Nyquist programazio hizkuntza</a>n idatzita. Nyquist plug-inek Windows, Mac eta GNU/Linux sostengatzen dute.</p>"
 
 #: download/nyquistplugins.php:16
 msgid "<a href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins\">Complete list of optional Nyquist plug-ins</a> on the Audacity <a href=\"http://wiki.audacityteam.org/wiki/\">Wiki</a>."
-msgstr "<a href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins\">Aukerazko Nyquist plug-in zerrenda osoa</a> Audacityren <a href=\"http://wiki.audacityteam.org/wiki/\">Wikia</a>-n."
+msgstr "<a href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins\">Aukerazko Nyquist plug-in zerrenda osoa</a> Audacityren <a href=\"http://wiki.audacityteam.org/wiki/\">Wikia</a>n."
 
 #: download/nyquistplugins.php:18
 msgid "See the main <a href=\"plugins\">plug-ins page</a> for installation instructions."
@@ -3227,7 +3260,7 @@ msgstr "Ikusi <a href=\"plugins\">plug-ins orrialdea</a> nagusia ezarpen jarraip
 
 #: download/nyquistplugins.php:20
 msgid "Help us test <a href=\"http://forum.audacityteam.org/viewforum.php?f=42\">new Nyquist plug-ins still under development</a> on the Audacity <a href=\"http://forum.audacityteam.org/\">Forum</a>."
-msgstr "Lagundu gaitzazu aztertzen <a href=\"http://forum.audacityteam.org/viewforum.php?f=42\">oraindik garapenean dauden Nyquist plug-in berriak</a> Audacityren <a href=\"http://forum.audacityteam.org/\">Eztabaidagunea</a>-n."
+msgstr "Lagundu gaitzazu aztertzen <a href=\"http://forum.audacityteam.org/viewforum.php?f=42\">oraindik garapenean dauden Nyquist plug-in berriak</a> Audacityren <a href=\"http://forum.audacityteam.org/\">Eztabaidagunea</a>n."
 
 #: download/nyquistplugins.php:22
 msgid "<p>Anyone can customise these plug-ins by opening the .ny file in a text editor, just as can be done with the Nyquist plug-ins already <a href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins#shipped\">shipped with Audacity</a>.</p>"
@@ -3298,7 +3331,7 @@ msgstr "<b>Erabiltzaile aurreratuentzat</b>, <a href=\"http://wiki.audacityteam.
 #: download/windows.php:111
 #, php-format
 msgid "Read about Audacity on <a href=\"%s\">Windows Vista</a>, <a href=\"%s\">Windows 7</a> and <a href=\"%s\">Windows 8</a>."
-msgstr ""
+msgstr "Irakurri Audacityri buruz <a href=\"%s\">Windows Vista</a>, <a href=\"%s\">Windows 7</a> eta <a href=\"%s\">Windows 8</a>-an."
 
 #: download/windows.php:112
 #: download/beta_windows.php:59
@@ -3307,7 +3340,7 @@ msgstr "Windows 95 eta NT ez daude sostengaturik."
 
 #: download/linux.php:17
 msgid "Installation packages for Audacity on GNU/Linux and other Unix-like systems are provided by individual distributions. The following distributions maintain regularly updated Audacity packages:"
-msgstr "Audacity ezarpen paketeak GNU/Linux eta beste Unix-bezalako sistematan banakako bananeketek hornitzen dituzte. Hurrengo banaketek Audacityren paketeak nahikoa eguneraturik izaten dituzte:"
+msgstr "Audacity ezarpen paketeak GNU/Linux eta beste Unix-bezalako sistematan banakako banaketek hornitzen dituzte. Hurrengo banaketek Audacityren paketeak nahikoa eguneraturik izaten dituzte:"
 
 #: download/linux.php:19
 msgid ""
@@ -3328,8 +3361,8 @@ msgstr ""
 " <li><a href=\"http://packages.gentoo.org/package/media-sound/audacity\">Gentoo</a></li>\n"
 " <li><A href=\"http://packman.links2linux.org/package/286\">SuSE/Open SUSE</a></li>\n"
 " <li>Ubuntu:\n"
-" <ul><li><a href=\"http://packages.ubuntu.com/search?keywords=audacity&searchon=names&suite=all&section=all\">packages.ubuntu</a> argitalpen paketeak.</li>\n"
-"     <li><a href=\"http://wiki.audacityteam.org/wiki/Nightly_Builds#linux\">daily PPA packages</a> eraikita Audacity <a href=\"/developers#svn\">SVN garapen kodea</a>-tik. <b>Oharra:</b> Hau ez da zure Audacity ekoizpen bertsio bezala erabili behar.</li>\n"
+" <ul><li><a href=\"http://packages.ubuntu.com/search?keywords=audacity&searchon=names&suite=all&section=all\">ubuntu.paketeak</a> argitalpen paketeak.</li>\n"
+"     <li><a href=\"http://wiki.audacityteam.org/wiki/Nightly_Builds#linux\">eguneko PPA paketeak</a> eraikita Audacity-ren <a href=\"/developers#svn\">SVN garapen kodea</a>-tik. <b>Oharra:</b> Hau ez da zure Audacity ekoizpen bertsio bezala erabili behar.</li>\n"
 "     <li><a href=\"http://rpmseek.com/rpm-pl/audacity.html?hl=com&cx=0%3A-%3A0%3A0%3A0%3A0%3A0&qArStr=0&qRtStr=0&qDnStr=109\">rpmseek</a> Audacityren ondoren paketeetarako.</li>\n"
 "</ul></ul>\n"
 
@@ -3494,7 +3527,7 @@ msgstr "Ezarpen jarraipideak (.dmg agiriak)"
 #: download/legacy_mac.php:35
 #: download/beta_mac.php:28
 msgid "Double-click the downloaded .dmg to mount it"
-msgstr "Klik bikoitza jeitsitako .dmg-an osatzeko"
+msgstr "Klik bikoitza jeitsitako .dmg-an osatzeko."
 
 #: download/mac.php:44
 #: download/beta_mac.php:29
@@ -3508,7 +3541,7 @@ msgstr "LADSPA plug-in ezartzailea</a> - 90 plug-in baino gehiago."
 
 #: download/mac.php:97
 msgid "<b>For advanced users</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#mac\">Nightly Builds</a> for <b>OS X 10.4 or later</b> (Universal Binary) are available for testing purposes."
-msgstr "<b>Erabailtzaile aurreratuentzat</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#mac\">Gau Eraiketak</a> <b>OS X 10.4 eo berriagoetarako</b> (Binario Univertsala) eskuragarri daude azterketa asmoetarako."
+msgstr "<b>Erabailtzaile aurreratuentzat</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#mac\">Gau Eraiketak</a> <b>OS X 10.4 edo berriagoetarako</b> (Binario Unibertsala) eskuragarri daude azterketa asmoetarako."
 
 #: download/mac.php:104
 #: download/legacy_mac.php:73
@@ -3544,7 +3577,7 @@ msgstr "Hau Audacity 1.3.1 eta 1.3.2-ren ezaugarri berrien amaiera da.  Jarraitu
 
 #: download/features-1.3-c.php:9
 msgid "Audacity 1.3: Multiple clips per track"
-msgstr "Audacity 1.3: Klip anitz bide bakoitzeko"
+msgstr "Audacity 1.3: Ebakin anitz bide bakoitzeko"
 
 #: download/features-1.3-c.php:16
 msgid "In Audacity 1.2, there is one audio 'clip' per track.  There is no easy way to time-shift part of a track without moving the rest.  In Audacity 1.3, you can split a single track into multiple clips.  You can move these clips around between different tracks, making it easy to construct complex compositions out of hundreds of smaller audio samples."
@@ -3556,19 +3589,19 @@ msgstr ""
 
 #: download/features-1.3-c.php:100
 msgid "There are five ways to end up with multiple clips in a single track:"
-msgstr ""
+msgstr "Bost bide daude ebakin anitzekin amaitzeko bide bakar batean:"
 
 #: download/features-1.3-c.php:103
 msgid "Split in the middle of an existing clip."
-msgstr ""
+msgstr "Banandu dagoen ebakin baten erdian."
 
 #: download/features-1.3-c.php:104
 msgid "Split Cut in the middle of an existing clip."
-msgstr ""
+msgstr "Banandu Ebaki dagoen ebakin baten erdian."
 
 #: download/features-1.3-c.php:105
 msgid "Split Delete in the middle of an existing clip."
-msgstr ""
+msgstr "Banandu Ezabatu dagoen ebakin baten erdian."
 
 #: download/features-1.3-c.php:106
 msgid "Paste into an empty portion of an existing track."
@@ -3576,7 +3609,7 @@ msgstr "Itsatsi hutsik dagoen bide zati batean."
 
 #: download/features-1.3-c.php:107
 msgid "Drag a clip from a different track."
-msgstr "Arrastatu klip bat bide ezberdin batetik."
+msgstr "Arrastatu ebakin bat bide ezberdin batetik."
 
 #: download/features-1.3-c.php:110
 msgid "These commands, and other editing commands, are described in detail below.  Alternatively, click on the item in the menu to the left to jump directly to that command."
@@ -3589,12 +3622,12 @@ msgstr "Beste gai batzuk:"
 #: download/features-1.3-c.php:115
 #: download/features-1.3-c.php:229
 msgid "Moving clips between tracks"
-msgstr ""
+msgstr "Ebakinak bideen artean mugitzea"
 
 #: download/features-1.3-c.php:116
 #: download/features-1.3-c.php:238
 msgid "Moving multiple clips at once"
-msgstr ""
+msgstr "Ebakin anitz aldiberean mugitzea"
 
 #: download/features-1.3-c.php:122
 msgid "Cut"
@@ -3606,7 +3639,7 @@ msgstr "Hautaturiko audio kentzen eta gakoan jartzen du eta hurrengo audioa ezke
 
 #: download/features-1.3-c.php:131
 msgid "Split Cut"
-msgstr ""
+msgstr "Banandu Ebaki"
 
 #: download/features-1.3-c.php:132
 msgid "Removes the selected audio and puts it on the clipboard, but does not shift the following audio.  The preceding and following audio are now separate clips that can be moved independently."
@@ -3626,7 +3659,7 @@ msgstr ""
 
 #: download/features-1.3-c.php:150
 msgid "Removes all audio from the current clip except the selected part.  Does not affect other clips in the same track."
-msgstr "Audio guztia kentzen du oraingo ebaketatik hautaturiko zatia izan ezik. Ez du eraginik bide bereko beste ebaketatan."
+msgstr "Audio guztia kentzen du oraingo ebakinetik hautaturiko zatia izan ezik. Ez du eraginik bide bereko beste ebakinetan."
 
 #: download/features-1.3-c.php:158
 msgid "Delete"
@@ -3638,7 +3671,7 @@ msgstr "Hautaturiko audioa kentzen du gakoan jarri gabe, eta hurrengo audioa ezk
 
 #: download/features-1.3-c.php:167
 msgid "Split Delete"
-msgstr ""
+msgstr "Banandu Ezabatu"
 
 #: download/features-1.3-c.php:168
 msgid "Removes the selected audio without placing it on the clipboard, but does not shift the following audio.  The preceding and following audio are now separate clips that can be moved independently."
@@ -3650,7 +3683,7 @@ msgstr "Isiltasuna"
 
 #: download/features-1.3-c.php:177
 msgid "Replaces the selection with silence"
-msgstr "Hautapen isiltasunarekin ordezten du"
+msgstr "Hautapena isiltasunarekin ordezten du"
 
 #: download/features-1.3-c.php:185
 msgid "Split"
@@ -3658,7 +3691,7 @@ msgstr "Banandu"
 
 #: download/features-1.3-c.php:186
 msgid "Splits the current clip into up to three clips at the selection boundaries.  The audio before, within, and after the selection can now all be shifted independently"
-msgstr ""
+msgstr "Oraingo ebakina hiru ebakinetan banantzen du hautaturiko mugatan. Aurreko, tarteko eta ondorengo audio hautapenak orain aske aldatu daitezke."
 
 #: download/features-1.3-c.php:195
 msgid "Duplicate"
@@ -3666,11 +3699,11 @@ msgstr "Bikoiztu"
 
 #: download/features-1.3-c.php:196
 msgid "Creates a new track containing only the current selection as a new clip"
-msgstr ""
+msgstr "Bide berri bat sortzen du oraingo hautapena bakarrik duela ebakin berri bat bezala"
 
 #: download/features-1.3-c.php:204
 msgid "Paste - into an existing clip"
-msgstr "Itsatsi - dagoen klip batean"
+msgstr "Itsatsi - dagoen ebakin batean"
 
 #: download/features-1.3-c.php:205
 msgid "When you select Paste and the cursor is inside a clip, the audio gets inserted into the middle of the clip and the following audio is shifted to the right to make room"
@@ -3714,7 +3747,7 @@ msgstr "Etiketa bat sortzeko, hasi audio zenbait hautatzetik."
 
 #: download/features-1.3-e.php:27
 msgid "Select 'Add Label At Selection' from the Tracks menu."
-msgstr "Hautatu 'Gehitu Etiketa Hautapenan' Bideak menutik."
+msgstr "Hautatu 'Gehitu Etiketa Hautapenean' Bideak menutik."
 
 #: download/features-1.3-e.php:33
 msgid "Type some text into the label."
@@ -3730,7 +3763,7 @@ msgstr "Gero, hautapena berreskuratu dezakezu - klikatu etiketa barnean."
 
 #: download/features-1.3-e.php:51
 msgid "After you click, the label region becomes the current selection, allowing you to perform an operation on other tracks in the area within the label."
-msgstr ""
+msgstr "Klikatu ondoren, etiketaturiko eremua oraingo hautapen bihurtzen da, ahalbidetzen dizularik eragiketa bat egitea beste bideetan etiketarik gabeko eremuan."
 
 #: download/features-1.3-k.php:9
 msgid "Audacity 1.3: Timer Recording"
@@ -3965,7 +3998,7 @@ msgstr "<li><a href=\"%s\">OpenDisc</a> <b>Windows</b>-rako ontasun handiko itur
 #: download/buy.php:20
 #, php-format
 msgid "<li><a href=\"%s\">FreedomSampler&trade;</a> is a collection of free, open source software for <b>Windows and Linux</b> with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you (US only)</li>"
-msgstr "<li><a href=\"%s\">FreedomSampler&trade;</a> <b>Windows eta Linux</b>-rako iturburu irekiko software aske bilduma bat da, iturburu kode osoarekin, berbanaketa erraza ahalbidetuz GNU Baimen Publiko Orokorrarekin. ISO irudiak dohainik jeitsi daitezke, edo kopia  bat <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">erosi</a> dezakezu etxera bidaltzeko (AEB bakarrik)</li>"
+msgstr "<li><a href=\"%s\">FreedomSampler&trade;</a> <b>Windows eta Linux</b>-rako iturburu irekiko software aske bilduma bat da, iturburu kode osoarekin, berbanaketa erraza ahalbidetuz GNU Baimen Publiko Orokorrarekin. ISO irudiak dohainik jeitsi daitezke, edo kopia  bat <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">erosi</a> dezakezu etxera bidaltzeko (AEB bakarrik).</li>"
 
 #: download/buy.php:21
 #, php-format
@@ -3975,7 +4008,7 @@ msgstr "<li><a href=\"%s\">VALO-CD</a> hogeita-bi iturburu-irekiko <b>Windows</b
 #: download/buy.php:22
 #, php-format
 msgid "<li><a href=\"%s\">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software for <b>Windows</b>. Currently, you can still <a href=\"%s\">download archived CD images for free</a>, or <a href=\"%s\">purchase a CD online</a> for worldwide shipping.</li>"
-msgstr "<li><a href=\"%s\">TheOpenCD</a> orain-jarraipengabeko  <b>Windows</b>-rako ontasun handiko iturburu irekiko software aske bilduma bat da. Oraindik <a href=\"%s\">agiritegiko CD irudiak dohainik jeitsi ditzakezu</a>, edo <a href=\"%s\">CD bat erosi online</a> mundu osoko bidalketarekin.</li>"
+msgstr "<li><a href=\"%s\">TheOpenCD</a> orain-jarraipen gabeko  <b>Windows</b>-rako ontasun handiko iturburu irekiko software aske bilduma bat da. Oraindik <a href=\"%s\">agiritegiko CD irudiak dohainik jeitsi ditzakezu</a>, edo <a href=\"%s\">CD bat erosi online</a> mundu osoko bidalketarekin.</li>"
 
 #: download/beta_linux.php:19
 msgid "Downloads"
@@ -4017,7 +4050,7 @@ msgstr ""
 "Audacity 2.0 da oraingo gure argitalpen seriea. \n"
 "      Dozenaka ezaugarri berri ditu, aurreko 1.3 serietan garatuak. \n"
 "      Aurreko bertsio guztiak ordezten ditu, bereziki 1.2.6 eta 1.3.14.\n"
-"      Ikusi <a href=\"../download/features-1.3-a\">1.3 Ezaugarri Berriak</a> 1.3 serieko aldaketatarako. Ikusi <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Argitalpen Oharrak</a> 2.0 serieko aldaketatarako..\n"
+"      Ikusi <a href=\"../download/features-1.3-a\">1.3 Ezaugarri Berriak</a> 1.3 serieko aldaketetarako. Ikusi <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Argitalpen Oharrak</a> 2.0 serieko aldaketatarako..\n"
 
 #: download/features-2.0.php:22
 msgid ""
@@ -4048,10 +4081,10 @@ msgstr ""
 "<ul> \n"
 "  <li>Eragin asko nabarmen hobetuta, bereziki Ekualizazioa, Zarata\n"
 "      Kentzea eta Normalkuntza. Ahots Kentzeak orain GVerb gehigarri bat du \n"
-"      Windows eta Mac-en. VAMP aztarketa pluginak orain sostengatzen dira.  \n"
+"      Windows eta Mac-en. Orain VAMP azterketa pluginak sostengatzen dira.  \n"
 "    </li>\n"
 "  <li>Etiketa bideak hobetuta Aldib.-Blokeatze Bideak ezaugarriarekin Bideak Menuan.\n"
-"      Klip anitz bide bakoitzeko. Bideak eta hautapenak ongi manipulatu daitezke \n"
+"      Ebakin anitz bide bakoitzeko. Bideak eta hautapenak ongi manipulatu daitezke \n"
 "      teklatua erabiliz. Lastertekla askoz gehiago. \n"
 "    </li>\n"
 "  <li>Gailu Tresnabarra berria sarrerak eta irteetak kudeatzeko. Denboragailu grabaketa ezaugarria.\n"
@@ -4099,7 +4132,7 @@ msgstr "wxWidgets 2.8-an ohinarriturik"
 
 #: download/features-1.3-g.php:30
 msgid "Previous versions of Audacity were based on wxWidgets 2.4.  This change brings support for GTK2 widgets on Unix and better Unicode support on all platforms, plus many other minor enhancements under the hood."
-msgstr ""
+msgstr "Audacityren aurreko bertsioak wxWidgets 2.4-an ohinarrituak ziren.  Aldaketa honek GTK2 widgets sostengua dakar Unix-en eta Unicode sostengu hobea plataforma guztietan, gainera beste hobekuntza txiki estalkipean."
 
 #: download/features-1.3-g.php:32
 msgid "Batch / CleanSpeech"
@@ -4115,7 +4148,7 @@ msgstr "Ebaki lerroak"
 
 #: download/features-1.3-g.php:38
 msgid "Turning this feature on in the Tracks Preferences means that cutting audio in the middle of a clip does not remove it permanently - click on the cut line at any time to restore it."
-msgstr ""
+msgstr "Ezaugarri hau gaituz gero Bide Hobespenetan esanahi du audio ebakin baten erdian ebakiz gero ez duela betirako kentzen - klikatu ebaki lerroan edonoiz leheneratzeko."
 
 #: download/beta_mac.php:23
 #, php-format
@@ -4227,6 +4260,17 @@ msgid ""
 "  <li>Level meters can monitor volume levels before, during and after recording. Clipping can be displayed in the waveform or in a label track.</li>\n"
 "</ul>"
 msgstr ""
+"<h3 id=\"record\">Grabaketa</h3>\n"
+"<p>Audacityk zuzeneko audioa grabatu dezake mikrofono edo nahasgailu baten bidez, edo <a href=\"http://manual.audacityteam.org/help/manual/man/tutorial_copying_tapes_lps_or_minidiscs_to_cd.html\">kasetetako, binilo diskatako edo minidiskatako grabaketak digitalizatu</a>. Soinu txartel batzuekin, Audacityk <a href=\"http://manual.audacityteam.org/help/manual/man/tutorial_recording_audio_playing_on_the_computer.html\">audio jarioak</a> ere hartu ditzake.</p>\n"
+"<ul>\n"
+"  <li>Grabatu mikrofonotik, bide sarreratik, USB/Firewire gailutik eta abar.</li>\n"
+"  <li>Gailu Tresnabarrak sarrera eta irteera gailu anitz kudeatzen ditu.</li>  \n"
+"  <li>Denborapen Grabaketa eta Soinu Eragindu Grabaketa ezaugarriak.</li>\n"
+"  <li>Bikoiztu dauden bideen gainean <a href=\"http://manual.audacityteam.org/help/manual/man/faq.html#overdub\">bide-anitzeko grabaketak</a> sortzeko.</li>\n"
+"  <li>Grabatu 192,000 Hz baino gehiagoko lagin neurri handiak (hardware egokiaren arabera).</li>\n"
+"  <li>Grabatu <a href=\"http://wiki.audacityteam.org/wiki/Multichannel_Recording\">bide anitz</a> aldibatean (hardware egokiaren arabera).</li>\n"
+"  <li>Maila neurgailuek bolumen neurriak monitorizatu ditzakete grabaketaren aurretik, zehar eta ondoren. Ebakina uhineran edo etiketa bide batean erakutsi daiteke.</li>\n"
+"</ul>"
 
 #: about/features.php:27
 msgid ""
@@ -4243,6 +4287,18 @@ msgid ""
 "  <li>Import and export <b>AC3</b>, <b>M4A/M4R (AAC)</b> and <b>WMA</b> with the optional <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg library</a> (this also supports import of audio from video files).</li>\n"
 "</ul>"
 msgstr ""
+"<h3 id=\"imp_exp\">Inportatu eta Esportatu</h3>\n"
+"<p>Inportatu soinu agiriak, editatu hauek, eta nahastu itzazu beste agiri batzuekin edo grabaketa berriekin. Esportatu zure grabaketak agiri heuskarri ezberdin askotan, <a href=\"http://manual.audacityteam.org/help/manual/man/export_multiple.html\">agiri anitz aldiberean barne</a>.</p>\n"
+"<ul>\n"
+"  <li>Inportatu eta esportatu <b>WAV</b>, <b>AIFF</b>, <b>AU</b>, <b>FLAC</b> eta <a href=\"http://vorbis.com\">Ogg Vorbis</a> agiriak.</li>\n"
+"  <li>\"Eskaerapean\" WAV edo AIFF agirien inportazio azkarra (agiriekin ia berehala lan egiten hastea ahalbidetzen dizu) zuzenean iturburutik irekurriz gero. \"Eskaerapean\" beste agiri heuskarrietatik inportatzea eskuragarri dago aukerazko<a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg liburutegia</a> erabiliz.</li>\n"
+"  <li>Inportatu eta esportatu <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>-ek sostengaturiko heuskarri guztiak <b>GSM 6.10</b>, <b>32-bit eta 64-bit float WAV</b> eta <b>U/A-Law</b> bezalakoak.</li>\n"
+"  <li>Inportatu MPEG audioa (<b>MP2</b> eta <b>MP3</b> agiriak barne) <a href=\"http://www.underbit.com/products/mad/\">libmad</a> erabiliz.</li>\n"
+"  <li>Inportatu raw (idazburugabea) audio agiriak \"Import Raw\" komandoa erabiliz.</li>\n"
+"  <li>Sortu WAV edo AIFF agiriak <a href=\"http://manual.audacityteam.org/help/manual/man/burning_music_files_to_a_cd.html\">audio CD</a> batean erretzeko.</li>\n"
+"  <li>Esportatu MP3 agiriak aukerazko <a href=http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#lame\">LAME kodeatzaile liburutegia</a>erabiliz.</li>\n"
+"  <li>Inportatu eta esportatu <b>AC3</b>, <b>M4A/M4R (AAC)</b> eta <b>WMA</b> aukerazko <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg liburutegia</a>erabiliz (honek audioa bideo agirietatik inportatzea ere sostengatzen du).</li>\n"
+"</ul>"
 
 #: about/features.php:40
 msgid ""
@@ -4253,6 +4309,12 @@ msgid ""
 "  <li>Tracks with different sample rates or formats are converted automatically in real time.</li>\n"
 "</ul>"
 msgstr ""
+"<h3>Soinu Ontasuna</h3>\n"
+"<ul>\n"
+"  <li>Sostengua 16-bit, 24-bit eta 32-bit (gain puntua) laginetarako (azkenak eskala osoaren gehiegizko laginak gordetzen ditu).</li>\n"
+"  <li>Lagin neurria eta heuskarriak ontasun-handiko birlaginketa eta ehundura erabiliz bihurtzen dira.</li>\n"
+"  <li>Lagin neurri edo heuskarri ezberdineko bideak berezgaitasunez bihurtzen dira egizko denboran.</li>\n"
+"</ul>"
 
 #: about/features.php:47
 msgid ""
@@ -4268,6 +4330,17 @@ msgid ""
 "  <li>Automatic Crash Recovery in the event of abnormal program termination.</li>  \n"
 "</ul>"
 msgstr ""
+"<h3 id=\"edit\">Edizioa</h3>\n"
+"<ul>\n"
+"  <li>Edizio erraza, Ebaki, Kopiatu, Itsatsi eta Ezabaturekin.</li>\n"
+"  <li>Desegite (eta Berregite) jarrai mugagabea atzera joateko urrats zenbateko bat.</li>\n"
+"  <li>Editatu etea nahastu bide zenbateko handi bat.</li>\n"
+"  <li><a href=\"http://manual.audacityteam.org/help/manual/man/audacity_tracks_and_clips.html\">Ebakin</a> anitz ahalbidetzen dira bide bakoitzeko</li>\n"
+"  <li><a href=\"http://manual.audacityteam.org/help/manual/man/label_tracks.html\">Etiketa bideak</a> <a href=\"http://manual.audacityteam.org/help/manual/man/sync_locked_tracks.html\">Aldib-Lotu Bideak</a> ezaugarri hautagarriarekin bideak eta etiketak aldibereturik edukitzeko.</li>\n"
+"  <li>Marrazte Tresna banakako lagin puntuak aldatzeko.</li>\n"
+"  <li><a href=\"http://manual.audacityteam.org/help/manual/man/envelope_tool.html\">Azal Tresna</a> bolumena igo edo jeisteko lehunki.</li>\n"
+"  <li>Berezgaitasunezko Matxura Berreskurapena programak modu ezohikoan amaitzea gertatuz gero.</li>  \n"
+"</ul>"
 
 #: about/features.php:59
 msgid ""
@@ -4278,6 +4351,12 @@ msgid ""
 "  <li>Excellent support for JAWS, <a href=\"http://www.nvda-project.org/\">NVDA</a> and other screen readers on Windows, and for <a href=\"http://www.apple.com/accessibility/voiceover/\">VoiceOver</a> on Mac.</li>   \n"
 "</ul>"
 msgstr ""
+"<h3><a href=\"http://manual.audacityteam.org/help/manual/man/accessibility.html\">Erabil-erraztasuna</a></h3>\n"
+"<ul>\n"
+"  <li> Bideak eta hautapenak <a href=\"http://manual.audacityteam.org/help/manual/man/audacity_selection.html\">erabat kudeatu daitezke teklatua erabiliz</a>.</li>\n"
+"  <li><a href=\"http://manual.audacityteam.org/help/manual/man/keyboard_shortcut_reference.html\">Lastertekla</a> kopuru handia. </li>\n"
+"  <li>Sostengu ezinhobea JAWS, <a href=\"http://www.nvda-project.org/\">NVDA</a> eta beste ikusleiho irakurgailuentzat Windowsen, eta <a href=\"http://www.apple.com/accessibility/voiceover/\">VoiceOver</a>-rako Mac-en.</li>   \n"
+"</ul>"
 
 #: about/features.php:66
 msgid ""
@@ -4301,6 +4380,25 @@ msgid ""
 "  <li>Run \"Chains\" of effects on a project or multiple files in <a href=\"http://manual.audacityteam.org/help/manual/man/batch_processing.html\">Batch Processing</a> mode. \n"
 "</ul>"
 msgstr ""
+"<h3 id=\"effects\">Eraginak</h3>\n"
+"<ul>\n"
+"  <li>Aldatu doinua tempoa aldatu gabe (edo alderantziz).</li>\n"
+"  <li>Kendu estatika, txistuak, burrunbak edo beste barreneko zarata egonkorrak.</li>\n"
+"  <li>Aldatu maiztasunak Ekualizazio, Behe Bultzada, Goi/Behe Igaropen eta Eragozpen Iragazki eraginekin.</li>\n"
+"  <li>Zehaztu bolumena Hertsapen, Handipen, Normalkuntza eta Sarrera/Irteera moteltze eraginekin.\n"
+"  <li><a href=\"http://manual.audacityteam.org/help/manual/man/vocal_remover.html\">Kendu Ahotsak</a> estereo bide jakinetatik.\n"
+"  <li>Sortu ahots-gainak podcast edo DJ ezarpenetatik <a href=\"http://manual.audacityteam.org/help/manual/man/auto_duck.html\">Berez Uztartu</a> eragina erabiliz.\n"
+"  <li>Beste barne-eraikitako eragin batzuk:\n"
+"    <ul>\n"
+"      <li>Oihartzuna</li>\n"
+"      <li>Phaser</li>\n"
+"      <li>Wahwah</li>\n"
+"      <li>Paul-luzapena (oso luzea)</li>\n"
+"      <li>Alderantzizkatu</li>\n"
+"      <li>Hautsi Isiltasuna</li>\n"
+"    </ul>\n"
+"  <li>Ekin eragin \"Kateak\" egitasmo batean edo agiri anitzetan <a href=\"http://manual.audacityteam.org/help/manual/man/batch_processing.html\">Multzo Prozesapen</a> moduan. \n"
+"</ul>"
 
 #: about/features.php:86
 msgid ""
@@ -4327,6 +4425,14 @@ msgid ""
 "  <li>Support for adding <a href=\"http://manual.audacityteam.org/help/manual/man/analyze_menu.html#vamp\">VAMP</a> analysis plug-ins.</a>\n"
 "</ul>"
 msgstr ""
+"<h3>Azteketa</h3>\n"
+"<ul>\n"
+"  <li>Argilitzaera ikuspen modua maiztasunak ikusteko.</li>\n"
+"  <li>\"Plot Argilitza\" komandoa maiztasun azterketa xeherako.</li>\n"
+"  <li>\"Lagin Datu Esportazioa\" hautapenean lagin bakoitzeko zabaltasun balioak dituen agiri bat esportatzeko.</li> \n"
+"  <li>Aldetasun Azterketa rms bolumen bataz-besteko aldeak aztertzeko aurraldeko hizketa eta barreneko musikaren artean.</li>\n"
+"  <li>Sostengua <a href=\"http://manual.audacityteam.org/help/manual/man/analyze_menu.html#vamp\">VAMP</a> azterketa plug-inak gehitzeko.</a>\n"
+"</ul>"
 
 #: about/features.php:101
 msgid ""
@@ -4339,7 +4445,7 @@ msgstr ""
 "<h3>Askea eta Plataforma-Anitzekoa</h3>\n"
 "<ul>\n"
 "  <li><a href=\"license\">GNU Baimen Publiko Orokorra (GPL)</a> baldintzatan baimendua.</li> \n"
-"  <li>Jarduten du Windows, Mac OS X eta GNU/Linux sistematan.</li>\n"
+"  <li>Windows, Mac OS X eta GNU/Linux sistematan jarduten du.</li>\n"
 "</ul>"
 
 #: about/credits.php:15
@@ -4360,7 +4466,7 @@ msgstr "Audacity, Dominic Mazzonik eta Roger Dannenberg-ek abiatu zuten 1999-ko 
 
 #: about/credits.php:22
 msgid "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, that is, excluding the code libraries Audacity uses. The <a href=\"http://www.ohloh.net/projects/audacity/contributors\">Contributors tab</a> on the Ohloh site shows the contributions of each developer."
-msgstr "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a>ek Audacityren garapen estatistika balioak ditu. Ohloh &quot;ikurrak&quot; gune honetako orrialde bakoitzaren beherenean eguneratutako balio laburpenak erakusten ditu. Audacityri buruzko Ohloh orrialdeak ezarri ditugu, hortaz Audacity-bereizi baten garapen balioak bakarrik erakusten ditu, horrela, Audacityk erabiltzen dituen liburutegi kodeak kanpo daude. <a href=\"http://www.ohloh.net/projects/audacity/contributors\">Laguntzaile hegatsak</a> Ohloh gunean garapen bakoitzaren laguntzaileak erakusten ditu."
+msgstr "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a>-ek Audacityren garapen estatistika balioak ditu. Ohloh &quot;ikurrak&quot; gune honetako orrialde bakoitzaren beherenean eguneratutako balio laburpenak erakusten ditu. Audacityri buruzko Ohloh orrialdeak ezarri ditugu, hortaz Audacity-bereizi baten garapen balioak bakarrik erakusten ditu, horrela, Audacityk erabiltzen dituen liburutegi kodeak kanpo daude. <a href=\"http://www.ohloh.net/projects/audacity/contributors\">Laguntzaile hegatsak</a> Ohloh gunean garapen bakoitzaren laguntzaileak erakusten ditu."
 
 #: about/credits.php:24
 msgid "Audacity Team Members"
@@ -4459,7 +4565,7 @@ msgstr "Eskerrak"
 
 #: about/credits.php:159
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
-msgstr "Beste norbanako eta erakunde asko daude eskerrak ematea nahi dizkiegunak. Hauetako askok kodea, eranskinak, irizkizunak, dirua, denbora edo beste gauza batzuekin lagundu egitasmoa. Beste batzuk besterik gabe guzti hau ahal egin duten tresnak egin dituzte."
+msgstr "Beste norbanako eta erakunde asko daude eskerrak ematea nahi dizkiegunak. Hauetako askok kodea, eranskinak, irizkizunak, dirua, denbora edo beste gauza batzuekin lagundu dute egitasmoa. Beste batzuk besterik gabe guzti hau ahal egin duten tresnak egin dituzte."
 
 #: about/credits.php:184
 msgid "(Let us know if we're forgetting anyone!)"
@@ -4675,12 +4781,12 @@ msgstr "<h3 id=\"license\">Baimena</h3>"
 #: about/license.php:29
 #, php-format
 msgid "Audacity is <a href=\"%s\">free software</a>. You may use it for any personal, commercial or educational purpose, including installing it on as many different computers as you wish."
-msgstr ""
+msgstr "Audacity <a href=\"%s\">software askea</a> da. Edozein egitasmo pertsonal, merkatal edo hezkuntzakoan erabili dezakezu, nahi duzun ordenagailu ezberdin guztietan ezartzea barne."
 
 #: about/license.php:33
 #, php-format
 msgid "You may also copy, distribute, modify, and/or resell Audacity, under the terms of the <a href=\"%s\">GNU General Public License (GPL)</a> as published by the Free Software Foundation - either <a href=\"%s\">version 2 of the License</a>, or (at your option) any later version. In granting you this right, the GPL requires that the source code you distribute is itself available under the GPL. If you distribute or recommend Audacity in any way, please cite our trademark by referring to Audacity as \"Audacity(R)\"."
-msgstr ""
+msgstr "Audacity kopiatu, aldatu eta/edo bersaldu dezakezu ere <a href=\"%s\">GNU Baimen Publiko Orokorra (GPL)</a>-ren baldintzatan Free Software Foundationek argitaratu bezala- bietan <a href=\"%s\">Baimenaren 2 bertsioa</a>, edo (zure aukeran) edozein bertsio berriagoan. Eskubide hau bermatzeko, GPL-ak zuk banatzen duzun iturburu kodea GPL baldintzatan eskuragarri egotea behar du. Audacity banatzen edo gomendatzen baduzu nonbait, mesedez aipatu gure egilemarka Audacity \"Audacity(R)\" bezala adieraziz."
 
 #. i18n-hint: the encoding inside the <a href> tag between the two
 #. "echo" strings here and elsewhere on this page obscures the
@@ -4704,6 +4810,9 @@ msgid ""
 "\n"
 "<p>A variety of companies and individuals bundle Audacity with their products, resell or otherwise distribute it. Below are requirements and guidelines for bundling, reselling or distributing Audacity. "
 msgstr ""
+"<h3 id=\"advice\">Aholkularitza Saltzaile eta Banatzaileentzat</h3>\n"
+"\n"
+"<p>Konpainia eta norbanako ugarik biltzen, bersaltzen edo bestela banatzen dute Audacity beren produktuekin. Behean Audacityren bilketa, bersalketa edo banaketaren betebehar eta gidalerroak daude. "
 
 #: about/license.php:56
 msgid "If you adhere to these, please "
@@ -4711,7 +4820,7 @@ msgstr "Hauei atxikitzen bazara, mesedez"
 
 #: about/license.php:59
 msgid "e-mail us</a> for possible inclusion on our <a href=\"../download/bundlers\">Vendors and Distributors of Audacity</a> page."
-msgstr ""
+msgstr "idatzi diezaguzu post@</a> gure <a href=\"../download/bundlers\">Audacity Saltzaile eta Banatzaile</a> orrialdearen barne jarri ahal izateko."
 
 #: about/license.php:63
 msgid ""
@@ -4724,15 +4833,23 @@ msgid ""
 "  </ol>\n"
 "</p>"
 msgstr ""
+"<h4 >Legazko Betebeharrak</h4>\n"
+"\n"
+"<p>Hurrengoa barneratu <b>behar</b> duzu <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> 2 bertsioa edo berriagoa betetzeko:\n"
+"  <ol>\n"
+"    <li><a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GPL</a> baimenaren hizkiz-hizkiko kopia bat eta </li>\n"
+"    <li><a href=\"http://audacity.sourceforge.net/download/source\">Audacity iturburu kodea</a> (edo Audacityren bertsio aldatu bat banatzen ari bazara, aldaturiko kodea). Horrela ez bada, kodea hornitzeko idatzizko eskaintza bat barneratu behar duzu.</li>\n"
+"  </ol>\n"
+"</p>"
 
 #: about/license.php:72
 #, php-format
 msgid "<p>If you distribute our <a href=\"%s\">installers</a> and do not modify them, this will fully comply, because the installers include the <a href=\"%s\">GPL</a> and an offer in README.txt for users to obtain the source code from us. Versions of Audacity after 1.3.3 also include the GPL in the application itself, in the About Audacity dialog. On this site, we block advertisements from distributors offering modified installers of Audacity, on the expectation that any modification is likely adding unwanted software.</p>"
-msgstr ""
+msgstr "<p>Gure <a href=\"%s\">ezartzaileak</a> banatzen badituzu eta ez badituzu aldatzen, honek osorik beteko du, zeren ezartzaileek barne dute <a href=\"%s\">GPL</a> baimena eta IRAKURRI.txt eskaintza bat erabiltzaileek iturburu kodea gudandik lortzeko. 1.3.3-tik aurrerako Audacity bertsioek ere GPL baimena barneratzen dute aplikazioan bertan, Audacityri Buruz elkarrizketan. Webgune honetan, blokeatu egin ditugu banatzaileek eskaintzen dituzten Audacity ezartzaile aldatuen iragarkiak, uste dugulako edozein aldaketa duena nahi ez den softwarea gehitzea dela.</p>"
 
 #: about/license.php:74
 msgid "<p>Additionally, the name <b>Audacity</b>&reg; is a <b>registered trademark</b> of Dominic Mazzoni. Therefore you <b>may not</b> advertise yourself or your business as an authorized distributor of Audacity, and you <b>may not</b> modify Audacity then continue to use the Audacity name without the express permission of the Audacity Team.</p>"
-msgstr ""
+msgstr "<p>Gehigarri bezala, <b>Audacity</b>&reg; izena Dominic Mazzoni-ren<b>erregistraturiko egilemarka</b> bat da. Hortaz, <b>ezin duzu</b> zure burua edo zure negozioa Audacity banatzaile baimendu bezala iragarri, eta <b>ezin duzu</b> Audacity aldatu bere izena erabiltzen jarraitzeko Audacity Taldearen baimena izan gabe.</p>"
 
 #: about/license.php:76
 msgid ""
@@ -4740,10 +4857,13 @@ msgid ""
 "\n"
 "<p>We would appreciate your linking to our web site: <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> so your users can download updated versions of Audacity when released. Also, please subscribe to the notifications list at the bottom of <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> to ensure you receive advice of and can distribute the latest version of Audacity.</p>"
 msgstr ""
+"<h4 >Audacity Eguneraketa eta Jakinarazpena</h4>\n"
+"\n"
+"<p>Eskertuko genizuke gure webgunera lotura izatea: <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> horrela zure erabiltzaileek Audacityren bertsio eguneratu bat jeitsi dezakete argitaratzen denean. Baita ere, mesedez harpidetu jakinarazpen zerrendara <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a> behealdean, oharra jasotzen duzula zihurtatzeko eta Audacityren azken bertsioa banatu ahal izateko.</p>"
 
 #: about/license.php:80
 msgid "<p>If you bundle the .exe or .dmg Audacity installers, the Audacity <a href=\"http://manual.audacityteam.org/help/manual/\">Manual</a> is included. If you provide the Audacity zip file or source tarball, please consider including the <a href=\"http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html\">standalone Manual</a> with your distribution to reduce the number of queries we receive."
-msgstr ""
+msgstr "<p>Audacity .exe edo .dmg ezartzaileak biltzen badituzu, Audacityren <a href=\"http://manual.audacityteam.org/help/manual/\">Eskuliburua</a> barne dago. Audacity zip agiria edo iturburu tarball bat hornitzen baduzu, mesedez kontuan izan <a href=\"http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html\">Eskuliburu aske bat</a> barneratzea zure banaketarekin jasotzen ditugun eskaerak gutxitzeko."
 
 #: about/license.php:83
 msgid "IMPORTANT: If you write your own documentation for Audacity, please "
@@ -4751,11 +4871,11 @@ msgstr "GARRANTZITSUA: Audacityrentzat zeure agiritza idazten baduzu, mesedez"
 
 #: about/license.php:86
 msgid "submit it to us</a> for review <em>before</em> you publish it.</p>"
-msgstr ""
+msgstr "aurkeztu diezaguzu</a> berreikusteko argitaratu <em>aurretik</em>.</p>"
 
 #: about/license.php:88
 msgid "<h4>For vendors selling a hardware product, with Audacity included:</h4>"
-msgstr ""
+msgstr "<h4>Hardware produktua saltzen duten saltzaileentzat, Audacity barne duela:</h4>"
 
 #: about/license.php:94
 msgid "<li>Thank you for choosing to distribute Audacity with your product! Please "
@@ -4763,7 +4883,7 @@ msgstr "<li>Mila esker zure produktoarekin Audacity banatzea hautatzearren! Mese
 
 #: about/license.php:97
 msgid "contact us</a> early so we can work together to make your product a success.</li>"
-msgstr ""
+msgstr "jarri harremanetan gurekin</a> garaiz elkarrekin lan egin ahal izateko zure produktoa garaipen bat izateko.</li>"
 
 #: about/license.php:100
 msgid "<li>Please distribute Audacity unmodified. If you need to modify it to work with your device, please "
@@ -4780,6 +4900,10 @@ msgid ""
 "  </ol>\n"
 "</p>"
 msgstr ""
+"<li>Mesedez aztertu sakon zure gailua Audacityrekin. Beharrezkoa den itxurapen jarraipide bereiziren bat badago zure gailuak Audacityrekin lan egiteko, mesedez zihurtatu gailuarekin batera dagoela.</li>\n"
+"        <li>Mesedez ohartu guk ezin ditugula zure bezeroak lagundu zure gailuaren arazo bereiziekin - hauek zeure gaituriko pertsonalak tratatu behar ditu. Audacity beraren sostengua behar duten erabiltzaileek laguntza hemen bilatu dezakete:<a href=\"http://audacity.sourceforge.net/contact/\">http://audacity.sourceforge.net/contact/</a>.</li>\n"
+"  </ol>\n"
+"</p>"
 
 #: about/license.php:111
 msgid ""
@@ -4790,10 +4914,16 @@ msgid ""
 "    <li>If you are reselling Audacity unmodified, your advertising should make it clear that Audacity is available for free on the Internet, and highlight the benefits of the customer purchasing Audacity from you.  For example, you could offer Audacity on a CD-ROM, bundle other software or music files, or provide a printed manual.</li>\n"
 "    <li>You should endeavour to provide your own technical support for your customers, and your own documentation if you have modified Audacity. "
 msgstr ""
+"<h4>Audacity bersaltzea nahi dutenentzat, edo bere bertsio berrizendatu bat:</h4>\n"
+"\n"
+"<p>\n"
+"  <ol>\n"
+"    <li>Audacity aldatugabe bersaltzen ari bazara, zure iragarkiak argi izan behar du Audacity dohainik eskuratu daitekeela Interneten, eta nabarmendu bezeroarentzat Audacity zugandik erosteak dituen onurak. Adibidez, Audacity CD-ROM batean eskaini dezakezu, beste software bat bildu edo musika agiriak, edo irarkituriko eskuliburu bat hornitu.</li>\n"
+"    <li>Ahalegindu behar zara zeure sostengu teknikoa eskaintzen zure bezeroei, eta zeure agiritza Audacity aldatu baduzu. "
 
 #: about/license.php:119
 msgid "If you are reselling Audacity exactly as obtained from us and have questions about this, please "
-msgstr ""
+msgstr "Audacity gugandik lortu duzun bezala bersaltzen ari bazara eta galderak badituzu, mesedez"
 
 #: about/license.php:122
 msgid "e-mail us</a>."
@@ -4859,7 +4989,7 @@ msgstr "Post@ zerrendak eta agiritegiak"
 
 #: community/translation.php:25
 msgid "Translating Audacity</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>."
-msgstr "Audacity Itzulpena</a> Audacityren <a href=\"http://wiki.audacityteam.org/index.php\">Wikia</a>-n."
+msgstr "Audacity Itzulpena</a> Audacityren <a href=\"http://wiki.audacityteam.org/index.php\">Wikia</a>n."
 
 #. i18n-hint: The three numbers will be year, month, day. Remember you
 #. can re-order the numbers if you want to - to get Day, Month, Year,
@@ -4885,7 +5015,7 @@ msgstr "wxWidgets i18n"
 
 #: community/translation.php:43
 msgid "Audacity Manual</a> - The Audacity Manual also requires translating. This is done online using Wiki software. To create an account and start translating, please contact"
-msgstr "Audacity Eskuliburua</a> - Audacity Eskuliburuak ere itzulpena behar du. Hau online egiten da Wiki softwarea erabiliz. Kontu bat sortu eta itzulpena hasteko, mesedez jarri harremanetan"
+msgstr "Audacity Eskuliburua</a> - Audacity Eskuliburuak ere itzulpena behar du. Hau online egiten da Wiki softwarea erabiliz. Kontu bat sortu eta itzulpena hasteko, mesedez jarri harremanetan:"
 
 #. i18n-hint: These instructions are for translators only, so you may
 #. leave them untranslated if you like.
@@ -4934,22 +5064,22 @@ msgid ""
 msgstr ""
 "<h3>Itzulpen Jarraipideak (softwarea eta webgunea)</h3>\n"
 "\n"
-"<p>Arrunt jadanik egongo da Audacity softwarearen edo webgunearen zure hizkuntzako itzulpen bat, baina sarri eguneraketa bat beharko du azken aldaketatarako. <b>Badagoen itzulpen bat eguneratzeko</b>, erabili beheko loturak zure hizkuntzako .po agiria jeisteko:</p>\n"
+"<p>Arrunt jadanik egongo da Audacity softwarearen edo webgunearen zure hizkuntzako itzulpen bat, baina sarri eguneraketa bat beharko du azken aldaketatarako. <b>Badagoen itzulpen bat eguneratzeko</b>, erabili azpiko loturak zure hizkuntzako .po agiria jeisteko:</p>\n"
 "<ul>\n"
 "  <li><a href=\"%s\">Audacity itzulpenak</a></li>\n"
 "  <li><a href=\"%s\">Audacity webgune itzulpenak</a></li>\n"
 "</ul>\n"
 "\n"
-"<p>Gaineko lotura klikatu ondoren, klikatu zure hizkuntzaren .po agiriaren lotura. Orrialdean irriskatu behera eskuineko \"Agiri argibideak\" panel urdinera, orduan eskuin-klikatu edo kontrol-klikatu \"Ikusi raw agiria\"loturaren gainean eta \"gorde orria\" edo \"gorde lotura honela\" .po agiria jeisteko.</p> \n"
+"<p>Gaineko lotura klikatu ondoren, klikatu zure hizkuntzaren .po agiriaren lotura. Orrialdean irriskatu behera eskuineko \"Agiri argibideak\" panel urdinera, orduan eskuin-klikatu edo kontrol-klikatu \"Ikusi raw agiria\" loturaren gainean eta \"gorde orria\" edo \"gorde lotura honela\" .po agiria jeisteko.</p> \n"
 "\n"
-"<p><b>Ez badago zure hizkuntzako .po agiririk</b>, sortu bat azken \"audacity.pot\" edo \"audacity_webgunea.pot\" agiria jeitsiz gaineko \"Itzultzaileentzako Baliabideak\"-tik. (Loturak nabigatzailean idazkia bakarrik erakusten badu, eskuin-klikatu edo kontril-klikatu eta gorde orria edo lotura). Berrizendatu .pot agiria \"audacity.po\" (edo \"audacity_webgunea.po\" web gunearen itzulpenerako) zure itzulpena hasi aurretik.</p>\n"
+"<p><b>Ez badago zure hizkuntzako .po agiririk</b>, sortu bat azken \"audacity.pot\" edo \"audacity_webgunea.pot\" agiria jeitsiz gaineko \"Itzultzaileentzako Baliabideak\"-tik. (Loturak nabigatzailean idazkia bakarrik erakusten badu, eskuin-klikatu edo kontrol-klikatu eta gorde orria edo lotura). Berrizendatu .pot agiria \"audacity.po\" (edo \"audacity_webgunea.po\" web gunearen itzulpenerako) zure itzulpena hasi aurretik.</p>\n"
 "\n"
 "<p><b>.po agiriak sortzeko eta editatzeko programak:</b></p>\n"
 "<ul>\n"
 "  <li><a href=\"http://poedit.sourceforge.net/\">poEdit</a> Windows eta Unix-rako.</li>\n"
 "  <li><a href=\"http://userbase.kde.org/Lokalize\">Lokalize</a> KDE4-rako</li>\n"
 "  <li><a href=\"http://translate.sourceforge.net/wiki/virtaal/index\">Virtaal</a></li>\n"
-"  <li><a href=\"http://www.gnu.org/software/gettext/\">GNU gettext</a> estandarra da Unix sistema gehinetan. Barne du PO modua Emacs idazki editatzailearentzat.</li>\n"
+"  <li><a href=\"http://www.gnu.org/software/gettext/\">GNU gettext</a> estandarra da Unix sistema gehienetan. Barne du PO modua Emacs idazki editatzailearentzat.</li>\n"
 "</ul>\n"
 "\n"
 "<p><b>PoEdit ohinarrizko erabilpena:</b><p>\n"
@@ -4962,14 +5092,14 @@ msgstr ""
 "<p><b>Itzulpena Audacityn aztertzeko:</b></p>\n"
 "<ul>\n"
 "  <li>Nabigatu \"Hizkuntzak\" zuzenbidera, Audacityren ezarpen zuzenbidearen barne dagoena, eta ireki zuzenbidea zure .po agiriak duen izen berarekin. Itzulpen berri bat sortuz gero, sortu zuzenbide bat \"Hizkuntzak\" agiritegian hizkuntza kode zuzena erabiliz hemendik <a href=\"http://www.poedit.net/translations.php\">http://www.poedit.net/translations.php</a>. Adibidez, Tamil hizkuntzarako kodea \"ta\" da, hortaz sortu \"Audacity\\Languages\\ta\".</li>\n"
-"  <li>Rename the saved <b>.mo</b> file to \"Audacity.mo\", and paste it into the directory you opened or created.</li>\n"
+"  <li>Berrizendatu gordetako <b>.mo</b> agiria \"Audacity.mo\", eta itsatsi hau ireki edo sortu duzun zuzenbidean.</li>\n"
 "  <li>Ireki Audacity eta <b>Hobespenak: Interfazea</b>, hautatu zure hizkuntza eta klikatu Ongi. Orain zure itzulpenak ikusi beharko dituzu. </li>\n"
 "</ul>\n"
 "\n"
 "<p><b>Argibide gehiago:</b></p>\n"
 "<ul>\n"
 "  <li><b>Aurkeztu itzulpena</b>, mesedez bidali osatutako .po agiria audacity-itzulpen post@ zerrendara. Audacity Taldeko kide batek agiria hartuko du eta mezu bat bidaliko du zerrendara hau baieztatuz.</li> \n"
-"  <li>Mesedez irakurri <a href=\"http://wiki.audacityteam.org/index.php?title=Translating_Audacity\">Audacity Itzulpena</a> Audacity iturburu kodea nola itzuli aholku gehiagorako, eta jakiteko nola Audacity softwarea eta webgunea itzuli.</li>\n"
+"  <li>Mesedez irakurri <a href=\"http://wiki.audacityteam.org/index.php?title=Translating_Audacity\">Audacity Itzulpena</a> Audacity iturburu kodea nola itzuli aholku gehiagorako, eta jakiteko Audacity softwarea eta webgunea nola itzuli.</li>\n"
 "</ul>"
 
 #: community/index.php:15
@@ -4986,7 +5116,7 @@ msgstr "C++ programatzilea bazara, batu garapen taldera eta lagundu gaitzazu Aud
 
 #: community/index.php:25
 msgid "If you are fluent in both English and another language, you can help translate the Audacity software, web site and <a href=\"http://manual.audacityteam.org/index.php?title=Main_Page\">Manual</a>. We also need people to help provide support for Audacity in different languages."
-msgstr "Gaitasuna baduzu bietan Ingeleraz eta beste hizkuntza batean, Audacity softwarea , webgunea eta <a href=\"http://manual.audacityteam.org/index.php?title=Main_Page\">Eskuliburua</a> itzultzen lagundu dezakezu. Audacityren sostengua hizkuntza ezberdinetan eskaintzeko laguntza ere behar dugu."
+msgstr "Gaitasuna baduzu bietan Ingeleraz eta beste hizkuntza batean, Audacity softwarea, webgunea eta <a href=\"http://manual.audacityteam.org/index.php?title=Main_Page\">Eskuliburua</a> itzultzen lagundu dezakezu. Audacityren sostengua hizkuntza ezberdinetan eskaintzeko laguntza ere behar dugu."
 
 #: community/index.php:28
 msgid "We also welcome <a href=\"../donate/\">donations</a> to support Audacity development."
@@ -5006,7 +5136,7 @@ msgstr "SVN"
 
 #: community/developers.php:22
 msgid "You can get the latest Audacity code from our <a href=\"http://code.google.com/p/audacity/source/browse/audacity-src/trunk\">SVN repository</a>.  We aren't currently working on any other version."
-msgstr "Audacityren azken kodea lortu dezakezu gure <a href=\"http://code.google.com/p/audacity/source/browse/audacity-src/trunk\">SVN biltegia</a>.  Orain ez gaude beste bertsio batean lanean."
+msgstr "Audacityren azken kodea gure <a href=\"http://code.google.com/p/audacity/source/browse/audacity-src/trunk\">SVN biltegia</a>n lortu dezakezu. Orain ez gaude beste bertsio batean lanean."
 
 #: community/developers.php:25
 msgid "Type this at the command line to check out the latest source code from SVN:"
@@ -5018,7 +5148,7 @@ msgstr "Ikusi gure garapen ituruburu kode orrialdea <a href=\"../download/beta_s
 
 #: community/developers.php:31
 msgid "The SVN repository may also be accessed using GUI and IDE <a href=\"http://wiki.audacityteam.org/wiki/SVN_Clients\">clients or plug-ins</a>. If using GUI or IDE tools, please use the commands indicated in the tool's documentation."
-msgstr "SVN biltegira EIG eta GIB erabiliz sartu daiteke <a href=\"http://wiki.audacityteam.org/wiki/SVN_Clients\">bezeroak edo plug-inak</a>. EIG edo GIB tresnak erabiltzen badituzu, mesedez erabili tresnaren agiritzan adierazitako aginduak."
+msgstr "SVN biltegira EIG (Erabiltzaile Interfaze Grafika) eta GIB (Garapen Inguru Barneratua) erabiliz sartu daiteke <a href=\"http://wiki.audacityteam.org/wiki/SVN_Clients\">bezeroak edo plug-inak</a>. EIG edo GIB tresnak erabiltzen badituzu, mesedez erabili tresnaren agiritzan adierazitako aginduak."
 
 #: community/developers.php:33
 msgid "Bug Tracking"
@@ -5026,7 +5156,7 @@ msgstr "Akats Aztarnaritza"
 
 #: community/developers.php:34
 msgid "The Audacity developers use bugzilla to track bugs and enhancements. To find issues to work on, please view our categorized <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Bug Lists</a>."
-msgstr "Audacity garatzaileek bugzilla erabiltzen dute akatsak eta hobekuntzak aztarnatzeko. Lanerako arazoak bilatzeko, mesedez ikusi gure kategoriaturiko <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Akats Zerrendak</a>."
+msgstr "Audacity garatzaileek bugzilla erabiltzen dute akatsak eta hobekuntzak aztarnatzeko. Lanerako arazoak bilatzeko, mesedez ikusi gure kategoriaz sailkaturiko <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Akats Zerrendak</a>."
 
 #: community/developers.php:35
 msgid "If you are a user reporting a new bug, please e-mail our <a href=\"../contact#feedback\">feedback address</a>."
@@ -5038,7 +5168,7 @@ msgstr "Eranskin Aurkezpena"
 
 #: community/developers.php:38
 msgid "We welcome patches from developers. Please see our <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Submitting Patches</a> page on the <a href=\"http://wiki.audacityteam.org/wiki\">Wiki</a>."
-msgstr "Ongi etorriak dira garatzaileen eranskinak. Mesedez ikusi gure <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Eranskinak Aurkeztea</a> orrialdea <a href=\"http://wiki.audacityteam.org/wiki\">Wikia</a>-n."
+msgstr "Ongi etorriak dira garatzaileen eranskinak. Mesedez ikusi gure <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Eranskinak Aurkeztea</a> orrialdea <a href=\"http://wiki.audacityteam.org/wiki\">Wikia</a>n."
 
 #: community/users.php:10
 msgid "User Community"
@@ -5122,6 +5252,9 @@ msgid ""
 "\n"
 "<p>As of April 8, 2009, this includes \"interest-based\" advertising, which utilizes cookies to try to determine users' areas of interest (for example, audio editing), to show advertisements of likelier interest. Please see Google's <a href=\"http://www.google.com/policies/privacy/ads/\">Advertising privacy FAQ</a> for information regarding your privacy including how to <a href=\"http://www.google.com/policies/privacy/ads/#toc-optout\">opt out</a> of this tracking.</p>"
 msgstr ""
+"<p>Gune honetako zenbait orrialdeetan, Google's AdSense programaren oharrak erakusten ditugu. Ikusi gure &ldquo;<a href=\"http://audacity.sourceforge.net/donate/\">Nola Biltzen Du Audacityk Dirua?</a>&rdquo; orrialdea oharrak zergaitik erakusten ditugun jakiteko.</p>\n"
+"\n"
+"<p>2009-ko Apirilak 8-tik, honek \"interesgarri-ohinarriko\" oharrak ditu, cookiak erabiltzen ditu erabiltzailearen interes gaiak zehazteko (adibidez, audio edizioa), ustezko ohar interesgarrienak erakusteko. Mesedez ikusi Google-en <a href=\"http://www.google.com/policies/privacy/ads/\">Ohar Pribatutasuna SEG</a> zure pribatutasunari buruzko argibideetarako, aztarnaketa honen <a href=\"http://www.google.com/policies/privacy/ads/#toc-optout\">ez aukera</a> nola egin barne.</p>"
 
 #: contact/privacy.php:22
 msgid "Announcement List Policy"
@@ -5132,6 +5265,8 @@ msgid ""
 "<p>You can subscribe to our announcement list by entering your e-mail address in the <a href=\"../#announce\"> form</a> on the <a href=\"../\">Audacity home page</a>.  We will use this list only to send you brief announcements of new Audacity releases.  We will never share the addresses on this list with anyone.</p>\n"
 "<p>To <b>unsubscribe</b> from the list at any time, enter your address in the <a href=\"../#announce\">form</a> on our <a href=\"../\">home page</a> and click \"Remove\". If you have any problems or questions, please e-mail our <a href=\"http://audacity.sourceforge.net/contact/#feedback\">feedback address</a>.</p>"
 msgstr ""
+"<p>Gure iragarpen zerrendara harpidetu zaitezke zure post@ helbidea sartuz <a href=\"../#announce\"> galdekizunean</a> <a href=\"../\">Audacity etxeko orrialdean</a>.  Zerrenda hau zuri Audacityren argitalpen berrien iragarpen laburrak bidaltzeko bakarrik erabiliko dugu.  Inoiz ez ditugu zerrendako helbideak inorekin elkarbanatuko.</p>\n"
+"<p>Edonoiz zerrendako <b>Harpidetza uzteko</b> , sartu zure helbidea <a href=\"../#announce\">galdekizunean</a> gure <a href=\"../\">etxeko orrialdean</a> eta klikatu \"Kendu\". Arazoren bat edo galderaren bat baduzu, mesedez idatzi post@ bat gure<a href=\"http://audacity.sourceforge.net/contact/#feedback\">irizkizun helbidera</a>.</p>"
 
 #: contact/privacy.php:33
 msgid "Mailing List Policy"
@@ -5145,6 +5280,11 @@ msgid ""
 "<p><b>Your e-mail address will always be truncated in published archives for your privacy, and the Audacity developers will not share your address with anyone.</b>  However, we <b>cannot</b> prevent other subscribers from seeing or publishing your messages. Therefore we recommend you avoid putting contact details such as street addresses or telephone numbers in your e-mails.</p>\n"
 "<p>If you have any questions about this policy, please e-mail our <a href=\"http://audacity.sourceforge.net/contact/#feedback\">feedback address</a>.</p>"
 msgstr ""
+"<p>(Hau ezartzen da <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-garapena</a>, <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-users\">audacity-erabiltzaileak</a> eta gure beste <a href=\"../contact/lists\">eztabaida zerrendei</a>.)</p>\n"
+"\n"
+"<p>Hauek post@ zerrenda publikoak dira. Mezu bat bidaltzen duzunean helbide hauetako batera, zerrendara harpideturiko guztiei bidaliko zaie, Audacity garatzaileei eta beste batzuei barne.  SourceForge eta beste webgune batzuek zerrenda hauetako agiriak argitaratu ditzakete.</p>\n"
+"<p><b>Zure post@ helbidea betik hautsiko da agiri argitaratuetan zure pribatutasunerako, eta Audacity garatzaileek ez dute zure helbidea inorekin elkarbanatuko.</b>  Edonola, guk <b>ezin dugu</b> beste harpidetuek zure mezuak ikustea edo argitaratzea saihestu. Hortaz gomendatzen dugu zure post@ mezuetan saihestea kale helbideak edo urrutizkin zenbakiak bezalako harreman xehetasunak jartzea.</p>\n"
+"<p>Galderaren bat baduzu araudi honetaz, mesedez idatzi post@ bat gure <a href=\"http://audacity.sourceforge.net/contact/#feedback\">irizkizun helbidera</a>.</p>"
 
 #. i18n-hint: If there are any special sources of help (local forums, lists) for Audacity
 #. users in your language (other than our Russian, French, German and Spanish
@@ -5209,7 +5349,7 @@ msgstr ""
 
 #: contact/index.php:59
 msgid "<b>Bug reports:</b> Please check both the <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Release Notes</a> for your specific version of Audacity 2.0 and <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Reporting Bugs</a> <b>before</b> making a report. We are not fixing bugs in the legacy 1.2 or 1.3 series - please upgrade to the <a href=\"/download/\">latest 2.0 version</a> of Audacity instead."
-msgstr "<b>Akats jakinarazpena:</b> Mesedez egiaztatu biak <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Argitalpen Oharrak</a> zure Audacity 2.0 bertsio bereizirako eta <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Akats Jakinarazpena</a> jakinarazpena egin <b>aurretik</b>. Ez ditugu 1.2 edo 1.3 ondoren serietako akatsak zuzentzen - mesedez eguneratu Audacityren<a href=\"/download/\">2.0 azken bertsiora</a> ordez."
+msgstr "<b>Akats jakinarazpena:</b> Mesedez egiaztatu biak <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Argitalpen Oharrak</a> zure Audacity 2.0 bertsio bereizirako eta <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Akats Jakinarazpena</a> jakinarazpena egin <b>aurretik</b>. Ez ditugu 1.2 edo 1.3 ondoren serietako akatsak zuzentzen - mesedez eguneratu Audacityren <a href=\"/download/\"> 2.0 azken bertsiora</a> ordez."
 
 #: contact/index.php:62
 msgid ""
@@ -5288,7 +5428,7 @@ msgstr "Audacityren iturburu kodearekin eta agiritzarekin lanean ari diren <a hr
 
 #: contact/lists.php:34
 msgid "We now use a <a href=\"http://www.bugzilla.org/\">Bugzilla</a> installation to track bugs and enhancements. To find issues to work on, please view our categorized <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Bug Lists</a>."
-msgstr "Orain <a href=\"http://www.bugzilla.org/\">Bugzilla</a> erabiltzen dugu, akatsak eta hobekuntzak aztarnatzeko ezarpen bat. Langaiak aurkitzeko, mesedez ikusi gure kategoriaturiko <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Akats Zerrendak</a>."
+msgstr "Orain <a href=\"http://www.bugzilla.org/\">Bugzilla</a> erabiltzen dugu, akatsak eta hobekuntzak aztarnatzeko ezarpen bat. Langaiak aurkitzeko, mesedez ikusi gure kategoriaz sailkaturiko <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Akats Zerrendak</a>."
 
 #: contact/lists.php:39
 msgid "Receive automatic notification of every change made to the Audacity <a href=\"../community/developers#svn\">source code</a>."
@@ -6235,7 +6375,7 @@ msgstr ""
 
 #: include/news.inc.php:859
 msgid "Audacity shines in Google Summer of Code (GSoC) 2008"
-msgstr ""
+msgstr "Audacity dizdiratsu Google Summer of Code (GSoC) 2008-an"
 
 #: include/news.inc.php:860
 msgid ""
@@ -6473,7 +6613,7 @@ msgstr ""
 
 #: include/news.inc.php:1087
 msgid "Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "
-msgstr ""
+msgstr "Ikasleentzako Deia! Ezarri <em>ORAIN</em> Audacity egitasmoentzako Google Summer of Code (GSoC) 2008 -an"
 
 #: include/news.inc.php:1088
 msgid ""
@@ -6815,7 +6955,7 @@ msgstr ""
 
 #: include/news.inc.php:1412
 msgid "Audacity 1.2.4 and 1.3.0 Released"
-msgstr "Audacity 1.2.4 eta1.3.0 argitaratuta"
+msgstr "Audacity 1.2.4 eta 1.3.0 argitaratuta"
 
 #: include/news.inc.php:1413
 msgid ""
@@ -6919,11 +7059,11 @@ msgstr "Agiri Heuskarriak"
 
 #: xml/index.php:15
 msgid "Audacity uses an open XML file format to encourage interoperability.  Beginning with version 1.3.0, we are publishing the following DTD to aid those who want to develop software that reads and writes Audacity project files:"
-msgstr ""
+msgstr "Audacityk XML agiri heuskarri ireki bat erabiltzen du elkarrekintza sustatzeko. 1.3.0 bertsioarekin hasita, hurrengo AMA (Agiri Mota Adiera) argitaratu dugu Audacity egitasmo agiriak irakurtzeko eta idazteko gauza den softwarea garatzea nahi dutenei laguntzeko:"
 
 #: xml/index.php:22
 msgid "More documentation on the Audacity project file format is forthcoming."
-msgstr "Agiritza gehiago Audacity egitasmo agiri heuskarrian laister izango da."
+msgstr "Laister izango da Audacity egitasmo agiri heuskarrian agiritza gehiago."
 
 #: donate/main.inc.php:11
 #: donate/index.php:11
@@ -6936,31 +7076,31 @@ msgstr "Eman Dirulaguntza bat"
 
 #: donate/index.php:19
 msgid "Click the button below to donate securely by PayPal (a PayPal account is not required). You can send any amount, using either your credit card or your PayPal account:"
-msgstr ""
+msgstr "Klikatu beheko botoia dirulaguntza segurtasunez emateko PayPal-rekin (beharrezkoa da PayPal kontu bat). Edozein kopuru bidali dezakezu, bietako bat erabiliz, zure kreditu txartela edo zure PayPal kontua:"
 
 #: donate/index.php:49
 msgid "Please note that we cannot accept other forms of payment such as checks or bank transfers. Also, donations to Audacity are not deductible for income taxes in the United States of America."
-msgstr ""
+msgstr "Mesedez ohartu ezin ditugula onartu txekeak edo banketxe eskualdaketak ez diren bestelako formak. Baita ere, Audacityri emaniko dirulaguntzak ez dira zerga kenkari Amerikako Estatu Batuetan."
 
 #: donate/index.php:55
 msgid "Audacity raises money via donations, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
-msgstr ""
+msgstr "Audacityk dirua laguntzen bidez lortzen du, <a href=\"http://audacityteam.org/sponsor.php\">babesleak</a> eta <a href=\"../contact/privacy#advertising\">iragarkiak</a> gure web orrialdeetan."
 
 #: donate/index.php:59
 msgid "As of March 2007, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, which hosts the Audacity site and downloads, is allowing us to also post advertisements, in an innovative program whereby we split the revenues. Thank you, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
-msgstr ""
+msgstr "2007-ko Martxotik, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, Audacity gunea eta jeisketak hostatzen dituenak, iragarkiak jartzea ere ahalbidetzen digu, non programa berritzaile batean sarrerak banandu ditzakegun. Mila esker, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
 
 #: donate/index.php:63
 msgid "Income to Audacity is not distributed among previous contributors to Audacity. There are too many people and it would be difficult to do so fairly. Also, nobody contributed code to Audacity expecting money in return. Audacity is developed by volunteers, working in our spare time. Audacity is not shareware, and we do not expect to make any money from it."
-msgstr ""
+msgstr "Audacityren sarrerak ez dira Audacityren aurreko kideen artean banatzen. Jende asko dago eta oso zaila litzake egitea. Gainera, inork ez du ekarpenik egin Audacityren kodean dirua lortuko duela itxaronez. Audacity boluntarioek garatzen dute, beren astian lan eginez. Audacity ez da sharewarea, eta ez dugu berarengandik dirurik egiterik itxaroten."
 
 #: donate/index.php:67
 msgid "Rather, the team of Audacity lead developers will spend the money on items and services that benefit the project as a whole. Money that comes in to the project helps us pay for bandwidth and web hosting, development tools, and audio hardware. In the past we used funds from donations to purchase the Audacity trademark and to subsidize travel costs for Audacity developers to meet for a hackathon, and we plan to do more of these. Our long-term goal is to bring in enough money to hire a full-time developer who could devote all of his/her time to the project and take over some of the administrative,  maintenance and release tasks, freeing volunteers to spend more time on code."
-msgstr ""
+msgstr "Gehiago, Audacity garatzaile nagusien taldeak dirua xahutu du egitasmoa bere osotasunean hobetzeko gai eta zerbitzuetan. Egitasmora heltzen den diruak bandazabalera eta web hostatua, garapen tresnak, eta audio hardwarea ordaintzen laguntzen digu. Iraganean dirulaguntzeko funtsak Audacity egilemarka erosteko eta Audacityko garatzaileen hackathon biltzar baterako bidai gastuak ordaintzeko erabili genituen, eta horrelako gehiago egiteko asmoa dugu. Gure epe-luzerako asmoa egitasmoan bere denbora osoaz jardungo duen garatzaile bat hitzartu ahal izateko nahikoa diru ekartzea da eta administrazio, mantenimendu eta argitalpen eginkizunak hartuko dituena, boluntarioak askatuz koderako denbora gehiago izan dezaten ."
 
 #: donate/index.php:71
 msgid "These are all things that help us provide Audacity for free and continue to make it better. The Audacity Team is completely committed to keeping Audacity free and open source. We made that commitment in <a href=\"http://audacity.sourceforge.net/about/license\">licensing Audacity under the GNU General Public License</a>."
-msgstr ""
+msgstr "Hauek dira Audacity doahinekoa izatea eta hobea egiten jarraitzen laguntzen diguten gauzak. Audacity Taldea erabat murgilduta dago Audacity dohainekoa eta iturburu irekikoa izateari heustearen betebeharrean. Betebehar hori hartu genuen <a href=\"http://audacity.sourceforge.net/about/license\">Audacity GNU Baimen Publiko Orokorra-rekin baimentzean</a>."
 
 #: donate/index.php:74
 msgid "Other Ways to Contribute"
@@ -6968,7 +7108,7 @@ msgstr "Laguntzeko beste Bide batzuk"
 
 #: donate/index.php:77
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
-msgstr ""
+msgstr "Dirulaguntza emateaz gain, <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> zure denbora ekarpena</a> egin dezakezu <a href=\"../community/developers\">programatzen</a>, <a href=\"../contact#feedback\">aztertzen</a>, <a href=\"http://manual.audacityteam.org/\"> agiritzan</a>, <a href=\"../community/translation\">itzultzen</a> lagunduz edo galderak erantzunez gure <a href=\"http://forum.audacityteam.org/\">Eztabaidagunea</a>n. Betik eskertzen dugu Audacity erabiltze soilak izanez ekarpena egiten dutenak, hau nola hobetu irizkizuna emanez eta bestei ezagutzera emanez. Mila esker Audacity sostengatzeagaitik."
 
 #~ msgid "2000/XP/Vista/7"
 #~ msgstr "2000/XP/Vista/7"
