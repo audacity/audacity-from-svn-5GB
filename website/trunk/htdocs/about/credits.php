@@ -143,6 +143,7 @@
   <li><a href="http://lame.sourceforge.net/">LAME</a></li>
   <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>
   <li><a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a></li>
+  <li><a href="http://sourceforge.net/p/soxr/wiki/Home/">libsoxr</a></li>
   <li><a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">Nyquist</a></li>
   <li><a href="http://vorbis.com/">Ogg Vorbis</a></li>
   <li><a href="http://www.portaudio.com/">PortAudio</a></li>
