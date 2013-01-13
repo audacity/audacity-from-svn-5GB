@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity-website.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-31 20:07+0000\n"
-"PO-Revision-Date: 2013-01-02 23:48-0000\n"
-"Last-Translator: gale <gale@audacityteam.org>\n"
+"POT-Creation-Date: 2012-12-31 02:14+0000\n"
+"PO-Revision-Date: 2013-01-13 02:18-0000\n"
+"Last-Translator: Xabier Aramendi\n"
 "Language-Team: (EUS_Xabier Aramendi) <azpidatziak@gmail.com>\n"
 "Language: Euskara (Basque)\n"
 "MIME-Version: 1.0\n"
@@ -197,7 +197,7 @@ msgstr "Sarri Egindako Galderak"
 #: help/faq.php:20
 #, php-format
 msgid "Frequently Asked Questions (FAQ) in English for the current <a href=\"/download/\">Audacity %s</a> version are included in the Manual."
-msgstr "Sarri Egindako Galderak (SEG) Ingeleraz oraingo <a href=\"/download/\">Audacity %s</a> bertsiorentzat Eskuliburaren barne dago."
+msgstr "Sarri Egindako Galderak (SEG) Ingeleraz oraingo <a href=\"/download/\">Audacity %s</a> bertsioaren Eskuliburuaren barne dago."
 
 #: help/faq.php:23
 msgid "View the FAQ in the online Manual"
@@ -1649,6 +1649,10 @@ msgid ""
 "you start Audacity it will notify you that it found an unsaved project,\n"
 "and prompt you to recover it.\n"
 msgstr ""
+"1.3.2 bertsiotik hasita, Audacityk berezgaitasunez gordetzen ditu zure uneko\n"
+"egitasmoaren berehalakoak etengabe. Audacity edo zure zure ordenagailua osorik\n"
+"matxuratuta edo indarra galduta ere, Audacity abiarazten duzun hurrengoan gordegabeko\n"
+"egitasmo bat aurkitu duelaz ohartaraziko zaitu, eta berreskuratzeaz galdetuko dizu.\n"
 
 #: download/features-1.3-l.php:23
 msgid ""
@@ -1662,6 +1666,14 @@ msgid ""
 "you the option of copying the required files into the project, making\n"
 "it self-contained."
 msgstr ""
+"One common source of confusion with Audacityn nahasketa iturri arruntenetako bat\n"
+"konprimitu gabeko (adib. WAV edo AIFF) agiri bat ireki edo inportatzen duzunean gertatzen da, \n"
+"Audacityk berez agiriarekin lotura duen denborak eta oroimena gordetzen ditu, ez du hura kopiatzen.\n"
+"Baina jatorrizko agiria mugitu, berrizendatu edo ezabatzen baduzu, zure Audacity egitasmoak\n"
+"ez du jadanik inoiz lan egingo. 1.3.2 bertsiotik hasita, Audacityk  zure egitasmoa gordetzen duzun \n"
+"lehen aldian galdetzen du, eta irtetzerakoan, egitasmoa beste audio agiri baten mende badago. \n"
+"Elkartoki bat badago, Audacityk beharrezko agiriak zure egitasmoaren barnean kopiatzeko\n"
+"aukera ematen dizu, hura berez-eduki eginez."
 
 #: download/features-1.3-l.php:46
 #: download/features-1.3-b.php:49
@@ -1845,7 +1857,7 @@ msgstr "Audacity 1.3: Bildu/Hedatu Bideak"
 
 #: download/features-1.3-b.php:16
 msgid "In Audacity 1.3, every track has an upward-pointing triangle at the bottom of the label area on the left side of the track.  Click it once to collapse the track to a very small size, and click it again to expand it back to its previous size.  Note that as in previous versions, you can resize a track by clicking anywhere along the bottom edge and dragging up or down."
-msgstr ""
+msgstr "Audacity 1.3-an, bide guztiek dute hedatu-bildu hiruki bat etiketa eremuaren behealdean bidearen ezkerraldean. Klikatu behin bidea neurri oso txiki batera biltzeko, eta klikatu berriro aurreko neurrira hedatzeko. Ohartu aurreko bertsioetan, bide bat birneurriratu ahal zenuela beheko hertzeko edonon klikatuz eta gora edo behera arrastatuz."
 
 #: download/features-1.3-b.php:21
 msgid "Before clicking on the collapse button for the top track"
@@ -3489,7 +3501,7 @@ msgstr "Hautapen Tresnabarra"
 
 #: download/features-1.3-d.php:23
 msgid "In Audacity 1.2, the current selection is contained in a status bar at the bottom of the window.  In Audacity 1.3, this is replaced by a fully functional Selection Toolbar, which displays and controls the current selection (your choice of Start and End, or Start and Length), and the current audio position.  Selection Toolbar is fully editable - just click in any field and type to change the current selection precisely.  In addition, many formatting options allow you to view times in different units, such as samples, CD frames, or NTSC video frames."
-msgstr ""
+msgstr "Audacity 1.2-an, uneko hautapena egoera barra batean dago leihoaren behealdean. Audacity 1.3-an, hau eginkizun guztiak dituen Hautapen Tresnabarra batez ordeztu da, uneko hautapena erakusten eta agintzen (Hasiera eta Amaiera edo Hasiera eta Luzera hautatzen dituzu) eta audioaren uneko kokapena duelarik.  Hautapen Tresnabarra osoki editagarria da -besterik gabe klikatu eremuren batean eta idatzi uneko hautapena zehatz-mehatz aldatzeko. Gehigarri bezala, heuskarri aukera anitzek denborak batasun ezberdinetan ikustea ahalbidetzen dizute, laginak, CD frameak edo NTSC bideo frameak."
 
 #: download/features-1.3-d.php:29
 msgid "The project sample rate control on Selection Toolbar"
@@ -3581,11 +3593,11 @@ msgstr "Audacity 1.3: Ebakin anitz bide bakoitzeko"
 
 #: download/features-1.3-c.php:16
 msgid "In Audacity 1.2, there is one audio 'clip' per track.  There is no easy way to time-shift part of a track without moving the rest.  In Audacity 1.3, you can split a single track into multiple clips.  You can move these clips around between different tracks, making it easy to construct complex compositions out of hundreds of smaller audio samples."
-msgstr ""
+msgstr "Audacity 1.2-an, audio 'ebakin' bat dago bide bakoitzeko. Ez dago modu errazik bide baten zati bati denbora-aldaketa egiteko gainontzekoa mugitu gabe. Audacity 1.3-an, bide bat ebakin anitzetan banandu dezakezu. Ebakin hauek bide ezberdinetan zehar mugitu ditzakezu, erraztasuna emanez osaketa koropilotsuak eraikitzea ehundaka audio lagin txikietatik abiatuz."
 
 #: download/features-1.3-c.php:98
 msgid "The commands you will need to create and work with audio clips are found in the Edit menu.  Some of these commands have the same name as in Audacity 1.2, but their behavior has either changed or has been extended to support new functionality."
-msgstr ""
+msgstr "Audio ebakinak sortzeko eta lantzeko beharko dituzun aginduak Editatu menuan aurkitu daitezke. Agindu hauetako batzuk Audacity 1.2-ko izen bera dute, baina beren jokabidea aldatu egin da edo hedatu egin dira eginkizun berriak sostengatzeko."
 
 #: download/features-1.3-c.php:100
 msgid "There are five ways to end up with multiple clips in a single track:"
@@ -3613,7 +3625,7 @@ msgstr "Arrastatu ebakin bat bide ezberdin batetik."
 
 #: download/features-1.3-c.php:110
 msgid "These commands, and other editing commands, are described in detail below.  Alternatively, click on the item in the menu to the left to jump directly to that command."
-msgstr ""
+msgstr "Agindu hauek eta beste edizio agindu batzuk, xehetasunez azaltzen dira behean. Aukeran, klikatu gai bat ezkerreko menuan zuzenean agindura jauzi egiteko."
 
 #: download/features-1.3-c.php:112
 msgid "Other topics:"
@@ -3655,7 +3667,7 @@ msgstr "Hautaturiko audio gakora kopiatzen du."
 
 #: download/features-1.3-c.php:149
 msgid "Trim"
-msgstr ""
+msgstr "Moztu"
 
 #: download/features-1.3-c.php:150
 msgid "Removes all audio from the current clip except the selected part.  Does not affect other clips in the same track."
@@ -3707,7 +3719,7 @@ msgstr "Itsatsi - dagoen ebakin batean"
 
 #: download/features-1.3-c.php:205
 msgid "When you select Paste and the cursor is inside a clip, the audio gets inserted into the middle of the clip and the following audio is shifted to the right to make room"
-msgstr ""
+msgstr "Itsatsi hautatzen duzunean eta kurtsorea ebakin baten barnean dagoenean, audioa ebakinaren erdian txertatzen da eta hurrengo audioa eskuinera aldatzen da tokia egiteko"
 
 #: download/features-1.3-c.php:211
 msgid "Paste - into the empty part of a track"
@@ -3715,7 +3727,7 @@ msgstr "Itsatsi - bide baten zati huts batean"
 
 #: download/features-1.3-c.php:212
 msgid "When you select Paste and the cursor is outside a clip, and there is enough room for the audio on the clipboard, the audio on the clipboard is inserted without any other clips being shifted over"
-msgstr ""
+msgstr "Itsatsi hautatzen duzunean eta kurtsorea ebakin baten kanpoan dagoenean, eta nahikoa toki dago gakoan duzun audioarentzat, gakoko audioa beste ebakinak aldatu gabe txertatzen da"
 
 #: download/features-1.3-c.php:220
 msgid "Join"
@@ -3723,15 +3735,15 @@ msgstr "Batu"
 
 #: download/features-1.3-c.php:221
 msgid "If you select a region that overlaps one or more clips, they are all joined into one large clip.  Regions in-between clips are treated as silence."
-msgstr ""
+msgstr "Ebakin bat edo gehiagori gainjartzen zaion eremu bat hautatzen baduzu, denak batzen dira ebakin handi batean. Ebakin arteko eremuak isiltasun bezala tratatzen dira."
 
 #: download/features-1.3-c.php:230
 msgid "The time-shift tool can now be used to move a single clip between tracks.  Just click and drag."
-msgstr ""
+msgstr "Denbora-aldaketa tresna orain ebakin bakar bat bideen artean mugitzeko erabili daiteke. Besterik gabe klikatu eta arrastatu."
 
 #: download/features-1.3-c.php:239
 msgid "To time-shift multiple clips at once, select all of the clips you want to move using the normal selection tool, then use the time-shift tool to click and drag.  If you click within the selection, all selected clips will move together.  If you click outside the selection, only the clip under the mouse cursor will move."
-msgstr ""
+msgstr "Ebakin anitzeri denbora-aldaketa batera egiteko, hautatu mugitzea nahi dituzun ebakin guztiak hautapen tresna arrunta erabiliz, orduan denbora-aldaketa tresna erabili klikatu eta arrastatzeko. Hautapenaren barnean klikatzen baduzu, hautaturiko ebakin guztiak batera mugituko dira. Hautapenaren kanpo klikatzen baduzu, saguaren kurtsorea dagoen ebakina bakarrik mugituko da."
 
 #: download/features-1.3-e.php:9
 msgid "Audacity 1.3: Improved Label Tracks"
@@ -3739,7 +3751,7 @@ msgstr "Audacity 1.3: Etiketa Bide Hobetua"
 
 #: download/features-1.3-e.php:16
 msgid "Label Tracks are Audacity's way for you to create markings and annotations within your project.  In Audacity 1.3, Label Tracks are much improved, with support for overlapping labels, and support for modifying both the left and right edge of the label region just by clicking and dragging."
-msgstr ""
+msgstr "Etiketa Bideak zure egitasmoaren barnean markak eta oharrak ezartzeko Audacityk duen bidea da. Audacity 1.3-an, Etiketa Bideak asko hobetu dira, gainjarpen etiketak sostengatuz, eta etiketaturiko eremuaren bi hertzak ezkerra eta eskuina klikatuz eta arrastatuz aldatzea sostengatzea."
 
 #: download/features-1.3-e.php:21
 msgid "To create a label, start by selecting some audio."
@@ -3771,7 +3783,7 @@ msgstr "Audacity 1.3: Denboragailu Grabaketa"
 
 #: download/features-1.3-k.php:16
 msgid "Timer Recording lets you schedule Audacity to start recording at a particular time and record only for a certain length of time.  Perfect if you want to record Internet radio or walk away while Audacity is recording from a cassette or LP."
-msgstr ""
+msgstr "Denboragailu Grabaketak Audacity ordu jakin batean grabatzen hasteko eta denbora zehatz batean zehar bakarrik grabatzeko egitarautzeko aukera ematen dizu. Ezinhobea Interneteko irratia edo joan beharra baduzu Audacity kasete edo LP bat grabatzen ari den bitartean."
 
 #: download/features-1.3-j.php:9
 msgid "Audacity 1.3: Repair and Equalization Effects"
@@ -3779,17 +3791,19 @@ msgstr "Audacity 1.3: Konponketa eta Ekualizazio Eraginak"
 
 #: download/features-1.3-j.php:14
 msgid "Repair Effect"
-msgstr "Konponketa Eragina"
+msgstr "Konpondu Eragina"
 
 #: download/features-1.3-j.php:16
 msgid "This new effect will fix a small pop or click in an audio track by smoothly interpolating the damaged audio samples.  It is designed to fix very short glitches, not major distortion or background noise.  It can fix minor clipping."
-msgstr ""
+msgstr "Eragin berri honek eztanda hots edo klaska txiki bat zuzentzen du audio batean kalteturiko audio laginak lehunki interpolatuz. Arazo oso txikiak zuzentzeko diseinatua dago, ez zakartze handiak edo barreneko zarata. Ebaketa txikiak ere zuzendu ditzake."
 
 #: download/features-1.3-j.php:21
 msgid ""
 "First, find the damanged part of your recording and zoom in<br>\n"
 "until you can see the individual audio samples."
 msgstr ""
+"Lehenik, bilatu zure grabaketan kalteturik dagoen zatia eta handitu zooma<br>\n"
+"banakako audio laginak ikusi ditzakezun arte."
 
 #: download/features-1.3-j.php:28
 msgid "Select the damaged portion of the audio."
@@ -3797,7 +3811,7 @@ msgstr "Hautatu hondatutako audio zatia."
 
 #: download/features-1.3-j.php:34
 msgid "Choose <b>Repair</b> from the Effect menu.<br>The selection is replaced with smoothly interpolated samples."
-msgstr "Hautatu <b>Konpondu</b> Eraginak menutik.<br>Hautapena lagin interpolatu lehunketa batez ordezten da."
+msgstr "Hautatu <b>Konpondu</b> Eragina menutik.<br>Hautapena lagin interpolatu lehunketa batez ordezten da."
 
 #: download/features-1.3-j.php:37
 msgid "Equalization Effect"
@@ -3810,6 +3824,9 @@ msgid ""
 "You can either draw an arbitrary equalization curve, or use a graphic\n"
 "equalizer.\n"
 msgstr ""
+"Ekualizazio eragin berriak, behean erakusten dena, aginte askoz gehiago ditu\n"
+"iragazki korapilotsu bat eraikitzeko zenbait maiztasun hobetzeko edo murrizteko.\n"
+"Zeure ekualizazio bihurgunea ere eraiki dezakezu, edo ekualizagailu grafiko bat erabili.\n"
 
 #: download/features-1.3-j.php:64
 #: download/features-1.3-h.php:58
@@ -3822,19 +3839,19 @@ msgstr "Audacity 1.3: Hobeturiko Tresnabarra Uztarpena"
 
 #: download/features-1.3-h.php:16
 msgid "In Audacity 1.3.2 and higher, you can easily dock, undock, and rearrange the location of all of Audacity's toolbars, including the selection bar.  A new blue triangle visually indicates when you are about to dock a toolbar in a particular location."
-msgstr ""
+msgstr "Audacity 1.3.2 eta berriagoetan, erraz uztartu, ez-uztartu eta antolatu ditzakezu Audacityren tresnabarra guztien kokapena, hautapen barra barne. Hiruki urdin berri batek adierazten du noiz uztartzen ari zaren tresnabarra bat kokapen jakin batean."
 
 #: download/features-1.3-h.php:21
 msgid "First, click on the grabber to the left of a toolbar you wish to drag."
-msgstr ""
+msgstr "Lehenik, klikatu arrastatzea nahi duzun tresnabarraren ezkerreko heldulekuan."
 
 #: download/features-1.3-h.php:27
 msgid "Drag the toolbar away from its original location.<br>If you release the mouse here, it will become a floating toolbar."
-msgstr ""
+msgstr "Arrastatu tresnabarra bere jatorrizko kokapenetik kanpora.<br>Sagua hemen askatzen baduzu, gaineko tresnabarra bihurtuko da."
 
 #: download/features-1.3-h.php:33
 msgid "While dragging, position the mouse near an edge or between two other toolbars,<br>and a blue triangle appears, indicating a possible location you can dock the toolbar."
-msgstr ""
+msgstr "Arrastatzerakoan, kokatu sagua hertz batengandik hurbil edo beste bi tresnabarra artean,<br>eta hiruki urdin bat agertuko da, tresnabarraren ahalezko uztarpen kokapena adieraziz."
 
 #: download/features-1.3-h.php:39
 msgid "Release the mouse button near a blue arrow and the toolbar is docked in its new location."
@@ -4108,7 +4125,7 @@ msgstr "Egintza hobea egitasmo handiekin"
 
 #: download/features-1.3-g.php:18
 msgid "As before, Audacity stores projects using a directory full of small files.  Audacity 1.3 now uses a hierarchical directory structure that results in better performance on large projects (tens of hours worth of audio across many tracks)."
-msgstr ""
+msgstr "Lehen bezala, Audacityk agiri txikien zuzenbide osoa erabiliz biltegiratzen ditu egitasmoak. Audacity 1.3-k orain zuzenbide egitura hierarkitua erabiltzen du, zeinak egintza hobea ematen du egitasmo handietarako (hamarka ordu audio bide anitz artean)."
 
 #: download/features-1.3-g.php:20
 msgid "Project integrity check on open"
@@ -4124,7 +4141,7 @@ msgstr "Igo FTP bidez"
 
 #: download/features-1.3-g.php:26
 msgid "Up to and including Audacity 1.3.3, an experimental dialog was available for uploading files to a server via FTP. A future version of Audacity may re-introduce this feature as an optional plug-in."
-msgstr ""
+msgstr "Audacity 1.3.3 barne eta berriagoetan, elkarrizketa esperimental bat zegoen eskuragarri agiriak zerbitzari batera igotzeko FTP bidez. Audacityren etorkizuneko bertsioek badaiteke ezaugarri hau berbarneratzea aukerazko plug-in bezala."
 
 #: download/features-1.3-g.php:28
 msgid "Based on wxWidgets 2.8"
@@ -4140,7 +4157,7 @@ msgstr "Multzo / Hizketa-Garbiketa"
 
 #: download/features-1.3-g.php:34
 msgid "Audacity has a new feature that allows you to process a batch of files, for example normalizing and converting to MP3.  CleanSpeech mode provides a simplified interface for some standard adjustments typically made on speech recordings.  You can access these features in the Interface Preferences."
-msgstr ""
+msgstr "Audacityk ezaugarri berri bat du agiri multzoak prozesatzea ahalbidetzen dizuna, adibidez MP3-ra normaltzea eta bihurtzea. Garbitu-Hizketa moduak interfaze arrunt bat eskaintzen du arrunt hizketa grabaketatan egiten diren zehaztapen estandar batzuentzat.  Ezaugarri hauek Interfazearen Hobespenetan daude."
 
 #: download/features-1.3-g.php:36
 msgid "Cut lines"
@@ -4198,12 +4215,20 @@ msgid ""
 "to change which track is focused, independent of the selection, and\n"
 "press the Enter key to toggle the selectedness of the focused track.\n"
 msgstr ""
+"Audacity 1.3.2 eta berriagoetan, osoki manipulatu dezakezu\n"
+"hautapena teklatua erabiliz. Betik bezala, sakatu ezker eta eskuin geziak,\n"
+"shift eta kontrolekin batera, kurtsorea mugitzeko edo hautapen bat\n"
+"ezkerrerantz edo eskuinerantz hedatzeko. Berria, sakatu gora edo behera\n"
+"geziak zein bide fokutzen den aldatzeko, hautapenetik aske, eta sakatu\n"
+"Sartu tekla fokuturiko bidearen hautatutasuna aldatzeko.\n"
 
 #: download/features-1.3-i.php:24
 msgid ""
 "The focused track is highlighted in green, as illustrated in\n"
 "the screenshots below.  Clicking on a track selects it and focuses it.\n"
 msgstr ""
+"Fokuturiko bidea orlegiz nabarmentzen da, beheko ikusleiho-argazkian\n"
+"bezala. Bide batean klikatuz hau hautatzen eta fokutzen du.\n"
 
 #: download/features-1.3-i.php:31
 msgid ""
@@ -4211,22 +4236,29 @@ msgid ""
 "You can tell the track is selected, because its label area is shaded.<br>\n"
 "You can tell the track is focused because of the green border."
 msgstr ""
+"Gainean, audio eremu bat hautatzen da bidearen goialdean.<br>\n"
+"Hautaturiko bidea zein den jakin dezakezu, zeren bere etiketa eremua itzalduta dago.<br>\n"
+"Fokuturiko bidea zein den jakin dezakezu zeren hertz orlegia du."
 
 #: download/features-1.3-i.php:39
 msgid ""
 "Pressing the down arrow key changes the focus to the lower track.<br>\n"
 "However, only the top track is selected."
 msgstr ""
+"Behera gezia tekla sakatuz fokua beheko bidera aldatzen du.<br>\n"
+"Horrela ere, goiko bidea bakarrik dago hautaturik."
 
 #: download/features-1.3-i.php:46
 msgid "Pressing the enter key toggles the lower track, so it is now selected, too."
-msgstr ""
+msgstr "Sartu tekla sakatuz beheko bidera aldatzen du, hortaz hau ere hautaturik dago orain."
 
 #: download/features-1.3-i.php:52
 msgid ""
 "Finally, press up-arrow and enter to unselect the top track.<br>\n"
 "This is one way to keep a particular range of audio selected<br>while changing which track is selected."
 msgstr ""
+"Azkenik, sakatu gora-gezia eta sartu goiko bidea deshautatzeko.<br>\n"
+"Hau modu bat da audio eremu bereizi bat hautaturik heusteko<br>hautaturiko bidea aldatzen den bitartean."
 
 #: download/beta_common.inc.php:16
 #, php-format
@@ -4291,7 +4323,7 @@ msgstr ""
 "<p>Inportatu soinu agiriak, editatu hauek, eta nahastu itzazu beste agiri batzuekin edo grabaketa berriekin. Esportatu zure grabaketak agiri heuskarri ezberdin askotan, <a href=\"http://manual.audacityteam.org/help/manual/man/export_multiple.html\">agiri anitz aldiberean barne</a>.</p>\n"
 "<ul>\n"
 "  <li>Inportatu eta esportatu <b>WAV</b>, <b>AIFF</b>, <b>AU</b>, <b>FLAC</b> eta <a href=\"http://vorbis.com\">Ogg Vorbis</a> agiriak.</li>\n"
-"  <li>\"Eskaerapean\" WAV edo AIFF agirien inportazio azkarra (agiriekin ia berehala lan egiten hastea ahalbidetzen dizu) zuzenean iturburutik irekurriz gero. \"Eskaerapean\" beste agiri heuskarrietatik inportatzea eskuragarri dago aukerazko<a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg liburutegia</a> erabiliz.</li>\n"
+"  <li>\"Eskaerapean\" WAV edo AIFF agirien inportazio azkarra (agiriekin ia berehala lan egiten hastea ahalbidetzen dizu) zuzenean iturburutik irekurriz gero. \"Eskaerapean\" beste agiri heuskarrietatik inportatzea eskuragarri dago aukerazko <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg liburutegia</a> erabiliz.</li>\n"
 "  <li>Inportatu eta esportatu <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>-ek sostengaturiko heuskarri guztiak <b>GSM 6.10</b>, <b>32-bit eta 64-bit float WAV</b> eta <b>U/A-Law</b> bezalakoak.</li>\n"
 "  <li>Inportatu MPEG audioa (<b>MP2</b> eta <b>MP3</b> agiriak barne) <a href=\"http://www.underbit.com/products/mad/\">libmad</a> erabiliz.</li>\n"
 "  <li>Inportatu raw (idazburugabea) audio agiriak \"Import Raw\" komandoa erabiliz.</li>\n"
@@ -4699,7 +4731,7 @@ msgstr ""
 "  <li>Kasetak eta grabaketak CD edo grabaketa digital bihurtu.</li>\n"
 "  <li>Editatu Ogg Vorbis, MP3, WAV edo AIFF soinu agiriak.</li>\n"
 "  <li>Ebaki, kopiatu, batu edo nahastu soinuak elkarrekin.</li>\n"
-"  <li>Aldatu grabaketa baten abiadura edo doinua .</li>\n"
+"  <li>Aldatu grabaketa baten abiadura edo doinua.</li>\n"
 "  <li>Eta gehiago! Ikusi <a href=\"features\">ezaugarri zerrenda</a> osoa.</li>\n"
 "</ul>"
 
@@ -5664,7 +5696,7 @@ msgstr ""
 
 #: include/news.inc.php:170
 msgid "Audacity 1.3.13 released, and LinuxQuestions.org Audio Authoring Award 2010"
-msgstr ""
+msgstr "Audacity 1.3.13 argitaratuta, eta LinuxQuestions.org Audio Egiletza Saria 2010"
 
 #: include/news.inc.php:171
 msgid ""
@@ -5744,7 +5776,7 @@ msgstr ""
 
 #: include/news.inc.php:249
 msgid "Audacity 1.3.12 released, and Audacity book release from PACKT Publishing"
-msgstr ""
+msgstr "Audacity 1.3.12 argitaratuta, eta Audacity liburua argitaratuta PACKT Argitaletxean"
 
 #: include/news.inc.php:250
 msgid ""
@@ -6182,7 +6214,7 @@ msgstr ""
 
 #: include/news.inc.php:674
 msgid "Audacity is mentoring two Google Summer of Code (GSoC) 2009 students"
-msgstr ""
+msgstr "Audacityk bi Google Summer of Code (GSoC) 2009 ikasleak aholkatzen ditu"
 
 #: include/news.inc.php:675
 msgid ""
@@ -6567,7 +6599,7 @@ msgstr ""
 
 #: include/news.inc.php:1045
 msgid "Audacity is mentoring five Google Summer of Code (GSoC) 2008 students"
-msgstr ""
+msgstr "Audacityk bost Google Summer of Code (GSoC) 2008 ikasleak aholkatzen ditu"
 
 #: include/news.inc.php:1046
 msgid ""
@@ -6590,7 +6622,7 @@ msgstr ""
 
 #: include/news.inc.php:1066
 msgid "Audacity is a mentoring organization Google Summer of Code (GSoC) 2008 "
-msgstr ""
+msgstr "Audacityk Google Summer of Code (GSoC) 2008 antolakuntza aholkatzen du"
 
 #: include/news.inc.php:1067
 msgid ""
