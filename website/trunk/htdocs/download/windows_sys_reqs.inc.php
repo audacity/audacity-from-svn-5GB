@@ -23,12 +23,12 @@
   </tr>
   <tr>
     <td>
-      Windows Vista (Home Premium/Business/Ultimate) (32-&nbsp;or&nbsp;64-bit)/<br>Windows 7/ Windows 8 (32-bit)</td>
+      Windows Vista (Home Premium/Business/Ultimate) (32-&nbsp;or&nbsp;64-bit)/<br>Windows 7 32-bit  <i>(except Windows 7 Starter)</i> / Windows 8 (32-bit)</td>
     <td>4 GB / 2 GHz</td>
     <td>1 GB / 1 GHz</td>
   </tr>
   <tr>
-    <td>Windows Vista (Home Basic) (32-&nbsp;or&nbsp;64-bit)</td>
+    <td>Windows Vista (Home Basic) (32-&nbsp;or&nbsp;64-bit)/Windows 7 Starter</td>
     <td>2 GB / 1 GHz</td>
     <td>512 MB / 1 GHz</td>
   </tr>

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 2012
+ * Copyright 2004 - 2013
  * Matt Brubeck
  * Dominic Mazzoni
  * Richard Ash
@@ -23,15 +23,17 @@
 
 <ul>
 <li><p><?php printf(_('<a href="%s">Audacity %s source tarball</a> (%s file, %.1lf MB)'), download_url($min_src_url), src_version, src_suffix, min_src_size)?> 
-<?php printf(_('standard source tarball. Assumes your system has necessary dependencies/libraries installed (see below).'))?></p></li>
+<?php printf(_('standard source tarball, primarily for GNU/Linux. Assumes your system has necessary dependencies/libraries installed (see below).'))?></p></li>
 </ul>
 
 <h3><?=_("Optional Downloads")?></h3>
 
 <ul>
-<li><p><?php printf(_('<a href="%s">Audacity %s source tarball</a> (%s file, %.1lf MB)'), download_url($full_src_url), src_version, src_suffix, full_src_size)?> 
-<?php printf(_('full source tarball: Primarily for use on Windows and Mac, as they typically lack necessary dependencies to compile Audacity. Also needed on a GNU/Linux system configured as an end-user.'))?></p></li>
-<li><p><?php printf(_('<a href="%s">Latest SVN Development Code</a>'), "../community/developers#svn")?></p></li>
+<!--<li><p><?php printf(_('<a href="%s">Audacity %s source tarball</a> (%s file, %.1lf MB)'), download_url($full_src_url), src_version, src_suffix, full_src_size)?> 
+<?php printf(_('full source tarball: Primarily for use on Windows and Mac, as they typically lack necessary dependencies to compile Audacity. Also needed on a GNU/Linux system configured as an end-user.'))?></p></li>-->
+<li><p><?php printf(_('<a href="%s">SVN Development Code</a> '), "../community/developers#svn")?>
+<?php printf(_('Check out the latest Audacity SVN development code. You can also check out a specific tagged release from SVN, suitable for a Windows, Mac or other system that lacks necessary dependencies to compile the standard source tarball.'))?>
+</p></li> 
 <li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try:')) ?></p>
    <ul><li><?php printf(_('<a href="%s">SourceForge</a>: View older versions by clicking to enter the required folder under "Name".'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
        <li><?php printf(_('<a href="%s">Google Code</a>: Click on the headings to sort the list.'), "http://code.google.com/p/audacity/downloads/list")?></li>
@@ -49,6 +51,8 @@
 
 <h4><?=_("Dependencies")?></h4>
 <p><?php printf(_('The <a href="http://wxwidgets.org">wxWidgets</a> library is required. Audacity %s requires wxGTK 2.8.12. The <a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a> library is also required and is included in Audacity obtained from <a href="/community/developers#svn">SVN</a>. Installation of other libraries is <a href="http://wiki.audacityteam.org/wiki/Developing_On_Linux#Optional_Packages_and_Features">optional</a>.'), src_version)?></p>
+
+<p><?php printf(_('<a href="%s">CMake</a> is required to build <a href="%s">libsoxr</a> which is now the Audacity default resampling library.'), "http://www.cmake.org/", "http://sourceforge.net/p/soxr/wiki/Home/")?></p>
 
 <p><?=_('If you install libraries using a package management system like Apt or RPM, you need to install the "dev" (development) packages for each library.')?></p>
 
