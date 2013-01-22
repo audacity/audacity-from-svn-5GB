@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Introduction</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<link rel=stylesheet type="text/css" href="audacity.css"/>
+</head>
+
+<body>
+<p style="text-align: center;"><a class=ss href="index.html">
+Back to the main page</a><br/>
+<a href="index.html"><img border=0 src="images/index_introduction.png"
+width="47" height="34" align="middle" alt="Introduction to Audacity"></a>
+<a class="menu_major" href="index.html">Introduction</a><br/>
+<span class=ss>Experienced users should head down to
+<a class=ss href="#experiencedusers">this section</a> in this document.</span>
+</p>
+
+<!-- intro text confined to 60% width START -->
+<p style="text-align: center;">
+<table width="60%"><tr><td>
+<p class=qg>Audacity ...</p>
+
+<p class=a>
+ a free cross platform audio editor.
+</p>
+<p class=a>
+  For new users to Audacity,
+  see <a href="tutorial_basics_1.html">the Tutorial in five parts</a> for
+  some basics on digital audio, setting up Audacity, selecting, aligning,
+  and recording.
+</p>
+
+<p class=a>Audacity is currently in version 1.2.3.
+This is a stable release of Audacity; it has been tested and works well for most people.
+However, it comes with no guarantee, and we depend on your feedback in order to continue
+to improve on it.  Please check our website for the latest version.
+
+Audacity is a collaborative project,
+so there are lots of opportunities for you to get involved if you're interested!
+<br>
+<center><a class=sf href="http://audacity.sourceforge.net/">http://audacity.sourceforge.net/</a></center>
+</p>
+
+</td></tr></table>
+</center>
+<!-- intro text confined to 60% width END -->
+
+
+<table width="100%">
+	<tr>
+	  <td width="48%" valign=top>
+
+
+<p class=qg>What can you do with Audacity?</p>
+<p class=a>Audacity is a program that manipulates digital audio
+  waveforms. In addition to recording sounds directly from
+  within the program, it imports many sound file formats, including
+  <a href="fileformats.html#wav">WAV</a>,
+  <a href="fileformats.html#aiff">AIFF</a>,
+  <a href="fileformats.html#mp3">MP3</a>, and
+  <a href="fileformats.html#ogg">Ogg Vorbis</a>. PCM formats of 8,16,24 and 32-bits can be imported and exported.</p>
+<p class=a>
+
+<ul>
+  <li><a href="menu_edit.html#cut">Cut</a>, <a href="menu_edit.html#copy">Copy, <a href="menu_edit.html#paste">Paste</a>,
+  <a href="menu_edit.html#delete">Delete</a>, <a href="menu_edit.html#silence">Silence</a>,
+  <a href="menu_edit.html#duplicate">Duplicate</a>, <a href="menu_edit.html#split">Split</a></li></li>
+  <li>apply <a href="menu_effects.html">plug-in effects</a> to any part of a sound</li>
+  <li>built-in <a href="toolbar.html#envelope">volume envelope editor</a></li>
+  <li>customizable <a href="track_popdown.html">spectrogram track view mode</a></li>
+  <li><a href="menu_view.html#spectrum">frequency analysis window</a> for audio analysis applications</li>
+  <li>custom playback <a href="track_popdown.html">rate</a> for every track, which is live-resampled to the project sample rate</li>
+  <li>simple to complex <a href="menu_project.html#align">align operations</a> for tracks and groups of tracks</li>
+</p>
+
+<p class=a>
+  
+</p>
+
+	  </td>
+	  <td width="52%" valign=top>
+
+
+<p class=qg>
+What can't Audacity do?
+</p>
+
+<p class=a>
+  Although Audacity is a very powerful
+  audio editor that works with an unlimited number tracks of virtually
+  unlimited size, it cannot do everything. It cannot :
+
+<ul>
+	<li>Audacity cannot record more than two channels at once on many systems.
+	Some support for multitrack recording is included in version 1.2.3, but
+   it does not support very many systems yet.
+
+	<li>Audacity opens MIDI files,
+	but it is not a MIDI editor, and its
+	MIDI features are extremely limited.
+
+</ul>
+</p>
+
+	  </td>
+	</tr>
+</table>
+
+<a name="experiencedusers"></a>
+<p class=qr>How does it work - a quick intro for experienced users</p>
+<table width="100%">
+	<tr>
+	  <td width="50%" valign=top>
+
+<p class=a>Audacity works with tracks, that contain one audio file.
+This file is editable and all actions are undoable.  Undo's are instantaneous.</p>
+<p class=a>Almost anything is undoable, including importing and deleting tracks!
+<p class=a>There are no inserts, auxes or buses yet.</p>
+<p class=a>All versions can use LADSPA plugins, and the Windows and Mac versions can use
+VST plugins using the VST Enabler (a separate download).
+	  </td>
+	  <td width="50%" valign=top>
+
+<p class=a>There is volume automation via the <a href="toolbar.html#envelope">envelope tool</a>.</p>
+<p class=a>Editing functions include <a href="menu_edit.html">Cut, Copy, Paste</a>,<a href="menu_edit.html#duplicate">Duplicate</a>(to new track at same timecode), <a href="menu_edit.html#split">Split</a>(to new track at same timecode), and <a href="menu_edit.html#silence">Silence</a>.</p>
+<p class=a>A grid can be activated for each track, and snapping can be switched on as well.</p>
+
+	  </td>
+	</tr>
+</table>
+
+
+<p class=qg>What makes Audacity unique?</p>
+
+<ul>
+<li>Audacity
+	is <it>free</it> and the source code is available
+    under the GNU General Public License.
+<li>Audacity
+    is <it>cross-platform</it> - it runs on Windows (98 through XP),
+    Mac OS X, and many Unix platforms, including Linux.  Previous
+    versions worked with Mac OS 9.
+<li>No limits on the number of tracks or the length of any track,
+    except the size of your hard disk.
+
+<li>Import almost anything: WAV, AIFF, Next/AU, IRCAM, MP3, and Ogg Vorbis
+	files are supported natively, but
+	Audacity
+	will also open just about any uncompressed sound file and
+	automatically deduce the format (using the
+	<a href="menu_project.html#importraw">Import Raw Data...</a>
+	feature).
+<li>Audacity
+    not only includes many high-quality effects built-in, but also
+    lets you use LADSPA and VST plug-in effects.
+    There are dozens of free, shareware, and commercial
+    plug-ins online that do everything from Reverb to
+    Noise Reduction.
+<li>Audacity supports plug-ins written in the Nyquist programming
+    language, a high-level language designed specifically for
+    working with audio.
+<li>Audacity
+	acts like a <it>non-destructive editor</it>, providing
+	multiple levels of undo, but it also writes changes made to the
+	audio to disk, eliminating the need for complicated real-time
+	processing.
+<li>Label tracks allow you to annotate waveforms (for example,
+    transcribing speech) and later export the waveforms to a text file.
+<li>Powerful spectral features allow you to view waveforms as
+    spectrograms or plot the power spectrum of any region of audio,
+    and even export this data to a spreadsheet.
+<li>Pitch-changing and tempo-changing effects</li>
+</ul>
+
+
+
+<a class=ss href="index.html">Back to the main page</a><br>&nbsp;<br>
+</body>
+</html>
+
