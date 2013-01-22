@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007 - 2012 Vaughan Johnson, Gale Andrews
+ * 2007 - 2013 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -38,6 +38,31 @@ function most_recent_news_item() {
 
 // Add news items below in reverse-chronological order
 // (most recent first).
+
+add_news_item(
+  "January 21, 2013",
+  	"2.0.3-release",
+  _("Audacity 2.0.3 Released"),
+  _("
+<p>
+  The Audacity Team is pleased to announce the release of
+  <a href=\"/download\">Audacity 2.0.3</a>. It replaces all
+  previous versions. 
+</p>
+<p>
+  Audacity 2.0.3 now uses the
+  <a href=\"http://wiki.audacityteam.org/wiki/Libsoxr\">
+  libsoxr</a> resampling library by default, instead of libresample, for higher quality and speed. 
+  <a href=\"http://manual.audacityteam.org/o/man/time_tracks.html\">
+  Time Tracks</a> have been improved and bug fixed, and new effects
+  include an accessible 
+  <a href=\"http://manual.audacityteam.org/o/man/adjustable_fade.html\">
+  Adjustable Fade</a>. See the
+  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.3\">
+  2.0.3 Release Notes</a> for details.
+</p>
+"));
+
 
 add_news_item(
   "August 24, 2012",

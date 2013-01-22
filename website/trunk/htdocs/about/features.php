@@ -19,7 +19,7 @@
   <li>Device Toolbar manages multiple input and output devices.</li>  
   <li>Timer Record and Sound Activated Recording features.</li>
   <li>Dub over existing tracks to create <a href="http://manual.audacityteam.org/help/manual/man/faq.html#overdub">multi-track recordings</a>.</li>
-  <li>Record at high sample rates in excess of 192,000 Hz (subject to appropriate hardware).</li>
+  <li>Record at sample rates up to 192,000 Hz (subject to appropriate hardware). Up to 384,000 Hz is supported for appropriate high-resolution devices, except when using Windows DirectSound host.</li>
   <li>Record <a href="http://wiki.audacityteam.org/wiki/Multichannel_Recording">multiple channels</a> at once (subject to appropriate hardware).</li>
   <li>Level meters can monitor volume levels before, during and after recording. Clipping can be displayed in the waveform or in a label track.</li>
 </ul>');
@@ -28,7 +28,7 @@
 <p>Import sound files, edit them, and combine them with other files or new recordings.  Export your recordings in many different file formats, including <a href="http://manual.audacityteam.org/help/manual/man/export_multiple.html">multiple files at once</a>.</p>
 <ul>
   <li>Import and export <b>WAV</b>, <b>AIFF</b>, <b>AU</b>, <b>FLAC</b> and <a href="http://vorbis.com">Ogg Vorbis</a> files.</li>
-  <li>Fast "On-Demand" import of WAV or AIFF files (letting you start work with the files almost immediately) if read directly from source. "On-Demand" import of other file formats is available with the optional <a href="http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown">FFmpeg library</a>.</li>
+  <li>Fast "On-Demand" import of WAV or AIFF files (letting you start work with the files almost immediately) if read directly from source.</li>
   <li>Import and export all formats supported by <a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a> such as <b>GSM 6.10</b>, <b>32-bit and 64-bit float WAV</b> and <b>U/A-Law</b>.</li>
   <li>Import MPEG audio (including <b>MP2</b> and <b>MP3</b> files) using <a href="http://www.underbit.com/products/mad/">libmad</a>.</li>
   <li>Import raw (headerless) audio files using the "Import Raw" command.</li>
@@ -68,7 +68,7 @@
   <li>Change the pitch without altering the tempo (or vice-versa).</li>
   <li>Remove static, hiss, hum or other constant background noises.</li>
   <li>Alter frequencies with Equalization, Bass Boost, High/Low Pass and Notch Filter effects.</li>
-  <li>Adjust volume with Compressor, Amplify, Normalize and Fade In/Out effects.
+  <li>Adjust volume with Compressor, Amplify, Normalize, Fade In/Fade Out and Adjustable Fade effects.
   <li><a href="http://manual.audacityteam.org/help/manual/man/vocal_remover.html">Remove Vocals</a> from suitable stereo tracks.
   <li>Create voice-overs for podcasts or DJ sets using <a href="http://manual.audacityteam.org/help/manual/man/auto_duck.html">Auto Duck</a> effect.
   <li>Other built-in effects include:
