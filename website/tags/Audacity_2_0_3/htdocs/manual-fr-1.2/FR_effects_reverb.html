@@ -1,0 +1,261 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Audioeffect - Reverb</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+<body>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#0000FF">Retour au sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_effects.html">
+    <font color="#0000FF">Retour aux effets</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+
+<H1 align=center>Réverbération</H1>
+</center>
+
+<P class=qr>Qu'est ce que la Réverbération ?</P>
+<P class=a>
+ Une réverbération simule la composante son qui résulte de réflexions par rebond 
+ sur les murs ou les objets. C'est une simulation d'une pièce. Quelques uns 
+ croient qu'il ne s'agit que d'un effet de délai avec quelques filtres mais 
+ c'est plus complexe que cela . Les effets de réverbération (plug-in logiciels 
+ ou unités externes de matériel) procurent une interface pour les paramètres 
+ modifiables qui mérite quelques explications. En premier, regardons une pièce 
+ simple.&nbsp;
+</P>
+<P class=qr>Base de Simulation d'une pièce</P>
+<P class=a>
+ <b>Notre modèle est une simple pièce </b>avec quatre murs droits. une source de 
+ son et un récepteur. Dans la&nbsp; <i>Figure 1</i> les flèches montrent le 
+ trajet du son.&nbsp;
+</P>
+<P class=a dir="ltr">
+ Le récepteur entend le signal <b>direct</b> en premier. Le&nbsp; signal <b>
+ direct</b> est aussi appelé la partie sèche du signal quand on utilise un 
+ effet. Beaucoup de réverbérations numériques produisent deux parties : Les 
+ premières réflexions et la composante de réverbération.
+</P>
+
+<a name=earlyreflections></a>
+<P class=menuref_item>I. Premières&nbsp; Réflexions</P>
+<table><tr>
+<td valign=top align=right><img border=0 src="images/FR_reverb_er1.jpg" width="352" height="373" alt="Primo Reflexions">
+                           <br><i><B>Figure 1</B></i></td>
+<td valign=top>
+ <P class=a>
+  La première réflexion atteint le récepteur quelques millisecondes après le 
+  signal direct.
+ </P>
+ <P class=a>
+  Le cheminement des premières réflexions est allongé. La différence de temps 
+  entre l'arrivée du signal direct et des premières réflexions est mesuré en 
+  millisecondes.</P>
+
+</td>
+</tr></table>
+
+
+<P class=menuref_item>II. Réverbérations</P>
+<table><tr>
+<td valign=top align=right>
+<p align="center"><img border=0 src="images/FR_reverb_rev1.jpg" width="348" height="370" alt="Réverbération">
+                           <br><i><B>Figure 2</B></i></p>
+<p align="center"><img border=0 src="images/FR_GVerb.jpg" width="400" height="400" alt="boîte de GVerb"></p>
+<p><b><i>Figure 3</i></b></td>
+<td valign=top>
+ <P class=a>
+  Les reflets sonores des murs et objets de la pièce, avec un temps individuels 
+  par réflexion, disparaissent et
+ </P>
+ <P class=a dir="ltr">
+  <U><B>Pré - délai</B></U><BR>
+  Le temps entre la réception du signal direct par le récepteur et le début de 
+  l'effet de réverbération est appelé le <B>Pré - délai</B>. C'est un paramètre 
+  dans beaucoup d'effets numériques de réverbération. (mesuré en millisecondes 
+  ou ms).
+ </P>
+ <P class=a>
+  <U><B>Temps de Réverbération</B></U><BR>
+  La différence de temps entre l'arrêt des sons générateurs et le niveau de 
+  réverbérations en résultant d'une émission de 60dB est appelé <B>RT60</B>. 
+  (abréviation de <B>Reverb Time</B>)</P>
+ <P class=a>
+  Lorsqu'on se réfère à ce temps pour une pièce réelle ou un effet numérique,&nbsp; RT60 
+  est à peu près ce que l'on entend.&nbsp;
+ </P>
+ <P class=a dir="ltr">
+  C'est un paramètre dans beaucoup d'effets numériques.
+ </P>
+ <P class=a dir="ltr">
+  &nbsp;</P>
+ <P class=a dir="ltr">
+  &nbsp;</P>
+ <P class=a dir="ltr">
+  &nbsp;</P>
+ <P class=a dir="ltr">
+  &nbsp;</P>
+ <P class=a dir="ltr">
+  Ci contre, la boîte de dialogue de l'effet &quot;GVerb avec :</P>
+ <P class=a dir="ltr">
+  La taille de al salle (Romsize)</P>
+ <P class=a dir="ltr">
+  Le temps de réverbération (Reverb Time)</P>
+ <P class=a dir="ltr">
+  La modulation (Damping)</P>
+ <P class=a dir="ltr">
+  L'entrée (input bandwhith)</P>
+ <P class=a dir="ltr">
+  Le niveau du signal d'origine (Dry signal level)</P>
+ <P class=a dir="ltr">
+  Le niveau de la primo réflexion ( Early selection level)</P>
+ <P class=a dir="ltr">
+  Le niveau d'extinction (tail level)</P>
+ <P class=a dir="ltr">
+  &nbsp;</P>
+ <P class=a dir="ltr">
+  &nbsp;</P>
+</td>
+</tr></table>
+
+<a name=parameters></a>
+<P class=qr>Paramètres communs aux Réverbérations numériques</P>
+
+<table cellpadding=4>
+<tr>
+ <td valign=top align=right class=menuref_item>Premières&nbsp;Réflexions</td>
+ <td valign=top>
+   <P class=a>
+    Habituellement contrôlé via les paramètres de <B>type de pièce</B> et / ou <B>
+    taille de la pièce</B>.
+   </P>
+   <P class=a>
+    Les <b>premières réflexions </b>permettent au cerveau humain d'identifier 
+    rapidement la taille de la pièce. Elles sont les parties les plus décisives 
+    de l'effet si la simulation de la pièce est l'objectif.
+   </P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Pré - retard</td>
+ <td valign=top>
+   <P class=a>
+    Paramètre : 0 à x millisecondes
+   </P>
+   <P class=a>
+    Temps entre le signal Direct Signal et le début du morceau réverbéré.
+   </P>
+   <P class=a>
+    Plus l'espace est important entre vous et les murs, plus le pré - retard est 
+    important.</P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Temps de Réverbération</td>
+ <td valign=top>
+   <P class=a>
+    Paramètre : 0.1 to x,x seconds
+   </P>
+   <P class=a>
+    Plus l'espace où vous êtes est important, plus ce temps sera long. C'est 
+    vrai, bien sûr dans certaines limites. La largeur de la pièce, la force du 
+    son conditionnent le niveau de réverbération. Une bonne façon de le 
+    démontrer est de visiter une imposante cathédrale et d'y parler calmement.&nbsp; 
+    Puis criez et vous entendrez des réverbérations fortes. La valeur RT60 est 
+    affectée des impulsions de bruits , mais le niveau d'impulsion peut aussi 
+    être connu.
+   </P>
+   <P class=a>
+    Beaucoup d'effets permettent de choisir ce temps pour différentes bandes de 
+    fréquences. D'autres unités sur architectures&nbsp; PC et Mac procurent deux bandes,
+    qui peuvent être traitées individuellement.</P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Etouffer la Réverbération</td>
+ <td valign=top>
+   <P class=a dir="ltr">
+    Généralement un égaliseur haut ou bas étage avec des fréquences variables.</P>
+   <P class=a dir="ltr">
+    Ces égaliseurs sont appliqués en continu sur l'évolution de la réverbération 
+    de la pièce audio.&nbsp; Dans d'autres cas,&nbsp; ils agissent sur certaines 
+    fréquences hautes ou basses, comme des atténuations de réverbérations. Plus 
+    les surfaces sont absorbantes, plus la réverbération est atténuée dans les 
+    hautes fréquences.</P>
+   <P class=a>
+    Freeverb possède un paramètre d'atténuation des plus hautes fréquences.
+   </P>
+   <BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Egaliseur de Réverbération (EQ)</td>
+ <td valign=top>
+   <P class=a dir="ltr">
+    Généralement un égaliseur haut ou bas étage avec des fréquences variables.</P>
+   <P class=a>
+    Ces égalisateurs sont seulement appliqués sur la sortie de la réverbération 
+    ou peut être même sur le morceau de réverbération de l'effet. quelques 
+    effets ont un égaliseur haut ou bas étage&nbsp; pour les premières 
+    réflexions.&nbsp;
+   </P>
+   <P class=a>
+    Freeverb a les paramètres de coupure haut et bas.
+   </P>
+   <BR>
+ </td>
+</tr>
+
+</table>
+
+<P class=a>
+ Voici un écran du réverbérateur fourni par le <b>plug-in</b> <b>Renaissance</b> 
+ disponible sur le 
+ Web&nbsp;à&nbsp; <a href="http://www.waves.com">http://www.waves.com</a>.
+</P>
+<center>
+<img border=0 src="images/reverb_rverb.png" width="599" height="232" alt="Réverbérateur Renaissance"><BR>
+<small><span class=ss>reproduit avec autorisation</span></small>
+</center>
+<P class=a>
+ Ici nous avons l'égaliseur haut et bas étage pour l'atténuation (à gauche) et 
+ pour la sortie finale (à droite) . La visualisation centrale haute représente 
+ les niveau et emplacement des primo- réflexions et le début puis l'atténuation 
+ de la partie de réverbération. Sous ces écrans se trouve les sélecteurs de type 
+ de&nbsp; réverbération.&nbsp; Ils modifient le placement et le niveau des primo 
+ - réflexions . les curseurs de taille influencent seulement ces dernières.
+</P>
+
+<!-- P class=a>
+ The surface of a wall as well as different shapes and sizes of objects in a room influence
+ the way sound reflects, bends or spreads from off them.
+</P -->
+<P class=a>
+ Les barres blanches reflètent le son clair via un spectre. Le voile épais ou 
+ mur épais reflète le son pauvre. Une pièce pleine de gens donne un son 
+ complètement différent d'une pièce vide. Gens et objets ne renvoient qu'une 
+ partie du son qu'ils reçoivent.
+</P>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#0000FF">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_effects.html">
+    <font color="#0000FF">Retour aux effets</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<BR>
+
+</body>
+</html>
