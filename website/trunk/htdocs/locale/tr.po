@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Website\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-27 21:39+0100\n"
-"PO-Revision-Date: 2012-10-31 19:23-0000\n"
-"Last-Translator: gale <gale@audacityteam.org>\n"
+"POT-Creation-Date: 2013-01-22 07:37+0000\n"
+"PO-Revision-Date: 2013-01-23 09:04-0000\n"
+"Last-Translator: Kaya Zeren\n"
 "Language-Team: Audacity\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
@@ -1486,7 +1486,7 @@ msgstr "Burada Audacity yazılımının Windows 98/ME/2000/XP sürümleri ile ç
 #: download/windows.php:38
 #: download/windows.php:109
 #: download/linux.php:33
-#: download/source.php:42
+#: download/source.php:44
 #: download/beta_windows.php:57
 #: download/mac.php:38
 #: download/mac.php:101
@@ -1628,7 +1628,7 @@ msgstr "Alternatif İndirme Bağlantıları"
 #: download/legacy_windows.php:67
 #: download/common.inc.php:17
 #: download/windows.php:84
-#: download/source.php:35
+#: download/source.php:37
 #: download/mac.php:80
 #: download/legacy_mac.php:53
 #, php-format
@@ -1638,7 +1638,7 @@ msgstr "İndirme sırasında sorun yaşıyor ya da daha eski bir Audacity sürü
 #: download/legacy_windows.php:69
 #: download/common.inc.php:19
 #: download/windows.php:88
-#: download/source.php:36
+#: download/source.php:38
 #: download/mac.php:84
 #: download/legacy_mac.php:55
 #, php-format
@@ -1648,7 +1648,7 @@ msgstr "<a href=\"%s\">SourceForge</a>: İstediğiniz paketin \"Adının\" oldu�
 #: download/legacy_windows.php:70
 #: download/common.inc.php:20
 #: download/windows.php:91
-#: download/source.php:37
+#: download/source.php:39
 #: download/mac.php:87
 #: download/legacy_mac.php:56
 #, php-format
@@ -1835,19 +1835,19 @@ msgstr "Audacity en az 64 MB RAM bellek ve 300 MHz hızında bir işlemci ile ka
 
 #: download/legacy_source.php:36
 #: download/beta_source.php:42
-#: download/source.php:44
+#: download/source.php:46
 msgid "or"
 msgstr "ya da"
 
 #: download/legacy_source.php:40
 #: download/beta_source.php:46
-#: download/source.php:48
+#: download/source.php:50
 msgid "How to Compile Audacity"
 msgstr "Audacity Nasıl Derlenir"
 
 #: download/legacy_source.php:42
 #: download/beta_source.php:48
-#: download/source.php:50
+#: download/source.php:52
 msgid "Dependencies"
 msgstr "Bağlılıklar"
 
@@ -1862,50 +1862,50 @@ msgstr "Şu kütüphaneleri kurmak <b>isteğe bağlıdır</b> - <a href=\"../com
 
 #: download/legacy_source.php:50
 #: download/beta_source.php:56
-#: download/source.php:53
+#: download/source.php:57
 msgid "If you install libraries using a package management system like Apt or RPM, you need to install the \"dev\" (development) packages for each library."
 msgstr "Kütüphaneleri, Apt ya da RPM gibi bir paket yönetim sistemi kullanarak kurarsanız, her kütüphane için \"dev\" (geliştirme) paketlerini de kurmalısınız. "
 
 #: download/legacy_source.php:52
 #: download/beta_source.php:58
-#: download/source.php:55
+#: download/source.php:59
 msgid "Compilation"
 msgstr "Derleme"
 
 #: download/legacy_source.php:53
 #: download/beta_source.php:59
-#: download/source.php:56
+#: download/source.php:60
 msgid "To compile Audacity, run the following command in the Audacity source directory:"
 msgstr "Audacity yazılımını derlemek için, Audacity kaynak klasörü içinde aşağıdaki komutu çalıştırın:"
 
 #: download/legacy_source.php:57
 #: download/beta_source.php:63
-#: download/source.php:60
+#: download/source.php:64
 msgid "You can type <i>./configure --help</i> to see a list of compilation options. After Audacity is compiled, run <i>make install</i> as root to install it."
 msgstr "Derleme seçenekleri listesini görmek için <i>./configure --help</i> yazabilirsiniz. Audacity derlendikten sonra, kurmak için root kullanıcısı ile <i>make install</i> komutunu çalıştırın."
 
 #: download/legacy_source.php:59
 #: download/beta_source.php:65
-#: download/source.php:62
+#: download/source.php:66
 msgid "Further Help"
 msgstr "Ek Yardım"
 
 #: download/legacy_source.php:61
 #: download/beta_source.php:67
-#: download/source.php:64
+#: download/source.php:68
 msgid "On Windows, see the file \"compile.txt\" inside the \"Win\" folder in the source code. For OS X, see \"compile.txt\" inside the \"Mac\" folder in the code."
 msgstr "Kaynak kodunda, Windows üzerinde,  \"Win\" klasörünün içinde, OS X üzerinde \"Mac\" klasörünün içinde bulunan \"compile.txt\" dosyasına bakabilirsiniz."
 
 #: download/legacy_source.php:62
 #: download/beta_source.php:68
-#: download/source.php:65
+#: download/source.php:69
 #, php-format
 msgid "%sSee our guides to compiling Audacity for %sWindows%s, %sMac%s and %sGNU/Linux%s on the %sWiki%s.%s"
 msgstr "%s%sWindows%s, %sMac%s ve %sGNU/Linux%s için Audacity derleme kitaplarına %sWiki%s sayfasından bakabilirsiniz.%s"
 
 #: download/legacy_source.php:73
 #: download/beta_source.php:79
-#: download/source.php:76
+#: download/source.php:80
 #, php-format
 msgid "%sIf you are still having difficulties, we want to help! Please ask on the %sCompiling Audacity%s board on our %sForum%s.%s"
 msgstr "%sHala sorun yaşıyorsanız, yardım etmek isteriz! %sCompiling Audacity%s panosuna %sForum%s üzerinden soru sorabilirsiniz.%s"
@@ -4343,8 +4343,8 @@ msgstr "<a href=\"%s\">Audacity %s sürümü kaynak tarball</a> (%s dosya, %.1lf
 
 #: download/source.php:26
 #, php-format
-msgid "standard source tarball. Assumes your system has necessary dependencies/libraries installed (see below)."
-msgstr "Standart kaynak tarball. Sisteminizde gerekli bağlılık ve kütüphanelerin bulunduğu ve kurulmuş olduğu varsayılır (aşağıya bakın)."
+msgid "standard source tarball, primarily for GNU/Linux. Assumes your system has necessary dependencies/libraries installed (see below)."
+msgstr "standart kaynak tarball, öncelikle GNU/Linux için kullanılır. Sisteminizde gerekli bağlılık ve kütüphanelerin bulunduğu ve yüklü olduğu varsayılır (aşağıya bakın)."
 
 #: download/source.php:33
 #, php-format
@@ -4353,17 +4353,27 @@ msgstr "Tam kaynak tarball: Audactiy derlemek için gerekli bağlılıkları eks
 
 #: download/source.php:34
 #, php-format
-msgid "<a href=\"%s\">Latest SVN Development Code</a>"
-msgstr "<a href=\"%s\">Son geliştirilmiş SVN havuzu kodu</a>"
+msgid "<a href=\"%s\">SVN Development Code</a> "
+msgstr "<a href=\"%s\">SVN Havuzu Kodu</a>"
 
-#: download/source.php:44
+#: download/source.php:35
+#, php-format
+msgid "Check out the latest Audacity SVN development code. You can also check out a specific tagged release from SVN, suitable for a Windows, Mac or other system that lacks necessary dependencies to compile the standard source tarball."
+msgstr "Son geliştirilen Audacity SVN kodunu alabilirsiniz. Aynı şekilde SVN havuzundan, Windows, Mac ya da gerekli bağlılıklara sahip olmayan diğer işletim sistemlerinde derlemek üzere, özel etiketlenmiş standart tarball sürümüne de ulaşabilirsiniz. "
+
+#: download/source.php:46
 msgid "See operating system support for"
 msgstr "Şunun için işletim sistemi desteğine bakın:"
 
-#: download/source.php:51
+#: download/source.php:53
 #, php-format
 msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is required. Audacity %s requires wxGTK 2.8.12. The <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a> library is also required and is included in Audacity obtained from <a href=\"/community/developers#svn\">SVN</a>. Installation of other libraries is <a href=\"http://wiki.audacityteam.org/wiki/Developing_On_Linux#Optional_Packages_and_Features\">optional</a>."
 msgstr "<a href=\"http://wxwidgets.org\">wxWidgets</a> kütüphanesi gereklidir. Audacity %s wxGTK 2.8.12 ile çalışır. Ayrıca <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a> kütüphanesi de gereklidir ve Audacity içinde <a href=\"/community/developers#svn\">SVN Kod Havuzunda</a> bulunur. Diğer kütüphanelerin yüklenmesi <a href=\"http://wiki.audacityteam.org/wiki/Developing_On_Linux#Optional_Packages_and_Features\">isteğe bağlıdır</a>."
+
+#: download/source.php:55
+#, php-format
+msgid "<a href=\"%s\">CMake</a> is required to build <a href=\"%s\">libsoxr</a> which is now the Audacity default resampling library."
+msgstr "Varsayılan Audacity yeniden örnekleme kütüphanesi olarak kullanılan <a href=\"%s\">libsoxr</a> bileşenini derlemek için <a href=\"%s\">CMake</a> gereklidir."
 
 #: download/beta_windows.php:13
 msgid "Windows Beta"
@@ -5193,20 +5203,20 @@ msgid ""
 "  <li>Device Toolbar manages multiple input and output devices.</li>  \n"
 "  <li>Timer Record and Sound Activated Recording features.</li>\n"
 "  <li>Dub over existing tracks to create <a href=\"http://manual.audacityteam.org/help/manual/man/faq.html#overdub\">multi-track recordings</a>.</li>\n"
-"  <li>Record at high sample rates in excess of 192,000 Hz (subject to appropriate hardware).</li>\n"
+"  <li>Record at sample rates up to 192,000 Hz (subject to appropriate hardware). Up to 384,000 Hz is supported for appropriate high-resolution devices, except when using Windows DirectSound host.</li>\n"
 "  <li>Record <a href=\"http://wiki.audacityteam.org/wiki/Multichannel_Recording\">multiple channels</a> at once (subject to appropriate hardware).</li>\n"
 "  <li>Level meters can monitor volume levels before, during and after recording. Clipping can be displayed in the waveform or in a label track.</li>\n"
 "</ul>"
 msgstr ""
 "<h3 id=\"record\">Kaydetme</h3>\n"
-"<p>Audacity kullanarak, bir mikrofon ya da karıştırıcıdan gelen ya da  <a href=\"http://manual.audacityteam.org/help/manual/man/tutorial_copying_tapes_lps_or_minidiscs_to_cd.html\">kaset bantlardan, kayıtlardan ya da mini disklerden gelen sayısallaştırılmış kayıtlar</a> canlı olarak kaydedilebilir. Bazı ses kartları ile <a href=\"http://manual.audacityteam.org/help/manual/man/tutorial_recording_audio_playing_on_the_computer.html\">ses akışları</a> da yakalanabilir.</p>\n"
+"<p>Audacity kullanarak, bir mikrofon ya da karıştırıcıdan gelen ya da  <a href=\"http://manual.audacityteam.org/help/manual/man/tutorial_copying_tapes_lps_or_minidiscs_to_cd.html\">kaset bantlardan, kayıtlardan ya da mini disklerden gelen sayısallaştırılmış kayıtlar</a> canlı olarak kaydedilebilir. Bazı ses kartları ile <a href=\"http://manual.audacityteam.org/help/manual/man/tutorial_recording_audio_playing_on_the_computer.html\">ses akışları</a>da yakalanabilir.</p>\n"
 "<ul>\n"
 "  <li>Mikrofon, ses girişi, USB/Firewire aygıtları ya da diğer kaynaklardan kayıt yapılabilir</li>\n"
 "  <li>Aygıt Araç Çubuğundan bir çok giriş ve çıkış aygıtı yönetilebilir.</li>  \n"
 "  <li>Zamanlamalı Kayıt ve Sese Göre Kayıt özellikleri bulunur.</li>\n"
-"  <li>Varolan izlerin üzerine bindirerek <a href=\"http://manual.audacityteam.org/help/manual/man/faq.html#overdub\">çok izli kayıtlar</a> oluşturabilir.</li>\n"
-"  <li>192,000 Hz gibi aşırı yüksek örnekleme hızlarından kayıt yapabilir (donanıma bağlı olarak).</li>\n"
-"  <li>Aynı anda <a href=\"http://wiki.audacityteam.org/wiki/Multichannel_Recording\">birden çok kanal</a> kaydedebilir (donanıma bağlı olarak).</li>\n"
+"  <li>Varolan izlerin üzerine bindirerek <a href=\"http://manual.audacityteam.org/help/manual/man/faq.html#overdub\">çok izli kayıtlar</a> oluşturulabilir.</li>\n"
+"  <li>192,000 Hz gibi aşırı yüksek örnekleme hızlarından kayıt yapılabilir (uygun donanım ile). Windows DirectSound sunucusu kullanılmadığında, uygun yüksek çözünürlüklü aygıtlar ile 384.000 Hz hızına çıkılabilir.</li>\n"
+"  <li>Aynı anda <a href=\"http://wiki.audacityteam.org/wiki/Multichannel_Recording\">birden çok kanal</a> kaydedilebilir (uygun donanım ile).</li>\n"
 "  <li>Düzey ölçerler, kayıt öncesi, kayıt sırasında ve kayıt sonrası ses düzeylerini izleyebilir. Kırpılmalar dalga şekli ya da etiket izlerinde gösterilebilir.</li>\n"
 "</ul>"
 
@@ -5216,7 +5226,7 @@ msgid ""
 "<p>Import sound files, edit them, and combine them with other files or new recordings.  Export your recordings in many different file formats, including <a href=\"http://manual.audacityteam.org/help/manual/man/export_multiple.html\">multiple files at once</a>.</p>\n"
 "<ul>\n"
 "  <li>Import and export <b>WAV</b>, <b>AIFF</b>, <b>AU</b>, <b>FLAC</b> and <a href=\"http://vorbis.com\">Ogg Vorbis</a> files.</li>\n"
-"  <li>Fast \"On-Demand\" import of WAV or AIFF files (letting you start work with the files almost immediately) if read directly from source. \"On-Demand\" import of other file formats is available with the optional <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg library</a>.</li>\n"
+"  <li>Fast \"On-Demand\" import of WAV or AIFF files (letting you start work with the files almost immediately) if read directly from source.</li>\n"
 "  <li>Import and export all formats supported by <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a> such as <b>GSM 6.10</b>, <b>32-bit and 64-bit float WAV</b> and <b>U/A-Law</b>.</li>\n"
 "  <li>Import MPEG audio (including <b>MP2</b> and <b>MP3</b> files) using <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
 "  <li>Import raw (headerless) audio files using the \"Import Raw\" command.</li>\n"
@@ -5229,7 +5239,7 @@ msgstr ""
 "<p>Ses dosyaları alınabilir, düzenlenebilir ve varolan dosyalarla ya da yeni yapılan kayıtlarla ile birleştirilebilir.  Kayıtları çok kullanılan dosya biçimlerinde ve <a href=\"http://manual.audacityteam.org/help/manual/man/export_multiple.html\">bir kerede bir çok dosya</a> olarak verebilir.</p>\n"
 "<ul>\n"
 "  <li><b>WAV</b>, <b>AIFF</b>, <b>AU</b>, <b>FLAC</b> ve <a href=\"http://vorbis.com\">Ogg Vorbis</a> dosyaları alınıp verilebilir.</li>\n"
-"  <li>WAV ya da AIFF dosyaları \"İsteğe Göre\" doğrudan kaynaktan okunarak hızla yüklenebilir. Böylece neredeyse anında çalışmaya başlanabilir. Diğer dosya biçimleri de ayrıca yüklenen <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg kütüphanesi</a> ile \"İsteğe Göre\" alınabilir.</li>\n"
+"  <li>WAV ya da AIFF dosyaları \"İsteğe Göre\" doğrudan kaynaktan okunarak hızla yüklenebilir (böylece neredeyse anında çalışmaya başlanabilir).</li>\n"
 "  <li><b>GSM 6.10</b>, <b>32-bit ve 64-bit kayan noktalı WAV</b> ve <b>U/A-Law</b> gibi <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a> tarafından desteklenen tüm dosya biçimleri alınıp verilebilir.</li>\n"
 "  <li>MPEG sesleri (<b>MP2</b> ve <b>MP3</b> dosyaları dahil)  <a href=\"http://www.underbit.com/products/mad/\">libmad</a> kullanılarak alınabilir.</li>\n"
 "  <li>\"Ham Veriyi Al\" komutu ile Ham (başlık bilgisiz) ses dosyaları açılabilir.</li>\n"
@@ -5303,7 +5313,7 @@ msgid ""
 "  <li>Change the pitch without altering the tempo (or vice-versa).</li>\n"
 "  <li>Remove static, hiss, hum or other constant background noises.</li>\n"
 "  <li>Alter frequencies with Equalization, Bass Boost, High/Low Pass and Notch Filter effects.</li>\n"
-"  <li>Adjust volume with Compressor, Amplify, Normalize and Fade In/Out effects.\n"
+"  <li>Adjust volume with Compressor, Amplify, Normalize, Fade In/Fade Out and Adjustable Fade effects.\n"
 "  <li><a href=\"http://manual.audacityteam.org/help/manual/man/vocal_remover.html\">Remove Vocals</a> from suitable stereo tracks.\n"
 "  <li>Create voice-overs for podcasts or DJ sets using <a href=\"http://manual.audacityteam.org/help/manual/man/auto_duck.html\">Auto Duck</a> effect.\n"
 "  <li>Other built-in effects include:\n"
@@ -5497,15 +5507,15 @@ msgstr "Nyquist eklentileri"
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity şu proje kodlarını temel alarak geliştirilmiştir:"
 
-#: about/credits.php:158
+#: about/credits.php:159
 msgid "Thanks"
 msgstr "Teşekkürler"
 
-#: about/credits.php:159
+#: about/credits.php:160
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "Teşekkür etmek istediğimiz başka birçok insan ve örgüt var. Bu kişilerin birçoğu kodlama, yamama, geri bildirim, bağış, zaman ve diğer şekillerde katkıda bulundular.  Bir kısmı ise tüm bunların yapılmasını sağlayan araç gereçleri sağladılar."
 
-#: about/credits.php:184
+#: about/credits.php:185
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Unuttuklarımız varsa lütfen bildirin!)"
 
@@ -5700,7 +5710,7 @@ msgstr ""
 "<p>Audacity yazılımının geliştirilmesine <a href=\"http://audacityteam.org/sponsor.php\">sponsor</a> olmak isteyen kurum ya da gruplarla görüşmek isteriz.</p>"
 
 #: about/news.php:21
-#: index.php:116
+#: index.php:114
 msgid "More news items..."
 msgstr "Diğer haberler..."
 
@@ -6080,31 +6090,40 @@ msgstr "<a href=\"http://code.google.com/p/audacity/source/browse/audacity-src/t
 msgid "Type this at the command line to check out the latest source code from SVN:"
 msgstr "SVN havuzundaki en son kaynak kodunu denetlemek için, komut satırına şunu yazın:"
 
-#: community/developers.php:27
-msgid "See our development source code page for <a href=\"../download/beta_source#instructions\">compilation instructions</a>."
-msgstr "Kaynak kodu geliştirme sayfasında <a href=\"../download/source#instructions\">derleme yönergelerini</a> bulabilirsiniz."
+#: community/developers.php:30
+#, php-format
+msgid "You can also check out a specific <a href=\"%s\">tagged release</a> from SVN."
+msgstr "Ayrıca SVN havuzundan özel <a href=\"%s\">etiketlenmiş sürümü</a> alabilirsiniz."
 
-#: community/developers.php:31
+#: community/developers.php:32
+msgid "Use the following syntax at the command line to check out a specific tagged release from SVN, for example:"
+msgstr "SVN havuzunda bulunan özel etiketlenmiş kaynak kodu sürümünü denetlemek için, komut satırına şunu yazabilirsiniz:"
+
+#: community/developers.php:37
+msgid "See our development source code page for <a href=\"../download/source#instructions\">compilation instructions</a>."
+msgstr "<a href=\"../download/source#instructions\">Derleme yönergelerini</a> kod geliştirme sayfasında bulabilirsiniz."
+
+#: community/developers.php:39
 msgid "The SVN repository may also be accessed using GUI and IDE <a href=\"http://wiki.audacityteam.org/wiki/SVN_Clients\">clients or plug-ins</a>. If using GUI or IDE tools, please use the commands indicated in the tool's documentation."
 msgstr "SVN havuzuna, birçok farklı GUI ve IDE <a href=\"http://wiki.audacityteam.org/wiki/SVN_Clients\">istemci ve eklentisi</a> kullanılarak erişelebilir. GUI ya da IDE araçları kullanıyorsanız, lütfen aracın belgelerinde belirtilen komutları kullanın."
 
-#: community/developers.php:33
+#: community/developers.php:41
 msgid "Bug Tracking"
 msgstr "Hata İzleme"
 
-#: community/developers.php:34
+#: community/developers.php:42
 msgid "The Audacity developers use bugzilla to track bugs and enhancements. To find issues to work on, please view our categorized <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Bug Lists</a>."
 msgstr "Audacity geliştiricileri tarafından, hata ayıklama ve geliştirme için <a href=\"http://www.bugzilla.org/\">Bugzilla</a> kullanılıyor. Üzerinde çalışılan konuları görmek için, gruplanmış <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Hata Listelerine</a> bakabilirsiniz."
 
-#: community/developers.php:35
+#: community/developers.php:43
 msgid "If you are a user reporting a new bug, please e-mail our <a href=\"../contact#feedback\">feedback address</a>."
 msgstr "Yeni bir hata bildirmek isteyen bir kullanıcıysanız, lütfen <a href=\"../contact#feedback\">geribildirim adresimize</a> e-posta gönderin."
 
-#: community/developers.php:37
+#: community/developers.php:45
 msgid "Submitting Patches"
 msgstr "Yamaları Gönderme"
 
-#: community/developers.php:38
+#: community/developers.php:46
 msgid "We welcome patches from developers. Please see our <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Submitting Patches</a> page on the <a href=\"http://wiki.audacityteam.org/wiki\">Wiki</a>."
 msgstr "Geliştiricilerden gelecek yamaları bekliyoruz. Bunun nasıl yapılacağı hakkındaki bilgiler için, <a href=\"http://audacityteam.org/wiki/index.php?title=Audacity_Wiki_Home_Page\">Wiki</a> sayfasındaki <a href=\"http://audacityteam.org/wiki/index.php?title=SubmittingPatches\">Yama Gönderme</a> bölümüne bakabilirsiniz."
 
@@ -6459,10 +6478,54 @@ msgid "%B %d, %Y"
 msgstr "%d %B %Y"
 
 #: include/news.inc.php:45
+msgid "Audacity 2.0.3 Released"
+msgstr "Audacity 2.0.3 Yayınlandı"
+
+#: include/news.inc.php:46
+msgid ""
+"\n"
+"<p>\n"
+"  The Audacity Team is pleased to announce the release of\n"
+"  <a href=\"/download\">Audacity 2.0.3</a>. It replaces all\n"
+"  previous versions. \n"
+"</p>\n"
+"<p>\n"
+"  Audacity 2.0.3 now uses the\n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Libsoxr\">\n"
+"  libsoxr</a> resampling library by default, instead of libresample, for higher quality and speed. \n"
+"  <a href=\"http://manual.audacityteam.org/o/man/time_tracks.html\">\n"
+"  Time Tracks</a> have been improved and bug fixed, and new effects\n"
+"  include an accessible \n"
+"  <a href=\"http://manual.audacityteam.org/o/man/adjustable_fade.html\">\n"
+"  Adjustable Fade</a>. See the\n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.3\">\n"
+"  2.0.3 Release Notes</a> for details.\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<p>\n"
+"  Audacity Ekibi olarak, <a href=\"/download\">Audacity 2.0.3</a>\n"
+"  sürümünün hazır olduğunu duyurmaktan gurur duyuyoruz.\n"
+"  Bu sürüm tüm önceki sürümlerin yerini alıyor. \n"
+"  </p>\n"
+"  <p>\n"
+"  Audacity 2.0.3 artık varsayılan olarak libresample yerine\n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Libsoxr\">\n"
+"  libsoxr</a> yeniden örnekleme kütüphanesini kullanarak daha kaliteli ve hızlı sonuç elde ediyor. \n"
+"  <a href=\"http://manual.audacityteam.org/o/man/time_tracks.html\">\n"
+"  Zaman İzleri</a> geliştirildi ve hataları ayıklandı, yeni etkilere erişilebilir\n"
+"  <a href=\"http://manual.audacityteam.org/o/man/adjustable_fade.html\">\n"
+"  Ayarlanabilir Kısma</a> eklendi.\n"
+"  Ek bilgi için: \n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.2\">\n"
+"  2.0.3 Yayın Notları</a>bölümüne bakın.\n"
+"</p>\n"
+
+#: include/news.inc.php:70
 msgid "Audacity 2.0.2 Released"
 msgstr "Audacity 2.0.2 Yayınlandı"
 
-#: include/news.inc.php:46
+#: include/news.inc.php:71
 msgid ""
 "\n"
 "<p>\n"
@@ -6490,11 +6553,11 @@ msgstr ""
 "  bölümüne bakın.\n"
 "</p>\n"
 
-#: include/news.inc.php:64
+#: include/news.inc.php:89
 msgid "Audacity 2.0.1 Released"
 msgstr "Audacity 2.0.1 Yayınlandı"
 
-#: include/news.inc.php:65
+#: include/news.inc.php:90
 msgid ""
 "\n"
 "<p>\n"
@@ -6523,11 +6586,11 @@ msgstr ""
 "  bölümlerine bakın.\n"
 "</p>\n"
 
-#: include/news.inc.php:82
+#: include/news.inc.php:107
 msgid "Audacity 2.0 Released!"
 msgstr "Audacity 2.0 yayınlandı!"
 
-#: include/news.inc.php:83
+#: include/news.inc.php:108
 msgid ""
 "\n"
 "<p>\n"
@@ -6555,11 +6618,11 @@ msgstr ""
 "  bölümlerine bakın.\n"
 "</p>\n"
 
-#: include/news.inc.php:101
+#: include/news.inc.php:126
 msgid "Audacity 1.3.14 released"
 msgstr "Audacity 1.3.14 yayınlandı"
 
-#: include/news.inc.php:102
+#: include/news.inc.php:127
 msgid ""
 "\n"
 "<p>\n"
@@ -6687,11 +6750,11 @@ msgstr ""
 "Audacity 1.3.14 sürümündeki değişiklikler</a> bölümüne bakabilirsiniz.\n"
 "</p>\n"
 
-#: include/news.inc.php:170
+#: include/news.inc.php:195
 msgid "Audacity 1.3.13 released, and LinuxQuestions.org Audio Authoring Award 2010"
 msgstr "Audacity 1.3.13 yayınlandı, ve LinuxQuestions.org Ses Yönetimi 2010 Ödülü"
 
-#: include/news.inc.php:171
+#: include/news.inc.php:196
 msgid ""
 "\n"
 "<p>\n"
@@ -6839,11 +6902,11 @@ msgstr ""
 "Yılın Ses Yönetimi Yazılımı</a> seçildi. LinuxQuestions.org etkin bir çevrimiçi Linux topluluğudur. Audacity neredeyse verilen oyların yüzde 75'ini almıştır. Tüm oy verenlere teşekkürler. \n"
 "</p> \n"
 
-#: include/news.inc.php:249
+#: include/news.inc.php:274
 msgid "Audacity 1.3.12 released, and Audacity book release from PACKT Publishing"
 msgstr "Audacity 1.3.12 yayınlandı ve PACKT Yayınevi'nden Audacity kitabı çıktı"
 
-#: include/news.inc.php:250
+#: include/news.inc.php:275
 msgid ""
 "\n"
 "<p>\n"
@@ -6988,11 +7051,11 @@ msgstr ""
 "<a href=\"http://wiki.audacityteam.org/wiki/Books_about_Audacity\">Audacity ile ilgili Kitaplar</a> sayfasında bulabilirsiniz.\n"
 "</p> \n"
 
-#: include/news.inc.php:328
+#: include/news.inc.php:353
 msgid "Audacity 1.3.11 released"
 msgstr "Audacity 1.3.11 yayınlandı"
 
-#: include/news.inc.php:329
+#: include/news.inc.php:354
 msgid ""
 "\n"
 "<p>\n"
@@ -7129,11 +7192,11 @@ msgstr ""
 "<a href=\"http://audacity.sourceforge.net/download/beta_windows#recdown\">\n"
 "</p>\n"
 
-#: include/news.inc.php:400
+#: include/news.inc.php:425
 msgid "Audacity 1.3.10 released"
 msgstr "Audacity 1.3.10 yayınlandı"
 
-#: include/news.inc.php:401
+#: include/news.inc.php:426
 msgid ""
 "\n"
 "<p>\n"
@@ -7291,11 +7354,11 @@ msgstr ""
 "<a href=\"http://audacity.sourceforge.net/download/beta_windows#recdown\">\n"
 "</p>\n"
 
-#: include/news.inc.php:483
+#: include/news.inc.php:508
 msgid "Audacity 1.3.9 released, Google Summer of Code (GSoC) 2009 completed"
 msgstr "Audacity 1.3.9 yayınlandı, Google Summer of Code (GSoC) 2009 tamamlandı"
 
-#: include/news.inc.php:484
+#: include/news.inc.php:509
 msgid ""
 "\n"
 "<p>\n"
@@ -7418,11 +7481,11 @@ msgstr ""
 "<a href=\"http://audacity.sourceforge.net/download/beta_windows#recdown\">\n"
 "</p>\n"
 
-#: include/news.inc.php:548
+#: include/news.inc.php:573
 msgid "SourceForge.net Community Choice Awards 2009"
 msgstr "SourceForge.net Topluluğunun Seçimleri Ödülleri 2009"
 
-#: include/news.inc.php:549
+#: include/news.inc.php:574
 msgid ""
 "\n"
 "<p>\n"
@@ -7446,11 +7509,11 @@ msgstr ""
 "çok teşekkürler!\n"
 "</p>\n"
 
-#: include/news.inc.php:564
+#: include/news.inc.php:589
 msgid "Audacity 1.3.8 released"
 msgstr "Audacity 1.3.8 yayınlandı"
 
-#: include/news.inc.php:565
+#: include/news.inc.php:590
 msgid ""
 "\n"
 "<p>\n"
@@ -7522,11 +7585,11 @@ msgstr ""
 "<a href=\"http://audacity.sourceforge.net/download/beta_windows#recdown\">\n"
 "</p>\n"
 
-#: include/news.inc.php:605
+#: include/news.inc.php:630
 msgid "Linux Journal and Bestcovery Awards, and new \"Audacity compact\" book"
 msgstr "Linux Journal ve Bestcovery Ödülleri ve yeni \"Audacity compact\" kitabı"
 
-#: include/news.inc.php:606
+#: include/news.inc.php:631
 msgid ""
 "\n"
 "<p>\n"
@@ -7656,11 +7719,11 @@ msgstr ""
 "</tr>\n"
 "</table>\n"
 
-#: include/news.inc.php:674
+#: include/news.inc.php:699
 msgid "Audacity is mentoring two Google Summer of Code (GSoC) 2009 students"
 msgstr "Audacity iki Google Summer of Code (GSoC) 2009 öğrencisine yol gösteriyor"
 
-#: include/news.inc.php:675
+#: include/news.inc.php:700
 msgid ""
 "\n"
 "<p>\n"
@@ -7702,11 +7765,11 @@ msgstr ""
 "\tOnaylanan öğrencileri tebrik eder, Audacity için başvuranlara teşekkür ederiz!\n"
 "</p>\n"
 
-#: include/news.inc.php:699
+#: include/news.inc.php:724
 msgid "Audacity 1.3.7 released"
 msgstr "Audacity 1.3.7 yayınlandı"
 
-#: include/news.inc.php:700
+#: include/news.inc.php:725
 msgid ""
 "\n"
 "<p>\n"
@@ -7832,11 +7895,11 @@ msgstr ""
 "</p>\n"
 "<br>\n"
 
-#: include/news.inc.php:766
+#: include/news.inc.php:791
 msgid "Audacity 1.3.6 released"
 msgstr "Audacity 1.3.6 yayınlandı"
 
-#: include/news.inc.php:767
+#: include/news.inc.php:792
 msgid ""
 "\n"
 "<p>\n"
@@ -7926,11 +7989,11 @@ msgstr ""
 "Audacity 1.2.6 ve 1.3.6 sürümlerini aynı anda kurup kullanabilirsiniz.\n"
 "</p>\n"
 
-#: include/news.inc.php:815
+#: include/news.inc.php:840
 msgid "German Audacity Book released"
 msgstr "Almanca Audacity kitabı yayınlandı"
 
-#: include/news.inc.php:816
+#: include/news.inc.php:841
 msgid ""
 "\n"
 "<p>\n"
@@ -8010,11 +8073,11 @@ msgstr ""
 "</table>\n"
 "</p>\n"
 
-#: include/news.inc.php:859
+#: include/news.inc.php:884
 msgid "Audacity shines in Google Summer of Code (GSoC) 2008"
 msgstr "Audacity Google Summer of Code (GSoC) 2008 Etkinliklerinde Parlıyor"
 
-#: include/news.inc.php:860
+#: include/news.inc.php:885
 msgid ""
 "\n"
 "<p>\n"
@@ -8110,11 +8173,11 @@ msgstr ""
 "\"önerilecek en iyi açık kaynaklı ürünler\" arasına seçildi.  \n"
 "</p>    \n"
 
-#: include/news.inc.php:911
+#: include/news.inc.php:936
 msgid "Audacity in PC World 100 Best Products of 2008"
 msgstr "Audacity PC World 2008 Yılının En iyi 100 Ürünü Arasında"
 
-#: include/news.inc.php:912
+#: include/news.inc.php:937
 msgid ""
 "\n"
 "<p>\n"
@@ -8192,11 +8255,11 @@ msgstr ""
 "en iyi özgür yazılım olarak yer aldı.\n"
 "</p>\n"
 
-#: include/news.inc.php:954
+#: include/news.inc.php:979
 msgid "Audacity 1.3.5 Released"
 msgstr "Audacity 1.3.5 yayınlandı"
 
-#: include/news.inc.php:955
+#: include/news.inc.php:980
 msgid ""
 "\n"
 "<p>\n"
@@ -8372,11 +8435,11 @@ msgstr ""
 "bölümüne bakın (yazılım paketindeki README.txt dosyasına da bakabilirsiniz).\n"
 "</p>\n"
 
-#: include/news.inc.php:1045
+#: include/news.inc.php:1070
 msgid "Audacity is mentoring five Google Summer of Code (GSoC) 2008 students"
 msgstr "Audacity beş Google Summer of Code (GSoC) 2008 öğrencisine yol gösteriyor"
 
-#: include/news.inc.php:1046
+#: include/news.inc.php:1071
 msgid ""
 "\n"
 "<p>\n"
@@ -8410,11 +8473,11 @@ msgstr ""
 "\tOnaylanan beş öğrenciyi kutlar, Audacity projesine ilgi gösteren herkese teşekkür ederiz!\n"
 "</p>\n"
 
-#: include/news.inc.php:1066
+#: include/news.inc.php:1091
 msgid "Audacity is a mentoring organization Google Summer of Code (GSoC) 2008 "
 msgstr "Audacity Google Summer of Code (GSoC) 2008 projesinde yol gösterici bir organizasyon"
 
-#: include/news.inc.php:1067
+#: include/news.inc.php:1092
 msgid ""
 "\n"
 "<p>\n"
@@ -8448,11 +8511,11 @@ msgstr ""
 "\tİlginiz için teşekkürler!\n"
 "</p>\n"
 
-#: include/news.inc.php:1087
+#: include/news.inc.php:1112
 msgid "Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "
 msgstr "Öğrencilere çağrı! <em>ŞİMDİ</em> Google Summer of Code (GSoC) 2008 kapsamında Audaciyt projesine başvurun"
 
-#: include/news.inc.php:1088
+#: include/news.inc.php:1113
 msgid ""
 "\n"
 "<p>\n"
@@ -8530,11 +8593,11 @@ msgstr ""
 "lütfen <a href=\"http://audacity.sourceforge.net/\">web sitemize</a> göz atmalarını isteyin.\n"
 "</p>\n"
 
-#: include/news.inc.php:1130
+#: include/news.inc.php:1155
 msgid "Audacity and Google Summer of Code (GSoC) 2008 "
 msgstr "Audacity ve Google Summer of Code (GSoC) 2008 "
 
-#: include/news.inc.php:1131
+#: include/news.inc.php:1156
 msgid ""
 "\n"
 "<p>\n"
@@ -8591,11 +8654,11 @@ msgstr ""
 "lütfen <a href=\"http://audacity.sourceforge.net/\">web sitemize</a> gözatmalarını isteyin.\n"
 "</p>\n"
 
-#: include/news.inc.php:1162
+#: include/news.inc.php:1187
 msgid "LinuxQuestions.org Audio Authoring Award 2007"
 msgstr "LinuxQuestions.org Ses Yönetimi Ödülü 2007"
 
-#: include/news.inc.php:1163
+#: include/news.inc.php:1188
 #, php-format
 msgid ""
 "\n"
@@ -8612,11 +8675,11 @@ msgstr ""
 "Yılın Ses Yönetimi Yazılımı</a> seçildi. LinuxQuestions.org etkin bir çevrimiçi Linux topluluğudur. Audacity verilen 444 oyun  70% oranını aldı. Oy veren herkese teşekkürler.\n"
 "</p>\n"
 
-#: include/news.inc.php:1174
+#: include/news.inc.php:1199
 msgid "Audacity 1.3.4 Released"
 msgstr "Audacity 1.3.4 yayınlandı"
 
-#: include/news.inc.php:1175
+#: include/news.inc.php:1200
 msgid ""
 "\n"
 "<p>\n"
@@ -8684,11 +8747,11 @@ msgstr ""
 "<a href=\"http://www.informit.com/store/product.aspx?isbn=0132366576&rl=1\">Audacity ile Podcast İşlemleri</a> kitabına bir göz atın.\n"
 "</p>\n"
 
-#: include/news.inc.php:1212
+#: include/news.inc.php:1237
 msgid "SourceForge Community Choice Awards 2007"
 msgstr "SourceForge Topluluğunun Seçimi Ödülü 2007"
 
-#: include/news.inc.php:1213
+#: include/news.inc.php:1238
 msgid ""
 "\n"
 "<p>\n"
@@ -8712,11 +8775,11 @@ msgstr ""
 " teşekkürlerimizi sunarız!\n"
 "</p>\n"
 
-#: include/news.inc.php:1228
+#: include/news.inc.php:1253
 msgid "Audacity 1.3.3 Released"
 msgstr "Audacity 1.3.3 yayınlandı"
 
-#: include/news.inc.php:1229
+#: include/news.inc.php:1254
 msgid ""
 "\n"
 "<p>\n"
@@ -8857,11 +8920,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>\n"
 
-#: include/news.inc.php:1302
+#: include/news.inc.php:1327
 msgid "Audacity 1.3.2 and 1.2.5 Released"
 msgstr "Audacity 1.3.2 ve 1.2.5 yayınlandı"
 
-#: include/news.inc.php:1303
+#: include/news.inc.php:1328
 msgid ""
 "<p>\n"
 "The Audacity developers have been busy with many new features over\n"
@@ -8983,11 +9046,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>"
 
-#: include/news.inc.php:1367
+#: include/news.inc.php:1392
 msgid "The Audacity Store Is Open"
 msgstr "Audacity Market Açıldı"
 
-#: include/news.inc.php:1368
+#: include/news.inc.php:1393
 msgid ""
 "\n"
 "\t<p>You are invited to try out the new <a href=\"http://audacitystore.com/\">Audacity Store</a>, which features\n"
@@ -9069,11 +9132,11 @@ msgstr ""
 "\t</p>\n"
 "\t"
 
-#: include/news.inc.php:1412
+#: include/news.inc.php:1437
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr "Audacity 1.3.0 ve 1.2.4 yayınlandı"
 
-#: include/news.inc.php:1413
+#: include/news.inc.php:1438
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple of bug fixes and minor improvements and is recommended for all users.  Audacity 1.3.0 is a beta release that contains hundreds of <a href=\"/download/features-1.3-a\">new features</a>, but this version is unfinished and unstable, and is recommended primarily for advanced users.  You can install both Audacity 1.2 and 1.3 simultaneously.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">1.2.4 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.4, or see <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for information about the new beta version.</p>\n"
@@ -9087,11 +9150,11 @@ msgstr ""
 "<a href=\"http://audacityteam.org/forum/\">Audacity Forumudur</a>.\n"
 "</p>"
 
-#: include/news.inc.php:1423
+#: include/news.inc.php:1448
 msgid "Audacity 1.2.3 Released"
 msgstr "Audacity 1.2.3 yayınlandı"
 
-#: include/news.inc.php:1424
+#: include/news.inc.php:1449
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
@@ -9124,54 +9187,45 @@ msgid "Audacity&reg; is free, open source, cross-platform software for recording
 msgstr "Audacity&reg; özgürce ve ücretsiz olarak dağıtılan, açık kaynaklı, farklı platformlarda çalışabilen bir ses düzenleme ve kaydetme yazılımıdır."
 
 #: index.php:66
-msgid "Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. <a href=\"about/\">Learn more about Audacity...</a> Also check our <a href=\"http://wiki.audacityteam.org/\">Wiki</a> and <a href=\"http://forum.audacityteam.org/\">Forum</a> for more information."
-msgstr "Audacity Windows&reg;, Mac&reg;, GNU/Linux&reg; ve diğer işletim sistemleriyle uyumludur. <a href=\"about/\">Buradan Audacity hakkında bilgi edinebilirsiniz</a>... Ek bilgi için, <a href=\"http://wiki.audacityteam.org/\">Wiki</a> sayfasına ve <a href=\"http://audacityteam.org/forum/\">Forum</a> bölümlerine bakabilirsiniz."
+msgid "Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. Check our <a href=\"about/features\">feature list</a>, <a href=\"http://wiki.audacityteam.org/\">Wiki</a> and <a href=\"http://forum.audacityteam.org/\">Forum</a> for more information."
+msgstr "Audacity, Windows&reg;, Mac&reg;, GNU/Linux&reg; ve diğer işletim sistemleriyle kullanılabilir. Ayrıntılı bilgi için, <a href=\"about/features\">Audacity özelliklerine</a>, <a href=\"http://wiki.audacityteam.org/\">Wiki</a> ve <a href=\"http://forum.audacityteam.org/\">Forum</a> bölümlerine bakabilirsiniz."
 
-#: index.php:68
-#, php-format
-msgid "The current release of Audacity is <a href=\"download/\">%s"
-msgstr "Son Audacity sürümü <a href=\"download/\">%s"
-
-#: index.php:68
-msgid "It replaces all previous 1.2, 1.3 and 2.x versions. See <a href=\"download/features-2.0\">New Features</a> for more information."
-msgstr "Bu sürüm, tüm önceki 1.2, 1.3 ve 2.x sürümlerinin yerini alıyor. Ek bilgi için: <a href=\"download/features-2.0\">Yeni Özellikler</a> bölümüne bakın.  "
-
-#: index.php:73
+#: index.php:71
 #, php-format
 msgid "<h3>Download Audacity %s</h3></a>%s %s"
 msgstr "<h3>Audacity %s sürümünü indirin</h3></a>%s %s"
 
-#: index.php:80
+#: index.php:78
 #, php-format
 msgid "%s\">Other Audacity Downloads %s</a></p>"
 msgstr "%s\">Diğer Audacity İndirmeleri %s</a></p>"
 
-#: index.php:87
+#: index.php:85
 msgid "All Audacity Downloads"
 msgstr "Tüm Audacity İndirmeleri"
 
-#: index.php:92
+#: index.php:90
 #, php-format
 msgid "Download Audacity %s %s"
 msgstr "Audacity %s %s sürümünü indirin"
 
-#: index.php:122
+#: index.php:120
 msgid "Get Notified of New Versions"
 msgstr "Yeni Sürümlerden Haberdar Olun"
 
-#: index.php:134
+#: index.php:132
 msgid "Email address"
 msgstr "E-posta adresi"
 
-#: index.php:135
+#: index.php:133
 msgid "Add"
 msgstr "Ekle"
 
-#: index.php:136
+#: index.php:134
 msgid "Remove"
 msgstr "Kaldır"
 
-#: index.php:162
+#: index.php:160
 msgid "Audacity Team's Advertisements Policy"
 msgstr "Audacity Ekibi Reklam Politikası"
 
@@ -9232,6 +9286,17 @@ msgstr "Katkıda Bulunmanın Diğer Yolları"
 #: donate/index.php:77
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr "Bağış yapmanın yanında, <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">zaman ayırarak</a> bize <a href=\"../community/developers\">yazılım geliştirme</a>, <a href=\"../contact#feedback\">deneme</a>, <a href=\"http://manual.audacityteam.org/\">belge hazırlama</a>, <a href=\"../community/translation\">çeviri</a> ya da <a href=\"http://forum.audacityteam.org/\">Forum</a> içinde soruları yanıtlama gibi konularda yardımcı olabilirsiniz. Ayrıca en basit şekilde öneri ve isteklerinizi ileterek, yazılımın geliştirilmesini yönlendirebilir, Audacity hakkında tanıdıklarınıza bilgi vererek tanınmasını sağlayabilirsiniz. Audacity projesini desteklediğiniz için teşekkür ederiz."
+
+#~ msgid "The current release of Audacity is <a href=\"download/\">%s"
+#~ msgstr "Son Audacity sürümü <a href=\"download/\">%s"
+
+#~ msgid ""
+#~ "It replaces all previous 1.2, 1.3 and 2.x versions. See <a href="
+#~ "\"download/features-2.0\">New Features</a> for more information."
+#~ msgstr ""
+#~ "Bu sürüm, tüm önceki 1.2, 1.3 ve 2.x sürümlerinin yerini alıyor. Ek bilgi "
+#~ "için: <a href=\"download/features-2.0\">Yeni Özellikler</a> bölümüne "
+#~ "bakın.  "
 
 #~ msgid "2000/XP/Vista/7"
 #~ msgstr "2000/XP/Vista/7"
