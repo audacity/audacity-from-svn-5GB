@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2007 - 12 Gale Andrews, Vaughan Johnson
+ * Copyright 2007 - 13 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -74,7 +74,7 @@
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
 <p>
-  <?=_("Windows 95 and NT are not supported. Windows Vista and 7 are supported in <a href=\"windows\">the latest version of Audacity</a>.")?>
+  <?=_("Windows 95 and NT are not supported. Windows Vista, Windows 7 and Windows 8 require <a href=\"windows\">the latest version of Audacity</a>.")?>
 </p>
 
 <p>
@@ -101,7 +101,7 @@
 
 <p>&nbsp;</p>
 <p>
-  <?=_("Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista or 7 running on machines of substantially higher specification than the minimum stated above.")?>
+  <?=_("Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP running on a machine of substantially higher specification than the minimum stated above.")?>
 </p>
 
 
