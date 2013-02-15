@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004-12 Matt Brubeck, Gale Andrews
+ * Copyright 2004-13 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -11,13 +11,6 @@
 ?>
 
 <h2><?=$pageTitle?></h2>
-<h3><?=_("Other Things Named “Audacity” (not related to us)")?></h3>
-<ul>
-  <li><?=_('<a href="http://audacityaudio.com/index.htm">Audacity DVR</a> is a digital voice recorder for smartphones.')?></li>
-  <li><?=_('<a href="http://www.audacity.org">Audacity.org</a> is a research company for construction industry professionals.')?></li>
-  <li><?=_('<a href="http://www.audacity.com/">Audacity, Inc.</a> provides software consulting services for businesses in Washington, Arizona and California.')?></li>
-  <li><?=_('Two different rock bands from <a href="http://www.myspace.com/audacityrocks">Finland</a> and <a href="http://www.unsigned.com/audacity">England</a> are named "Audacity".')?></li>
-</ul>
 
 <h3><?=_("Other Open Source Audio Software")?></h3>
 <p><?=_('<a href="http://ardour.org/">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux and Mac OS X.')?></p>
