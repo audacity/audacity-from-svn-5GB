@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity website translation 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-31 20:07+0000\n"
-"PO-Revision-Date: 2012-12-06 03:37-0000\n"
+"POT-Creation-Date: 2013-01-30 13:34+0000\n"
+"PO-Revision-Date: 2013-02-17 21:23-0000\n"
 "Last-Translator: Atsushi YOSHIDA\n"
 "Language-Team: Atsushi YOSHIDA\n"
 "MIME-Version: 1.0\n"
@@ -173,7 +173,7 @@ msgid "Developers"
 msgstr "開発者"
 
 #: main.inc.php:64
-#: about/credits.php:87
+#: about/credits.php:88
 #: community/translation.php:9
 #: community/index.php:24
 msgid "Translators"
@@ -1481,7 +1481,7 @@ msgstr "これらはWindows 98/ME/2000/XP向けのAudacityの古いバージョ�
 #: download/windows.php:38
 #: download/windows.php:109
 #: download/linux.php:33
-#: download/source.php:42
+#: download/source.php:44
 #: download/beta_windows.php:57
 #: download/mac.php:38
 #: download/mac.php:101
@@ -1623,7 +1623,7 @@ msgstr "その他のダウンロードリンク"
 #: download/legacy_windows.php:67
 #: download/common.inc.php:17
 #: download/windows.php:84
-#: download/source.php:35
+#: download/source.php:37
 #: download/mac.php:80
 #: download/legacy_mac.php:53
 #, php-format
@@ -1633,7 +1633,7 @@ msgstr "もしうまくダウンロードできない場合や、以前のバー
 #: download/legacy_windows.php:69
 #: download/common.inc.php:19
 #: download/windows.php:88
-#: download/source.php:36
+#: download/source.php:38
 #: download/mac.php:84
 #: download/legacy_mac.php:55
 #, php-format
@@ -1643,7 +1643,7 @@ msgstr "<a href=\"%s\">SourceForge</a>:以前のバージョンは\"Name\"の下
 #: download/legacy_windows.php:70
 #: download/common.inc.php:20
 #: download/windows.php:91
-#: download/source.php:37
+#: download/source.php:39
 #: download/mac.php:87
 #: download/legacy_mac.php:56
 #, php-format
@@ -1828,19 +1828,19 @@ msgstr "Audacityの動作には最低64 MB RAMおよび300 MHzプロセッサが
 
 #: download/legacy_source.php:36
 #: download/beta_source.php:42
-#: download/source.php:44
+#: download/source.php:46
 msgid "or"
 msgstr "または"
 
 #: download/legacy_source.php:40
 #: download/beta_source.php:46
-#: download/source.php:48
+#: download/source.php:50
 msgid "How to Compile Audacity"
 msgstr "Audacityをコンパイルするには"
 
 #: download/legacy_source.php:42
 #: download/beta_source.php:48
-#: download/source.php:50
+#: download/source.php:52
 msgid "Dependencies"
 msgstr "従属物"
 
@@ -1855,50 +1855,50 @@ msgstr "<b>必要に応じて</b>次のライブラリをインストールし�
 
 #: download/legacy_source.php:50
 #: download/beta_source.php:56
-#: download/source.php:53
+#: download/source.php:57
 msgid "If you install libraries using a package management system like Apt or RPM, you need to install the \"dev\" (development) packages for each library."
 msgstr "AptやRPMなどのパッケージ管理システムを使ってライブラリをインストールする場合には、それぞれのライブラリに \"dev\" (development) パッケージをインストールする必要があります。"
 
 #: download/legacy_source.php:52
 #: download/beta_source.php:58
-#: download/source.php:55
+#: download/source.php:59
 msgid "Compilation"
 msgstr "コンパイル"
 
 #: download/legacy_source.php:53
 #: download/beta_source.php:59
-#: download/source.php:56
+#: download/source.php:60
 msgid "To compile Audacity, run the following command in the Audacity source directory:"
 msgstr "Audacityをコンパイルするには、Audacity sourceディレクトリにて次のコマンドを実行してください。"
 
 #: download/legacy_source.php:57
 #: download/beta_source.php:63
-#: download/source.php:60
+#: download/source.php:64
 msgid "You can type <i>./configure --help</i> to see a list of compilation options. After Audacity is compiled, run <i>make install</i> as root to install it."
 msgstr "コンパイルのオプションを見るには<i>./configure --help</i>を入力してください。Audacityをコンパイルしたら、rootとして<i>make install</i>コマンドにてインストールしてください。"
 
 #: download/legacy_source.php:59
 #: download/beta_source.php:65
-#: download/source.php:62
+#: download/source.php:66
 msgid "Further Help"
 msgstr "さらにヘルプが必要な場合"
 
 #: download/legacy_source.php:61
 #: download/beta_source.php:67
-#: download/source.php:64
+#: download/source.php:68
 msgid "On Windows, see the file \"compile.txt\" inside the \"Win\" folder in the source code. For OS X, see \"compile.txt\" inside the \"Mac\" folder in the code."
 msgstr "Windowsではソースコードに含まれる\"Win\" フォルダー内の\"compile.txt\"をご覧ください。 OS Xではソースコードに含まれる\"Mac\"フォルダ内の\"compile.txt\"をご覧ください。"
 
 #: download/legacy_source.php:62
 #: download/beta_source.php:68
-#: download/source.php:65
+#: download/source.php:69
 #, php-format
 msgid "%sSee our guides to compiling Audacity for %sWindows%s, %sMac%s and %sGNU/Linux%s on the %sWiki%s.%s"
 msgstr "%s%sWindows%s、%sMac%sおよび%sGNU/Linux%s用Audacityのコンパイルのガイドは%sWiki%sに掲載してありますのでご覧ください。%s"
 
 #: download/legacy_source.php:73
 #: download/beta_source.php:79
-#: download/source.php:76
+#: download/source.php:80
 #, php-format
 msgid "%sIf you are still having difficulties, we want to help! Please ask on the %sCompiling Audacity%s board on our %sForum%s.%s"
 msgstr "%sそれでも解決しない場合、私たちがお手伝いいたします! ぜひ %sCompiling Audacity%s ボード （ %sForum%s内）にお問い合わせください。%s "
@@ -4129,7 +4129,7 @@ msgid "On Mac OS X only, Audacity loads <a href=\"http://manual.audacityteam.org
 msgstr "Mac OS X では、Audacityはシステムのプラグインディレクトリから<a href=\"http://manual.audacityteam.org/help/manual/man/effect_menu.html#audio_unit\">Audio Unit</a> プラグインを自動的にロードします。Audacityは\"plug-ins\" フォルダー内のAudio Unitsを認識しません。"
 
 #: download/plugins.php:42
-#: about/credits.php:137
+#: about/credits.php:138
 msgid "Libraries"
 msgstr "ライブラリ"
 
@@ -4332,8 +4332,8 @@ msgstr "<a href=\"%s\">Audacity %s リリース (source tarball)</a> (%s ファ�
 
 #: download/source.php:26
 #, php-format
-msgid "standard source tarball. Assumes your system has necessary dependencies/libraries installed (see below)."
-msgstr "標準的なソースtarballです。お使いのシステムには必要なdependency/ライブラリがイントールされていることを前提としています（下記参照のこと）。"
+msgid "standard source tarball, primarily for GNU/Linux. Assumes your system has necessary dependencies/libraries installed (see below)."
+msgstr "GNU/Linux用の標準的なソースtarballです。お使いのシステムには必要なdependency/ライブラリがイントールされていることを前提としています（下記参照のこと）。"
 
 #: download/source.php:33
 #, php-format
@@ -4342,17 +4342,27 @@ msgstr "これはフルのソースtarballです。WindowsやMacマシンでAuda
 
 #: download/source.php:34
 #, php-format
-msgid "<a href=\"%s\">Latest SVN Development Code</a>"
-msgstr "<a href=\"%s\">最新のSVN開発コード</a>。"
+msgid "<a href=\"%s\">SVN Development Code</a>&nbsp;"
+msgstr "<a href=\"%s\">最新のSVN開発コード</a>&nbsp;"
 
-#: download/source.php:44
+#: download/source.php:35
+#, php-format
+msgid "Check out the latest Audacity SVN development code. You can also check out a specific tagged release from SVN, suitable for a Windows, Mac or other system that lacks necessary dependencies to compile the standard source tarball."
+msgstr "最新のAudacityのSVN開発コードをチェックアウトしてください。またSVNからは特定にタグ付けされたWindows、Mac、あるいはその他システム用のリリースをチェックアウトすることもできますが、それらは標準ソースTarballでコンパイルするには必要なデペンデンシーが不足しているかもしれません。"
+
+#: download/source.php:46
 msgid "See operating system support for"
 msgstr "オペレーティングシステムごとの説明をご覧ください。"
 
-#: download/source.php:51
+#: download/source.php:53
 #, php-format
 msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is required. Audacity %s requires wxGTK 2.8.12. The <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a> library is also required and is included in Audacity obtained from <a href=\"/community/developers#svn\">SVN</a>. Installation of other libraries is <a href=\"http://wiki.audacityteam.org/wiki/Developing_On_Linux#Optional_Packages_and_Features\">optional</a>."
 msgstr "<a href=\"http://wxwidgets.org\">wxWidgets</a> ライブラリが必要です。Audacity %s にはwxGTK 2.8.12が必要です。<a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a> ライブラリも必要で、これはAudacityを<a href=\"/community/developers#svn\">SVN</a>取得すれば含まれています。その他のライブラリのインストールは<a href=\"http://wiki.audacityteam.org/wiki/Developing_On_Linux#Optional_Packages_and_Features\">オプション</a>です。"
+
+#: download/source.php:55
+#, php-format
+msgid "<a href=\"%s\">CMake</a> is required to build <a href=\"%s\">libsoxr</a> which is now the Audacity default resampling library."
+msgstr "<a href=\"%s\">CMake</a> が <a href=\"%s\">libsoxr</a> のビルドに必要です。これはAudacityのデフォルトのリサンプリングライブラリです。"
 
 #: download/beta_windows.php:13
 msgid "Windows Beta"
@@ -5183,7 +5193,7 @@ msgid ""
 "  <li>Device Toolbar manages multiple input and output devices.</li>  \n"
 "  <li>Timer Record and Sound Activated Recording features.</li>\n"
 "  <li>Dub over existing tracks to create <a href=\"http://manual.audacityteam.org/help/manual/man/faq.html#overdub\">multi-track recordings</a>.</li>\n"
-"  <li>Record at high sample rates in excess of 192,000 Hz (subject to appropriate hardware).</li>\n"
+"  <li>Record at sample rates up to 192,000 Hz (subject to appropriate hardware). Up to 384,000 Hz is supported for appropriate high-resolution devices, except when using Windows DirectSound host.</li>\n"
 "  <li>Record <a href=\"http://wiki.audacityteam.org/wiki/Multichannel_Recording\">multiple channels</a> at once (subject to appropriate hardware).</li>\n"
 "  <li>Level meters can monitor volume levels before, during and after recording. Clipping can be displayed in the waveform or in a label track.</li>\n"
 "</ul>"
@@ -5195,7 +5205,7 @@ msgstr ""
 "  <li>デバイスツールバーによる複数の入出力デバイスの管理</li>  \n"
 "  <li>タイマー録音および音声起動録音機能</li>\n"
 "  <li>既存トラック上へのダビングによる<a href=\"http://manual.audacityteam.org/help/manual/man/faq.html#overdub\">マルチトラック録音</a>.</li>\n"
-"  <li>192,000 Hzを超える高サンプルレート (適切なハードウェアが必要)</li>\n"
+"  <li>192,000 Hzを超える高サンプルレート (適切なハードウェアが必要)。 適切な高精度デバイスを使うことで最高384,000 Hzのサンプルレートをサポート（Windows DirectSoundホスト使用時を除く）</li>\n"
 "  <li><a href=\"http://wiki.audacityteam.org/wiki/Multichannel_Recording\">マルチチャンネル</a>録音 (適切なハードウェアが必要).</li>\n"
 "  <li>録音の前、途中、後のボリュームレベルを表示するレベルメーターと波形またはラベルトラックに表示可能なクリッピング</li>\n"
 "</ul>"
@@ -5206,7 +5216,7 @@ msgid ""
 "<p>Import sound files, edit them, and combine them with other files or new recordings.  Export your recordings in many different file formats, including <a href=\"http://manual.audacityteam.org/help/manual/man/export_multiple.html\">multiple files at once</a>.</p>\n"
 "<ul>\n"
 "  <li>Import and export <b>WAV</b>, <b>AIFF</b>, <b>AU</b>, <b>FLAC</b> and <a href=\"http://vorbis.com\">Ogg Vorbis</a> files.</li>\n"
-"  <li>Fast \"On-Demand\" import of WAV or AIFF files (letting you start work with the files almost immediately) if read directly from source. \"On-Demand\" import of other file formats is available with the optional <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg library</a>.</li>\n"
+"  <li>Fast \"On-Demand\" import of WAV or AIFF files (letting you start work with the files almost immediately) if read directly from source.</li>\n"
 "  <li>Import and export all formats supported by <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a> such as <b>GSM 6.10</b>, <b>32-bit and 64-bit float WAV</b> and <b>U/A-Law</b>.</li>\n"
 "  <li>Import MPEG audio (including <b>MP2</b> and <b>MP3</b> files) using <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
 "  <li>Import raw (headerless) audio files using the \"Import Raw\" command.</li>\n"
@@ -5219,10 +5229,10 @@ msgstr ""
 "<p>サウンドファイルの取り込み、編集、他のファイルあるいは新しい録音との合体。 さまざまなファイル形式で、また<a href=\"http://manual.audacityteam.org/help/manual/man/export_multiple.html\">複数ファイルを一度に操作</a>できる書き出し</p>\n"
 "<ul>\n"
 "  <li><b>WAV</b>, <b>AIFF</b>, <b>AU</b>, <b>FLAC</b>および <a href=\"http://vorbis.com\">Ogg Vorbis</a> ファイルの取り込みおよび書き出し</li>\n"
-"  <li>ソースから直接読み込む場合のWAVまたはAIFFファイルの高速な \"オンデマンド\" 取り込み 。オプションの<a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpegライブラリ</a>を使えば他のファイル形式の\"オンデマンド\" 取り込みも可能です。 .</li>\n"
+"  <li>ソースから直接読み込む場合のWAVまたはAIFFファイルの高速な \"オンデマンド\" 取り込み 。 (それらの複数のファイルを使ってすぐに作業開始できます。)</li>\n"
 "  <li><a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>でサポートされるすべての形式の取り込みおよび書き出し、たとえば<b>GSM 6.10</b>, <b>32-bit and 64-bit float WAV</b> および <b>U/A-Law</b>.</li>\n"
 "  <li><a href=\"http://www.underbit.com/products/mad/\">libmad</a>によるMPEGオーディオの取り込み (<b>MP2</b> および <b>MP3</b>を含む) </li>\n"
-"  <li>\"ローRaw)データの取り込み\" コマンドによるロー（ヘッダーレス）オーディオファイルの取り込み</li>\n"
+"  <li>\"ロー(Raw)データの取り込み\" コマンドによるロー（ヘッダーレス）オーディオファイルの取り込み</li>\n"
 "  <li><a href=\"http://manual.audacityteam.org/help/manual/man/burning_music_files_to_a_cd.html\">オーディオCD</a>書き込みに適したWAVまたはAIFFファイルの作成</li>\n"
 "  <li>オプションの<a href=http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#lame\">LAME encoder library</a>を使用したMP3ファイルの書き出し</li>\n"
 "  <li>オプションの<a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg library</a>を使用した<b>AC3</b>, <b>M4A/M4R (AAC)</b> および<b>WMA</b>ファイルの書き出しと取り込み (ビデオファイルからのオーディオ取り出しもサポートしています)</li>\n"
@@ -5293,7 +5303,7 @@ msgid ""
 "  <li>Change the pitch without altering the tempo (or vice-versa).</li>\n"
 "  <li>Remove static, hiss, hum or other constant background noises.</li>\n"
 "  <li>Alter frequencies with Equalization, Bass Boost, High/Low Pass and Notch Filter effects.</li>\n"
-"  <li>Adjust volume with Compressor, Amplify, Normalize and Fade In/Out effects.\n"
+"  <li>Adjust volume with Compressor, Amplify, Normalize, Fade In/Fade Out and Adjustable Fade effects.\n"
 "  <li><a href=\"http://manual.audacityteam.org/help/manual/man/vocal_remover.html\">Remove Vocals</a> from suitable stereo tracks.\n"
 "  <li>Create voice-overs for podcasts or DJ sets using <a href=\"http://manual.audacityteam.org/help/manual/man/auto_duck.html\">Auto Duck</a> effect.\n"
 "  <li>Other built-in effects include:\n"
@@ -5325,7 +5335,7 @@ msgstr ""
 "      <li>リバース</li>\n"
 "      <li>Truncate Silence</li>\n"
 "  </ul>\n"
-"  <li> <a href=\"http://manual.audacityteam.org/help/manual/man/batch_processing.html\">バッチ処理</a>モードにて エフェクトの\"Chains\" が可能。 \n"
+"  <li> <a href=\"http://manual.audacityteam.org/help/manual/man/batch_processing.html\">バッチ処理</a>モードにて 複数エフェクトまたは複数ファイルの\"Chains\" が可能。 \n"
 "</ul>"
 
 #: about/features.php:86
@@ -5406,7 +5416,7 @@ msgstr "品質保証"
 
 #: about/credits.php:27
 #: about/credits.php:30
-#: about/credits.php:31
+#: about/credits.php:33
 #: about/credits.php:34
 #: about/credits.php:37
 #: about/credits.php:51
@@ -5414,35 +5424,36 @@ msgstr "品質保証"
 #: about/credits.php:53
 #: about/credits.php:54
 #: about/credits.php:55
-#: about/credits.php:57
+#: about/credits.php:56
 #: about/credits.php:58
 #: about/credits.php:59
-#: about/credits.php:66
-#: about/credits.php:68
+#: about/credits.php:60
+#: about/credits.php:67
 #: about/credits.php:69
 #: about/credits.php:70
 #: about/credits.php:71
 #: about/credits.php:72
 #: about/credits.php:73
-#: about/credits.php:75
+#: about/credits.php:74
 #: about/credits.php:76
 #: about/credits.php:77
 #: about/credits.php:78
 #: about/credits.php:79
-#: about/credits.php:81
+#: about/credits.php:80
 #: about/credits.php:82
 #: about/credits.php:83
 #: about/credits.php:84
+#: about/credits.php:85
 msgid "developer"
 msgstr "開発者"
 
 #: about/credits.php:28
-#: about/credits.php:33
+#: about/credits.php:32
 #: about/credits.php:35
 #: about/credits.php:36
 #: about/credits.php:38
-#: about/credits.php:60
 #: about/credits.php:61
+#: about/credits.php:62
 msgid "documentation and support"
 msgstr "ドキュメンテーションとサポート"
 
@@ -5454,8 +5465,8 @@ msgstr "フランス語"
 msgid "system administration"
 msgstr "システム管理"
 
-#: about/credits.php:32
-#: about/credits.php:56
+#: about/credits.php:31
+#: about/credits.php:57
 msgid "developer and co-founder of Audacity"
 msgstr "Audacityの開発者と創始者"
 
@@ -5467,35 +5478,35 @@ msgstr "技術リーダーシップカウンシル"
 msgid "Emeritus: distinguished Audacity Team members, not currently active"
 msgstr "名誉チームメンバー：顕著な功績のあったAudacityチームメンバー。現在は活動休止中"
 
-#: about/credits.php:64
+#: about/credits.php:65
 msgid "Contributors"
 msgstr "貢献者"
 
-#: about/credits.php:67
+#: about/credits.php:68
 msgid "accessibility advisor"
 msgstr "アクセシビリティアドバイザ"
 
-#: about/credits.php:74
+#: about/credits.php:75
 msgid "graphic artist"
 msgstr "グラフィックアーティスト"
 
-#: about/credits.php:80
+#: about/credits.php:81
 msgid "Nyquist plug-ins"
 msgstr "Nyquistプラグイン"
 
-#: about/credits.php:138
+#: about/credits.php:139
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacityは下記のプロジェクトのソースコードを用いています。"
 
-#: about/credits.php:158
+#: about/credits.php:160
 msgid "Thanks"
 msgstr "感謝"
 
-#: about/credits.php:159
+#: about/credits.php:161
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "他にも私たちが感謝したい人々や組織が多くあります。これらの多くはコードやパッチやフィードバックやお金や時間やその他諸々の点においてプロジェクトに貢献してきました。ほかにも、これらの作業全体を可能にするツールを作っていただいた人もいます。"
 
-#: about/credits.php:184
+#: about/credits.php:186
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(もし誰か忘れている人がいたら私たちに知らせてください！)"
 
@@ -5691,7 +5702,7 @@ msgstr ""
 "私たちは、<a href=\"http://audacityteam.org/sponsor.php\">Audacity開発へのスポンサー</a>に興味のあるいくつかの会社やグループからも、ぜひ手紙をもらいたいと思っています。"
 
 #: about/news.php:21
-#: index.php:116
+#: index.php:114
 msgid "More news items..."
 msgstr "もっとニュースを見る"
 
@@ -6071,31 +6082,40 @@ msgstr "Audacityの最新版コードは<a href=\"http://code.google.com/p/audac
 msgid "Type this at the command line to check out the latest source code from SVN:"
 msgstr "SVNから最新のソースコードをチェックアウトするには、コマンドラインに以下のように入力してください:"
 
-#: community/developers.php:27
-msgid "See our development source code page for <a href=\"../download/beta_source#instructions\">compilation instructions</a>."
+#: community/developers.php:30
+#, php-format
+msgid "You can also check out a specific <a href=\"%s\">tagged release</a> from SVN."
+msgstr "SVNより特定の<a href=\"%s\">タグ付けされたリリース</a> をチェックアウトすることができます。"
+
+#: community/developers.php:32
+msgid "Use the following syntax at the command line to check out a specific tagged release from SVN, for example:"
+msgstr "SVNから最新のソースコードをチェックアウトするには、コマンドラインに以下のように入力してください、たとえば:"
+
+#: community/developers.php:37
+msgid "See our development source code page for <a href=\"../download/source#instructions\">compilation instructions</a>."
 msgstr "<a href=\"../download/source#instructions\">コンパイル手順</a>を参照するには開発ソースコードのページをご覧ください。"
 
-#: community/developers.php:31
+#: community/developers.php:39
 msgid "The SVN repository may also be accessed using GUI and IDE <a href=\"http://wiki.audacityteam.org/wiki/SVN_Clients\">clients or plug-ins</a>. If using GUI or IDE tools, please use the commands indicated in the tool's documentation."
 msgstr "SVNリポジトリは各種のGUIおよびIDE<a href=\"http://wiki.audacityteam.org/wiki/SVN_Clients\">クライアントやプラグイン</a>よりアクセスできます。 GUIやIDEをお使いになる際にはそれぞれのツールの解説書に示されるコマンドを使ってください。"
 
-#: community/developers.php:33
+#: community/developers.php:41
 msgid "Bug Tracking"
 msgstr "バグトラッキング"
 
-#: community/developers.php:34
+#: community/developers.php:42
 msgid "The Audacity developers use bugzilla to track bugs and enhancements. To find issues to work on, please view our categorized <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Bug Lists</a>."
 msgstr "Audacity開発チームはBugzillaをバグトラックおよび改善のために使っています。 解決すべき課題を見つけるには、カテゴリ別に分類された <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Bug Lists</a>をご覧ください。"
 
-#: community/developers.php:35
+#: community/developers.php:43
 msgid "If you are a user reporting a new bug, please e-mail our <a href=\"../contact#feedback\">feedback address</a>."
 msgstr "もしご使用中に新しいバグを発見された場合は、<a href=\"../contact#feedback\">feedback address</a>にEメールでお知らせください。"
 
-#: community/developers.php:37
+#: community/developers.php:45
 msgid "Submitting Patches"
 msgstr "パッチの提出"
 
-#: community/developers.php:38
+#: community/developers.php:46
 msgid "We welcome patches from developers. Please see our <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Submitting Patches</a> page on the <a href=\"http://wiki.audacityteam.org/wiki\">Wiki</a>."
 msgstr "開発者からのパッチは歓迎です。 <a href=\"http://wiki.audacityteam.org/wiki\">Wiki</a>ページにある<a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Submitting Patches</a> をご覧ください。"
 
@@ -6453,10 +6473,54 @@ msgid "%B %d, %Y"
 msgstr "%B %d, %Y"
 
 #: include/news.inc.php:45
+msgid "Audacity 2.0.3 Released"
+msgstr "Audacity 2.0.3がリリースされました！"
+
+#: include/news.inc.php:46
+msgid ""
+"\n"
+"<p>\n"
+"  The Audacity Team is pleased to announce the release of\n"
+"  <a href=\"/download\">Audacity 2.0.3</a>. It replaces all\n"
+"  previous versions. \n"
+"</p>\n"
+"<p>\n"
+"  Audacity 2.0.3 now uses the\n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Libsoxr\">\n"
+"  libsoxr</a> resampling library by default, instead of libresample, for higher quality and speed. \n"
+"  <a href=\"http://manual.audacityteam.org/o/man/time_tracks.html\">\n"
+"  Time Tracks</a> have been improved and bug fixed, and new effects\n"
+"  include an accessible \n"
+"  <a href=\"http://manual.audacityteam.org/o/man/adjustable_fade.html\">\n"
+"  Adjustable Fade</a>. See the\n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.3\">\n"
+"  2.0.3 Release Notes</a> for details.\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<p>\n"
+"  Audacityチームより\n"
+"  <a href=\"/download\">Audacity 2.0.3</a>をリリースいたします。これはl\n"
+"  すべての過去のバージョンを置き換えるものです。\n"
+"</p>\n"
+"<p>\n"
+"  Audacity 2.0.3 は\n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Libsoxr\">\n"
+"  libsoxr</a> リサンプリングライブラリをデフォルトで使っています。これは旧来のlibresampleよりも高速で高品質です。\n"
+"  <a href=\"http://manual.audacityteam.org/o/man/time_tracks.html\">\n"
+"  時間トラック</a> が改善されバグ修正され、また新しいエフェクトである\n"
+"  \n"
+"  <a href=\"http://manual.audacityteam.org/o/man/adjustable_fade.html\">\n"
+"  アジャスタブル・フェード</a>も追加されました。より詳しくは\n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.3\">\n"
+"  2.0.3 Release Notes</a> をご覧下さい。\n"
+"</p>\n"
+
+#: include/news.inc.php:70
 msgid "Audacity 2.0.2 Released"
 msgstr "Audacity 2.0.2がリリースされました！"
 
-#: include/news.inc.php:46
+#: include/news.inc.php:71
 msgid ""
 "\n"
 "<p>\n"
@@ -6482,11 +6546,11 @@ msgstr ""
 "  2.0.2 Release Notes</a>をご覧下さい。\n"
 "</p>\n"
 
-#: include/news.inc.php:64
+#: include/news.inc.php:89
 msgid "Audacity 2.0.1 Released"
 msgstr "Audacity 2.0.1がリリースされました！"
 
-#: include/news.inc.php:65
+#: include/news.inc.php:90
 msgid ""
 "\n"
 "<p>\n"
@@ -6513,11 +6577,11 @@ msgstr ""
 "  2.0.1 Release Notes</a>をご覧下さい。\n"
 "</p>\n"
 
-#: include/news.inc.php:82
+#: include/news.inc.php:107
 msgid "Audacity 2.0 Released!"
 msgstr "Audacity 2.0がリリースされました！"
 
-#: include/news.inc.php:83
+#: include/news.inc.php:108
 msgid ""
 "\n"
 "<p>\n"
@@ -6544,11 +6608,11 @@ msgstr ""
 "  をご覧ください。\n"
 "</p>\n"
 
-#: include/news.inc.php:101
+#: include/news.inc.php:126
 msgid "Audacity 1.3.14 released"
 msgstr "Audacity 1.3.14がリリースされました。"
 
-#: include/news.inc.php:102
+#: include/news.inc.php:127
 msgid ""
 "\n"
 "<p>\n"
@@ -6671,11 +6735,11 @@ msgstr ""
 "Changes in Audacity 1.3.14</a> をご覧ください。\n"
 "</p>\n"
 
-#: include/news.inc.php:170
+#: include/news.inc.php:195
 msgid "Audacity 1.3.13 released, and LinuxQuestions.org Audio Authoring Award 2010"
 msgstr "Audacity 1.3.13がリリースされました。またLinuxQuestions.org Audio Authoring Award 2010を受賞しました。"
 
-#: include/news.inc.php:171
+#: include/news.inc.php:196
 msgid ""
 "\n"
 "<p>\n"
@@ -6811,11 +6875,11 @@ msgstr ""
 "Audacityは2010 LinuxQuestions.org Members Choice pollにて<a href=\"http://www.linuxquestions.org/questions/2010-linuxquestions-org-members-choice-awards-93/audio-authoring-application-of-the-year-855921/\">Audio Authoring Application of the Year</a> に選ばれました。iLinuxQuestions.orgはLinuxに関する活発なオンラインコミュニティで、その投票ではAudacityはおよそ75%の投票を獲得することができました。ありがとうござました。\n"
 "</p> \n"
 
-#: include/news.inc.php:249
+#: include/news.inc.php:274
 msgid "Audacity 1.3.12 released, and Audacity book release from PACKT Publishing"
 msgstr "Audacity 1.3.12がリリースされました。またAudacityの本がPACKT Publishingより発売されました。"
 
-#: include/news.inc.php:250
+#: include/news.inc.php:275
 msgid ""
 "\n"
 "<p>\n"
@@ -6956,11 +7020,11 @@ msgstr ""
 " <a href=\"http://wiki.audacityteam.org/wiki/Books_about_Audacity\">Books about Audacity</a>ページをご覧ください。\n"
 "</p> \n"
 
-#: include/news.inc.php:328
+#: include/news.inc.php:353
 msgid "Audacity 1.3.11 released"
 msgstr "Audacity 1.3.11がリリースされました。"
 
-#: include/news.inc.php:329
+#: include/news.inc.php:354
 msgid ""
 "\n"
 "<p>\n"
@@ -7093,11 +7157,11 @@ msgstr ""
 "ダウンロード可能</a>です。 \n"
 "</p>\n"
 
-#: include/news.inc.php:400
+#: include/news.inc.php:425
 msgid "Audacity 1.3.10 released"
 msgstr "Audacity 1.3.10がリリースされました。"
 
-#: include/news.inc.php:401
+#: include/news.inc.php:426
 msgid ""
 "\n"
 "<p>\n"
@@ -7250,11 +7314,11 @@ msgstr ""
 "ダウンロード</a>可能です。 \n"
 "</p>\n"
 
-#: include/news.inc.php:483
+#: include/news.inc.php:508
 msgid "Audacity 1.3.9 released, Google Summer of Code (GSoC) 2009 completed"
 msgstr "Audacity1.3.9リリース、Google Summer of Code (GSoC) 2009終了 "
 
-#: include/news.inc.php:484
+#: include/news.inc.php:509
 msgid ""
 "\n"
 "<p>\n"
@@ -7373,11 +7437,11 @@ msgstr ""
 "をお使いください</a>。 \n"
 "</p>\n"
 
-#: include/news.inc.php:548
+#: include/news.inc.php:573
 msgid "SourceForge.net Community Choice Awards 2009"
 msgstr "SourceForge Community Choice Awards 2009"
 
-#: include/news.inc.php:549
+#: include/news.inc.php:574
 msgid ""
 "\n"
 "<p>\n"
@@ -7400,11 +7464,11 @@ msgstr ""
 "サポートいただいたSourceForge.netに感謝いたします！\n"
 "</p>\n"
 
-#: include/news.inc.php:564
+#: include/news.inc.php:589
 msgid "Audacity 1.3.8 released"
 msgstr "Audacity 1.3.8公開"
 
-#: include/news.inc.php:565
+#: include/news.inc.php:590
 msgid ""
 "\n"
 "<p>\n"
@@ -7477,12 +7541,12 @@ msgstr ""
 "1.3.7をお使いください。</a>. \n"
 "</p>\n"
 
-#: include/news.inc.php:605
+#: include/news.inc.php:630
 msgid "Linux Journal and Bestcovery Awards, and new \"Audacity compact\" book"
 msgstr "Linux JournalおよびBestcovery Awards、さらに新刊の\"Audacity compact\""
 
 # New
-#: include/news.inc.php:606
+#: include/news.inc.php:631
 msgid ""
 "\n"
 "<p>\n"
@@ -7612,12 +7676,12 @@ msgstr ""
 "</tr>\n"
 "</table>\n"
 
-#: include/news.inc.php:674
+#: include/news.inc.php:699
 msgid "Audacity is mentoring two Google Summer of Code (GSoC) 2009 students"
 msgstr "AudacityはGoogle Summer of Code (GSoC) 2009の学生さん2名を指導しています。"
 
 # New似たものがある
-#: include/news.inc.php:675
+#: include/news.inc.php:700
 msgid ""
 "\n"
 "<p>\n"
@@ -7659,11 +7723,11 @@ msgstr ""
 "\t合格された学生さんたち、おめでとうございます。またAudacityにご興味をいただきましたみなさんに感謝申し上げます!\n"
 "</p>\n"
 
-#: include/news.inc.php:699
+#: include/news.inc.php:724
 msgid "Audacity 1.3.7 released"
 msgstr "Audacity 1.3.7 がリリースされました。"
 
-#: include/news.inc.php:700
+#: include/news.inc.php:725
 msgid ""
 "\n"
 "<p>\n"
@@ -7785,11 +7849,11 @@ msgstr ""
 "</p>\n"
 "<br>\n"
 
-#: include/news.inc.php:766
+#: include/news.inc.php:791
 msgid "Audacity 1.3.6 released"
 msgstr "Audacity 1.3.6がリリースされました。"
 
-#: include/news.inc.php:767
+#: include/news.inc.php:792
 msgid ""
 "\n"
 "<p>\n"
@@ -7878,11 +7942,11 @@ msgstr ""
 "インストールすることができます。\n"
 "</p>\n"
 
-#: include/news.inc.php:815
+#: include/news.inc.php:840
 msgid "German Audacity Book released"
 msgstr "ドイツ語のAudacityに関する本が出版されました。"
 
-#: include/news.inc.php:816
+#: include/news.inc.php:841
 msgid ""
 "\n"
 "<p>\n"
@@ -7960,11 +8024,11 @@ msgstr ""
 "</table>\n"
 "</p>\n"
 
-#: include/news.inc.php:859
+#: include/news.inc.php:884
 msgid "Audacity shines in Google Summer of Code (GSoC) 2008"
 msgstr "Google Summer of Code (GSoC) 2008での顕著な活躍"
 
-#: include/news.inc.php:860
+#: include/news.inc.php:885
 msgid ""
 "\n"
 "<p>\n"
@@ -8063,11 +8127,11 @@ msgstr ""
 "\"オープンシースが提供すべきベスト製品賞\"として選ばれました。  \n"
 "</p>    \n"
 
-#: include/news.inc.php:911
+#: include/news.inc.php:936
 msgid "Audacity in PC World 100 Best Products of 2008"
 msgstr "PC World 100 Best Products of 2008にも選ばれました"
 
-#: include/news.inc.php:912
+#: include/news.inc.php:937
 msgid ""
 "\n"
 "<p>\n"
@@ -8145,11 +8209,11 @@ msgstr ""
 "of Best Free Softwareにも選ばれました。\n"
 "</p>\n"
 
-#: include/news.inc.php:954
+#: include/news.inc.php:979
 msgid "Audacity 1.3.5 Released"
 msgstr "Audacity 1.3.5がリリースされました。"
 
-#: include/news.inc.php:955
+#: include/news.inc.php:980
 msgid ""
 "\n"
 "<p>\n"
@@ -8321,11 +8385,11 @@ msgstr ""
 "<a href=\"/download/features-1.3-a\">1.3での新機能</a>をご覧ください。\n"
 "</p>\n"
 
-#: include/news.inc.php:1045
+#: include/news.inc.php:1070
 msgid "Audacity is mentoring five Google Summer of Code (GSoC) 2008 students"
 msgstr "Audacityは5人のGoogle Summer of Code (GSoC) 2008学生を指導しています。"
 
-#: include/news.inc.php:1046
+#: include/news.inc.php:1071
 msgid ""
 "\n"
 "<p>\n"
@@ -8359,11 +8423,11 @@ msgstr ""
 "\t許可を受けた5人の学生の皆様、おめでとうございます。そしてAudacityにご興味を持っていただきました多くの方々に感謝いたします。!\n"
 "</p>\n"
 
-#: include/news.inc.php:1066
+#: include/news.inc.php:1091
 msgid "Audacity is a mentoring organization Google Summer of Code (GSoC) 2008 "
 msgstr "AudacityはGoogle Summer of Code (GSoC) 2008の指導機関の1つです。"
 
-#: include/news.inc.php:1067
+#: include/news.inc.php:1092
 msgid ""
 "\n"
 "<p>\n"
@@ -8397,11 +8461,11 @@ msgstr ""
 "\tご興味をお持ちいただきありがとうございます!\n"
 "</p>\n"
 
-#: include/news.inc.php:1087
+#: include/news.inc.php:1112
 msgid "Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "
 msgstr "学生の皆さんへ!  Google Summer of Code (GSoC) 2008でのAudacityプロジェクトに<em>今すぐ</em>申し込みましょう。 "
 
-#: include/news.inc.php:1088
+#: include/news.inc.php:1113
 msgid ""
 "\n"
 "<p>\n"
@@ -8480,11 +8544,11 @@ msgstr ""
 "お知らせして詳細情報を読んでいただけるようにしてください。\n"
 "</p>\n"
 
-#: include/news.inc.php:1130
+#: include/news.inc.php:1155
 msgid "Audacity and Google Summer of Code (GSoC) 2008 "
 msgstr "AudacityとGoogle Summer of Code (GSoC) 2008 "
 
-#: include/news.inc.php:1131
+#: include/news.inc.php:1156
 msgid ""
 "\n"
 "<p>\n"
@@ -8541,11 +8605,11 @@ msgstr ""
 "お知らせして詳細情報を読んでいただけるようにしてください。\n"
 "</p>\n"
 
-#: include/news.inc.php:1162
+#: include/news.inc.php:1187
 msgid "LinuxQuestions.org Audio Authoring Award 2007"
 msgstr "LinuxQuestions.org Audio Authoring Award 2007"
 
-#: include/news.inc.php:1163
+#: include/news.inc.php:1188
 #, php-format
 msgid ""
 "\n"
@@ -8562,11 +8626,11 @@ msgstr ""
 "Audio Authoring Application of the Year</a>に選ばれました。 LinuxQuestions.orgは活発なオンラインLinuxコミュニティです。その投票において、Audacityは444人の方々から7割の方々の賛同を得ました。(In the voting, Audacity received nearly  70% of  the 444 votes cast.)  ご投票いただいた皆様に感謝いたします。 \n"
 "</p>\n"
 
-#: include/news.inc.php:1174
+#: include/news.inc.php:1199
 msgid "Audacity 1.3.4 Released"
 msgstr "Audacity 1.3.4 がリリースされました。"
 
-#: include/news.inc.php:1175
+#: include/news.inc.php:1200
 msgid ""
 "\n"
 "<p>\n"
@@ -8634,11 +8698,11 @@ msgstr ""
 "<a href=\"http://www.informit.com/store/product.aspx?isbn=0132366576&rl=1\">Podcasting with Audacity</a>でご覧ください。\n"
 "</p>\n"
 
-#: include/news.inc.php:1212
+#: include/news.inc.php:1237
 msgid "SourceForge Community Choice Awards 2007"
 msgstr "SourceForge Community Choice Awards 2007"
 
-#: include/news.inc.php:1213
+#: include/news.inc.php:1238
 msgid ""
 "\n"
 "<p>\n"
@@ -8662,11 +8726,11 @@ msgstr ""
 "Audacityをより良くするために貢献してくださる皆様に<b>大</b>感謝いたします。\n"
 "</p>\n"
 
-#: include/news.inc.php:1228
+#: include/news.inc.php:1253
 msgid "Audacity 1.3.3 Released"
 msgstr "Audacity 1.3.3 がリリースされました。"
 
-#: include/news.inc.php:1229
+#: include/news.inc.php:1254
 msgid ""
 "\n"
 "<p>\n"
@@ -8803,11 +8867,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>\n"
 
-#: include/news.inc.php:1302
+#: include/news.inc.php:1327
 msgid "Audacity 1.3.2 and 1.2.5 Released"
 msgstr "Audacity 1.3.2 および 1.2.5がリリースされました。"
 
-#: include/news.inc.php:1303
+#: include/news.inc.php:1328
 msgid ""
 "<p>\n"
 "The Audacity developers have been busy with many new features over\n"
@@ -8925,11 +8989,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>"
 
-#: include/news.inc.php:1367
+#: include/news.inc.php:1392
 msgid "The Audacity Store Is Open"
 msgstr "Audacityストアがオープンしました"
 
-#: include/news.inc.php:1368
+#: include/news.inc.php:1393
 msgid ""
 "\n"
 "\t<p>You are invited to try out the new <a href=\"http://audacitystore.com/\">Audacity Store</a>, which features\n"
@@ -9011,11 +9075,11 @@ msgstr ""
 "\t</p>\n"
 "\t"
 
-#: include/news.inc.php:1412
+#: include/news.inc.php:1437
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr "Audacity 1.2.4 および 1.3.0 がリリースされました。"
 
-#: include/news.inc.php:1413
+#: include/news.inc.php:1438
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple of bug fixes and minor improvements and is recommended for all users.  Audacity 1.3.0 is a beta release that contains hundreds of <a href=\"/download/features-1.3-a\">new features</a>, but this version is unfinished and unstable, and is recommended primarily for advanced users.  You can install both Audacity 1.2 and 1.3 simultaneously.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">1.2.4 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.4, or see <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for information about the new beta version.</p>\n"
@@ -9029,11 +9093,11 @@ msgstr ""
 "<a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>をご利用ください。\n"
 "</p>"
 
-#: include/news.inc.php:1423
+#: include/news.inc.php:1448
 msgid "Audacity 1.2.3 Released"
 msgstr "Audacity 1.2.3 公開"
 
-#: include/news.inc.php:1424
+#: include/news.inc.php:1449
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
@@ -9066,54 +9130,45 @@ msgid "Audacity&reg; is free, open source, cross-platform software for recording
 msgstr "Audacity&reg; はフリー、オープンソースでクロスプラットフォームのレコーディング・サウンド編集ソフトウェアです。"
 
 #: index.php:66
-msgid "Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. <a href=\"about/\">Learn more about Audacity...</a> Also check our <a href=\"http://wiki.audacityteam.org/\">Wiki</a> and <a href=\"http://forum.audacityteam.org/\">Forum</a> for more information."
-msgstr "AudacityはWindows&reg;, Mac&reg;, GNU/Linux&reg;およびその他のオペレーティングシステムに対応しています。<a href=\"about/\">Audacityについて...</a>  また<a href=\"http://wiki.audacityteam.org/\">Wiki</a> あるいは <a href=\"http://forum.audacityteam.org/\">Forum</a> もご覧ください。"
+msgid "Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. Check our <a href=\"about/features\">feature list</a>, <a href=\"http://wiki.audacityteam.org/\">Wiki</a> and <a href=\"http://forum.audacityteam.org/\">Forum</a> for more information."
+msgstr "AudacityはWindows&reg;, Mac&reg;, GNU/Linux&reg;およびその他のオペレーティングシステムに対応しています。<a href=\"about/features\">機能リスト</a>、<a href=\"http://wiki.audacityteam.org/\">Wiki</a> あるいは <a href=\"http://forum.audacityteam.org/\">Forum</a> もご覧ください。"
 
-#: index.php:68
-#, php-format
-msgid "The current release of Audacity is <a href=\"download/\">%s"
-msgstr "Audacityの最新リリースは <a href=\"download/\">%s です。"
-
-#: index.php:68
-msgid "It replaces all previous 1.2, 1.3 and 2.x versions. See <a href=\"download/features-2.0\">New Features</a> for more information."
-msgstr " これはすべての過去の1.2、1.3および2.xバージョンを置き換えるものです。より詳しい情報は<a href=\"download/features-2.0\">New Features</a>をご覧ください。"
-
-#: index.php:73
+#: index.php:71
 #, php-format
 msgid "<h3>Download Audacity %s</h3></a>%s %s"
 msgstr "<h3>Audacity %s をダウンロード</h3></a>%s %s"
 
-#: index.php:80
+#: index.php:78
 #, php-format
 msgid "%s\">Other Audacity Downloads %s</a></p>"
 msgstr "%s\">その他のAudacityダウンロード %s</a></p>"
 
-#: index.php:87
+#: index.php:85
 msgid "All Audacity Downloads"
 msgstr "Audacity（全バージョン）のダウンロード"
 
-#: index.php:92
+#: index.php:90
 #, php-format
 msgid "Download Audacity %s %s"
 msgstr "Download Audacity %s %s"
 
-#: index.php:122
+#: index.php:120
 msgid "Get Notified of New Versions"
 msgstr "新しいバージョンを知らせる"
 
-#: index.php:134
+#: index.php:132
 msgid "Email address"
 msgstr "メールアドレス"
 
-#: index.php:135
+#: index.php:133
 msgid "Add"
 msgstr "追加"
 
-#: index.php:136
+#: index.php:134
 msgid "Remove"
 msgstr "削除"
 
-#: index.php:162
+#: index.php:160
 msgid "Audacity Team's Advertisements Policy"
 msgstr "広告ポリシー"
 
@@ -9174,6 +9229,17 @@ msgstr "その他の貢献方法"
 #: donate/index.php:77
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr "さまざまな方法でみなさんがAudacityプロジェクトに参加しサポートすることができます。お金の寄付以外にも、たとえば <a href=\"../community/developers\">プログラミング</a>、<a href=\"../contact#feedback\">テスト</a>、 <a href=\"http://manual.audacityteam.org/\">ドキュメント作成</a>、<a href=\"../community/translation\">翻訳</a> あるいは<a href=\"http://forum.audacityteam.org/\">Forum</a>にて質問に答えることでも <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">貢献</a> いただくことができます。私たちはAudacityをご使用いただき改善点をご提案いただいたり、Audacityのことを他の方々に広めていただくだけでも大変意義のある貢献だと考えており歓迎いたします。 Audacityへにサポートに感謝いたします。"
+
+#~ msgid "The current release of Audacity is <a href=\"download/\">%s"
+#~ msgstr "Audacityの最新リリースは <a href=\"download/\">%s です。"
+
+#~ msgid ""
+#~ "It replaces all previous 1.2, 1.3 and 2.x versions. See <a href="
+#~ "\"download/features-2.0\">New Features</a> for more information."
+#~ msgstr ""
+#~ " これはすべての過去の1.2、1.3および2.xバージョンを置き換えるものです。より"
+#~ "詳しい情報は<a href=\"download/features-2.0\">New Features</a>をご覧くださ"
+#~ "い。"
 
 #~ msgid ""
 #~ "<h3>Windows or Linux </h3>\n"
