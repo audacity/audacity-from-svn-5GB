@@ -223,8 +223,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
   <li>Repeat steps 1 and 2 for each song.</li>
   <li>When you are finished, choose “Export Multiple” from the File menu.  When you click the “Export” button, Audacity will save each song as a separate file, using the format and location you choose.</li>
 </ol>").
-"<p>"._("Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically.</p>
-<p>Full instructions for both methods are in the illustrated tutorial").' <a href="http://wiki.audacityteam.org/wiki/Splitting_recordings_into_separate_tracks">Splitting recordings into separate tracks</a> '._("on the Audacity Wiki.")."</p>".
+"<p>"._("Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically using Analyze > Silence Finder. If you do not have Silence Finder in your version of Audacity, it can be found in the <a href=\"http://wiki.audacityteam.org/w/images/8/8d/NyPlug-ins_126.zip\">Audacity legacy 1.2.6 Plug-in Pack</a>.")."</p>".
 "<p>"._("See also:").' <a href="faq_i18n?s=files&amp;i=burn-cd">'._("How do I save my recording on an audio CD?")."</a></p>"
         ),
       ),
