@@ -7,17 +7,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacity\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-22 07:37+0000\n"
-"PO-Revision-Date: 2013-01-30 13:14-0000\n"
-"Last-Translator: Thomas De Rocker\n"
+"Report-Msgid-Bugs-To: http://wiki.audacityteam.org/wiki/Reporting_Bugs\n"
+"POT-Creation-Date: 2013-02-17 21:35+0000\n"
+"PO-Revision-Date: 2013-02-22 07:12-0000\n"
+"Last-Translator: Thomas de Rocker\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/audacity/language/nl/)\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
 
 #: main.inc.php:20
 msgid "Home"
@@ -174,7 +174,7 @@ msgid "Developers"
 msgstr "Ontwikkelaars"
 
 #: main.inc.php:64
-#: about/credits.php:87
+#: about/credits.php:88
 #: community/translation.php:9
 #: community/index.php:24
 msgid "Translators"
@@ -1148,7 +1148,8 @@ msgstr "Filters"
 msgid "Nyquist comes with a number of common filters built-in.  Here are some of the more common ones:"
 msgstr "Nyquist heeft een aantal algemene filters ingebouwd. Hier zijn een aantal van de meest algemene:"
 
-#. i18n-hint: Butterworth is the name of the filter design. Not normally something you'd want to translate.
+#. i18n-hint: Butterworth is the name of the filter design. Not normally
+#. something you'd want to translate.
 #: help/nyquist2.php:75
 msgid "Low-pass filter (first-order Butterworth). Cutoff may be a float or a signal (for time-varying filtering) and expresses hertz."
 msgstr "Low-pass filter (eerste-orde Butterworth). Kantelfrequentie kan vlotten of een signaal zijn (voor tijdsafhankelijk filteren) en wordt uitgedrukt in hertz."
@@ -1238,7 +1239,8 @@ msgstr ""
 " </ul>\n"
 "</p>"
 
-#. i18n-hint: If there are any special sources of help (local forums, lists) for
+#. i18n-hint: If there are any special sources of help (local forums, lists)
+#. for
 #. Audacity users in your language (other than our Russian, French, German
 #. and Spanish forums), please add links to them at the end of this paragraph
 #. and at \htdocs\contact\index.php. If there is any translated documentation,
@@ -1402,7 +1404,8 @@ msgstr "Stereosporen bewerken"
 msgid "Nyquist represents stereo tracks as an array of sounds (not a list).  Many Nyquist functions automatically work with these arrays, but not all, so sometimes you may find it necessary to split up a stereo array, or reassemble one.  Here are some useful functions:"
 msgstr "Nyquist stelt stereosporen voor als arrays van geluiden (geen lijst). Veel Nyquist functies werken automatisch met deze arrays, maar dat doen ze niet allemaal, dus soms zal het noodzakelijk zijn stereo arrays op te splitsen, of er een opnieuw samen te stellen. Dit zijn een paar nuttige funcies:"
 
-#. i18n-hint: The first and last are html tags, the middle one is a variable name
+#. i18n-hint: The first and last are html tags, the middle one is a variable
+#. name
 #: help/nyquist3.php:110
 #, php-format
 msgid "%sreturns true if %s is an array%s"
@@ -1457,7 +1460,8 @@ msgstr "%sAls u Nyquist helemaal niet aan de praat krijgt, neem dan a.u.b. %scon
 msgid "%sIf you are working on Nyquist plug-in effects and would like to share them with others, or if you would like to discuss how to achieve certain effects in Nyquist, please post on the %sNyquist board of the Forum%s or join the %saudacity-nyquist mailing list%s.%s"
 msgstr "%sAls u werkt aan Nyquist plugineffecten en ze met anderen wilt delen, of als u in het algemeen details wilt bespreken over hoe u bepaalde effecten kunt bereiken, post op de %sNyquist-pagina van het forum%s of abonneer u op de %saudacity-nyquist mailing list%s.%s"
 
-#. i18n-hint: All the %s are HTML tags which makes "Nyquist Reference Manual" into a link
+#. i18n-hint: All the %s are HTML tags which makes "Nyquist Reference Manual"
+#. into a link
 #: help/nyquist3.php:128
 #, php-format
 msgid "%sDon't forget to consult the full %sNyquist 2.37 Reference Manual%s for more details of Lisp and Nyquist.%s"
@@ -1652,8 +1656,8 @@ msgid "<a href=\"%s\">Google Code</a>: Click on the headings to sort the list."
 msgstr "<a href=\"%s\">Google Code</a>: klik op de hoofdingen om de lijst te sorteren."
 
 #: download/legacy_windows.php:77
-msgid "Windows 95 and NT are not supported. Windows Vista and 7 are supported in <a href=\"windows\">the latest version of Audacity</a>."
-msgstr "Windows 95 and NT worden niet ondersteund. Windows Vista en 7 worden alleen ondersteund in <a href=\"windows\">de laatste versie van Audacity</a>."
+msgid "Windows 95 and NT are not supported. Windows Vista, Windows 7 and Windows 8 require <a href=\"windows\">the latest version of Audacity</a>."
+msgstr "Windows 95 and NT worden niet ondersteund. Windows Vista, Windows 7 en Windows 8 vereisen <a href=\"windows\">de laatste versie van Audacity</a>."
 
 #: download/legacy_windows.php:81
 #: download/windows_sys_reqs.inc.php:10
@@ -1676,8 +1680,8 @@ msgid "Minimum RAM/<br>processor speed"
 msgstr "Minimale RAM/<br>processorsnelheid"
 
 #: download/legacy_windows.php:104
-msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista or 7 running on machines of substantially higher specification than the minimum stated above."
-msgstr "Over het algemeen werkt Audacity het best op computers die meer hebben dan de minimumvereisten in de tabel hierboven. Waar Audacity gebruikt moet worden voor lange multitrack-projecten raden we aan om Windows XP, Vista of 7 te gebruiken op computers met een aanzienlijk hogere specificatie dan het minimum dat hierboven gesteld werd."
+msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP running on a machine of substantially higher specification than the minimum stated above."
+msgstr "Over het algemeen werkt Audacity het best op computers die meer hebben dan de minimumvereisten in de tabel hierboven. Waar Audacity gebruikt moet worden voor lange multitrack-projecten raden we aan om Windows XP te gebruiken op computers met een aanzienlijk hogere specificatie dan het minimum dat hierboven gesteld werd."
 
 #: download/common.inc.php:12
 #: download/windows.php:72
@@ -4136,7 +4140,7 @@ msgid "On Mac OS X only, Audacity loads <a href=\"http://manual.audacityteam.org
 msgstr "Bij Mac OS X laadt Audacity <a href=\"http://manual.audacityteam.org/help/manual/man/effect_menu.html#audio_unit\">Audio Unit</a>-plugins automatisch van systeem-pluginmappen. Audacity zal geen Audio Units herkennen in zijn eigen \"plugins\"-map."
 
 #: download/plugins.php:42
-#: about/credits.php:137
+#: about/credits.php:138
 msgid "Libraries"
 msgstr "Bibliotheken"
 
@@ -4349,8 +4353,8 @@ msgstr "Volledige broncode-tarball, bruikbaar voor Windows en Mac, omdat die mee
 
 #: download/source.php:34
 #, php-format
-msgid "<a href=\"%s\">SVN Development Code</a> "
-msgstr "<a href=\"%s\">SVN-ontwikkelingscode</a> "
+msgid "<a href=\"%s\">SVN Development Code</a>&nbsp;"
+msgstr "<a href=\"%s\">SVN-ontwikkelingscode</a>&nbsp;"
 
 #: download/source.php:35
 #, php-format
@@ -5422,7 +5426,7 @@ msgstr "kwaliteitsverzekering"
 
 #: about/credits.php:27
 #: about/credits.php:30
-#: about/credits.php:31
+#: about/credits.php:33
 #: about/credits.php:34
 #: about/credits.php:37
 #: about/credits.php:51
@@ -5430,35 +5434,36 @@ msgstr "kwaliteitsverzekering"
 #: about/credits.php:53
 #: about/credits.php:54
 #: about/credits.php:55
-#: about/credits.php:57
+#: about/credits.php:56
 #: about/credits.php:58
 #: about/credits.php:59
-#: about/credits.php:66
-#: about/credits.php:68
+#: about/credits.php:60
+#: about/credits.php:67
 #: about/credits.php:69
 #: about/credits.php:70
 #: about/credits.php:71
 #: about/credits.php:72
 #: about/credits.php:73
-#: about/credits.php:75
+#: about/credits.php:74
 #: about/credits.php:76
 #: about/credits.php:77
 #: about/credits.php:78
 #: about/credits.php:79
-#: about/credits.php:81
+#: about/credits.php:80
 #: about/credits.php:82
 #: about/credits.php:83
 #: about/credits.php:84
+#: about/credits.php:85
 msgid "developer"
 msgstr "ontwikkelaar"
 
 #: about/credits.php:28
-#: about/credits.php:33
+#: about/credits.php:32
 #: about/credits.php:35
 #: about/credits.php:36
 #: about/credits.php:38
-#: about/credits.php:60
 #: about/credits.php:61
+#: about/credits.php:62
 msgid "documentation and support"
 msgstr "documentatie en ondersteuning"
 
@@ -5470,8 +5475,8 @@ msgstr "Frans"
 msgid "system administration"
 msgstr "systeemadministratie"
 
-#: about/credits.php:32
-#: about/credits.php:56
+#: about/credits.php:31
+#: about/credits.php:57
 msgid "developer and co-founder of Audacity"
 msgstr "ontwikkelaars en mede-oprichters van Audacity"
 
@@ -5483,143 +5488,123 @@ msgstr "Technical Leadership Council"
 msgid "Emeritus: distinguished Audacity Team members, not currently active"
 msgstr "Emeritus: onderscheiden Audacity-teamleden, op dit moment niet actief"
 
-#: about/credits.php:64
+#: about/credits.php:65
 msgid "Contributors"
 msgstr "Bijdragen van:"
 
-#: about/credits.php:67
+#: about/credits.php:68
 msgid "accessibility advisor"
 msgstr "toegankelijkheidsadviseur"
 
-#: about/credits.php:74
+#: about/credits.php:75
 msgid "graphic artist"
 msgstr "grafische artiest"
 
-#: about/credits.php:80
+#: about/credits.php:81
 msgid "Nyquist plug-ins"
 msgstr "Nyquist-plugins"
 
-#: about/credits.php:138
+#: about/credits.php:139
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity is gebaseerd op broncode van de volgende projecten:"
 
-#: about/credits.php:159
+#: about/credits.php:160
 msgid "Thanks"
 msgstr "Bedankt"
 
-#: about/credits.php:160
+#: about/credits.php:161
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "Wij willen nog vele andere organisaties en mensen bedanken. Velen hebben broncode aangeleverd, voor patches gezorgd, feedback en geld gegeven, en tijd besteed aan het project. Weer anderen hebben ons gewoon het gereedschap aangereikt waardoor het hele project mogelijk is gemaakt."
 
-#: about/credits.php:185
+#: about/credits.php:186
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Laat ons weten als wij iemand vergeten zijn!)"
 
-#: about/links.php:14
-msgid "Other Things Named “Audacity” (not related to us)"
-msgstr "Andere dingen die \"Audacity\" heten (maar niets met ons te maken hebben)"
-
-#: about/links.php:16
-msgid "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is a digital voice recorder for smartphones."
-msgstr "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is een digitale voice recorder voor smartphones."
-
-#: about/links.php:17
-msgid "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company for construction industry professionals."
-msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a> is een researchbedrijf voor professionals uit de bouwwereld."
-
-#: about/links.php:18
-msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides software consulting services for businesses in Washington, Arizona and California."
-msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> voorziet software-consultatiediensten voor zaken in Washington, Arizona en Californië."
-
-#: about/links.php:19
-msgid "Two different rock bands from <a href=\"http://www.myspace.com/audacityrocks\">Finland</a> and <a href=\"http://www.unsigned.com/audacity\">England</a> are named \"Audacity\"."
-msgstr "Twee verschillende rockbands van <a href=\"http://www.myspace.com/audacityrocks\">Finland</a> en <a href=\"http://www.unsigned.com/audacity\">Engeland</a> heten \"Audacity\"."
-
-#: about/links.php:22
+#: about/links.php:15
 msgid "Other Open Source Audio Software"
 msgstr "Andere open source audiosoftware"
 
-#: about/links.php:23
+#: about/links.php:16
 msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux and Mac OS X."
 msgstr "<a href=\"http://ardour.org/\">Ardour</a> is een krachtig digitale-audio workstation voor GNU/Linux en Mac OS X."
 
-#: about/links.php:24
+#: about/links.php:17
 msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper for Microsoft Windows."
 msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is een gratis cd-ripper voor Microsoft Windows."
 
-#: about/links.php:25
+#: about/links.php:18
 msgid "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
 msgstr "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> is een vrij gereedschap voor het opnemen en opschonen van opnames van vinylplaten."
 
-#: about/links.php:26
+#: about/links.php:19
 msgid "<a href=\"http://www.mixxx.org/\">Mixxx</a> is free cross-platform digital DJ mixing software with features like automatic BPM matching and seamless looping."
 msgstr "<a href=\"http://www.mixxx.org/\">Mixxx</a> is  gratis cross-platform digitale dj mixing software met functies als automatische bpm-synchronisatie en naadloos herhalen."
 
-#: about/links.php:27
+#: about/links.php:20
 msgid "More free audio software at SourceForge.net:"
 msgstr "Meer vrije/gratis audiosoftware bij Sourceforge.net:"
 
-#: about/links.php:29
+#: about/links.php:22
 msgid "Audio Editors"
 msgstr "Audio-editors"
 
-#: about/links.php:30
+#: about/links.php:23
 msgid "Audio Capture/Recording"
 msgstr "Audio capture/opnemen"
 
-#: about/links.php:31
+#: about/links.php:24
 msgid "Audio Analysis"
 msgstr "Audio-analyse"
 
-#: about/links.php:34
+#: about/links.php:27
 msgid "Open Source Audio-Visual Software"
 msgstr "Open source audiovisuele software"
 
-#: about/links.php:35
+#: about/links.php:28
 msgid "<a href=\"http://www.blender.org/\">Blender</a> is a free, cross-platform 3D content creation suite for animations, interactive applications and video games."
 msgstr "<a href=\"http://www.blender.org/\">Blender</a> is een gratis, cross-platform 3D-inhoud creatiepakket voor animaties, interactieve applicaties en videospellen."
 
-#: about/links.php:36
+#: about/links.php:29
 msgid "<a href=\"http://mediainfo.sourceforge.net/\">MediaInfo</a> is a free, cross-platform tag and codec analyzer for audio and video files."
 msgstr "<a href=\"http://mediainfo.sourceforge.net/\">MediaInfo</a> is een gratis, cross-platform tag- en codec-analyzer voor audio- en videobestanden."
 
-#: about/links.php:37
+#: about/links.php:30
 msgid "<a href=\"http://www.videolan.org/vlc/\">VLC media player</a> is a free, cross-platform media player for most audio and video files as well as DVD, Audio CD and VCD. VLC can also send, save and convert <a href=\"http://www.videolan.org/streaming-features.html\">audio and video streams</a>."
 msgstr "<a href=\"http://www.videolan.org/vlc/\">VLC media player</a> is een gratis, cross-platform media player voor de meeste audio- en videobestanden, en ook dvd's, audio-cd's en vcd's. VLC kan ook <a href=\"http://www.videolan.org/streaming-features.html\">audio- en videostreams<a/> zenden, converteren en opslaan."
 
-#: about/links.php:38
+#: about/links.php:31
 msgid "CD/DVD burning:"
 msgstr "Cd/dvd branden:"
 
-#: about/links.php:40
+#: about/links.php:33
 msgid "<a href=\"http://infrarecorder.org/\">InfraRecorder</a> for Windows"
 msgstr "<a href=\"http://infrarecorder.org/\">InfraRecorder</a> voor Windows"
 
-#: about/links.php:41
+#: about/links.php:34
 msgid "<a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a> for Mac OS X"
 msgstr "<a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a> voor Mac OS X"
 
-#: about/links.php:42
+#: about/links.php:35
 msgid "<a href=\"http://k3b.org/\">K3b</a> or <a href=\"http://archive.xfce.org/src/apps/xfburn/0.4\">Xfburn</a> for Linux"
 msgstr "<a href=\"http://k3b.org/\">K3b</a> of <a href=\"http://archive.xfce.org/src/apps/xfburn/0.4\">Xfburn</a> voor Linux"
 
-#: about/links.php:44
+#: about/links.php:37
 msgid "Video editing/capture:"
 msgstr "Videobewerking/opname:"
 
-#: about/links.php:46
+#: about/links.php:39
 msgid "<a href=\"http://www.virtualdub.org/\">VirtualDub</a> for Windows"
 msgstr "<a href=\"http://www.virtualdub.org/\">VirtualDub</a> voor Windows"
 
-#: about/links.php:47
+#: about/links.php:40
 msgid "<a href=\"http://avidemux.sourceforge.net/\">Avidemux</a> for Windows, Mac OS X (Intel) and Linux"
 msgstr "<a href=\"http://avidemux.sourceforge.net/\">Avidemux</a> voor Windows, Mac OS X (Intel) en Linux"
 
-#: about/links.php:48
+#: about/links.php:41
 msgid "<a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a> for Mac OS X"
 msgstr "<a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a> voor Mac OS X"
 
-#: about/links.php:49
+#: about/links.php:42
 msgid "<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> or <a href=\"http://www.kinodv.org/article/static/2\">Kino</a> for Linux"
 msgstr "<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> of <a href=\"http://www.kinodv.org/article/static/2\">Kino</a> voor Linux"
 
@@ -6239,10 +6224,13 @@ msgstr ""
 "<b>Uit privéoogmerk zal uw adres normaal gezien verwijderd worden uit gepubliceerde archieven, en de ontwikkelaars van Audacity zullen uw adres niet aan anderen doorgeven.</b> Maar wij <b>kunnen niet</b> voorkomen dat andere abonnees uw berichten zien of publiceren. Daarom raden we aan dat u vermijdt om contactpersoon-details zoals straatadressen of telefoonummers in uw e-mais op te nemen./p>\n"
 "<p>Als u vragen heeft over dit beleid of er een probleem mee heeft naar een openbare mailingslijst te schrijven, stuur dan een e-mail naar ons <a href=\"http://audacity.sourceforge.net/contact/#feedback\">feedback-adres</a>.</p>"
 
-#. i18n-hint: If there are any special sources of help (local forums, lists) for Audacity
+#. i18n-hint: If there are any special sources of help (local forums, lists)
+#. for Audacity
 #. users in your language (other than our Russian, French, German and Spanish
-#. forums), please add links to them here and at the bottom of \htdocs\help\index.php.
-#. If there is any translated documentation, please add links to it at the bottom
+#. forums), please add links to them here and at the bottom of
+#. \htdocs\help\index.php.
+#. If there is any translated documentation, please add links to it at the
+#. bottom
 #. of \htdocs\help\documentation.php
 #: contact/index.php:25
 msgid "Audacity Forum for Questions or Problems"
@@ -6362,7 +6350,8 @@ msgid "%s archives and subscription information"
 msgstr "%s archieven en abonnementsinformatie"
 
 #. i18n-hint: Please add a note that these lists are in English.  If there are
-#. Audacity mailing lists or forums in your language, please link to them here.
+#. Audacity mailing lists or forums in your language, please link to them
+#. here.
 #: contact/lists.php:20
 msgid ""
 "These lists are for discussion about the Audacity audio editor.  </p>\n"
@@ -9271,6 +9260,40 @@ msgstr "Andere manieren om bij te dragen"
 #: donate/index.php:77
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr "Naast het doneren van geld kan u ook <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">uw tijd bijdragen</a> door ons te helpen met <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testen</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">vertalingen</a> of door vragen te beantwoorden op ons <a href=\"http://forum.audacityteam.org/\">Forum</a>. We hebben altijd gebruikers verwelkomd wiens enige bijdrage gewoon het gebruiken van Audacity is, door ons feedback te geven over hoe het te verbeteren en door anderen erover te vertellen. Bedankt om Audacity te ondersteunen."
+
+#~ msgid "Other Things Named “Audacity” (not related to us)"
+#~ msgstr ""
+#~ "Andere dingen die \"Audacity\" heten (maar niets met ons te maken hebben)"
+
+#~ msgid ""
+#~ "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is a "
+#~ "digital voice recorder for smartphones."
+#~ msgstr ""
+#~ "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is een "
+#~ "digitale voice recorder voor smartphones."
+
+#~ msgid ""
+#~ "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research "
+#~ "company for construction industry professionals."
+#~ msgstr ""
+#~ "<a href=\"http://www.audacity.org\">Audacity.org</a> is een "
+#~ "researchbedrijf voor professionals uit de bouwwereld."
+
+#~ msgid ""
+#~ "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides software "
+#~ "consulting services for businesses in Washington, Arizona and California."
+#~ msgstr ""
+#~ "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> voorziet software-"
+#~ "consultatiediensten voor zaken in Washington, Arizona en Californië."
+
+#~ msgid ""
+#~ "Two different rock bands from <a href=\"http://www.myspace.com/"
+#~ "audacityrocks\">Finland</a> and <a href=\"http://www.unsigned.com/audacity"
+#~ "\">England</a> are named \"Audacity\"."
+#~ msgstr ""
+#~ "Twee verschillende rockbands van <a href=\"http://www.myspace.com/"
+#~ "audacityrocks\">Finland</a> en <a href=\"http://www.unsigned.com/audacity"
+#~ "\">Engeland</a> heten \"Audacity\"."
 
 #~ msgid "The current release of Audacity is <a href=\"download/\">%s"
 #~ msgstr "De huidige release van Audacity is <a href=\"download/\">%s"
