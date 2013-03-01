@@ -163,7 +163,6 @@
   <li>Dave Beydler</li>
   <li>Brian Cameron</li> 
   <li>Jason Cohen</li>
-  <li>Benjamin Drung</li>
   <li>Dave Fancella</li>
   <li>Steve Harris</li>
   <li>Daniel James</li>
