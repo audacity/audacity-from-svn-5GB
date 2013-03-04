@@ -40,7 +40,6 @@
 
 <h3><?=_("Technical Leadership Council")?></h3>
 <ul>
-  <li>Richard Ash</li>
   <li>James Crook</li>
   <li>Vaughan Johnson</li>
   <li>Martyn Shaw</li>
