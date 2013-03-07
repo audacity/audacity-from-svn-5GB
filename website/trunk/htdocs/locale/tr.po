@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Website\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-22 07:37+0000\n"
-"PO-Revision-Date: 2013-01-23 09:04-0000\n"
+"POT-Creation-Date: 2013-02-22 07:30+0000\n"
+"PO-Revision-Date: 2013-03-07 22:14-0000\n"
 "Last-Translator: Kaya Zeren\n"
 "Language-Team: Audacity\n"
 "Language: tr_TR\n"
@@ -173,7 +173,7 @@ msgid "Developers"
 msgstr "Geliştiriciler"
 
 #: main.inc.php:64
-#: about/credits.php:87
+#: about/credits.php:88
 #: community/translation.php:9
 #: community/index.php:24
 msgid "Translators"
@@ -451,13 +451,13 @@ msgstr ""
 
 #: help/faq_i18n.php:120
 #: help/faq_i18n.php:170
-#: help/faq_i18n.php:228
+#: help/faq_i18n.php:227
 msgid "See also:"
 msgstr "Ek Bilgi:"
 
 #: help/faq_i18n.php:120
 #: help/faq_i18n.php:201
-#: help/faq_i18n.php:228
+#: help/faq_i18n.php:227
 msgid "How do I save my recording on an audio CD?"
 msgstr "Yaptığım kayıdı nasıl bir müzik CD'sine yazabilirim?"
 
@@ -665,26 +665,18 @@ msgstr ""
 "</ol>"
 
 #: help/faq_i18n.php:226
-msgid ""
-"Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically.</p>\n"
-"<p>Full instructions for both methods are in the illustrated tutorial"
-msgstr ""
-"Alternatif olarak, Audacity izler arasındaki sessizlikleri algılayarak, şarkıları kendiliğinden etiketlemeyi deneyebilir./p>\n"
-"<p>İki yöntem için de ayrıntılı açıklamaları görüntülü derslerde bulabilirsiniz"
+msgid "Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically using Analyze > Silence Finder. If you do not have Silence Finder in your version of Audacity, it can be found in the <a href=\"http://wiki.audacityteam.org/w/images/8/8d/NyPlug-ins_126.zip\">Audacity legacy 1.2.6 Plug-in Pack</a>."
+msgstr "Alternatif olarak, Audacity Çözümleyici > Sessizlik Bulucu özelliğini kullanarak izler arasındaki sessizlikleri algılayıp kendiliğinden etiketlemeyi dener. Kullandığınız Audacity sürümü için Sessizlik Bulucu eklentisini <a href=\"http://wiki.audacityteam.org/w/images/8/8d/NyPlug-ins_126.zip\">Audacity eski 1.2.6 Uyumlu Ek Paketini</a> indirip kurarak edinebilirsiniz."
 
-#: help/faq_i18n.php:227
-msgid "on the Audacity Wiki."
-msgstr "bölümüne bakabilirsiniz."
-
-#: help/faq_i18n.php:233
+#: help/faq_i18n.php:232
 msgid "<h4 id=\"editing\">Editing</h4>"
 msgstr "<h4 id=\"editing\">Düzenleme</h4>"
 
-#: help/faq_i18n.php:236
+#: help/faq_i18n.php:235
 msgid "Why can’t I use the effects or other menu items?"
 msgstr "Etkileri ya da diğer menü ögelerini neden kullanamıyorum?"
 
-#: help/faq_i18n.php:237
+#: help/faq_i18n.php:236
 msgid ""
 "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>\n"
 "<p>Also, many menu items are disabled while playing, recording, or pausing a track. To enable them, press the yellow <b>Stop</b> button.</p>"
@@ -692,19 +684,19 @@ msgstr ""
 "<p>Bazı menü ögeleri, kullanıma hazır olana kadar devre dışı görünürler. Bir etkiyi seçmeden önce, değiştirmek istediğiniz sesi seçmelisiniz. Sesi seçmek için, Seçim aracıyla tıklayıp sürükleyerek seçin ya da Düzenle menüsünden “Tümünü Seç” komutunu seçin.</p>\n"
 "<p>Ayrıca, birçok menü aracı, bir iz oynatılır, kaydedilir ya da bekletilirken engellenmiştir. Bunları etkinleştirmek için sarı <b>Dur</b>tuşuna basın.</p>"
 
-#: help/faq_i18n.php:241
+#: help/faq_i18n.php:240
 msgid "How do I mix two tracks together?"
 msgstr "İki kanalı birbirine nasıl karıştırabilirim?"
 
-#: help/faq_i18n.php:242
+#: help/faq_i18n.php:241
 msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the <b>Play</b> button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
 msgstr "<p>İki dosyayı karıştırmak için, ikisini de Audacity içine almanız yeterlidir. Ayrı izler olarak görünürler ve <b>Oynat</b> tuşuna bastığınızda birbirlerine karışmış olarak çalınırlar. Zaman kaydırma aracını kullnarak farklı zamanlarda başlamalarını sağlayabilir ya da diğer düzenleme komutlarını kullanarak izler üzerinde değişiklik yapabilirsiniz.</p>"
 
-#: help/faq_i18n.php:245
+#: help/faq_i18n.php:244
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
 msgstr "Bir kayıttaki vokalleri kaldırarak bir Karaoke izi yapabilir miyim?"
 
-#: help/faq_i18n.php:246
+#: help/faq_i18n.php:245
 msgid ""
 "<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals are exactly the same on both stereo channels, you can remove them by “subtracting” one channel from the other.  This works for many studio recordings, where the vocal track is mixed exactly in the center.</p>\n"
 "<p>To do this in Audacity:</p>\n"
@@ -730,19 +722,19 @@ msgstr ""
 "<p>Sonucu dinlemek için <b>Oynat</b> tuşuna basın. Eğer şanslıysanız, bir karaoke parçada olacağı gibi, vokal gidecek ve çoğu enstrüman etkilenmeden kalacaktır. Sonucu kaydetmek için Dosya menüsünden Ver komutlarını kullanabilirsiniz.</p>\n"
 "<p>Eğer vokaller iki kanalda da birebir aynı değilse, deneyebileceğiniz başka yöntemler ya da isteğe göre yüklenen eklentiler vardır. Daha ayrıntılı bilgi için Wiki sayfasındaki <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Vokal Çıkartma</a>' bölümüne bakabilirsiniz.</p>\n"
 
-#: help/faq_i18n.php:276
+#: help/faq_i18n.php:275
 msgid "Other frequently asked questions..."
 msgstr "Diğer sık sorulan sorular..."
 
-#: help/faq_i18n.php:280
+#: help/faq_i18n.php:279
 msgid "Older Frequently Asked Questions for international help"
 msgstr "Uluslararası yardım için eski Sık Sorulan Sorular"
 
-#: help/faq_i18n.php:284
+#: help/faq_i18n.php:283
 msgid "These are older Frequently Asked Questions (FAQ), <b>only for those languages where the latest <a href=\"faq\">FAQ</a> doesn't yet have a translation.</b> These questions remain largely valid for Audacity 2.0.x, but please use the latest FAQ if you can do so."
 msgstr "Burada, <b><a href=\"faq\">SSS</a> bölümü henüz çevrilmemiş diller için, eski sık sorulan soruları (SSS) bulabilirsiniz..</b> Bu bilgiler, çoğunlukla Audacity 2.0.x sürümü için de geçerliliğini korumaktadır. Ancak gene de İngilizce anlayabiliyorsanız, en son SSS bölümüne bakın."
 
-#: help/faq_i18n.php:286
+#: help/faq_i18n.php:285
 msgid "Additional help in French, German, Russian or Spanish can be obtained from our <a href=\"http://forum.audacityteam.org/viewforum.php?f=3\">International Forum</a>."
 msgstr "Fransızca, Almanca, Rusça ve İspanyolca yardım için <a href=\"http://forum.audacityteam.org/viewforum.php?f=3\">Uluslararası Forumlarımıza</a> bakabilirsiniz."
 
@@ -1656,8 +1648,8 @@ msgid "<a href=\"%s\">Google Code</a>: Click on the headings to sort the list."
 msgstr "<a href=\"%s\">Google Code</a>: Listeyi sıralamak için başlıklara tıklayabilirsiniz."
 
 #: download/legacy_windows.php:77
-msgid "Windows 95 and NT are not supported. Windows Vista and 7 are supported in <a href=\"windows\">the latest version of Audacity</a>."
-msgstr "Windows 95 ve NT desteklenmiyor. Windows Vista ve 7 yalnız <a href=\"windows\">son Audacity sürümü</a> tarafından destekleniyor."
+msgid "Windows 95 and NT are not supported. Windows Vista, Windows 7 and Windows 8 require <a href=\"windows\">the latest version of Audacity</a>."
+msgstr "Windows 95 ve NT artık desteklenmiyor. <a href=\"windows\">Son Audacity sürümü</a>Windows Vista, Windows 7 ve Windows 8 destekliyor."
 
 #: download/legacy_windows.php:81
 #: download/windows_sys_reqs.inc.php:10
@@ -1680,8 +1672,8 @@ msgid "Minimum RAM/<br>processor speed"
 msgstr "En düşük RAM/<br>işlemci hızı"
 
 #: download/legacy_windows.php:104
-msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista or 7 running on machines of substantially higher specification than the minimum stated above."
-msgstr "Genel olarak, Audacity, yukarıdaki tablodaki en düşük gereksinimleri karşılayan bilgisayarlarda iyi şekilde çalışır. Uzun ve çok izli projelerde Audacity kullanmak için, bu gereksinimlerden daha yüksek özelliklere sahip, Windows 2000, XP, Vista ya da 7 kullanan bir bilgisayar önerilir."
+msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP running on a machine of substantially higher specification than the minimum stated above."
+msgstr "Audacity, genellikle yukarıdaki tabloda listelenen en düşük gereksinimleri karşılayan bilgisayarlarda iyi şekilde çalışır. Audacity yazılımını uzun ve çok izli projelerde kullanmak için, bu gereksinimlerden daha yüksek özelliklere sahip, Windows XP yüklü bir bilgisayar önerilir."
 
 #: download/common.inc.php:12
 #: download/windows.php:72
@@ -4140,7 +4132,7 @@ msgid "On Mac OS X only, Audacity loads <a href=\"http://manual.audacityteam.org
 msgstr "Yalnız Mac OS X üzerinde, Audacity <a href=\"http://manual.audacityteam.org/help/manual/man/effect_menu.html#audio_unit\">Ses Birimi</a> eklentilerini, sistem eklentileri klasöründen yükler. Audacity kendi \"plug-ins\" klasöründeki ses birimlerini algılamaz."
 
 #: download/plugins.php:42
-#: about/credits.php:137
+#: about/credits.php:138
 msgid "Libraries"
 msgstr "Kitaplıklar"
 
@@ -4353,8 +4345,8 @@ msgstr "Tam kaynak tarball: Audactiy derlemek için gerekli bağlılıkları eks
 
 #: download/source.php:34
 #, php-format
-msgid "<a href=\"%s\">SVN Development Code</a> "
-msgstr "<a href=\"%s\">SVN Havuzu Kodu</a>"
+msgid "<a href=\"%s\">SVN Development Code</a>&nbsp;"
+msgstr "<a href=\"%s\">SVN Havuzu Kodu</a>&nbsp;"
 
 #: download/source.php:35
 #, php-format
@@ -5426,7 +5418,7 @@ msgstr "kalite güvencesi"
 
 #: about/credits.php:27
 #: about/credits.php:30
-#: about/credits.php:31
+#: about/credits.php:33
 #: about/credits.php:34
 #: about/credits.php:37
 #: about/credits.php:51
@@ -5434,35 +5426,36 @@ msgstr "kalite güvencesi"
 #: about/credits.php:53
 #: about/credits.php:54
 #: about/credits.php:55
-#: about/credits.php:57
+#: about/credits.php:56
 #: about/credits.php:58
 #: about/credits.php:59
-#: about/credits.php:66
-#: about/credits.php:68
+#: about/credits.php:60
+#: about/credits.php:67
 #: about/credits.php:69
 #: about/credits.php:70
 #: about/credits.php:71
 #: about/credits.php:72
 #: about/credits.php:73
-#: about/credits.php:75
+#: about/credits.php:74
 #: about/credits.php:76
 #: about/credits.php:77
 #: about/credits.php:78
 #: about/credits.php:79
-#: about/credits.php:81
+#: about/credits.php:80
 #: about/credits.php:82
 #: about/credits.php:83
 #: about/credits.php:84
+#: about/credits.php:85
 msgid "developer"
 msgstr "geliştiren"
 
 #: about/credits.php:28
-#: about/credits.php:33
+#: about/credits.php:32
 #: about/credits.php:35
 #: about/credits.php:36
 #: about/credits.php:38
-#: about/credits.php:60
 #: about/credits.php:61
+#: about/credits.php:62
 msgid "documentation and support"
 msgstr "belgeler ve destek"
 
@@ -5474,8 +5467,8 @@ msgstr "Fransızca"
 msgid "system administration"
 msgstr "sistem yönetimi"
 
-#: about/credits.php:32
-#: about/credits.php:56
+#: about/credits.php:31
+#: about/credits.php:57
 msgid "developer and co-founder of Audacity"
 msgstr "Audacity kurucu ve geliştiricisi"
 
@@ -5487,143 +5480,123 @@ msgstr "Teknik Liderlik Konseyi"
 msgid "Emeritus: distinguished Audacity Team members, not currently active"
 msgstr "Emekli: şu anda etkin olmayan, eski Audacity takımı üyeleri"
 
-#: about/credits.php:64
+#: about/credits.php:65
 msgid "Contributors"
 msgstr "Katkıda Bulunanlar"
 
-#: about/credits.php:67
+#: about/credits.php:68
 msgid "accessibility advisor"
 msgstr "erişilebilirlik danışmanı"
 
-#: about/credits.php:74
+#: about/credits.php:75
 msgid "graphic artist"
 msgstr "grafik sanatçısı"
 
-#: about/credits.php:80
+#: about/credits.php:81
 msgid "Nyquist plug-ins"
 msgstr "Nyquist eklentileri"
 
-#: about/credits.php:138
+#: about/credits.php:139
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity şu proje kodlarını temel alarak geliştirilmiştir:"
 
-#: about/credits.php:159
+#: about/credits.php:160
 msgid "Thanks"
 msgstr "Teşekkürler"
 
-#: about/credits.php:160
+#: about/credits.php:161
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "Teşekkür etmek istediğimiz başka birçok insan ve örgüt var. Bu kişilerin birçoğu kodlama, yamama, geri bildirim, bağış, zaman ve diğer şekillerde katkıda bulundular.  Bir kısmı ise tüm bunların yapılmasını sağlayan araç gereçleri sağladılar."
 
-#: about/credits.php:185
+#: about/credits.php:186
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Unuttuklarımız varsa lütfen bildirin!)"
 
-#: about/links.php:14
-msgid "Other Things Named “Audacity” (not related to us)"
-msgstr "“Audacity” Olarak Adlandırılan Diğer Şeyler (Bizimle İlgili Olmayan)"
-
-#: about/links.php:16
-msgid "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is a digital voice recorder for smartphones."
-msgstr "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a>, akıllı telefonlar için bir sayısal ses kaydedicisidir"
-
-#: about/links.php:17
-msgid "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company for construction industry professionals."
-msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a>, inşaat endüstrisi profesyonelleri için bir araştırma şirketidir."
-
-#: about/links.php:18
-msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides software consulting services for businesses in Washington, Arizona and California."
-msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a>, Washington, Arizona ve California bölgelerinde, kurumsal yazılım danışmanlık hizmetleri verir."
-
-#: about/links.php:19
-msgid "Two different rock bands from <a href=\"http://www.myspace.com/audacityrocks\">Finland</a> and <a href=\"http://www.unsigned.com/audacity\">England</a> are named \"Audacity\"."
-msgstr "<a href=\"http://www.myspace.com/audacityrocks\">Finlandiya</a> ve <a href=\"http://www.unsigned.com/audacity\">İngiltere</a>'de \"Audacity\" adında iki farklı rock grubu bulunmaktadır."
-
-#: about/links.php:22
+#: about/links.php:15
 msgid "Other Open Source Audio Software"
 msgstr "Diğer Açık Kaynaklı Ses Yazılımları"
 
-#: about/links.php:23
+#: about/links.php:16
 msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux and Mac OS X."
 msgstr "<a href=\"http://ardour.org/\">Ardour</a>, GNU/Linux ve Mac OS X üzerinde çalışan güçlü bir sayısal ses iş istasyonudur."
 
-#: about/links.php:24
+#: about/links.php:17
 msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper for Microsoft Windows."
 msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> Microsoft Windows için özgürce ve ücretsiz olarak dağıtılan bir CD dönüştürücüdür."
 
-#: about/links.php:25
+#: about/links.php:18
 msgid "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
 msgstr "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> plak kayıtlarını dönüştürüp kaydeden ve temizleyen özgürce ve ücretsiz olarak dağıtılan bir araçtır."
 
-#: about/links.php:26
+#: about/links.php:19
 msgid "<a href=\"http://www.mixxx.org/\">Mixxx</a> is free cross-platform digital DJ mixing software with features like automatic BPM matching and seamless looping."
 msgstr "<a href=\"http://www.mixxx.org/\">Mixxx</a> farklı platformlarda çalışabilen, kendiliğinden BPM uydurma ve kesintisiz çevrim gibi özellikleri olan, özgürce ve ücretsiz olarak dağıtılan bir sayısal DJ karıştırma yazılımıdır."
 
-#: about/links.php:27
+#: about/links.php:20
 msgid "More free audio software at SourceForge.net:"
 msgstr "SourceForge.net sitesinden özgürce ve ücretsiz olarak dağıtılan daha başka yazılımlar:"
 
-#: about/links.php:29
+#: about/links.php:22
 msgid "Audio Editors"
 msgstr "Ses Düzenleyicileri"
 
-#: about/links.php:30
+#: about/links.php:23
 msgid "Audio Capture/Recording"
 msgstr "Ses Yakalama/Kaydetme"
 
-#: about/links.php:31
+#: about/links.php:24
 msgid "Audio Analysis"
 msgstr "Ses Çözümlemesi"
 
-#: about/links.php:34
+#: about/links.php:27
 msgid "Open Source Audio-Visual Software"
 msgstr "Açık Kaynaklı Ses ve Görüntü Yazılımları"
 
-#: about/links.php:35
+#: about/links.php:28
 msgid "<a href=\"http://www.blender.org/\">Blender</a> is a free, cross-platform 3D content creation suite for animations, interactive applications and video games."
 msgstr "<a href=\"http://www.blender.org/\">Blender</a>, canlandırma, etkileşimli uygulamalar ve video oyunları için, farklı platformlarda çalışabilen, özgürce ve ücretsiz olarak dağıtılan, ücretsiz bir 3B içerik oluşturma paketidir."
 
-#: about/links.php:36
+#: about/links.php:29
 msgid "<a href=\"http://mediainfo.sourceforge.net/\">MediaInfo</a> is a free, cross-platform tag and codec analyzer for audio and video files."
 msgstr "<a href=\"http://mediainfo.sourceforge.net/\">MediaInfo</a> ses ve görüntü dosyaları için, özgürce ve ücretsiz olarak dağıtılan, platformlar arası bir etiket ve kodlayıcı çözümleyicisidir."
 
-#: about/links.php:37
+#: about/links.php:30
 msgid "<a href=\"http://www.videolan.org/vlc/\">VLC media player</a> is a free, cross-platform media player for most audio and video files as well as DVD, Audio CD and VCD. VLC can also send, save and convert <a href=\"http://www.videolan.org/streaming-features.html\">audio and video streams</a>."
 msgstr "<a href=\"http://www.videolan.org/vlc/\">VLC ortam oynatıcı</a> pek çok görüntü ve ses dosyasının yanısıra, DVD, Ses CD, ve VCD gibi çeşitli ortamları oynatabilen, farklı platformlarda çalışabilen, özgürce ve ücretsiz olarak dağıtılan, bir ortam oynatıcısıdır . VLC ayrıca <a href=\"http://www.videolan.org/streaming-features.html\">ses ve görüntü akışlarını</a> gönderebilir, kaydedebilir ve dönüştürebilir."
 
-#: about/links.php:38
+#: about/links.php:31
 msgid "CD/DVD burning:"
 msgstr "CD/DVD yazma:"
 
-#: about/links.php:40
+#: about/links.php:33
 msgid "<a href=\"http://infrarecorder.org/\">InfraRecorder</a> for Windows"
 msgstr "Windows için <a href=\"http://infrarecorder.org/\">InfraRecorder</a>"
 
-#: about/links.php:41
+#: about/links.php:34
 msgid "<a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a> for Mac OS X"
 msgstr "Mac OSX için <a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a>."
 
-#: about/links.php:42
+#: about/links.php:35
 msgid "<a href=\"http://k3b.org/\">K3b</a> or <a href=\"http://archive.xfce.org/src/apps/xfburn/0.4\">Xfburn</a> for Linux"
 msgstr "Linux için <a href=\"http://k3b.org/\">K3b</a> ya da <a href=\"http://archive.xfce.org/src/apps/xfburn/0.4\">Xfburn</a>."
 
-#: about/links.php:44
+#: about/links.php:37
 msgid "Video editing/capture:"
 msgstr "Görüntü yakalama ve düzenleme:"
 
-#: about/links.php:46
+#: about/links.php:39
 msgid "<a href=\"http://www.virtualdub.org/\">VirtualDub</a> for Windows"
 msgstr "Windows için <a href=\"http://www.virtualdub.org/\">VirtualDub</a>"
 
-#: about/links.php:47
+#: about/links.php:40
 msgid "<a href=\"http://avidemux.sourceforge.net/\">Avidemux</a> for Windows, Mac OS X (Intel) and Linux"
 msgstr "Windows, Mac OS X (Intel) ve Linux için <a href=\"http://avidemux.sourceforge.net/\">Avidemux</a>."
 
-#: about/links.php:48
+#: about/links.php:41
 msgid "<a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a> for Mac OS X"
 msgstr "Mac OSX için <a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a>."
 
-#: about/links.php:49
+#: about/links.php:42
 msgid "<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> or <a href=\"http://www.kinodv.org/article/static/2\">Kino</a> for Linux"
 msgstr "Linux için <a href=\"http://cinelerra.org/about.php\">Cinelerra</a> ya da <a href=\"http://www.kinodv.org/article/static/2\">Kino</a>"
 
@@ -9287,16 +9260,3 @@ msgstr "Katkıda Bulunmanın Diğer Yolları"
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr "Bağış yapmanın yanında, <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">zaman ayırarak</a> bize <a href=\"../community/developers\">yazılım geliştirme</a>, <a href=\"../contact#feedback\">deneme</a>, <a href=\"http://manual.audacityteam.org/\">belge hazırlama</a>, <a href=\"../community/translation\">çeviri</a> ya da <a href=\"http://forum.audacityteam.org/\">Forum</a> içinde soruları yanıtlama gibi konularda yardımcı olabilirsiniz. Ayrıca en basit şekilde öneri ve isteklerinizi ileterek, yazılımın geliştirilmesini yönlendirebilir, Audacity hakkında tanıdıklarınıza bilgi vererek tanınmasını sağlayabilirsiniz. Audacity projesini desteklediğiniz için teşekkür ederiz."
 
-#~ msgid "The current release of Audacity is <a href=\"download/\">%s"
-#~ msgstr "Son Audacity sürümü <a href=\"download/\">%s"
-
-#~ msgid ""
-#~ "It replaces all previous 1.2, 1.3 and 2.x versions. See <a href="
-#~ "\"download/features-2.0\">New Features</a> for more information."
-#~ msgstr ""
-#~ "Bu sürüm, tüm önceki 1.2, 1.3 ve 2.x sürümlerinin yerini alıyor. Ek bilgi "
-#~ "için: <a href=\"download/features-2.0\">Yeni Özellikler</a> bölümüne "
-#~ "bakın.  "
-
-#~ msgid "2000/XP/Vista/7"
-#~ msgstr "2000/XP/Vista/7"
