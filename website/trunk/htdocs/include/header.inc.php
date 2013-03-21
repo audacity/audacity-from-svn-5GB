@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2006 - 12 Vaughan Johnson
+ * Copyright 2006 - 13 Vaughan Johnson
  * Copyright 2005 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
  * This file is licensed under a Creative Commons license:
@@ -18,52 +18,37 @@
   <link rel="stylesheet" href="<?=$sitePath?>/style.css" type="text/css">
 
   <!-- Google+ : This part needs to be within <head>. The badge is shown in the footer. -->
-	<link href="https://plus.google.com/108226440145001840649" rel="Audacity Team" />
+   <link href="https://plus.google.com/108226440145001840649" rel="Audacity Team" />
   <!-- end Google+ -->
 </head>
 <body>
 <p><a class="skip" href="#content"><?=_("Jump to page content")?></a></p>
 
-<!-- SiteSearch Google -->
-<form method="get" action="http://www.google.com/custom" target="_top">
-<table border="0" bgcolor="#ffffff" align="right">
-<tr><td nowrap="nowrap" valign="top" align="left" height="32">
-<a href="http://www.google.com/">
-<img src="http://www.google.com/logos/Logo_25wht.gif" border="0" alt="Google" align="middle"></img></a>
-</td>
-<td nowrap="nowrap">
-<input type="hidden" name="domains" value="audacity.sourceforge.net;audacityteam.org"></input>
-<label for="sbi" style="display: none">Enter your search terms</label>
-<input type="text" name="q" size="31" maxlength="255" value="" id="sbi"></input>
-<label for="sbb" style="display: none">Submit search form</label>
-<input type="submit" name="sa" value="Search" id="sbb"></input>
-</td></tr>
-<tr>
-<td>&nbsp;</td>
-<td nowrap="nowrap">
-<table>
-<tr>
-<td>
-<input type="radio" name="sitesearch" value="audacity.sourceforge.net" checked id="ss1"></input>
-<label for="ss1" title="Search audacity.sourceforge.net"><font size="-1" color="#000000">this site</font></label></td>
-<td>
-<input type="radio" name="sitesearch" value="audacityteam.org" id="ss2"></input>
-<label for="ss2" title="Search audacityteam.org"><font size="-1" color="#000000">Wiki/Forum/Team site</font></label></td>
-<td>
-<input type="radio" name="sitesearch" value="" id="ss0"></input>
-<label for="ss0" title="Search the Web"><font size="-1" color="#000000">Web</font></label></td>
-</tr>
-</table>
-<input type="hidden" name="client" value="pub-2386514291404644"></input>
-<input type="hidden" name="forid" value="1"></input>
-<input type="hidden" name="ie" value="ISO-8859-1"></input>
-<input type="hidden" name="oe" value="ISO-8859-1"></input>
-<input type="hidden" name="safe" value="active"></input>
-<input type="hidden" name="cof" value="GALT:#008000;GL:1;DIV:#336699;VLC:663399;AH:center;BGC:FFFFFF;LBGC:336699;ALC:0000FF;LC:0000FF;T:000000;GFNT:0000FF;GIMP:0000FF;LH:50;LW:127;L:http://audacity.sourceforge.net/images/Audacity-logo-r_50pct.jpg;S:http://audacity.sourceforge.net;FORID:1"></input>
-<input type="hidden" name="hl" value="en"></input>
-</td></tr></table>
-</form>
-<!-- end SiteSearch Google -->
+<!-- Google Custom Search Engine -->
+   <!-- search box code -->
+      <form action="http://www.google.com" id="cse-search-box" target="blank">
+         <table border="0" bgcolor="#ffffff" align="right">
+          <tr><td>
+            <div>
+               <input type="hidden" name="cx" value="partner-pub-2386514291404644:6498816767" />
+               <input type="hidden" name="ie" value="UTF-8" />
+               <input type="text" name="q" size="45" />
+               <input type="submit" name="sa" value="Search" />
+            </div>
+          </td></tr>
+          <tr><td align="center">
+             <font size="-1"><i>Search this site and audacityteam.org sites.</i></font>
+          </td></tr>
+         </table>
+      </form>
+      <script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"></script>
+   <!-- end search box code -->
+   <!-- popular queries code -->
+      <script type="text/javascript" src="http://www.google.com/cse/query_renderer.js"></script>
+      <div id="queries"></div>
+      <script src="http://www.google.com/cse/api/partner-pub-2386514291404644/cse/6498816767/queries/js?oe=UTF-8&amp;callback=(new+PopularQueryRenderer(document.getElementById(%22queries%22))).render"></script>     
+   <!-- end popular queries code -->
+<!-- end Google Custom Search Engine -->
 
 <?php
   $titleStr = _("Audacity: Free Sound Editor and Recording Software");
@@ -78,10 +63,10 @@
 ?>
 
 <!--<div align="right">
-	<a title="<?=_('Audacity Store, for Audacity-logo shirts, bags and ceramic mugs')?>" href="http://audacitystore.com/">
+   <a title="<?=_('Audacity Store, for Audacity-logo shirts, bags and ceramic mugs')?>" href="http://audacitystore.com/">
    <img src="../images/Audacity Store_banner_50pct.jpg" alt="<?=_('Audacity Store, for Audacity-logo shirts, bags and ceramic mugs')?>" />
-	</a>
-	<br>
+   </a>
+   <br>
 </div>-->
 
 <div id="sitenav">
@@ -142,7 +127,7 @@
           if ($selected) {
             if ($heading) {
               $li_class = "class=\"heading\"";
-	    }
+       }
             else if ($indented) {
               $li_class = "class=\"indented_selected\"";
             }
@@ -182,30 +167,30 @@
 		to ~35. Revert to commenting out the SourceForge scripts and doing the Google script.
 		- Vaughan
 
-		<script type="text/javascript">
-		var dfp_ord = Math.random()*10000000000000000;
-		var partner_clientid = '2386514291404644';
-		var unixgroupname = 'audacity';
-		</script>
-		<script type="text/javascript" src="http://genweb.ostg.com/google/sfproject.js"></script>
-	*/
-	?>
+      <script type="text/javascript">
+      var dfp_ord = Math.random()*10000000000000000;
+      var partner_clientid = '2386514291404644';
+      var unixgroupname = 'audacity';
+      </script>
+      <script type="text/javascript" src="http://genweb.ostg.com/google/sfproject.js"></script>
+   */
+   ?>
 
-	<script type="text/javascript"><!--
-	google_ad_client = "ca-pub-2386514291404644";
-	/* AdSense_under_navbar */
-	google_ad_slot = "4949551373";
-	google_ad_width = 160;
-	google_ad_height = 600;
-	//-->
-	</script>
-	<script type="text/javascript"
-	  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-	</script>
-	
-	<center>
-		<a href="/contact/privacy#advertising"><font size="-2"><?=_("Advertisements Policy")?></font></a>  
-	</center>
+   <script type="text/javascript"><!--
+   google_ad_client = "ca-pub-2386514291404644";
+   /* AdSense_under_navbar */
+   google_ad_slot = "4949551373";
+   google_ad_width = 160;
+   google_ad_height = 600;
+   //-->
+   </script>
+   <script type="text/javascript"
+     src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+   </script>
+   
+   <center>
+      <a href="/contact/privacy#advertising"><font size="-2"><?=_("Advertisements Policy")?></font></a>  
+   </center>
   </div>
 
   </div> <!-- leftcolumn -->
