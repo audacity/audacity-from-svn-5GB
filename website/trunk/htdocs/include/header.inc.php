@@ -37,7 +37,7 @@
             </div>
           </td></tr>
           <tr><td align="center">
-             <font size="-1"><i>Search this site and audacityteam.org sites.</i></font>
+             <font size="-1"><i>Search Audacity sites and other selected sites.</i></font>
           </td></tr>
          </table>
       </form>
