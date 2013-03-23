@@ -43,11 +43,14 @@
       </form>
       <script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"></script>
    <!-- end search box code -->
-   <!-- popular queries code -->
-      <script type="text/javascript" src="http://www.google.com/cse/query_renderer.js"></script>
-      <div id="queries"></div>
-      <script src="http://www.google.com/cse/api/partner-pub-2386514291404644/cse/6498816767/queries/js?oe=UTF-8&amp;callback=(new+PopularQueryRenderer(document.getElementById(%22queries%22))).render"></script>     
-   <!-- end popular queries code -->
+   <!-- Vaughan, 2013-03-22: This optional code from Google is causing display problems against the supplied "search box code" above, 
+         that's modified from Google-supplied, to be top-right on our site. -->
+      <!-- popular queries code -->
+        <script type="text/javascript" src="http://www.google.com/cse/query_renderer.js"></script>
+        <div id="queries"></div>
+        <script src="http://www.google.com/cse/api/partner-pub-2386514291404644/cse/6498816767/queries/js?oe=UTF-8&amp;callback=(new+PopularQueryRenderer(document.getElementById(%22queries%22))).render"></script>     
+      <!-- end popular queries code -->
+   <!-- end comment out popular queries code -->
 <!-- end Google Custom Search Engine -->
 
 <?php
@@ -157,15 +160,15 @@
   </div>
 
   <div id="adsense">
-	<?php
-	/* 4/30/2007: Ross Turk of SourceForge says please just direct all revenue to 
-		Audacity for one month, due to error I made because of their documentation. 
-	   6/1/2007: The above is the Sourceforge code (http://downloads.sourceforge.net/sitedocs/afc_setup.pdf). 
-		This commented out stuff is the code that puts up a very similar type of ad unit, 
-		in case we ever need it again.
-	   6/3/2007: Something's wrong with their script, so we've plummeted from ~85k pageviews per day 
-		to ~35. Revert to commenting out the SourceForge scripts and doing the Google script.
-		- Vaughan
+   <?php
+   /* 4/30/2007: Ross Turk of SourceForge says please just direct all revenue to 
+      Audacity for one month, due to error I made because of their documentation. 
+      6/1/2007: The above is the Sourceforge code (http://downloads.sourceforge.net/sitedocs/afc_setup.pdf). 
+      This commented out stuff is the code that puts up a very similar type of ad unit, 
+      in case we ever need it again.
+      6/3/2007: Something's wrong with their script, so we've plummeted from ~85k pageviews per day 
+      to ~35. Revert to commenting out the SourceForge scripts and doing the Google script.
+      - Vaughan
 
       <script type="text/javascript">
       var dfp_ord = Math.random()*10000000000000000;
