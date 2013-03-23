@@ -43,14 +43,14 @@
       </form>
       <script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"></script>
    <!-- end search box code -->
-   <!-- Vaughan, 2013-03-22: This optional code from Google is causing display problems against the supplied "search box code" above, 
-         that's modified from Google-supplied, to be top-right on our site. -->
-      <!-- popular queries code -->
-        <script type="text/javascript" src="http://www.google.com/cse/query_renderer.js"></script>
-        <div id="queries"></div>
-        <script src="http://www.google.com/cse/api/partner-pub-2386514291404644/cse/6498816767/queries/js?oe=UTF-8&amp;callback=(new+PopularQueryRenderer(document.getElementById(%22queries%22))).render"></script>     
-      <!-- end popular queries code -->
-   <!-- end comment out popular queries code -->
+   <!-- /* Vaughan, 2013-03-22: This optional code from Google is causing display problems against the supplied "search box code" above, 
+      that's modified from Google-supplied, to be top-right on our site. Popular queries seem to work, regardless. Revisit later. */
+         popular queries code
+            <script type="text/javascript" src="http://www.google.com/cse/query_renderer.js"></script>
+            <div id="queries"></div>
+            <script src="http://www.google.com/cse/api/partner-pub-2386514291404644/cse/6498816767/queries/js?oe=UTF-8&amp;callback=(new+PopularQueryRenderer(document.getElementById(%22queries%22))).render"></script>     
+        end popular queries code 
+   --> 
 <!-- end Google Custom Search Engine -->
 
 <?php
