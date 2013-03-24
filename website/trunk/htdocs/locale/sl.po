@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacity website\n"
+"Project-Id-Version: Spletišče Audacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-31 20:07+0000\n"
-"PO-Revision-Date: 2012-11-14 19:09-0000\n"
-"Last-Translator: filmsi\n"
+"POT-Creation-Date: 2013-03-22 07:26+0000\n"
+"PO-Revision-Date: 2013-03-24 08:02-0000\n"
+"Last-Translator: gale <gale@audacityteam.org>\n"
 "Language-Team: sl.libreoffice.org <users@sl.libreoffice.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,6 +17,7 @@ msgstr ""
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 
 #: main.inc.php:20
 msgid "Home"
@@ -205,8 +206,9 @@ msgid "View the FAQ in the online Manual"
 msgstr "Pokaži pogosta vprašanja v spletnem priročniku"
 
 #: help/faq.php:24
+#, fuzzy
 msgid "In Audacity, click Help > Manual (in web browser), then the \"FAQ\" link in the \"Navigation\" box on the left. The Manual is included with the <a href=\"http://audacity.sourceforge.net/download/windows\">Windows .exe</a> or <a href=\"http://audacity.sourceforge.net/download/mac\">Mac OS X .dmg</a> Audacity installers."
-msgstr ""
+msgstr "se splača prevest"
 
 #: help/faq.php:27
 msgid "Other languages"
@@ -214,7 +216,7 @@ msgstr "Drugi jeziki"
 
 #: help/faq.php:28
 msgid "View the localized FAQ in the online Manual:"
-msgstr ""
+msgstr "Oglejte si prevedena pogosta vprašanja v spletnem priročniku:"
 
 #: help/faq.php:30
 msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/fr\">French</a>"
@@ -230,23 +232,23 @@ msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/es\">španski</a>"
 
 #: help/faq.php:34
 msgid "<b>Note: </b>For the above three locales, the translation of the remainder of the Manual is not yet fully complete."
-msgstr ""
+msgstr "<b>Opomba: </b>za zgornje tri jezike prevod priročnika še ni povsem končan."
 
 #: help/faq.php:36
+#, fuzzy
 msgid "For all other languages, please check <a href=\"faq_i18n\">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0.x. The Manual will be updated for other languages in due course. Volunteers to help with <a href=\"http://manual.audacityteam.org/man/Help:Translating\">translating the Manual<a/> are welcomed."
-msgstr ""
+msgstr "se splača prevest"
 
 #: help/faq.php:38
 msgid "Still need help?"
 msgstr "Še vedno potrebujete pomoč?"
 
 #: help/faq.php:40
-#, fuzzy
 msgid ""
 "If the Frequently Asked Questions don't resolve your query, see the \n"
 "<a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">\n"
 "contact us</a> for help."
-msgstr "Tukaj je nekaj najbolj pogostih vprašanj o Audacity.  Če vašega vprašanja ni tukaj, si oglejte <a href=\"documentation\">dokumentacijo</a> ali se za pomoč <a href=\"../contact/\">obrnite na nas</a>."
+msgstr "Če vašega vprašanja ni med pogostimi vprašanji, zbranimi tukaj, si oglejte <a href=\"documentation\">dokumentacijo</a> ali se za pomoč <a href=\"../contact/\">obrnite na nas</a>."
 
 #: help/faq_i18n.php:22
 msgid "<h4 id=\"about\">About Audacity</h4>"
@@ -257,27 +259,28 @@ msgid "Is Audacity really free?  Why?"
 msgstr "Je Audacity zares zastonj? Zakaj?"
 
 #: help/faq_i18n.php:26
-#, fuzzy
 msgid ""
 "<p>Yes, Audacity is <a href=\"../about/\">completely free, open source software</a>.  You are free to use this program for any legitimate purpose, including personal, commercial or educational, and may install it on as many different computers as you wish. You are also free to give it away, sell it, or modify it for your own use, under the terms of the <a href=\"../about/license\">GNU General Public License</a>.</p>\n"
 "<p>The authors of Audacity decided to release it under the GPL for many reasons. Some of us do it out of generosity. Some of us do it for moral reasons, because we feel that all software should be free; others believe that there is a place for both free and proprietary software.</p>\n"
 "<p>One reason Audacity is free is so that it will be more popular and useful.  Yet another reason is to encourage collaboration. Because of Audacity's free license, dozens of people around the world have contributed code, bug fixes, documentation, and graphics.</p>\n"
 "<p>We welcome <a href=\"/donate/\">donations</a> to support Audacity development.</p>"
 msgstr ""
-"<p>Da, Audacity je <a href=\"../about/\">popolnoma brezplačna, odprtokodna programska oprema</a>.  Ta program lahko brezplačno uporabljate za osebne ali poslovne namene.  Prav tako ga lahko brezplačno podarite, prodajate ali spreminjate za lastno uporabo pod pogoji <a href=\"../about/license\">splošne javne licence GNU</a>.</p>\n"
-"<p>Avtorji Audacity so se odločili aplikacijo objaviti pod GPL iz več razlogov. Nekateri to počnemo iz radodarnosti. Nekateri to počnemo iz moralnih razlogov, ker čutimo, da bi morala biti vsa programska oprema zastonj; drugi verjamejo, da je prostor za tako brezplačno kot lastniško programsko opremo.</p>\n"
-"<p>Eden od razlogov, zakaj je Audacity brezplačen, je tudi, da bi bil bolj priljubljen in uporaben.  Še en razlog je vzpodbuditi sodelovanje. Zaradi brezplačne licence Audacity so ducati ljudi po svetu prispevali kodo, popravke hroščev, dokumentacijo in grafiko.</p><p>Veseli pa smo <a href=\"../community/donate\">donacij</a> v podporo razvoju Audacity.</p>"
+"<p>Da, Audacity je <a href=\"../about/\">popolnoma brezplačna, odprtokodna programska oprema</a>. Ta program lahko brezplačno uporabljate za osebne ali poslovne namene. Prav tako ga lahko brezplačno podarite, prodajate ali spreminjate za lastno uporabo pod pogoji <a href=\"../about/license\">splošnega javnega dovoljenja GNU</a>.</p>\n"
+"<p>Avtorji Audacity so se odločili program objaviti pod GPL iz več razlogov. Nekateri to počnemo iz radodarnosti. Nekateri to počnemo iz moralnih razlogov, ker čutimo, da bi morala biti vsa programska oprema zastonj; drugi verjamejo, da je prostor za tako brezplačno kot lastniško programsko opremo.</p>\n"
+"<p>Eden od razlogov, zakaj je Audacity brezplačen, je tudi, da bi bil bolj priljubljen in uporaben.  Še en razlog je vzpodbuditi sodelovanje. Zaradi brezplačne licence Audacity so ducati ljudi po svetu prispevali kodo, popravke hroščev, dokumentacijo in grafiko.</p>\n"
+"<p>Veseli pa smo <a href=\"/donate\">donacij</a> v podporo razvoju Audacity.</p>"
 
 #: help/faq_i18n.php:32
 msgid "Does Audacity contain any viruses, spyware or adware?"
 msgstr "Vsebuje Audacity kakšne viruse, programe za vohljanje ali oglaševanje?"
 
 #: help/faq_i18n.php:33
-#, fuzzy
 msgid ""
 "<p>No. Audacity does not include any type of malware or adware if you download it from this site.  Audacity is <a href=\"../about/\">completely free and open source</a>.  It is developed by a not-for-profit volunteer group, and the source code is available for anyone to study or use.</p>\n"
 "<p>Sometimes, virus checkers can report false positives for the Audacity installer for Windows (.exe). This is because it is a compressed installer. If you are concerned, please download the .zip file instead and check that for viruses.</p>"
-msgstr "<p>Ne. Audacity ne vsebuje vohunskih ali reklamnih programov.  Audacity je <a href=\"../about/\">popolnoma brezplačen in odprtokoden</a>.  Razvija ga neprofitna skupina prostovoljcev in izvorna koda je na voljo vsakomur za študij ali uporabo.</p>"
+msgstr ""
+"<p>Ne. Audacity ne vsebuje vohunskih ali reklamnih programov, če ga prenesete s tega spletišča.  Audacity je <a href=\"../about/\">popolnoma brezplačen in odprtokoden</a>.  Razvija ga neprofitna skupina prostovoljcev in izvorna koda je na voljo vsakomur za študij ali uporabo.</p>\n"
+"<p>Včasih virusni programi javijo lažne zadetke za namestitveni program Audacity za Windows (.exe). Vzrok je ta, da je namestitveni program stisnjen. Če ste v dvomih, raje prenesite datoteko .zip in preverite, če vsebuje viruse.</p>"
 
 #: help/faq_i18n.php:37
 msgid "May I distribute copies of Audacity?"
@@ -316,10 +319,11 @@ msgid "How can I change the language displayed in Audacity?"
 msgstr "Kako spremenim jezik vmesnika v programu Audacity?"
 
 #: help/faq_i18n.php:55
+#, fuzzy
 msgid ""
 "<p>The language Audacity uses on first run is determined by the language the operating system uses. To change the current Audacity language, go to the Interface tab of Preferences, choose the specific language required from the \"Language\" box, then click OK.</p>\n"
 "<p>If Audacity is already running in an unfamiliar language, you can still navigate the menus sequentially to change the language, or change it in the audacity.cfg settings file. For instructions, please see <a href=\"http://wiki.audacityteam.org/wiki/Changing_the_current_language\">Changing the current language</a> on the Audacity <a href=\"http://wiki.audacityteam.org\">Wiki</a>.</p>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: help/faq_i18n.php:59
 msgid "Does Audacity run on 64-bit systems?"
@@ -330,6 +334,8 @@ msgid ""
 "<p>There is no 64-bit version of Audacity, but in principle it should run on 64-bit systems, subject to having appropriate 64-bit drivers for the sound device.</p> \n"
 "<p>Users upgrading from 32-bit Windows XP to 64-bit Windows Vista or 7 should make especially sure their computer is well above Audacity's minimum <a href=\"../download/windows#sysreq\">system requirements for Windows</a>.</p>"
 msgstr ""
+"<p>64-bitna različica Audacity ne obstaja, načeloma pa bi morala delovati na 64-bitnih sistemih, če le imate ustrezne 64-bitne gonilnike za zvočno napravo.</p> \n"
+"<p>Uporabniki, ki nadgrajujete z 32-bitnih Windows XP na 64-bitni Windows Vista ali 7, morajo preveriti, da njihov računalnik presega minimalne <a href=\"../download/windows#sysreq\">sistemske zahteve Audacity za sisteme Windows</a>.</p>"
 
 #: help/faq_i18n.php:66
 msgid "<h4 id=\"install\">Installation and Plug-Ins</h4>"
@@ -340,6 +346,7 @@ msgid "How do I download and install the LAME MP3 encoder?"
 msgstr "Kako prenesem in namestim kodirnik LAME MP3?"
 
 #: help/faq_i18n.php:70
+#, fuzzy
 msgid ""
 "<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.\n"
 "<h3 id=\"win\">Windows</h3>\n"
@@ -363,7 +370,7 @@ msgid ""
 "</ol>\n"
 "<h3 id=\"nix\">Linux/Unix</h3>\n"
 "Follow <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions\">these instructions</a> on our <a href=\"http://audacityteam.org/wiki/\">Wiki</a> to download and install a suitable LAME package from the internet."
-msgstr ""
+msgstr "se splača prevest"
 
 #: help/faq_i18n.php:94
 msgid "What should I do if I have problems downloading or installing Audacity?"
@@ -382,9 +389,8 @@ msgid "How can I record in stereo?"
 msgstr "Kako lahko snemam v stereo tehniki?"
 
 #: help/faq_i18n.php:104
-#, fuzzy
 msgid "<p>To record in stereo, open the Audacity preferences.  In the \"Devices\" section, change the number of recording channels from 1 (mono) to 2 (stereo).</p>"
-msgstr "<p>Za snemanje v načinu stereo odprite nastavitve programa Audacity.  V razdelku “Zvočni V/I” spremenite število snemalnih kanalov z 1 (mono) na 2 (stereo).</p>"
+msgstr "<p>Za snemanje v načinu stereo odprite nastavitve programa Audacity.  V razdelku \"Naprave\" spremenite število snemalnih kanalov z 1 (mono) na 2 (stereo).</p>"
 
 #: help/faq_i18n.php:107
 msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
@@ -421,13 +427,13 @@ msgstr ""
 
 #: help/faq_i18n.php:120
 #: help/faq_i18n.php:170
-#: help/faq_i18n.php:228
+#: help/faq_i18n.php:227
 msgid "See also:"
 msgstr "Poglejte tudi:"
 
 #: help/faq_i18n.php:120
 #: help/faq_i18n.php:201
-#: help/faq_i18n.php:228
+#: help/faq_i18n.php:227
 msgid "How do I save my recording on an audio CD?"
 msgstr "Kako shranim svoj posnetek na zvočni CD?"
 
@@ -447,6 +453,7 @@ msgid "Can I play a track while recording a new one on top of it?"
 msgstr "Lahko predvajam sled med snemanjem nove čez njo?"
 
 #: help/faq_i18n.php:129
+#, fuzzy
 msgid ""
 "<p>This is called multi-track recording.  It makes it possible to record harmonies with yourself, or add new instruments or vocals to an existing recording.  To do this in Audacity, open the \"Recording\" tab of Audacity preferences and check the box labeled <b>Overdub: Play other tracks while recording new one.</b></p>\n"
 "<p>See also:\n"
@@ -454,14 +461,13 @@ msgid ""
 "\t\t<li><a href=\"faq_i18n?s=recording&amp;i=sync\">Why isn't my new track in sync with the previous ones?</a></li>\n"
 "\t</ul>\n"
 "</p>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: help/faq_i18n.php:137
 msgid "Why isn’t my new track in sync with the previous ones?"
 msgstr "Zakaj ni moja nova sled sinhrona s predhodnimi sledmi?"
 
 #: help/faq_i18n.php:138
-#, fuzzy
 msgid ""
 "<p>When you make a <a href=\"faq_i18n?s=recording&amp;i=multi-track\">multi-track recording</a>, there is an unpredictable delay between playback and recording.  Audacity tries to correct for this automatically, but this doesn't yet work on all computers.</p>\n"
 "<p>If a new track is not synchronized with the others, you can zoom in and use the Time Shift tool to drag it to the correct location.</p>"
@@ -509,18 +515,20 @@ msgid "How do I open an Audacity project (AUP file) in another program?"
 msgstr "Kako odprem projekt Audacity (datoteka AUP) v drugem programu?"
 
 #: help/faq_i18n.php:163
+#, fuzzy
 msgid ""
 "<p>Audacity project files are saved in a special format that only Audacity can open. To open your project in another program or <a href=\"faq_i18n?s=files&amp;i=burn-cd\">burn it to CD</a>, firstly open the .aup file in Audacity if you have already saved one (if you saved it recently it will be in the File&nbsp;>&nbsp;Recent Files menu). Then use the <b>Export</b> commands further down the File menu to save the audio in a standard format like WAV or AIFF.</p>\n"
 "<p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>   \n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: help/faq_i18n.php:168
 msgid "Why does Audacity create a folder full of .au files when I save a project?"
 msgstr "Zakaj Audacity ustvari mapo, polno datotek .au, ko shranim projekt?"
 
 #: help/faq_i18n.php:169
+#, fuzzy
 msgid "<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently. When you save an .aup project file, Audacity stores all the pieces in a _data folder that has the same name as the .aup file. For example, \"song.aup\" will open the pieces inside the \"song_data\" folder.</p>  <p><b>You should not touch the .au files yourself, or move or rename the _data folder</b>. Simply open the .aup file, then Audacity will load the .au files in the correct sequence automatically.</p> <p>To learn more about working with Audacity projects, please see our <a href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips\">File Management Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php\">Wiki</a>.</p>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: help/faq_i18n.php:173
 msgid "Audacity crashed!  Can I recover any unsaved data?"
@@ -556,15 +564,15 @@ msgid "Can Audacity import additional formats like M4A, WMA or FLAC?"
 msgstr "Lahko v Audacity uvozim datoteke v zapisu kot so M4A, WMA ali FLAC?"
 
 #: help/faq_i18n.php:190
+#, fuzzy
 msgid "<p>Yes. Install the optional <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg</a> library. FFmpeg also allows Audacity to import audio from video files. Note that on Mac OS X, Audacity has built-in support for M4A import without installing FFmpeg, using the QuickTime components supplied by the operating system.</p>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: help/faq_i18n.php:194
 msgid "How do I import a track from an audio CD?"
 msgstr "Kako uvozim sled z zvočnega CD?"
 
 #: help/faq_i18n.php:195
-#, fuzzy
 msgid ""
 "<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>\n"
 "<p>On Mac OS X computers, CD tracks appear in Finder as AIFF files so can be imported directly into Audacity. For more help on importing audio from CD tracks on both Windows and OS X, see our Wiki help page on <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How to import CDs</a>.</p>\n"
@@ -572,7 +580,7 @@ msgid ""
 msgstr ""
 "<p>Audacity ne more neposredno uvoziti sledi z zvočnega CD-ja.  Uporabiti morate poseben program, kot sta <a href=\"http://cdexos.sourceforge.net/\">CDex</a> ali <a href=\"http://www.apple.com/itunes/\">iTunes</a>, s katerima izluščite sledi CD-ja v zapisu, ki ga lahko Audacity prebere, npr. WAV ali AIFF.</p>\n"
 "<p>Na računalnikih Mac OS X, se sledi pojavijo v Finder-ju kot datoteke AIFF in jih lahko neposredno uvozite v Audacity. Za dodatno pomoč o uvažanju zvoka s sledi CD-ja v okoljih Windows in OS X si oglejte stran pomoči wikija z naslovom <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">Kako uvozimo CD-je</a>.</p>\n"
-"<p>Glejte tudi: <a href=\"faq?s=files&amp;i=burn-cd\">Kako shranim svoj posnetek na zvočni CD?</a></p>\n"
+"<p>Glejte tudi: <a href=\"faq_i18n?s=files&amp;i=burn-cd\">Kako shranim svoj posnetek na zvočni CD?</a></p>\n"
 
 #: help/faq_i18n.php:202
 msgid "After making a recording or editing a file in Audacity, follow these steps to save your work on an audio CD:"
@@ -614,7 +622,6 @@ msgid "How can I split a long recording into multiple files or CD tracks?"
 msgstr "Kako lahko razdelim dolg posnetek na več datotek ali sledi CD?"
 
 #: help/faq_i18n.php:219
-#, fuzzy
 msgid ""
 "<p>Follow these steps to create a separate file for each song or segment of a long recording.  This is particularly useful if you are creating a CD, since each file will appear as a separate track on the CD.</p>\n"
 "<ol>\n"
@@ -624,34 +631,28 @@ msgid ""
 "  <li>When you are finished, choose “Export Multiple” from the File menu.  When you click the “Export” button, Audacity will save each song as a separate file, using the format and location you choose.</li>\n"
 "</ol>"
 msgstr ""
-"<p>Sledite tem korakom za ustvarjanje ločene datoteke za vsako pesem ali segment daljšega posnetka.  To je še posebej uporabno, če ustvarjate glasbeni CD, saj bo vsaka datoteka posamezna pesem.</p>\n"
+"<p>Sledite tem korakom za ustvarjanje ločene datoteke za vsako pesem ali segment daljšega posnetka. To je še posebej uporabno, če ustvarjate glasbeni CD, saj bo vsaka datoteka posamezna pesem.</p>\n"
 "<ol>\n"
 "  <li>S klikom postavite kazalko na začetek prve pesmi.</li>\n"
-"  <li>Izberite “Dodaj naslov izbiri” iz menija Projekt.  Če želite lahko vtipkate ime pesmi.</li>\n"
+"  <li>Izberite “Dodaj naslov izbiri” iz menija Projekt (ali menija Sledi v Audacity Beta).  Če želite lahko vtipkate ime pesmi.</li>\n"
 "  <li>Ponovite koraka 1 in 2 za vsako pesem.</li>\n"
 "  <li>Ko končate, izberite “Izvozi posamično” iz menija Datoteka.  Ko kliknete gumb “Izvozi”, bo Audacity vsako pesem posnel kot ločeno datoteko, pri čemer bo uporabljen zapis in mesto, ki ste ga izbrali.</li>\n"
 "</ol>"
 
 #: help/faq_i18n.php:226
-msgid ""
-"Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically.</p>\n"
-"<p>Full instructions for both methods are in the illustrated tutorial"
-msgstr ""
-
-#: help/faq_i18n.php:227
 #, fuzzy
-msgid "on the Audacity Wiki."
-msgstr " Wikija za Audacity."
+msgid "Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically using Analyze > Silence Finder. If you do not have Silence Finder in your version of Audacity, it can be found in the <a href=\"http://wiki.audacityteam.org/w/images/8/8d/NyPlug-ins_126.zip\">Audacity legacy 1.2.6 Plug-in Pack</a>."
+msgstr "se splača prevest"
 
-#: help/faq_i18n.php:233
+#: help/faq_i18n.php:232
 msgid "<h4 id=\"editing\">Editing</h4>"
 msgstr "<h4 id=\"editing\">Montaža</h4>"
 
-#: help/faq_i18n.php:236
+#: help/faq_i18n.php:235
 msgid "Why can’t I use the effects or other menu items?"
 msgstr "Zakaj ne morem uporabiti učinkov ali drugih izbir v menijih?"
 
-#: help/faq_i18n.php:237
+#: help/faq_i18n.php:236
 msgid ""
 "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>\n"
 "<p>Also, many menu items are disabled while playing, recording, or pausing a track. To enable them, press the yellow <b>Stop</b> button.</p>"
@@ -659,20 +660,19 @@ msgstr ""
 "<p>Nekatere menijske izbire so sivinske ali onemogočene, dokler niso pripravljene za uporabo.  Pred uporabo učinka morate izbrati zvok, ki ga želite spremeniti.  Za izbiro zvokov kliknite in povlecite z orodjem za izbiro, da ga osvetlite, ali izberite ukaz “Izberi vse” v meniju Uredi.</p>\n"
 "<p>Prav tako so številne menijske izbire onemogočene med predvajanjem, snemanjem ali prekinjenim predvajanjem sledi. Da jih omogočite, pritisnite rumeni gumb <b>Ustavi</b>.</p>"
 
-#: help/faq_i18n.php:241
+#: help/faq_i18n.php:240
 msgid "How do I mix two tracks together?"
 msgstr "Kako zmešam dve zvočne sledi skupaj?"
 
-#: help/faq_i18n.php:242
+#: help/faq_i18n.php:241
 msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the <b>Play</b> button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
 msgstr "<p>Za mešanje dveh datotek le uvozite obe v Audacity.  Pojavili se bosta v ločenih sledeh in mešanje se začne, ko pritisnete gumb <b>Predvajaj</b>.  Uporabite lahko orodje Časovni zamik za premikanje naokoli, tako da se začnejo ob različnem času, ali uporabite druge ukaze za urejanje, da bi spremenili katero koli od sledi.</p>"
 
-#: help/faq_i18n.php:245
+#: help/faq_i18n.php:244
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
 msgstr "Ali lahko odstranim vokale iz posnetka, da bi ustvaril glasbeno sled za karaoke?"
 
-#: help/faq_i18n.php:246
-#, fuzzy
+#: help/faq_i18n.php:245
 msgid ""
 "<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals are exactly the same on both stereo channels, you can remove them by “subtracting” one channel from the other.  This works for many studio recordings, where the vocal track is mixed exactly in the center.</p>\n"
 "<p>To do this in Audacity:</p>\n"
@@ -695,36 +695,36 @@ msgstr ""
 "  <li>Iz menija Učinki izberite “Invert”.</li>\n"
 "  <li>Z uporabo menijev sledi spremenite vse sledi v “Mono.”</li>\n"
 "</ol>\n"
-"<p>Pritisnite gumb Predvajaj, da bi slišali rezultate.  Če ste imeli srečo, bo glas izginil, večina instrumentov pa bo neprizadetih, kot pri posnetku za karaoke.  Za shranjevanje rezultata lahko uporabite ukaze Izvozi v meniju Datoteka.</p>\n"
+"<p>Pritisnite gumb <b>Predvajaj</b>, da bi slišali rezultate. Če ste imeli srečo, bo glas izginil, večina instrumentov pa bo neprizadetih, kot pri posnetku za karaoke. Za shranjevanje rezultata lahko uporabite ukaze Izvozi v meniju Datoteka.</p>\n"
 "<p>Če vokali niso enakomerno porazdeljeni na obe stereo sledi, obstajajo druge tehnike ali dodatni vtičniki, ki jih lahko preizkusite. Oglejte si našo stran Wiki <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Odstranjevanje vokalov</a> za več podrobnosti.</p>\n"
 
-#: help/faq_i18n.php:276
+#: help/faq_i18n.php:275
 msgid "Other frequently asked questions..."
 msgstr "Druga pogosto zastavljena vprašanja ..."
 
-#: help/faq_i18n.php:280
+#: help/faq_i18n.php:279
 msgid "Older Frequently Asked Questions for international help"
 msgstr "Starejša pogosto zastavljena vprašanja (FAQ) za mednarodno pomoč"
 
-#: help/faq_i18n.php:284
+#: help/faq_i18n.php:283
+#, fuzzy
 msgid "These are older Frequently Asked Questions (FAQ), <b>only for those languages where the latest <a href=\"faq\">FAQ</a> doesn't yet have a translation.</b> These questions remain largely valid for Audacity 2.0.x, but please use the latest FAQ if you can do so."
-msgstr ""
+msgstr "se splača prevest"
 
-#: help/faq_i18n.php:286
+#: help/faq_i18n.php:285
 msgid "Additional help in French, German, Russian or Spanish can be obtained from our <a href=\"http://forum.audacityteam.org/viewforum.php?f=3\">International Forum</a>."
-msgstr ""
+msgstr "Poleg tega je na voljo dodatna pomoč v francoskem, nemškem, ruskem in španskem jeziku na našem <a href=\"http://forum.audacityteam.org/viewforum.php?f=3\">mednarodnem forumu</a>."
 
 #. i18n-hint:  Please add a note that the manuals below are in English.
 #. If there is documentation for Audacity 2.x available in your language
 #. but not already linked to at the bottom of this page, please add the links.
 #: help/documentation.php:18
-#, fuzzy
 msgid "This page contains links to Manuals (with Tutorials) for the free Audacity audio editor. For additional help, see the <a href=\"/faq\">Frequently Asked Questions</a> and additional <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">Tutorials</a> and <a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/\">Wiki</a>."
-msgstr "Ta stran vsebuje priročnike in uporabniške vodnike za brezplačni urejevalnik zvoka Audacity. Za dodatno pomoč si oglejte še <a href=\"faq\">pogosto zastavljena vprašanja</a> in <a href=\"tutorials\">razložene primere</a>, pa tudi <a href=\"http://audacityteam.org/wiki/index.php?title=Tips\">nasvete (v angl.)</a> na <a href=\"http://audacityteam.org/wiki/\">angleškem wikiju</a> Audacity."
+msgstr "Ta stran vsebuje priročnike in uporabniške vodnike za brezplačni urejevalnik zvoka Audacity. Za dodatno pomoč si oglejte še <a href=\"faq\">pogosto zastavljena vprašanja</a> in <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">razložene primere</a>, pa tudi <a href=\"http://audacityteam.org/wiki/Category:Tips\">nasvete (v angl.)</a> na <a href=\"http://audacityteam.org/\">angleškem wikiju</a> Audacity."
 
 #: help/documentation.php:21
 msgid "Legacy documentation for old versions of Audacity can be found <a href=\"/help/legacy_documentation\">here</a>."
-msgstr ""
+msgstr "Opuščeno dokumentacijo za stare različice Audacity najdete <a href=\"/help/legacy_documentation\">tukaj</a>."
 
 #: help/documentation.php:23
 msgid "Audacity Manuals (with Tutorials)"
@@ -732,7 +732,7 @@ msgstr "Priročniki Audacity (s primeri uporabe)"
 
 #: help/documentation.php:25
 msgid "The <a href=\"/download/windows\">Windows .exe</a> and <a href=\"/download/mac\">Mac OS X .dmg</a> installers already include a built-in copy of the Manual. To access it, click <b>Help > Manual (in web browser)</b> in the Audacity program."
-msgstr ""
+msgstr "Namestitveni datoteki za <a href=\"/download/windows\">Windows .exe</a> in <a href=\"/download/mac\">Mac OS X .dmg</a> že vsebujeta vgrajeno kopijo priročnika. V programu Audacity ga odprete s klikom <b>Help > Priročnik (v brskalniku)</b>."
 
 #: help/documentation.php:30
 #, php-format
@@ -753,9 +753,8 @@ msgid "View the latest Audacity alpha development Manual online.</a>"
 msgstr "Preberite si najnovejši spletni priročnik za Audacity %s v nastajanju.</a>"
 
 #: help/documentation.php:32
-#, fuzzy
 msgid "(This Manual is only for the latest Audacity alpha <a href=\"http://wiki.audacityteam.org/wiki/Nightly_Builds\">Nightly Builds</a>)."
-msgstr "Prevajanje Audacity</a> na <a href=\"http://wiki.audacityteam.org/index.php\">wikiju</a> Audacity."
+msgstr "(Ta priročnik je namenjen zadnjim alfa različicam <a href=\"http://wiki.audacityteam.org/wiki/Nightly_Builds\">nočnih gradenj</a> Audacity)."
 
 #. i18n-hint: Text below this hint is local help for
 #. specific languages and should be left untranslated.
@@ -1185,7 +1184,6 @@ msgid "Documentation and Support"
 msgstr "Dokumentacija in podpora"
 
 #: help/index.php:16
-#, fuzzy
 msgid ""
 "<p><b>Questions?</b> First, check our <a href=\"faq\">Frequently Asked Questions</a> and the following resources:</p>\n"
 "\n"
@@ -1204,10 +1202,10 @@ msgstr ""
 "\n"
 "<p>\n"
 " <ul>\n"
-"   <li><a href=\"documentation\">Dokumentacija</a> - preberite uporabniški priročnik in hitri sklicni priročnik.</li>\n"
-"   <li><a href=\"http://audacityteam.org/wiki\">Wiki Audacity</a> je obširen vir, ki ga urejajo uporabniki, in ki vključuje:\n"
-"    <ul><li><a href=\"http://audacityteam.org/wiki/index.php?title=Tutorials\">Vodniki s primeri</a> - vodniki, ki korak za korakom razlagajo najpogostejša opravila v Audacity, kot je izdelava zvonenj, odstranjevanje vokalov, mešanje, ustvarjanje podcastov in presnemavanje kaset in plošč na računalnik. Ne voljo so tudi nekateri <a href=\"http://audacityteam.org/wiki/index.php?title=MultiLingual\">vodniki v drugih jezikih</a>.</li>\n"
-"     <li><a href=\"http://audacityteam.org/wiki/index.php?title=Tips\">Nasveti</a> - ti članki vam bodo pomagali pri delu in pri razumevanju Audacity in vaše zvočne strojne opreme.</li>\n"
+"   <li><a href=\"documentation\">Priročniki</a> - preberite uporabniški priročnik s hitrimi sklicnimi priročniki. Slednji ponujajo pomoč pri pogostih opravilih v Audacity, kot je ustvarjanje telefonskih zvonenj, odstranjevanja vokalov, ustvarjanje podkastov in presnemavanje kaset in plošč na računalnik.</li>\n"
+"   <li><a href=\"http://wiki.audacityteam.org/\">Wiki Audacity</a> je obširen vir, ki ga urejajo uporabniki, in ki vključuje:\n"
+"    <ul><li><a href=\"http://audacityteam.org/wiki/Category:Tutorial\">Vodniki s primeri</a> - bolj specializirani vodniki, vključno z nekaterimi nekateri <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial#legacy\">zastareli priročniki</a> za starejše izdaje Audacity, povezave na <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial#external\">druge priročnike na spletu</a> in <a href=\"http://audacityteam.org/wiki/index.php?title=MultiLingual\">vodniki v drugih jezikih</a>.</li>\n"
+"     <li><a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Nasveti</a> - ti članki vam bodo pomagali pri delu in pri razumevanju Audacity in vaše zvočne strojne opreme.</li>\n"
 "    </ul>\n"
 "  </li>\n"
 " </ul>\n"
@@ -1220,15 +1218,16 @@ msgstr ""
 #. please add links to it at the bottom of \htdocs\help\documentation.php
 #: help/index.php:36
 msgid "<p><b>Still need help?</b> Please read <a href=\"../contact/\">Contact Us</a> for how to ask your question on the Audacity <a href=\"http://forum.audacityteam.org/\">Forum</a>.</p>"
-msgstr ""
+msgstr "<p><b>Še vedno potrebujete pomoč?</b> Preberite si <a href=\"../contact/\">Stik z nami</a> o tem, kako lahko zastavite svoja vprašanja na <a href=\"http://forum.audacityteam.org/\">Forumu</a> Audacity.</p>"
 
 #: help/legacy_documentation.php:9
 msgid "Legacy Documentation"
 msgstr "Opuščena dokumentacija"
 
 #: help/legacy_documentation.php:16
+#, fuzzy
 msgid "This is old documentation for legacy versions of Audacity. Please see <a href=\"/help/documentation\">Documentation</a> for information about the current Audacity Manuals."
-msgstr ""
+msgstr "se splača prevest"
 
 #: help/legacy_documentation.php:26
 msgid "Audacity 1.2 Quick Reference Guide"
@@ -1284,8 +1283,9 @@ msgid "Audacity has support for three types of plug-ins that can be written in N
 msgstr "Audacity podpira tri vrste vtičnikov, ki jih lahko napišete v jeziku Nyquist:"
 
 #: help/nyquist3.php:43
+#, fuzzy
 msgid "These correspond to the three menus that can contain plug-ins: Generate, Effect, and Analyze.  Generate plug-ins are expected to generate new audio from scratch, Effect plug-ins (\"process\") modify existing audio in-place, and Analyze plug-ins process audio but do not modify it (though they are allowed to add labels)."
-msgstr ""
+msgstr "se splača prevest"
 
 #: help/nyquist3.php:45
 #, php-format
@@ -1297,8 +1297,9 @@ msgid "Parameter dialogs"
 msgstr "Pogovorna okna za parametre"
 
 #: help/nyquist3.php:49
+#, fuzzy
 msgid "Audacity has limited support for plug-ins showing a dialog to get parameters from the user.  Here is an example of a plug-in that opens a dialog:"
-msgstr ""
+msgstr "se splača prevest"
 
 #: help/nyquist3.php:70
 msgid "If Audacity finds at least one \"control\" line, it will open a dialog to prompt the user for certain parameters to the plug-in.  Each parameter consists of a text box and a slider, and after the user has entered each one, the final value will be stored in a Nyquist variable with a name that you specify on the \"control\" line.  Here's what the dialog for the Delay effect shown above looks like in Audacity for Linux:"
@@ -1432,22 +1433,23 @@ msgstr ""
 
 #. i18n-hint: All the %s are HTML tags which makes "Nyquist Reference Manual" into a link
 #: help/nyquist3.php:128
-#, fuzzy, php-format
+#, php-format
 msgid "%sDon't forget to consult the full %sNyquist 2.37 Reference Manual%s for more details of Lisp and Nyquist.%s"
-msgstr "%sNe pozabite pokukati v celosten %sReferenčni priročnik za Nyquist%s, če vas zanimajo podrobnosti, kako deluje Nyquist.%s"
+msgstr "%sNe pozabite pokukati v celosten %sReferenčni priročnik za Nyquist 2.37%s, če vas zanimajo podrobnosti, kako delujeta Lisp in Nyquist.%s"
 
 #: download/beta_nightly.inc.php:10
+#, fuzzy
 msgid "\"Nightly Builds\" are Alpha builds from latest development code. Your help in testing and <a href=\"/contact#feedback\">reporting bugs</a> in these builds is invaluable. <b>Note:</b>&nbsp;These builds will definitely be less reliable than official releases. They should not be used as your production version of Audacity."
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/legacy_windows.php:12
-#, fuzzy
 msgid "Legacy Windows"
-msgstr "Windows"
+msgstr "Opuščeni sistemi Windows"
 
 #: download/legacy_windows.php:19
+#, fuzzy
 msgid "These are legacy versions of Audacity for Windows 98/ME/2000/XP.<p><a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Windows Vista</a><b>,</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> <b>and</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_8_OS\">Windows 8</a> <b>are not supported in any Audacity versions on this page</b>. Please use <a href=\"/download/windows\">the latest Windows version</a> for Vista, 7 and 8.</p>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/legacy_windows.php:24
 #: download/legacy_windows.php:75
@@ -1456,7 +1458,7 @@ msgstr ""
 #: download/windows.php:38
 #: download/windows.php:109
 #: download/linux.php:33
-#: download/source.php:42
+#: download/source.php:44
 #: download/beta_windows.php:57
 #: download/mac.php:38
 #: download/mac.php:101
@@ -1481,27 +1483,23 @@ msgid "<a href=\"http://audacity.googlecode.com/files/audacity-win-2.0-ansi.exe\
 msgstr "<a href=\"http://audacity.googlecode.com/files/audacity-win-2.0-ansi.exe\">Audacity 2.0.0, namestitev</a> (datoteka .exe, 19.2 MB, vključno z datotekami pomoči) za <b>Windows 98/ME</b>"
 
 #: download/legacy_windows.php:33
-#, fuzzy
 msgid "<a href=\"http://audacity.googlecode.com/files/audacity-win-2.0-ansi.zip\">Audacity 2.0.0 zip file</a> (7.8 MB) for <b>Windows 98/ME</b> - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions."
-msgstr ""
-"<a href=\"%s\">Audacity %s, datoteka zip</a> (%.1lf MB)\n"
-"  - Če ne morete zagnati namestitvene datoteke zaradi omejenih pravic, potem prenesite in razširite to datoteko ali spodnjo datoteko za Windows 98/ME."
+msgstr "<a href=\"http://audacity.googlecode.com/files/audacity-win-2.0-ansi.zip\">Audacity 2.0.0, datoteka zip</a> (7,8 MB) za <b>Windows 98/ME</b> - Če ne morete zagnati namestitvene datoteke zaradi omejenih pravic ali želite manjši prenos, potem prenesite in uporabite to povezavo."
 
 #: download/legacy_windows.php:38
+#, fuzzy
 msgid "Please consider using 2.0.0 above for Windows 98/ME or the <a href=\"/download/windows\">latest 2.0.x version</a> for Windows 2000/XP."
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/legacy_windows.php:41
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) for <b>Windows 98/ME/2000/XP</b>"
-msgstr "<a href=\"%s\">Namestitvena datoteka vtičnikov LADSPA %s</a> (datoteka .exe, %.1lf MB) - več kot 90 vtičnikov."
+msgstr "<a href=\"%s\">Namestitvena datoteka Audacity %s</a> (datoteka .exe, %.1lf MB) za <b>Windows 98/ME/2000/XP</b>"
 
 #: download/legacy_windows.php:42
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for <b>Windows 98/ME/2000/XP</b> - If you cannot run the installer because of restricted permissions, download and unzip this file instead."
-msgstr ""
-"Windows 98/ME/2000/XP/Vista: <a href=\"%s\">Audacity %s, datoteka zip</a> (%.1lf MB)\n"
-"  - Če ne morete zagnati namestitvene datoteke zaradi omejenih pravic, potem prenesite in razširite to datoteko."
+msgstr "<a href=\"%s\">Audacity %s, datoteka zip</a> (%.1lf MB) za <b>Windows 98/ME/2000/XP</b> - Če ne morete zagnati namestitvene datoteke zaradi omejenih pravic, potem prenesite in razširite to datoteko."
 
 #: download/legacy_windows.php:45
 #: download/legacy_source.php:24
@@ -1603,27 +1601,27 @@ msgstr "Druge povezave za prenos"
 #: download/legacy_windows.php:67
 #: download/common.inc.php:17
 #: download/windows.php:84
-#: download/source.php:35
+#: download/source.php:37
 #: download/mac.php:80
 #: download/legacy_mac.php:53
-#, fuzzy, php-format
+#, php-format
 msgid "If you have trouble with your download, or need an older version of Audacity, try:"
-msgstr "Če imate težave pri prenosu ali potrebujete starejšo različico programa Audacity, poskusite naše alternative povezave za prenos:"
+msgstr "Če imate težave pri prenosu ali potrebujete starejšo različico programa Audacity, poskusite naslednje:"
 
 #: download/legacy_windows.php:69
 #: download/common.inc.php:19
 #: download/windows.php:88
-#: download/source.php:36
+#: download/source.php:38
 #: download/mac.php:84
 #: download/legacy_mac.php:55
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">SourceForge</a>: View older versions by clicking to enter the required folder under \"Name\"."
-msgstr "<a href=\"%s\">SourceForge</a> (starejše različice si lahko ogledate, če kliknete na ustrezen paket)."
+msgstr "<a href=\"%s\">SourceForge</a>: starejše različice si lahko ogledate, če odprete ustrezno mapo pod \"Ime\"."
 
 #: download/legacy_windows.php:70
 #: download/common.inc.php:20
 #: download/windows.php:91
-#: download/source.php:37
+#: download/source.php:39
 #: download/mac.php:87
 #: download/legacy_mac.php:56
 #, php-format
@@ -1631,8 +1629,8 @@ msgid "<a href=\"%s\">Google Code</a>: Click on the headings to sort the list."
 msgstr "<a href=\"%s\">Koda Google</a>: kliknite naslove, če želite razvrstiti seznam."
 
 #: download/legacy_windows.php:77
-msgid "Windows 95 and NT are not supported. Windows Vista and 7 are supported in <a href=\"windows\">the latest version of Audacity</a>."
-msgstr "Windows 95 in NT nista podprta. Windows Vista in 7 asta podprta v <a href=\"windows\">zadnji različici Audacity</a>."
+msgid "Windows 95 and NT are not supported. Windows Vista, Windows 7 and Windows 8 require <a href=\"windows\">the latest version of Audacity</a>."
+msgstr "Windows 95 in NT nista podprta. Windows Vista, Windows 7 in Windows 8 so podprti v <a href=\"windows\">zadnji različici Audacity</a>."
 
 #: download/legacy_windows.php:81
 #: download/windows_sys_reqs.inc.php:10
@@ -1655,9 +1653,8 @@ msgid "Minimum RAM/<br>processor speed"
 msgstr "Najmanjša velikost pomnilnika/<br>hitrost procesorja"
 
 #: download/legacy_windows.php:104
-#, fuzzy
-msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista or 7 running on machines of substantially higher specification than the minimum stated above."
-msgstr "Splošno deluje Audacity najbolje na računalniških sistemih, ki presegajo minimalne zahteve iz zgornje tabele. Ko želite Audacity uporabiti za daljše večsledne projekte, priporočamo uporabo Windows 2000, XP ali Vista na računalnikih z občutno močnejšimi konfiguracijami, kot je minimalno zahtevana za te operacijske sisteme."
+msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP running on a machine of substantially higher specification than the minimum stated above."
+msgstr "Splošno deluje Audacity najbolje na računalniških sistemih, ki presegajo minimalne zahteve iz zgornje tabele. Ko želite Audacity uporabiti za daljše večsledne projekte, priporočamo uporabo Windows XP na računalnikih z občutno močnejšimi konfiguracijami, kot je minimalno zahtevana za te operacijske sisteme."
 
 #: download/common.inc.php:12
 #: download/windows.php:72
@@ -1688,7 +1685,6 @@ msgstr ""
 "zagonu Audacity obveščeni o neshranjenem projektu, ki ga bostelahko obnovili.\n"
 
 #: download/features-1.3-l.php:23
-#, fuzzy
 msgid ""
 "One common source of confusion with Audacity is that when you\n"
 "open or import an uncompressed file (e.g. WAV or AIFF), Audacity by \n"
@@ -1706,7 +1702,7 @@ msgstr ""
 "premaknete, spremenite ali izbrišete izvorno datoteko, vaš projekt Audacity\n"
 "ne bo več deloval.  Od različice 1.3.2 naprej vas Audacity ob vsakem shranjevanju\n"
 "vpraša, ali je projekt odvisen od zvočnih datotek in če želite\n"
-"le-te skopirati v projekt, tako da je samozadosten."
+"slednje skopirati v projekt, tako da je samozadosten."
 
 #: download/features-1.3-l.php:46
 #: download/features-1.3-b.php:49
@@ -1791,9 +1787,9 @@ msgstr "Če imate težave pri prenosu ali potrebujete starejšo različico progr
 #: download/legacy_source.php:28
 #: download/beta_source.php:34
 #: download/beta_common.inc.php:17
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">SourceForge</a> (older versions can be viewed by clicking to enter the required folder under \"Name\")"
-msgstr "<a href=\"%s\">SourceForge</a> (starejše različice si lahko ogledate, če kliknete na ustrezen paket)."
+msgstr "<a href=\"%s\">SourceForge</a> (starejše različice si lahko ogledate, če kliknete na ustrezno mapo pod \"Name\")."
 
 #: download/legacy_source.php:29
 #: download/beta_source.php:35
@@ -1809,24 +1805,23 @@ msgstr "Audacity deluje najbolje z vsaj 64 MB spomina RAM in 300 MHz procesorjem
 
 #: download/legacy_source.php:36
 #: download/beta_source.php:42
-#: download/source.php:44
+#: download/source.php:46
 msgid "or"
 msgstr "ali"
 
 #: download/legacy_source.php:40
 #: download/beta_source.php:46
-#: download/source.php:48
+#: download/source.php:50
 msgid "How to Compile Audacity"
 msgstr "Kako prevajati Audacity"
 
 #: download/legacy_source.php:42
 #: download/beta_source.php:48
-#: download/source.php:50
+#: download/source.php:52
 msgid "Dependencies"
 msgstr "Odvisnosti"
 
 #: download/legacy_source.php:43
-#, fuzzy
 msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the unicode options. The next version of Audacity will support newer wxWidgets and GTK libraries."
 msgstr "Knjižnica <a href=\"http://wxwidgets.org\">wxWidgets</a> je <b>obvezna</b>.  Audacity 1.2 potrebuje wxGTK 2.4, prevedeno <em>brez</em> možnosti unicode.  Naslednja stabilna različica Audacity bo podpirala novejše knjižnice wxWidgets in GTK."
 
@@ -1837,53 +1832,53 @@ msgstr "Namestitev naslednjih knjižnic je <b>neobvezna</b> - vključene so v Au
 
 #: download/legacy_source.php:50
 #: download/beta_source.php:56
-#: download/source.php:53
+#: download/source.php:57
 msgid "If you install libraries using a package management system like Apt or RPM, you need to install the \"dev\" (development) packages for each library."
 msgstr "Če namestite knjižnice z upravljalskim sistemom za pakete, kot sta Apt ali RPM, preverite, da za vsako knjižnico namestite tudi razvojne pakete \"dev\"."
 
 #: download/legacy_source.php:52
 #: download/beta_source.php:58
-#: download/source.php:55
+#: download/source.php:59
 msgid "Compilation"
 msgstr "Prevajanje"
 
 #: download/legacy_source.php:53
 #: download/beta_source.php:59
-#: download/source.php:56
+#: download/source.php:60
 msgid "To compile Audacity, run the following command in the Audacity source directory:"
 msgstr "Za gradnjo Audacitsy zaženite naslednji ukaz v mapi z izvorno kodo Audacity:"
 
 #: download/legacy_source.php:57
 #: download/beta_source.php:63
-#: download/source.php:60
+#: download/source.php:64
 msgid "You can type <i>./configure --help</i> to see a list of compilation options. After Audacity is compiled, run <i>make install</i> as root to install it."
 msgstr "Vtipkate lahko <i>./configure --help</i> za prikaz seznama možnosti prevajanja. Po prevajanju Audacity, zaženite <i>make install</i> kot korenski uporabnik za namestitev."
 
 #: download/legacy_source.php:59
 #: download/beta_source.php:65
-#: download/source.php:62
+#: download/source.php:66
 msgid "Further Help"
 msgstr "Dodatna pomoč"
 
 #: download/legacy_source.php:61
 #: download/beta_source.php:67
-#: download/source.php:64
+#: download/source.php:68
 msgid "On Windows, see the file \"compile.txt\" inside the \"Win\" folder in the source code. For OS X, see \"compile.txt\" inside the \"Mac\" folder in the code."
-msgstr ""
+msgstr "Na sistemih Windows si oglejte datoteko \"compile.txt\" v mapi \"Win\" izvorne kode. Za OS X si oglejte \"compile.txt\" v mapi \"Mac\" izvorne kode."
 
 #: download/legacy_source.php:62
 #: download/beta_source.php:68
-#: download/source.php:65
+#: download/source.php:69
 #, php-format
 msgid "%sSee our guides to compiling Audacity for %sWindows%s, %sMac%s and %sGNU/Linux%s on the %sWiki%s.%s"
-msgstr ""
+msgstr "%sOglejte si naše vodnike za prevajanje Audacity za %sWindows%s, %sMac%s in %sGNU/Linux%s na %swikiju%s.%s"
 
 #: download/legacy_source.php:73
 #: download/beta_source.php:79
-#: download/source.php:76
-#, php-format
+#: download/source.php:80
+#, fuzzy, php-format
 msgid "%sIf you are still having difficulties, we want to help! Please ask on the %sCompiling Audacity%s board on our %sForum%s.%s"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-b.php:9
 msgid "Audacity 1.3: Collapse/Expand Tracks"
@@ -1918,14 +1913,12 @@ msgid "Multiple clips per track"
 msgstr "Več posnetkov na sled"
 
 #: download/bundlers.php:16
-#, fuzzy
 msgid "Audacity is free to download, but many vendors bundle copies of the program with their products, or resell or distribute Audacity, thanks to the <a href=\"../about/license\">GNU General Public License</a>. The following are legitimate, legal offerings from companies that have worked with us. We are happy and proud that they chose to bundle Audacity with their products."
-msgstr "Audacity lahko preneste brezplačno, pa tudi prodajalci lahko brezplačno priložijo izvode programa svojim izdelkom ali nadalje prodajajo ali razširjajo Audacity, zahvaljujoč <a href=\"../about/license\">splošni javni licenci GNU</a>.  Tovrstne ponudbe so pravno legitimne. Srečni in ponosni smo, da s svojimi izdelki ponujajo tudi Audacity."
+msgstr "Audacity lahko preneste brezplačno, pa tudi prodajalci lahko brezplačno priložijo izvode programa svojim izdelkom ali nadalje prodajajo ali razširjajo Audacity, zahvaljujoč <a href=\"../about/license\">splošnemu javnemu dovoljenju GNU</a>.  Tovrstne ponudbe so legitimne, pravno upravičene ponudbe podjetij, s katerimi sodelujemo. Srečni in ponosni smo, da s svojimi izdelki ponujajo tudi Audacity."
 
 #: download/bundlers.php:18
-#, fuzzy
 msgid "Some vendors, Umixit, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a>, and <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href=\"#others\">custom versions</a>. The UmixIt custom version added a mixer board interface and karaoke window which are now incorporated in Audacity Beta. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Voice is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Some of these improvements will be incorporated in future versions of Audacity."
-msgstr "Nekateri prodajalci, <a href=\"http://umixit.com\">UmixIt</a>, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a> in <a href=\"http://audiotouch.com.au/\">Audiotouch</a> so dodatno podprli Audacity s sponzoriranjem <a href=\"#others\">prilagojenih različic</a>. Prva prilagojena različica UmixIt dodaja vmesnik za mešalno mizo in okno za karaoke. Različica ThinkLabs je prilagojena za kardiograme z digitalnimi stetoskopi. Audacity_Audiotouch je prilagojena integraciji z Audiotouch, za enostavno rabo študentov, ki potrebujejo veliko posnetkov. Številne izmed teh izboljšav bodo vključene v prihodnje različice Audacity."
+msgstr "Nekateri prodajalci, Umixit, <a href=\"http://www.thinklabsmedical.com\">Thinklabs</a> in <a href=\"http://audiotouch.com.au/\">Audiotouch</a> so dodatno podprli Audacity s sponzoriranjem <a href=\"#others\">prilagojenih različic</a>. Prva prilagojena različica UmixIt dodaja vmesnik za mešalno mizo in okno za karaoke, ki je vključen v Audacity Beta. Različica ThinkLabs je prilagojena za kardiograme z digitalnimi stetoskopi. Audacity_Audiotouch je prilagojena integraciji z Audiotouch, za enostavno rabo študentov, ki potrebujejo veliko posnetkov. Številne izmed teh izboljšav bodo vključene v prihodnje različice Audacity."
 
 #: download/bundlers.php:21
 msgid "To be considered for addition to this list, please first review our <a href=\"../about/license\">License, and Advice for Vendors and Distributors</a> page. If you are distributing Audacity under those terms "
@@ -2045,7 +2038,6 @@ msgid "USB Audio Capture Device."
 msgstr "Naprava USB za zajem/snemanje zvoka."
 
 #: download/bundlers.php:188
-#, fuzzy
 msgid "Now discontinued FireWire&reg; recording system featuring 24-bit/96k analog to digital conversion rate, four simultaneous inputs, software control panel, audio recording and production software."
 msgstr "Snemalni sistem FireWire&reg;, ki ga odlikuje hitrost pretvorbe v digitalni zapis 24-bitov/96k, štirje hkratni vhodi, programska nadzorna konzola, programska oprema za snemanje in obdelavo (produkcijo)."
 
@@ -2088,56 +2080,49 @@ msgid "USB Turntable."
 msgstr "Gramofon USB."
 
 #: download/bundlers.php:305
-#, fuzzy
 msgid "As one of the major manufacturers of USB playback equipment, Ion bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs and cassettes. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Ion later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track. See our Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB turntables</a> for more information."
-msgstr "Gramofoni USB. OPOMBA: 21. januarja 2007 je v časopisu New York Times izšel <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">članek o teh gramofonih</a> (zdaj na voljo le kot plačljiv članek), ki je vseboval napačne trditve o omejitvah Audacity. Kljub zapisanemu v članku pa Audacity lahko posname celo ploščo LP, zazna prekinitve med posnetki na plošči glede na vmesno tišino in naenkrat izvozi posamične datoteke, razdeljene glede na prekinitvene točke. Ion je popravil svojo dokumentacijo in očitno še naprej prilaga Audacity svojim izdelkom. Za več informacij si oglejte našo stran Wiki <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">Gramofoni USB (v angl.)</a>."
+msgstr "Kot eden vodilnih proizvajalcev predvajalne opreme USB je podjetje Ion več let prilagalo Audacity navedenim izdelkom, kar je pomagalo pri vzpostavljanju širše priljubljenosti digitizaciji plošč LP in kaset. OPOMBA: 21. januarja 2007 je v časopisu New York Times izšel <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">članek o teh gramofonih</a>, ki je vseboval napačne trditve o omejitvah Audacity. Kljub zapisanemu v članku pa Audacity lahko posname celo ploščo LP, zazna prekinitve med posnetki na plošči glede na vmesno tišino in naenkrat izvozi posamične datoteke, razdeljene glede na prekinitvene točke. Ion je popravil svojo dokumentacijo in očitno še naprej prilaga Audacity svojim izdelkom. Za več informacij si oglejte našo stran Wiki <a href=\"http://audacityteam.org/wiki/USB_turntables\">Gramofoni USB (v angl.)</a>."
 
 #: download/bundlers.php:333
-#, fuzzy
 msgid "As one of the major manufacturers of USB turntables, Numark bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs. NOTE: In January 2007, an <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Numark later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track.  See our Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/USB_turntables\">USB turntables</a> for more information."
-msgstr "Gramofoni USB. OPOMBA: 21. januarja 2007 je v časopisu New York Times izšel <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">članek o teh gramofonih</a> (zdaj na voljo le kot plačljiv članek), ki je vseboval napačne trditve o omejitvah Audacity. Kljub zapisanemu v članku pa Audacity lahko posname celo ploščo LP, zazna prekinitve med posnetki na plošči glede na vmesno tišino in naenkrat izvozi posamične datoteke, razdeljene glede na prekinitvene točke. Ion je popravil svojo dokumentacijo in očitno še naprej prilaga Audacity svojim izdelkom. Za več informacij si oglejte našo stran Wiki <a href=\"http://audacityteam.org/wiki/index.php?title=USB_turntables\">Gramofoni USB (v angl.)</a>."
+msgstr "Kot eden vodilnih proizvajalcev gramofonov USB je podjetje Numark več let prilagalo Audacity navedenim izdelkom, kar je pomagalo pri vzpostavljanju širše priljubljenosti digitizaciji plošč LP. OPOMBA: 21. januarja 2007 je v časopisu New York Times izšel <a href=\"http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482\">članek o teh gramofonih</a>, ki je vseboval napačne trditve o omejitvah Audacity. Kljub zapisanemu v članku pa Audacity lahko posname celo ploščo LP, zazna prekinitve med posnetki na plošči glede na vmesno tišino in naenkrat izvozi posamične datoteke, razdeljene glede na prekinitvene točke. Ion je popravil svojo dokumentacijo in očitno še naprej prilaga Audacity svojim izdelkom. Za več informacij si oglejte našo stran Wiki <a href=\"http://audacityteam.org/wiki/USB_turntables\">Gramofoni USB (v angl.)</a>."
 
 #: download/bundlers.php:353
-#, fuzzy
 msgid "FreedomSampler&trade; is a collection of free, open source software for Windows and Linux with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you."
-msgstr "FreedomSampler&trade; je zbirka brezplačnih, odprto-kodnih programov s celotno izvorno kodo, ki dovoljuje enostavno razširjanje pod splošno javno licenco GNU. Slike ISO prenesete brezplačno ali pa lahko <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">kupite</a> kopijo, ki jo boste prejeli po pošti."
+msgstr "FreedomSampler&trade; je zbirka brezplačnih, odprto-kodnih programov za Windows in Linux s celotno izvorno kodo, ki dovoljuje enostavno razširjanje pod splošno javno licenco GNU. Slike ISO prenesete brezplačno ali pa lahko <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">kupite</a> kopijo, ki jo boste prejeli po pošti."
 
 #: download/bundlers.php:364
-#, fuzzy
 msgid "TheOpenCD is a now-discontinued collection of high quality free and open source software for Windows. Currently, you can still <a href=\"http://releases.theopencd.org/\">download archived CD images</a> or <a href=\"http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">purchase a CD online</a> for worldwide shipping."
-msgstr "TheOpenCD je že opuščena zbirka visoko kakovostnih prostih in odprto-kodnih programov. Trenutno lahko še vedno <a href=\"http://releases.theopencd.org/\">prenesete arhivirane slike zgoščenk</a> ali <a href=\"http://ztechshop.net/disks/opencd/\">prek spleta kupite zgoščenko</a>, ki jo dostavijo po celem svetu."
+msgstr "TheOpenCD je že opuščena zbirka visoko kakovostnih prostih in odprto-kodnih programov za sisteme Windows. Trenutno lahko še vedno <a href=\"http://releases.theopencd.org/\">prenesete arhivirane slike zgoščenk</a> ali <a href=\"http://www.thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">prek spleta kupite zgoščenko</a>, ki jo dostavijo po celem svetu."
 
 #: download/bundlers.php:375
-#, fuzzy
 msgid "OpenDisc is a similar collection of high quality free and open source software for Windows. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. The project hopes to make available a purchasable CD shortly."
 msgstr "OpenDisc je podobna zbirka visoko kakovostnih prostih in odprto-kodnih programov. Trenutno je za prenos na voljo <a href=\"http://downloads.sourceforge.net/opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">slika zgoščenke</a>. Upajo, da bodo v kratkem na voljo ploščki za prodajo."
 
 #: download/bundlers.php:386
+#, fuzzy
 msgid "VALO-CD contains twenty-two open-source Windows programs on a single CD. You can download and burn the ISO image, or purchase the CD for worldwide shipping."
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/bundlers.php:406
-#, fuzzy
 msgid "Audiotouch is sound recording and playback software, designed for ease of use. It features one-touch recording and saving, quickly recording multiple audio files directly to disk without the need to interact with save dialog boxes. Audacity_Voice is a customized version of Audacity which can be added to Audiotouch, offering simple editing with reduced menu dialogs."
-msgstr "Audiotouch je programska oprema za snemanje in predvajanja, načrtovana za enostavno uporabo. Podpira snemanje in shranjevanje z enim dotikom, hitro snemanje več zvočnih datotek neposredno na disk brez interakcije s pogovornimi okni za shranjevanje. Audacity_Audiotouch je prilagojena različica Audacity, ki jo lahko dodate Audiotouch, ponuja pa enostavno urejanje z oskubljenimi pogovornimi okni in meniji."
+msgstr "Audiotouch je programska oprema za snemanje in predvajanja, načrtovana za enostavno uporabo. Podpira snemanje in shranjevanje z enim dotikom, hitro snemanje več zvočnih datotek neposredno na disk brez interakcije s pogovornimi okni za shranjevanje. Audacity_Voice je prilagojena različica Audacity, ki jo lahko dodate Audiotouch, ponuja pa enostavno urejanje z oskubljenimi pogovornimi okni in meniji."
 
 #: download/bundlers.php:416
 msgid "Software allowing users to create their own custom comic books with included clipart, backgrounds, word balloons, sound files and other  assets."
 msgstr "Programska oprema, s katero uporabniki ustvarjajo lastne stripe z vključenimi vektorskimi risbami, ozadji, dialoškimi oblački, zvočnimi datotekami in drugimi elementi."
 
 #: download/bundlers.php:425
-#, fuzzy
 msgid "The Thinklabs <a href=\"http://www.thinklabsmedical.com/electronic-stethoscope.html\">ds32a digital stethoscope</a> has enhanced sound quality with 50x amplification. Volume can be adjusted for faint heart sounds, obese patients or noisy work environments. The stethoscope's waveforms and spectrograms can be analyzed in Thinklabs Phonocardiography (a customized version of Audacity for Microsoft Windows and Mac OS X)."
-msgstr "<a href=\"http://www.thinklabsmedical.com/content/view/17/157/\">Digitalni stetoskop ds32a</a> podjetja Thinklabs ima izboljšano zvočno kakovost s 50-kratno ojačitvijo. Prilagodite jakost za šibke zvoke bitja srca, paciente z močnejšo postavo, glasna delovna okolja. Raziščite zvočne krivulje in spektrograme s <em>Thinklabs Phonocardiography, powered by Audacity</em> (prilagojeno različico Audacity za Microsoft Windows in Mac OS X)."
+msgstr "<a href=\"http://www.thinklabsmedical.com/electronic-stethoscope.html\">Digitalni stetoskop ds32a</a> podjetja Thinklabs ima izboljšano zvočno kakovost s 50-kratno ojačitvijo. Prilagodite jakost za šibke zvoke bitja srca, paciente z močnejšo postavo, glasna delovna okolja. Raziščite zvočne krivulje in spektrograme s Thinklabs Phonocardiography (prilagojeno različico Audacity za Microsoft Windows in Mac OS X)."
 
 #: download/bundlers.php:434
 msgid "Portable recording studio or digital audio workstation (DAW), featuring \"walk and mix\" technology."
 msgstr "Prenosni snemalni studio ali digitalna zvočna delovna postaja (DAW), ki se ponaša s tehnologijo \"hodi in mešaj\" (\"walk and mix\")."
 
 #: download/bundlers.php:444
-#, fuzzy
 msgid "A now discontinued, customized version of Audacity for Microsoft Windows and Mac OS X. Umixit-enabled multi-track CDs or songs were available, enabling the user to record their own vocals or instruments to create remixes, mash-ups, sing karaoke and more."
-msgstr "Prilagojena različica Audacity za Microsoft Windows in Mac OS X, ki navdušencem omogoča skupno uživanje studijskih izkušenj s profesionalci. Dodajte Cd ali pesem, ki podpira Umixit, nato posnemite lastne vokale ali instrumente, ustvarite remikse, pojte karaoke in še več ..."
+msgstr "Zdaj zastarela prilagojena različica Audacity za Microsoft Windows in Mac OS X, ki navdušencem omogoča skupno uživanje studijskih izkušenj s profesionalci. Lahko ste dodali Cd ali pesem, ki podpira Umixit, nato posneli lastne vokale ali instrumente, ustvarili remikse, peli karaoke in še več ..."
 
 #: download/bundlers.php:454
 msgid "Mirror site for Audacity downloads, from webzine about Windows software at Impress Watch Corporation, Tokyo, Japan."
@@ -2157,6 +2142,7 @@ msgid "Changes in Audacity 1.3.14"
 msgstr "Spremembe v Audacity 1.3.14"
 
 #: download/features-1.3-a.php:21
+#, fuzzy
 msgid ""
 "\n"
 "<dl>\n"
@@ -2171,9 +2157,10 @@ msgid ""
 "                            or recording.</li>\n"
 "                 </ul>\n"
 "              </dd>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:36
+#, fuzzy
 msgid ""
 "\n"
 "\t       <dd> Imports and Exports: \n"
@@ -2185,9 +2172,10 @@ msgid ""
 "                            caused a freeze.</li>\n"
 "                 </ul>\n"
 "              </dd>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:48
+#, fuzzy
 msgid ""
 "\n"
 "\t       <dd> Effects and Analysis: \n"
@@ -2198,9 +2186,10 @@ msgid ""
 "                            analyzed.</li>  \n"
 "                 </ul>\n"
 "              </dd>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:59
+#, fuzzy
 msgid ""
 "\n"
 "\t       <dd> Other bug fixes: \n"
@@ -2217,9 +2206,10 @@ msgid ""
 "                       <li><i>(Linux)</i> Restore building if USE_PORTMIXER is not defined.</li>\n"
 "                 </ul>\n"
 "              </dd>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:76
+#, fuzzy
 msgid ""
 "\n"
 "\t       <dd>Changes and Improvements:\n"
@@ -2249,13 +2239,14 @@ msgid ""
 "<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.14#Known_Issues_at_Release\">\n"
 "Known Issues at Release</a> (also viewable in the included README.txt).\n"
 "</p>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:107
 msgid "Changes in Audacity 1.3.13"
 msgstr "Spremembe v Audacity 1.3.13"
 
 #: download/features-1.3-a.php:109
+#, fuzzy
 msgid ""
 "\n"
 "<dl>\n"
@@ -2283,9 +2274,10 @@ msgid ""
 "                            Keyboard Preferences and spurious lines drawn on waveform.</li>\n"
 "                 </ul>\n"
 "              </dd>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:137
+#, fuzzy
 msgid ""
 "\n"
 "\t       <dd> Imports and Exports: \n"
@@ -2323,9 +2315,10 @@ msgid ""
 "                            semi-colon (;).</li>\n"
 "                 </ul>\n"
 "              </dd>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:175
+#, fuzzy
 msgid ""
 "\n"
 "\t       <dd> Other bug fixes: \n"
@@ -2342,9 +2335,10 @@ msgid ""
 "                            Audacity was configured with libsamplerate. </li>\n"
 "                 </ul>       \n"
 "              </dd>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:192
+#, fuzzy
 msgid ""
 "\n"
 "   <dt> Changes and improvements:</dt>\n"
@@ -2382,13 +2376,14 @@ msgid ""
 "<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.13#Known_Issues_at_Release\">\n"
 "Known Issues at Release</a> (also viewable in the included README.txt).\n"
 "</p>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:231
 msgid "Changes in Audacity 1.3.12"
 msgstr "Spremembe v Audacity 1.3.12"
 
 #: download/features-1.3-a.php:233
+#, fuzzy
 msgid ""
 "\n"
 "<dl>\n"
@@ -2432,9 +2427,10 @@ msgid ""
 "                            was broken</li>\n"
 "                 </ul>       \n"
 "              </dd>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:277
+#, fuzzy
 msgid ""
 "\n"
 "   <dt> Changes and improvements:</dt>\n"
@@ -2466,13 +2462,14 @@ msgid ""
 "<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.12#Known_Issues_at_Release\">\n"
 "Known Issues at Release</a> (also viewable in the included README.txt).\n"
 "</p>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:309
 msgid "Changes in Audacity 1.3.11"
 msgstr "Spremembe v Audacity 1.3.11"
 
 #: download/features-1.3-a.php:311
+#, fuzzy
 msgid ""
 "\n"
 "<dl>\n"
@@ -2535,9 +2532,10 @@ msgid ""
 "                             versions of Audacity</li>\n"
 "                 </ul>\n"
 "          </dd>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:374
+#, fuzzy
 msgid ""
 "\n"
 "   <dt> Changes and improvements:</dt>\n"
@@ -2556,13 +2554,14 @@ msgid ""
 "<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.11#Known_Issues_at_Release\">\n"
 "Known Issues at Release</a> (also viewable in the included README.txt).\n"
 "</p>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:393
 msgid "Changes in Audacity 1.3.10"
 msgstr "Spremembe v Audacity 1.3.10"
 
 #: download/features-1.3-a.php:395
+#, fuzzy
 msgid ""
 "\n"
 "<dl>\n"
@@ -2622,9 +2621,10 @@ msgid ""
 "                              a crash</li>\n"
 "                 </ul>\n"
 "           </dd>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:455
+#, fuzzy
 msgid ""
 "\n"
 "   <dt> Changes and improvements:</dt>\n"
@@ -2647,13 +2647,14 @@ msgid ""
 "<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.10#Known_Issues_at_Release\">\n"
 "Known Issues at Release</a> (also viewable in the included README.txt).\n"
 "</p>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:478
 msgid "New in Audacity 1.3.9"
 msgstr "Novo v Audacity 1.3.9"
 
 #: download/features-1.3-a.php:480
+#, fuzzy
 msgid ""
 "\n"
 "<dl>\n"
@@ -2715,13 +2716,14 @@ msgid ""
 "<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.9#Known_Issues_at_Release\">\n"
 "Known Issues at Release</a> (also viewable in the included README.txt).\n"
 "</p>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:543
 msgid "New in Audacity 1.3.8"
 msgstr "Novo v Audacity 1.3.8"
 
 #: download/features-1.3-a.php:545
+#, fuzzy
 msgid ""
 "\n"
 "<dl>\n"
@@ -2795,7 +2797,7 @@ msgid ""
 "<a href=\"http://wiki.audacityteam.org/index.php?title=Release_Notes_1.3.8#Known_Issues_at_Release\">\n"
 "Known Issues at Release</a> (also viewable in the included README.txt).\n"
 "</p>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-a.php:620
 msgid "New in Audacity 1.3.7"
@@ -3371,9 +3373,8 @@ msgid "Other features"
 msgstr "Druge odlike"
 
 #: download/windows_sys_reqs.inc.php:44
-#, fuzzy
 msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista, Windows 7 or Windows 8 running on machines of substantially higher specification than the minimum stated above."
-msgstr "Splošno deluje Audacity najbolje na računalniških sistemih, ki presegajo minimalne zahteve iz zgornje tabele. Ko želite Audacity uporabiti za daljše večsledne projekte, priporočamo uporabo Windows 2000, XP ali Vista na računalnikih z občutno močnejšimi konfiguracijami, kot je minimalno zahtevana za te operacijske sisteme."
+msgstr "Splošno deluje Audacity najbolje na računalniških sistemih, ki presegajo minimalne zahteve iz zgornje tabele. Ko želite Audacity uporabiti za daljše večsledne projekte, priporočamo uporabo Windows XP, Vista, Windows 7 ali Windows 8 na računalnikih z občutno močnejšimi konfiguracijami, kot je minimalno zahtevana za te operacijske sisteme."
 
 #: download/plugins.php:16
 msgid "You can download and install plug-ins or libraries to add extra functionality to Audacity. Plug-ins can give you extra effects, or more audio generation and analysis capability. Adding libraries can allow you to import or export additional audio formats."
@@ -3384,9 +3385,8 @@ msgid "Plug-In Installation"
 msgstr "Namestitev vtičnikov"
 
 #: download/plugins.php:19
-#, fuzzy
 msgid "To install new LADSPA or Nyquist plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under \"Program Files\".  On Mac OS X, it is usually under \"Applications\". On Linux, you can use <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#linux_plugins\">various plug-in locations</a>. Restart Audacity, then the addded plug-ins will appear underneath the divider in the \"Effect\", \"Generate\" or \"Analyze\" menus."
-msgstr "Če želite namestiti dodatne vtičnike, jih postavite v mapo <b>Plug-Ins</b> v namestitveni mapi Audacity. V sistemih Windows se ta običajno nahaja v mapi \"Program Files\".  V sistemih Mac OS X je običajno v mapi \"Applications\". Ponovno zaženite Audacity, nato se vtičniki pojavijo pod ločilom v menijih \"Učinek\", \"Tvori\" ali \"Analiziraj\"."
+msgstr "Če želite namestiti dodatne vtičnike, jih postavite v mapo <b>Plug-Ins</b> v namestitveni mapi Audacity. V sistemih Windows se ta običajno nahaja v mapi \"Program Files\".  V sistemih Mac OS X je običajno v mapi \"Applications\". V sistemih Linux lahko uporabite <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#linux_plugins\">različna mesta vtičnikov</a>. Ponovno zaženite Audacity, nato se vtičniki pojavijo pod ločilom v menijih \"Učinek\", \"Tvori\" ali \"Analiziraj\"."
 
 #: download/plugins.php:21
 msgid "LADSPA Plug-Ins"
@@ -3410,26 +3410,27 @@ msgid "VST Plug-Ins"
 msgstr "Vtičniki VST"
 
 #: download/plugins.php:28
+#, fuzzy
 msgid "On Windows and Mac, Audacity can load VST effects (but not VST instruments). The VST Enabler is no longer required.  Enable \"Rescan VST effects\" in the Effects Preferences and restart Audacity when you want to add new effects. See <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#vst_install\">\"How do I install VST plug-ins?\"</a> for more information."
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/plugins.php:30
+#, fuzzy
 msgid "VST effects can be found on many plug-in sites such as:"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/plugins.php:37
-#, fuzzy
 msgid "The <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-ins</a> page on our <a href=\"http://wiki.audacityteam.org/\">Wiki<a/> contains further help for VST plug-ins, and lists a large number of VST plug-ins that have been reported to work well in Audacity."
-msgstr "Stran <a href=\"http://audacityteam.org/wiki/index.php?title=VST_Plug-ins\">Vtičniki VST (v angl.)</a> na našem <a href=\"http://audacityteam.org/wiki/\">wikiju<a/> vsebuje seznam velikega števila vtičnikov VST, ki naj bi odlično delovali v Audacity."
+msgstr "Stran <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">Vtičniki VST (v angl.)</a> na našem <a href=\"http://wiki.audacityteam.org/\">wikiju<a/> vsebuje seznam velikega števila vtičnikov VST, ki naj bi odlično delovali v Audacity."
 
 #: download/plugins.php:39
-#, fuzzy
 msgid "Audio Unit Plug-Ins"
-msgstr "Vtičniki Nyquist"
+msgstr "Vtičniki Audio Unit"
 
 #: download/plugins.php:40
+#, fuzzy
 msgid "On Mac OS X only, Audacity loads <a href=\"http://manual.audacityteam.org/help/manual/man/effect_menu.html#audio_unit\">Audio Unit</a> plug-ins automatically from system plug-in directories. Audacity will not recognize any Audio Units in its own \"plug-ins\" folder."
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/plugins.php:42
 #: about/credits.php:137
@@ -3437,13 +3438,13 @@ msgid "Libraries"
 msgstr "Knjižnice"
 
 #: download/plugins.php:43
-#, fuzzy
 msgid "The <b>LAME MP3 encoding</b> library allows Audacity to export audio in the popular <a href=\"http://wiki.audacityteam.org/index.php?title=MP3\">MP3</a> format. To install the LAME library, please read our <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#lame\">LAME FAQ</a>."
-msgstr "Trenutno je edina knjižnica, ki jo lahko dodate v različico 1.2 Audacity, knjižnica <b>kodiranja MP3 LAME</b>. Z njo lahko Audacity izvaža posnetke v priljubljenem zapisu <a href=\"http://wiki.audacityteam.org/index.php?title=MP3\">MP3</a>. Če želite namestiti knjižnico LAME, si preberite naša <a href=\"../help/faq?s=install&i=lame-mp3\">pogosto zastavljena vprašanja o LAME</a>."
+msgstr "S knjižnico <b>kodiranja MP3 LAME</b> lahko Audacity izvaža posnetke v priljubljenem zapisu <a href=\"http://wiki.audacityteam.org/index.php?title=MP3\">MP3</a>. Če želite namestiti knjižnico LAME, si preberite naša <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#lame\">pogosto zastavljena vprašanja o LAME</a>."
 
 #: download/plugins.php:45
+#, fuzzy
 msgid "The <b>FFmpeg import/export</b> library allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg FAQ</a>."
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/betafeatures.inc.php:12
 msgid "Click here to read about new features in Audacity 1.3."
@@ -3454,26 +3455,26 @@ msgid "Download Nyquist Plug-Ins"
 msgstr "Prenesi vtičnike Nyquist"
 
 #: download/nyquistplugins.php:14
-#, fuzzy
 msgid "<p>These are optional generator, effect and analyze plug-ins for the Audacity audio editor, written in the <a href=\"/help/nyquist\">Nyquist programming language</a>. Nyquist plug-ins support Windows, Mac and GNU/Linux.</p>"
-msgstr "<p>To so dodatni vtičniki za urejevalnik zvoka Audacity.  Spisani so v <a href=\"../help/nyquist\">programskem jeziku Nyquist</a>.  Za napotke o namestitvi si oglejte glavno <a href=\"plugins\">stran vtičnikov</a>.</p>"
+msgstr "<p>To so dodatni vtičniki za generiranje zvoka, učinke in analizo v urejevalniku zvoka Audacity. Spisani so v <a href=\"/help/nyquist\">programskem jeziku Nyquist</a>. Vtičniki Nyquist delujejo na sistemih Windows, Mac in GNU/Linux.</p>"
 
 #: download/nyquistplugins.php:16
-#, fuzzy
 msgid "<a href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins\">Complete list of optional Nyquist plug-ins</a> on the Audacity <a href=\"http://wiki.audacityteam.org/wiki/\">Wiki</a>."
-msgstr "najboljša različica za <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> in <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista"
+msgstr "<a href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins\">Popoln seznam dodatnih vtičnikov Nyquist</a> na <a href=\"http://wiki.audacityteam.org/wiki/\">wikiju</a> Audacity."
 
 #: download/nyquistplugins.php:18
 msgid "See the main <a href=\"plugins\">plug-ins page</a> for installation instructions."
-msgstr ""
+msgstr "Navodila za namestitev si oglejte na glavni <a href=\"plugins\">strani za vtičnike</a>."
 
 #: download/nyquistplugins.php:20
+#, fuzzy
 msgid "Help us test <a href=\"http://forum.audacityteam.org/viewforum.php?f=42\">new Nyquist plug-ins still under development</a> on the Audacity <a href=\"http://forum.audacityteam.org/\">Forum</a>."
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/nyquistplugins.php:22
+#, fuzzy
 msgid "<p>Anyone can customise these plug-ins by opening the .ny file in a text editor, just as can be done with the Nyquist plug-ins already <a href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins#shipped\">shipped with Audacity</a>.</p>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/beta_source.php:20
 #: download/source.php:22
@@ -3514,9 +3515,9 @@ msgid "Recommended Downloads - Latest Version of Audacity"
 msgstr "Priporočeni prenosi - najnovejša izdaja Audacity"
 
 #: download/windows.php:26
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB, including help files) for <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b>"
-msgstr "<a href=\"%s\">Audacity %s</a> (datoteka .dmg, %.1lf MB, vključno z datotekami pomoči)"
+msgstr "<a href=\"%s\">Audacity %s, namestitev</a> (datoteka .exe, %.1lf MB, vključno z datotekami pomoči) za <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b>"
 
 #: download/windows.php:32
 #, php-format
@@ -3524,7 +3525,7 @@ msgid "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for <b>Windows&nbsp;20
 msgstr "<a href=\"%s\">Audacity %s, datoteka zip</a> (%.1lf MB) za <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b> - Če ne morete zagnati namestitvene datoteke zaradi omejenih pravic ali želite manjši prenos, potem prenesite in razširite to datoteko."
 
 #: download/windows.php:54
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">LADSPA plug-ins %s installer</a> (.exe file, %.1lf MB) - Contains over 90 plug-ins."
 msgstr "<a href=\"%s\">Namestitvena datoteka vtičnikov LADSPA %s</a> (datoteka .exe, %.1lf MB) - več kot 90 vtičnikov."
 
@@ -3540,7 +3541,7 @@ msgstr "<b>Naprednim uporabnikom</b> so za preizkušanje na voljo <a href=\"http
 #: download/windows.php:111
 #, php-format
 msgid "Read about Audacity on <a href=\"%s\">Windows Vista</a>, <a href=\"%s\">Windows 7</a> and <a href=\"%s\">Windows 8</a>."
-msgstr ""
+msgstr "Preberite si o Audacity na sistemih <a href=\"%s\">Windows Vista</a>, <a href=\"%s\">Windows 7</a> in <a href=\"%s\">Windows 8</a>."
 
 #: download/windows.php:112
 #: download/beta_windows.php:59
@@ -3574,9 +3575,8 @@ msgstr ""
 "</ul>\n"
 
 #: download/linux.php:31
-#, fuzzy
 msgid "Otherwise, we recommend either searching the web pages of your distribution for the latest information, or compiling Audacity yourself from <a href=\"source\">source code</a>."
-msgstr "Sicer priporočamo iskanje najnovejših informacij na spletnih straneh svoje distribucije ali prevajanje Audacity iz <a href=\"beta_source#recdown\">izvorne kode</a>."
+msgstr "Sicer priporočamo iskanje najnovejših informacij na spletnih straneh svoje distribucije ali prevajanje Audacity iz <a href=\"source\">izvorne kode</a>."
 
 #: download/linux.php:34
 #: download/beta_linux.php:36
@@ -3586,7 +3586,7 @@ msgstr "Priporočamo uporabno najnovejše različice GNU/Linux vaše distribucij
 
 #: download/betawarning.inc.php:13
 msgid "Audacity 1.3 has become the 2.0 version. Please check its <a href=\"#sysreq\">System Requirements</a>."
-msgstr ""
+msgstr "Audacity 1.3 je postala različica 2.0. Preverite njene <a href=\"#sysreq\">sistemske zahteve</a>."
 
 #: download/betawarning.inc.php:15
 msgid ""
@@ -3623,7 +3623,7 @@ msgstr ""
 #. <a href> tag itself.
 #: download/betawarning.inc.php:30
 msgid "Please help our development effort by trying the Beta and "
-msgstr ""
+msgstr "Pomagajte našemu razvoji s poskušanjem različic beta in "
 
 #: download/betawarning.inc.php:33
 msgid "send us your comments</a>. Please mention your operating system, full details of any problems, and any features that need improvement or no longer work properly. You can install 1.3 and 1.2 on the same machine by installing them to different directories."
@@ -3636,42 +3636,51 @@ msgid "<a href=\"%s\">Audacity %s source tarball</a> (%s file, %.1lf MB)"
 msgstr "<a href=\"%s\">Audacity %s (izvorna koda v obliki tarball)</a> (datoteka %s, %.1lf MB)"
 
 #: download/source.php:26
-#, fuzzy, php-format
-msgid "standard source tarball. Assumes your system has necessary dependencies/libraries installed (see below)."
-msgstr "To je naš standarden paket izvorne kode. Predpostavlja, da imate na svojem sistemu nameščene vse ustrezne odvisne knjižnice (glejte spodaj)."
+#, php-format
+msgid "standard source tarball, primarily for GNU/Linux. Assumes your system has necessary dependencies/libraries installed (see below)."
+msgstr "To je naš standarden paket izvorne kode, predvsem za GNU/Linux. Predpostavlja, da imate na svojem sistemu nameščene vse ustrezne odvisne knjižnice (glejte spodaj)."
 
 #: download/source.php:33
-#, fuzzy, php-format
+#, php-format
 msgid "full source tarball: Primarily for use on Windows and Mac, as they typically lack necessary dependencies to compile Audacity. Also needed on a GNU/Linux system configured as an end-user."
-msgstr "To je poln paket izvorne kode, namenjen sistemom Windows ali OSX, na katerih morda niso nameščene vse potrebne knjižnice za prevajanje programa Audacity."
+msgstr "To je poln paket izvorne kode, namenjen sistemom Windows ali OSX, na katerih morda niso nameščene vse potrebne knjižnice za prevajanje programa Audacity. Potrebno tudi na sistemih GNU/Linux za končnega uporabnika."
 
 #: download/source.php:34
 #, php-format
-msgid "<a href=\"%s\">Latest SVN Development Code</a>"
-msgstr "<a href=\"%s\">Najnovejša razvojna koda SVN </a>"
+msgid "<a href=\"%s\">SVN Development Code</a>&nbsp;"
+msgstr "<a href=\"%s\">Najnovejša razvojna koda SVN</a>&nbsp;"
 
-#: download/source.php:44
+#: download/source.php:35
+#, fuzzy, php-format
+msgid "Check out the latest Audacity SVN development code. You can also check out a specific tagged release from SVN, suitable for a Windows, Mac or other system that lacks necessary dependencies to compile the standard source tarball."
+msgstr "se splača prevest"
+
+#: download/source.php:46
 msgid "See operating system support for"
-msgstr ""
+msgstr "Oglejte si podporo operacijskega sistema za"
 
-#: download/source.php:51
-#, php-format
+#: download/source.php:53
+#, fuzzy, php-format
 msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is required. Audacity %s requires wxGTK 2.8.12. The <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a> library is also required and is included in Audacity obtained from <a href=\"/community/developers#svn\">SVN</a>. Installation of other libraries is <a href=\"http://wiki.audacityteam.org/wiki/Developing_On_Linux#Optional_Packages_and_Features\">optional</a>."
-msgstr ""
+msgstr "se splača prevest"
+
+#: download/source.php:55
+#, fuzzy, php-format
+msgid "<a href=\"%s\">CMake</a> is required to build <a href=\"%s\">libsoxr</a> which is now the Audacity default resampling library."
+msgstr "se splača prevest"
 
 #: download/beta_windows.php:13
 msgid "Windows Beta"
 msgstr "Windows Beta"
 
 #: download/beta_windows.php:21
-#, fuzzy
 msgid "Read about Audacity on Windows <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> and <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>."
-msgstr "najboljša različica za <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> in <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista"
+msgstr "Preberite si o Audacity na sistemih Windows <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a> in <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">7</a>."
 
 #: download/beta_windows.php:25
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor, including help files. <b>See further information about</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_7_OS\">Windows 7</a> <b>and</b> <a href=\"http://wiki.audacityteam.org/wiki/Windows_Vista_OS\">Vista</a><b>.</b>"
-msgstr "<a href=\"%s\">Namestitveni program Audacity %s</a> (datoteka .exe, %.1lf MB) - Zadnja različica brezplačnega urejevalnika zvoka Audacity, vključno z datotekami pomoči. <b>Oglejte si dodatne informacije o</b> <a href=\"http://audacityteam.org/wiki/index.php?title=Windows_7_OS\">Windows 7 (angl.)</a> <b>in</b> <a href=\"http://audacityteam.org/wiki/index.php?title=Windows_Vista_OS\">Visti (angl.)</a><b>.</b>"
+msgstr "<a href=\"%s\">Namestitveni program Audacity %s</a> (datoteka .exe, %.1lf MB) - Zadnja različica brezplačnega urejevalnika zvoka Audacity, vključno z datotekami pomoči. <b>Oglejte si dodatne informacije o</b> <a href=\"http://audacityteam.org/wiki/Windows_7_OS\">Windows 7 (angl.)</a> <b>in</b> <a href=\"http://audacityteam.org/wiki/Windows_Vista_OS\">Visti (angl.)</a><b>.</b>"
 
 #: download/beta_windows.php:27
 #, php-format
@@ -3679,7 +3688,7 @@ msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) -  The lat
 msgstr "<a href=\"%s\">Namestitveni program Audacity %s</a> (datoteka .exe, %.1lf MB) - Zadnja različica brezplačnega urejevalnika zvoka Audacity z datotekami pomoči.</a>"
 
 #: download/beta_windows.php:46
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
 "  - If you want a download without help files, or cannot run the installer because of restricted permissions, download and unzip this or the Windows 98/ME file below instead."
@@ -3700,9 +3709,8 @@ msgid "The selection Toolbar"
 msgstr "Vrstica izbora"
 
 #: download/features-1.3-d.php:23
-#, fuzzy
 msgid "In Audacity 1.2, the current selection is contained in a status bar at the bottom of the window.  In Audacity 1.3, this is replaced by a fully functional Selection Toolbar, which displays and controls the current selection (your choice of Start and End, or Start and Length), and the current audio position.  Selection Toolbar is fully editable - just click in any field and type to change the current selection precisely.  In addition, many formatting options allow you to view times in different units, such as samples, CD frames, or NTSC video frames."
-msgstr "V Audacity 1.2 je trenutni izbor vsebovan v vrstici stanja na dnu okna.  V Audacity 1.3 je to zamenjano z polno funkcionalno Vrstico izbire, ki prikaže in nadzira trenuten izbor (uporabnikova izbira prikaza začetka in konca ali začetka in dolžine) ter trenutni položaj v zvoku.  Vrstico izbora je mogoče v celoti urejati - le kliknite na katero koli polje in vnesite natančne spremembe trenutnega izbora.  Poleg tega so na voljo številne možnosti oblikovanja, ki omogočajo izpis časa v različnih enotah, kot so vzorci, sličice CD ali video slilčice NTSC."
+msgstr "V Audacity 1.2 je trenutni izbor vsebovan v vrstici stanja na dnu okna.  V Audacity 1.3 je to zamenjala polno funkcionalna Vrstica izbora, ki prikaže in nadzira trenuten izbor (uporabnikov izbor prikaza začetka in konca ali začetka in dolžine) ter trenutni položaj v zvoku.  Vrstico izbora je mogoče v celoti urejati - le kliknite na katero koli polje in vnesite natančne spremembe trenutnega izbora.  Poleg tega so na voljo številne možnosti oblikovanja, ki omogočajo izpis časa v različnih enotah, kot so vzorci, sličice CD ali video slilčice NTSC."
 
 #: download/features-1.3-d.php:29
 msgid "The project sample rate control on Selection Toolbar"
@@ -3744,8 +3752,9 @@ msgstr "Dvokliknite preneseni .dmg in ga s tem naložite"
 
 #: download/mac.php:44
 #: download/beta_mac.php:29
+#, fuzzy
 msgid "Then to install Audacity, copy the \"Audacity\" folder from the newly mounted .dmg to <b>/Applications</b> or any other location of your choosing."
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/mac.php:51
 #: download/legacy_mac.php:45
@@ -3765,8 +3774,9 @@ msgstr "Audacity deluje najbolje z vsaj 1 GB pomnilnika RAM in 1 GHz procesorjem
 #: download/mac.php:105
 #: download/legacy_mac.php:74
 #: download/beta_mac.php:50
+#, fuzzy
 msgid "Where Audacity is to be used for lengthy multi-track projects, we recommend a minimum of 2 GB RAM and 2 GHz processor (4 GB RAM on OS X 10.7 or later)."
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-f.php:9
 msgid "Audacity 1.3: Mac OS X features"
@@ -4068,8 +4078,9 @@ msgid "Legacy Mac OS 9 / X"
 msgstr "Opuščeni Mac OS 9 / X"
 
 #: download/legacy_mac.php:20
+#, fuzzy
 msgid "<b>Mac OS X 10.4 and later are not supported in Audacity 1.2. Please use</b> <a href=\"../download/mac\">the latest Mac version</a><b> for these operating systems.</b>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/legacy_mac.php:26
 #, php-format
@@ -4165,8 +4176,9 @@ msgid "For users of <b>Mac OS 9</b> and <b>Mac OS 10.0 through 10.3</b>, legacy 
 msgstr "Za uporabnike <b>Mac OS 9</b> in <b>Mac OS 10.0 do 10.3</b> je opuščena različica Audacity na voljo tudi na <a href=\"legacy_mac\">strani opuščenih prenosov za Mac"
 
 #: download/index.php:94
+#, fuzzy
 msgid "<a href=\"http://sourceforge.net/projects/audacity/files/\">All Previous Versions of Audacity</a>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/index.php:97
 msgid "Further Information"
@@ -4210,24 +4222,24 @@ msgid "<h3>Windows or Linux </h3>"
 msgstr "<h3>Windows ali Linux </h3>"
 
 #: download/buy.php:19
-#, php-format
+#, fuzzy, php-format
 msgid "<li><a href=\"%s\">OpenDisc</a> is a collection of high quality free and open source software for <b>Windows</b>. You can download the latest CD image for free, or donate to receive a CD copy anywhere in the world.</li>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/buy.php:20
-#, fuzzy, php-format
+#, php-format
 msgid "<li><a href=\"%s\">FreedomSampler&trade;</a> is a collection of free, open source software for <b>Windows and Linux</b> with full source code, allowing easy redistribution under the GNU General Public License. ISO images may be downloaded for free, or you can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">purchase</a> a copy to be shipped to you (US only)</li>"
-msgstr "FreedomSampler&trade; je zbirka brezplačnih, odprto-kodnih programov s celotno izvorno kodo, ki dovoljuje enostavno razširjanje pod splošno javno licenco GNU. Slike ISO prenesete brezplačno ali pa lahko <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">kupite</a> kopijo, ki jo boste prejeli po pošti."
+msgstr "<li><a href=\"%s\">FreedomSampler&trade;</a> je zbirka brezplačnih, odprto-kodnih programov za <b>Windows in Linux</b> s celotno izvorno kodo, ki dovoljuje enostavno razširjanje pod splošnim javnim dovoljenjem GNU. Slike ISO prenesete brezplačno ali pa lahko <a href=\"http://www.twistedlincoln.com/shop/catalog/products/freedomsampler\">kupite</a> kopijo, ki jo boste prejeli po pošti (velja samo v ZDA)."
 
 #: download/buy.php:21
-#, php-format
+#, fuzzy, php-format
 msgid "<li><a href=\"%s\">VALO-CD</a> contains twenty-two open-source <b>Windows</b> programs on a single CD. You can download and burn the ISO image for free, or purchase the CD for worldwide shipping.</li>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/buy.php:22
-#, fuzzy, php-format
+#, php-format
 msgid "<li><a href=\"%s\">TheOpenCD</a> is a now-discontinued collection of high quality free and open source software for <b>Windows</b>. Currently, you can still <a href=\"%s\">download archived CD images for free</a>, or <a href=\"%s\">purchase a CD online</a> for worldwide shipping.</li>"
-msgstr "TheOpenCD je že opuščena zbirka visoko kakovostnih prostih in odprto-kodnih programov. Trenutno lahko še vedno <a href=\"http://releases.theopencd.org/\">prenesete arhivirane slike zgoščenk</a> ali <a href=\"http://ztechshop.net/disks/opencd/\">prek spleta kupite zgoščenko</a>, ki jo dostavijo po celem svetu."
+msgstr "<li><a href=\"%s\">TheOpenCD</a> je že opuščena zbirka visoko kakovostnih prostih in odprto-kodnih programov za <b>Windows</b>. Trenutno lahko še vedno <a href=\"%s\">prenesete arhivirane slike zgoščenk</a> ali <a href=\"%s\">prek spleta kupite zgoščenko</a>, ki jo dostavijo po celem svetu."
 
 #: download/beta_linux.php:19
 msgid "Downloads"
@@ -4260,14 +4272,16 @@ msgid "Otherwise, we recommend either searching the web pages of your distributi
 msgstr "Sicer priporočamo iskanje najnovejših informacij na spletnih straneh svoje distribucije ali prevajanje Audacity iz <a href=\"beta_source#recdown\">izvorne kode</a>."
 
 #: download/features-2.0.php:16
+#, fuzzy
 msgid ""
 "Audacity 2.0 is our current release series. \n"
 "      It has dozens of new features, developed in the previous 1.3 series. \n"
 "      It replaces all previous versions, especially 1.2.6 and 1.3.14.\n"
 "      See <a href=\"../download/features-1.3-a\">New Features in 1.3</a> for changes during the 1.3 series. See <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Release Notes</a> for changes in the 2.0 series.\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-2.0.php:22
+#, fuzzy
 msgid ""
 "\n"
 "Some of the major changes in 2.0.0 over 1.2.6 are: \n"
@@ -4290,7 +4304,7 @@ msgid ""
 "      for import/export of AC3/M4A/WMA and import of audio from video files. \n"
 "    </li>\n"
 "</ul>\n"
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-g.php:9
 msgid "Audacity 1.3: Other features"
@@ -4317,8 +4331,9 @@ msgid "Upload via FTP"
 msgstr "Prenos prek FTP"
 
 #: download/features-1.3-g.php:26
+#, fuzzy
 msgid "Up to and including Audacity 1.3.3, an experimental dialog was available for uploading files to a server via FTP. A future version of Audacity may re-introduce this feature as an optional plug-in."
-msgstr ""
+msgstr "se splača prevest"
 
 #: download/features-1.3-g.php:28
 msgid "Based on wxWidgets 2.8"
@@ -4333,18 +4348,16 @@ msgid "Batch / CleanSpeech"
 msgstr "Paketno delo / PočistiGovor"
 
 #: download/features-1.3-g.php:34
-#, fuzzy
 msgid "Audacity has a new feature that allows you to process a batch of files, for example normalizing and converting to MP3.  CleanSpeech mode provides a simplified interface for some standard adjustments typically made on speech recordings.  You can access these features in the Interface Preferences."
-msgstr "Audacity ima novo funkcionalnost procesiranja večjega števila datotek, npr. normalizacijo in pretvorbo v MP3.  Način PočistiGovor ponuja poenostavljen vmesnik za nekatere običajne prilagoditve posnetkov govora.  Do teh funkcij lahko dostopate prek zavihka Paketno delo v pogovornem oknu Nastavitve."
+msgstr "Audacity ima novo funkcionalnost obdelave večjega števila datotek, npr. normalizacijo in pretvorbo v MP3.  Način PočistiGovor ponuja poenostavljen vmesnik za nekatere običajne prilagoditve posnetkov govora.  Do teh funkcij lahko dostopate prek pogovornega okna nastavitev vmesnika."
 
 #: download/features-1.3-g.php:36
 msgid "Cut lines"
 msgstr "Črte reza"
 
 #: download/features-1.3-g.php:38
-#, fuzzy
 msgid "Turning this feature on in the Tracks Preferences means that cutting audio in the middle of a clip does not remove it permanently - click on the cut line at any time to restore it."
-msgstr "Ko je aktivirana ta sposobnost (v zavihku Vmesnik v Nastavitvah), rezanje zvoka na sredi posnetka le-tega ne odstrani za vedno - kadar koli lahko kliknete na črto reza in ga povrnete nazaj."
+msgstr "Ko je aktivirana ta funkcionalnost (v zavihku Vmesnik v Nastavitvah), rezanje zvoka na sredi posnetka le-tega ne odstrani za vedno - kadar koli lahko kliknete na črto reza in ga povrnete nazaj."
 
 #: download/beta_mac.php:23
 #, php-format
@@ -4378,9 +4391,8 @@ msgid "Installation packages for Audacity on GNU/Linux and other Unix-like syste
 msgstr "Namestitvene pakete Audacity za GNU/Linux in druge Unixu podobne sisteme so pogosto zagotovljene v okviru posamezne distribucije:"
 
 #: download/legacy_linux.php:29
-#, fuzzy
 msgid "The above list is not comprehensive. If you don't see an up-to-date package for your own distribution, we recommend searching your distribution's web site for the latest information. Alternatively, you can compile Audacity from <a href=\"legacy_source\">source code</a>."
-msgstr "Zgornji seznam ni popoln. Če ne vidite najnovejšega paketa za svojo distribucijo, priporočamo, da preiščete spletno stran svoje distribucije za dodatne informacije. Sicer pa lahko Audacity prevedete iz <a href=\"source#recdown\">izvorne kode</a>."
+msgstr "Zgornji seznam ni popoln. Če ne vidite najnovejšega paketa za svojo distribucijo, priporočamo, da preiščete spletno stran svoje distribucije za dodatne informacije. Sicer pa lahko Audacity prevedete iz <a href=\"legacy_source\">izvorne kode</a>."
 
 #: download/features-1.3-i.php:9
 msgid "Audacity 1.3: Track focus"
@@ -4456,11 +4468,11 @@ msgid "About Audacity"
 msgstr "O Audacity"
 
 #: about/features.php:13
-#, fuzzy
 msgid "This is a list of features in Audacity, the free, open source, cross-platform audio editor.  For full information on how to use these features, go to the <a href=\"../help/\">help pages</a>."
-msgstr "To je seznam odlik aplikacije Audacity, prostega urejevalnika zvoka.  Za več informacij o njihovi uprorabi obiščite <a href=\"../help/\">strani pomoči</a>."
+msgstr "To je seznam odlik programa Audacity, prostega urejevalnika zvoka.  Za več informacij o njihovi uporabi obiščite <a href=\"../help/\">strani pomoči</a>."
 
 #: about/features.php:15
+#, fuzzy
 msgid ""
 "<h3 id=\"record\">Recording</h3>\n"
 "<p>Audacity can record live audio through a microphone or mixer, or <a href=\"http://manual.audacityteam.org/help/manual/man/tutorial_copying_tapes_lps_or_minidiscs_to_cd.html\">digitize recordings from cassette tapes, records, or minidiscs</a>. With some sound cards, Audacity can also capture <a href=\"http://manual.audacityteam.org/help/manual/man/tutorial_recording_audio_playing_on_the_computer.html\">streaming audio</a>.</p>\n"
@@ -4469,19 +4481,20 @@ msgid ""
 "  <li>Device Toolbar manages multiple input and output devices.</li>  \n"
 "  <li>Timer Record and Sound Activated Recording features.</li>\n"
 "  <li>Dub over existing tracks to create <a href=\"http://manual.audacityteam.org/help/manual/man/faq.html#overdub\">multi-track recordings</a>.</li>\n"
-"  <li>Record at high sample rates in excess of 192,000 Hz (subject to appropriate hardware).</li>\n"
+"  <li>Record at sample rates up to 192,000 Hz (subject to appropriate hardware). Up to 384,000 Hz is supported for appropriate high-resolution devices, except when using Windows DirectSound host.</li>\n"
 "  <li>Record <a href=\"http://wiki.audacityteam.org/wiki/Multichannel_Recording\">multiple channels</a> at once (subject to appropriate hardware).</li>\n"
 "  <li>Level meters can monitor volume levels before, during and after recording. Clipping can be displayed in the waveform or in a label track.</li>\n"
 "</ul>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: about/features.php:27
+#, fuzzy
 msgid ""
 "<h3 id=\"imp_exp\">Import and Export</h3>\n"
 "<p>Import sound files, edit them, and combine them with other files or new recordings.  Export your recordings in many different file formats, including <a href=\"http://manual.audacityteam.org/help/manual/man/export_multiple.html\">multiple files at once</a>.</p>\n"
 "<ul>\n"
 "  <li>Import and export <b>WAV</b>, <b>AIFF</b>, <b>AU</b>, <b>FLAC</b> and <a href=\"http://vorbis.com\">Ogg Vorbis</a> files.</li>\n"
-"  <li>Fast \"On-Demand\" import of WAV or AIFF files (letting you start work with the files almost immediately) if read directly from source. \"On-Demand\" import of other file formats is available with the optional <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg library</a>.</li>\n"
+"  <li>Fast \"On-Demand\" import of WAV or AIFF files (letting you start work with the files almost immediately) if read directly from source.</li>\n"
 "  <li>Import and export all formats supported by <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a> such as <b>GSM 6.10</b>, <b>32-bit and 64-bit float WAV</b> and <b>U/A-Law</b>.</li>\n"
 "  <li>Import MPEG audio (including <b>MP2</b> and <b>MP3</b> files) using <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
 "  <li>Import raw (headerless) audio files using the \"Import Raw\" command.</li>\n"
@@ -4489,10 +4502,9 @@ msgid ""
 "  <li>Export MP3 files with the optional <a href=http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#lame\">LAME encoder library</a>.</li>\n"
 "  <li>Import and export <b>AC3</b>, <b>M4A/M4R (AAC)</b> and <b>WMA</b> with the optional <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg library</a> (this also supports import of audio from video files).</li>\n"
 "</ul>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: about/features.php:40
-#, fuzzy
 msgid ""
 "<h3>Sound Quality</h3>\n"
 "<ul>\n"
@@ -4503,13 +4515,13 @@ msgid ""
 msgstr ""
 "<h3>Kakovost zvoka</h3>\n"
 "<ul>\n"
-"  <li>Snemajte in urejajte 16-bitne, 24-bitne in 32-bitne (plavajoča vejica) vzorce.</li>\n"
-"  <li>Snemajte do 96 KHz.</li>\n"
-"  <li>Mere vzorčenja in formati se pretvarjajo z uporabo visokokvalitetnega ponovnega vzorčenja in ditheringa.</li>\n"
-"  <li>Mešajte sledi z različnimi merami vzorčenja ali formati in Audacity jih pretvori samodejno v realnem času.</li>\n"
+"  <li>Snemajte in urejajte 16-bitne, 24-bitne in 32-bitne (plavajoča vejica) vzorce (slednji ohranijo vzorce v preseženem polnem merilu).</li>\n"
+"  <li>Mere vzorčenja in formati se pretvarjajo z uporabo visokokvalitetnega ponovnega vzorčenja in stresanja.</li>\n"
+"  <li>Mešajte sledi z različnimi merami vzorčenja ali zapisi in Audacity jih pretvori samodejno v realnem času.</li>\n"
 "</ul>"
 
 #: about/features.php:47
+#, fuzzy
 msgid ""
 "<h3 id=\"edit\">Editing</h3>\n"
 "<ul>\n"
@@ -4522,9 +4534,10 @@ msgid ""
 "  <li><a href=\"http://manual.audacityteam.org/help/manual/man/envelope_tool.html\">Envelope Tool</a> to fade the volume up or down smoothly.</li>\n"
 "  <li>Automatic Crash Recovery in the event of abnormal program termination.</li>  \n"
 "</ul>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: about/features.php:59
+#, fuzzy
 msgid ""
 "<h3><a href=\"http://manual.audacityteam.org/help/manual/man/accessibility.html\">Accessibility</a></h3>\n"
 "<ul>\n"
@@ -4532,16 +4545,17 @@ msgid ""
 "  <li>Large range of <a href=\"http://manual.audacityteam.org/help/manual/man/keyboard_shortcut_reference.html\">keyboard shortcuts</a>. </li>\n"
 "  <li>Excellent support for JAWS, <a href=\"http://www.nvda-project.org/\">NVDA</a> and other screen readers on Windows, and for <a href=\"http://www.apple.com/accessibility/voiceover/\">VoiceOver</a> on Mac.</li>   \n"
 "</ul>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: about/features.php:66
+#, fuzzy
 msgid ""
 "<h3 id=\"effects\">Effects</h3>\n"
 "<ul>\n"
 "  <li>Change the pitch without altering the tempo (or vice-versa).</li>\n"
 "  <li>Remove static, hiss, hum or other constant background noises.</li>\n"
 "  <li>Alter frequencies with Equalization, Bass Boost, High/Low Pass and Notch Filter effects.</li>\n"
-"  <li>Adjust volume with Compressor, Amplify, Normalize and Fade In/Out effects.\n"
+"  <li>Adjust volume with Compressor, Amplify, Normalize, Fade In/Fade Out and Adjustable Fade effects.\n"
 "  <li><a href=\"http://manual.audacityteam.org/help/manual/man/vocal_remover.html\">Remove Vocals</a> from suitable stereo tracks.\n"
 "  <li>Create voice-overs for podcasts or DJ sets using <a href=\"http://manual.audacityteam.org/help/manual/man/auto_duck.html\">Auto Duck</a> effect.\n"
 "  <li>Other built-in effects include:\n"
@@ -4555,18 +4569,20 @@ msgid ""
 "    </ul>\n"
 "  <li>Run \"Chains\" of effects on a project or multiple files in <a href=\"http://manual.audacityteam.org/help/manual/man/batch_processing.html\">Batch Processing</a> mode. \n"
 "</ul>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: about/features.php:86
+#, fuzzy
 msgid ""
 "<h3><a href=\"../download/plugins\">Plug-ins</a></h3>\n"
 "<ul>\n"
 "  <li>Add new effects with <a href=\"http://www.ladspa.org/\">LADSPA</a>, <a href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins\">Nyquist</a>, <a href=\"http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#vst_install\">VST</a> and <a href=\"http://manual.audacityteam.org/help/manual/man/effect_menu.html#Audio_Unit_Effects\">Audio Unit</a> effect plug-ins.</li>\n"
 "  <li>Effects written in the <a href=\"../help/nyquist\">Nyquist programming language</a> can be easily modified in a text editor - or you can even write your own plug-in.</li>\n"
 "</ul>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: about/features.php:92
+#, fuzzy
 msgid ""
 "<h3>Analysis</h3>\n"
 "<ul>\n"
@@ -4576,10 +4592,9 @@ msgid ""
 "  <li>Contrast Analysis for analyzing average rms volume differences between foreground speech and background music.</li>\n"
 "  <li>Support for adding <a href=\"http://manual.audacityteam.org/help/manual/man/analyze_menu.html#vamp\">VAMP</a> analysis plug-ins.</a>\n"
 "</ul>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: about/features.php:101
-#, fuzzy
 msgid ""
 "<h3>Free and Cross-Platform</h3>\n"
 "<ul>\n"
@@ -4589,7 +4604,7 @@ msgid ""
 msgstr ""
 "<h3>Brezplačen in večplatformski</h3>\n"
 "<ul>\n"
-"  <li>Licenciran pod <a href=\"license\">splošno javno licenco GNU (GPL)</a>.</li>\n"
+"  <li>Licenciran pod <a href=\"license\">splošnim javnim dovoljenjem GNU (GPL)</a>.</li>\n"
 "  <li>Teče v okoljih Mac OS X, Windows in GNU/Linux.</li>\n"
 "</ul>"
 
@@ -4623,9 +4638,10 @@ msgstr "zagotavljanje kakovosti"
 
 #: about/credits.php:27
 #: about/credits.php:30
-#: about/credits.php:31
+#: about/credits.php:33
 #: about/credits.php:34
 #: about/credits.php:37
+#: about/credits.php:50
 #: about/credits.php:51
 #: about/credits.php:52
 #: about/credits.php:53
@@ -4654,7 +4670,7 @@ msgid "developer"
 msgstr "razvijalec"
 
 #: about/credits.php:28
-#: about/credits.php:33
+#: about/credits.php:32
 #: about/credits.php:35
 #: about/credits.php:36
 #: about/credits.php:38
@@ -4671,7 +4687,7 @@ msgstr "francoščina"
 msgid "system administration"
 msgstr "sistemska administracija"
 
-#: about/credits.php:32
+#: about/credits.php:31
 #: about/credits.php:56
 msgid "developer and co-founder of Audacity"
 msgstr "razvijalec in soustanovitelj Audacity"
@@ -4680,7 +4696,7 @@ msgstr "razvijalec in soustanovitelj Audacity"
 msgid "Technical Leadership Council"
 msgstr "Tehnični vodstveni svet"
 
-#: about/credits.php:49
+#: about/credits.php:48
 msgid "Emeritus: distinguished Audacity Team members, not currently active"
 msgstr "Zaslužni člani: cenjeni člani ekipe Audacity, ki niso trenutno aktivni"
 
@@ -4704,11 +4720,11 @@ msgstr "Vtičniki Nyquist"
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity temelji na kodi naslednjih projektov:"
 
-#: about/credits.php:158
+#: about/credits.php:159
 msgid "Thanks"
 msgstr "Zahvala"
 
-#: about/credits.php:159
+#: about/credits.php:160
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "Veliko drugih ljudi in organizacij je, katerim bi se radi zahvalili. Mnogi so projektu prispevali kodo, popravke, odzive, denar, čas ali drugo.  Drugi preprosto izdelujejo orodja, ki so to celo stvar omogočila."
 
@@ -4716,115 +4732,97 @@ msgstr "Veliko drugih ljudi in organizacij je, katerim bi se radi zahvalili. Mno
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Opomnite nas, če smo koga pozabili!)"
 
-#: about/links.php:14
-msgid "Other Things Named “Audacity” (not related to us)"
-msgstr "Druge stvari poimenovane “Audacity˝ (v nobeni povezavi z nami)"
-
-#: about/links.php:16
-msgid "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is a digital voice recorder for smartphones."
-msgstr "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> je digitalni snemalnik govora za pametne telefone."
-
-#: about/links.php:17
-msgid "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company for construction industry professionals."
-msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a> je raziskovalna družba za stokovnjake iz gradbene industrije."
-
-#: about/links.php:18
-msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides software consulting services for businesses in Washington, Arizona and California."
-msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> ponuja svetovalne programske storitve za podjetja v Washingtonu, Arizoni in Kaliforniji."
-
-#: about/links.php:19
-msgid "Two different rock bands from <a href=\"http://www.myspace.com/audacityrocks\">Finland</a> and <a href=\"http://www.unsigned.com/audacity\">England</a> are named \"Audacity\"."
-msgstr "Različni rock skupini s <a href=\"http://www.myspace.com/audacityrocks\">Finske</a> in iz <a href=\"http://www.unsigned.com/audacity\">Anglije</a> nosita ime \"Audacity\"."
-
-#: about/links.php:22
+#: about/links.php:15
 msgid "Other Open Source Audio Software"
 msgstr "Druga odprto-kodna programska oprema za zvok"
 
-#: about/links.php:23
+#: about/links.php:16
 msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux and Mac OS X."
 msgstr "<a href=\"http://ardour.org/\">Ardour</a> je močna digitalna zvočna delovna postaja, ki teče v okoljih GNU/Linux in Mac OS X."
 
-#: about/links.php:24
+#: about/links.php:17
 msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper for Microsoft Windows."
 msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> je zastonj CD ripper za okolje Microsoft Windows."
 
-#: about/links.php:25
+#: about/links.php:18
 msgid "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
 msgstr "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> je brezplačno orodje za zajem in čiščenje posnetkov z vinilnih plošč."
 
-#: about/links.php:26
+#: about/links.php:19
+#, fuzzy
 msgid "<a href=\"http://www.mixxx.org/\">Mixxx</a> is free cross-platform digital DJ mixing software with features like automatic BPM matching and seamless looping."
-msgstr ""
+msgstr "se splača prevest"
 
-#: about/links.php:27
+#: about/links.php:20
 msgid "More free audio software at SourceForge.net:"
 msgstr "Več prostega zvokovnega programja na SourceForge.net:"
 
-#: about/links.php:29
+#: about/links.php:22
 msgid "Audio Editors"
 msgstr "Urejevalniki zvoka"
 
-#: about/links.php:30
+#: about/links.php:23
 msgid "Audio Capture/Recording"
 msgstr "Zajem/snemanje zvoka"
 
-#: about/links.php:31
+#: about/links.php:24
 msgid "Audio Analysis"
 msgstr "Analiza zvoka"
 
-#: about/links.php:34
+#: about/links.php:27
 msgid "Open Source Audio-Visual Software"
 msgstr "Odprto-kodna programje za avdiovizualno"
 
-#: about/links.php:35
+#: about/links.php:28
+#, fuzzy
 msgid "<a href=\"http://www.blender.org/\">Blender</a> is a free, cross-platform 3D content creation suite for animations, interactive applications and video games."
-msgstr ""
+msgstr "se splača prevest"
 
-#: about/links.php:36
+#: about/links.php:29
 #, fuzzy
 msgid "<a href=\"http://mediainfo.sourceforge.net/\">MediaInfo</a> is a free, cross-platform tag and codec analyzer for audio and video files."
 msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> je zastonj CD ripper za okolje Microsoft Windows."
 
-#: about/links.php:37
+#: about/links.php:30
+#, fuzzy
 msgid "<a href=\"http://www.videolan.org/vlc/\">VLC media player</a> is a free, cross-platform media player for most audio and video files as well as DVD, Audio CD and VCD. VLC can also send, save and convert <a href=\"http://www.videolan.org/streaming-features.html\">audio and video streams</a>."
-msgstr ""
+msgstr "se splača prevest"
 
-#: about/links.php:38
+#: about/links.php:31
 msgid "CD/DVD burning:"
 msgstr "Peka CD/DVD:"
 
-#: about/links.php:40
+#: about/links.php:33
 msgid "<a href=\"http://infrarecorder.org/\">InfraRecorder</a> for Windows"
 msgstr "<a href=\"http://infrarecorder.org/\">InfraRecorder</a> za Windows"
 
-#: about/links.php:41
+#: about/links.php:34
 msgid "<a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a> for Mac OS X"
-msgstr ""
+msgstr "<a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a> za Mac OS X"
 
-#: about/links.php:42
+#: about/links.php:35
 msgid "<a href=\"http://k3b.org/\">K3b</a> or <a href=\"http://archive.xfce.org/src/apps/xfburn/0.4\">Xfburn</a> for Linux"
-msgstr ""
+msgstr "<a href=\"http://k3b.org/\">K3b</a> ali <a href=\"http://archive.xfce.org/src/apps/xfburn/0.4\">Xfburn</a> za Linux"
 
-#: about/links.php:44
+#: about/links.php:37
 msgid "Video editing/capture:"
 msgstr "Montaža/zajem videa:"
 
-#: about/links.php:46
+#: about/links.php:39
 msgid "<a href=\"http://www.virtualdub.org/\">VirtualDub</a> for Windows"
 msgstr "<a href=\"http://www.virtualdub.org/\">VirtualDub</a> za Windows"
 
-#: about/links.php:47
-#, fuzzy
+#: about/links.php:40
 msgid "<a href=\"http://avidemux.sourceforge.net/\">Avidemux</a> for Windows, Mac OS X (Intel) and Linux"
-msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> je zastonj CD ripper za okolje Microsoft Windows."
+msgstr "<a href=\"http://avidemux.sourceforge.net/\">Avidemux</a> za Windows, Mac OS X (Intel) in Linux"
 
-#: about/links.php:48
+#: about/links.php:41
 msgid "<a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a> for Mac OS X"
-msgstr ""
+msgstr "<a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a> za Mac OS X"
 
-#: about/links.php:49
+#: about/links.php:42
 msgid "<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> or <a href=\"http://www.kinodv.org/article/static/2\">Kino</a> for Linux"
-msgstr ""
+msgstr "<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> ali <a href=\"http://www.kinodv.org/article/static/2\">Kino</a> za Linux"
 
 #: about/index.php:15
 msgid ""
@@ -4859,7 +4857,6 @@ msgstr ""
 #. Also check the translations of this web page:
 #. http://www.fsf.org/philosophy/free-sw.html
 #: about/index.php:34
-#, fuzzy
 msgid ""
 "<h3>About Free Software</h3>\n"
 "\n"
@@ -4873,13 +4870,13 @@ msgid ""
 msgstr ""
 "<h3>O prosti programski opremi</h3>\n"
 "\n"
-"<p>Audacity je prosto programje, ki ga razvija skupina prostovoljcev in ki je na voljo pod <a href=\"license\">splošno javno licenco GNU (GPL)</a>.</p>\n"
+"<p>Audacity je prosto programje, ki ga razvija skupina prostovoljcev in ki je na voljo pod <a href=\"license\">splošnim javnim dovoljenjem GNU (GPL)</a>.</p>\n"
 "\n"
-"<p>Prosto programje ni le brezplačno (kot &quot;brezplačno pivo&quot;).  Je <b>svobodno kot v svobodi</b> (kot &quot;svoboda govora&quot;).  Prosta programska oprema ponuja svobodo uporabe programa, proučevanja njegovega delovanja, izboljševanja in deljenja z drugimi.  Če želite več informacij, obiščite <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
+"<p>Prosto programje ni le brezplačno (kot &quot;brezplačno pivo&quot;).  Je <b>svobodno kot v svobodi</b> (kot &quot;svoboda govora&quot;). Prosta programska oprema ponuja svobodo uporabe programa, proučevanja njegovega delovanja, izboljševanja in deljenja z drugimi.  Če želite več informacij, obiščite <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
 "\n"
-"<p>Programe, kakršen je Audacity, imenujemo tudi <b>odprtokodna programska oprema</b>, saj je njihova izvorna koda na voljo vsem za študij ali uporabo.  Na voljo je na tisoče drugih odprtokodnih in brezplačnih programov, vključno s spletnim brskalnikom <a href=\"http://www.mozilla.com/\">Mozillo</a>, pisarniškim paketom <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> in celotnimi operacijskimi sistemi na osnovi Linuxa, kot je <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Ubuntu</a>.</p>\n"
+"<p>Programe, kakršen je Audacity, imenujemo tudi <b>odprtokodna programska oprema</b>, saj je njihova izvorna koda na voljo vsem za študij ali uporabo. Na voljo je na tisoče drugih odprtokodnih in brezplačnih programov, vključno s spletnim brskalnikom <a href=\"http://www.mozilla.com/\">Mozillo</a>, pisarniškim paketom <a href=\"http://sl.libreoffice.org/\">LibreOffice</a> in celotnimi operacijskimi sistemi na osnovi Linuxa, kot je <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Ubuntu</a>.</p>\n"
 "\n"
-"<p>Veseli smo <a href=\"../community/donate\">donacij</a> v podporo razvoju Audacity. Vsakdo lahko <a href=\"http://audacityteam.org/wiki/index.php?title=Contribute\">prispeva</a> k Audacity pri pisanju <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">dokumentacije</a>, <a href=\"../community/translation\">prevajanju</a>, <a href=\"http://audacityteam.org/forum/index.php\">podpori</a> uporabnikom in pri <a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">preizkušanju<a/> naše nove kode.</p>"
+"<p>Veseli smo <a href=\"/donate/\">donacij</a> v podporo razvoju Audacity. Vsakdo lahko <a href=\"http://audacityteam.org/wiki/index.php?title=Contribute\">prispeva</a> k Audacity pri pisanju <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">dokumentacije</a>, <a href=\"../community/translation\">prevajanju</a>, <a href=\"http://audacityteam.org/forum/index.php\">podpori</a> uporabnikom in pri <a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">preizkušanju<a/> naše nove kode.</p>"
 
 #: about/index.php:44
 msgid "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses.</p>"
@@ -4910,7 +4907,7 @@ msgstr ""
 "<p>Prav tako bi radi slišali od družb ali skupin, ki jih zanima <a href=\"http://audacityteam.org/sponsor.php\">sponzoriranje</a> razvoja Audacity.</p>"
 
 #: about/news.php:21
-#: index.php:116
+#: index.php:114
 msgid "More news items..."
 msgstr "Več novic ..."
 
@@ -4929,7 +4926,7 @@ msgstr "<h3 id=\"license\">Dovoljenje</h3>"
 #: about/license.php:29
 #, php-format
 msgid "Audacity is <a href=\"%s\">free software</a>. You may use it for any personal, commercial or educational purpose, including installing it on as many different computers as you wish."
-msgstr ""
+msgstr "Audacity je <a href=\"%s\">prosto programje</a>. Uporabljate ga lahko za poljubne osebne, pridobitniške in/ali izobraževalne namene, vključno z nameščanjem na poljubnem številu računalnikov."
 
 #: about/license.php:33
 #, fuzzy, php-format
@@ -5017,8 +5014,9 @@ msgstr ""
 "<p>Hvaležni bomo, če boste dodali povezavo na našo spletno stran: <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a>, tako da lahko vaši uporabniki prenesejo posodobljene različice Audacity, ko izidejo. Prav tako se prijavite na obvestila na dnu <a href=\"http://audacity.sourceforge.net\">http://audacity.sourceforge.net</a>, da si zagotovite prejemanje nasvetov in da lahko razširjate najnovejšo različico Audacity.</p>"
 
 #: about/license.php:80
+#, fuzzy
 msgid "<p>If you bundle the .exe or .dmg Audacity installers, the Audacity <a href=\"http://manual.audacityteam.org/help/manual/\">Manual</a> is included. If you provide the Audacity zip file or source tarball, please consider including the <a href=\"http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html\">standalone Manual</a> with your distribution to reduce the number of queries we receive."
-msgstr ""
+msgstr "se splača prevest"
 
 #: about/license.php:83
 msgid "IMPORTANT: If you write your own documentation for Audacity, please "
@@ -5133,7 +5131,7 @@ msgstr "Snemanje z Audacity"
 #: community/translation.php:20
 #, php-format
 msgid "We are grateful that volunteers translate Audacity into many different languages. If you would like to help, please join the %saudacity-translation mailing list%s, and read instructions below."
-msgstr ""
+msgstr "Hvaležni smo, da prostovoljci prevajajo Audacity v številne jezike. Če bi radi pomagali, se pridružite %sdopisnemu seznamu audacity-translation%s in preberite spodnje napotke."
 
 #: community/translation.php:22
 msgid "Resources for Translators"
@@ -5170,14 +5168,13 @@ msgid "wxWidgets i18n"
 msgstr "wxWidgets i18n"
 
 #: community/translation.php:43
-#, fuzzy
 msgid "Audacity Manual</a> - The Audacity Manual also requires translating. This is done online using Wiki software. To create an account and start translating, please contact"
-msgstr "Uporabniški priročnik Audacity (beta)</a> - Tudi Uporabniški priročnik Audacity (beta) je potrebno prevesti. To lahko storite prek wikija. Če želite ustvariti račun in začeti s prevajanjem, pišite na"
+msgstr "Uporabniški priročnik Audacity</a> - Tudi Uporabniški priročnik Audacity je potrebno prevesti. To lahko storite prek wikija. Če želite ustvariti račun in začeti s prevajanjem, pišite na"
 
 #. i18n-hint: These instructions are for translators only, so you may
 #. leave them untranslated if you like.
 #: community/translation.php:50
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "<h3>Translation Instructions (software and web site)</h3>\n"
 "\n"
@@ -5218,26 +5215,23 @@ msgid ""
 "  <li><b>To submit a translation</b>, please send the completed .po file to the audacity-translation mailing list. A member of Audacity Team will commit the file and send a message to the list confirming this.</li> \n"
 "  <li>Please read <a href=\"http://wiki.audacityteam.org/index.php?title=Translating_Audacity\">Translating Audacity</a> for more tips on translating the Audacity source code, and to learn how the Audacity software and web site are translated.</li>\n"
 "</ul>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: community/index.php:15
 msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute your time to the Audacity project:"
 msgstr "Audacity je brezplačna programska oprema, ki jo razvijajo prostovoljci.  Tukaj so možnosti, kako lahko tudi sami pomagate projektu Audacity:"
 
 #: community/index.php:19
-#, fuzzy
 msgid "Give us <a href=\"../contact#feedback\">suggestions or bug reports</a>, join the Audacity user community and help other users."
-msgstr "Pišite nam, poročajte o hroščih, postanite del uporabniške skupnosti Audacity in pomagajte drugim uporabnikom."
+msgstr "<a href=\"../contact#feedback\">Pišite nam, poročajte o hroščih</a>, postanite del uporabniške skupnosti Audacity in pomagajte drugim uporabnikom."
 
 #: community/index.php:22
-#, fuzzy
 msgid "If you are a C++ programmer, join the development team and help us improve Audacity.  We also welcome documentation and other contributions, and can help with questions on modifying the Audacity source code. To get started, please join the <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a> mailing list."
-msgstr "Če znate programirati v jeziku C++, se lahko pridružite razvijalski ekipi in nam pomagate izboljšati Audacity.  Pozdravljamo dokumentacijo in tudi druge prispevke, na voljo smo za vprašanja o gradnji in spreminjanju izvorne kode Audacity."
+msgstr "Če znate programirati v jeziku C++, se lahko pridružite razvijalski ekipi in nam pomagate izboljšati Audacity.  Pozdravljamo dokumentacijo in tudi druge prispevke, na voljo smo za vprašanja o gradnji in spreminjanju izvorne kode Audacity. Za začetek se prijavite na dopisni seznam <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a>."
 
 #: community/index.php:25
-#, fuzzy
 msgid "If you are fluent in both English and another language, you can help translate the Audacity software, web site and <a href=\"http://manual.audacityteam.org/index.php?title=Main_Page\">Manual</a>. We also need people to help provide support for Audacity in different languages."
-msgstr "Če tekoče obvladate angleščino in kak drug jezik, nam lahko pomagate s prevodom aplikacije, spletnih strani Audacity in <a href=\"http://manual.audacityteam.org/index.php?title=Main_Page\">Priročnika Bata</a>.  Prav tako potrebujemo sodelavce, ki bi nudili pomoč za Audacity v različnih jezikih."
+msgstr "Če tekoče obvladate angleščino in kak drug jezik, nam lahko pomagate s prevodom programa, spletnih strani Audacity in <a href=\"http://manual.audacityteam.org/index.php?title=Main_Page\">Priročnika</a>. Prav tako potrebujemo sodelavce, ki bi nudili pomoč za Audacity v različnih jezikih."
 
 #: community/index.php:28
 msgid "We also welcome <a href=\"../donate/\">donations</a> to support Audacity development."
@@ -5248,9 +5242,8 @@ msgid "<a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on 
 msgstr "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> ima statistiko o vrednosti razvoja Audacity. &quot;Značka&quot; Ohloh na dnu vsake strani na tem spletnem naslovu kaže posodobljene vrednosti povzetka. Strani Ohloh smo postavili za Audacity, tako da statistika prikazuje le vrednosti, ki se strogo nanašajo na razvoj Audacity, torej brez zunanjih programskih knjižnic, ki jih uporablja Audacity. <a href=\"http://www.ohloh.net/projects/59/analyses/latest\">Zavihek Code</a> na spletnem mestu Ohloh prikazuje napredek v razvoju kode."
 
 #: community/developers.php:19
-#, fuzzy
 msgid "Join the <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a> mailing list to discuss current and future development, or to get help modifying the Audacity source code."
-msgstr "Pridružite se dopisnemu seznamu <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a> za razpravo o trenutnem in nadaljnem razvoju ter iskanje pomoči pri prevajanju in spreminjanju izvorne kode Audacity."
+msgstr "Pridružite se dopisnemu seznamu <a href=\"http://lists.sourceforge.net/lists/listinfo/audacity-devel\">audacity-devel</a> za razpravo o trenutnem in nadaljnjem razvoju ter iskanje pomoči pri prevajanju in spreminjanju izvorne kode Audacity."
 
 #: community/developers.php:21
 msgid "SVN"
@@ -5258,40 +5251,50 @@ msgstr "SVN"
 
 #: community/developers.php:22
 msgid "You can get the latest Audacity code from our <a href=\"http://code.google.com/p/audacity/source/browse/audacity-src/trunk\">SVN repository</a>.  We aren't currently working on any other version."
-msgstr ""
+msgstr "Najnovejšo izvorno kodo Audacity lahko pridobite v našem <a href=\"http://code.google.com/p/audacity/source/browse/audacity-src/trunk\">skladišču SVN</a>. Trenutno ne razvijamo nobene druge različice."
 
 #: community/developers.php:25
 msgid "Type this at the command line to check out the latest source code from SVN:"
 msgstr "Vnesite naslednji ukaz v ukazno vrstico za pridobitev najnovejše izvorne kode iz SVN:"
 
-#: community/developers.php:27
-msgid "See our development source code page for <a href=\"../download/beta_source#instructions\">compilation instructions</a>."
-msgstr "Poglejte si razvijalsko stran izvorne kode za <a href=\"../download/beta_source#instructions\">napotke pri prevajanju (v angl.)</a>."
+#: community/developers.php:30
+#, fuzzy, php-format
+msgid "You can also check out a specific <a href=\"%s\">tagged release</a> from SVN."
+msgstr "se splača prevest"
 
-#: community/developers.php:31
+#: community/developers.php:32
+msgid "Use the following syntax at the command line to check out a specific tagged release from SVN, for example:"
+msgstr "Vnesite npr. naslednji ukaz v ukazno vrstico za prevzem izvorne kode določene izdaje iz SVN:"
+
+#: community/developers.php:37
+msgid "See our development source code page for <a href=\"../download/source#instructions\">compilation instructions</a>."
+msgstr "Poglejte si razvijalsko stran izvorne kode za <a href=\"../download/source#instructions\">napotke pri prevajanju (v angl.)</a>."
+
+#: community/developers.php:39
+#, fuzzy
 msgid "The SVN repository may also be accessed using GUI and IDE <a href=\"http://wiki.audacityteam.org/wiki/SVN_Clients\">clients or plug-ins</a>. If using GUI or IDE tools, please use the commands indicated in the tool's documentation."
-msgstr ""
+msgstr "se splača prevest"
 
-#: community/developers.php:33
+#: community/developers.php:41
 msgid "Bug Tracking"
 msgstr "Sledenje hroščem"
 
-#: community/developers.php:34
+#: community/developers.php:42
+#, fuzzy
 msgid "The Audacity developers use bugzilla to track bugs and enhancements. To find issues to work on, please view our categorized <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Bug Lists</a>."
-msgstr ""
+msgstr "se splača prevest"
 
-#: community/developers.php:35
+#: community/developers.php:43
 msgid "If you are a user reporting a new bug, please e-mail our <a href=\"../contact#feedback\">feedback address</a>."
-msgstr ""
+msgstr "Če kot uporabnik poročate o novem hrošču, nam ne pozabite pisati na naš <a href=\"../contact#feedback\">naslov za odziv</a>."
 
-#: community/developers.php:37
+#: community/developers.php:45
 msgid "Submitting Patches"
 msgstr "Pošiljanje popravkov"
 
-#: community/developers.php:38
-#, fuzzy
+#: community/developers.php:46
 msgid "We welcome patches from developers. Please see our <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Submitting Patches</a> page on the <a href=\"http://wiki.audacityteam.org/wiki\">Wiki</a>."
-msgstr "Popravki napak razvijalcev so seveda dobrodošli. Prosimo, da si ogledate stran <a href=\"http://audacityteam.org/wiki/index.php?title=SubmittingPatches\">Pošiljanje popravkov</a> na našem <a href=\"http://audacityteam.org/wiki/index.php?title=Audacity_Wiki_Home_Page\">wikiju</a>."
+msgstr "Popravki napak razvijalcev so seveda dobrodošli. Prosimo, da si ogledate stran <a href=\"http://audacityteam.org/wiki/SubmittingPatches\">Pošiljanje popravkov</a> na našem <a href=\"http://audacityteam.org/wiki\">wikiju</a>."
 
 #: community/users.php:10
 msgid "User Community"
@@ -5306,9 +5309,9 @@ msgid "Say Hello!"
 msgstr "Recite živjo!"
 
 #: community/users.php:19
-#, fuzzy, php-format
+#, php-format
 msgid "If you enjoy Audacity, <a href=\"%s\">write to us</a> and let us know that you like it.  It makes us happy to know that people enjoy it.  Also feel free to send comments and suggestions.  We're always improving Audacity, and we value your input."
-msgstr "in nam povejte, da vam je všeč.  Veseli nas vedeti, da je ljudem všeč.  Prav tako nam pošljite pripombe in predloge.  Vedno izboljšujemo Audacity in cenimo vaše povratne informacije."
+msgstr "Če vam je Audacity všeč, <a href=\"%s\">nam pišite</a> in nam povejte, da vam je všeč.  Veseli nas vedeti, da je ljudem všeč.  Prav tako nam pošljite pripombe in predloge. Vedno izboljšujemo Audacity in cenimo vaše povratne informacije."
 
 #. i18n-hint:  Note that the wiki is in English.  If you want, you can create
 #. a page in your language on the wiki, and link to it instead.
@@ -5317,14 +5320,14 @@ msgid "<h3>Join the User Community</h3>"
 msgstr "<h3>Pridružite se skupnosti uporabnikov</h3>"
 
 #: community/users.php:25
-#, fuzzy, php-format
+#, php-format
 msgid "Subscribe to the <a href=\"%s\">audacity-users mailing list</a> to share tips, questions and feedback with other Audacity users and developers."
-msgstr "za izmenjavo nasvetov, vprašanj in odzivov z drugimi uporabniki in razvijalci Audacity."
+msgstr "Za izmenjavo nasvetov, vprašanj in odzivov z drugimi uporabniki in razvijalci Audacity se naročite na <a href=\"%s\">dopisni seznam audacity-users</a>."
 
 #: community/users.php:26
-#, fuzzy, php-format
+#, php-format
 msgid "Visit the <a class=\"ext\" target=\"blank\" href=\"%s\">Audacity Wiki</a>, a community resource where users can add or edit information about Audacity and digital audio."
-msgstr "vir skupnosti, kjer lahko uporabniki dodajajo in spreminjajo podatke o Audacity in digitalnem zvoku."
+msgstr "Obiščite <a class=\"ext\" target=\"blank\" href=\"%s\">wiki Audacity</a>, vir skupnosti, kjer lahko uporabniki dodajajo in spreminjajo podatke o Audacity in digitalnem zvoku."
 
 #: community/users.php:27
 #, php-format
@@ -5345,31 +5348,32 @@ msgid "Help us test our latest versions"
 msgstr "Pomagajte nam pri preizkušanju najnovejših različic"
 
 #: community/users.php:33
-#, php-format
+#, fuzzy, php-format
 msgid "<a href=\"%s\">Subscribe</a> to our announcements list for the latest news, and download our <a href=\"%s\">latest release</a> or <a href=\"%s\">Nightly Build</a>. Nightly Builds are aplha pre-releases that may contain new features or bug fixes that haven't been fully tested yet."
-msgstr ""
+msgstr "se splača prevest"
 
 #: community/users.php:35
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "After testing, please <a href=\"%s\">let us know</a>:\n"
 "<ul><li>Details of any problems you encountered</li>\n"
 "<li>Any <em>regressions</em> - things that used to work but now don't</li>\n"
 "<li>What you liked</li>\n"
 "<li>What could be improved.</li></ul>."
-msgstr ""
+msgstr "se splača prevest"
 
 #: contact/privacy.php:16
-#: include/header.inc.php:207
+#: include/header.inc.php:192
 msgid "Advertisements Policy"
 msgstr "Politika oglaševanja"
 
 #: contact/privacy.php:18
+#, fuzzy
 msgid ""
 "<p>On some pages on this site, we show advertisements from Google's AdSense program. See our &ldquo;<a href=\"http://audacity.sourceforge.net/donate/\">How Does Audacity Raise Money?</a>&rdquo; page for the reasons we show advertisements.</p>\n"
 "\n"
 "<p>As of April 8, 2009, this includes \"interest-based\" advertising, which utilizes cookies to try to determine users' areas of interest (for example, audio editing), to show advertisements of likelier interest. Please see Google's <a href=\"http://www.google.com/policies/privacy/ads/\">Advertising privacy FAQ</a> for information regarding your privacy including how to <a href=\"http://www.google.com/policies/privacy/ads/#toc-optout\">opt out</a> of this tracking.</p>"
-msgstr ""
+msgstr "se splača prevest"
 
 #: contact/privacy.php:22
 msgid "Announcement List Policy"
@@ -5382,7 +5386,7 @@ msgid ""
 "<p>To <b>unsubscribe</b> from the list at any time, enter your address in the <a href=\"../#announce\">form</a> on our <a href=\"../\">home page</a> and click \"Remove\". If you have any problems or questions, please e-mail our <a href=\"http://audacity.sourceforge.net/contact/#feedback\">feedback address</a>.</p>"
 msgstr ""
 "<p>Lahko se prijavite na seznam obvestil z vnosom svojega naslova v obrazec na <a href=\"../\">domači strani Audacity</a>.  Seznam bomo uporabili samo za pošiljanje kratkih obvestil o novih izdajah Audacity.  Naslovov ne bomo nikoli delili z nikomer.</p>\n"
-"<p>Za <b>odjavo</b> s seznama lahko kadar koli vnesete svoj naslov v <a href=\"../#announce\">obrazec</a> na naši <a href=\"../\">domači strani</a> in stisnete gumb \"Odstrani\".  Če imate kakršne koli težave ali vprašanja, prosimo pišite na naslov <a href=\"&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#100;&#x6f;&#109;&#x69;&#110;&#x69;&#x63;&#64;&#x61;&#117;&#100;&#97;&#99;&#x69;&#x74;&#121;&#x74;&#x65;&#x61;&#109;&#x2e;&#111;&#114;&#103;&#63;&#115;&#117;&#98;&#x6a;&#101;&#99;&#116;&#61;&#x41;&#110;&#110;&#111;&#x75;&#110;&#99;&#x65;&#109;&#101;&#x6e;&#x74;&#32;&#108;&#105;&#x73;&#116;\">glavnemu razvijalcu</a>.</p>"
+"<p>Za <b>odjavo</b> s seznama lahko kadar koli vnesete svoj naslov v <a href=\"../#announce\">obrazec</a> na naši <a href=\"../\">domači strani</a> in stisnete gumb \"Odstrani\".  Če imate kakršne koli težave ali vprašanja, prosimo pišite na naslov <a href=\"http://audacity.sourceforge.net/contact/#feedback\">glavnemu razvijalcu</a>.</p>"
 
 #: contact/privacy.php:33
 msgid "Mailing List Policy"
@@ -5413,9 +5417,8 @@ msgid "Audacity Forum for Questions or Problems"
 msgstr "Forum Audacity za vaša vprašanja ali težave"
 
 #: contact/index.php:26
-#, fuzzy
 msgid "<b>There is no technical support by e-mail or telephone.</b> Most questions are answered in our <a href=\"../help/faq\">Frequently Asked Questions (FAQ)</a>, <a href=\"../help/documentation\">documentation</a>, and the additional <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">Tutorials</a> and <a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Tips</a> on our <a href=\"http://wiki.audacityteam.org/wiki\">Wiki</a>. All these resources are searchable using the search box top right of this page."
-msgstr "<b>Ne nudimo tehnične podpore po e-pošti ali telefonu.</b> Na večino vprašanj smo odgovorili v <a href=\"../help/faq\">Pogosto zastavljenih vprašanjih (FAQ)</a> in <a href=\"../help/documentation\">dokumentaciji</a> ter v <a href=\"http://audacityteam.org/wiki/index.php?title=Tutorials\">vodnikih</a> in <a href=\"http://audacityteam.org/wiki/index.php?title=Tips\">nasvetih</a> na našem <a href=\"http://audacityteam.org/wiki\">wikiju</a>. Po vseh navedenih virih lahko iščete z iskalnim poljem v desnem gornjem kotu te strani."
+msgstr "<b>Ne nudimo tehnične podpore po e-pošti ali telefonu.</b> Na večino vprašanj smo odgovorili v <a href=\"../help/faq\">Pogosto zastavljenih vprašanjih (FAQ)</a> in <a href=\"../help/documentation\">dokumentaciji</a> ter v <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorials\">vodnikih</a> in <a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">nasvetih</a> na našem <a href=\"http://wiki.audacityteam.org/wiki\">wikiju</a>. Po vseh navedenih virih lahko iščete z iskalnim poljem v desnem gornjem kotu te strani."
 
 #: contact/index.php:28
 msgid "If you still need help, expert assistance is available on our"
@@ -5428,13 +5431,13 @@ msgid "Forum</a>."
 msgstr "forumu Audacity</a> (v angleškem jeziku)."
 
 #: contact/index.php:35
-#, fuzzy
 msgid " To post a question, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">register</a>, confirm your registration then log in. Choose the correct subforum (for example, \"Windows\" in the Audacity 2.X Forum), click \"New Topic\" top left, then submit your message.  Foreign language subforums are available for <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">French</a>, <a href=\"http://audacity-forum.de/\">German</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Russian</a> and <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Spanish</a>."
-msgstr " Če želite zastaviti vprašanje, se <a href=\"http://audacityteam.org/forum/ucp.php?mode=register\">registrirajte</a> na forumu, potrdite svojo registracijo in se prijavite. Izberite pravi podforum za objavo (npr. forum Windows za Audacity 1.2.x), kliknite \"New Topic\", nato pošljite svoje sporočilo. Tujejezični podforumi so na voljo za <a href=\"http://audacityteam.org/forum/viewforum.php?f=7\">francoščino</a>, <a href=\"http://audacity-forum.de/\">nemščino</a>, <a href=\"http://audacityteam.org/forum/viewforum.php?f=10\">ruščino</a> in <a href=\"http://audacityteam.org/forum/viewforum.php?f=8\">španščino</a>."
+msgstr " Če želite zastaviti vprašanje, se <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">registrirajte</a> na forumu, potrdite svojo registracijo in se prijavite. Izberite pravi podforum za objavo (npr. forum Windows za Audacity 2.x), kliknite \"New Topic\", nato pošljite svoje sporočilo. Tujejezični podforumi so na voljo za <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">francoščino</a>, <a href=\"http://audacity-forum.de/\">nemščino</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">ruščino</a> in <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">španščino</a>."
 
 #: contact/index.php:37
+#, fuzzy
 msgid "Always give plenty of information when asking questions on the Forum. You can find more help with joining and using the Forum <a href=\"http://wiki.audacityteam.org/wiki/Asking_Questions\">here</a>."
-msgstr ""
+msgstr "se splača prevest"
 
 #: contact/index.php:39
 msgid "Suggestions, Bug Reports, Feature Requests and Patches"
@@ -5446,9 +5449,10 @@ msgstr "Predlogi, poročila o napakah, prošnje za razvoj in popravki"
 #. the <a href> tag, and ignore the line with the <a href> tag itself.
 #: contact/index.php:46
 msgid "You can "
-msgstr ""
+msgstr "Lahko nam "
 
 #: contact/index.php:49
+#, fuzzy
 msgid ""
 "e-mail us</a> about any Audacity matter, but <b>not for technical support</b> - this is provided on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. Please write in <b>English language only.</b> Please tell us your experiences of the Audacity program, documentation or web site. We particularly welcome the following:</p>\n"
 "\n"
@@ -5457,14 +5461,14 @@ msgid ""
 "<li>Reports of possible program bugs</li>\n"
 "<li>Requests for new or enhanced features</li>\n"
 "<li>Offers to <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">contribute</a> to the Audacity project."
-msgstr ""
+msgstr "se splača prevest"
 
 #: contact/index.php:59
+#, fuzzy
 msgid "<b>Bug reports:</b> Please check both the <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Release Notes</a> for your specific version of Audacity 2.0 and <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Reporting Bugs</a> <b>before</b> making a report. We are not fixing bugs in the legacy 1.2 or 1.3 series - please upgrade to the <a href=\"/download/\">latest 2.0 version</a> of Audacity instead."
-msgstr ""
+msgstr "se splača prevest"
 
 #: contact/index.php:62
-#, fuzzy
 msgid ""
 "<b>Please include the following information.</b> This is important.</p>\n"
 "<ol>\n"
@@ -5476,13 +5480,15 @@ msgid ""
 "\n"
 "<p><b>Patches:</b> Code patches to fix problems or enhance features will be gratefully received. Please follow the guidance on the <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Submitting Patches</a> page on our <a href=\"http://wiki.audacityteam.org/\">Wiki</a>.</p>"
 msgstr ""
-"Poročila o očitnih hroščih naj bodo čim bolj natančna in morajo vsebovati:</p>\n"
+"Poročila o očitnih hroščih naj bodo čim bolj natančna in <b>naj vsebujejo</b>:</p>\n"
 "<ol>\n"
-"  <li>številko uporabljene različice Audacity (npr. 1.2.6),</li>\n"
-"  <li>operacijski sistem (npr. Windows XP Service Pack 2 ali Intel Mac OS X 10.4) ter</li>\n"
+"  <li>natanko številko uporabljene različice Audacity (npr. 2.0.0), to lahko preverite prek Pomoč > O programu Audacity ali Audacity > O programu Audacity na OSX,</li>\n"
+"  <li>operacijski sistem (npr. Windows 7 Service Pack 1 ali Intel Mac OS X 10.4) ter</li>\n"
 "  <li>podrobnosti o tem, kaj ste skušali narediti, kateri koraki so pripeljali do težav in podrobnosti o sporočilih o napaki.</li>\n"
 "</ol>\n"
-"<p>Popravke napak ali nove funkcionalnosti sprejemamo z velikim navdušenjem. Prosimo, da sledite navodilom na strani <a href=\"http://audacityteam.org/wiki/index.php?title=SubmittingPatches\">Pošiljanje popravkov</a> na našem <a href=\"http://audacityteam.org/wiki/index.php\">wikiju</a>.</p>"
+"</div>\n"
+"\n"
+"<p><b>Popravki:</b> Popravke napak ali nove funkcionalnosti sprejemamo z velikim navdušenjem. Prosimo, da sledite navodilom na strani <a href=\"http://audacityteam.org/wiki/SubmittingPatches\">Pošiljanje popravkov</a> na našem <a href=\"http://wiki.audacityteam.org/\">wikiju</a>.</p>"
 
 #: contact/index.php:72
 msgid "Discussion Lists"
@@ -5538,12 +5544,13 @@ msgid "For  <a href=\"../community/developers\">developers</a> working with the 
 msgstr "Za <a href=\"../community/developers\">razvijalce</a>, ki uporabljajo izvorno kodo Audacity in dokumentacijo, in druge, ki jih zanima naš razvoj ali se želijo naučiti prevajati ali razvijati izvorno kodo Audacity."
 
 #: contact/lists.php:34
+#, fuzzy
 msgid "We now use a <a href=\"http://www.bugzilla.org/\">Bugzilla</a> installation to track bugs and enhancements. To find issues to work on, please view our categorized <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Bug Lists</a>."
-msgstr ""
+msgstr "se splača prevest"
 
 #: contact/lists.php:39
 msgid "Receive automatic notification of every change made to the Audacity <a href=\"../community/developers#svn\">source code</a>."
-msgstr ""
+msgstr "Prejemajte samodejna obvestila o vsaki spremembi v <a href=\"../community/developers#svn\">izvorni kodi</a> Audacity."
 
 #: contact/lists.php:46
 msgid "For <a href=\"../community/translation\">translators</a> localizing the Audacity software, web site and documentation."
@@ -5584,16 +5591,16 @@ msgstr "Audacity"
 msgid "Jump to page content"
 msgstr "Skoči na vsebino strani"
 
-#: include/header.inc.php:69
+#: include/header.inc.php:54
 msgid "Audacity: Free Sound Editor and Recording Software"
 msgstr "Audacity: prostokodni program za urejanje in snemanje zvoka"
 
-#: include/header.inc.php:81
-#: include/header.inc.php:82
+#: include/header.inc.php:66
+#: include/header.inc.php:67
 msgid "Audacity Store, for Audacity-logo shirts, bags and ceramic mugs"
 msgstr "Trgovina Audacity za majice, vreče in skodelice z logotipom Audacity"
 
-#: include/header.inc.php:88
+#: include/header.inc.php:73
 msgid "Site Navigation"
 msgstr "Krmarjenje po straneh"
 
@@ -5632,10 +5639,55 @@ msgid "%B %d, %Y"
 msgstr "%d.%m.%Y"
 
 #: include/news.inc.php:45
+msgid "Audacity 2.0.3 Released"
+msgstr "Izšel je Audacity 2.0.3"
+
+#: include/news.inc.php:46
+msgid ""
+"\n"
+"<p>\n"
+"  The Audacity Team is pleased to announce the release of\n"
+"  <a href=\"/download\">Audacity 2.0.3</a>. It replaces all\n"
+"  previous versions. \n"
+"</p>\n"
+"<p>\n"
+"  Audacity 2.0.3 now uses the\n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Libsoxr\">\n"
+"  libsoxr</a> resampling library by default, instead of libresample, for higher quality and speed. \n"
+"  <a href=\"http://manual.audacityteam.org/o/man/time_tracks.html\">\n"
+"  Time Tracks</a> have been improved and bug fixed, and new effects\n"
+"  include an accessible \n"
+"  <a href=\"http://manual.audacityteam.org/o/man/adjustable_fade.html\">\n"
+"  Adjustable Fade</a>. See the\n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.3\">\n"
+"  2.0.3 Release Notes</a> for details.\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<p>\n"
+"  Ekipa Audacity z veseljem objavlja izid\n"
+"  <a href=\"/download\">Audacity 2.0.3</a>. Ta nadomešča vse\n"
+"  prejšnje različice. \n"
+"</p>\n"
+"<p>\n"
+"  Audacity 2.0.3 odslej uporablja knjižnico prevzorčenja\n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Libsoxr\">\n"
+"  libsoxr</a> kot privzeto (namesto libresample), kar zagotavlja višjo kakovost in hitrost. \n"
+"  <a href=\"http://manual.audacityteam.org/o/man/time_tracks.html\">\n"
+"  Časovne sledi</a> so izboljšane in imajo veliko manj hroščev, novi učinki pa\n"
+"  vključujejo dostopen \n"
+"  <a href=\"http://manual.audacityteam.org/o/man/adjustable_fade.html\">\n"
+"  Prilagodljiv preliv</a>. Podrobnosti si oglejte v\n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.3\">\n"
+"  Opombah ob izdaji 2.0.3</a> (angl.).\n"
+"</p>\n"
+
+#: include/news.inc.php:70
 msgid "Audacity 2.0.2 Released"
 msgstr "Izšel je Audacity 2.0.2"
 
-#: include/news.inc.php:46
+#: include/news.inc.php:71
+#, fuzzy
 msgid ""
 "\n"
 "<p>\n"
@@ -5649,13 +5701,14 @@ msgid ""
 "  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.2\">\n"
 "  2.0.2 Release Notes</a> for detailed changes.\n"
 "</p>\n"
-msgstr ""
+msgstr "se splača prevest"
 
-#: include/news.inc.php:64
+#: include/news.inc.php:89
 msgid "Audacity 2.0.1 Released"
 msgstr "Izšel je Audacity 2.0.1"
 
-#: include/news.inc.php:65
+#: include/news.inc.php:90
+#, fuzzy
 msgid ""
 "\n"
 "<p>\n"
@@ -5669,13 +5722,14 @@ msgid ""
 "  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.1\">\n"
 "  2.0.1 Release Notes</a> for detailed changes.\n"
 "</p>\n"
-msgstr ""
+msgstr "se splača prevest"
 
-#: include/news.inc.php:82
+#: include/news.inc.php:107
 msgid "Audacity 2.0 Released!"
 msgstr "Na voljo je Audacity 2.0!"
 
-#: include/news.inc.php:83
+#: include/news.inc.php:108
+#, fuzzy
 msgid ""
 "\n"
 "<p>\n"
@@ -5689,13 +5743,13 @@ msgid ""
 "  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.0\">Release Notes</a>\n"
 "  for detailed information.\n"
 "</p>\n"
-msgstr ""
+msgstr "se splača prevest"
 
-#: include/news.inc.php:101
+#: include/news.inc.php:126
 msgid "Audacity 1.3.14 released"
 msgstr "Izšel je Audacity 1.3.14"
 
-#: include/news.inc.php:102
+#: include/news.inc.php:127
 msgid ""
 "\n"
 "<p>\n"
@@ -5761,11 +5815,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:170
+#: include/news.inc.php:195
 msgid "Audacity 1.3.13 released, and LinuxQuestions.org Audio Authoring Award 2010"
 msgstr "Izšel je Audacity 1.3.13, nagrada Audio Authoring Award 2007"
 
-#: include/news.inc.php:171
+#: include/news.inc.php:196
 msgid ""
 "\n"
 "<p>\n"
@@ -5841,11 +5895,11 @@ msgid ""
 "</p> \n"
 msgstr ""
 
-#: include/news.inc.php:249
+#: include/news.inc.php:274
 msgid "Audacity 1.3.12 released, and Audacity book release from PACKT Publishing"
-msgstr ""
+msgstr "Izšel je Audacity 1.3.12 in knjiga Audacity pri PACKT Publishing"
 
-#: include/news.inc.php:250
+#: include/news.inc.php:275
 msgid ""
 "\n"
 "<p>\n"
@@ -5921,11 +5975,11 @@ msgid ""
 "</p> \n"
 msgstr ""
 
-#: include/news.inc.php:328
+#: include/news.inc.php:353
 msgid "Audacity 1.3.11 released"
 msgstr "Izšel je Audacity 1.3.11"
 
-#: include/news.inc.php:329
+#: include/news.inc.php:354
 msgid ""
 "\n"
 "<p>\n"
@@ -5995,11 +6049,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:400
+#: include/news.inc.php:425
 msgid "Audacity 1.3.10 released"
 msgstr "Izšel je Audacity 1.3.10"
 
-#: include/news.inc.php:401
+#: include/news.inc.php:426
 msgid ""
 "\n"
 "<p>\n"
@@ -6080,11 +6134,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:483
+#: include/news.inc.php:508
 msgid "Audacity 1.3.9 released, Google Summer of Code (GSoC) 2009 completed"
 msgstr "Izšel je Audacity 1.3.9, zaključen Google Summer of Code (GSoC) 2009"
 
-#: include/news.inc.php:484
+#: include/news.inc.php:509
 msgid ""
 "\n"
 "<p>\n"
@@ -6147,12 +6201,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:548
+#: include/news.inc.php:573
 msgid "SourceForge.net Community Choice Awards 2009"
 msgstr "Nagrade skupnosti SourceForge SFCCA 2009"
 
-#: include/news.inc.php:549
-#, fuzzy
+#: include/news.inc.php:574
 msgid ""
 "\n"
 "<p>\n"
@@ -6165,22 +6218,12 @@ msgid ""
 "support over the years!\n"
 "</p>\n"
 msgstr ""
-"\n"
-"<p>\n"
-"Audacity je prejel nagrado \n"
-"<a href=\"http://sourceforge.net/community/index.php/landing-pages/cca07/\">\n"
-"\tSourceForge Community Choice Awards 2007 -- v kategoriji Multimedija\n"
-"</a>!\n"
-"Čestitke drugim finalistom. \n"
-"<b>Velika</b> zahvala velja SourceForgeu, vsem, ki ste glasovali, in vsem, \n"
-"ki prispevate k izboljšanju Audacity! \n"
-"</p>\n"
 
-#: include/news.inc.php:564
+#: include/news.inc.php:589
 msgid "Audacity 1.3.8 released"
 msgstr "Izšel je Audacity 1.3.8"
 
-#: include/news.inc.php:565
+#: include/news.inc.php:590
 msgid ""
 "\n"
 "<p>\n"
@@ -6219,11 +6262,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:605
+#: include/news.inc.php:630
 msgid "Linux Journal and Bestcovery Awards, and new \"Audacity compact\" book"
 msgstr "Nagradi Linux Journal in Bestcovery ter nova knjiga \"Audacity compact\""
 
-#: include/news.inc.php:606
+#: include/news.inc.php:631
 msgid ""
 "\n"
 "<p>\n"
@@ -6353,11 +6396,11 @@ msgstr ""
 "</tr>\n"
 "</table>\n"
 
-#: include/news.inc.php:674
+#: include/news.inc.php:699
 msgid "Audacity is mentoring two Google Summer of Code (GSoC) 2009 students"
 msgstr "Audacity je mentor dvem študentom v okviru Google Summer of Code (GSoc) 2009"
 
-#: include/news.inc.php:675
+#: include/news.inc.php:700
 msgid ""
 "\n"
 "<p>\n"
@@ -6399,11 +6442,11 @@ msgstr ""
 "\tČestitke petim sprejetim študentom in zahvala vsem drugim, ki ste se prijavili in izkazali zanimanje za Audacity!\n"
 "</p>\n"
 
-#: include/news.inc.php:699
+#: include/news.inc.php:724
 msgid "Audacity 1.3.7 released"
 msgstr "Izšel je Audacity 1.3.7"
 
-#: include/news.inc.php:700
+#: include/news.inc.php:725
 msgid ""
 "\n"
 "<p>\n"
@@ -6531,11 +6574,11 @@ msgstr ""
 "</p>\n"
 "<br>\n"
 
-#: include/news.inc.php:766
+#: include/news.inc.php:791
 msgid "Audacity 1.3.6 released"
 msgstr "Izšel je Audacity 1.3.6"
 
-#: include/news.inc.php:767
+#: include/news.inc.php:792
 msgid ""
 "\n"
 "<p>\n"
@@ -6625,11 +6668,11 @@ msgstr ""
 "različici Audacity 1.2.6 in 1.3.6.\n"
 "</p>\n"
 
-#: include/news.inc.php:815
+#: include/news.inc.php:840
 msgid "German Audacity Book released"
 msgstr "Izšla je nemška knjiga o Audacity"
 
-#: include/news.inc.php:816
+#: include/news.inc.php:841
 msgid ""
 "\n"
 "<p>\n"
@@ -6709,11 +6752,11 @@ msgstr ""
 "</table>\n"
 "</p>\n"
 
-#: include/news.inc.php:859
+#: include/news.inc.php:884
 msgid "Audacity shines in Google Summer of Code (GSoC) 2008"
 msgstr "Audacity blesti v Google Summer of Code (GSoc) 2008"
 
-#: include/news.inc.php:860
+#: include/news.inc.php:885
 msgid ""
 "\n"
 "<p>\n"
@@ -6809,11 +6852,11 @@ msgstr ""
 "\"slavijo najboljše izdelke, kar jih lahko ponudi odprta koda\".  \n"
 "</p>    \n"
 
-#: include/news.inc.php:911
+#: include/news.inc.php:936
 msgid "Audacity in PC World 100 Best Products of 2008"
 msgstr "Audacity na seznamu 100 najboljših izdelkov leta 2008 revije PC World"
 
-#: include/news.inc.php:912
+#: include/news.inc.php:937
 msgid ""
 "\n"
 "<p>\n"
@@ -6890,11 +6933,11 @@ msgstr ""
 "najboljše brezplačne programske opreme <em>časopisa PC Magazine</em>.\n"
 "</p>\n"
 
-#: include/news.inc.php:954
+#: include/news.inc.php:979
 msgid "Audacity 1.3.5 Released"
 msgstr "Izšel je Audacity 1.3.5"
 
-#: include/news.inc.php:955
+#: include/news.inc.php:980
 msgid ""
 "\n"
 "<p>\n"
@@ -7069,11 +7112,11 @@ msgstr ""
 "za več informacij o nizu beta različic 1.3.x.\n"
 "</p>\n"
 
-#: include/news.inc.php:1045
+#: include/news.inc.php:1070
 msgid "Audacity is mentoring five Google Summer of Code (GSoC) 2008 students"
 msgstr "Audacity je mentor petim študentom v okviru Google Summer of Code (GSoc) 2008"
 
-#: include/news.inc.php:1046
+#: include/news.inc.php:1071
 msgid ""
 "\n"
 "<p>\n"
@@ -7106,11 +7149,11 @@ msgstr ""
 "\tČestitke petim sprejetim študentom in zahvala vsem drugim, ki ste se prijavili!\n"
 "</p>\n"
 
-#: include/news.inc.php:1066
+#: include/news.inc.php:1091
 msgid "Audacity is a mentoring organization Google Summer of Code (GSoC) 2008 "
 msgstr "Audacity je mentorska organizacija za Google Summer of Code (GSoc) 2008"
 
-#: include/news.inc.php:1067
+#: include/news.inc.php:1092
 msgid ""
 "\n"
 "<p>\n"
@@ -7144,11 +7187,11 @@ msgstr ""
 "\tHvala za izkazano zanimanje!\n"
 "</p>\n"
 
-#: include/news.inc.php:1087
+#: include/news.inc.php:1112
 msgid "Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "
 msgstr "Poziv študentom! Prijavite se <em>TAKOJ</em> za projekte Audacity v okviru Google Summer of Code (GSoC) 2008 "
 
-#: include/news.inc.php:1088
+#: include/news.inc.php:1113
 msgid ""
 "\n"
 "<p>\n"
@@ -7189,11 +7232,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:1130
+#: include/news.inc.php:1155
 msgid "Audacity and Google Summer of Code (GSoC) 2008 "
 msgstr "Audacity in Google Summer of Code (GSoc) 2008"
 
-#: include/news.inc.php:1131
+#: include/news.inc.php:1156
 msgid ""
 "\n"
 "<p>\n"
@@ -7223,11 +7266,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:1162
+#: include/news.inc.php:1187
 msgid "LinuxQuestions.org Audio Authoring Award 2007"
 msgstr "Nagrada Audio Authoring Award 2007"
 
-#: include/news.inc.php:1163
+#: include/news.inc.php:1188
 #, php-format
 msgid ""
 "\n"
@@ -7244,11 +7287,11 @@ msgstr ""
 "Program leta 2007 za zvočno ustvarjanje</a> v članski anketi LinuxQuestions.org. LinuxQuestions.org je aktivna spletna skupna uporabnikov in razvijalcev Linuxa. Pri glasovanju je Audacity prejel skoraj 70% od skupaj 444 glasov. Hvala vsem, ki ste glasovali.\n"
 "</p>\n"
 
-#: include/news.inc.php:1174
+#: include/news.inc.php:1199
 msgid "Audacity 1.3.4 Released"
 msgstr "Izšel je Audacity 1.3.4"
 
-#: include/news.inc.php:1175
+#: include/news.inc.php:1200
 msgid ""
 "\n"
 "<p>\n"
@@ -7316,11 +7359,11 @@ msgstr ""
 "<a href=\"http://www.informit.com/store/product.aspx?isbn=0132366576&rl=1\">Podcasting z Audacity</a>.\n"
 "</p>\n"
 
-#: include/news.inc.php:1212
+#: include/news.inc.php:1237
 msgid "SourceForge Community Choice Awards 2007"
 msgstr "Nagrade skupnosti SourceForge SFCCA 2007"
 
-#: include/news.inc.php:1213
+#: include/news.inc.php:1238
 msgid ""
 "\n"
 "<p>\n"
@@ -7344,11 +7387,11 @@ msgstr ""
 "ki prispevate k izboljšanju Audacity! \n"
 "</p>\n"
 
-#: include/news.inc.php:1228
+#: include/news.inc.php:1253
 msgid "Audacity 1.3.3 Released"
 msgstr "Izšel je Audacity 1.3.3"
 
-#: include/news.inc.php:1229
+#: include/news.inc.php:1254
 msgid ""
 "\n"
 "<p>\n"
@@ -7487,11 +7530,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>\n"
 
-#: include/news.inc.php:1302
+#: include/news.inc.php:1327
 msgid "Audacity 1.3.2 and 1.2.5 Released"
 msgstr "Izšla sta Audacity 1.3.2 in 1.2.5"
 
-#: include/news.inc.php:1303
+#: include/news.inc.php:1328
 msgid ""
 "<p>\n"
 "The Audacity developers have been busy with many new features over\n"
@@ -7613,11 +7656,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>"
 
-#: include/news.inc.php:1367
+#: include/news.inc.php:1392
 msgid "The Audacity Store Is Open"
 msgstr "Trgovina Audacity je odprta"
 
-#: include/news.inc.php:1368
+#: include/news.inc.php:1393
 msgid ""
 "\n"
 "\t<p>You are invited to try out the new <a href=\"http://audacitystore.com/\">Audacity Store</a>, which features\n"
@@ -7699,11 +7742,11 @@ msgstr ""
 "\t</p>\n"
 "\t"
 
-#: include/news.inc.php:1412
+#: include/news.inc.php:1437
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr "Izšla sta Audacity 1.2.4 in 1.3.0"
 
-#: include/news.inc.php:1413
+#: include/news.inc.php:1438
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple of bug fixes and minor improvements and is recommended for all users.  Audacity 1.3.0 is a beta release that contains hundreds of <a href=\"/download/features-1.3-a\">new features</a>, but this version is unfinished and unstable, and is recommended primarily for advanced users.  You can install both Audacity 1.2 and 1.3 simultaneously.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">1.2.4 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.4, or see <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for information about the new beta version.</p>\n"
@@ -7717,11 +7760,11 @@ msgstr ""
 "<a href=\"http://audacityteam.org/forum/\">forum Audacity</a>.\n"
 "</p>"
 
-#: include/news.inc.php:1423
+#: include/news.inc.php:1448
 msgid "Audacity 1.2.3 Released"
 msgstr "Na voljo je Audacity 1.2.3"
 
-#: include/news.inc.php:1424
+#: include/news.inc.php:1449
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
@@ -7754,54 +7797,45 @@ msgid "Audacity&reg; is free, open source, cross-platform software for recording
 msgstr "Audacity&reg; is brezplačen, odprto kodni program za snemanje in montažo zvoka."
 
 #: index.php:66
-msgid "Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. <a href=\"about/\">Learn more about Audacity...</a> Also check our <a href=\"http://wiki.audacityteam.org/\">Wiki</a> and <a href=\"http://forum.audacityteam.org/\">Forum</a> for more information."
-msgstr "Audacity je na voljo za Windows&reg;, Mac&reg;, GNU/Linux&reg; in druge operacijske sisteme. <a href=\"about/\">Izvedite več o Audacity ...</a> Prav tako za več informacij obiščite naša <a href=\"http://wiki.audacityteam.org/wiki/\">wiki</a> in <a href=\"http://forum.audacityteam.org/\">forum</a>."
+msgid "Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. Check our <a href=\"about/features\">feature list</a>, <a href=\"http://wiki.audacityteam.org/\">Wiki</a> and <a href=\"http://forum.audacityteam.org/\">Forum</a> for more information."
+msgstr "Audacity je na voljo za Windows&reg;, Mac&reg;, GNU/Linux&reg; in druge operacijske sisteme. Za več informacij obiščite <a href=\"about/features\">seznam funkcionalnosti</a>, <a href=\"http://wiki.audacityteam.org/wiki/\">wiki</a> in <a href=\"http://forum.audacityteam.org/\">forum</a>."
 
-#: index.php:68
-#, php-format
-msgid "The current release of Audacity is <a href=\"download/\">%s"
-msgstr "Najnovejša izdaja Audacity je <a href=\"download/\">%s"
-
-#: index.php:68
-msgid "It replaces all previous 1.2, 1.3 and 2.x versions. See <a href=\"download/features-2.0\">New Features</a> for more information."
-msgstr "Nadomešča vse prejšnje različice 1.2, 1.3 in 2.x. Več si preberite na strani <a href=\"download/features-2.0\">Novosti</a>."
-
-#: index.php:73
+#: index.php:71
 #, php-format
 msgid "<h3>Download Audacity %s</h3></a>%s %s"
 msgstr "<h3>Prenesi Audacity %s</h3></a>%s %s"
 
-#: index.php:80
+#: index.php:78
 #, php-format
 msgid "%s\">Other Audacity Downloads %s</a></p>"
 msgstr "%s\">Drugi prenosi Audacity %s</a></p>"
 
-#: index.php:87
+#: index.php:85
 msgid "All Audacity Downloads"
 msgstr "Vsi prenosi Audacity"
 
-#: index.php:92
+#: index.php:90
 #, php-format
 msgid "Download Audacity %s %s"
 msgstr "Prenesi Audacity %s %s"
 
-#: index.php:122
+#: index.php:120
 msgid "Get Notified of New Versions"
 msgstr "Bodite obveščeni o novih različicah"
 
-#: index.php:134
+#: index.php:132
 msgid "Email address"
 msgstr "E-poštni naslov"
 
-#: index.php:135
+#: index.php:133
 msgid "Add"
 msgstr "Dodaj"
 
-#: index.php:136
+#: index.php:134
 msgid "Remove"
 msgstr "Odstrani"
 
-#: index.php:162
+#: index.php:160
 msgid "Audacity Team's Advertisements Policy"
 msgstr "Politika oglaševanja ekipe Audacity"
 
@@ -7833,7 +7867,7 @@ msgstr "Kliknite spodnji gumb in varno darujte prek sistema PayPal (račun PayPa
 
 #: donate/index.php:49
 msgid "Please note that we cannot accept other forms of payment such as checks or bank transfers. Also, donations to Audacity are not deductible for income taxes in the United States of America."
-msgstr ""
+msgstr "Upoštevajte, da ne moremo prejeti drugih oblik plačila, kot so čeki ali bančna nakazila. Prav tako donacije projektu Audacity se sodijo med davčne olajšave v ZDA."
 
 #: donate/index.php:55
 msgid "Audacity raises money via donations, <a href=\"http://audacityteam.org/sponsor.php\">sponsorships</a> and <a href=\"../contact/privacy#advertising\">advertisements</a> on our web pages."
@@ -7860,6 +7894,7 @@ msgid "Other Ways to Contribute"
 msgstr "Drugi načini, na katere lahko prispevate"
 
 #: donate/index.php:77
+#, fuzzy
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
-msgstr ""
+msgstr "se splača prevest"
 
