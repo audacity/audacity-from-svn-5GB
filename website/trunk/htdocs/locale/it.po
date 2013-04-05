@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity_website\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-22 07:37+0000\n"
-"PO-Revision-Date: 2013-01-23 20:37-0000\n"
-"Last-Translator: Carmelo\n"
+"POT-Creation-Date: 2013-03-22 07:26+0000\n"
+"PO-Revision-Date: 2013-04-05 11:33-0000\n"
+"Last-Translator: gale <gale@audacityteam.org>\n"
 "Language-Team: italiano <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
 
 #: main.inc.php:20
 msgid "Home"
@@ -445,13 +445,13 @@ msgstr ""
 
 #: help/faq_i18n.php:120
 #: help/faq_i18n.php:170
-#: help/faq_i18n.php:228
+#: help/faq_i18n.php:227
 msgid "See also:"
 msgstr "Leggete anche:"
 
 #: help/faq_i18n.php:120
 #: help/faq_i18n.php:201
-#: help/faq_i18n.php:228
+#: help/faq_i18n.php:227
 msgid "How do I save my recording on an audio CD?"
 msgstr "Come posso salvare le mie registrazioni su un CD audio?"
 
@@ -658,26 +658,18 @@ msgstr ""
 "</ol>"
 
 #: help/faq_i18n.php:226
-msgid ""
-"Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically.</p>\n"
-"<p>Full instructions for both methods are in the illustrated tutorial"
-msgstr ""
-"In alternativa, è possibile che Audacity cerchi di rilevare i silenzi tra le tracce e quindi di etichettarle automaticamente.</p>\n"
-"<p>Le istruzioni complete per ambedue i metodi sono nel tutorial illustrato"
+msgid "Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically using Analyze > Silence Finder. If you do not have Silence Finder in your version of Audacity, it can be found in the <a href=\"http://wiki.audacityteam.org/w/images/8/8d/NyPlug-ins_126.zip\">Audacity legacy 1.2.6 Plug-in Pack</a>."
+msgstr "In alternativa, Audacity può cercare di individuare i silenzi tra le tracce e poi etichettarle automaticamente usando Analizza > Silence Finder. Se non disponete di Silence Finder nella vostra versione di Audacity, è possibile trovarlo nel <a href=\"http://wiki.audacityteam.org/w/images/8/8d/NyPlug-ins_126.zip\">Audacity legacy 1.2.6 Plug-in Pack</a>."
 
-#: help/faq_i18n.php:227
-msgid "on the Audacity Wiki."
-msgstr " nel Wiki Audacity."
-
-#: help/faq_i18n.php:233
+#: help/faq_i18n.php:232
 msgid "<h4 id=\"editing\">Editing</h4>"
 msgstr "<h4 id=\"editing\">Modifica</h4>"
 
-#: help/faq_i18n.php:236
+#: help/faq_i18n.php:235
 msgid "Why can’t I use the effects or other menu items?"
 msgstr "Perché non posso usare gli effetti o altre voci di menu?"
 
-#: help/faq_i18n.php:237
+#: help/faq_i18n.php:236
 msgid ""
 "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>\n"
 "<p>Also, many menu items are disabled while playing, recording, or pausing a track. To enable them, press the yellow <b>Stop</b> button.</p>"
@@ -685,19 +677,19 @@ msgstr ""
 "<p>Alcune opzioni di menu sono disabilitate finché non sono pronte per essere utilizzate. Prima di scegliere un effetto, dovete selezionare l'audio che volete cambiare. Per selezionare l'audio, fate clic e trascinate con lo strumento Selezione per evidenziarlo, o scegliete il comando “Seleziona > Tutto” dal menu Modifica.</p>\n"
 "<p>Inoltre, molte opzioni di menu sono disabilitate durante la riproduzione, registrazione, o la pausa di una traccia. Per abilitarle, premete il pulsante giallo <b>Ferma</b>.</p>"
 
-#: help/faq_i18n.php:241
+#: help/faq_i18n.php:240
 msgid "How do I mix two tracks together?"
 msgstr "Come posso miscelare due tracce?"
 
-#: help/faq_i18n.php:242
+#: help/faq_i18n.php:241
 msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the <b>Play</b> button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
 msgstr "<p>Per miscelare due file, importateli entrambi su Audacity. Appariranno così due tracce separate, e saranno miscelate insieme quando premete il tasto Riproduci. È possibile usare lo strumento Allinea Tracce per muoverle in modo da farle iniziare prima o dopo, oppure potete usare altri comandi di Modifica per alterare le tracce secondo i vostri gusti.</p>"
 
-#: help/faq_i18n.php:245
+#: help/faq_i18n.php:244
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
 msgstr "Posso rimuovere la componente vocale da una registrazione per creare una traccia Karaoke?"
 
-#: help/faq_i18n.php:246
+#: help/faq_i18n.php:245
 msgid ""
 "<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals are exactly the same on both stereo channels, you can remove them by “subtracting” one channel from the other.  This works for many studio recordings, where the vocal track is mixed exactly in the center.</p>\n"
 "<p>To do this in Audacity:</p>\n"
@@ -723,19 +715,19 @@ msgstr ""
 "<p>Premete il pulsante <b>Riproduci</b> per ascoltare il risultato. Se siete stati fortunati, la componente vocale sarà scomparsa, ma la maggior parte della componente strumentale sarà rimasta inalterata, come in una traccia di karaoke. Potete usare i comandi Esporta del menu File per salvare il risultato.</p>\n"
 "<p>Se le parti vocali non sono esattamente le stesse in ambedue i canali stereo, sono disponibili altre tecniche o plug-in opzionali con cui operare. Leggete la nostra pagina Wiki <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Rimozione delle parti vocalil</a> per avere maggiori dettagli.</p>\n"
 
-#: help/faq_i18n.php:276
+#: help/faq_i18n.php:275
 msgid "Other frequently asked questions..."
 msgstr "Altre domande frequenti..."
 
-#: help/faq_i18n.php:280
+#: help/faq_i18n.php:279
 msgid "Older Frequently Asked Questions for international help"
 msgstr "Vecchie Domande frequenti (FAQ) per un aiuto"
 
-#: help/faq_i18n.php:284
+#: help/faq_i18n.php:283
 msgid "These are older Frequently Asked Questions (FAQ), <b>only for those languages where the latest <a href=\"faq\">FAQ</a> doesn't yet have a translation.</b> These questions remain largely valid for Audacity 2.0.x, but please use the latest FAQ if you can do so."
 msgstr "Queste sono le vecchie Domande Frequenti (FAQ), <b>solo per quelle lingue in cui le ultime <a href=\"faq\">FAQ</a> non sono ancora state tradotte.</b> Queste domande restano in gran parte valide per Audacity 2.0.x, ma è meglio usare le ultime FAQ se se possibile."
 
-#: help/faq_i18n.php:286
+#: help/faq_i18n.php:285
 msgid "Additional help in French, German, Russian or Spanish can be obtained from our <a href=\"http://forum.audacityteam.org/viewforum.php?f=3\">International Forum</a>."
 msgstr "È possibile ottenere ulteriori aiuti in Francese, Tedesco, Russo o Spagnolo dal nostro <a href=\"http://forum.audacityteam.org/viewforum.php?f=3\">International Forum</a>."
 
@@ -1649,8 +1641,8 @@ msgid "<a href=\"%s\">Google Code</a>: Click on the headings to sort the list."
 msgstr "<a href=\"%s\">Codice Google</a>: Fate clic sulle intestazioni per ordinare la lista."
 
 #: download/legacy_windows.php:77
-msgid "Windows 95 and NT are not supported. Windows Vista and 7 are supported in <a href=\"windows\">the latest version of Audacity</a>."
-msgstr "Windows 95 e NT non sono supportati. Windows Vista e 7 sono supportati <a href=\"windows\">nell'ultima versione di Audacity</a>."
+msgid "Windows 95 and NT are not supported. Windows Vista, Windows 7 and Windows 8 require <a href=\"windows\">the latest version of Audacity</a>."
+msgstr "Windows 95 e NT non sono supportati. Windows Vista, Windows 7 e Windows 8 sono supportati <a href=\"windows\">nell'ultima versione di Audacity</a>."
 
 #: download/legacy_windows.php:81
 #: download/windows_sys_reqs.inc.php:10
@@ -1673,8 +1665,8 @@ msgid "Minimum RAM/<br>processor speed"
 msgstr "RAM/<br>velocità processore minima"
 
 #: download/legacy_windows.php:104
-msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista or 7 running on machines of substantially higher specification than the minimum stated above."
-msgstr "Generalmente, Audacity funziona bene sui computer che presentano dei requisiti minimi superiori a quelli elencati nella tabella precedente. Se Audacity deve essere usato per lunghi progetti multi-traccia, raccomandiamo di usare Windows XP, Vista o 7 che girano su macchine con più elevate specifiche rispetto ai minimi definiti in precedenza."
+msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP running on a machine of substantially higher specification than the minimum stated above."
+msgstr "Generalmente, Audacity funziona bene sui computer che presentano dei requisiti minimi superiori a quelli elencati nella tabella precedente. Se Audacity deve essere usato per lunghi progetti multi-traccia, raccomandiamo di usare Windows XP che gira su macchine con più elevate specifiche rispetto ai minimi definiti in precedenza."
 
 #: download/common.inc.php:12
 #: download/windows.php:72
@@ -4346,7 +4338,7 @@ msgstr "Sorgente tarball completo: principalmente per l'uso con Windows e Mac, c
 
 #: download/source.php:34
 #, php-format
-msgid "<a href=\"%s\">SVN Development Code</a> "
+msgid "<a href=\"%s\">SVN Development Code</a>&nbsp;"
 msgstr "<a href=\"%s\">Codice di sviluppo SVN</a>&nbsp;"
 
 #: download/source.php:35
@@ -5420,9 +5412,10 @@ msgstr "assicurazione di qualità"
 
 #: about/credits.php:27
 #: about/credits.php:30
-#: about/credits.php:31
+#: about/credits.php:33
 #: about/credits.php:34
 #: about/credits.php:37
+#: about/credits.php:50
 #: about/credits.php:51
 #: about/credits.php:52
 #: about/credits.php:53
@@ -5451,7 +5444,7 @@ msgid "developer"
 msgstr "sviluppatore"
 
 #: about/credits.php:28
-#: about/credits.php:33
+#: about/credits.php:32
 #: about/credits.php:35
 #: about/credits.php:36
 #: about/credits.php:38
@@ -5468,7 +5461,7 @@ msgstr "Italiano"
 msgid "system administration"
 msgstr "sistema di gestione"
 
-#: about/credits.php:32
+#: about/credits.php:31
 #: about/credits.php:56
 msgid "developer and co-founder of Audacity"
 msgstr "Sviluppatore e co-fondatore di Audacity"
@@ -5477,7 +5470,7 @@ msgstr "Sviluppatore e co-fondatore di Audacity"
 msgid "Technical Leadership Council"
 msgstr "Technical Leadership Council"
 
-#: about/credits.php:49
+#: about/credits.php:48
 msgid "Emeritus: distinguished Audacity Team members, not currently active"
 msgstr "Emerito: importante componente dell'Audacity Team, non attualmente attivo"
 
@@ -5509,115 +5502,95 @@ msgstr "Ringraziamenti"
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "Esistono molte altre persone e organizzazioni che vorremmo ringraziare. Molti di loro hanno contribuito al progetto con codice, patch, suggerimenti, denaro, tempo o altro. Altri più semplicemente hanno creato strumenti che hanno reso possibile tutto ciò."
 
-#: about/credits.php:185
+#: about/credits.php:184
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Fateci sapere se abbiamo dimenticato qualcuno!)"
 
-#: about/links.php:14
-msgid "Other Things Named “Audacity” (not related to us)"
-msgstr "Altri oggetti chiamati \"Audacity\" (non legati a noi)"
-
-#: about/links.php:16
-msgid "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is a digital voice recorder for smartphones."
-msgstr "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> è un registratore vocale digitale per smartphone"
-
-#: about/links.php:17
-msgid "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company for construction industry professionals."
-msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a> è una compagnia che si dedica alle costruzioni industriali professionali."
-
-#: about/links.php:18
-msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides software consulting services for businesses in Washington, Arizona and California."
-msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> fornisce servizi di consulenza software per le imprese a Washington, Arizona e California."
-
-#: about/links.php:19
-msgid "Two different rock bands from <a href=\"http://www.myspace.com/audacityrocks\">Finland</a> and <a href=\"http://www.unsigned.com/audacity\">England</a> are named \"Audacity\"."
-msgstr "Due differenti gruppi rock della <a href=\"http://www.myspace.com/audacityrocks\">Finlandia</a> e dell'<a href=\"http://www.unsigned.com/audacity\">Inghilterra</a> hanno preso il nome \"Audacity\"."
-
-#: about/links.php:22
+#: about/links.php:15
 msgid "Other Open Source Audio Software"
 msgstr "Altri software audio open source"
 
-#: about/links.php:23
+#: about/links.php:16
 msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux and Mac OS X."
 msgstr "<a href=\"http://ardour.org/\">Ardour</a> è un potente sistema di registrazione digitale disponibile per GNU/Linux."
 
-#: about/links.php:24
+#: about/links.php:17
 msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper for Microsoft Windows."
 msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> è un software libero per estrarre le tracce dei CD per Microsoft Windows."
 
-#: about/links.php:25
+#: about/links.php:18
 msgid "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
 msgstr "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> è uno strumento libero per catturare e ripulire le registrazioni provenienti da dischi in vinile."
 
-#: about/links.php:26
+#: about/links.php:19
 msgid "<a href=\"http://www.mixxx.org/\">Mixxx</a> is free cross-platform digital DJ mixing software with features like automatic BPM matching and seamless looping."
 msgstr "<a href=\"http://www.mixxx.org/\">Mixxx</a> è un software gratuito multipiattaforma di nixaggio digitale DJ con funzioni come la corrispondenza automatica BPM e seamless looping."
 
-#: about/links.php:27
+#: about/links.php:20
 msgid "More free audio software at SourceForge.net:"
 msgstr "Molti altri software liberi su Sourceforge.net:"
 
-#: about/links.php:29
+#: about/links.php:22
 msgid "Audio Editors"
 msgstr "Editor audio"
 
-#: about/links.php:30
+#: about/links.php:23
 msgid "Audio Capture/Recording"
 msgstr "Cattura audio/Registrazione"
 
-#: about/links.php:31
+#: about/links.php:24
 msgid "Audio Analysis"
 msgstr "Analisi audio"
 
-#: about/links.php:34
+#: about/links.php:27
 msgid "Open Source Audio-Visual Software"
 msgstr "Altri software audio-visivi open source"
 
-#: about/links.php:35
+#: about/links.php:28
 msgid "<a href=\"http://www.blender.org/\">Blender</a> is a free, cross-platform 3D content creation suite for animations, interactive applications and video games."
 msgstr "<a href=\"http://www.blender.org/\">Blender</a> è una suitedi creazione 3D gratuita multipiattaforma per animazioni,applicazioni interattive e videogiochi."
 
-#: about/links.php:36
+#: about/links.php:29
 msgid "<a href=\"http://mediainfo.sourceforge.net/\">MediaInfo</a> is a free, cross-platform tag and codec analyzer for audio and video files."
 msgstr "<a href=\"http://mediainfo.sourceforge.net/\">MediaInfo</a> è un tag libero e multipiattaforma e analizzatore di codec per file audio e video."
 
-#: about/links.php:37
+#: about/links.php:30
 msgid "<a href=\"http://www.videolan.org/vlc/\">VLC media player</a> is a free, cross-platform media player for most audio and video files as well as DVD, Audio CD and VCD. VLC can also send, save and convert <a href=\"http://www.videolan.org/streaming-features.html\">audio and video streams</a>."
 msgstr "<a href=\"http://www.videolan.org/vlc/\">VLC media player</a> è un media player gratuito multipiattaforma per la maggior parte dei file audio e video e per DVD, Audio CD e VCD. VLC inoltre può inviare, salvare e convertire <a href=\"http://www.videolan.org/streaming-features.html\">flussi audio e video<a/>."
 
-#: about/links.php:38
+#: about/links.php:31
 msgid "CD/DVD burning:"
 msgstr "Masterizzazione CD/DVD:"
 
-#: about/links.php:40
+#: about/links.php:33
 msgid "<a href=\"http://infrarecorder.org/\">InfraRecorder</a> for Windows"
 msgstr "<a href=\"http://infrarecorder.org/\">InfraRecorder</a> per Windows"
 
-#: about/links.php:41
+#: about/links.php:34
 msgid "<a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a> for Mac OS X"
 msgstr "<a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a> per Mac OS X"
 
-#: about/links.php:42
+#: about/links.php:35
 msgid "<a href=\"http://k3b.org/\">K3b</a> or <a href=\"http://archive.xfce.org/src/apps/xfburn/0.4\">Xfburn</a> for Linux"
 msgstr "<a href=\"http://k3b.org/\">K3b</a> or <a href=\"http://archive.xfce.org/src/apps/xfburn/0.4\">Xfburn</a> per Linux"
 
-#: about/links.php:44
+#: about/links.php:37
 msgid "Video editing/capture:"
 msgstr "Editing/cattura video:"
 
-#: about/links.php:46
+#: about/links.php:39
 msgid "<a href=\"http://www.virtualdub.org/\">VirtualDub</a> for Windows"
 msgstr "<a href=\"http://www.virtualdub.org/\">VirtualDub</a> per Windows"
 
-#: about/links.php:47
+#: about/links.php:40
 msgid "<a href=\"http://avidemux.sourceforge.net/\">Avidemux</a> for Windows, Mac OS X (Intel) and Linux"
 msgstr "<a href=\"http://avidemux.sourceforge.net/\">Avidemux</a> per Windows, Mac OS X (Intel) e Linux"
 
-#: about/links.php:48
+#: about/links.php:41
 msgid "<a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a> for Mac OS X"
 msgstr "<a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a> per Mac OS X"
 
-#: about/links.php:49
+#: about/links.php:42
 msgid "<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> or <a href=\"http://www.kinodv.org/article/static/2\">Kino</a> for Linux"
 msgstr "<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> or <a href=\"http://www.kinodv.org/article/static/2\">Kino</a> per Linux"
 
@@ -6193,7 +6166,7 @@ msgstr ""
 "<li>Cosa potrebbe essere migliorato.</li></ul>."
 
 #: contact/privacy.php:16
-#: include/header.inc.php:207
+#: include/header.inc.php:192
 msgid "Advertisements Policy"
 msgstr "Linea di condotta per la pubblicità"
 
@@ -6428,16 +6401,16 @@ msgstr "Audacity"
 msgid "Jump to page content"
 msgstr "Vai ai contenuti della pagina"
 
-#: include/header.inc.php:69
+#: include/header.inc.php:54
 msgid "Audacity: Free Sound Editor and Recording Software"
 msgstr "Audacity: software libero di modifica e registrazione dell'audio"
 
-#: include/header.inc.php:81
-#: include/header.inc.php:82
+#: include/header.inc.php:66
+#: include/header.inc.php:67
 msgid "Audacity Store, for Audacity-logo shirts, bags and ceramic mugs"
 msgstr "Negozio Audacity, per camicie, borse e tazze di ceramica con il logo di Audacity"
 
-#: include/header.inc.php:88
+#: include/header.inc.php:73
 msgid "Site Navigation"
 msgstr "Navigazione nel sito"
 
@@ -9283,6 +9256,52 @@ msgstr "Altri modi per collaborare"
 #: donate/index.php:77
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr "Oltre a donare denaro, è possibile <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> collaborare</a> aiutandoci <a href=\"../community/developers\">programmando</a>, <a href=\"../contact#feedback\">testando</a>, <a href=\"http://manual.audacityteam.org/\"> traducendo la documentazione</a>,<a href=\"../community/translation\"></a> o rispondendo alle domande sul nostro <a href=\"http://forum.audacityteam.org/\">Forum</a>. Diamo sempre il benvenuto agli utenti il cui solo contributo è semplicemente usare Audacity, fornendoci suggerimenti su come migliorarlo e parlarne ad altri. Vi ringraziamo di supportare Audacity."
+
+#~ msgid ""
+#~ "Alternatively, Audacity can attempt to detect the silences between tracks "
+#~ "then label them automatically.</p>\n"
+#~ "<p>Full instructions for both methods are in the illustrated tutorial"
+#~ msgstr ""
+#~ "In alternativa, è possibile che Audacity cerchi di rilevare i silenzi tra "
+#~ "le tracce e quindi di etichettarle automaticamente.</p>\n"
+#~ "<p>Le istruzioni complete per ambedue i metodi sono nel tutorial "
+#~ "illustrato"
+
+#~ msgid "on the Audacity Wiki."
+#~ msgstr " nel Wiki Audacity."
+
+#~ msgid "Other Things Named “Audacity” (not related to us)"
+#~ msgstr "Altri oggetti chiamati \"Audacity\" (non legati a noi)"
+
+#~ msgid ""
+#~ "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is a "
+#~ "digital voice recorder for smartphones."
+#~ msgstr ""
+#~ "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> è un "
+#~ "registratore vocale digitale per smartphone"
+
+#~ msgid ""
+#~ "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research "
+#~ "company for construction industry professionals."
+#~ msgstr ""
+#~ "<a href=\"http://www.audacity.org\">Audacity.org</a> è una compagnia che "
+#~ "si dedica alle costruzioni industriali professionali."
+
+#~ msgid ""
+#~ "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides software "
+#~ "consulting services for businesses in Washington, Arizona and California."
+#~ msgstr ""
+#~ "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> fornisce servizi "
+#~ "di consulenza software per le imprese a Washington, Arizona e California."
+
+#~ msgid ""
+#~ "Two different rock bands from <a href=\"http://www.myspace.com/"
+#~ "audacityrocks\">Finland</a> and <a href=\"http://www.unsigned.com/audacity"
+#~ "\">England</a> are named \"Audacity\"."
+#~ msgstr ""
+#~ "Due differenti gruppi rock della <a href=\"http://www.myspace.com/"
+#~ "audacityrocks\">Finlandia</a> e dell'<a href=\"http://www.unsigned.com/"
+#~ "audacity\">Inghilterra</a> hanno preso il nome \"Audacity\"."
 
 #~ msgid "The current release of Audacity is <a href=\"download/\">%s"
 #~ msgstr "La corrente versione di Audacity è <a href=\"download/\">%s"
