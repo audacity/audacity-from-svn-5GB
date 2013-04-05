@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2007, 2012 by Vaughan Johnnson
+ * Copyright 2007, 2013 by Vaughan Johnnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -17,7 +17,7 @@
     <th><?=_("Minimum RAM/<br>processor speed")?></th>
   </tr>
   <tr>
-    <td class="version">Windows 7/ Windows 8 (64-bit)</td>
+    <td class="version">Windows 7 (64-bit)/ Windows 8 (64-bit)</td>
     <td class="ramspeed">4 GB / 2 GHz</td>
     <td class="ramspeed">2 GB / 1 GHz</td>
   </tr>
