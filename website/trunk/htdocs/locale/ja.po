@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity website translation 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-30 13:34+0000\n"
-"PO-Revision-Date: 2013-02-17 21:23-0000\n"
-"Last-Translator: Atsushi YOSHIDA\n"
+"POT-Creation-Date: 2013-04-06 10:51+0100\n"
+"PO-Revision-Date: 2013-04-06 19:49-0000\n"
+"Last-Translator: gale <gale@audacityteam.org>\n"
 "Language-Team: Atsushi YOSHIDA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,6 +34,7 @@ msgstr "特徴"
 #: main.inc.php:24
 #: about/screenshots.php:9
 #: index.php:63
+#: v_index.php:63
 msgid "Screenshots"
 msgstr "スクリーンショット"
 
@@ -173,7 +174,7 @@ msgid "Developers"
 msgstr "開発者"
 
 #: main.inc.php:64
-#: about/credits.php:88
+#: about/credits.php:87
 #: community/translation.php:9
 #: community/index.php:24
 msgid "Translators"
@@ -447,13 +448,13 @@ msgstr ""
 
 #: help/faq_i18n.php:120
 #: help/faq_i18n.php:170
-#: help/faq_i18n.php:228
+#: help/faq_i18n.php:227
 msgid "See also:"
 msgstr "こちらもご覧ください："
 
 #: help/faq_i18n.php:120
 #: help/faq_i18n.php:201
-#: help/faq_i18n.php:228
+#: help/faq_i18n.php:227
 msgid "How do I save my recording on an audio CD?"
 msgstr "どのようにして録音したものをCDに保存するのですか？"
 
@@ -659,26 +660,18 @@ msgstr ""
 "</ol>"
 
 #: help/faq_i18n.php:226
-msgid ""
-"Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically.</p>\n"
-"<p>Full instructions for both methods are in the illustrated tutorial"
-msgstr ""
-"別の方法として、Audacityはトラック間の無音区間を検出して自動的にラベルを付けます。</p>\n"
-"<p>これらの方法についての詳細についてはAudacity Wikiのチュートリアル"
+msgid "Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically using Analyze > Silence Finder. If you do not have Silence Finder in your version of Audacity, it can be found in the <a href=\"http://wiki.audacityteam.org/w/images/8/8d/NyPlug-ins_126.zip\">Audacity legacy 1.2.6 Plug-in Pack</a>."
+msgstr "別の方法として、解析 > Silence FinderのメニューによりAudacityはトラック間の無音部分を検出してそこに自動的にラベルをつけることができます。 お使いのバージョンにSilence Finderがない場合は <a href=\"http://wiki.audacityteam.org/w/images/8/8d/NyPlug-ins_126.zip\">Audacity legacy 1.2.6 Plug-in Pack</a>をご参照ください。"
 
-#: help/faq_i18n.php:227
-msgid "on the Audacity Wiki."
-msgstr "をご覧ください。"
-
-#: help/faq_i18n.php:233
+#: help/faq_i18n.php:232
 msgid "<h4 id=\"editing\">Editing</h4>"
 msgstr "<h4 id=\"editing\">編集</h4>"
 
-#: help/faq_i18n.php:236
+#: help/faq_i18n.php:235
 msgid "Why can’t I use the effects or other menu items?"
 msgstr "なぜエフェクトメニューや他のメニューが使えないのですか？"
 
-#: help/faq_i18n.php:237
+#: help/faq_i18n.php:236
 msgid ""
 "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>\n"
 "<p>Also, many menu items are disabled while playing, recording, or pausing a track. To enable them, press the yellow <b>Stop</b> button.</p>"
@@ -686,19 +679,19 @@ msgstr ""
 "<p>いくつかのメニューアイテムは使用可能になるまでの間はグレーになっているか無効になっています。 効果を使用する前に、対象となるオーディオを選択する必要があります。 オーディオを選択するには選択ツールを使ってそのオーディオトラックをクリック/ドラッグしてハイライトするか、編集メニューから\"全て選択\"を選んでください。</p>\n"
 "<p>また、再生中、録音中まはポーズ中は多くのメニューアイテムが無効になっています。それらを有効にするには、黄色の<b>停止</b>ボタンを押してください。</p>"
 
-#: help/faq_i18n.php:241
+#: help/faq_i18n.php:240
 msgid "How do I mix two tracks together?"
 msgstr "どのようにして2つのトラックをミックスするのですか？"
 
-#: help/faq_i18n.php:242
+#: help/faq_i18n.php:241
 msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the <b>Play</b> button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
 msgstr "<p>2つのファイルをミックスするには、まずAudacityに両方のファイルを読み込みます。それらは別々のトラックとして現れますので、再生ボタンを押せばミックスされます。あなたはタイムシフトツールを使って異なる時刻にスタートするように移動したり、他の編集コマンドを使ってそれぞれのトラックを作り変えたりすることができます。</p>"
 
-#: help/faq_i18n.php:245
+#: help/faq_i18n.php:244
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
 msgstr "カラオケトラックを作るために録音したものからボーカルを消すことはできますか？"
 
-#: help/faq_i18n.php:246
+#: help/faq_i18n.php:245
 msgid ""
 "<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals are exactly the same on both stereo channels, you can remove them by “subtracting” one channel from the other.  This works for many studio recordings, where the vocal track is mixed exactly in the center.</p>\n"
 "<p>To do this in Audacity:</p>\n"
@@ -724,19 +717,19 @@ msgstr ""
 "<p><b>再生</b> ボタンを押し、結果を聴いてみてください。  運がよければボーカルは消え去り、その他の楽器は残っておりカラオケのようになっているでしょう。ファイルメニューの書き出しコマンドを使いこの結果を保存することができます。</p>\n"
 "<p>もしボーカルが正確に両チャンネルで等しくない場合、いくつかの他のテクニックがあります。またオプションのプラグインもありますので試してみる価値があります。 詳細はWikiページの <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Vocal Removal</a> をご覧ください。</p>\n"
 
-#: help/faq_i18n.php:276
+#: help/faq_i18n.php:275
 msgid "Other frequently asked questions..."
 msgstr "他のよくある質問..."
 
-#: help/faq_i18n.php:280
+#: help/faq_i18n.php:279
 msgid "Older Frequently Asked Questions for international help"
 msgstr "よくある質問"
 
-#: help/faq_i18n.php:284
+#: help/faq_i18n.php:283
 msgid "These are older Frequently Asked Questions (FAQ), <b>only for those languages where the latest <a href=\"faq\">FAQ</a> doesn't yet have a translation.</b> These questions remain largely valid for Audacity 2.0.x, but please use the latest FAQ if you can do so."
 msgstr "これらは旧版の「よくある質問(FAQ)」で <b>最新の<a href=\"faq\">FAQ</a> がまだ翻訳されていない場合にご活用ください。</b> これらはほとんどの部分でAudacity 2.0.xにも適用可能ですが、もし最新のFAQを使える場合はそちらをお使いください。"
 
-#: help/faq_i18n.php:286
+#: help/faq_i18n.php:285
 msgid "Additional help in French, German, Russian or Spanish can be obtained from our <a href=\"http://forum.audacityteam.org/viewforum.php?f=3\">International Forum</a>."
 msgstr "Additional help in French, German, Russian or Spanish can be obtained from our <a href=\"http://forum.audacityteam.org/viewforum.php?f=3\">International Forum</a>."
 
@@ -1651,8 +1644,8 @@ msgid "<a href=\"%s\">Google Code</a>: Click on the headings to sort the list."
 msgstr "<a href=\"%s\">Google Code</a>: リストのヘッダーをクリックすれば並べ替えできます。"
 
 #: download/legacy_windows.php:77
-msgid "Windows 95 and NT are not supported. Windows Vista and 7 are supported in <a href=\"windows\">the latest version of Audacity</a>."
-msgstr "Windows 95 および NT はサポートされていません。Windows Vistaおよび7は <a href=\"../download/beta_windows\">最新のWindows版</a>でサポートされています。"
+msgid "Windows 95 and NT are not supported. Windows Vista, Windows 7 and Windows 8 require <a href=\"windows\">the latest version of Audacity</a>."
+msgstr "Windows 95 および NT はサポートされていません。Windows Vista、７および８は <a href=\"../download/beta_windows\">最新のWindows版</a>でサポートされています。"
 
 #: download/legacy_windows.php:81
 #: download/windows_sys_reqs.inc.php:10
@@ -1675,8 +1668,8 @@ msgid "Minimum RAM/<br>processor speed"
 msgstr "最低限のRAM/<br>プロセッサ速度"
 
 #: download/legacy_windows.php:104
-msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP, Vista or 7 running on machines of substantially higher specification than the minimum stated above."
-msgstr "一般にAudacityは上表の最低必要条件以上のコンピュータで動作させることが望まれます。Audacityが長時間オーディオや複数トラックを扱うプロジェクトで使われる場合は、最低条件よりずっと高性能のWindows 2000、XP、Vistaまたは７マシンを推奨します"
+msgid "Generally, Audacity works best on computers meeting more than the minimum requirements in the table above. Where Audacity is to be used for lengthy multi-track projects, we recommend using Windows XP running on a machine of substantially higher specification than the minimum stated above."
+msgstr "一般にAudacityは上表の最低必要条件以上のコンピュータで動作させることが望まれます。Audacityが長時間オーディオや複数トラックを扱うプロジェクトで使われる場合は、最低条件よりずっと高性能のWindows XPマシンを推奨します"
 
 #: download/common.inc.php:12
 #: download/windows.php:72
@@ -4129,7 +4122,7 @@ msgid "On Mac OS X only, Audacity loads <a href=\"http://manual.audacityteam.org
 msgstr "Mac OS X では、Audacityはシステムのプラグインディレクトリから<a href=\"http://manual.audacityteam.org/help/manual/man/effect_menu.html#audio_unit\">Audio Unit</a> プラグインを自動的にロードします。Audacityは\"plug-ins\" フォルダー内のAudio Unitsを認識しません。"
 
 #: download/plugins.php:42
-#: about/credits.php:138
+#: about/credits.php:137
 msgid "Libraries"
 msgstr "ライブラリ"
 
@@ -5419,31 +5412,31 @@ msgstr "品質保証"
 #: about/credits.php:33
 #: about/credits.php:34
 #: about/credits.php:37
+#: about/credits.php:50
 #: about/credits.php:51
 #: about/credits.php:52
 #: about/credits.php:53
 #: about/credits.php:54
 #: about/credits.php:55
-#: about/credits.php:56
+#: about/credits.php:57
 #: about/credits.php:58
 #: about/credits.php:59
-#: about/credits.php:60
-#: about/credits.php:67
+#: about/credits.php:66
+#: about/credits.php:68
 #: about/credits.php:69
 #: about/credits.php:70
 #: about/credits.php:71
 #: about/credits.php:72
 #: about/credits.php:73
-#: about/credits.php:74
+#: about/credits.php:75
 #: about/credits.php:76
 #: about/credits.php:77
 #: about/credits.php:78
 #: about/credits.php:79
-#: about/credits.php:80
+#: about/credits.php:81
 #: about/credits.php:82
 #: about/credits.php:83
 #: about/credits.php:84
-#: about/credits.php:85
 msgid "developer"
 msgstr "開発者"
 
@@ -5452,8 +5445,8 @@ msgstr "開発者"
 #: about/credits.php:35
 #: about/credits.php:36
 #: about/credits.php:38
+#: about/credits.php:60
 #: about/credits.php:61
-#: about/credits.php:62
 msgid "documentation and support"
 msgstr "ドキュメンテーションとサポート"
 
@@ -5466,7 +5459,7 @@ msgid "system administration"
 msgstr "システム管理"
 
 #: about/credits.php:31
-#: about/credits.php:57
+#: about/credits.php:56
 msgid "developer and co-founder of Audacity"
 msgstr "Audacityの開発者と創始者"
 
@@ -5474,148 +5467,127 @@ msgstr "Audacityの開発者と創始者"
 msgid "Technical Leadership Council"
 msgstr "技術リーダーシップカウンシル"
 
-#: about/credits.php:49
+#: about/credits.php:48
 msgid "Emeritus: distinguished Audacity Team members, not currently active"
 msgstr "名誉チームメンバー：顕著な功績のあったAudacityチームメンバー。現在は活動休止中"
 
-#: about/credits.php:65
+#: about/credits.php:64
 msgid "Contributors"
 msgstr "貢献者"
 
-#: about/credits.php:68
+#: about/credits.php:67
 msgid "accessibility advisor"
 msgstr "アクセシビリティアドバイザ"
 
-#: about/credits.php:75
+#: about/credits.php:74
 msgid "graphic artist"
 msgstr "グラフィックアーティスト"
 
-#: about/credits.php:81
+#: about/credits.php:80
 msgid "Nyquist plug-ins"
 msgstr "Nyquistプラグイン"
 
-#: about/credits.php:139
+#: about/credits.php:138
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacityは下記のプロジェクトのソースコードを用いています。"
 
-#: about/credits.php:160
+#: about/credits.php:159
 msgid "Thanks"
 msgstr "感謝"
 
-#: about/credits.php:161
+#: about/credits.php:160
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "他にも私たちが感謝したい人々や組織が多くあります。これらの多くはコードやパッチやフィードバックやお金や時間やその他諸々の点においてプロジェクトに貢献してきました。ほかにも、これらの作業全体を可能にするツールを作っていただいた人もいます。"
 
-#: about/credits.php:186
+#: about/credits.php:184
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(もし誰か忘れている人がいたら私たちに知らせてください！)"
 
-#: about/links.php:14
-msgid "Other Things Named “Audacity” (not related to us)"
-msgstr "「Audacity」という名前の他の製品や会社など (私たちとは無関係です)"
-
-#: about/links.php:16
-msgid "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is a digital voice recorder for smartphones."
-msgstr "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> はスマートフォン向けディジタルボイスレコーダーです。"
-
-#: about/links.php:17
-msgid "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company for construction industry professionals."
-msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a>は建設産業の研究会社です。"
-
-#: about/links.php:18
-msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides software consulting services for businesses in Washington, Arizona and California."
-msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> はワシントン、アリゾナ、およびカリフォルニア州にてソフトウェアコンサルティングを提供する会社です。"
-
-# New
-#: about/links.php:19
-msgid "Two different rock bands from <a href=\"http://www.myspace.com/audacityrocks\">Finland</a> and <a href=\"http://www.unsigned.com/audacity\">England</a> are named \"Audacity\"."
-msgstr "<a href=\"http://www.myspace.com/audacityrocks\">フィンランド</a> および <a href=\"http://www.unsigned.com/audacity\">英国</a> の2つのロックバンドが \"Audacity\"という名前を使っています。"
-
-#: about/links.php:22
+#: about/links.php:15
 msgid "Other Open Source Audio Software"
 msgstr "他のオープンソースのオーディオソフトウェア"
 
-#: about/links.php:23
+#: about/links.php:16
 msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux and Mac OS X."
 msgstr "<a href=\"http://ardour.org/\">Ardour</a> は、GNU/LinuxおよびMac OS X上で動く、強力なデジタルオーディオワークステーションです。"
 
-#: about/links.php:24
+#: about/links.php:17
 msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper for Microsoft Windows."
 msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a>は、Microsoft Windows上で動くフリーのCDリッパーソフトです。"
 
-#: about/links.php:25
+#: about/links.php:18
 msgid "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
 msgstr "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> はLPレコードから録音し処理するフリーツールです。"
 
-#: about/links.php:26
+#: about/links.php:19
 msgid "<a href=\"http://www.mixxx.org/\">Mixxx</a> is free cross-platform digital DJ mixing software with features like automatic BPM matching and seamless looping."
 msgstr "<a href=\"http://www.mixxx.org/\">Mixxx</a> はフリーでクロスプラットフォームのディジタルDJミキシングソフトウェアで、BPMマッチング機能やシームレスルーピング機能を持っています。"
 
-#: about/links.php:27
+#: about/links.php:20
 msgid "More free audio software at SourceForge.net:"
 msgstr "SourceForge.netにおけるその他のオーディオソフトウェア"
 
-#: about/links.php:29
+#: about/links.php:22
 msgid "Audio Editors"
 msgstr "オーディオエディタ"
 
-#: about/links.php:30
+#: about/links.php:23
 msgid "Audio Capture/Recording"
 msgstr "オーディオキャプター／レコーディング"
 
-#: about/links.php:31
+#: about/links.php:24
 msgid "Audio Analysis"
 msgstr "オーディオ解析"
 
-#: about/links.php:34
+#: about/links.php:27
 msgid "Open Source Audio-Visual Software"
 msgstr "オープンソースのオーディオビジュアルソフトウェア"
 
-#: about/links.php:35
+#: about/links.php:28
 msgid "<a href=\"http://www.blender.org/\">Blender</a> is a free, cross-platform 3D content creation suite for animations, interactive applications and video games."
 msgstr "<a href=\"http://www.blender.org/\">Blender</a>はフリーでクロスプラットフォームの3Dコンテンツ作成スイートで、アニメーション、インタラクティブなアプリあるいはビデオゲーム等向けです。"
 
-#: about/links.php:36
+#: about/links.php:29
 msgid "<a href=\"http://mediainfo.sourceforge.net/\">MediaInfo</a> is a free, cross-platform tag and codec analyzer for audio and video files."
 msgstr "<a href=\"http://mediainfo.sourceforge.net/\">MediaInfo</a>はフリーでクロスプラットフォームのオーディオおよびビデオファイル用のタグとコーデック分析ソフトウェアです。"
 
-#: about/links.php:37
+#: about/links.php:30
 msgid "<a href=\"http://www.videolan.org/vlc/\">VLC media player</a> is a free, cross-platform media player for most audio and video files as well as DVD, Audio CD and VCD. VLC can also send, save and convert <a href=\"http://www.videolan.org/streaming-features.html\">audio and video streams</a>."
 msgstr "<a href=\"http://www.videolan.org/vlc/\">VLC media player</a> はフリーでクロスプラットフォームのメディアプレーヤーで、多くの形式のオーディオおよびビデオファイル、DVD、オーディオCDおよびVCDに対応しています。さらにVLCは<a href=\"http://www.videolan.org/streaming-features.html\">audio and video streams<a/>を送信、保存および変換することができます。"
 
-#: about/links.php:38
+#: about/links.php:31
 msgid "CD/DVD burning:"
 msgstr "CD/DVD書き込み:"
 
-#: about/links.php:40
+#: about/links.php:33
 msgid "<a href=\"http://infrarecorder.org/\">InfraRecorder</a> for Windows"
 msgstr "Windows版<a href=\"http://infrarecorder.org/\">InfraRecorder</a>"
 
-#: about/links.php:41
+#: about/links.php:34
 msgid "<a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a> for Mac OS X"
 msgstr "Mac OS X版<a href=\"http://burn-osx.sourceforge.net/Pages/English/home.html\">Burn</a> "
 
-#: about/links.php:42
+#: about/links.php:35
 msgid "<a href=\"http://k3b.org/\">K3b</a> or <a href=\"http://archive.xfce.org/src/apps/xfburn/0.4\">Xfburn</a> for Linux"
 msgstr "Linux版<a href=\"http://k3b.org/\">K3b</a> または <a href=\"http://archive.xfce.org/src/apps/xfburn/0.4\">Xfburn</a>"
 
-#: about/links.php:44
+#: about/links.php:37
 msgid "Video editing/capture:"
 msgstr "ビデオ編集/キャプチャ:"
 
-#: about/links.php:46
+#: about/links.php:39
 msgid "<a href=\"http://www.virtualdub.org/\">VirtualDub</a> for Windows"
 msgstr "Windows版<a href=\"http://www.virtualdub.org/\">VirtualDub</a>"
 
-#: about/links.php:47
+#: about/links.php:40
 msgid "<a href=\"http://avidemux.sourceforge.net/\">Avidemux</a> for Windows, Mac OS X (Intel) and Linux"
 msgstr " Windows、 Mac OS X (Intel)およびLinux版<a href=\"http://avidemux.sourceforge.net/\">Avidemux</a>"
 
-#: about/links.php:48
+#: about/links.php:41
 msgid "<a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a> for Mac OS X"
 msgstr "Mac OS X版<a href=\"http://sourceforge.net/projects/hyperengine/\">HyperEngine-AV</a>"
 
-#: about/links.php:49
+#: about/links.php:42
 msgid "<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> or <a href=\"http://www.kinodv.org/article/static/2\">Kino</a> for Linux"
 msgstr "Linux版<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> または <a href=\"http://www.kinodv.org/article/static/2\">Kino</a> for Linux"
 
@@ -5703,6 +5675,7 @@ msgstr ""
 
 #: about/news.php:21
 #: index.php:114
+#: v_index.php:114
 msgid "More news items..."
 msgstr "もっとニュースを見る"
 
@@ -6191,7 +6164,7 @@ msgstr ""
 "<li>改善すべき点</li></ul>."
 
 #: contact/privacy.php:16
-#: include/header.inc.php:207
+#: include/header.inc.php:195
 msgid "Advertisements Policy"
 msgstr "広告ポリシー"
 
@@ -6425,16 +6398,16 @@ msgstr "Audacity"
 msgid "Jump to page content"
 msgstr "コンテンツのページへジャンプ"
 
-#: include/header.inc.php:69
+#: include/header.inc.php:57
 msgid "Audacity: Free Sound Editor and Recording Software"
 msgstr "Audacity: フリーのサウンドエディタ・レコーディングソフトウェア"
 
-#: include/header.inc.php:81
-#: include/header.inc.php:82
+#: include/header.inc.php:69
+#: include/header.inc.php:70
 msgid "Audacity Store, for Audacity-logo shirts, bags and ceramic mugs"
 msgstr "Audacity Store - Audacityロゴ入りシャツ、バッグやマグカップなど"
 
-#: include/header.inc.php:88
+#: include/header.inc.php:76
 msgid "Site Navigation"
 msgstr "サイトナビゲーション"
 
@@ -9106,69 +9079,85 @@ msgstr ""
 "<p>変更点と知られている問題点の完全なリストを見るには、<a href=\"download/release-notes\">リリースノート</a>をご覧ください。</p>"
 
 #: index.php:12
+#: v_index.php:12
 msgid "Free Audio Editor and Recorder"
 msgstr "フリーのオーディオエディタ・レコーダー"
 
 #: index.php:23
+#: v_index.php:23
 msgid "for Windows"
 msgstr "Windows向け"
 
 #: index.php:35
+#: v_index.php:35
 msgid "for Mac"
 msgstr "Mac向け"
 
 #: index.php:36
+#: v_index.php:36
 msgid "OS X 10.4 or later"
 msgstr "OS X 10.4以降"
 
 #: index.php:47
+#: v_index.php:47
 msgid "for Windows, Mac or GNU/Linux"
 msgstr "Windows, Mac または GNU/Linux向け"
 
 #: index.php:60
+#: v_index.php:60
 msgid "Audacity&reg; is free, open source, cross-platform software for recording and editing sounds."
 msgstr "Audacity&reg; はフリー、オープンソースでクロスプラットフォームのレコーディング・サウンド編集ソフトウェアです。"
 
 #: index.php:66
+#: v_index.php:66
 msgid "Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. Check our <a href=\"about/features\">feature list</a>, <a href=\"http://wiki.audacityteam.org/\">Wiki</a> and <a href=\"http://forum.audacityteam.org/\">Forum</a> for more information."
 msgstr "AudacityはWindows&reg;, Mac&reg;, GNU/Linux&reg;およびその他のオペレーティングシステムに対応しています。<a href=\"about/features\">機能リスト</a>、<a href=\"http://wiki.audacityteam.org/\">Wiki</a> あるいは <a href=\"http://forum.audacityteam.org/\">Forum</a> もご覧ください。"
 
 #: index.php:71
+#: v_index.php:71
 #, php-format
 msgid "<h3>Download Audacity %s</h3></a>%s %s"
 msgstr "<h3>Audacity %s をダウンロード</h3></a>%s %s"
 
 #: index.php:78
+#: v_index.php:78
 #, php-format
 msgid "%s\">Other Audacity Downloads %s</a></p>"
 msgstr "%s\">その他のAudacityダウンロード %s</a></p>"
 
 #: index.php:85
+#: v_index.php:85
 msgid "All Audacity Downloads"
 msgstr "Audacity（全バージョン）のダウンロード"
 
 #: index.php:90
+#: v_index.php:90
 #, php-format
 msgid "Download Audacity %s %s"
 msgstr "Download Audacity %s %s"
 
 #: index.php:120
+#: v_index.php:120
 msgid "Get Notified of New Versions"
 msgstr "新しいバージョンを知らせる"
 
 #: index.php:132
+#: v_index.php:132
 msgid "Email address"
 msgstr "メールアドレス"
 
 #: index.php:133
+#: v_index.php:133
 msgid "Add"
 msgstr "追加"
 
 #: index.php:134
+#: v_index.php:134
 msgid "Remove"
 msgstr "削除"
 
 #: index.php:160
+#: v_index.php:160
 msgid "Audacity Team's Advertisements Policy"
 msgstr "広告ポリシー"
 
@@ -9230,193 +9219,39 @@ msgstr "その他の貢献方法"
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
 msgstr "さまざまな方法でみなさんがAudacityプロジェクトに参加しサポートすることができます。お金の寄付以外にも、たとえば <a href=\"../community/developers\">プログラミング</a>、<a href=\"../contact#feedback\">テスト</a>、 <a href=\"http://manual.audacityteam.org/\">ドキュメント作成</a>、<a href=\"../community/translation\">翻訳</a> あるいは<a href=\"http://forum.audacityteam.org/\">Forum</a>にて質問に答えることでも <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">貢献</a> いただくことができます。私たちはAudacityをご使用いただき改善点をご提案いただいたり、Audacityのことを他の方々に広めていただくだけでも大変意義のある貢献だと考えており歓迎いたします。 Audacityへにサポートに感謝いたします。"
 
-#~ msgid "The current release of Audacity is <a href=\"download/\">%s"
-#~ msgstr "Audacityの最新リリースは <a href=\"download/\">%s です。"
-
 #~ msgid ""
-#~ "It replaces all previous 1.2, 1.3 and 2.x versions. See <a href="
-#~ "\"download/features-2.0\">New Features</a> for more information."
+#~ "Alternatively, Audacity can attempt to detect the silences between tracks "
+#~ "then label them automatically.</p>\n"
+#~ "<p>Full instructions for both methods are in the illustrated tutorial"
 #~ msgstr ""
-#~ " これはすべての過去の1.2、1.3および2.xバージョンを置き換えるものです。より"
-#~ "詳しい情報は<a href=\"download/features-2.0\">New Features</a>をご覧くださ"
-#~ "い。"
+#~ "別の方法として、Audacityはトラック間の無音区間を検出して自動的にラベルを付"
+#~ "けます。</p>\n"
+#~ "<p>これらの方法についての詳細についてはAudacity Wikiのチュートリアル"
+
+#~ msgid "on the Audacity Wiki."
+#~ msgstr "をご覧ください。"
+
+#~ msgid "Other Things Named “Audacity” (not related to us)"
+#~ msgstr "「Audacity」という名前の他の製品や会社など (私たちとは無関係です)"
 
 #~ msgid ""
-#~ "<h3>Windows or Linux </h3>\n"
-#~ "  <p>\n"
-#~ "   <ul>\n"
-#~ "    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</"
-#~ "a> is a collection of free, open source software for <b>Windows and "
-#~ "Linux</b> with full source code, allowing easy redistribution under the "
-#~ "GNU General Public License. ISO images may be downloaded for free, or you "
-#~ "can <a href=\"http://www.twistedlincoln.com/shop/catalog/products/"
-#~ "freedomsampler\">purchase</a> a copy to be shipped to you (US only).</"
-#~ "li>\n"
-#~ "    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a now-"
-#~ "discontinued collection of high quality free and open source software for "
-#~ "<b>Windows</b>. Currently, you can still <a href=\"http://releases."
-#~ "theopencd.org/\">download archived CD images</a> or <a href=\"http://www."
-#~ "thelinuxshop.co.uk/catalog/product_info.php?products_id=189\">purchase a "
-#~ "CD online</a> for worldwide shipping.</li>\n"
-#~ "    <li><a href=\"http://theopendisc.com/\">OpenDisc</a> is a similar "
-#~ "collection of high quality free and open source software for <b>Windows</"
-#~ "b>. Currently, a downloadable <a href=\"http://downloads.sourceforge.net/"
-#~ "opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CD image</a> is available. "
-#~ "The project hopes to make available a purchasable CD shortly.</li>\n"
-#~ "    <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a> contains twenty-"
-#~ "two open-source <b>Windows</b> programs on a single CD. You can download "
-#~ "and burn the ISO image, or purchase the CD for worldwide shipping.</li>\n"
-#~ "   </ul>\n"
-#~ "  </p>"
+#~ "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> is a "
+#~ "digital voice recorder for smartphones."
 #~ msgstr ""
-#~ "<h3>WindowsまたはLinux</h3>\n"
-#~ "  <p>\n"
-#~ "   <ul>\n"
-#~ "    <li><a href=\"http://www.freedomsampler.com/\">FreedomSampler&trade;</"
-#~ "a> は<b>WindowsおよびLinux</b>向けのフリーおよびオープンソースソフトウェア"
-#~ "のコレクションで、ソースコードを含んでおり GNU General Public Licenseisの"
-#~ "下で容易に再配布できます。 ISOイメージが無料でダウンロードできます。 また"
-#~ "はCDを <a href=\"http://www.twistedlincoln.com/shop/catalog/products/"
-#~ "freedomsampler\">購入</a>することができます（米国内のみ）</li>\n"
-#~ "    <li><a href=\"http://www.theopencd.org/\">TheOpenCD</a>は<b>Windows</"
-#~ "b>向けの高品質なフリーおよびオープンソースソフトウェアのコレクションです"
-#~ "が、現在販売中止しています。  現時点では<a href=\"http://releases."
-#~ "theopencd.org/\">アーカイブCDイメージのダウンロード</a>を行うか、または世"
-#~ "界中に出荷可能な  <a href=\"http://www.thelinuxshop.co.uk/catalog/"
-#~ "product_info.php?products_id=189\">CDのオンライン購入</a> にて入手可能で"
-#~ "す。</li>\n"
-#~ "    <li><a href=\"http://theopendisc.com/\">OpenDisc</a>も類似の"
-#~ "<b>Windows</b>向け高品質なフリーおよびオープンソースソフトウェアのコレク"
-#~ "ションです。現時点では、<a href=\"http://downloads.sourceforge.net/"
-#~ "opendisc/OpenDisc-07.10.iso?use_mirror=osdn\">CDイメージ</a>がダウンロード"
-#~ "可能です。CDの販売が近いうちに可能になると期待されています。</li>\n"
-#~ " <li><a href=\"http://www.valo-cd.net/\">VALO-CD</a>は22のオープンソースの"
-#~ "<b>Windows</b>プログラムを1枚のCDに収めたものです。ISOイメージファイルをダ"
-#~ "ウンロードしてCDに書き込むかCDを購入することができます。</li>\n"
-#~ "   </ul>\n"
-#~ "  </p>"
-
-#~ msgid "2000/XP/Vista/7"
-#~ msgstr "2000/XP/Vista/7"
+#~ "<a href=\"http://audacityaudio.com/index.htm\">Audacity DVR</a> はスマート"
+#~ "フォン向けディジタルボイスレコーダーです。"
 
 #~ msgid ""
-#~ "If you prefer to send a personal check or another form of payment, please "
-#~ "write to our "
-#~ msgstr "もしパーソナルチェックまたは他の方法による送金をご希望の場合は、"
-
-#~ msgid ""
-#~ "feedback e-mail address</a> telling us what country you are in and how "
-#~ "you'd like to pay."
+#~ "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research "
+#~ "company for construction industry professionals."
 #~ msgstr ""
-#~ "フィードバックe-mailアドレス</a>にお住まいの国をご希望の支払方法をお知らせ"
-#~ "ください。 "
-
-#~ msgid "If you enjoy Audacity,"
-#~ msgstr "もしAudacityを気に入っていただけましたら、"
-
-#~ msgid "write to us"
-#~ msgstr "メールをください"
-
-#~ msgid "Subscribe to the"
-#~ msgstr "私たちの"
-
-#~ msgid "audacity-users mailing list"
-#~ msgstr "audacity-usersメーリングリストを購読してください。"
-
-#~ msgid "Visit the"
-#~ msgstr "私たちの"
-
-#~ msgid "Audacity Wiki"
-#~ msgstr "Audacity Wikiをご覧ください。"
-
-#~ msgid "Join our"
-#~ msgstr "私たちの"
-
-#~ msgid "Audacity Forum"
-#~ msgstr "Audacity Forumにご参加ください。"
-
-#~ msgid "let us know"
-#~ msgstr "お知らせください"
+#~ "<a href=\"http://www.audacity.org\">Audacity.org</a>は建設産業の研究会社で"
+#~ "す。"
 
 #~ msgid ""
-#~ "You can help us by downloading our latest <a href=\"../download/"
-#~ "\">version</a> or <a href=\"http://wiki.audacityteam.org/index.php?"
-#~ "title=Nightly_Builds\">Nightly Build<a/> and testing it out. These "
-#~ "versions usually contain new features or bug fixes that haven't been "
-#~ "fully tested yet. Please <a href=\"../contact#feedback\">let us know</a> "
-#~ "of any problems you encounter, what you like and what could be improved. "
-#~ "Tell us if you find any <em>regressions</em> - things that used to work "
-#~ "but don't work anymore."
+#~ "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> provides software "
+#~ "consulting services for businesses in Washington, Arizona and California."
 #~ msgstr ""
-#~ "私たちの最新<a href=\"../download/\">バージョン</a> あるいは <a href="
-#~ "\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds\">Nightly "
-#~ "Build<a/> をダウンロードしてテストしていただけると助かります。これらのバー"
-#~ "ジョンはまだ完全にテスト済みではありませんが新機能やバグ修正を含んでいま"
-#~ "す。問題を発見したり気に入った機能や改善すべき機能などについてお気づきの点"
-#~ "をぜひ<a href=\"../contact#feedback\">お知らせください</a>。 もし<em>改悪"
-#~ "点</em> - すなわち以前は正常だったのに今はうまく動かない機能 - を発見され"
-#~ "たらお知らせください。"
-
-#~ msgid "for Windows, Mac, or GNU/Linux"
-#~ msgstr "Windows, Mac または GNU/Linux向け"
-
-#~ msgid ""
-#~ "Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg;, and "
-#~ "other operating systems. <a href=\"about/\">Learn more about Audacity...</"
-#~ "a> Also check our <a href=\"http://audacityteam.org/wiki/\">Wiki</a> and "
-#~ "<a href=\"http://audacityteam.org/forum/\">Forum</a> for more information."
-#~ msgstr ""
-#~ "AudacityはWindows&reg;, Mac&reg;, GNU/Linux&reg;およびその他のオペレーティ"
-#~ "ングシステムに対応しています。<a href=\"about/\">Audacityについて...</a>  "
-#~ "また<a href=\"http://audacityteam.org/wiki/\">Wiki</a> あるいは <a href="
-#~ "\"http://audacityteam.org/forum/\">Forum</a> もご覧ください。"
-
-#~ msgid ""
-#~ " It replaces all previous versions. It is derived from version 1.3.14, "
-#~ "but is no longer a Beta version, and has major improvements over 1.2.6. "
-#~ "See <a href=\"download/features-2.0\">New Features</a> for more "
-#~ "information."
-#~ msgstr ""
-#~ " これは以前のバージョンを置き換えるものです。バージョン1.3.14から派生した"
-#~ "ものですが、もはやベータではありません。また1.2.6に比べると大幅な改善が盛"
-#~ "り込まれています。より詳しい情報は<a href=\"download/features-2.0\">New "
-#~ "Features</a>をご覧ください。"
-
-#~ msgid "Audacity 2.0"
-#~ msgstr "Audacity 2.0"
-
-#~ msgid ""
-#~ "Windows 98/ME/2000/XP: <a href=\"%s\">Audacity %s installer</a> (.exe "
-#~ "file, %.1lf MB)"
-#~ msgstr ""
-#~ "Windows 98/ME/2000/XP:<a href=\"%s\">Audacity %s インストーラ</a> (.exe "
-#~ "file, %.1lf MB)"
-
-#~ msgid "Audacity Zip file"
-#~ msgstr "Audacity Zip ファイル"
-
-#~ msgid ""
-#~ "Windows 98/ME/2000/XP: <a href=\"%s\">Audacity %s zip file</a> (%.1lf "
-#~ "MB)\n"
-#~ "  - If you cannot run the installer because of restricted permissions, "
-#~ "download and unzip this file instead."
-#~ msgstr ""
-#~ "Windows 98/ME/2000/XP: <a href=\"%s\">Audacity %s zip ファイル</a> (%.1lf "
-#~ "MB)\n"
-#~ "  - もし環境の制限によりインストーラを実行できない場合には、代わりにこの"
-#~ "ファイルをダウンロードし解凍してください。"
-
-#~ msgid "Legacy Mac downloads page"
-#~ msgstr "以前のMacダウンロードページ"
-
-#~ msgid "New Features"
-#~ msgstr "新機能"
-
-#~ msgid ""
-#~ "<p>If possible, please include the <a href=\"http://audacity.sourceforge."
-#~ "net/help/documentation\">Audacity documentation</a> with your "
-#~ "distribution, to reduce the number of queries we receive. "
-#~ msgstr ""
-#~ "<p>もし可能であれば <a href=\"http://audacity.sourceforge.net/help/"
-#~ "documentation\">Audacityドキュメンテーション</a> も含めて配布いただき、私"
-#~ "たちが受け取る質問数を減少させるようにご協力願います。"
+#~ "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> はワシントン、アリ"
+#~ "ゾナ、およびカリフォルニア州にてソフトウェアコンサルティングを提供する会社"
+#~ "です。"
