@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2007 - 2012  Vaughan Johnson, Gale Andrews
+ * Copyright 2007 - 2013  Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -15,7 +15,7 @@
 
 <p><?=_('Audacity is free to download, but many vendors bundle copies of the program with their products, or resell or distribute Audacity, thanks to the <a href="../about/license">GNU General Public License</a>. The following are legitimate, legal offerings from companies that have worked with us. We are happy and proud that they chose to bundle Audacity with their products.')?></p>
 
-<p><?=_('Some vendors, Umixit, <a href="http://www.thinklabsmedical.com">Thinklabs</a>, and <a href="http://audiotouch.com.au/">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href="#others">custom versions</a>. The UmixIt custom version added a mixer board interface and karaoke window which are now incorporated in Audacity Beta. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Voice is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Some of these improvements will be incorporated in future versions of Audacity.')?></p>
+<p><?=_('Some vendors, Umixit, <a href="http://www.thinklabsmedical.com">Thinklabs</a>, and <a href="http://audiotouch.com.au/">Audiotouch</a>, have additionally supported Audacity by sponsoring <a href="#others">custom versions</a>. The UmixIt custom version added a mixer board interface and karaoke window which are now incorporated into Audacity. The ThinkLabs version is customized for cardiographs from digital stethoscopes. Audacity_Voice is customized for integration with Audiotouch, for ease of use by students needing numerous recordings. Some of these improvements will be incorporated in future versions of Audacity.')?></p>
 
 <p>
   <?php echo _('To be considered for addition to this list, please first review our <a href="../about/license">License, and Advice for Vendors and Distributors</a> page. If you are distributing Audacity under those terms ');?>
