@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity-website.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-22 07:30+0000\n"
-"PO-Revision-Date: 2013-03-07 22:07-0000\n"
-"Last-Translator: Xabier Aramendi\n"
+"POT-Creation-Date: 2013-04-06 10:51+0100\n"
+"PO-Revision-Date: 2013-05-06 02:44-0000\n"
+"Last-Translator: Xabier\n"
 "Language-Team: (EUS_Xabier Aramendi) <azpidatziak@gmail.com>\n"
-"Language: Euskara (Basque)\n"
+"Language: Euskara (Basque Country-Navarre)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,6 +33,7 @@ msgstr "Ezaugarriak"
 #: main.inc.php:24
 #: about/screenshots.php:9
 #: index.php:63
+#: v_index.php:63
 msgid "Screenshots"
 msgstr "Ikusleiho-argazkiak"
 
@@ -172,7 +173,7 @@ msgid "Developers"
 msgstr "Garatzaileak"
 
 #: main.inc.php:64
-#: about/credits.php:88
+#: about/credits.php:87
 #: community/translation.php:9
 #: community/index.php:24
 msgid "Translators"
@@ -370,6 +371,28 @@ msgid ""
 "<h3 id=\"nix\">Linux/Unix</h3>\n"
 "Follow <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions\">these instructions</a> on our <a href=\"http://audacityteam.org/wiki/\">Wiki</a> to download and install a suitable LAME package from the internet."
 msgstr ""
+"<p>Software patenteak direla-eta, ezin dugu MP3 kodeaketa softwarea geuk banatu. Jarraitu jarraipide hauek LAME kodeatzaile askea erabiltzeko MP3 agiriak esportatzeko Audacity-rekin.\n"
+"<h3 id=\"win\">Windows</h3>\n"
+"<ol>\n"
+"  <li>Joan <a href=\"http://lame1.buanzo.com.ar/\">LAME jeisketa orrialdea</a>ra.</li>\n"
+"  <li>\"For Audacity on Windows\" azpian, ezker-klikatu <b>\"Lame v3.99.3 for Windows.exe\"</b> lotura eta gorde agiria zure ordenagailuko edonon. <b>Ez eskuin-klikatu .exe agiria lotura.</b> </li> \n"
+"  <li>Klik-bikoitza <b>\"Lame v3.99.3 for Windows.exe\"</b> abiarazteko (\"argitaratzailea ez da egiaztatu\" bezalako edozein kontuz ohar segurtasunez ezikusi dezakezu).</li> \n"
+"  <li>Jarraitu \"Ezartzailearen\" jarraipideak LAME for Audacity ezartzeko. Ez aldatu eskainitako kokaleku helmuga, \"C:\\Programa Agiriak\\Lame for Audacity\".</li>\n"
+"  <li>\"Esportatu MP3 bezala\" agindua erabiltzen duzun lehen aldian, Audacityk <b>\"lame_enc.dll\"</b>-ren kokalekuaz galdetuko du. Nabigatu \"C:\\Programa Agiriak\\Lame for Audacity\", hautatu \"lame_enc.dll\", orduan klikatu \"Ireki\" eta \"Ongi\".</li>\n"
+"  <li>Zip aukera nahiago baduzu LAME jeisteko, gorde zip agiria zure ordenagailuko edonon, atera \"lame_enc.dll\" edozein kokalekura, orduan erakutsi Audacityri non aurkitu dezakeen gaineko 5. Urratsean bezala.</li>\n"
+"  <li>Zailtasunen baduzu, mesedez ikusi gure <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#Windows_Instructions\">jarraipide xehetuagoak</a> <a href=\"http://audacityteam.org/wiki/\">Audacity Wikia</a>n.</li>\n"
+"</ol>\n"
+"<h3 id=\"mac\">Mac OS 9 or X</h3>\n"
+"<ol>\n"
+"  <li>Joan <a href=\"http://lame1.buanzo.com.ar/\">LAME jeisketa orrialdea</a>ra.</li>\n"
+"  <li>Klikatu jeisteko <b>\"Lame Library v3.98.2 for Audacity on OSX.dmg\"</b> edo <b>\"LameLib-Carbon.sit\"</b>, zure sistema eragilearen arabera.</li>\n"
+"  <li>Klik-bikoitza .dmg-an \"Lame Library v3.98.2 for Audacity on OSX.pkg\" ateratzeko Finder-era edo erabili Stuffit ateratzeko \"LameLib\" .sit-etik (hauetako edozein berezgaitasunez gertatu daiteke).</li>\n"
+"  <li>Klik-bikoitza .pkg-an <b>\"libmp3lame.dylib\"</b> ezartzeko /usr/local/lib/audacity-an, edo <b>\"LameLib\"</b> gordetzeko zure ordenagailuko edonon.</li>\n"
+"  <li>\"Esportatu MP3 bezala\" agindua erabiltzen duzun lehen aldian, Audacityk \"libmp3lame.dylib\" edo \"LameLib\"-ren kokalekuaz galdetuko du. Nabigatu kokalekura, orduan ireki agiria eta klikatu \"Ongi\".</li>\n"
+"  <li>Zailtasunen baduzu, mesedez ikusi gure <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#Mac_Instructions\">jarraipide xehetuagoak</a> <a href=\"http://audacityteam.org/wiki/index.php\">Audacity Wikia</a>n.</li> \n"
+"</ol>\n"
+"<h3 id=\"nix\">Linux/Unix</h3>\n"
+"Jarraitu <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions\">jarraipide hauei</a> gure <a href=\"http://audacityteam.org/wiki/\">Wikia</a>n LAME pakete egokia internetetik jeisteko eta ezartzeko."
 
 #: help/faq_i18n.php:94
 msgid "What should I do if I have problems downloading or installing Audacity?"
@@ -3352,7 +3375,7 @@ msgid "On Mac OS X only, Audacity loads <a href=\"http://manual.audacityteam.org
 msgstr "Mac OS X-en bakarrik, Audacityk <a href=\"http://manual.audacityteam.org/help/manual/man/effect_menu.html#audio_unit\">Audio Unitate</a> plug-inak berezgaitasunez gertatzen ditu sistemaren plug-in zuzenbideetatik. Audacityk ez du ezagutuko Audio Unitaterik bere \"plug-inak\" agiritegian."
 
 #: download/plugins.php:42
-#: about/credits.php:138
+#: about/credits.php:137
 msgid "Libraries"
 msgstr "Liburutegiak"
 
@@ -4636,31 +4659,31 @@ msgstr "ontasun segurtasuna"
 #: about/credits.php:33
 #: about/credits.php:34
 #: about/credits.php:37
+#: about/credits.php:50
 #: about/credits.php:51
 #: about/credits.php:52
 #: about/credits.php:53
 #: about/credits.php:54
 #: about/credits.php:55
-#: about/credits.php:56
+#: about/credits.php:57
 #: about/credits.php:58
 #: about/credits.php:59
-#: about/credits.php:60
-#: about/credits.php:67
+#: about/credits.php:66
+#: about/credits.php:68
 #: about/credits.php:69
 #: about/credits.php:70
 #: about/credits.php:71
 #: about/credits.php:72
 #: about/credits.php:73
-#: about/credits.php:74
+#: about/credits.php:75
 #: about/credits.php:76
 #: about/credits.php:77
 #: about/credits.php:78
 #: about/credits.php:79
-#: about/credits.php:80
+#: about/credits.php:81
 #: about/credits.php:82
 #: about/credits.php:83
 #: about/credits.php:84
-#: about/credits.php:85
 msgid "developer"
 msgstr "garatzailea"
 
@@ -4669,8 +4692,8 @@ msgstr "garatzailea"
 #: about/credits.php:35
 #: about/credits.php:36
 #: about/credits.php:38
+#: about/credits.php:60
 #: about/credits.php:61
-#: about/credits.php:62
 msgid "documentation and support"
 msgstr "agiritza eta sostengua"
 
@@ -4683,7 +4706,7 @@ msgid "system administration"
 msgstr "sistema administrazioa"
 
 #: about/credits.php:31
-#: about/credits.php:57
+#: about/credits.php:56
 msgid "developer and co-founder of Audacity"
 msgstr "garatzailea eta Audacityren sorkidea"
 
@@ -4691,39 +4714,39 @@ msgstr "garatzailea eta Audacityren sorkidea"
 msgid "Technical Leadership Council"
 msgstr "Buruzagitza Teknikoaren Batzordea"
 
-#: about/credits.php:49
+#: about/credits.php:48
 msgid "Emeritus: distinguished Audacity Team members, not currently active"
 msgstr "Zaharrak: Audacity Taldean bereziak, ez daude jardunean orain"
 
-#: about/credits.php:65
+#: about/credits.php:64
 msgid "Contributors"
 msgstr "Laguntzaileak"
 
-#: about/credits.php:68
+#: about/credits.php:67
 msgid "accessibility advisor"
 msgstr "Sarbidetasun aholkularia"
 
-#: about/credits.php:75
+#: about/credits.php:74
 msgid "graphic artist"
 msgstr "artista grafikoa"
 
-#: about/credits.php:81
+#: about/credits.php:80
 msgid "Nyquist plug-ins"
 msgstr "Nyquist plug-inak"
 
-#: about/credits.php:139
+#: about/credits.php:138
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity hurrengo egitasmoen kodean ohinarritzen da:"
 
-#: about/credits.php:160
+#: about/credits.php:159
 msgid "Thanks"
 msgstr "Eskerrak"
 
-#: about/credits.php:161
+#: about/credits.php:160
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "Beste norbanako eta erakunde asko daude eskerrak ematea nahi dizkiegunak. Hauetako askok kodea, eranskinak, irizkizunak, dirua, denbora edo beste gauza batzuekin lagundu dute egitasmoa. Beste batzuk besterik gabe guzti hau ahal egin duten tresnak egin dituzte."
 
-#: about/credits.php:186
+#: about/credits.php:184
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Jakinarazi diezaguzu norbaitez ahazten ari bagara!)"
 
@@ -4899,6 +4922,7 @@ msgstr ""
 
 #: about/news.php:21
 #: index.php:114
+#: v_index.php:114
 msgid "More news items..."
 msgstr "Gai berri gehiago..."
 
@@ -5281,7 +5305,7 @@ msgstr "Idatzi hau komando lerroan azken iturburu kodea egiaztatzeko SVN-tik:"
 #: community/developers.php:30
 #, php-format
 msgid "You can also check out a specific <a href=\"%s\">tagged release</a> from SVN."
-msgstr ""
+msgstr "Egiaztatu dezakezu ere bereiziki <a href=\"%s\">etiketaturiko argitalpena</a> bat SVN-tik."
 
 #: community/developers.php:32
 msgid "Use the following syntax at the command line to check out a specific tagged release from SVN, for example:"
@@ -5387,7 +5411,7 @@ msgstr ""
 "<li>Zer hobetu daitekeen.</li></ul>."
 
 #: contact/privacy.php:16
-#: include/header.inc.php:207
+#: include/header.inc.php:195
 msgid "Advertisements Policy"
 msgstr "Iragarpen Araudia"
 
@@ -5618,16 +5642,16 @@ msgstr "Audacity"
 msgid "Jump to page content"
 msgstr "Jauzi orrialdearen edukira"
 
-#: include/header.inc.php:69
+#: include/header.inc.php:57
 msgid "Audacity: Free Sound Editor and Recording Software"
 msgstr "Audacity: Soinu Edizio eta Grabaketa Software Askea"
 
-#: include/header.inc.php:81
-#: include/header.inc.php:82
+#: include/header.inc.php:69
+#: include/header.inc.php:70
 msgid "Audacity Store, for Audacity-logo shirts, bags and ceramic mugs"
 msgstr "Audacity Denda, Audacity-logoa kamisetak, poltsak eta buztinezko kikarak"
 
-#: include/header.inc.php:88
+#: include/header.inc.php:76
 msgid "Site Navigation"
 msgstr "Webgune Nabigazioa"
 
@@ -7189,69 +7213,85 @@ msgid ""
 msgstr ""
 
 #: index.php:12
+#: v_index.php:12
 msgid "Free Audio Editor and Recorder"
 msgstr "Audio Editatzailea eta Grabatzailea"
 
 #: index.php:23
+#: v_index.php:23
 msgid "for Windows"
 msgstr "Windows-rako"
 
 #: index.php:35
+#: v_index.php:35
 msgid "for Mac"
 msgstr "Mac-rako"
 
 #: index.php:36
+#: v_index.php:36
 msgid "OS X 10.4 or later"
 msgstr "OS X 10.4 edo berriagoa"
 
 #: index.php:47
+#: v_index.php:47
 msgid "for Windows, Mac or GNU/Linux"
 msgstr "Windows, Mac edo GNU/Linux-rako"
 
 #: index.php:60
+#: v_index.php:60
 msgid "Audacity&reg; is free, open source, cross-platform software for recording and editing sounds."
 msgstr "Audacity&reg; soinua grabatzeko eta editatzeko software askea, iturburu irekikoa eta plataforma-anitzekoa da."
 
 #: index.php:66
+#: v_index.php:66
 msgid "Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. Check our <a href=\"about/features\">feature list</a>, <a href=\"http://wiki.audacityteam.org/\">Wiki</a> and <a href=\"http://forum.audacityteam.org/\">Forum</a> for more information."
 msgstr "Audacity eskuragarri dago Windows&reg;, Mac&reg;, GNU/Linux&reg; eta beste sistema eragileetarako. Ikusi ere gure <a href=\"about/features\">ezaugarri zerrenda</a>, <a href=\"http://wiki.audacityteam.org/\">Wikia</a> eta <a href=\"http://forum.audacityteam.org/\">Eztabaidagunea</a> argibide gehiagorako."
 
 #: index.php:71
+#: v_index.php:71
 #, php-format
 msgid "<h3>Download Audacity %s</h3></a>%s %s"
 msgstr "<h3>Jeitsi Audacity %s</h3></a>%s %s"
 
 #: index.php:78
+#: v_index.php:78
 #, php-format
 msgid "%s\">Other Audacity Downloads %s</a></p>"
 msgstr "%s\">Beste Audacity Jeisketak %s</a></p>"
 
 #: index.php:85
+#: v_index.php:85
 msgid "All Audacity Downloads"
 msgstr "Audacity Jeisketa Guztiak"
 
 #: index.php:90
+#: v_index.php:90
 #, php-format
 msgid "Download Audacity %s %s"
 msgstr "Jeitsi Audacity %s %s"
 
 #: index.php:120
+#: v_index.php:120
 msgid "Get Notified of New Versions"
 msgstr "Jaso Jakinarazpenak Bertsio Berrietaz"
 
 #: index.php:132
+#: v_index.php:132
 msgid "Email address"
 msgstr "Post@ helbidea"
 
 #: index.php:133
+#: v_index.php:133
 msgid "Add"
 msgstr "Gehitu"
 
 #: index.php:134
+#: v_index.php:134
 msgid "Remove"
 msgstr "Kendu"
 
 #: index.php:160
+#: v_index.php:160
 msgid "Audacity Team's Advertisements Policy"
 msgstr "Audacity Taldearen Ohartarazpen Araudia"
 
