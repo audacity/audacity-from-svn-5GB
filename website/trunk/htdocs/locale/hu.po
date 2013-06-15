@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: hungarian audacity website\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-06 09:13+0100\n"
-"PO-Revision-Date: 2013-06-01 23:12-0000\n"
-"Last-Translator: D�niel Bara\n"
+"PO-Revision-Date: 2013-06-15 13:00-0000\n"
+"Last-Translator: Gale Andrews\n"
 "Language-Team: documan <documan@sourceforge.net>\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "Language: hu_HU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.5.5\n"
 
@@ -25,9 +25,8 @@ msgstr "Ingyenes Audió Szerkesztő és Felvevő"
 
 #: index.php:23
 #: v_index.php:23
-#, fuzzy
 msgid "for Windows"
-msgstr "Windows"
+msgstr "Windows-ra"
 
 #: index.php:35
 #: v_index.php:35
@@ -65,19 +64,18 @@ msgstr ""
 #: v_index.php:71
 #, php-format
 msgid "<h3>Download Audacity %s</h3></a>%s %s"
-msgstr ""
+msgstr "<h3>Az Audacity %s letöltése</h3></a>%s %s"
 
 #: index.php:78
 #: v_index.php:78
 #, php-format
 msgid "%s\">Other Audacity Downloads %s</a></p>"
-msgstr ""
+msgstr "%s\">Más Audacity letöltések %s</a></p>"
 
 #: index.php:85
 #: v_index.php:85
-#, fuzzy
 msgid "All Audacity Downloads"
-msgstr "Lehetővé teszi, hogy az Audacity VST-bővítményeket töltsön be."
+msgstr "Minden Audacity letöltés"
 
 #: index.php:90
 #: v_index.php:90
@@ -190,7 +188,7 @@ msgstr "Csatlakozz hozzánk"
 
 #: community/index.php:15
 msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute your time to the Audacity project:"
-msgstr "Az Audacity egy ingyenes program, amit önkéntesek írtak. Ha szeretnél te is hozzájárulni, íg teheted meg:"
+msgstr "Az Audacity egy ingyenes program, amit önkéntesek írtak. Ha szeretnél te is hozzájárulni, így teheted meg:"
 
 #: community/index.php:18
 #: main.inc.php:62
@@ -251,18 +249,18 @@ msgstr ""
 #. translate the values as %4$02d/%3$02d/%2$04d. The string (%s) inserts
 #. a html tag to end the link, and is not visible.
 #: community/translation.php:31
-#, fuzzy, php-format
+#, php-format
 msgid "Latest audacity.pot file%s (last updated %04d/%02d/%02d)"
-msgstr "A legfrissebb audacity.pot fájl"
+msgstr "A legfrissebb audacity.pot fájl%s (utoljára frissítve: %04d/%02d/%02d)"
 
 #. i18n-hint: The three numbers will be year, month, day. Remember you
 #. can re-order the numbers if you want to - to get Day, Month, Year,
 #. translate the values as %4$02d/%3$02d/%2$04d. The string (%s) inserts
 #. a html tag to end the link, and is not visible.
 #: community/translation.php:39
-#, fuzzy, php-format
+#, php-format
 msgid "Latest audacity_website.pot file%s (last updated %04d/%02d/%02d)"
-msgstr "A legfrissebb audacity_website.pot fájl"
+msgstr "A legfrissebb audacity_website.pot fájl %s (utoljára frissítve: %04d/%02d/%02d)"
 
 #: community/translation.php:42
 msgid "wxWidgets i18n"
@@ -1921,7 +1919,7 @@ msgstr ""
 #: donate/index_v.php:11
 #: donate/main.inc.php:11
 msgid "How Does Audacity Raise Money?"
-msgstr "Hogyan keres pnzt az Audacity?"
+msgstr "Hogyan keres pénzt az Audacity?"
 
 #: donate/index.php:16
 #: donate/index_v.php:16
@@ -1934,7 +1932,7 @@ msgstr "A gombra kattintva adományozhatsz PayPal-lal (nem szükséges PayPal fi
 
 #: donate/index.php:49
 msgid "Please note that we cannot accept other forms of payment such as checks or bank transfers. Also, donations to Audacity are not deductible for income taxes in the United States of America."
-msgstr "Kérjük, vegye figyelembe, hogy nem tudunk elfogadni más fizetési eszközket (csekket vagy átutalást). (Emellett az Audacity adományaiból nem vonható le a jövedelemadó az Amerikai Egyesült Államokban.)"
+msgstr "Kérjük, vedd figyelembe, hogy nem tudunk elfogadni más fizetési eszközket (csekket vagy átutalást)."
 
 #: donate/index.php:55
 #: donate/index_v.php:43
@@ -1943,7 +1941,7 @@ msgstr "Az Audacity adományokkal, <a href=\"http://audacityteam.org/sponsor.php
 
 #: donate/index.php:59
 msgid "As of March 2007, <a href=\"http://sourceforge.net/\">SourceForge.net</a>, which hosts the Audacity site and downloads, is allowing us to also post advertisements, in an innovative program whereby we split the revenues. Thank you, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
-msgstr "2007. márciusa óta a <a href=\"http://sourceforge.net/\">SourceForge.net</a>, amelyről az Audacity weboldal és a letöltések működnek, lehetővé tesz számunkra a hirdetések megjelenítését, amelynek a bevételét el tudjuk osztani, Köszönjük, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
+msgstr "2007. márciusa óta a <a href=\"http://sourceforge.net/\">SourceForge.net</a>, amelyről az Audacity weboldal és a letöltések működnek, lehetővé teszi számunkra a hirdetések megjelenítését, amelynek a bevételét el tudjuk osztani, Köszönjük, <a href=\"http://sourceforge.net/\">SourceForge.net</a>!"
 
 #: donate/index.php:63
 msgid "Income to Audacity is not distributed among previous contributors to Audacity. There are too many people and it would be difficult to do so fairly. Also, nobody contributed code to Audacity expecting money in return. Audacity is developed by volunteers, working in our spare time. Audacity is not shareware, and we do not expect to make any money from it."
@@ -1951,7 +1949,7 @@ msgstr "Az Audacity bevételét nem tudnánk igazságosan megosztani a közremű
 
 #: donate/index.php:67
 msgid "Rather, the team of Audacity lead developers will spend the money on items and services that benefit the project as a whole. Money that comes in to the project helps us pay for bandwidth and web hosting, development tools, and audio hardware. In the past we used funds from donations to purchase the Audacity trademark and to subsidize travel costs for Audacity developers to meet for a hackathon, and we plan to do more of these. Our long-term goal is to bring in enough money to hire a full-time developer who could devote all of his/her time to the project and take over some of the administrative,  maintenance and release tasks, freeing volunteers to spend more time on code."
-msgstr "Az Audacity csapat a pénzt olyan célokra fogják felhasználni, amelyek az egész projektet segítik. A bejövő pénz a szerver bérlést és a fejlesztői eszközöket segítik. A projekt kezdetekor az adományokat abba fejtettük, hogy megvettük az Audacity védjegyet, támogattuk a fejlesztők utazási költségeit egy találkozóra, és szeretnénk több ilyet is szervezni. A hosszútávú célunk az, hogy elég pénz összegyűljön felvenni egy teljes munkaidős fejlesztőt, aki teljes idejét a projektre fordíthatja, és átveheti egy részét az adminisztratív és karbantartási munkáknak,  több időt hagyva az önkénteseknek a program fejlesztésére."
+msgstr "Az Audacity csapata a pénzt olyan célokra fogja felhasználni, amelyek az egész projektet segítik. A bejövő pénz a szerver bérlést és a fejlesztői eszközöket segítik. A projekt kezdetekor az adományokat abba fejtettük, hogy megvettük az Audacity védjegyet, támogattuk a fejlesztők utazási költségeit egy találkozóra, és szeretnénk több ilyet is szervezni. A hosszútávú célunk az, hogy elég pénz összegyűljön felvenni egy teljes munkaidős fejlesztőt, aki teljes idejét a projektre fordíthatja, és átveheti egy részét az adminisztratív és karbantartási munkáknak,  több időt hagyva az önkénteseknek a program fejlesztésére."
 
 #: donate/index.php:71
 msgid "These are all things that help us provide Audacity for free and continue to make it better. The Audacity Team is completely committed to keeping Audacity free and open source. We made that commitment in <a href=\"http://audacity.sourceforge.net/about/license\">licensing Audacity under the GNU General Public License</a>."
@@ -1964,7 +1962,7 @@ msgstr "Hozzájárulás más módon"
 
 #: donate/index.php:77
 msgid "Besides donating money, you can <a href=\"http://wiki.audacityteam.org/wiki/Contribute\"> contribute your time</a> by helping us with <a href=\"../community/developers\">programming</a>, <a href=\"../contact#feedback\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</a>, <a href=\"../community/translation\">translations</a> or by anwering questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity."
-msgstr "Pénz adományozásán kívül másképpen is <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">hozzájárulhatsz</a> a projekthez, segíthetsz a <a href=\"../community/developers\">programozásban</a>, a <a href=\"../contact#feedback\">tesztelésben</a>, a <a href=\"http://manual.audacityteam.org/\">leírásban</a>, a <a href=\"../community/translation\">fordításban</a>, vagy a fórumon feltett kérdések megválaszolásában. Mindig szeretjük az olyan felhasználókat, akik azzal segítenek, hogy használják az Audacity-t, ötleteket adnak a fejlesztéshez, és másoknak is beszélnek róla. Köszönjük, hogy támogatja az Audacity-t."
+msgstr "Pénz adományozásán kívül másképpen is <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">hozzájárulhatsz</a> a projekthez, segíthetsz a <a href=\"../community/developers\">programozásban</a>, a <a href=\"../contact#feedback\">tesztelésben</a>, a <a href=\"http://manual.audacityteam.org/\">leírásban</a>, a <a href=\"../community/translation\">fordításban</a>, vagy a fórumon feltett kérdések megválaszolásában. Mindig szeretjük az olyan felhasználókat, akik azzal segítenek, hogy használják az Audacity-t, ötleteket adnak a fejlesztéshez, és másoknak is beszélnek róla. Köszönjük, hogy támogatod az Audacity-t."
 
 #: donate/index_v.php:20
 msgid "Click the <b>Donate</b> button to donate securely by PayPal (PayPal account not required)."
@@ -2659,9 +2657,8 @@ msgid "In Audacity, click Help > Manual (in web browser), then the \"FAQ\" link 
 msgstr ""
 
 #: help/faq.php:27
-#, fuzzy
 msgid "Other languages"
-msgstr "Egyéb letöltések"
+msgstr "Más nyelvek"
 
 #: help/faq.php:28
 msgid "View the localized FAQ in the online Manual:"
@@ -3144,11 +3141,11 @@ msgstr ""
 
 #: main.inc.php:20
 msgid "Home"
-msgstr "Otthon"
+msgstr "Kezdőlap"
 
 #: main.inc.php:21
 msgid "About"
-msgstr "Névjegy"
+msgstr "Rólunk"
 
 #: main.inc.php:23
 #: about/features.php:9
@@ -3283,7 +3280,7 @@ msgstr "Az oldal, amit keresett, nem található.  Próbálja meg az <a href=\"/
 
 #: download/index.php:33
 msgid "Audacity for Windows&reg;"
-msgstr "Az Audacity Windows alatt"
+msgstr "Audacity Windows&reg; -ra"
 
 #: download/index.php:40
 msgid "(Windows 2000/XP/Vista/Windows 7/Windows 8)"
@@ -3291,7 +3288,7 @@ msgstr ""
 
 #: download/index.php:48
 msgid "Audacity for Mac&reg;"
-msgstr ""
+msgstr "Audacity Mac&reg;-re"
 
 #: download/index.php:55
 msgid "(Universal Binary for Mac OS X 10.4 or later)"
@@ -3299,7 +3296,7 @@ msgstr ""
 
 #: download/index.php:63
 msgid "Audacity for GNU/Linux&reg;"
-msgstr "Az Audacity Linux alatt"
+msgstr "Audacity Linux-ra"
 
 #: download/index.php:70
 #, fuzzy
@@ -3571,9 +3568,9 @@ msgstr ""
 #: download/legacy_windows.php:67
 #: download/mac.php:80
 #: download/windows.php:84
-#, fuzzy, php-format
+#, php-format
 msgid "If you have trouble with your download, or need an older version of Audacity, try:"
-msgstr "Amennyiben problémád támad a letöltéssel, vagy az Audacity régebbi verzióját keresed, próbálkozz az <a href=\"%s\">alternatív letöltési linkekkel</a>."
+msgstr "Amennyiben problémád támad a letöltéssel, vagy az Audacity régebbi verzióját keresed, próbáld meg ezeket:"
 
 #: download/common.inc.php:19
 #: download/legacy_mac.php:55
@@ -3645,9 +3642,9 @@ msgid "Timer Recording"
 msgstr ""
 
 #: download/beta_common.inc.php:16
-#, fuzzy, php-format
+#, php-format
 msgid "If you have trouble with your download, or need an older version of Audacity, try our alternative download links:"
-msgstr "Amennyiben problémád támad a letöltéssel, vagy az Audacity régebbi verzióját keresed, próbálkozz az <a href=\"%s\">alternatív letöltési linkekkel</a>."
+msgstr "Amennyiben problémád támad a letöltéssel, vagy az Audacity régebbi verzióját keresed, próbáld meg az alábbi letöltéseket:"
 
 #: download/beta_common.inc.php:17
 #: download/legacy_source.php:28
@@ -6255,6 +6252,16 @@ msgid ""
 "  <li>And more! See the complete <a href=\"features\">list of features</a>.</li>\n"
 "</ul>"
 msgstr ""
+"<p>Az Audacity egy ingyenes, <a href=\"http://audacityteam.org/wiki/index.php?title=Changing_the_current_language\">többnyelvű</a>, és könnyen használható hangfelvevő és -szerkesztő program több operációs rendszerre. Az Audacity funkciói:</p>\n"
+"\n"
+"<ul>\n"
+"  <li>-hangfelvétel</li>\n"
+"  <li>-kazetták konvertálása digitális formátumba</li>\n"
+" <li>-Ogg Vorbis, AIFF, WAV és MP3 fájlok szerkesztése</li>\n"
+" <li>-hangok vágása, másolása, összeillesztése és keverése</li>\n"
+" <li>-hangmagasság vagy tempó megváltoztatása</li>\n"
+" <li>-És még sok más! A funkciók listáját <a href=\"features\">itt</a> nézheti meg.</li>\n"
+"</ul>"
 
 #. i18n-hint: You may change the link addresses below, if there is a
 #. version of the page in your language at a different location.
@@ -6621,9 +6628,8 @@ msgid "<a href=\"http://www.mixxx.org/\">Mixxx</a> is free cross-platform digita
 msgstr ""
 
 #: about/links.php:20
-#, fuzzy
 msgid "More free audio software at SourceForge.net:"
-msgstr "Még több ingyenes szoftver a SourceForge.net alatt:"
+msgstr "Még több ingyenes szoftver a SourceForge.net-en:"
 
 #: about/links.php:22
 msgid "Audio Editors"
@@ -6693,7 +6699,6 @@ msgid "<a href=\"http://cinelerra.org/about.php\">Cinelerra</a> or <a href=\"htt
 msgstr ""
 
 #: about/features.php:13
-#, fuzzy
 msgid "This is a list of features in Audacity, the free, open source, cross-platform audio editor.  For full information on how to use these features, go to the <a href=\"../help/\">help pages</a>."
 msgstr "Ez az ingyenes hangszerkesztő, az Audacity jellemzőinek listája. Bővebb információért ezek használatával kapcsolatban tekintsd meg a <a href=\"../help/\">súgó oldalakat</a>."
 
