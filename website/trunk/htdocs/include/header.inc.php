@@ -159,7 +159,7 @@
     </ul>
   </div>
 
-  <div id="adsense" style="border:5px solid black">
+  <div id="adsense" style="border:1px solid black">
    <?php
    /* 4/30/2007: Ross Turk of SourceForge says please just direct all revenue to 
       Audacity for one month, due to error I made because of their documentation. 
