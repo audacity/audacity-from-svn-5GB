@@ -159,7 +159,7 @@
     </ul>
   </div>
 
-  <div id="adsense" style="border:1px solid black">
+  <div id="adsense" style="border:2px solid black">
    <?php
    /* 4/30/2007: Ross Turk of SourceForge says please just direct all revenue to 
       Audacity for one month, due to error I made because of their documentation. 
@@ -191,10 +191,11 @@
      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
    </script>
    
-   <center>
-      <a href="/contact/privacy#advertising"><font size="-2"><?=_("Advertisements Policy")?></font></a>  
-   </center>
   </div>
+
+  <center>
+    <a href="/contact/privacy#advertising"><font size="-2"><?=_("Advertisements Policy")?></font></a>
+  </center>
 
   </div> <!-- leftcolumn -->
 
