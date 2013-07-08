@@ -137,7 +137,7 @@
 
 </div>
 <hr>
-<div id="adsense_home_page" style="border:1px solid black">
+<div id="adsense_home_page" style="border:2px solid black">
   <center>
     <!-- Google AdSense -->
     <script type="text/javascript">
