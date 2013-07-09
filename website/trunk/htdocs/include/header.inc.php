@@ -191,11 +191,11 @@
      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
    </script>
    
-  </div>
+   <center>
+      <a href="/contact/privacy#advertising"><font size="-2"><?=_("Advertisements Policy")?></font></a>
+   </center>
 
-  <center>
-    <a href="/contact/privacy#advertising"><font size="-2"><?=_("Advertisements Policy")?></font></a>
-  </center>
+  </div>
 
   </div> <!-- leftcolumn -->
 
