@@ -140,7 +140,7 @@ table.winsysreq td.ramspeed { width:22%; }
 	background:#ddd;
 	border:2px solid #666;
 	margin:24px 16px; /* 2em 1em; */
-	width:160; /* AdSense ads are 160px wide, plus we now put a 2px border around them, so this should match. */
+	width:160px; /* AdSense ads are 160px wide, plus we now put a 2px border around them, so this should match. */
 }
 #subnav h3 {
 	font-size:1em;
