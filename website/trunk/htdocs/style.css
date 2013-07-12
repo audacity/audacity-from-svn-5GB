@@ -140,7 +140,7 @@ table.winsysreq td.ramspeed { width:22%; }
 	background:#ddd;
 	border:2px solid #666;
 	margin:24px 16px; /* 2em 1em; */
-	width:156px; /* SourceForge/AdSense ads are 160px wide, minus 4px for the border.		11em; */
+	width:160; /* AdSense ads are 160px wide, plus we now put a 2px border around them, so this should match. */
 }
 #subnav h3 {
 	font-size:1em;
@@ -183,7 +183,7 @@ table.winsysreq td.ramspeed { width:22%; }
 	margin:24px 16px; /* 2em 1em; */
 }
 
-.afternav { margin-left:170px; /* SourceForge/AdSense ads are 160px wide.	12em; */}
+.afternav { margin-left:172px; /* AdSense ads are 160px wide. */}
 
 #content {
 	max-width:60em;
