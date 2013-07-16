@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007-12 Gale Andrews, Vaughan Johnson. 
+ * 2007-13 Gale Andrews, Vaughan Johnson. 
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -12,12 +12,12 @@
 
   echo "<h2>$pageTitle</h2>";
 
-  echo _('<p>Audacity is a free, easy-to-use and <a href="http://audacityteam.org/wiki/index.php?title=Changing_the_current_language">multilingual</a> audio editor and recorder for Windows, Mac OS X, GNU/Linux and other operating systems.  You can use Audacity to:</p>
+  echo _('<p>Audacity is a free, easy-to-use, <a href="http://manual.audacityteam.org/o/man/faq_recording_how_to_s.html#overdub">multi-track</a> audio editor and recorder for Windows, Mac OS X, GNU/Linux and other operating systems. The interface is translated into <a href="http://audacityteam.org/wiki/index.php?title=Changing_the_current_language#list">many languages</a>. You can use Audacity to:</p>
 
 <ul>
   <li>Record live audio.</li>
   <li>Convert tapes and records into digital recordings or CDs.</li>
-  <li>Edit Ogg Vorbis, MP3, WAV or AIFF sound files.</li>
+  <li>Edit WAV, AIFF, FLAC, MP2, MP3 or Ogg Vorbis sound files.</li>
   <li>Cut, copy, splice or mix sounds together.</li>
   <li>Change the speed or pitch of a recording.</li>
   <li>And more! See the complete <a href="features">list of features</a>.</li>
