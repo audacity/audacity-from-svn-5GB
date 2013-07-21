@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2012 Gale Andrews, Vaughan Johnson
+ * Copyright 2013 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -70,7 +70,7 @@
           _('<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.
 <h3 id="win">Windows</h3>
 <ol>
-  <li>Go to the <a href="http://lame1.buanzo.com.ar/">LAME download page</a>.</li>
+  <li>Go to the external <a href="http://lame1.buanzo.com.ar/">LAME download page</a>.</li>
   <li>Under "For Audacity on Windows", left-click the link <b>"Lame v3.99.3 for Windows.exe"</b> and save the file anywhere on your computer. <b>Do not right-click the link to the .exe file.</b> </li> 
   <li>Double-click <b>"Lame v3.99.3 for Windows.exe"</b> to launch it (you can safely ignore any warnings that the "publisher could not be verified").</li> 
   <li>Follow the "Setup" instructions to install LAME for Audacity. Do not change the offered destination location of "C:\Program Files\Lame for Audacity".</li>
@@ -80,7 +80,7 @@
 </ol>
 <h3 id="mac">Mac OS 9 or X</h3>
 <ol>
-  <li>Go to the <a href="http://lame1.buanzo.com.ar/">LAME download page</a>.</li>
+  <li>Go to the external <a href="http://lame1.buanzo.com.ar/">LAME download page</a>.</li>
   <li>Click to download either <b>"Lame Library v3.98.2 for Audacity on OSX.dmg"</b> or <b>"LameLib-Carbon.sit"</b>, according to your operating system.</li>
   <li>Double-click the .dmg to extract "Lame Library v3.98.2 for Audacity on OSX.pkg" to Finder, or use Stuffit to extract "LameLib" from the .sit (either of these may happen automatically).</li>
   <li>Double-click the .pkg to install <b>"libmp3lame.dylib"</b> in /usr/local/lib/audacity, or save <b>"LameLib"</b> anywhere on your computer.</li>
@@ -201,17 +201,14 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
           _("How do I save my recording on an audio CD?"),
           "<p>"._("After making a recording or editing a file in Audacity, follow these steps to save your work on an audio CD:")."</p>".
           _("<ol>
-  <li>Use the “Export as WAV” or “Export as AIFF” command to save your Audacity recording in a sound file.</li>
-  <li>Use any CD-recording software (iTunes or Nero, for example) to burn this file to a CD.</li>
+ <li>At the bottom left of the Audacity window, set the Project Rate to 44100 Hz
+ <li>Go to the \"File Formats\" tab of Preferences, and in the \"Uncompressed Export Format\" drop-down, choose WAV (Microsoft 16-bit PCM) or AIFF (Apple/SGI 16-bit PCM) <i>(in Audacity 1.3.3 onwards, skip this step)</i>
+ <li>If your Project does not already contain a stereo track, click Project > New Stereo Track <i>(Tracks > Add New... > Stereo Track in 1.3.2 onwards)</i> to ensure Audacity exports your recording as a stereo file - this step may not be needed if burning to CD with iTunes)
+ <li> Choose File > Export As... > WAV or File > Export As... AIFF to export your recording to an audio file <i> (in 1.3.3 or later, choose File > Export... then choose WAV or AIFF in the \"Export File\" dialog that appears)</i>  
+ <li>Use any CD-recording software (for example, iTunes or Nero) to burn this file to a CD.</li>
 </ol>
-<p>To make a disc you can play in normal CD players, make sure to create a “music” or “audio” CD (not a “data” CD).  Use CD-R discs, because some players cannot read CD-RW. You can burn only 74 minutes or so onto an audio CD – this is a limitation of the audio CD format.</p>
-<p>Some CD software will burn only 16-bit, 44.1KHz stereo sound files.  If your CD recording software won't open your sound file, export the file again after choosing the following settings in Audacity:</p>
-<ol>
-  <li>At the bottom of the Audacity window, set the Project Rate to 44100 Hz.</li>
-  <li>In the File Formats preferences, choose WAV (16-bit...) or AIFF (16-bit...).</li>
-  <li>If your project does not already contain a stereo track, choose “New Stereo Track” from the Project menu.  (This will make Audacity export your recording as a stereo file.)</li>
-</ol>
-<p>For helpful tips on CD burning with Windows Media Player and iTunes, and help on burning longer “data” CDs, see <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_burn_CDs\">How to burn CDs</a> on the Audacity Wiki.</p>
+<p>To make a disc you can play in normal CD players, ensure you create a \"music\" or \"audio\" CD (not a \"data\" or \"MP3 CD\"). Use CD-R discs, because some players cannot read CD-RW. You can burn only 74 minutes or so onto an audio CD - this is a limitation of the audio CD format.</p>
+<p>It is also possible to burn longer \"data\" CDs which are playable on computers and most DVD players or MP3 CD players, but not in standalone CD players. For details and other advanced tips including help with particular CD burning software, see <a href=\"http://wiki.audacityteam.org/wiki/How_to_burn_CDs\">How to burn CDs</a> on the Audacity Wiki.</p>
 <p>See also: <a href=\"faq_i18n?s=files&amp;i=split\">How can I split a long recording into multiple tracks?</a></p>")
         ),
         "split" => array(
@@ -276,11 +273,11 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
   }
   else {
     // Print the list of sections and questions.
-    $pageTitle = _("Older Frequently Asked Questions for international help");
+    $pageTitle = _("Older Frequently Asked Questions (for legacy Audacity and international help)");
     include "../include/header.inc.php";
 
     echo "<h2>$pageTitle</h2>";
-    echo "<p>"._('These are older Frequently Asked Questions (FAQ), <b>only for those languages where the latest <a href="faq">FAQ</a> doesn\'t yet have a translation.</b> These questions remain largely valid for Audacity 2.0.x, but please use the latest FAQ if you can do so.')."</p>";
+    echo "<p>"._('These are older Frequently Asked Questions (FAQ), <b>only for:</b> <ul><li><a href="../download/#legacy">legacy versions of Audacity</a></li><li>users of <a href="../download/">current Audacity</a> in languages where the <a href="faq">current FAQ</a> has no translation yet.</li></ul> These questions remain largely valid for Audacity 2.0.x, but please use the current FAQ if you can do so.')."</p>";
 
 echo "<p>"._('Additional help in French, German, Russian or Spanish can be obtained from our <a href="http://forum.audacityteam.org/viewforum.php?f=3">International Forum</a>.')."</p>";
 
