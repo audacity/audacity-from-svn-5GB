@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 12 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 13 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -18,7 +18,7 @@
   <li>Record from microphone, line input, USB/Firewire devices and others.</li>
   <li>Device Toolbar manages multiple input and output devices.</li>  
   <li>Timer Record and Sound Activated Recording features.</li>
-  <li>Dub over existing tracks to create <a href="http://manual.audacityteam.org/help/manual/man/faq.html#overdub">multi-track recordings</a>.</li>
+  <li>Dub over existing tracks to create <a href="http://manual.audacityteam.org/o/man/faq_recording_how_to_s.html#overdub">multi-track recordings</a>.</li>
   <li>Record at sample rates up to 192,000 Hz (subject to appropriate hardware). Up to 384,000 Hz is supported for appropriate high-resolution devices, except when using Windows DirectSound host.</li>
   <li>Record <a href="http://wiki.audacityteam.org/wiki/Multichannel_Recording">multiple channels</a> at once (subject to appropriate hardware).</li>
   <li>Level meters can monitor volume levels before, during and after recording. Clipping can be displayed in the waveform or in a label track.</li>
