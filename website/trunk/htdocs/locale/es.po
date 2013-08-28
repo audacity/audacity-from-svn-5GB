@@ -16,15 +16,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity website Spanish\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-06 09:13+0100\n"
-"PO-Revision-Date: 2013-06-30 09:37-0000\n"
+"POT-Creation-Date: 2013-07-27 03:05+0100\n"
+"PO-Revision-Date: 2013-08-28 18:09-0000\n"
 "Last-Translator: Antonio Paniagua\n"
 "Language-Team: Spanish <audacity-translation@lists.sourceforge.net>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-Country: SPAIN\n"
@@ -3539,7 +3539,7 @@ msgid ""
 "<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.\n"
 "<h3 id=\"win\">Windows</h3>\n"
 "<ol>\n"
-"  <li>Go to the <a href=\"http://lame1.buanzo.com.ar/\">LAME download page</a>.</li>\n"
+"  <li>Go to the external <a href=\"http://lame1.buanzo.com.ar/\">LAME download page</a>.</li>\n"
 "  <li>Under \"For Audacity on Windows\", left-click the link <b>\"Lame v3.99.3 for Windows.exe\"</b> and save the file anywhere on your computer. <b>Do not right-click the link to the .exe file.</b> </li> \n"
 "  <li>Double-click <b>\"Lame v3.99.3 for Windows.exe\"</b> to launch it (you can safely ignore any warnings that the \"publisher could not be verified\").</li> \n"
 "  <li>Follow the \"Setup\" instructions to install LAME for Audacity. Do not change the offered destination location of \"C:\\Program Files\\Lame for Audacity\".</li>\n"
@@ -3549,7 +3549,7 @@ msgid ""
 "</ol>\n"
 "<h3 id=\"mac\">Mac OS 9 or X</h3>\n"
 "<ol>\n"
-"  <li>Go to the <a href=\"http://lame1.buanzo.com.ar/\">LAME download page</a>.</li>\n"
+"  <li>Go to the external <a href=\"http://lame1.buanzo.com.ar/\">LAME download page</a>.</li>\n"
 "  <li>Click to download either <b>\"Lame Library v3.98.2 for Audacity on OSX.dmg\"</b> or <b>\"LameLib-Carbon.sit\"</b>, according to your operating system.</li>\n"
 "  <li>Double-click the .dmg to extract \"Lame Library v3.98.2 for Audacity on OSX.pkg\" to Finder, or use Stuffit to extract \"LameLib\" from the .sit (either of these may happen automatically).</li>\n"
 "  <li>Double-click the .pkg to install <b>\"libmp3lame.dylib\"</b> in /usr/local/lib/audacity, or save <b>\"LameLib\"</b> anywhere on your computer.</li>\n"
@@ -3564,9 +3564,9 @@ msgstr ""
 "<ol>\n"
 "  <li>Acceda a la  <a href=\"http://lame1.buanzo.com.ar/\">página de descarga de LAME</a>.</li>\n"
 "  <li>Bajo  \"For Audacity on Windows\", haga clic en el enlace <b>\"Lame v3.99.3 for Audacity on Windows.exe\"</b> y guarde el archivo en algún lugar de su ordenador. <b>No haga clic con el botón derecho en el archivo .exe.</b> </li> \n"
-"  <li>Haga doble clic en <b>\"Lame_v3.99.3_for_Audacity_on_Windows.exe\"</b>para ejecutarlo  (puede obviar cualquier aviso de seguridad que aparezca).</li> \n"
+"  <li>Haga doble clic en <b>\"Lame v3.99.3 for Windows.exe\"</b>para ejecutarlo  (puede obviar cualquier aviso de seguridad que aparezca).</li> \n"
 "  <li>Siga las instrucciones de instalación para completar el proceso. No modifique la carpeta de instalación sugerida \"C:\\Archivos de programa\\Lame for Audacity\".</li>\n"
-"  <li>La primera vez que utiliza la opción \"Archivo > Exportar como MP3\", Audacity le preguntará por la ubicación de <b>\"lame_enc.dll\"</b>. Explore hasta \"C:\\Archivos de programa\\Lame for Audacity\", seleccione \"lame_enc.dll\" y haga clic en \"Abrir\" y \"Ok\". En la versión Beta de Audacity, escoja \"Archivo > Exportar\",seleccione \"Archivos MP3· en \"Guardar como tipo\". La exportación debería comenzar inmediatamente. </li>\n"
+"  <li>La primera vez que utiliza la opción \"Archivo > Exportar como MP3\", Audacity le preguntará por la ubicación de <b>\"lame_enc.dll\"</b>. Explore hasta \"C:\\Archivos de programa\\Lame for Audacity\", seleccione \"lame_enc.dll\" y haga clic en \"Abrir\" y \"Ok\".</li>\n"
 "  <li>Si prefiere la opción Zip para descargar LAME, guarde el archivo zip en algún lugar de su ordenador y extraiga el archivo \"lame_enc.dll\" en cualquier lugar, posteriormente muestre a Audacity dónde encontrarlo siguiendo los pasos anteriores.</li>\n"
 "  <li>Si encuentra alguna dificultad, consulte nuestras <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#Windows_Instructions\">instrucciones detalladas</a> en el <a href=\"http://audacityteam.org/wiki/\">Wiki de Audacity</a>.</li>\n"
 "</ol>\n"
@@ -3574,13 +3574,13 @@ msgstr ""
 "<ol>\n"
 "  <li>Acceda a la <a href=\"http://lame1.buanzo.com.ar/\">página de descarga de LAME</a>.</li>\\n"
 "  <li>Haga clic en <b>\"Lame Library v3.98.2 for Audacity on OSX.dmg\"</b> o <b>\"LameLib-Carbon.sit\"</b>, según su sistema operativo.</li>\n"
-"  <li>Haga doble clic en el archivo .dmg para extraer \"Lame Library v3.99.2 for Audacity on OSX.pkg\" a Finder, o utilice Stuffit para extraer \"LameLib\" desde el archivo .sit (ambos pueden suceder automáticamente).</li>\n"
+"  <li>Haga doble clic en el archivo .dmg para extraer \"Lame Library v3.98.2 for Audacity on OSX.pkg\" a Finder, o utilice Stuffit para extraer \"LameLib\" desde el archivo .sit (ambos pueden suceder automáticamente).</li>\n"
 "  <li>Haga doble clic en el archivo .pkg para instalar <b>\"libmp3lame.dylib\"</b> en /usr/local/lib/audacity, o guarde <b>\"LameLib\"</b> en cualquier lugar de su equipo.</li>\n"
 "  <li>La primera vez que utilice la opción \"Export como MP3\", Audacity le preguntará por la ubicación de  \"libmp3lame.dylib\" o \"LameLib\". Acceda a esa carpeta, abra el archivo y pulse \"Ok\".</li>\n"
 "  <li>Si encuentra alguna dificultad consulte nuestras <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#Mac_Instructions\">instrucciones detalladas </a> en el  <a href=\"http://audacityteam.org/wiki/index.php\"> Wiki de Audacity</a>.</li>\n"
 "</ol>\n"
 "<h3 id=\"nix\">Linux/Unix</h3>\n"
-"Siga <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions\">estas instrucciones </a> en nuestro <a href=\"http://audacityteam.org/wiki/\">Wiki</a> para descargar e instalar una versión del paquete LAME desed Internet."
+"Siga <a href=\"http://audacityteam.org/wiki/index.php?title=Lame_Installation#GNU.2FLinux.2FUnix_instructions\">estas instrucciones </a> en nuestro <a href=\"http://audacityteam.org/wiki/\">Wiki</a> para descargar e instalar una versión del paquete LAME desde Internet."
 
 #: help/faq_i18n.php:94
 msgid "What should I do if I have problems downloading or installing Audacity?"
@@ -3636,13 +3636,13 @@ msgstr ""
 
 #: help/faq_i18n.php:120
 #: help/faq_i18n.php:170
-#: help/faq_i18n.php:227
+#: help/faq_i18n.php:224
 msgid "See also:"
 msgstr "Ver también:"
 
 #: help/faq_i18n.php:120
 #: help/faq_i18n.php:201
-#: help/faq_i18n.php:227
+#: help/faq_i18n.php:224
 msgid "How do I save my recording on an audio CD?"
 msgstr "¿Cómo puedo grabar mis grabaciones en un CD de audio?"
 
@@ -3800,38 +3800,32 @@ msgstr "Después de hacer una grabación o edición de un archivo en Audacity, s
 #: help/faq_i18n.php:203
 msgid ""
 "<ol>\n"
-"  <li>Use the “Export as WAV” or “Export as AIFF” command to save your Audacity recording in a sound file.</li>\n"
-"  <li>Use any CD-recording software (iTunes or Nero, for example) to burn this file to a CD.</li>\n"
+" <li>At the bottom left of the Audacity window, set the Project Rate to 44100 Hz\n"
+" <li>Go to the \"File Formats\" tab of Preferences, and in the \"Uncompressed Export Format\" drop-down, choose WAV (Microsoft 16-bit PCM) or AIFF (Apple/SGI 16-bit PCM) <i>(in Audacity 1.3.3 onwards, skip this step)</i>\n"
+" <li>If your Project does not already contain a stereo track, click Project > New Stereo Track <i>(Tracks > Add New... > Stereo Track in 1.3.2 onwards)</i> to ensure Audacity exports your recording as a stereo file - this step may not be needed if burning to CD with iTunes)\n"
+" <li> Choose File > Export As... > WAV or File > Export As... AIFF to export your recording to an audio file <i> (in 1.3.3 or later, choose File > Export... then choose WAV or AIFF in the \"Export File\" dialog that appears)</i>  \n"
+" <li>Use any CD-recording software (for example, iTunes or Nero) to burn this file to a CD.</li>\n"
 "</ol>\n"
-"<p>To make a disc you can play in normal CD players, make sure to create a “music” or “audio” CD (not a “data” CD).  Use CD-R discs, because some players cannot read CD-RW. You can burn only 74 minutes or so onto an audio CD – this is a limitation of the audio CD format.</p>\n"
-"<p>Some CD software will burn only 16-bit, 44.1KHz stereo sound files.  If your CD recording software won't open your sound file, export the file again after choosing the following settings in Audacity:</p>\n"
-"<ol>\n"
-"  <li>At the bottom of the Audacity window, set the Project Rate to 44100 Hz.</li>\n"
-"  <li>In the File Formats preferences, choose WAV (16-bit...) or AIFF (16-bit...).</li>\n"
-"  <li>If your project does not already contain a stereo track, choose “New Stereo Track” from the Project menu.  (This will make Audacity export your recording as a stereo file.)</li>\n"
-"</ol>\n"
-"<p>For helpful tips on CD burning with Windows Media Player and iTunes, and help on burning longer “data” CDs, see <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_burn_CDs\">How to burn CDs</a> on the Audacity Wiki.</p>\n"
+"<p>To make a disc you can play in normal CD players, ensure you create a \"music\" or \"audio\" CD (not a \"data\" or \"MP3 CD\"). Use CD-R discs, because some players cannot read CD-RW. You can burn only 74 minutes or so onto an audio CD - this is a limitation of the audio CD format.</p>\n"
+"<p>It is also possible to burn longer \"data\" CDs which are playable on computers and most DVD players or MP3 CD players, but not in standalone CD players. For details and other advanced tips including help with particular CD burning software, see <a href=\"http://wiki.audacityteam.org/wiki/How_to_burn_CDs\">How to burn CDs</a> on the Audacity Wiki.</p>\n"
 "<p>See also: <a href=\"faq_i18n?s=files&amp;i=split\">How can I split a long recording into multiple tracks?</a></p>"
 msgstr ""
 "<ol>\n"
-"  <li>Utilice el comando Exportar como WAV o Exportar como AIFF para guardar sugrabación Audacity en un archivo de sonido.</li>\n"
-"  <li>Utilice cualquier software de grabación de CD (iTunes ó Nero, por ejemplo) para grabar el archivo en un CD.</li>\n"
+" <li>En la parte inferior izquierda de Audacity establezca la velocidad del proyecto a 44100 Hz\n"
+" <li>Acceda a la pestaña \"Formatos de archivo\" en Preferencias y en la lista desplegable \"Formato de exportación son compresión\" seleccione WAV (Microsoft 16-bit PCM) o AIFF (Apple/SGI 16-bit PCM) <i>(en Audacity 1.3.3 o superior, omita este paso)</i>\n"
+" <li>Si el proyecto no contiene alguna pista estério, seleccione Proyecto> Nueva pista estéreo <i>(Pistas > Añadir nueva... > Pista estéro en la versión 1.3.2 o superior)</i> para asegurar que Audacity exporta la grabación como un archivo estéreo (este paso puede no ser necesario al grabar un CD con iTunes)\n"
+" <li> Seleccione Archivo > Exportar como... > WAV o Archivo > Export como... AIFF para exportar la grabación a un archivo de audio <i> ein 1.3.3 o posterior, seleccione Archivo > Exportar... y seleccione WAV o AIFF en el cuadro de diálogo  \"Exportar archivo\")</i>  \n"
+" <li>Utilice cualquier software e grabación de CD (como iTunes o Nero) para generar un CD con el archivo de audio.</li>\n"
 "</ol>\n"
-"<p>Para crear un disco que se pueda escuchar en reproductores de CD normales, asegúrese de que crea un CD de música o audio (no un CD de datos).  Emplee discos CD-R, ya que algunos reproductores no pueden leer CD-RW. Sólo puede grabar aproximadamente 74 minutos en un CD de audio, es una limitación propia del formato.</p>\n"
-"<p>Cierto software de CD grabará solamente archivos de sonido estéreo de 16 bits y 44.1 kHz. Si su software de grabación de CD no puede abrir su archivo de sonido, expórtelo nuevamente especificando la configuración siguiente en Audacity:</p>\n"
-"<ol>\n"
-"  <li>En la parte inferior de la ventana Audacity, especifique la Frecuencia del Proyecto a 44100 Hz.</li>\n"
-"  <li>En las \"Preferencias...\" de Formatos de Archivo, elija WAV (16 bits etc.) o AIFF (16 bits...).</li>\n"
-"  <li>Si su proyecto aún no contiene ninguna pista estéreo, seleccione \"Nueva pista estéreo\" en el  menú Proyecto.  (Esto hará que Audacity exporte la grabación como archivo estéreo.)</li>\n"
-"</ol>\n"
-"<p>Para obtener algunos consejos sobre grabación de CD con Windows Media Player e iTunes, además de ayuda sobre cómo grabar CD de datos más largos consulte  <a href=\"http://audacityteam.org/wiki/index.php?title=How_to_burn_CDs\"> Como grabar un CD</a> en el Wiki de Audacity.</p>\n"
-"<p>Consulta también:  <a href=\"faq_i18n?s=files&amp;i=split\">¿Cómo puedo partir una grabación larga en múltiples pistas?</a></p>"
+"<p>Para generar un disco que se pueda escuchar en cualquier reproductor de CD asegúrese de crear un CD de música o audio (no un CD de datos o MP3). Utilice  discos CD-R ya que algunos lectores no pueden leer discos CD-RW. Sólo podrá grabar unos 74 minutos en un CD de audio. Es una limitación del propio formato.</p>\n"
+"<p>También es posible grabar CD de datos con una mayor duración que puede reproducirse correctamente en un ordenador o en la mayoría de los reproductores de DVD o de CD MP3, pero no en los reproductores de CD estándar. Para conocert más detales y otros consejos avanzados, así como ayuda sobre software de grabaión de CD específico, consulte  <a href=\"http://wiki.audacityteam.org/wiki/How_to_burn_CDs\">Cómo grabar CD</a> en el Wiki de Audacity.</p>\n"
+"<p>Consulte también: <a href=\"faq_i18n?s=files&amp;i=split\">Cómo puede dividir una grabación larga en varias pistas</a></p>"
 
-#: help/faq_i18n.php:218
+#: help/faq_i18n.php:215
 msgid "How can I split a long recording into multiple files or CD tracks?"
 msgstr "¿Cómo puedo partir una grabación larga en varios archivos o pistas de CD?"
 
-#: help/faq_i18n.php:219
+#: help/faq_i18n.php:216
 msgid ""
 "<p>Follow these steps to create a separate file for each song or segment of a long recording.  This is particularly useful if you are creating a CD, since each file will appear as a separate track on the CD.</p>\n"
 "<ol>\n"
@@ -3849,19 +3843,19 @@ msgstr ""
 "  <li>Cuando termine, elija Exportar múltiple... del menú Archivo.  Cuando haga clic en el botón \"Exportar\", Audacity guardará cada canción como un archivo separado, usando el formato y ubicación que le indique.</li>\n"
 "</ol>"
 
-#: help/faq_i18n.php:226
+#: help/faq_i18n.php:223
 msgid "Alternatively, Audacity can attempt to detect the silences between tracks then label them automatically using Analyze > Silence Finder. If you do not have Silence Finder in your version of Audacity, it can be found in the <a href=\"http://wiki.audacityteam.org/w/images/8/8d/NyPlug-ins_126.zip\">Audacity legacy 1.2.6 Plug-in Pack</a>."
 msgstr "De forma alternativa, Audacity puede intentar detectar silencios entre pistas y etiquetarlos automáticamente mediante Analizar>Encontrar silencios. Si no cuenta con esta opción en su versión de Audacity, puede encontrarse en el  <a href=\"http://wiki.audacityteam.org/w/images/8/8d/NyPlug-ins_126.zip\">Audacity legacy 1.2.6 Plug-in Pack</a>."
 
-#: help/faq_i18n.php:232
+#: help/faq_i18n.php:229
 msgid "<h4 id=\"editing\">Editing</h4>"
 msgstr "<h4 id=\"editing\">Editar</h4>"
 
-#: help/faq_i18n.php:235
+#: help/faq_i18n.php:232
 msgid "Why can’t I use the effects or other menu items?"
 msgstr "¿Por qué no puedo usar los efectos u otros objetos del menú?"
 
-#: help/faq_i18n.php:236
+#: help/faq_i18n.php:233
 msgid ""
 "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>\n"
 "<p>Also, many menu items are disabled while playing, recording, or pausing a track. To enable them, press the yellow <b>Stop</b> button.</p>"
@@ -3869,19 +3863,19 @@ msgstr ""
 "<p>Algunos objetos del menú están deshabilitados mientras no puedan utilizarse.  Antes de elegir un efecto, debe seleccionar al audio que desee cambiar.  Para seleccionar audio, es necesario hacer clic y arrastrar con la herramienta de Selección para así destacar la porción de audio, o bien usar el comando \"Seleccionar Todo\" del menú Editar.</p>\n"
 "<p>Además, muchos elementos de los menús están desactivados mientras se reproduce, se graba o se pausa una pista. Para activarlos, haga clic en el botón amarillo <b>Detener</b>.</p>"
 
-#: help/faq_i18n.php:240
+#: help/faq_i18n.php:237
 msgid "How do I mix two tracks together?"
 msgstr "¿Como mezclo dos pistas en una sola?"
 
-#: help/faq_i18n.php:241
+#: help/faq_i18n.php:238
 msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the <b>Play</b> button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
 msgstr "<p>Para mezclar dos archivos, basta con importarlos en Audacity.  Los archivos aparecerán en pistas separadas y serán mezclados al pulsar el botón <b>Reproducir</b>. Puede usar la herramienta de desplazamiento  en el tiempo para modificar su posición en el tiempo y que de ese modo comiencen en diferentes momentos o utilizar las otras herramientas de edición para alterar cualquiera de las pistas.</p>"
 
-#: help/faq_i18n.php:244
+#: help/faq_i18n.php:241
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
 msgstr "¿Puedo eliminar las voces de una grabación para crear una pista de karaoke?"
 
-#: help/faq_i18n.php:245
+#: help/faq_i18n.php:242
 msgid ""
 "<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals are exactly the same on both stereo channels, you can remove them by “subtracting” one channel from the other.  This works for many studio recordings, where the vocal track is mixed exactly in the center.</p>\n"
 "<p>To do this in Audacity:</p>\n"
@@ -3907,19 +3901,19 @@ msgstr ""
 "<p>Presione el botón Reproducir para escuchar los resultados.  Si tiene suerte, la voz se habrá ido pero la mayoría del resto de instrumentos permanecerán inalterados, justo como una pista karaoke.  Puede usar los comandos de Exportar en el menú Archivo para guardar los resultados.</p>\n"
 "<p> Si las voces no son exactamente iguales en los dos canales del estéreo, hay otra técnica o plug-in opcional que puede probar. Consulte nuestra página del wiki <a href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Eliminación de voces</a> para obtener más información.</p>\n"
 
-#: help/faq_i18n.php:275
+#: help/faq_i18n.php:272
 msgid "Other frequently asked questions..."
 msgstr "Otras preguntas frecuentes..."
 
-#: help/faq_i18n.php:279
-msgid "Older Frequently Asked Questions for international help"
-msgstr "Antiguas preguntas más frecuentes para ayuda internacional"
+#: help/faq_i18n.php:276
+msgid "Older Frequently Asked Questions (for legacy Audacity and international help)"
+msgstr "Antiguas preguntas más frecuentes (para versiones antiguas de Audacity y ayuda internacional)"
 
-#: help/faq_i18n.php:283
-msgid "These are older Frequently Asked Questions (FAQ), <b>only for those languages where the latest <a href=\"faq\">FAQ</a> doesn't yet have a translation.</b> These questions remain largely valid for Audacity 2.0.x, but please use the latest FAQ if you can do so."
-msgstr "Estas son las antiguas Preguntas Frecuentes (FAQ), <b>disponibles para aquellos idiomas en los que las últimas <a href=\"faq\">FAQ</a> aún no han sido traducidas.</b> Estas respuestas aún permanecen vigentes en Audacity 2.0.x, pero es más adecuado utilizar la última FAQ si puede hacerlo."
+#: help/faq_i18n.php:280
+msgid "These are older Frequently Asked Questions (FAQ), <b>only for:</b> <ul><li><a href=\"../download/#legacy\">legacy versions of Audacity</a></li><li>users of <a href=\"../download/\">current Audacity</a> in languages where the <a href=\"faq\">current FAQ</a> has no translation yet.</li></ul> These questions remain largely valid for Audacity 2.0.x, but please use the current FAQ if you can do so."
+msgstr "Estas son las antiguas Preguntas Frecuentes (FAQ), <b>sólo para:</b> <ul><li><a href=\"../download/#legacy\">versiones antiguas de Audacity</a></li><li>los usuarios de <a href=\"../download/\">la versión actual de Audacity</a>en idiomas en los que las <a href=\"faq\">FAQ</a> aún no han sido traducidas.</b> Estas respuestas aún permanecen vigentes en Audacity 2.0.x, pero es más adecuado utilizar la última FAQ si puede hacerlo."
 
-#: help/faq_i18n.php:285
+#: help/faq_i18n.php:282
 msgid "Additional help in French, German, Russian or Spanish can be obtained from our <a href=\"http://forum.audacityteam.org/viewforum.php?f=3\">International Forum</a>."
 msgstr "Se puede obtener ayuda adiciona en francés, aleman, ruso o español en nuestro <a href=\"http://forum.audacityteam.org/viewforum.php?f=3\">foro internacional</a>."
 
@@ -5714,8 +5708,8 @@ msgstr "<a href=\"%s\">Audacity %s tarball de código</a> (archivo %s, %.1lf MB)
 
 #: download/source.php:26
 #, php-format
-msgid "standard source tarball, primarily for GNU/Linux. Assumes your system has necessary dependencies/libraries installed (see below)."
-msgstr "tarball de código predeterminado, sobre todo para GNU/Linux. Asume que el sistema tiene las bibliotecas necesarias en su sistema (véase más abajo)."
+msgid "standard source tarball, primarily for GNU/Linux. This assumes your system has necessary dependencies and libraries installed. For Windows and Mac, see SVN (below)."
+msgstr "tarball de código predeterminado, sobre todo para GNU/Linux. Asume que el sistema tiene las bibliotecas necesarias en su sistema. Para Windows y Mac consulte el SVN (véase más abajo)."
 
 #: download/source.php:33
 #, php-format
@@ -5724,13 +5718,13 @@ msgstr "Este es un tarball de código completo, útil para los sistemas Windows 
 
 #: download/source.php:34
 #, php-format
-msgid "<a href=\"%s\">SVN Development Code</a>&nbsp;"
-msgstr "<a href=\"%s\">Código de desarrollo SVN</a>&nbsp;"
+msgid "<a href=\"%s\">SVN Repository</a>&nbsp;"
+msgstr "<a href=\"%s\">Repositorio SVN</a>&nbsp;"
 
 #: download/source.php:35
 #, php-format
-msgid "Check out the latest Audacity SVN development code. You can also check out a specific tagged release from SVN, suitable for a Windows, Mac or other system that lacks necessary dependencies to compile the standard source tarball."
-msgstr "Pruebe el último código de desarrollo del SVN de Audacity. Puede probar una versión específica del SVN, que funcione con Windows, Mac u otro sistema que carezca de los requisitos necesarios de compilación del tarball de código fuente estándar."
+msgid "Check out either the latest Audacity development code or a specific tagged release. SVN checkouts are suitable for any system, including those that lack necessary dependencies to compile the standard source tarball."
+msgstr "Pruebe el último código de desarrollo del SVN de Audacity o una versión específica. Los códigos del SVN están disponibles para cualquier sistema,  incluso aquellos que carezcan de los requisitos necesarios de compilación del tarball de código fuente estándar."
 
 #: download/source.php:46
 msgid "See operating system support for"
@@ -8522,25 +8516,25 @@ msgstr "Acerca de Audacity"
 
 #: about/index.php:15
 msgid ""
-"<p>Audacity is a free, easy-to-use and <a href=\"http://audacityteam.org/wiki/index.php?title=Changing_the_current_language\">multilingual</a> audio editor and recorder for Windows, Mac OS X, GNU/Linux and other operating systems.  You can use Audacity to:</p>\n"
+"<p>Audacity is a free, easy-to-use, <a href=\"http://manual.audacityteam.org/o/man/faq_recording_how_to_s.html#overdub\">multi-track</a> audio editor and recorder for Windows, Mac OS X, GNU/Linux and other operating systems. The interface is translated into <a href=\"http://audacityteam.org/wiki/index.php?title=Changing_the_current_language#list\">many languages</a>. You can use Audacity to:</p>\n"
 "\n"
 "<ul>\n"
 "  <li>Record live audio.</li>\n"
 "  <li>Convert tapes and records into digital recordings or CDs.</li>\n"
-"  <li>Edit Ogg Vorbis, MP3, WAV or AIFF sound files.</li>\n"
+"  <li>Edit WAV, AIFF, FLAC, MP2, MP3 or Ogg Vorbis sound files.</li>\n"
 "  <li>Cut, copy, splice or mix sounds together.</li>\n"
 "  <li>Change the speed or pitch of a recording.</li>\n"
 "  <li>And more! See the complete <a href=\"features\">list of features</a>.</li>\n"
 "</ul>"
 msgstr ""
-"<p>Audacity es un editor de audio libre, fácil de usar y <a href=\"http://audacityteam.org/wiki/index.php?title=Changing_the_current_language\">multilingüe</a> para Windows, Mac OS X, GNU/Linux y otros sistemas operativos. Puede usar Audacity para:</p>\n"
+"<p>Audacity es un editor de audio libre, fácil de usar , <a href=\"http://manual.audacityteam.org/o/man/faq_recording_how_to_s.html#overdub\">multipista</a> para Windows, Mac OS X, GNU/Linux y otros sistemas operativos. El interface está traducido a <a href=\"http://audacityteam.org/wiki/index.php?title=Changing_the_current_language\">varios idiomas</a>. Puede usar Audacity para:</p>\n"
 "<ul>\n"
 "  <li>Grabar audio en vivo.</li>\n"
 "  <li>Convertir cintas y grabaciones a sonido digital o CD.</li>\n"
-"  <li>Editar archivos Ogg Vorbis, MP3, WAV y AIFF.</li>\n"
+"  <li>Editar archivos WAV, AIFF, FLAC, MP2, MP3 y Ogg Vorbis.</li>\n"
 "  <li>Cortar, copiar, unir y mezclar sonidos.</li>\n"
 "  <li>Cambiar la velocidad o el tono de una grabación.</li>\n"
-"  <li>Y mucho más. Vea la lista completa de <a href=\"features\">funciones</a>.</li>\n"
+"  <li>Y mucho más. Vea la lista completa de <a href=\"features\">funciones</a>.</ li>\n"
 "</ul>"
 
 #. i18n-hint: You may change the link addresses below, if there is a
@@ -9242,6 +9236,68 @@ msgstr "Audacity utiliza un formato de archivo XML abierto para mejorar la inter
 #: xml/index.php:22
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "En breve, más documentación sobre el formato de archivo de proyecto de Audacity."
+
+#~ msgid ""
+#~ "<ol>\n"
+#~ "  <li>Use the “Export as WAV” or “Export as AIFF” command to save your "
+#~ "Audacity recording in a sound file.</li>\n"
+#~ "  <li>Use any CD-recording software (iTunes or Nero, for example) to burn "
+#~ "this file to a CD.</li>\n"
+#~ "</ol>\n"
+#~ "<p>To make a disc you can play in normal CD players, make sure to create "
+#~ "a “music” or “audio” CD (not a “data” CD).  Use CD-R discs, because some "
+#~ "players cannot read CD-RW. You can burn only 74 minutes or so onto an "
+#~ "audio CD – this is a limitation of the audio CD format.</p>\n"
+#~ "<p>Some CD software will burn only 16-bit, 44.1KHz stereo sound files.  "
+#~ "If your CD recording software won't open your sound file, export the file "
+#~ "again after choosing the following settings in Audacity:</p>\n"
+#~ "<ol>\n"
+#~ "  <li>At the bottom of the Audacity window, set the Project Rate to 44100 "
+#~ "Hz.</li>\n"
+#~ "  <li>In the File Formats preferences, choose WAV (16-bit...) or AIFF (16-"
+#~ "bit...).</li>\n"
+#~ "  <li>If your project does not already contain a stereo track, choose "
+#~ "“New Stereo Track” from the Project menu.  (This will make Audacity "
+#~ "export your recording as a stereo file.)</li>\n"
+#~ "</ol>\n"
+#~ "<p>For helpful tips on CD burning with Windows Media Player and iTunes, "
+#~ "and help on burning longer “data” CDs, see <a href=\"http://audacityteam."
+#~ "org/wiki/index.php?title=How_to_burn_CDs\">How to burn CDs</a> on the "
+#~ "Audacity Wiki.</p>\n"
+#~ "<p>See also: <a href=\"faq_i18n?s=files&amp;i=split\">How can I split a "
+#~ "long recording into multiple tracks?</a></p>"
+#~ msgstr ""
+#~ "<ol>\n"
+#~ "  <li>Utilice el comando Exportar como WAV o Exportar como AIFF para "
+#~ "guardar sugrabación Audacity en un archivo de sonido.</li>\n"
+#~ "  <li>Utilice cualquier software de grabación de CD (iTunes ó Nero, por "
+#~ "ejemplo) para grabar el archivo en un CD.</li>\n"
+#~ "</ol>\n"
+#~ "<p>Para crear un disco que se pueda escuchar en reproductores de CD "
+#~ "normales, asegúrese de que crea un CD de música o audio (no un CD de "
+#~ "datos).  Emplee discos CD-R, ya que algunos reproductores no pueden leer "
+#~ "CD-RW. Sólo puede grabar aproximadamente 74 minutos en un CD de audio, es "
+#~ "una limitación propia del formato.</p>\n"
+#~ "<p>Cierto software de CD grabará solamente archivos de sonido estéreo de "
+#~ "16 bits y 44.1 kHz. Si su software de grabación de CD no puede abrir su "
+#~ "archivo de sonido, expórtelo nuevamente especificando la configuración "
+#~ "siguiente en Audacity:</p>\n"
+#~ "<ol>\n"
+#~ "  <li>En la parte inferior de la ventana Audacity, especifique la "
+#~ "Frecuencia del Proyecto a 44100 Hz.</li>\n"
+#~ "  <li>En las \"Preferencias...\" de Formatos de Archivo, elija WAV (16 "
+#~ "bits etc.) o AIFF (16 bits...).</li>\n"
+#~ "  <li>Si su proyecto aún no contiene ninguna pista estéreo, seleccione "
+#~ "\"Nueva pista estéreo\" en el  menú Proyecto.  (Esto hará que Audacity "
+#~ "exporte la grabación como archivo estéreo.)</li>\n"
+#~ "</ol>\n"
+#~ "<p>Para obtener algunos consejos sobre grabación de CD con Windows Media "
+#~ "Player e iTunes, además de ayuda sobre cómo grabar CD de datos más largos "
+#~ "consulte  <a href=\"http://audacityteam.org/wiki/index.php?"
+#~ "title=How_to_burn_CDs\"> Como grabar un CD</a> en el Wiki de Audacity.</"
+#~ "p>\n"
+#~ "<p>Consulta también:  <a href=\"faq_i18n?s=files&amp;i=split\">¿Cómo "
+#~ "puedo partir una grabación larga en múltiples pistas?</a></p>"
 
 #~ msgid ""
 #~ "Alternatively, Audacity can attempt to detect the silences between tracks "
