@@ -118,7 +118,7 @@ RSYNCOPTS+=--exclude '*.bak' --exclude '/files' --itemize-changes
 # files.
 # --itemize-changes 	show what is being changed on each file as it happens
 # construct some longer strings to use in commands
-UPLOADURL=$(SFUSER),$(PROJECT)@$(SFHOST):$(PROJDIR)
+UPLOADURL=$(SFUSER)@$(SFHOST):$(PROJDIR)
 
 pull:
 	rsync $(RSYNCOPTS) $(UPLOADURL) .
