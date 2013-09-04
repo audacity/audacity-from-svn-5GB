@@ -2,7 +2,7 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2005 Matt Brubeck
- * Copyright 2007 - 12 Gale Andrews, Vaughan Johnson
+ * Copyright 2007 - 13 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -23,6 +23,8 @@ echo "<p><ul>";
 echo "<li><a href=\"http://manual.audacityteam.org/o/man/faq.html\">"._('View the FAQ in the online Manual')."</a>.</li>";
 echo "<li>"._('In Audacity, click Help > Manual (in web browser), then the "FAQ" link in the "Navigation" box on the left. The Manual is included with the <a href="http://audacity.sourceforge.net/download/windows">Windows .exe</a> or <a href="http://audacity.sourceforge.net/download/mac">Mac OS X .dmg</a> Audacity installers.')."</li></ul></p>";
 echo "</div>";
+
+echo "<p>"._('For <a href="../download/#legacy">old versions of Audacity</a> please view the <a href="faq_i18n">Older Frequently Asked Questions</a>.')."</p>";
 
 echo "<h3>"._('Other languages')."</h3>";
 echo "<p>"._('View the localized FAQ in the online Manual:')."</p>";

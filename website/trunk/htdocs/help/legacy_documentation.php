@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2012 Gale Andrews
+ * Copyright 2012 - 2013 Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -13,7 +13,7 @@
         echo "<h2>$pageTitle</h2>";
 ?>
 
-<p><?=_('This is old documentation for legacy versions of Audacity. Please see <a href="/help/documentation">Documentation</a> for information about the current Audacity Manuals.')?></p>
+<p><?=_('This is legacy documentation for <a href="../download/#legacy">old versions of Audacity</a>. Also see the <a href="faq_i18n">Older Frequently Asked Questions</a> for more help with old versions. Please see <a href="/help/documentation">Documentation</a> for information about the current Audacity Manuals.')?></p>
 
 <?php
      echo 

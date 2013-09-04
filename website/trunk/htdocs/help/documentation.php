@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 2012 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 2013 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -18,7 +18,7 @@
 	echo "<p>"._('This page contains links to Manuals (with Tutorials) for the free Audacity audio editor. For additional help, see the <a href="/faq">Frequently Asked Questions</a> and additional <a href="http://wiki.audacityteam.org/wiki/Category:Tutorial">Tutorials</a> and <a href="http://wiki.audacityteam.org/wiki/Category:Tips">Tips</a> on the Audacity <a href="http://wiki.audacityteam.org/">Wiki</a>.')."</p>";
 ?>
 
-<p><?=_('Legacy documentation for old versions of Audacity can be found <a href="/help/legacy_documentation">here</a>.')?></p>
+<p><?=_('Legacy documentation for <a href="../download/#legacy">old versions of Audacity</a> can be found <a href="/help/legacy_documentation">here</a>.')?></p>
 
 <h3><?=_('Audacity Manuals (with Tutorials)')?></h3>
 
@@ -28,7 +28,7 @@
 <ul>
 <li><a href="http://manual.audacityteam.org/o/
 "><?php printf(_('View the latest Audacity %s Manual online'), src_version)?></a>.</li>
-<li><a href="http://manual.audacityteam.org/help/manual/man/unzipping_the_manual.html"><?php printf(_('Download and install the latest Audacity %s Manual in HTML format'), src_version)?></a>  <?=_('(Most users on <a href="/download/linux">GNU/Linux</a> will need this if they want a built-in Manual).')?></li>
+<li><a href="http://manual.audacityteam.org/o/man/unzipping_the_manual.html"><?php printf(_('Download and install the latest Audacity %s Manual in HTML format'), src_version)?></a>  <?=_('(Most users on <a href="/download/linux">GNU/Linux</a> will need this if they want a built-in Manual).')?></li>
 <li><a href="http://manual.audacityteam.org/index.php?title=Main_Page"><?=_('View the latest Audacity alpha development Manual online.</a>')?> <?=_('(This Manual is only for the latest Audacity alpha <a href="http://wiki.audacityteam.org/wiki/Nightly_Builds">Nightly Builds</a>).')?></li>
 </ul>
 </p>
