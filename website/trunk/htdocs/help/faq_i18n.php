@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2013 Gale Andrews, Vaughan Johnson
+ * Copyright 2012 - 2013 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -187,7 +187,7 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
         ),
         "wma-proprietary" => array(
           _("Can Audacity import additional formats like M4A, WMA or FLAC?"),
-          _("<p>Yes. Install the optional <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg</a> library. FFmpeg also allows Audacity to import audio from video files. Note that on Mac OS X, Audacity has built-in support for M4A import without installing FFmpeg, using the QuickTime components supplied by the operating system.</p>
+          _("<p>Yes, if you install the optional <a href=\"http://manual.audacityteam.org/o/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg</a> library and if you have at least legacy Audacity 1.3.13 or later. FFmpeg also allows Audacity to import audio from video files. Note that on Mac OS X, Audacity has built-in support for M4A import without installing FFmpeg, using the QuickTime components supplied by the operating system.</p>
 ")
         ),
         "import-cd" => array(
