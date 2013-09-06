@@ -21,7 +21,7 @@
   if ($download == "windows") {
     $download_version = win_exe_version;
     $download_OS = _("for Windows");
-    $download_OS_versions = "2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8";
+    $download_OS_versions = "2000/XP/Vista/7/8";
     $download_page = "windows";
     $recommended_download = $win_exe_url;
     /*
@@ -63,12 +63,18 @@
     <a title="<?=_("Screenshots")?>" href="about/screenshots"><img alt="<?=_("Screenshots")?>" src="about/images/audacity-windows-small.jpg"></a>
   </div>
   <p>
-    <?=_('Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. Check our <a href="about/features">feature list</a>, <a href="http://wiki.audacityteam.org/">Wiki</a> and <a href="http://forum.audacityteam.org/">Forum</a> for more information.')?></p>
+    <?=_('Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. 
+    Check our <a href="about/features">feature list</a>, 
+    <a href="http://wiki.audacityteam.org/">wiki</a>, and 
+    <a href="http://forum.audacityteam.org/">forum</a> for more information.')?></p>
 </div>
 
 <div id="download">
+  <center>
   <div id="download_sub">
-    <a href="<?=download_url($recommended_download)?>"><?php printf(_("<h3>Download Audacity %s</h3></a>%s %s"), $download_version, $download_OS, $download_OS_versions)?>
+    <a href="<?=download_url($recommended_download)?>">
+      <?php printf(_("<h1>Download Audacity %s</h1> <p><h3>%s %s</h3></p></a>"), 
+        $download_version, $download_OS, $download_OS_versions)?>
   </div>
 
   <?php
@@ -85,11 +91,7 @@
       <a href="download/"><?=_('All Audacity Downloads')?></a>
     </p>
   </div>
-
-  <!--<div id="download_sub">
-    <h3><a href="download/<?=$beta_download_page?>"><?php printf(_("Download Audacity %s %s"), $beta_version, $beta_download_OS_versions)?></a></h3>
-    <p><?=$beta_download_OS_versions?></p>
-  </div>-->
+  </center>
 </div>
 
 <div style="clear: both;"> </div>
