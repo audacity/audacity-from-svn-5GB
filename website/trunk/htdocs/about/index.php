@@ -16,6 +16,7 @@
 
 <ul>
   <li>Record live audio.</li>
+  <li><a href="http://manual.audacityteam.org/o/man/tutorial_recording_computer_playback_on_windows.html">Record computer playback</a> on any Windows Vista or later machine.</li>
   <li>Convert tapes and records into digital recordings or CDs.</li>
   <li>Edit WAV, AIFF, FLAC, MP2, MP3 or Ogg Vorbis sound files.</li>
   <li>Cut, copy, splice or mix sounds together.</li>
