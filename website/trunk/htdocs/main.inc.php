@@ -30,13 +30,13 @@ $siteNavItems = array(
   ),
   array(_("Download"), "download/",
     array(
-      array(_("Audacity 2.0 series")."", ""),
+      array(_("Audacity")."", ""),
       array($ind._("Windows"), "windows"),
       array($ind._("Mac"), "mac"),
       array($ind._("GNU/Linux"), "linux"),
       array($ind._("Source Code"), "source"),
 
-      array(_("<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Release_Notes\" target=\"_blank\">Release Notes (Wiki)</a>")."", ""),
+      array(_("<a class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Release_Notes\" target=\"_blank\">Release Notes (Wiki)</a>")."", ""),
       array(_("Plug-Ins and Libraries"), "plugins"),
       array(_("Obtain a CD"), "buy"),
       array(_("Vendors and Distributors of Audacity"), "bundlers"),

@@ -43,7 +43,7 @@
 <p><?=_('If you are a user reporting a new bug, please e-mail our <a href="../contact#feedback">feedback address</a>.')?></p>
 
 <h3><?=_('Submitting Patches')?></h3>
-<p><?=_('We welcome patches from developers. Please see our <a href="http://wiki.audacityteam.org/wiki/SubmittingPatches">Submitting Patches</a> page on the <a href="http://wiki.audacityteam.org/wiki">Wiki</a>.')?></p>
+<p><?=_('We welcome patches from developers. Please see our <a href="http://wiki.audacityteam.org/wiki/SubmittingPatches">Submitting Patches</a> page on the <a href="http://wiki.audacityteam.org/wiki">Audacity Wiki</a>.')?></p>
 
 <?php
   include "../include/footer.inc.php";

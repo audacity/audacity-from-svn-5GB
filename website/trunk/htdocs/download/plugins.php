@@ -34,7 +34,7 @@
 <li><a href="http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/">Open Directory</a> (Windows, Mac).</li>
 </ul>
 
-<p><?=_('The <a href="http://wiki.audacityteam.org/wiki/VST_Plug-ins">VST Plug-ins</a> page on our <a href="http://wiki.audacityteam.org/">Wiki<a/> contains further help for VST plug-ins, and lists a large number of VST plug-ins that have been reported to work well in Audacity.')?></p>
+<p><?=_('The <a href="http://wiki.audacityteam.org/wiki/VST_Plug-ins">VST Plug-ins</a> page on the <a href="http://wiki.audacityteam.org/">Audacity Wiki<a/> contains further help for VST plug-ins, and lists a large number of VST plug-ins that have been reported to work well in Audacity.')?></p>
 
 <h3><?=_("Audio Unit Plug-Ins")?></h3>
 <p><?=_('On Mac OS X only, Audacity loads <a href="http://manual.audacityteam.org/help/manual/man/effect_menu.html#audio_unit">Audio Unit</a> plug-ins automatically from system plug-in directories. Audacity will not recognize any Audio Units in its own "plug-ins" folder.')?></p>  
