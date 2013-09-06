@@ -17,7 +17,7 @@
   echo "</li><li>";
   echo _('See the main <a href="plugins">plug-ins page</a> for installation instructions.');
   echo "</li><li>";
-  echo _('Help us test <a href="http://forum.audacityteam.org/viewforum.php?f=42">new Nyquist plug-ins still under development</a> on the Audacity <a href="http://forum.audacityteam.org/">Forum</a>.');
+  echo _('Help us test <a href="http://forum.audacityteam.org/viewforum.php?f=42">new Nyquist plug-ins still under development</a> on the <a href="http://forum.audacityteam.org/">Audacity Forum</a>.');
   echo "</li></ul>";
   echo _('<p>Anyone can customise these plug-ins by opening the .ny file in a text editor, just as can be done with the Nyquist plug-ins already <a href="http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins#shipped">shipped with Audacity</a>.</p>');
 ?>

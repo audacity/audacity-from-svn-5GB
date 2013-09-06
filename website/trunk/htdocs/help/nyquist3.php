@@ -123,7 +123,7 @@ printf('<p>%s</p>', _('Audacity comes with some sample plug-ins that you can exa
 //i18n-hint: All the %s are HTML tags which makes "contact us" into a link
 printf(_('%sIf you\'re having trouble getting Nyquist to work at all, please %scontact us%s.%s'), '<p>', '<a href="../contact/#feedback">', '</a>', '</p>');
 //i18n-hint: All the %s are HTML tags which makes the text into links.
-printf(_('%sIf you are working on Nyquist plug-in effects and would like to share them with others, or if you would like to discuss how to achieve certain effects in Nyquist, please post on the %sNyquist board of the Forum%s or join the %saudacity-nyquist mailing list%s.%s'), '<p>', '<a href="http://forum.audacityteam.org/viewforum.php?f=39">', '</a>', '<a href="../contact/lists#nyquist">', '</a>', '</p>');
+printf(_('%sIf you are working on Nyquist plug-in effects and would like to share them with others, or if you would like to discuss how to achieve certain effects in Nyquist, please post on the %sNyquist board of the Audacity Forum%s or join the %saudacity-nyquist mailing list%s.%s'), '<p>', '<a href="http://forum.audacityteam.org/viewforum.php?f=39">', '</a>', '<a href="../contact/lists#nyquist">', '</a>', '</p>');
 //i18n-hint: All the %s are HTML tags which makes "Nyquist Reference Manual" into a link
 printf(_('%sDon\'t forget to consult the full %sNyquist 2.37 Reference Manual%s for more details of Lisp and Nyquist.%s'), '<p>', '<a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">', '</a>', '</p>');
 

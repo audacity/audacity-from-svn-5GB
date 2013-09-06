@@ -74,7 +74,7 @@ echo _('Please note that we cannot accept other forms of payment such as checks 
 <h2><?=_('Other Ways to Contribute')?></h2>
 
 <p>
-<?=_('Besides donating money, you can <a href="http://wiki.audacityteam.org/wiki/Contribute"> contribute your time</a> by helping us with <a href="../community/developers">programming</a>, <a href="../contact#feedback">testing</a>, <a href="http://manual.audacityteam.org/"> documentation</a>, <a href="../community/translation">translations</a> or by anwering questions on our <a href="http://forum.audacityteam.org/">Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity.')?>
+<?=_('Besides donating money, you can <a href="http://wiki.audacityteam.org/wiki/Contribute"> contribute your time</a> by helping us with <a href="../community/developers">programming</a>, <a href="../contact#feedback">testing</a>, <a href="http://manual.audacityteam.org/"> documentation</a>, <a href="../community/translation">translations</a> or by anwering questions on the <a href="http://forum.audacityteam.org/">Audacity Forum</a>. We have always welcomed users whose only contribution is simply using Audacity, giving us feedback on how to improve it and telling others about it. Thank you for supporting Audacity.')?>
 </p>
 
 <?php
