@@ -25,16 +25,16 @@
 <h3><?=_('Audacity Forum for Questions or Problems')?></h3>
 <p><?=_('<b>There is no technical support by e-mail or telephone.</b> Most questions are answered in our <a href="../help/faq">Frequently Asked Questions (FAQ)</a>, <a href="../help/documentation">documentation</a>, and the additional <a href="http://wiki.audacityteam.org/wiki/Category:Tutorial">Tutorials</a> and <a href="http://wiki.audacityteam.org/wiki/Category:Tips">Tips</a> on the <a href="http://wiki.audacityteam.org/wiki">Audacity Wiki</a>. All these resources are searchable using the search box top right of this page.')?></p>
 <p>
-<?php echo _('If you still need help, expert assistance is available on our');?>
+<?php echo _('If you still need help, expert assistance is available on the');?>
   <a href="http://forum.audacityteam.org/">
 <?php
   // i18n-hint: "Forum" is the link text to the Forum. Probably you should not
   // translate this link text unless there is a sub-forum in your language.
-  echo _('Forum</a>.');?>
+  echo _('Audacity Forum</a>.');?>
 <?php
   echo _(' To post a question, <a href="http://forum.audacityteam.org/ucp.php?mode=register">register</a>, confirm your registration then log in. Choose the correct subforum (for example, "Windows" in the Audacity 2.X Forum), click "New Topic" top left, then submit your message.  Foreign language subforums are available for <a href="http://forum.audacityteam.org/viewforum.php?f=7">French</a>, <a href="http://audacity-forum.de/">German</a>, <a href="http://forum.audacityteam.org/viewforum.php?f=10">Russian</a> and <a href="http://forum.audacityteam.org/viewforum.php?f=8">Spanish</a>.');?>
 </p>
-<p><?=_('Always give plenty of information when asking questions on the Forum. You can find more help with joining and using the Forum <a href="http://wiki.audacityteam.org/wiki/Asking_Questions">here</a>.')?></p>
+<p><?=_('Always give plenty of information when asking questions on the Audacity Forum. You can find more help with joining and using the Audacity Forum <a href="http://wiki.audacityteam.org/wiki/Asking_Questions">here</a>.')?></p>
 
 <h3 id="feedback"><?=_('Suggestions, Bug Reports, Feature Requests and Patches')?></h3>
 <p>
@@ -46,7 +46,7 @@
    echo _('You can ')?>
    <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;"> 
 <?php
-   echo _('e-mail us</a> about any Audacity matter, but <b>not for technical support</b> - this is provided on our <a href="http://forum.audacityteam.org/">Forum</a>. Please write in <b>English language only.</b> Please tell us your experiences of the Audacity program, documentation or web site. We particularly welcome the following:</p>
+   echo _('e-mail us</a> about any Audacity matter, but <b>not for technical support</b> - this is provided on the <a href="http://forum.audacityteam.org/">Audacity Forum</a>. Please write in <b>English language only.</b> Please tell us your experiences of the Audacity program, documentation or web site. We particularly welcome the following:</p>
 
 <p>
 <ul>

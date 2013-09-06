@@ -33,7 +33,7 @@ echo _('<p><b>Questions?</b> First, check our <a href="faq">Frequently Asked Que
 // and at \htdocs\contact\index.php. If there is any translated documentation,
 // please add links to it at the bottom of \htdocs\help\documentation.php
 
-echo _('<p><b>Still need help?</b> Please read <a href="../contact/">Contact Us</a> for how to ask your question on the Audacity <a href="http://forum.audacityteam.org/">Forum</a>.</p>')?>
+echo _('<p><b>Still need help?</b> Please read <a href="../contact/">Contact Us</a> for how to ask your question on the <a href="http://forum.audacityteam.org/">Audacity Forum</a>.</p>')?>
 
 <?php
   include "../include/footer.inc.php";
