@@ -65,7 +65,7 @@
   </li>
   <li>
     <p>
-      <a href="http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg">
+      <a href="http://manual.audacityteam.org/o/man/faq_installation_and_plug_ins.html#ffdown">
         <?=_("FFmpeg import/export library")?>
       </a> - <?=_("Allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files.")?>
     </p>
