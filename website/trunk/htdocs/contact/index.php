@@ -23,7 +23,7 @@
   ?>
 
 <h3><?=_('Audacity Forum for Questions or Problems')?></h3>
-<p><?=_('<b>There is no technical support by e-mail or telephone.</b> Most questions are answered in our <a href="../help/faq">Frequently Asked Questions (FAQ)</a>, <a href="../help/documentation">documentation</a>, and the additional <a href="http://wiki.audacityteam.org/wiki/Category:Tutorial">Tutorials</a> and <a href="http://wiki.audacityteam.org/wiki/Category:Tips">Tips</a> on our <a href="http://wiki.audacityteam.org/wiki">Wiki</a>. All these resources are searchable using the search box top right of this page.')?></p>
+<p><?=_('<b>There is no technical support by e-mail or telephone.</b> Most questions are answered in our <a href="../help/faq">Frequently Asked Questions (FAQ)</a>, <a href="../help/documentation">documentation</a>, and the additional <a href="http://wiki.audacityteam.org/wiki/Category:Tutorial">Tutorials</a> and <a href="http://wiki.audacityteam.org/wiki/Category:Tips">Tips</a> on the <a href="http://wiki.audacityteam.org/wiki">Audacity Wiki</a>. All these resources are searchable using the search box top right of this page.')?></p>
 <p>
 <?php echo _('If you still need help, expert assistance is available on our');?>
   <a href="http://forum.audacityteam.org/">
@@ -67,7 +67,7 @@
 </ol>
 </div>
 
-<p><b>Patches:</b> Code patches to fix problems or enhance features will be gratefully received. Please follow the guidance on the <a href="http://wiki.audacityteam.org/wiki/SubmittingPatches">Submitting Patches</a> page on our <a href="http://wiki.audacityteam.org/">Wiki</a>.</p>')?>    
+<p><b>Patches:</b> Code patches to fix problems or enhance features will be gratefully received. Please follow the guidance on the <a href="http://wiki.audacityteam.org/wiki/SubmittingPatches">Submitting Patches</a> page on the <a href="http://wiki.audacityteam.org/">Audacity Wiki</a>.</p>')?>    
 
 <h3><?php echo _('Discussion Lists')?></h3>
 <p><?php echo _('Subscribe to our');?>

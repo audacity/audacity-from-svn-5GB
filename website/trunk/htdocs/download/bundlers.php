@@ -302,7 +302,7 @@
    Turntables</a> and <a href="http://www.ionaudio.com/products/audio-conversion/cassette-players">
    Cassette Players</a>
    </td>
-   <td><?=_('As one of the major manufacturers of USB playback equipment, Ion bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs and cassettes. NOTE: In January 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Ion later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track. See our Wiki page about <a href="http://wiki.audacityteam.org/wiki/USB_turntables">USB turntables</a> for more information.')?>
+   <td><?=_('As one of the major manufacturers of USB playback equipment, Ion bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs and cassettes. NOTE: In January 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Ion later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track. See the Audacity Wiki page about <a href="http://wiki.audacityteam.org/wiki/USB_turntables">USB turntables</a> for more information.')?>
    </td>
   </tr>
   <tr>
@@ -330,7 +330,7 @@
    <td>
    <a href="http://www.numark.com/turntables3">USB Turntables</a>
    </td>
-   <td><?=_('As one of the major manufacturers of USB turntables, Numark bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs. NOTE: In January 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Numark later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track.  See our Wiki page about <a href="http://wiki.audacityteam.org/wiki/USB_turntables">USB turntables</a> for more information.')?>
+   <td><?=_('As one of the major manufacturers of USB turntables, Numark bundled Audacity with the listed products for several years, helping to establish the wide popularity of digitizing LPs. NOTE: In January 2007, an <a href="http://select.nytimes.com/gst/abstract.html?res=F40E1EFA35540C728EDDA80894DF404482">article about these turntables</a> appeared in the New York Times, containing erroneous statements about limitations of Audacity. Numark later corrected their documentation to clarify that Audacity could record a whole LP, detect split points between LP tracks based on silences and simultaneously export multiple files for each track.  See the Audacity Wiki page about <a href="http://wiki.audacityteam.org/wiki/USB_turntables">USB turntables</a> for more information.')?>
    </td>
   </tr>
 </table>

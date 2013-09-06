@@ -15,7 +15,7 @@
      // i18n-hint:  Please add a note that the manuals below are in English.
      // If there is documentation for Audacity 2.x available in your language
      // but not already linked to at the bottom of this page, please add the links.
-	echo "<p>"._('This page contains links to Manuals (with Tutorials) for the free Audacity audio editor. For additional help, see the <a href="/faq">Frequently Asked Questions</a> and additional <a href="http://wiki.audacityteam.org/wiki/Category:Tutorial">Tutorials</a> and <a href="http://wiki.audacityteam.org/wiki/Category:Tips">Tips</a> on the Audacity <a href="http://wiki.audacityteam.org/">Wiki</a>.')."</p>";
+	echo "<p>"._('This page contains links to Manuals (with Tutorials) for the free Audacity audio editor. For additional help, see the <a href="/faq">Frequently Asked Questions</a> and additional <a href="http://wiki.audacityteam.org/wiki/Category:Tutorial">Tutorials</a> and <a href="http://wiki.audacityteam.org/wiki/Category:Tips">Tips</a> on the <a href="http://wiki.audacityteam.org/">Audacity Wiki</a>.')."</p>";
 ?>
 
 <p><?=_('Legacy documentation for <a href="../download/#legacy">old versions of Audacity</a> can be found <a href="/help/legacy_documentation">here</a>.')?></p>

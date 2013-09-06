@@ -13,7 +13,7 @@
   echo "<h2>$pageTitle</h2>";
   echo _('<p>These are optional generator, effect and analyze plug-ins for the Audacity audio editor, written in the <a href="/help/nyquist">Nyquist programming language</a>. Nyquist plug-ins support Windows, Mac and GNU/Linux.</p>');
   echo "<ul><li>";
-  echo _('<a href="http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins">Complete list of optional Nyquist plug-ins</a> on the Audacity <a href="http://wiki.audacityteam.org/wiki/">Wiki</a>.');
+  echo _('<a href="http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins">Complete list of optional Nyquist plug-ins</a> on the <a href="http://wiki.audacityteam.org/wiki/">Audacity Wiki</a>.');
   echo "</li><li>";
   echo _('See the main <a href="plugins">plug-ins page</a> for installation instructions.');
   echo "</li><li>";
