@@ -21,7 +21,7 @@
   if ($download == "windows") {
     $download_version = win_exe_version;
     $download_OS = _("for Windows");
-    $download_OS_versions = "2000/XP/Vista/7/8";
+    $download_OS_versions = "2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8";
     $download_page = "windows";
     $recommended_download = $win_exe_url;
     /*
@@ -44,7 +44,7 @@
   }
   else {
     $download_version = src_version;
-    $download_OS = _("for Windows, Mac or GNU/Linux");
+    $download_OS = _("for Windows, Mac, or GNU/Linux");
     $download_OS_versions = "";
     $download_page = "source";
     $recommended_download = $min_src_url;
