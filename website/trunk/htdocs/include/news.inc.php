@@ -40,6 +40,52 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "September 6, 2013",
+  	"2.0.4-release",
+  _("Audacity 2.0.4 Released"),
+  _("
+<p>
+  <a href=\"/download\">Audacity 2.0.4</a>
+  replaces all previous versions, with these improvements:
+  <ul>
+    <li>New 
+      <a href=\"http://manual.audacityteam.org/o/man/reverb.html\"><b>Effect > Reverb</b></a> 
+      (based on <b><em>Freeverb</em></b>), that replaces <b>GVerb</b>.</li>
+    <li>New 
+      <a href=\"http://manual.audacityteam.org/o/man/view_menu.html\">
+        <b>View > Go to Selection Start</b> and <b>Go to Selection End</b></a> 
+      commands.</li>
+    <li>New 
+      <a href=\"http://manual.audacityteam.org/o/man/tracks_menu.html\">
+        <b>Tracks > Align End to End</b></a> 
+      command to append selected tracks.</li>
+    <li>WAV files import/export now supports 
+      \"Album Title\", \"Track Number\" and \"Genre\" 
+      LIST INFO tags and ID3 tags.</li>
+    <li>(Windows) New support for <b><em>Windows WDM/KS</em></b> host which can 
+      provide very low latencies if you reduce \"Audio to Buffer\" in 
+      <a href=\"http://manual.audacityteam.org/o/man/recording_preferences.html\">
+        Recording Preferences</a>.</li>
+    <li>(Windows Vista and later) You can now 
+      <a href=\"http://manual.audacityteam.org/o/man/tutorial_recording_computer_playback_on_windows.html\">
+        record computer playback</a> 
+      by choosing the new <b><em>Windows WASAPI</em></b> host in 
+      <a href=\"http://manual.audacityteam.org/o/man/device_toolbar.html\">
+        Device Toolbar</a>
+      , then a \"loopback\" input.</li>
+    <li>Bugs have been fixed, involving Keyboard Preferences, Equalization curves, 
+      and <b>Effect > Change Pitch</b>, and several more. 
+    </li>
+  </ul>
+  See the 
+  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.4\">
+    2.0.4 Release Notes</a> 
+  for more items and details.
+</p>
+"));
+
+
+add_news_item(
   "January 21, 2013",
   	"2.0.3-release",
   _("Audacity 2.0.3 Released"),
