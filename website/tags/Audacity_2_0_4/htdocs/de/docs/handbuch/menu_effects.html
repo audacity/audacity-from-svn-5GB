@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Effect Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+
+<body>
+<!--top table-->
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Zur Inhaltsangabe</a></td>
+    <td width="50%" align=center><a class="ss" href="reference.html">Zur Referenzseite</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<BR>
+<table cellpadding=0 cellspacing=0 width="98%">
+	<tr>
+	  <td align=center>
+	  	<table cellpadding=0 cellspacing=0><tr>
+	  	<td><a class=menuref href="menu_file.html">Datei</a></td>
+	  	<td><a class=menuref href="menu_edit.html">Ändern</a></td>
+	  	<td><a class=menuref href="menu_view.html">Anzeige</a></td>
+	  	<td><a class=menuref href="menu_project.html">Projekt</a></td>
+	  	<td><a class=menuref href="menu_generate.html">Generieren</a></td>
+	  	<td><a class=menuref_current href="menu_effects.html">Effekte</a></td>
+	  	<td><a class=menuref href="menu_analyze.html">Analyse</a></td>
+	  	</tr></table>
+	  </td>
+	</tr>
+	<tr>
+	  <td class=bg_r align=center><font size="+3">Effektmenü</font></td>
+	</tr>
+</table>
+
+<p class=a>
+Audacity hat eine Menge an eingebauten Effekten und kann ebenso mit
+Plugins Effekten (VST Plugins) in MacOS und Windows arbeiten.
+ Kostenlose VST Plugins erhält man <a href="http://www.databaseaudio.co.uk">http://www.databaseaudio.co.uk</a>.
+Informationen hierzu und was diese Effekte bewirken erhält man auf folgender Seite <a href="http://www.kvr-vst.com">http://www.kvr-vst.com</a>.</p>
+
+
+<p class=a>
+Um einen Effekt anzuwenden , markiere einfach einen Teil der Audiospur die du ändern möchtest und wähle den
+Effekt den du benutzen möchtest aus. Effekte die Eingaben benötigen, zeigen dir danach einen 
+Eingabedialog an, mit dem du alle Einstellungen vornehmen kannst.</p>
+
+<P class=a>
+Es gibt vier verschiedene Klassen von Effekten und diese werden alle auf die gleiche Art <a href="effects_basics.html">angewendet</a>. Diese sind
+<br>
+<center><table><tr><td>
+<span class=bg_b><a href="#internal">Interne Effekte</a></span>,
+<span class=bg_o><a href="#vstfx">VST Effekte </a></span>(Nur Windows/Mac),
+<span class=bg_g><a href="#nyquistfx">Nyquist Effekte</a></span> und
+<span class=bg_r><a href="#ladspafx">LADSPA Effekte</a></span>(Nur Linux).
+</td></tr></table></center>
+
+<a name="internal"></a>
+<H2 align=center class=bg_b>Interne Effekte</H2>
+<center>
+  <table width="100%"><tr>
+    <td valign=top width="50%">
+
+
+<p class=menuref_item>Amplify...</p>
+<p class=a>Dieser Effekete erhöht oder verringert die Lautstärke einer oder mehrerer Audiospuren.
+Wenn dieser Effekt ausgewählt wir, berechnet <b>Audacity</b> automatisch
+das Maximum der Lautstärkeerhöhung, ohne das es zu clipping kommt. Dieser Wert kann natürlich
+geändert werden.</p>
+
+<p class=menuref_item>Bass Boost...</p>
+<p class=a>Dies ist ein kleiner, sanfter Filter der die tiefen Töne verstärkt, ohne die anderen Frequenzen anzutasten.
+Der beste Effekt tritt ein, wenn man die Basstöne nicht zu stark erhöht; 12 dB sollten ausreichen.</p>
+
+<p class=menuref_item>Echo...</p>
+<p class=a>Eine einfache Verzögerung.</p>
+<p class=a>Dieser Effekt wiederholt die ausgewählte Audiospur immer wieder,jedesmal etwas "weicher".
+ Die eingebaute Zeitverzögerung zwischen jeder Wiederholung wird fest vorgegeben.</p>
+<p class=a>Als erstes sollte man den Audiobereich auswählen, an dem man den Echoeffekt anwenden möchte.
+Dann wählt man den "Echo..." Effekt aus dem Menü und Audacity wird dich nach zwei Werten fragen:
+
+<p class=a>Der erste wert ist die Zeitverzögerung zwischen den Echos, in Sekunden angegeben.
+Der zweite Wert ist der Decay Faktor, eine Zahl zwischen 0 and 1.  
+Ein Decay Factor von 0 erzeugt <b>kein</b> Echo. ein Wert von 1 erzeugt ein Echo das so laut ist, wie das Original.
+Ein Wert von 0.5 erzeugt ein Echo mit der Hälfte der Lautstärke des Originals und wird bei jeder Wiederholung
+um die Hälfte leiser, so daß der Effekt langsam ausläuft.
+</p>
+<p class=a>Der Echo Effekt ist sehr einfach und sollte nicht als Ersatz für den Reverb
+Effekt genutzt werden, der die Raumumgebeung eines Raumes, einer Konzerthalle, einer Bühne erzeugt.
+Audacity für MacOS und Windows wird mit dem FreeVerb Effekt ausgeliefert, das kostenlose VST
+Reverb Plugin.  Im bereich <a href="#freeverb">FreeVerb</a> erfährst du mehr über diesen Effekt.
+</p>
+
+<p class=a>Ein Hinweis : Wenn man einen Decay Wert von 1.0 eingibt, erzeugt man Schleifen, die solange laufen, bis sie komplett beendet werden.
+</p>
+
+<p class=menuref_item>Fade In</p>
+<p class=a>Dieser Effekt erzeugt einen lineares Einblenden in die Audiospur. Für ein logarithmisches
+Einblenden, muss man das <a href="toolbar.html#envelope">Envelope Tool</a> benutzen.</p>
+
+<p class=menuref_item>Fade Out</p>
+<p class=a>Das Gegenteil von Fade-in, ein lineares Ausblenden.</p>
+
+<p class=menuref_item>FFT Filter...</p>
+<p class=a>Dieser Effekt funktioniert, die Dialogbox wird jedoch zur Zeit noch entwickelt. 
+Man kann diesen Effekt benutzen, jedoch gibt es keinerlei Hinweise, welche Frequenz welche ist ? bzw. wie stark diese angehoben werden muss
+um den Effekt zu erzielen, den man möchte.</p>
+<p class=a>Die ist dam weitesten geschnitte Filter den es gibt, wenn man diesen vorsichtig
+benutzt, kann man exakt die Frequenzen verstärken, die man möchte.
+Man muss aber sehr vorsichtig sein und langsam ändern, ansonsten kann der FFT Filter schnell in Soundartefakte "ausbrechen".</p>
+
+
+
+
+	</td>
+	<td valign=top width="50%">
+
+
+
+
+<p class=menuref_item>Invert</p>
+<p class=a>Dieser Effekt tauscht im Audiosignal "oben mit unten". Normalerweise
+hat dies keinen Effekt auf das Hörerlebnis. Man kann diesen Effekt jedoch dann benutzen, wenn beide
+Kanäle der Audiospur (Links und Rechts) die gleiche <i>"Anzahl an Sprachstücken"</i> haben, jedoch unterschiedliche
+Anzahl an Instrumenten. Wenn nun nur einer der beiden Kanäle "invertiert" wird, heben sich bei Abspielen die Sprachstücke gegeneinander auf
+, so daß ein reines Instrumentalstück übrigbleibt. Dies funktioniert aber nur, wenn wirklich das gleiche
+"Sprachsignal" in beiden Audiospuren vorhanden ist.</p>
+
+<p class=menuref_item>Noise Removal...</p>
+<p class=a>Dieser Effekt ist ideal um ein konstantes Hintergrundgeräusch auszufiltern
+wie zum Beispiel Rauschen von Kassetten oder Ventilatorengeräusch. Es funktioniert leider
+nicht so gut, bei Hintergrundgesprächen oder Musik im Hintergrund.</p>
+<p class=a>Das Entfernen von Geräuschen funktioniert in 2 Schritten. Der erste Schritt
+ist die Auswahl in einer Audiospur, die nur das Geräusch enthält und <b>kein</b> normales 
+Audiosignal, in anderen Worten selektiere den Bereich der eigentlich leise (nichts) enthalten soll zur
+Zeit aber das Geräusch enthält.
+Dann wähle <b>Noise Removal...</b> aus dem Effektmenü und klicke auf
+<i>Get Profile</i>.  Audacity "lernt" nun, aus deiner Auswahl, welche Geräusche es später ausfiltern soll.
+</p>
+<p class=a>Dann markiere den gesamten Audiobereich, aus dem das Hintergrundgeräusch entfernt werden soll
+und klicke wieder auf <b>Noise Removal...</b>. Diese mal klicke auf 
+"Remove Noise". Nun dauert es einige Zeit, je nachdem wieviel markiert wurde.</p>
+<p class=a>Wenn zuviel oder zuwenig entfernt wurde, klicken bitte auf <b>Wiederherstellen (Undo)</b>
+(aus dem Ändernmenü) und versuche erneut <b>Noise Removal...</b> mit einem anderen Geräuschlevel.
+ Hierzu muss man nicht erneut das Geräuschprofil analysieren, wenn man der Ansicht ist, die erste Auswahl war
+richtig.</p>
+<p class=a>Das Entfernen von Hintergrundgeräuschen führt immer zu gewissen
+"Unschärfen" in der eigentlichen Audiospur. Das ist normal und es gibt keinen Weg dies zur Zeit zu umgehen.
+Wenn das eigentliche Audiosignal sehr laut ist und das Geräusch leise, funktioniert der Effekt wunderbar.
+Sollte das Geräusch laut sein, variabel oder auch das eigentliche Audiosignal leise, kommt es immer zu hörbaren Artefakten oder Einbussen im Audiosignal.
+</p>
+<p class=a>Zukünftige Versionen von Audacity werden eventuell einen verbesserten Effekt mitbringen.
+</p>
+
+<p class=menuref_item>Phaser...</p>
+<p class=a>Der Name "Phaser" kommt aus der Phrase "Phase Shifter", weil der Effekt
+das Phasenverschobene Signal mit dem Original vermischt. Hierbei wird ein
+Low Frequency Oscillator (LFO) genutzt.</p>
+
+<p class=menuref_item>Reverse</p>
+<p class=a>Dieser Effekt tauscht Beginn und Ende eines Audiosignals.
+Nach Anwedung hört man das Signal vom Ende zum Anfang. Hier kann man schöne Effekte erzielen in dem man Naturgeräusche so ändert
+oder Sprache umdreht und somit interessante Botschaften erhält (Anm. d. Übersetzers: Dies ist ein Witz)
+</p>
+
+<p class=menuref_item>Wahwah...</p>
+<p class=a>Ein Effekt der die Gitarrengeräusche aus den 70er imitiert.</p>
+<p class=a>Dieser Effekt nutzt einen Bandpass Filter, sowie einen
+low frequency oscillator (LFO) um das ganze konstant über die Länge des Audiosignals zu halten.
+</p>
+<p class=a>Der WahWah Effekt wirkt sowohl auf die linke als auch die rechte Tonspur , so daß
+man den Eindruck gewinnt, der Ton wandert von links nach rechts in den Boxen.</p>
+
+
+	</td>
+    </tr>
+    <tr><td colspan=2 class=top_b>&nbsp;</td></tr>
+</table>
+</center>
+
+
+<a name=vstfx></a>
+<H2 align=center class=bg_o>VST Plugins</H2>
+<p class=a>Um einen VST Effekt zur Verfügung zu haben, muss dieser im Verezichnis Plugins abgelegt werden. Bevor diese jedoch
+funktionieren muss im selben Verzeichnis die VST enabler.dll abgelegt sein. Nachdem der Effekt dorthin kopiert wurde
+und Audacity das nächste mal aufgerufen wird, steht dieser zur Verfügung.</p>
+
+<a name="freeverb"></a>
+<p class=menuref_item>Freeverb2...</p>
+
+
+<center>
+  <table width="100%"><tr>
+    <td valign=top width="50%">
+
+
+<p class=a>Audacity für Mac OS und Windows kommt zusammen mit einem VST Plugin namens
+Freeverb, das in Version 2 vorliegt (kurz "Freeverb2").  Dieser 
+Effekt ist gut konfigurierbar und von sehr hoher Qualität.</p>
+<p class=a>Um einen schönen Effekt zu erzielen ist eine Menge an
+Einstellungen nötig, sowie einiges an Experimenten.</p>
+<p class=a>Es gibt einige Parameter in Freeverb2: Raumgrösse, Damping,
+Vorverzögerung, Lowpass, Highpass, Wet level, und Dry level.</p>
+<p class=a>Wir beginnen mit dem "wet und dry" Leveln.  Freeverb arbeitet
+so, daß das Originalsignal bearbeitet um um den Effekt zu erzielen, der entsteht, wenn das Signal
+von den Wänden zurückgeworfen wird. Dies nennt man den "wet part".</p>
+<p class=a>Dieser Teil wird mit dem Originalsignal, das man den "dry part" nennt zusammengemischt
+um den Effekt von direktem und indirektem Signal zu erreichen. Wenn man den
+"dry level" auf -infinity setzt und den wet level auf 0 dB, erreicht man ein Ergeniss, das dem
+Hörgenuss ( ? :-) ? ) entspricht, wenn man außerhalb einer Konzerthalle steht, man hört nur den
+zurückgeworfenen Teil des Signals.</p>
+
+
+	</td>
+	<td valign=top width="50%">
+
+
+<p class=a>Bei umgekehrten Werten erreicht man den Effekt, daß man direkt vor 
+dem Sänger in einem kleinen Raum steht, man hört nur den direkten Sound.
+ Man sollte damit starten, beide Werte auf 0 zu setzen und dann entsprechend zu erhöhen.
+</p>
+
+<p class=a>Der Raumgrössenparameter ist selbst erklärend.
+Eine kleine Raumgrösse erzeugt einen schnellen, hellen Reverbeffekt, während grosse
+Räume einen dunklerern, langsam Effekt erzeugen.</p>
+<p class=a>Die Vorverzögerungseinstellung kontrolliert die verzögerung zwischen dem
+Originalsignal (dry) und dem vermischen mit dem reflektiertem Signal (wet).
+Je grösser die Verzögerung, desto größer erscheint der Raum.</p>
+<p class=a>Letztlich, der lowpass und highpass Filter wirkt auf das reflektierte Signal (wet)
+Der Lowpass Filter verstärkt die tiefen Töne, der Highpassfilter die hohen Frequenzen.</p>
+	</td>
+    </tr>
+    <tr><td colspan=2 class=top_o>&nbsp;</td></tr>
+</table>
+</center>
+
+
+<a name=nyquistfx></a>
+<H2 align=center class=bg_g>Nyquist Plugins</H2>
+<p class=a>Um einen Nyquist Effekt zum laufen zu bringen, muss dieser einfach in das
+Nyquistverzeichnis gelegt werden. Während der Installation wird dieses bereits angelegt, da im Download von Audacity bereits
+einige Nyquist Effekte enthalten sind. Nach dem nächsten Start von Audacity sind diese Effekte im Effektemenü verfügbar.</p>
+<!-- a name="nyquist1"></a>
+<p class=menuref_item>Freeverb2...</p -->
+
+
+<a name=ladspafx></a>
+<H2 align=center class=bg_r>LADSPA Plugins</H2>
+<p class=a>
+Keine Erklärung bisher
+</p>
+
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Zur Inhaltsangabe</a></td>
+    <td width="50%" align=center><a class="ss" href="reference.html">Zur Refernzseite</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+</body>
+</html>
+
+
