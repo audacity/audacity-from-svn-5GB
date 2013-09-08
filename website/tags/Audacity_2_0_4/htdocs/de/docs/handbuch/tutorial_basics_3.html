@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+        <title>Tutorial - Basics - Part 3 - Setup, Audio Import and Playback</title>
+<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+<body>
+<!--top table-->
+<DIV align=center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="tutorials.html">Back to the Tutorial Page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+
+<table width="95%" border=0 cellspacing=0 cellpadding=0>
+  <tr><td colspan=2 width="100%" align=center>
+	<a class=top_r href="tutorial_basics_1.html">Digital Audio</a>
+	<a class=top_y href="tutorial_basics_2.html">Rules of Audacity</a>
+	<a class=top_b href="tutorial_basics_3.html">Setup, Audio Import and Playback</a>
+	<a class=top_g href="tutorial_basics_4.html">Recording with Audacity</a>
+    </td>
+  </tr>
+</table>
+</DIV>
+<!-- -->
+
+<h2 align=center><span class=ss><B>Tutorial - I.Basics</B></span><br><span class=sf>Part 3&nbsp;-&nbsp;&nbsp;</span>Setup, Audio Import and Playback<span class=sf>&nbsp;&nbsp;-&nbsp;Part 3</span></h2>
+
+<P class=qb>1. Create a new project</P>
+
+<P class=a>
+This is very important!
+</P>
+
+<P class=a>
+Audacity writes all the changed and recorded audio to a directory called <B><i>Projectname</i>_data</B>, which is located right where you saved the project file itself.
+</P>
+
+<P class=a>
+Thus, select <img border=0 src="images/file_save_project.png" width="218" height="106" align="top"> and choose a location and filename for your project.
+</P>
+
+<P class=a>
+Please note that when you startup Audacity fresh, only the <B>&quot;Save As...&quot</B> menu option is available.
+</p>
+
+<P class=a>
+To save your project later on, you can also use the keyboard shortcut : <span class=keybshc_s>CTRL+S</span>
+</P>
+
+
+<P class=qb>2. Check the Preferences</P>
+
+<P class=a>
+Again, this is very important!
+</P>
+
+<table width="95%"><tr>
+	<td align=center valign=top class=a width="45%">Press <span class=keybshc_s>CTRL+P</span>
+	or go to ...<br>&nbsp;<br>
+	  <img border=0 src="images/file_preferences.png" width="267" height="275" align="top">
+	</td>
+	<td align=center valign=top class=a width="55%">...then check if the right output is selected :
+	<br>&nbsp;<br><img border=0 src="images/preferences_audioio.png" width="475" height="214" align="top">
+	</td>
+</tr></table>
+
+<table width="95%"><tr>
+	<td align=center valign=top class=a width="45%"><BR>...set the sample rate of your choice...
+	  (44.1 kHz is the default)<br>&nbsp;<br>
+	  <img border=0 src="images/preferences_quality.png" width="299" height="126" align="top"> 
+	</td>
+	<td align=center valign=top class=a width="55%"><BR>...and here's a crucial screen :
+	  <br>&nbsp;<br>
+	  <img border=0 src="images/preferences_fileformats.png" width="474" height="351" align="top"> 
+	</td>
+</tr></table>
+
+<P class=a>
+The <i>File Formats</i> settings need discussing at this point.
+</P>
+
+<P class=a>
+<B><i>When importing uncompressed audio</i></B>, there are two ways to do it. &quot;<i>Make a copy of the original</i>&quot; means, that Audacity actually copies the entire audio file that you imported in to its project data directory and in the process sets up the little overview graphics, whose descriptions get stored in the project data directory too.
+</P>
+
+<P class=a>
+The second way is to use the original imported audio. You may think we're actually editing this file, but no we aren't. In fact, Audacity will now read the imported file once and simply create the graphics overviews for them in to the data directory, and subsequently write to disk all the audio data that you change. The original file is only used for playback. All audio that remains unchanged will be played from the original file.
+</P>
+
+<P class=a>
+<B>The advantage of choosing to make a copy of the original</B> is that you avoid trouble, should <B>anything</B> in the original file change.
+</P>
+
+<P class=a>
+For example, should you accidentally delete the original file, you're lost.
+</P>
+
+<P class=a>
+You have to make up your mind before you start a project. Choose to make a copy of all imported files, and you'll use more space on your harddisk(s), but it will be easier to back up the project too, because all files that have anything to do with your project will be in the project data directory.
+</P>
+
+<P class=a>
+The <i>Uncompressed Export Format</i> can be set to WAV or AIFF for now. Please check the <a href="fileformats.html">fileformats page</a> for further information on export formats.
+</P>
+
+<P class=a>
+We'll ignore the <i>Spectrogram</i> settings for now. The <i>Directories</i> setting can be ignored as well for now, because all it sets is the directory to use for recordings, undo data and other stuff, if you haven't yet saved your project. Since we already saved our project, this setting is of no importance to us, though you may want to set it properly later on. Initially this is set to a folder called &quot;.audacity_temp&quot; in whatever directory you were in when Audacity started.
+</P>
+
+
+<P class=qb>3. Import an audio file</P>
+
+<P class=a>
+There are three ways to do this:
+</P>
+
+<P class=a>
+1. Simply drag and drop the audio file in to the Audacity window.
+(If you're using Mac OS 9 or X, drag the audio file to the Audacity
+icon instead...)
+</P>
+
+<P class=a>
+2. Select <i>Import Audio ...</i> in the Project menu.
+</P>
+
+<P class=a>
+3. Use the keyboard shortcut : <span class=keybshc_s>CTRL+I</span>
+</P>
+
+<P class=a>
+Audacity can import WAV, AIFF, AU, IRCAM, MP3 and OGG files. Please refer to the
+<a href="fileformats.html">fileformats page</a> for further reference on these audio formats.
+</P>
+
+
+<P class=qb>4. Playback</P>
+
+<P class=a>
+The imported file should now be displayed in an audio track. The track will look a little like this, depending on what you imported :
+</P>
+
+<div align=center><center><img border=0 src="images/track_example_stereo.png" width="453" height="131" align="top" ALT="An imported stereo track"><br>
+<span class=ss>Trackpanel and Waveform Overview of the imported Track</span></center></div>
+
+<P class=a>
+If you're not sure where to find audio material, simply rip some off a CD, or in Windows, check the Media folder in the directory of your Windows installation.
+</P>
+
+<P class=a>
+Now click on the green Play button <a href="toolbar.html#play"><img border=0 src="images/transport_play.png" alt="Play Button" align="middle"></a>
+at the top and you should hear the file you have just imported.
+</P>
+
+<center><a class=top_g href="tutorial_basics_4.html">Next part - Recording with Audacity</a></center>
+
+<BR>
+
+<a class=ss href="index.html">Back to the main page</a>
+
+</body>
+</html>
