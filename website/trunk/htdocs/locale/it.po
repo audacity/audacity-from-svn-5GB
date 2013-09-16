@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity_website\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-27 03:05+0100\n"
-"PO-Revision-Date: 2013-08-28 08:34+0100\n"
+"POT-Creation-Date: 2013-09-09 19:15+0100\n"
+"PO-Revision-Date: 2013-09-13 15:19+0100\n"
 "Last-Translator: Carmelo Battaglia <battaglia.carmelo@fastwebnet.it>\n"
 "Language-Team: italiano <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,27 +17,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.7\n"
 
-#: index.php:12 v_index.php:12
+#: index.php:12
 msgid "Free Audio Editor and Recorder"
 msgstr "Editor e registratore audio libero"
 
-#: index.php:23 v_index.php:23
+#: index.php:23
 msgid "for Windows"
 msgstr "per Windows"
 
-#: index.php:35 v_index.php:35
+#: index.php:35
 msgid "for Mac"
 msgstr "per Mac"
 
-#: index.php:36 v_index.php:36
+#: index.php:36
 msgid "OS X 10.4 or later"
 msgstr "OS X 10.4 o seguenti"
 
-#: index.php:47 v_index.php:47
-msgid "for Windows, Mac or GNU/Linux"
-msgstr "per Windows, Mac o GNU/Linux"
+#: index.php:47
+msgid "for Windows, Mac, or GNU/Linux"
+msgstr "per Windows, Mac, o GNU/Linux"
 
-#: index.php:60 v_index.php:60
+#: index.php:60
 msgid ""
 "Audacity&reg; is free, open source, cross-platform software for recording "
 "and editing sounds."
@@ -45,63 +45,62 @@ msgstr ""
 "Audacity&reg; è un software gratuito, open source, multi-piattaforma per "
 "registrare e modificare l'audio."
 
-#: index.php:63 main.inc.php:24 v_index.php:63 about/screenshots.php:9
+#: index.php:63 main.inc.php:24 about/screenshots.php:9
 msgid "Screenshots"
 msgstr "Immagini del programma"
 
-#: index.php:66 v_index.php:66
+#: index.php:66
 msgid ""
 "Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other "
-"operating systems. Check our <a href=\"about/features\">feature list</a>, <a "
-"href=\"http://wiki.audacityteam.org/\">Wiki</a> and <a href=\"http://forum."
-"audacityteam.org/\">Forum</a> for more information."
+"operating systems. \n"
+"    Check our <a href=\"about/features\">feature list</a>, \n"
+"    <a href=\"http://wiki.audacityteam.org/\">wiki</a>, and \n"
+"    <a href=\"http://forum.audacityteam.org/\">forum</a> for more "
+"information."
 msgstr ""
 "Audacity è disponibile per Windows&reg;, Mac&reg;, GNU/Linux&reg;, e altri "
-"sistemi operativi. Controllate il nostro <a href=\"about/features\">elenco "
-"caratteristiche</a>, il <a href=\"http://wiki.audacityteam.org/\">Wiki</a> e "
-"il <a href=\"http://audacityteam.org/forum/\">Forum</a> per avere maggiori "
+"sistemi operativi. \n"
+"    Controllate il nostro <a href=\"about/features\">elenco caratteristiche</"
+"a>, \n"
+"    il <a href=\"http://wiki.audacityteam.org/\">Wiki</a> e \n"
+"    il <a href=\"http://audacityteam.org/\">Forum</a> per avere maggiori "
 "informazioni."
 
-#: index.php:71 v_index.php:71
+#: index.php:76
 #, php-format
-msgid "<h3>Download Audacity %s</h3></a>%s %s"
-msgstr "<h3>Scaricate Audacity %s</h3></a>%s %s"
+msgid "<h1>Download Audacity %s</h1> <p><h3>%s %s</h3></p></a>"
+msgstr "<h1>Scaricate Audacity %s</h1> <p><h3>%s %s</h3></p></a>"
 
-#: index.php:78 v_index.php:78
+#: index.php:84
 #, php-format
 msgid "%s\">Other Audacity Downloads %s</a></p>"
 msgstr "%s\">Altri download Audacity %s</a></p>"
 
-#: index.php:85 v_index.php:85
+#: index.php:91
 msgid "All Audacity Downloads"
 msgstr "Tutti i download Audacity"
 
-#: index.php:90 v_index.php:90
-#, php-format
-msgid "Download Audacity %s %s"
-msgstr "Scaricate Audacity %s %s"
-
-#: index.php:114 v_index.php:114 about/news.php:21
+#: index.php:116 about/news.php:21
 msgid "More news items..."
 msgstr "Altre novità..."
 
-#: index.php:120 v_index.php:120
+#: index.php:122
 msgid "Get Notified of New Versions"
 msgstr "Rimanete aggiornati sulle nuove versioni"
 
-#: index.php:132 v_index.php:132
+#: index.php:134
 msgid "Email address"
 msgstr "Indirizzo e-mail"
 
-#: index.php:133 v_index.php:133
+#: index.php:135
 msgid "Add"
 msgstr "Iscrivetevi"
 
-#: index.php:134 v_index.php:134
+#: index.php:136
 msgid "Remove"
 msgstr "Annullate l'iscrizione"
 
-#: index.php:160 v_index.php:160
+#: index.php:162
 msgid "Audacity Team's Advertisements Policy"
 msgstr "Politica per la pubblicità del Team di Audacity"
 
@@ -309,11 +308,11 @@ msgstr "Mailing list e archivi"
 
 #: community/translation.php:25
 msgid ""
-"Translating Audacity</a> on the Audacity <a href=\"http://wiki.audacityteam."
-"org/index.php\">Wiki</a>."
+"Translating Audacity</a> on the <a href=\"http://wiki.audacityteam.org/index."
+"php\">Audacity Wiki</a>."
 msgstr ""
 "Tradurre Audacity</a> sul <a href=\"http://wiki.audacityteam.org/index.php"
-"\">Wiki</a> di Audacity."
+"\">Wiki Audacity</a>."
 
 #. i18n-hint: The three numbers will be year, month, day. Remember you
 #. can re-order the numbers if you want to - to get Day, Month, Year,
@@ -340,12 +339,12 @@ msgstr "wxWidgets i18n"
 #: community/translation.php:43
 msgid ""
 "Audacity Manual</a> - The Audacity Manual also requires translating. This is "
-"done online using Wiki software. To create an account and start translating, "
+"done online using wiki software. To create an account and start translating, "
 "please contact"
 msgstr ""
-"Manuale utente Audacity</a> - Il manuale utente Audacity deve essere "
-"tradotto. La traduzione viene eseguita online usando il software Wiki. Per "
-"creare un account e iniziare la traduzione, contattateci"
+"Manuale Audacity</a> - Il manuale Audacity deve essere tradotto. La "
+"traduzione viene eseguita online usando il software Wiki. Per creare un "
+"account e iniziare la traduzione, contattateci"
 
 #. i18n-hint: These instructions are for translators only, so you may
 #. leave them untranslated if you like.
@@ -638,12 +637,12 @@ msgstr "Invio di patch"
 msgid ""
 "We welcome patches from developers. Please see our <a href=\"http://wiki."
 "audacityteam.org/wiki/SubmittingPatches\">Submitting Patches</a> page on the "
-"<a href=\"http://wiki.audacityteam.org/wiki\">Wiki</a>."
+"<a href=\"http://wiki.audacityteam.org/wiki\">Audacity Wiki</a>."
 msgstr ""
-"Accogliamo con favore le patch da parte degli sviluppatori. Siete pregati di "
-"leggere la nostra pagina <a href=\"http://audacityteam.org/wiki/"
-"SubmittingPatches\">Invio di patch</a> nel <a href=\"http://wiki."
-"audacityteam.org/wiki\">Wiki</a>."
+"Accogliamo con favore le patch da parte degli sviluppatori. Consultate la "
+"nostra pagina <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches"
+"\">Invio di patch</a> nel <a href=\"http://wiki.audacityteam.org/wiki\">Wiki "
+"Audacity</a>."
 
 #: include/footer.inc.php:15
 msgid "Page Footer"
@@ -679,7 +678,7 @@ msgstr "Sito web ospitato da Sourceforge"
 msgid "View this page in a different language"
 msgstr "Visualizza questa pagina in un'altra lingua"
 
-#: include/header.inc.php:13
+#: include/header.inc.php:13 main.inc.php:33
 msgid "Audacity"
 msgstr "Audacity"
 
@@ -714,10 +713,109 @@ msgid "%B %d, %Y"
 msgstr "%d %B %Y"
 
 #: include/news.inc.php:45
+msgid "Audacity 2.0.4 Released"
+msgstr "Rilasciato Audacity 2.0.4"
+
+#: include/news.inc.php:46
+msgid ""
+"\n"
+"<p>\n"
+"  <a href=\"/download\">Audacity 2.0.4</a>\n"
+"  replaces all previous versions, with these improvements:\n"
+"  <ul>\n"
+"    <li>New \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/reverb.html\"><b>Effect "
+"> Reverb</b></a> \n"
+"      (based on <b><em>Freeverb</em></b>), that replaces <b>GVerb</b>.</li>\n"
+"    <li>New \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/view_menu.html\">\n"
+"        <b>View > Go to Selection Start</b> and <b>Go to Selection End</b></"
+"a> \n"
+"      commands.</li>\n"
+"    <li>New \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/tracks_menu.html\">\n"
+"        <b>Tracks > Align End to End</b></a> \n"
+"      command to append selected tracks.</li>\n"
+"    <li>WAV files import/export now supports \n"
+"      \"Album Title\", \"Track Number\" and \"Genre\" \n"
+"      LIST INFO tags and ID3 tags.</li>\n"
+"    <li>(Windows) New support for <b><em>Windows WDM/KS</em></b> host which "
+"can \n"
+"      provide very low latencies if you reduce \"Audio to Buffer\" in \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/recording_preferences."
+"html\">\n"
+"        Recording Preferences</a>.</li>\n"
+"    <li>(Windows Vista and later) You can now \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/"
+"tutorial_recording_computer_playback_on_windows.html\">\n"
+"        record computer playback</a> \n"
+"      by choosing the new <b><em>Windows WASAPI</em></b> host in \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/device_toolbar.html\">\n"
+"        Device Toolbar</a>\n"
+"      , then a \"loopback\" input.</li>\n"
+"    <li>Bugs have been fixed, involving Keyboard Preferences, Equalization "
+"curves, \n"
+"      and <b>Effect > Change Pitch</b>, and several more. \n"
+"    </li>\n"
+"  </ul>\n"
+"  See the \n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.4\">\n"
+"    2.0.4 Release Notes</a> \n"
+"  for more items and details.\n"
+"</p>\n"
+msgstr ""
+"\n"
+"<p>\n"
+"  <a href=\"/download\">Audacity 2.0.4</a>\n"
+"  sostituisce tutte le precedenti versioni, con questi miglioramenti:\n"
+"  <ul>\n"
+"    <li>Nuovo \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/reverb.html"
+"\"><b>Effetti > Riverbero</b></a> \n"
+"      (basato su <b><em>Freeverb</em></b>), che sostituisce <b>GVerb</b>.</"
+"li>\n"
+"    <li>Nuovo \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/view_menu.html\">\n"
+"       Comandi <b>Visualizza > Vai a inizio selezione</b> e <b>Vai a fine "
+"selezione</b></a>. \n"
+"      </li>\n"
+"    <li>Nuovo \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/tracks_menu.html\">\n"
+"       Comando <b>Tracce > Allinea fine con fine</b></a> \n"
+"      per aggiungere tracce selezionate.</li>\n"
+"    <li>L'importazione/esportazione di file WAV ora supporta \n"
+"      i tag LIST INFO e i tag ID3</li>\n"
+"      \"Titolo album\", \"Numero traccia\" e \"Genere\". \n"
+"    <li>(Windows) Nuovo supporto per l'host <b><em>Windows WDM/KS</em></b> "
+"che può \n"
+"      fornire latenze molto basse se riducete \"Audio nel Buffer\" nelle \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/recording_preferences."
+"html\">\n"
+"        Preferenze Registrazione</a>.</li>\n"
+"    <li>(Windows Vista e seguenti) Ora è possibile \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/"
+"tutorial_recording_computer_playback_on_windows.html\">\n"
+"        registrare la riproduzione del computer</a> \n"
+"      scegliendo il nuovo host <b><em>Windows WASAPI</em></b>nella \n"
+"      <a href=\"http://manual.audacityteam.org/o/man/device_toolbar.html\">\n"
+"        Barra Dispositivi</a>\n"
+"      , poi un imput \"loopback\".</li>\n"
+"    <li>Sono stati corretti errori, che interessavano le Preferenze Tastiera,"
+"le curve di Equalizzazione, \n"
+"      e <b>Effetti > Cambia intonazione</b>, e molti altri. \n"
+"    </li>\n"
+"  </ul>\n"
+"  Consultate le \n"
+"  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.4\">\n"
+"    Note di rilascio 2.0.4 </a> \n"
+" per ulteriori soggetti e dettagli.\n"
+"</p>\n"
+
+#: include/news.inc.php:91
 msgid "Audacity 2.0.3 Released"
 msgstr "Rilasciato Audacity 2.0.3"
 
-#: include/news.inc.php:46
+#: include/news.inc.php:92
 msgid ""
 "\n"
 "<p>\n"
@@ -759,11 +857,11 @@ msgstr ""
 "  Note di rilascio 2.0.3</a> per i dettagli.\n"
 "</p>\n"
 
-#: include/news.inc.php:70
+#: include/news.inc.php:116
 msgid "Audacity 2.0.2 Released"
 msgstr "Rilasciato Audacity 2.0.2"
 
-#: include/news.inc.php:71
+#: include/news.inc.php:117
 msgid ""
 "\n"
 "<p>\n"
@@ -792,11 +890,11 @@ msgstr ""
 "  Note di rilascio 2.0.2</a> per dettagli sui cambiamenti.\n"
 "</p>\n"
 
-#: include/news.inc.php:89
+#: include/news.inc.php:135
 msgid "Audacity 2.0.1 Released"
 msgstr "Rilasciato Audacity 2.0.1"
 
-#: include/news.inc.php:90
+#: include/news.inc.php:136
 msgid ""
 "\n"
 "<p>\n"
@@ -824,11 +922,11 @@ msgstr ""
 "  Note di rilascio 2.0.1</a> per dettagli sui cambiamenti.\n"
 "</p>\n"
 
-#: include/news.inc.php:107
+#: include/news.inc.php:153
 msgid "Audacity 2.0 Released!"
 msgstr "Rilasciato Audacity 2.0!"
 
-#: include/news.inc.php:108
+#: include/news.inc.php:154
 msgid ""
 "\n"
 "<p>\n"
@@ -860,11 +958,11 @@ msgstr ""
 "  per avere informazioni dettagliate.\n"
 "</p>\n"
 
-#: include/news.inc.php:126
+#: include/news.inc.php:172
 msgid "Audacity 1.3.14 released"
 msgstr "Rilasciato Audacity 1.3.14"
 
-#: include/news.inc.php:127
+#: include/news.inc.php:173
 msgid ""
 "\n"
 "<p>\n"
@@ -1029,14 +1127,14 @@ msgstr ""
 "1.3.14 e le serie Beta.\n"
 "</p>\n"
 
-#: include/news.inc.php:195
+#: include/news.inc.php:241
 msgid ""
 "Audacity 1.3.13 released, and LinuxQuestions.org Audio Authoring Award 2010"
 msgstr ""
 "È stata pubblicata la versione 1.3.13 di Audacity  e LinuxQuestions.org "
 "Audio Authoring Award 2010"
 
-#: include/news.inc.php:196
+#: include/news.inc.php:242
 msgid ""
 "\n"
 "<p>\n"
@@ -1247,14 +1345,14 @@ msgstr ""
 "espressi. Grazie a coloro che hanno votato. \n"
 "</p> \n"
 
-#: include/news.inc.php:274
+#: include/news.inc.php:320
 msgid ""
 "Audacity 1.3.12 released, and Audacity book release from PACKT Publishing"
 msgstr ""
 "È stata pubblicata la versione 1.3.12 di Audacity, e il libro su Audacity da "
 "parte di PACKT Publishing"
 
-#: include/news.inc.php:275
+#: include/news.inc.php:321
 msgid ""
 "\n"
 "<p>\n"
@@ -1449,11 +1547,11 @@ msgstr ""
 "Audacity</a>.\n"
 "</p> \n"
 
-#: include/news.inc.php:353
+#: include/news.inc.php:399
 msgid "Audacity 1.3.11 released"
 msgstr "Rilasciato Audacity 1.3.11"
 
-#: include/news.inc.php:354
+#: include/news.inc.php:400
 msgid ""
 "\n"
 "<p>\n"
@@ -1620,11 +1718,11 @@ msgstr ""
 "1.3.7</a>. \n"
 "</p>\n"
 
-#: include/news.inc.php:425
+#: include/news.inc.php:471
 msgid "Audacity 1.3.10 released"
 msgstr "Rilasciato Audacity 1.3.10"
 
-#: include/news.inc.php:426
+#: include/news.inc.php:472
 msgid ""
 "\n"
 "<p>\n"
@@ -1818,12 +1916,12 @@ msgstr ""
 "la versione 1.3.7.</a>. \n"
 "</p>\n"
 
-#: include/news.inc.php:508
+#: include/news.inc.php:554
 msgid "Audacity 1.3.9 released, Google Summer of Code (GSoC) 2009 completed"
 msgstr ""
 "Rilasciato Audacity 1.3.9, completato il Google Summer of Code (GSoC) 2009"
 
-#: include/news.inc.php:509
+#: include/news.inc.php:555
 msgid ""
 "\n"
 "<p>\n"
@@ -1974,11 +2072,11 @@ msgstr ""
 "ancora disponibile</a>. \n"
 "</p>\n"
 
-#: include/news.inc.php:573
+#: include/news.inc.php:619
 msgid "SourceForge.net Community Choice Awards 2009"
 msgstr "SourceForge.net Community Choice Awards 2009"
 
-#: include/news.inc.php:574
+#: include/news.inc.php:620
 msgid ""
 "\n"
 "<p>\n"
@@ -2004,11 +2102,11 @@ msgstr ""
 "supporto negli anni!\n"
 "</p>\n"
 
-#: include/news.inc.php:589
+#: include/news.inc.php:635
 msgid "Audacity 1.3.8 released"
 msgstr "Rilasciato Audacity 1.3.8"
 
-#: include/news.inc.php:590
+#: include/news.inc.php:636
 msgid ""
 "\n"
 "<p>\n"
@@ -2098,12 +2196,12 @@ msgstr ""
 "disponibile la versione 1.3.7</a>. \n"
 "</p>\n"
 
-#: include/news.inc.php:630
+#: include/news.inc.php:676
 msgid "Linux Journal and Bestcovery Awards, and new \"Audacity compact\" book"
 msgstr ""
 "Linux Journal e Bestcovery Awards, e il nuovo libro \"Audacity compact\""
 
-#: include/news.inc.php:631
+#: include/news.inc.php:677
 msgid ""
 "\n"
 "<p>\n"
@@ -2258,12 +2356,12 @@ msgstr ""
 "</tr>\n"
 "</table>\n"
 
-#: include/news.inc.php:699
+#: include/news.inc.php:745
 msgid "Audacity is mentoring two Google Summer of Code (GSoC) 2009 students"
 msgstr ""
 "Audacity è guida per due studenti al Google Summer of Code (GSoC) 2009 "
 
-#: include/news.inc.php:700
+#: include/news.inc.php:746
 msgid ""
 "\n"
 "<p>\n"
@@ -2315,11 +2413,11 @@ msgstr ""
 "sono applicati per l'interesse ad Audacity!\n"
 "</p>\n"
 
-#: include/news.inc.php:724
+#: include/news.inc.php:770
 msgid "Audacity 1.3.7 released"
 msgstr "Rilasciato Audacity 1.3.7"
 
-#: include/news.inc.php:725
+#: include/news.inc.php:771
 msgid ""
 "\n"
 "<p>\n"
@@ -2489,11 +2587,11 @@ msgstr ""
 "</p>\n"
 "<br>\n"
 
-#: include/news.inc.php:791
+#: include/news.inc.php:837
 msgid "Audacity 1.3.6 released"
 msgstr "Rilasciato Audacity 1.3.6"
 
-#: include/news.inc.php:792
+#: include/news.inc.php:838
 msgid ""
 "\n"
 "<p>\n"
@@ -2599,11 +2697,11 @@ msgstr ""
 "1.3.6 installati sullo stesso computer.\n"
 "</p>\n"
 
-#: include/news.inc.php:840
+#: include/news.inc.php:886
 msgid "German Audacity Book released"
 msgstr "Rilasciato un libro su Audacity in lingua tedesca"
 
-#: include/news.inc.php:841
+#: include/news.inc.php:887
 msgid ""
 "\n"
 "<p>\n"
@@ -2704,11 +2802,11 @@ msgstr ""
 "</table>\n"
 "</p>\n"
 
-#: include/news.inc.php:884
+#: include/news.inc.php:930
 msgid "Audacity shines in Google Summer of Code (GSoC) 2008"
 msgstr "Audacity brilla nel Google Summer of Code (GSoC) 2008"
 
-#: include/news.inc.php:885
+#: include/news.inc.php:931
 msgid ""
 "\n"
 "<p>\n"
@@ -2828,11 +2926,11 @@ msgstr ""
 "\"celebrano i migliori prodotti che l'open source offre\".  \n"
 "</p>    \n"
 
-#: include/news.inc.php:936
+#: include/news.inc.php:982
 msgid "Audacity in PC World 100 Best Products of 2008"
 msgstr "Audacity nel PC World 100 Best Products of 2008"
 
-#: include/news.inc.php:937
+#: include/news.inc.php:983
 msgid ""
 "\n"
 "<p>\n"
@@ -2933,11 +3031,11 @@ msgstr ""
 "<em>di PC Magazine</em> per il Migliore Software Libero.\n"
 "</p>\n"
 
-#: include/news.inc.php:979
+#: include/news.inc.php:1025
 msgid "Audacity 1.3.5 Released"
 msgstr "Rilasciato Audacity 1.3.5"
 
-#: include/news.inc.php:980
+#: include/news.inc.php:1026
 msgid ""
 "\n"
 "<p>\n"
@@ -3157,13 +3255,13 @@ msgstr ""
 "per avere ulteriori informazioni sulla serie delle versioni 1.3.x beta.\n"
 "</p>\n"
 
-#: include/news.inc.php:1070
+#: include/news.inc.php:1116
 msgid "Audacity is mentoring five Google Summer of Code (GSoC) 2008 students"
 msgstr ""
 "Audacity è stato guida per cinque studenti nel Google Summer of Code (GSoC) "
 "2008"
 
-#: include/news.inc.php:1071
+#: include/news.inc.php:1117
 msgid ""
 "\n"
 "<p>\n"
@@ -3207,12 +3305,12 @@ msgstr ""
 "si sono applicati per l'interesse su Audacity!\n"
 "</p>\n"
 
-#: include/news.inc.php:1091
+#: include/news.inc.php:1137
 msgid "Audacity is a mentoring organization Google Summer of Code (GSoC) 2008 "
 msgstr ""
 "Audacity è una organizzazione guida di Google Summer of Code (GSoC) 2008 "
 
-#: include/news.inc.php:1092
+#: include/news.inc.php:1138
 msgid ""
 "\n"
 "<p>\n"
@@ -3254,7 +3352,7 @@ msgstr ""
 "\tGrazie per l'interesse!\n"
 "</p>\n"
 
-#: include/news.inc.php:1112
+#: include/news.inc.php:1158
 msgid ""
 "Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer "
 "of Code (GSoC) 2008 "
@@ -3262,7 +3360,7 @@ msgstr ""
 "Invito per gli studenti! Richiedete <em>ORA</em> i progetti Audacity in "
 "Google Summer of Code (GSoC) 2008 "
 
-#: include/news.inc.php:1113
+#: include/news.inc.php:1159
 msgid ""
 "\n"
 "<p>\n"
@@ -3376,11 +3474,11 @@ msgstr ""
 "sourceforge.net/\">sito web</a> per queste informazioni.\n"
 "</p>\n"
 
-#: include/news.inc.php:1155
+#: include/news.inc.php:1201
 msgid "Audacity and Google Summer of Code (GSoC) 2008 "
 msgstr "Audacity e Google Summer of Code (GSoC) 2008 "
 
-#: include/news.inc.php:1156
+#: include/news.inc.php:1202
 msgid ""
 "\n"
 "<p>\n"
@@ -3465,11 +3563,11 @@ msgstr ""
 "sourceforge.net/\">sito web</a> per queste informazioni.\n"
 "</p>\n"
 
-#: include/news.inc.php:1187
+#: include/news.inc.php:1233
 msgid "LinuxQuestions.org Audio Authoring Award 2007"
 msgstr "LinuxQuestions.org Audio Authoring Award 2007"
 
-#: include/news.inc.php:1188
+#: include/news.inc.php:1234
 #, php-format
 msgid ""
 "\n"
@@ -3496,11 +3594,11 @@ msgstr ""
 "chiunque abbia votato.\n"
 "</p>\n"
 
-#: include/news.inc.php:1199
+#: include/news.inc.php:1245
 msgid "Audacity 1.3.4 Released"
 msgstr "Rilasciato Audacity 1.3.4 "
 
-#: include/news.inc.php:1200
+#: include/news.inc.php:1246
 msgid ""
 "\n"
 "<p>\n"
@@ -3576,11 +3674,11 @@ msgstr ""
 "isbn=0132366576&rl=1\">Podcasting with Audacity</a>.\n"
 "</p>\n"
 
-#: include/news.inc.php:1237
+#: include/news.inc.php:1283
 msgid "SourceForge Community Choice Awards 2007"
 msgstr "SourceForge Community Choice Awards 2007"
 
-#: include/news.inc.php:1238
+#: include/news.inc.php:1284
 msgid ""
 "\n"
 "<p>\n"
@@ -3607,11 +3705,11 @@ msgstr ""
 "coloro che hanno contribuito a rendere Audacity grande!\n"
 "</p>\n"
 
-#: include/news.inc.php:1253
+#: include/news.inc.php:1299
 msgid "Audacity 1.3.3 Released"
 msgstr "Rilasciato Audacity 1.3.3"
 
-#: include/news.inc.php:1254
+#: include/news.inc.php:1300
 msgid ""
 "\n"
 "<p>\n"
@@ -3771,11 +3869,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>\n"
 
-#: include/news.inc.php:1327
+#: include/news.inc.php:1373
 msgid "Audacity 1.3.2 and 1.2.5 Released"
 msgstr "Rilasciati Audacity 1.3.2 e 1.2.5"
 
-#: include/news.inc.php:1328
+#: include/news.inc.php:1374
 msgid ""
 "<p>\n"
 "The Audacity developers have been busy with many new features over\n"
@@ -3914,11 +4012,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>"
 
-#: include/news.inc.php:1392
+#: include/news.inc.php:1438
 msgid "The Audacity Store Is Open"
 msgstr "Il negozio Audacity è aperto"
 
-#: include/news.inc.php:1393
+#: include/news.inc.php:1439
 msgid ""
 "\n"
 "\t<p>You are invited to try out the new <a href=\"http://audacitystore.com/"
@@ -4031,11 +4129,11 @@ msgstr ""
 "\t</p>\n"
 "\t"
 
-#: include/news.inc.php:1437
+#: include/news.inc.php:1483
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr "Rilasciato Audacity 1.2.4 e 1.3.0"
 
-#: include/news.inc.php:1438
+#: include/news.inc.php:1484
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple "
 "of bug fixes and minor improvements and is recommended for all users.  "
@@ -4067,11 +4165,11 @@ msgstr ""
 "<a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>.\n"
 "</p>"
 
-#: include/news.inc.php:1448
+#: include/news.inc.php:1494
 msgid "Audacity 1.2.3 Released"
 msgstr "Rilasciato Audacity 1.2.3"
 
-#: include/news.inc.php:1449
+#: include/news.inc.php:1495
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a "
 "bug that interfered with long recordings on some Windows systems, and "
@@ -4203,20 +4301,20 @@ msgid ""
 "community/developers\">programming</a>, <a href=\"../contact#feedback"
 "\">testing</a>, <a href=\"http://manual.audacityteam.org/\"> documentation</"
 "a>, <a href=\"../community/translation\">translations</a> or by anwering "
-"questions on our <a href=\"http://forum.audacityteam.org/\">Forum</a>. We "
-"have always welcomed users whose only contribution is simply using Audacity, "
-"giving us feedback on how to improve it and telling others about it. Thank "
-"you for supporting Audacity."
+"questions on the <a href=\"http://forum.audacityteam.org/\">Audacity Forum</"
+"a>. We have always welcomed users whose only contribution is simply using "
+"Audacity, giving us feedback on how to improve it and telling others about "
+"it. Thank you for supporting Audacity."
 msgstr ""
 "Oltre a donare denaro, è possibile <a href=\"http://wiki.audacityteam.org/"
 "wiki/Contribute\"> collaborare</a> aiutandoci <a href=\"../community/"
 "developers\">programmando</a>, <a href=\"../contact#feedback\">testando</a>, "
-"<a href=\"http://manual.audacityteam.org/\"> traducendo la documentazione</"
-"a>,<a href=\"../community/translation\"></a> o rispondendo alle domande sul "
-"nostro <a href=\"http://forum.audacityteam.org/\">Forum</a>. Diamo sempre il "
-"benvenuto agli utenti il cui solo contributo è semplicemente usare Audacity, "
-"fornendoci suggerimenti su come migliorarlo e parlarne ad altri. Vi "
-"ringraziamo di supportare Audacity."
+"<a href=\"http://manual.audacityteam.org/\"> fornendo documentazione</a>, <a "
+"href=\"../community/translation\">traducendo</a> o rispondendo a domande "
+"sul<a href=\"http://forum.audacityteam.org/\">Forum Audacity</a>. Diamo "
+"sempre il benvenuto agli utenti il cui solo contributo è semplicemente usare "
+"Audacity, fornendoci suggerimenti su come migliorarlo e parlarne ad altri. "
+"Vi ringraziamo di supportare Audacity."
 
 #: donate/index_v.php:20
 msgid ""
@@ -4358,12 +4456,12 @@ msgstr ""
 #: help/index.php:36
 msgid ""
 "<p><b>Still need help?</b> Please read <a href=\"../contact/\">Contact Us</"
-"a> for how to ask your question on the Audacity <a href=\"http://forum."
-"audacityteam.org/\">Forum</a>.</p>"
+"a> for how to ask your question on the <a href=\"http://forum.audacityteam."
+"org/\">Audacity Forum</a>.</p>"
 msgstr ""
-"<p><b>Ancora bisogno di aiuto?</b> Leggete la sezione <a href=\"../contact/"
-"\">Contattateci</a> per sapere come porre domande sul <a href=\"http://forum."
-"audacityteam.org/\">Forum</a> di Audacity.</p>"
+"<p><b>Ancora bisogno di aiuto?</b> Consultate la sezione <a href=\"../"
+"contact/\">Contattateci</a> per sapere come porre domande sul <a href="
+"\"http://forum.audacityteam.org/\">Forum Audacity</a>.</p>"
 
 #: help/nyquist3.php:10 help/nyquist3.php:19 help/nyquist.php:20
 #: help/nyquist2.php:19
@@ -4666,13 +4764,14 @@ msgstr "%sSe avete dei problemi nel lavorare con Nyquist, %scontattateci%s.%s"
 msgid ""
 "%sIf you are working on Nyquist plug-in effects and would like to share them "
 "with others, or if you would like to discuss how to achieve certain effects "
-"in Nyquist, please post on the %sNyquist board of the Forum%s or join the "
-"%saudacity-nyquist mailing list%s.%s"
+"in Nyquist, please post on the %sNyquist board of the Audacity Forum%s or "
+"join the %saudacity-nyquist mailing list%s.%s"
 msgstr ""
 "%sSe state eseguendo un lavoro sui plug-in effetti Nyquist e desiderate "
 "condividerlo con altri, o se volete discutere dei dettagli generali di come "
 "ottenere certi effetti in Nyquist, inviate un messaggio nella %ssezione "
-"Nyquist del Forum%s o iscrivetevi alla %saudacity-nyquist mailing list%s.%s"
+"Nyquist del Forum Audacity%s o iscrivetevi alla %saudacity-nyquist mailing "
+"list%s.%s"
 
 #. i18n-hint: All the %s are HTML tags which makes "Nyquist Reference Manual" into a link
 #: help/nyquist3.php:128
@@ -4838,19 +4937,19 @@ msgid ""
 "navigate the menus sequentially to change the language, or change it in the "
 "audacity.cfg settings file. For instructions, please see <a href=\"http://"
 "wiki.audacityteam.org/wiki/Changing_the_current_language\">Changing the "
-"current language</a> on the Audacity <a href=\"http://wiki.audacityteam.org"
-"\">Wiki</a>.</p>"
+"current language</a> on the <a href=\"http://wiki.audacityteam.org"
+"\">Audacity Wiki</a>.</p>"
 msgstr ""
 "<p>La lingua usata in Audacity al primo avvio è determinata dalla lingua del "
-"sistema operativo in uso. Per cambiare la lungua corrente in Audacity, "
+"sistema operativo in uso. Per cambiare la lingua corrente in Audacity, "
 "andate nella scheda Interfaccia delle Preferenze, scegliete la lingua "
 "desiderata dal riquadro \"Lingua\", poi fate clic su OK.</p>\n"
-"<p>Se Audacity è già avviato in una lingua non familiare, è possibile "
+"<p>Se Audacity è già avviato in una lingua non desiderata, è possibile "
 "navigare tra i menu sequenzialmente per cambiare la lingua, o cambiarla nel "
 "file di impostazioni audacity.cfg. Per le istruzioni,consultate <a href="
-"\"http://wiki.audacityteam.org/wiki/Changing_the_current_language\">cambiare "
-"la lingua corrente</a> nel <a href=\"http://wiki.audacityteam.org\">Wiki</a> "
-"di Audacity.</p>"
+"\"http://wiki.audacityteam.org/wiki/Changing_the_current_language\">Cambiare "
+"la lingua corrente</a> nel <a href=\"http://wiki.audacityteam.org\">Wiki "
+"Audacity</a>.</p>"
 
 #: help/faq_i18n.php:59
 msgid "Does Audacity run on 64-bit systems?"
@@ -4936,8 +5035,8 @@ msgid ""
 "<h3 id=\"nix\">Linux/Unix</h3>\n"
 "Follow <a href=\"http://audacityteam.org/wiki/index.php?"
 "title=Lame_Installation#GNU.2FLinux.2FUnix_instructions\">these "
-"instructions</a> on our <a href=\"http://audacityteam.org/wiki/\">Wiki</a> "
-"to download and install a suitable LAME package from the internet."
+"instructions</a> on the <a href=\"http://audacityteam.org/wiki/\">Audacity "
+"Wiki</a> to download and install a suitable LAME package from the internet."
 msgstr ""
 "<p>A causa dei brevetti software, non possiamo distribuire il software di "
 "codifica MP3. Seguite le istruzioni seguenti per usare l'encoder libero LAME "
@@ -4986,7 +5085,7 @@ msgstr ""
 "  <li>La prima volta che usate il comando \"Esporta come MP3\", Audacity vi "
 "chiederà la sede di \"libmp3lame.dylib\" o \"LameLib\". Andate in questa "
 "sede, poi aprite il file e fate clic su \"OK\".</li>\n"
-"    <li>In caso di difficoltà, leggete le nostre <a href=\"http://"
+"    <li>In caso di difficoltà, consultate le nostre <a href=\"http://"
 "audacityteam.org/wiki/index.php?title=Lame_Installation#Mac_Instructions"
 "\">istruzioni più dettagliate</a> nel <a href=\"http://audacityteam.org/wiki/"
 "index.php\">Wiki Audacity</a>.</li> \n"
@@ -4994,8 +5093,8 @@ msgstr ""
 "<h3 id=\"nix\">Linux/Unix</h3>\n"
 "Seguite <a href=\"http://audacityteam.org/wiki/index.php?"
 "title=Lame_Installation#GNU.2FLinux.2FUnix_instructions\">queste istruzioni</"
-"a> nel nostro <a href=\"http://audacityteam.org/wiki/\">Wiki</a> per "
-"scaricare e installare un idoneo pacchetto LAME da internet."
+"a> nel nostro <a href=\"http://audacityteam.org/wiki/\">Wiki Audacity</a> "
+"per scaricare e installare un idoneo pacchetto LAME da internet."
 
 #: help/faq_i18n.php:94
 msgid "What should I do if I have problems downloading or installing Audacity?"
@@ -5057,9 +5156,9 @@ msgid ""
 "turntables</a> on the Audacity Wiki.</p>\n"
 "<p>There is also a detailed tutorial, <a href=\"http://audacityteam.org/wiki/"
 "index.php?title=Transferring_tapes_and_records_to_computer_or_CD"
-"\">Transferring tapes and records to computer or CD</a>, on the Wiki. This "
-"will guide you through the steps from recording your records, cassettes or "
-"minidiscs to exporting as an audio file and burning to CD.</p>\n"
+"\">Transferring tapes and records to computer or CD</a>, on the Audacity "
+"Wiki. This will guide you through the steps from recording your records, "
+"cassettes or minidiscs to exporting as an audio file and burning to CD.</p>\n"
 "<p>Notes:</p>\n"
 "<ul>\n"
 "\t<li><p>Do not plug stereo equipment into your computer’s “Microphone” "
@@ -5095,9 +5194,9 @@ msgstr ""
 "<p>È inoltre disponibile un dettagliato tutorial, <a href=\"http://"
 "audacityteam.org/wiki/index.php?"
 "title=Transferring_tapes_and_records_to_computer_or_CD\">Trasferire nastri e "
-"dischi su computer o CD</a>, nel Wiki. Questo tutorial vi guiderà passo dopo "
-"passo dalla registrazione dei vostri dischi, cassette o minidisc fino alla "
-"esportazione in file audio e alla masterizzazione su CD.</p>\n"
+"dischi su computer o CD</a>, nel Wiki Audacity. Questo tutorial vi guiderà "
+"passo dopo passo dalla registrazione dei vostri dischi, cassette o minidisc "
+"fino alla esportazione in file audio e alla masterizzazione su CD.</p>\n"
 "<p>Note:</p>\n"
 "<ul>\n"
 "\t<li><p>Non collegate apparecchi stereo nella porta “Microfono” del vostro "
@@ -5210,7 +5309,7 @@ msgid ""
 "Control Panel and try to enable this option there. For instructions see: <a "
 "href=\"http://audacityteam.org/wiki/index.php?"
 "title=Mixer_Toolbar_Issues#Using_the_Control_Panel\">Using the Control "
-"Panel</a> on the Wiki.</p>\n"
+"Panel</a> on the Audacity Wiki.</p>\n"
 "<p>If this doesn't work on your computer, you can instead use a cable to "
 "connect your computer's “Line Out” (speaker) port to its “Line In” port, and "
 "use Audacity to record from Line In.</p>\n"
@@ -5222,37 +5321,37 @@ msgid ""
 "open source), <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio "
 "Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/"
 "\">Wiretap Pro</a>. For more help see <a href=\"http://wiki.audacityteam.org/"
-"wiki/Recording_audio_playing_on_the_computer#Mac\">this page</a> on our <a "
-"href=\"http://wiki.audacityteam.org/wiki/\">Wiki</a>.</p>\n"
+"wiki/Recording_audio_playing_on_the_computer#Mac\">this page</a> on the <a "
+"href=\"http://wiki.audacityteam.org/wiki/\">Audacity Wiki</a>.</p>\n"
 msgstr ""
 "<h3>Windows e Linux</h3>\n"
 "<p>Con la maggior parte dei dispositivi audio in Windows e Linux, è "
 "possibile registrare qualsiasi audio che il computer sta correntemente "
 "riproducendo, inclusi i flussi delle radio in internet.</p>\n"
-"<p>Nel menu a comparsa della Barra strumenti Dispositivi di Audacity, "
-"scegliete “Wave Out” o “Stereo Mix” come sorgente di ingresso.  (Il nome "
-"esatto può essere differente, in relazione ai driver audio del vostro "
-"computer). In Windows, se non avete un'opzione “Wave Out” or “Stereo Mix”, o "
-"se non si registra, andate nel Pannello di controllo del sistema e cercate "
-"di abilitare questa opzione in questa sede. Per avere le istruzioni "
-"consultate: <a href=\"http://audacityteam.org/wiki/index.php?"
+"<p>Nel menu a comparsa della Barra Dispositivi di Audacity, scegliete “Wave "
+"Out” o “Stereo Mix” come sorgente di ingresso.  (Il nome esatto può essere "
+"differente, in relazione ai driver audio del vostro computer). In Windows, "
+"se non avete un'opzione “Wave Out” o “Stereo Mix”, o se non si registra, "
+"andate nel Pannello di controllo del sistema e cercate di abilitare questa "
+"opzione in questa sede. Per avere le istruzioni consultate: <a href=\"http://"
+"audacityteam.org/wiki/index.php?"
 "title=Mixer_Toolbar_Issues#Using_the_Control_Panel\">Usare il Pannello di "
-"controllo</a> nel Wiki.</p>\n"
+"controllo</a> nel Wiki Audacity.</p>\n"
 "<p>Se questa procedura non funziona nel vostro computer, è possibile usare "
-"un cavo per collegare la porta “Line Out” (speaker) del computerall sua "
-"porta “Line In” port, e usare Audacity per registrare da Line In.</p>\n"
+"un cavo per collegare la porta “Line Out” (speaker) del computer alla sua "
+"porta “Line In”, e usare Audacity per registrare da Line In.</p>\n"
 "<p><b>Nota:</b> Non abilitate l'opzione\"Software playthrough\" quando "
-"registrate una roduzione del computer, poiché questo crea una serie di echi."
-"</p> \n"
+"registrate una riproduzione del computer, poiché questo crea una serie di "
+"echi.</p> \n"
 "<h3 id=\"mac\">Mac OS X</h3>\n"
-"<p>Gli utenti di Mac OS X possono catturareflussi audio usando un programma "
+"<p>Gli utenti di Mac OS X possono catturare flussi audio usando un programma "
 "come <a href=\"http://www.cycling74.com/products/soundflower\">Soundflower</"
 "a> (gratuito, open source), <a href=\"http://www.rogueamoeba.com/audiohijack/"
 "\">Audio Hijack</a> o <a href=\"http://www.ambrosiasw.com/utilities/wiretap/"
 "\">Wiretap Pro</a>. Per avere maggiori aiuti consultate <a href=\"http://"
 "wiki.audacityteam.org/wiki/Recording_audio_playing_on_the_computer#Mac"
 "\">questa pagina</a> nel nostro <a href=\"http://wiki.audacityteam.org/wiki/"
-"\">Wiki</a>.</p>\n"
+"\">Wiki Audacity</a>.</p>\n"
 
 #: help/faq_i18n.php:153
 msgid "Can I set Audacity to record at a certain time?"
@@ -5283,8 +5382,8 @@ msgid ""
 "like WAV or AIFF.</p>\n"
 "<p>To learn more about working with Audacity projects, please see our <a "
 "href=\"http://wiki.audacityteam.org/index.php?title=File_Management_Tips"
-"\">File Management Tips</a> on the Audacity <a href=\"http://wiki."
-"audacityteam.org/index.php\">Wiki</a>.</p>   \n"
+"\">File Management Tips</a> on the <a href=\"http://wiki.audacityteam.org/"
+"index.php\">Audacity Wiki</a>.</p>   \n"
 msgstr ""
 "<p>I file progetto Audacity sono salvati in un formato speciale che solo "
 "Audacity può aprire. Per aprire un progetto in un altro programma o per <a "
@@ -5293,7 +5392,7 @@ msgstr ""
 "di recente sarà nel menu File&nbsp;>&nbsp;File recenti). Poi usate i comandi "
 "<b>Esporta</b> presenti nel menu File per salvare l'audio in un formato "
 "standard come WAV o AIFF.</p>\n"
-"<p>Per saperne di più su come lavorare con i progetti Audacity, leggete i "
+"<p>Per saperne di più su come lavorare con i progetti Audacity, consultate i "
 "nostri <a href=\"http://wiki.audacityteam.org/index.php?"
 "title=File_Management_Tips\">Consigli gestione file</a> nel <a href=\"http://"
 "wiki.audacityteam.org/index.php\">Wiki Audacity</a>.</p>   \n"
@@ -5316,8 +5415,8 @@ msgid ""
 "files in the correct sequence automatically.</p> <p>To learn more about "
 "working with Audacity projects, please see our <a href=\"http://wiki."
 "audacityteam.org/index.php?title=File_Management_Tips\">File Management "
-"Tips</a> on the Audacity <a href=\"http://wiki.audacityteam.org/index.php"
-"\">Wiki</a>.</p>"
+"Tips</a> on the <a href=\"http://wiki.audacityteam.org/index.php\">Audacity "
+"Wiki</a>.</p>"
 msgstr ""
 "<p>Audacity spezza le lunghe tracce in piccole parti in modo da poterle "
 "modificare in maniera più efficace. Quando salvate un file progetto .aup, "
@@ -5327,9 +5426,9 @@ msgstr ""
 "o spostare o rinominare la cartella _data</b>. Semplicemente aprite il file ."
 "aup, poi Audacity caricherà i file .au automaticamente nella sequenza "
 "corretta.</p> <p>Per saperne di più su come lavorare con i progetti "
-"Audacity, vedete i nostri <a href=\"http://wiki.audacityteam.org/index.php?"
-"title=File_Management_Tips\">Consigli gestione file</a> nel <a href=\"http://"
-"wiki.audacityteam.org/index.php\">Wiki Audacity</a>.</p>"
+"Audacity, consultate i nostri <a href=\"http://wiki.audacityteam.org/index."
+"php?title=File_Management_Tips\">Consigli gestione file</a> nel <a href="
+"\"http://wiki.audacityteam.org/index.php\">Wiki Audacity</a>.</p>"
 
 #: help/faq_i18n.php:173
 msgid "Audacity crashed!  Can I recover any unsaved data?"
@@ -5389,19 +5488,20 @@ msgstr "Audacity può importare ulteriori formati file come M4A, WMA o FLAC?"
 
 #: help/faq_i18n.php:190
 msgid ""
-"<p>Yes. Install the optional <a href=\"http://manual.audacityteam.org/index."
-"php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg</a> library. "
-"FFmpeg also allows Audacity to import audio from video files. Note that on "
-"Mac OS X, Audacity has built-in support for M4A import without installing "
-"FFmpeg, using the QuickTime components supplied by the operating system.</"
-"p>\n"
+"<p>Yes, if you install the optional <a href=\"http://manual.audacityteam.org/"
+"o/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg</a> library and if "
+"you have at least legacy Audacity 1.3.13 or later. FFmpeg also allows "
+"Audacity to import audio from video files. Note that on Mac OS X, Audacity "
+"has built-in support for M4A import without installing FFmpeg, using the "
+"QuickTime components supplied by the operating system.</p>\n"
 msgstr ""
-"<p>Si. Installate la libreria opzionalel <a href=\"http://manual."
-"audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg"
-"\">FFmpeg</a>. FFmpeg inoltre permette ad Audacity di importare audio da "
-"file video. È da notare che in Mac OS X, Audacity dispone del supporto per "
-"importare M4A senza la necessità di installare FFmpeg, usando i componenti "
-"QuickTime forniti dal sistema operativo.</p>\n"
+"<p>Si, se installate la libreria opzionale <a href=\"http://manual."
+"audacityteam.org/o/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg</"
+"a> e se avete almeno il vecchio Audacity 1.3.13 o successivo. FFmpeg inoltre "
+"permette ad Audacity di importare audio da file video. È da notare che in "
+"Mac OS X, Audacity dispone del supporto per importare M4A senza la necessità "
+"di installare FFmpeg, usando i componenti QuickTime forniti dal sistema "
+"operativo.</p>\n"
 
 #: help/faq_i18n.php:194
 msgid "How do I import a track from an audio CD?"
@@ -5415,9 +5515,9 @@ msgid ""
 "into a format that Audacity can read, like WAV or AIFF.</p>\n"
 "<p>On Mac OS X computers, CD tracks appear in Finder as AIFF files so can be "
 "imported directly into Audacity. For more help on importing audio from CD "
-"tracks on both Windows and OS X, see our Wiki help page on <a href=\"http://"
-"audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How to import CDs</"
-"a>.</p>\n"
+"tracks on both Windows and OS X, see the Audacity Wiki help page on <a href="
+"\"http://audacityteam.org/wiki/index.php?title=How_to_import_CDs\">How to "
+"import CDs</a>.</p>\n"
 "<p>See also: <a href=\"faq_i18n?s=files&amp;i=burn-cd\">How do I save my "
 "recording on an audio CD?</a></p>\n"
 msgstr ""
@@ -5428,9 +5528,9 @@ msgstr ""
 "AIFF.</p>\n"
 "<p>Nei computer Mac OS X, le tracce CD appaiono in Finder come file AIFF e "
 "quindi possono essere importate direttamente in Audacity. Per avere un aiuto "
-"maggiore sull'importazione di audio da tracce CD in Windows e OS X, leggete "
-"la nostra pagina Wiki di aiuto in <a href=\"http://audacityteam.org/wiki/"
-"index.php?title=How_to_import_CDs\">Come importare CD</a>.</p>\n"
+"maggiore sull'importazione di audio da tracce CD in Windows e OS X, "
+"consultate la nostra pagina Wiki di aiuto in <a href=\"http://audacityteam."
+"org/wiki/index.php?title=How_to_import_CDs\">Come importare CD</a>.</p>\n"
 "<p>Consultate inoltre: <a href=\"faq_i18n?s=files&amp;i=burn-cd\">Come posso "
 "salvare la registrazione su un CD audio?</a></p>\n"
 
@@ -5629,7 +5729,7 @@ msgid ""
 "<p>If the vocals are not exactly the same on both stereo channels, there are "
 "some other techniques or optional plug-ins you can try. Please see our <a "
 "href=\"http://audacityteam.org/wiki/index.php?title=Vocal_Removal\">Vocal "
-"Removal</a> Wiki page for more details.</p>\n"
+"Removal</a> Audacity Wiki page for more details.</p>\n"
 msgstr ""
 "<p>Questo è possibile <b>solo per certe tracce stereo</b>. Quando le parti "
 "vocali sono esattamente le stesse in ambedue i canali stereo, è possibile "
@@ -5649,12 +5749,12 @@ msgstr ""
 "<p>Premete il pulsante <b>Riproduci</b> per ascoltare il risultato. Se siete "
 "stati fortunati, la componente vocale sarà scomparsa, ma la maggior parte "
 "della componente strumentale sarà rimasta inalterata, come in una traccia di "
-"karaoke. Potete usare i comandi Esporta del menu File per salvare il "
+"karaoke. È possibile usare i comandi Esporta del menu File per salvare il "
 "risultato.</p>\n"
 "<p>Se le parti vocali non sono esattamente le stesse in ambedue i canali "
 "stereo, sono disponibili altre tecniche o plug-in opzionali con cui operare. "
-"Leggete la nostra pagina Wiki <a href=\"http://audacityteam.org/wiki/index."
-"php?title=Vocal_Removal\">Rimozione delle parti vocalil</a> per avere "
+"Consultate la nostra pagina Wiki <a href=\"http://audacityteam.org/wiki/"
+"index.php?title=Vocal_Removal\">Rimozione delle parti vocalil</a> per avere "
 "maggiori dettagli.</p>\n"
 
 #: help/faq_i18n.php:272
@@ -5704,13 +5804,17 @@ msgstr "Documentazione precedente"
 
 #: help/legacy_documentation.php:16
 msgid ""
-"This is old documentation for legacy versions of Audacity. Please see <a "
-"href=\"/help/documentation\">Documentation</a> for information about the "
-"current Audacity Manuals."
+"This is legacy documentation for <a href=\"../download/#legacy\">old "
+"versions of Audacity</a>. Also see the <a href=\"faq_i18n\">Older Frequently "
+"Asked Questions</a> for more help with old versions. Please see <a href=\"/"
+"help/documentation\">Documentation</a> for information about the current "
+"Audacity Manuals."
 msgstr ""
-"Questa è la vecchia documentazione per le versioni precedenti di Audacity. "
-"Consultate <a href=\"/help/documentation\">Documentazione</a> per avere "
-"maggiori informazioni sull'attuale manuale di Audacity"
+"Questa è la vecchia documentazione per <a href=\"../download/#legacy\">le "
+"versioni precedenti di Audacity</a>. Consultate anche <a href=\"faq_i18n"
+"\">Vecchie FAQ</a> per avere un maggiore aiuto sulle vecchie versioni."
+"Consultate <a href=\"/help/documentation\">Documentazione</a> per "
+"informazioni sul corrente manuale Audacity."
 
 #. i18n-hint:  Please add a note that the guides or manuals below are
 #. in English. This is legacy documentation, so it is not a priority to
@@ -5801,26 +5905,34 @@ msgstr ""
 "sourceforge.net/download/mac\">Mac OS X .dmg</a>."
 
 #: help/faq.php:27
+msgid ""
+"For <a href=\"../download/#legacy\">old versions of Audacity</a> please view "
+"the <a href=\"faq_i18n\">Older Frequently Asked Questions</a>."
+msgstr ""
+"Per le <a href=\"../download/#legacy\">vecchie versioni di Audacity</a> "
+"consultate le <a href=\"faq_i18n\">Vecchie FAQ</a>."
+
+#: help/faq.php:29
 msgid "Other languages"
 msgstr "Altre lingue"
 
-#: help/faq.php:28
+#: help/faq.php:30
 msgid "View the localized FAQ in the online Manual:"
 msgstr "Consultate le FAQ localizzate nel manuale online:"
 
-#: help/faq.php:30
+#: help/faq.php:32
 msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/fr\">French</a>"
 msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/fr\">Francese</a>"
 
-#: help/faq.php:31
+#: help/faq.php:33
 msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/it\">Italian</a>"
 msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/it\">Italiano</a>"
 
-#: help/faq.php:32
+#: help/faq.php:34
 msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/es\">Spanish</a>"
 msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/es\">Spagnolo</a>"
 
-#: help/faq.php:34
+#: help/faq.php:36
 msgid ""
 "<b>Note: </b>For the above three locales, the translation of the remainder "
 "of the Manual is not yet fully complete."
@@ -5828,7 +5940,7 @@ msgstr ""
 "<b>Nota:</b> Per le precedenti tre localizzazioni, la traduzione del resto "
 "del manuale non è ancora stata completata."
 
-#: help/faq.php:36
+#: help/faq.php:38
 msgid ""
 "For all other languages, please check <a href=\"faq_i18n\">Older Frequently "
 "Asked Questions for international help</a>, which remain largely valid for "
@@ -5842,11 +5954,11 @@ msgstr ""
 "<a href=\"http://manual.audacityteam.org/man/Help:Translating\">per tradurre "
 "il manuale<a/>."
 
-#: help/faq.php:38
+#: help/faq.php:40
 msgid "Still need help?"
 msgstr "Avete ancora bisogno di aiuto?"
 
-#: help/faq.php:40
+#: help/faq.php:42
 msgid ""
 "If the Frequently Asked Questions don't resolve your query, see the \n"
 "<a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">\n"
@@ -6555,23 +6667,24 @@ msgid ""
 "audio editor. For additional help, see the <a href=\"/faq\">Frequently Asked "
 "Questions</a> and additional <a href=\"http://wiki.audacityteam.org/wiki/"
 "Category:Tutorial\">Tutorials</a> and <a href=\"http://wiki.audacityteam.org/"
-"wiki/Category:Tips\">Tips</a> on the Audacity <a href=\"http://wiki."
-"audacityteam.org/\">Wiki</a>."
+"wiki/Category:Tips\">Tips</a> on the <a href=\"http://wiki.audacityteam.org/"
+"\">Audacity Wiki</a>."
 msgstr ""
 "Questa pagina contiene collegamenti ai manuali (con Tutorial) dell'editor "
 "audio libero Audacity. Per un ulteriore aiuto, consultate le <a href=\"faq"
 "\">Frequently Asked Questions</a> e gli ulteriori <a href=\"http://wiki."
 "audacityteam.org/wiki/Category:Tutorial\">Tutorial</a> e <a href=\"http://"
 "wiki.audacityteam.org/wikiCategory:Tips\">Suggerimenti</a> nel <a href="
-"\"http://wiki.audacityteam.org/\">Wiki</a> Audacity."
+"\"http://wiki.audacityteam.org/\">Wiki Audacity</a>."
 
 #: help/documentation.php:21
 msgid ""
-"Legacy documentation for old versions of Audacity can be found <a href=\"/"
-"help/legacy_documentation\">here</a>."
+"Legacy documentation for <a href=\"../download/#legacy\">old versions of "
+"Audacity</a> can be found <a href=\"/help/legacy_documentation\">here</a>."
 msgstr ""
-"È possibile trovare la documentazione per le vecchie versioni di Audacity <a "
-"href=\"/help/legacy_documentation\">qui</a>."
+"È possibile trovare la documentazione per le <a href=\"../download/#legacy"
+"\">vecchie versioni di Audacity <a href=\"/help/legacy_documentation\">qui</"
+"a>."
 
 #: help/documentation.php:23
 msgid "Audacity Manuals (with Tutorials)"
@@ -6655,10 +6768,6 @@ msgstr "Link"
 msgid "Download"
 msgstr "Download"
 
-#: main.inc.php:33
-msgid "Audacity 2.0 series"
-msgstr "Serie Audacity 2.0"
-
 #: main.inc.php:34 download/windows.php:16
 msgid "Windows"
 msgstr "Windows"
@@ -6677,11 +6786,11 @@ msgstr "Codice sorgente"
 
 #: main.inc.php:39
 msgid ""
-"<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Release_Notes\" "
+"<a class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Release_Notes\" "
 "target=\"_blank\">Release Notes (Wiki)</a>"
 msgstr ""
 "<A class=\"ext\" href=\"http://wiki.audacityteam.org/wiki/Release_Notes\" "
-"target=\"_blank\">Note di rilascio (Wiki)</a>"
+"target=\"_blank\">Note di rilascio (Wiki</a>"
 
 #: main.inc.php:40 download/plugins.php:11
 msgid "Plug-Ins and Libraries"
@@ -7044,6 +7153,10 @@ msgstr "RAM/<br>velocità processore raccomandata"
 msgid "Minimum RAM/<br>processor speed"
 msgstr "RAM/<br>velocità processore minima"
 
+#: download/windows_sys_reqs.inc.php:26
+msgid "except Windows 7 Starter"
+msgstr "eccetto Windows 7 Starter"
+
 #: download/windows_sys_reqs.inc.php:44
 msgid ""
 "Generally, Audacity works best on computers meeting more than the minimum "
@@ -7329,7 +7442,7 @@ msgstr "Download opzionali"
 msgid "Plug-ins and Libraries"
 msgstr "Plug-in e librerie"
 
-#: download/legacy_mac.php:45 download/mac.php:51
+#: download/legacy_mac.php:45
 msgid "LADSPA plug-ins installer</a> - over 90 plug-ins."
 msgstr "LADSPA plug-ins installer</a> - oltre 90 plug-in."
 
@@ -7722,12 +7835,12 @@ msgstr ""
 #: download/nyquistplugins.php:16
 msgid ""
 "<a href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins"
-"\">Complete list of optional Nyquist plug-ins</a> on the Audacity <a href="
-"\"http://wiki.audacityteam.org/wiki/\">Wiki</a>."
+"\">Complete list of optional Nyquist plug-ins</a> on the <a href=\"http://"
+"wiki.audacityteam.org/wiki/\">Audacity Wiki</a>."
 msgstr ""
 "<a href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins"
-"\">Elenco completo degli opzionali plug-in Nyquist</a> nel <a href=\"http://"
-"wiki.audacityteam.org/wiki/\">Wiki</a> Audacity."
+"\">L'elenco completo degli opzionali plug-in Nyquist </a> nel <a href="
+"\"http://wiki.audacityteam.org/wiki/\">Wiki Audacity</a>."
 
 #: download/nyquistplugins.php:18
 msgid ""
@@ -7740,12 +7853,12 @@ msgstr ""
 #: download/nyquistplugins.php:20
 msgid ""
 "Help us test <a href=\"http://forum.audacityteam.org/viewforum.php?"
-"f=42\">new Nyquist plug-ins still under development</a> on the Audacity <a "
-"href=\"http://forum.audacityteam.org/\">Forum</a>."
+"f=42\">new Nyquist plug-ins still under development</a> on the <a href="
+"\"http://forum.audacityteam.org/\">Audacity Forum</a>."
 msgstr ""
 "Aiutateci a provare i <a href=\"http://forum.audacityteam.org/viewforum.php?"
 "f=42\">nuovi plug-in Nyquist ancora in fase di sviluppo</a> nel <a href="
-"\"http://forum.audacityteam.org/\">Forum</a> Audacity."
+"\"http://forum.audacityteam.org/\">Forum Audacity</a>."
 
 #: download/nyquistplugins.php:22
 msgid ""
@@ -7931,22 +8044,22 @@ msgid ""
 "a>, and <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, have "
 "additionally supported Audacity by sponsoring <a href=\"#others\">custom "
 "versions</a>. The UmixIt custom version added a mixer board interface and "
-"karaoke window which are now incorporated in Audacity Beta. The ThinkLabs "
+"karaoke window which are now incorporated into Audacity. The ThinkLabs "
 "version is customized for cardiographs from digital stethoscopes. "
 "Audacity_Voice is customized for integration with Audiotouch, for ease of "
 "use by students needing numerous recordings. Some of these improvements will "
 "be incorporated in future versions of Audacity."
 msgstr ""
 "Alcuni venditori, Umixit, <a href=\"http://www.thinklabsmedical.com"
-"\">Thinklabs</a>, and <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, "
+"\">Thinklabs</a>, e <a href=\"http://audiotouch.com.au/\">Audiotouch</a>, "
 "hanno ulteriormente supportato Audacity sponsorizzando delle <a href="
 "\"#others\">versioni personalizzate</a>. La versione personalizzata UmixIt "
 "ha aggiunto una interfaccia mixer e una finestra karaoke che sono ora "
-"incorporate in Audacity Beta. La versione ThinkLabs è stata personalizzata "
-"per stetoscopi digitali cardiologici. Audacity_Voice è stato personalizzato "
-"per l'integrazione con Audiotouch, per facilitarne l'uso da parte degli "
-"studenti che necessitano di numerose registrazioni. Alcuni di questi "
-"miglioramenti saranno incorporati nelle future versioni di Audacity."
+"incorporate in Audacity. La versione ThinkLabs è stata personalizzata per "
+"stetoscopi digitali cardiologici. Audacity_Voice è stato personalizzato per "
+"l'integrazione con Audiotouch, per facilitarne l'uso da parte degli studenti "
+"che necessitano di numerose registrazioni. Alcuni di questi miglioramenti "
+"saranno incorporati nelle future versioni di Audacity."
 
 #: download/bundlers.php:21
 msgid ""
@@ -8197,7 +8310,7 @@ msgid ""
 "limitations of Audacity. Ion later corrected their documentation to clarify "
 "that Audacity could record a whole LP, detect split points between LP tracks "
 "based on silences and simultaneously export multiple files for each track. "
-"See our Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/"
+"See the Audacity Wiki page about <a href=\"http://wiki.audacityteam.org/wiki/"
 "USB_turntables\">USB turntables</a> for more information."
 msgstr ""
 "Come uno dei maggiori produttori di attrezzatura di riproduzione USB, Ion ha "
@@ -8224,8 +8337,9 @@ msgid ""
 "limitations of Audacity. Numark later corrected their documentation to "
 "clarify that Audacity could record a whole LP, detect split points between "
 "LP tracks based on silences and simultaneously export multiple files for "
-"each track.  See our Wiki page about <a href=\"http://wiki.audacityteam.org/"
-"wiki/USB_turntables\">USB turntables</a> for more information."
+"each track.  See the Audacity Wiki page about <a href=\"http://wiki."
+"audacityteam.org/wiki/USB_turntables\">USB turntables</a> for more "
+"information."
 msgstr ""
 "Come uno dei maggiori produttori di giradischi USB, Numark ha abbinato per "
 "molti Audacity con i suoi prodotti in elenco, favorendo l'ampia diffusione "
@@ -8833,6 +8947,10 @@ msgstr ""
 "later</b> (binario universale) - Usate questo se volete un download più "
 "piccolo (senza file di aiuto), o non potete avviare l'installer a causa di "
 "autorizzazioni limitate."
+
+#: download/mac.php:51
+msgid "LADSPA plug-ins zip file</a> - over 90 plug-ins."
+msgstr "File zip LADSPA plug-in </a> - oltre 90 plug-in."
 
 #: download/mac.php:94 download/windows.php:98
 msgid "Audacity Nightly Builds"
@@ -11789,14 +11907,14 @@ msgstr "Gli effetti VST possono essere trovati su molti siti plug-in come:"
 #: download/plugins.php:37
 msgid ""
 "The <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST Plug-ins</"
-"a> page on our <a href=\"http://wiki.audacityteam.org/\">Wiki<a/> contains "
-"further help for VST plug-ins, and lists a large number of VST plug-ins that "
-"have been reported to work well in Audacity."
+"a> page on the <a href=\"http://wiki.audacityteam.org/\">Audacity Wiki<a/> "
+"contains further help for VST plug-ins, and lists a large number of VST plug-"
+"ins that have been reported to work well in Audacity."
 msgstr ""
 "La pagina <a href=\"http://wiki.audacityteam.org/wiki/VST_Plug-ins\">VST "
-"Plug-ins</a> nel nostro <a href=\"http://wiki.audacityteam.org/\">Wiki<a/> "
-"elenca un notevole numero di plug-in VST che funzionano molto bene in "
-"Audacity."
+"Plug-ins</a> nel nostro <a href=\"http://wiki.audacityteam.org/\">Wiki "
+"Audacity<a/> contiene ulteriori aiuti per i plug-in VST, ed elenca un "
+"notevole numero di plug-in VST che funzionano molto bene in Audacity."
 
 #: download/plugins.php:39
 msgid "Audio Unit Plug-Ins"
@@ -12268,9 +12386,9 @@ msgid ""
 "</a>, <a href=\"../help/documentation\">documentation</a>, and the "
 "additional <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial"
 "\">Tutorials</a> and <a href=\"http://wiki.audacityteam.org/wiki/Category:"
-"Tips\">Tips</a> on our <a href=\"http://wiki.audacityteam.org/wiki\">Wiki</"
-"a>. All these resources are searchable using the search box top right of "
-"this page."
+"Tips\">Tips</a> on the <a href=\"http://wiki.audacityteam.org/wiki"
+"\">Audacity Wiki</a>. All these resources are searchable using the search "
+"box top right of this page."
 msgstr ""
 "<b>Non è disponibile alcun supporto tecnico per e-mail o telefono.</b> Molte "
 "domande trovano risposta nella nostra pagina <a href=\"../help/faq"
@@ -12278,21 +12396,21 @@ msgstr ""
 "\">documentazione</a>, e nei <a href=\"http://wiki.audacityteam.org/wiki/"
 "Category:Tutorial\">Tutorial</a> e nei <a href=\"http://wiki.audacityteam."
 "org/wiki/Category:Tips\">Suggerimenti</a> presenti nel nostro <a href="
-"\"http://wiki.audacityteam.org/wiki\">Wiki</a>. Tutte queste risorse "
-"dispongono della ricerca mediante il riquadro Ricerca nella parte superiore "
-"destra di questa pagina."
+"\"http://wiki.audacityteam.org/wiki\">Wiki Audacity</a>. Tutte queste "
+"risorse dispongono della ricerca mediante il riquadro Ricerca nella parte "
+"superiore destra di questa pagina."
 
 #: contact/index.php:28
-msgid "If you still need help, expert assistance is available on our"
+msgid "If you still need help, expert assistance is available on the"
 msgstr ""
 "Se avete ancora bisogno di aiuto, è disponibile un'assistenza da parte di "
-"esperti nel nostro"
+"esperti nel"
 
 #. i18n-hint: "Forum" is the link text to the Forum. Probably you should not
 #. translate this link text unless there is a sub-forum in your language.
 #: contact/index.php:33
-msgid "Forum</a>."
-msgstr "Forum</a>."
+msgid "Audacity Forum</a>."
+msgstr "Forum Audacity</a>."
 
 #: contact/index.php:35
 msgid ""
@@ -12318,13 +12436,14 @@ msgstr ""
 
 #: contact/index.php:37
 msgid ""
-"Always give plenty of information when asking questions on the Forum. You "
-"can find more help with joining and using the Forum <a href=\"http://wiki."
-"audacityteam.org/wiki/Asking_Questions\">here</a>."
+"Always give plenty of information when asking questions on the Audacity "
+"Forum. You can find more help with joining and using the Audacity Forum <a "
+"href=\"http://wiki.audacityteam.org/wiki/Asking_Questions\">here</a>."
 msgstr ""
-"Vengono fornite moltissime informazioni quando si pongono domande nel Forum. "
-"È possibile trovare ulteriori informazioni iscrivendovi e utilizzando il "
-"Forum <a href=\"http://wiki.audacityteam.org/wiki/Asking_Questions\">qui</a>."
+"Vengono fornite moltissime informazioni quando si pongono domande nel Forum "
+"Audacity. È possibile trovare ulteriori informazioni iscrivendovi e "
+"utilizzando il Forum <a href=\"http://wiki.audacityteam.org/wiki/"
+"Asking_Questions\">qui</a>."
 
 #: contact/index.php:39
 msgid "Suggestions, Bug Reports, Feature Requests and Patches"
@@ -12342,10 +12461,10 @@ msgstr "È possibile"
 #: contact/index.php:49
 msgid ""
 "e-mail us</a> about any Audacity matter, but <b>not for technical support</"
-"b> - this is provided on our <a href=\"http://forum.audacityteam.org/"
-"\">Forum</a>. Please write in <b>English language only.</b> Please tell us "
-"your experiences of the Audacity program, documentation or web site. We "
-"particularly welcome the following:</p>\n"
+"b> - this is provided on the <a href=\"http://forum.audacityteam.org/"
+"\">Audacity Forum</a>. Please write in <b>English language only.</b> Please "
+"tell us your experiences of the Audacity program, documentation or web site. "
+"We particularly welcome the following:</p>\n"
 "\n"
 "<p>\n"
 "<ul>\n"
@@ -12356,7 +12475,7 @@ msgid ""
 msgstr ""
 "Inviateci una e-mail </a> su qualsiasi problema con Audacity, ma <b>non per "
 "supporto tecnico</b> - questo è fornito sul nostro <a href=\"http://forum."
-"audacityteam.org/\">Forum</a>. Si prega di scrivere solo in lingua "
+"audacityteam.org/\">Forum Audacity</a>. Si prega di scrivere solo in lingua "
 "<b>Inglese.</b> Vi preghiamo di comunicarci le vostre esperienze con il "
 "programma Audacity, la documentazione o il sito web. Apprezziamo in "
 "particolare:</p>\n"
@@ -12401,8 +12520,8 @@ msgid ""
 "\n"
 "<p><b>Patches:</b> Code patches to fix problems or enhance features will be "
 "gratefully received. Please follow the guidance on the <a href=\"http://wiki."
-"audacityteam.org/wiki/SubmittingPatches\">Submitting Patches</a> page on our "
-"<a href=\"http://wiki.audacityteam.org/\">Wiki</a>.</p>"
+"audacityteam.org/wiki/SubmittingPatches\">Submitting Patches</a> page on the "
+"<a href=\"http://wiki.audacityteam.org/\">Audacity Wiki</a>.</p>"
 msgstr ""
 "<b>Includete le seguenti informazioni.</b> Questo è importante.</p>\n"
 "<ol>\n"
@@ -12413,8 +12532,8 @@ msgstr ""
 "  <li><b>Il vostro sistema operativo</b> (per esempio, Windows 7 Service "
 "Pack 1 o Intel Mac OS X 10.4).</li>\n"
 "  <li><b>I dettagli di quello che avete cercato di fare</b>, compresi i "
-"passi che hanno portato al problema che si è manifestato, e i dettagli di "
-"ogni messaggio di errore.</li>\n"
+"passi che hanno portato al problema che si è manifestato, e il testo di ogni "
+"messaggio di errore.</li>\n"
 "</ol>\n"
 "</div>\n"
 "\n"
@@ -12422,7 +12541,7 @@ msgstr ""
 "caratteristiche saranno ben accette. Siete pregati di seguire le linee guida "
 "della pagina <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches"
 "\">Inviare Patch</a> del nostro <a href=\"http://wiki.audacityteam.org/"
-"\">Wiki</a>.</p>"
+"\">Wiki Audacity</a>.</p>"
 
 #: contact/index.php:72
 msgid "Discussion Lists"
@@ -12656,6 +12775,9 @@ msgid ""
 "\n"
 "<ul>\n"
 "  <li>Record live audio.</li>\n"
+"  <li><a href=\"http://manual.audacityteam.org/o/man/"
+"tutorial_recording_computer_playback_on_windows.html\">Record computer "
+"playback</a> on any Windows Vista or later machine.</li>\n"
 "  <li>Convert tapes and records into digital recordings or CDs.</li>\n"
 "  <li>Edit WAV, AIFF, FLAC, MP2, MP3 or Ogg Vorbis sound files.</li>\n"
 "  <li>Cut, copy, splice or mix sounds together.</li>\n"
@@ -12673,12 +12795,16 @@ msgstr ""
 "\n"
 "<ul>\n"
 "  <li>Registrare audio dal vivo.</li>\n"
+"<li><a href=\"http://manual.audacityteam.org/o/man/"
+"tutorial_recording_computer_playback_on_windows.html\">Registrare la "
+"riproduzione del computer</a> su qualsiasi macchina Windows Vista o seguenti."
+"</li>\n"
 "  <li>Convertire nastri e dischi in registrazioni digitali o CD.</li>\n"
 "  <li>Modificare i file audio WAV, AIFF, FLAC, MP2, MP3 o Ogg Vorbis.</li>\n"
 "  <li>Tagliare, copiare, unire o miscelare audio.</li>\n"
 "  <li>Cambiare la velocità o l'intonazione di una registrazione.</li>\n"
-"  <li>E molto altro ancora! Consultate l'<a href=\"features\">elenco delle "
-"caratteristiche</a>.</li>\n"
+"  <li>E molto altro ancora! Consultate il completo <a href=\"features"
+"\">elenco delle caratteristiche</a>.</li>\n"
 "</ul>"
 
 #. i18n-hint: You may change the link addresses below, if there is a
@@ -12689,7 +12815,7 @@ msgstr ""
 #.
 #. Also check the translations of this web page:
 #. http://www.fsf.org/philosophy/free-sw.html
-#: about/index.php:34
+#: about/index.php:35
 msgid ""
 "<h3>About Free Software</h3>\n"
 "\n"
@@ -12750,7 +12876,7 @@ msgstr ""
 "utente e per <a href=\"http://audacityteam.org/wiki/index.php?"
 "title=Nightly_Builds\">provare<a/> l'ultima versione del codice.</p>"
 
-#: about/index.php:44
+#: about/index.php:45
 msgid ""
 "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on "
 "the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom "
@@ -12766,7 +12892,7 @@ msgstr ""
 "mostrino solo i dati dello sviluppo specifico di Audacity, escludendo il "
 "codice delle librerie di terze parti utilizzate da Audacity.</p>"
 
-#: about/index.php:46
+#: about/index.php:47
 msgid ""
 "<h3>Bundling, Reselling or Distributing Audacity</h3>\n"
 "\n"
@@ -12790,7 +12916,7 @@ msgstr ""
 "distribuzione di Audacity, leggete tutta la pagina <a href=\"../about/license"
 "\">Licenza e consigli per i venditori e i distributori</a>.</p>"
 
-#: about/index.php:52
+#: about/index.php:53
 msgid ""
 "<h3>Sponsoring Audacity Development</h3>\n"
 "\n"
@@ -13449,69 +13575,103 @@ msgstr ""
 msgid ""
 "<h3 id=\"record\">Recording</h3>\n"
 "<p>Audacity can record live audio through a microphone or mixer, or <a href="
-"\"http://manual.audacityteam.org/help/manual/man/"
+"\"http://manual.audacityteam.org/o/man/"
 "tutorial_copying_tapes_lps_or_minidiscs_to_cd.html\">digitize recordings "
-"from cassette tapes, records, or minidiscs</a>. With some sound cards, "
-"Audacity can also capture <a href=\"http://manual.audacityteam.org/help/"
-"manual/man/tutorial_recording_audio_playing_on_the_computer.html\">streaming "
-"audio</a>.</p>\n"
+"from cassette tapes, records or minidiscs</a>. With some sound cards, and on "
+"any Windows Vista, Windows 7 or Windows 8 machine, Audacity can also capture "
+"<a href=\"http://manual.audacityteam.org/o/man/"
+"tutorial_recording_audio_playing_on_the_computer.html\">streaming audio</a>."
+"</p>\n"
 "<ul>\n"
+"  <li><a href=\"http://manual.audacityteam.org/o/man/device_toolbar.html"
+"\">Device Toolbar</a> manages multiple input and output devices.</li>  \n"
+"  <li><a href=\"http://manual.audacityteam.org/o/man/meter_toolbar.html"
+"\">Level meters</a> can monitor volume levels before, during and after "
+"recording. <a href=\"http://manual.audacityteam.org/o/man/glossary."
+"html#clipping\">Clipping</a> can be displayed in the waveform or in a label "
+"track.</li>\n"
 "  <li>Record from microphone, line input, USB/Firewire devices and others.</"
 "li>\n"
-"  <li>Device Toolbar manages multiple input and output devices.</li>  \n"
+"  <li><a href=\"http://manual.audacityteam.org/o/man/"
+"tutorial_recording_computer_playback_on_windows.html\">Record computer "
+"playback on Windows Vista and later</a> by choosing \"Windows WASAPI\" host "
+"in Device Toolbar then a \"loopback\" input.</li>\n"
 "  <li>Timer Record and Sound Activated Recording features.</li>\n"
 "  <li>Dub over existing tracks to create <a href=\"http://manual."
-"audacityteam.org/help/manual/man/faq.html#overdub\">multi-track recordings</"
-"a>.</li>\n"
+"audacityteam.org/o/man/faq_recording_how_to_s.html#overdub\">multi-track "
+"recordings</a>.</li>\n"
+"  <li>Record at very low <a href=\"http://manual.audacityteam.org/o/man/"
+"glossary.html#latency\">latencies</a> on supported devices on Windows by "
+"choosing \"Windows WDM-KS\" host and a low \"Audio to Buffer\" setting in <a "
+"href=\"http://manual.audacityteam.org/o/man/recording_preferences.html"
+"\">Recording Preferences</a>. On Linux, you can obtain comparable latencies "
+"by using Audacity  with <a href=\"http://wiki.audacityteam.org/wiki/"
+"Linux_Issues#JACK\">JACK</a>.  \n"
 "  <li>Record at sample rates up to 192,000 Hz (subject to appropriate "
-"hardware). Up to 384,000 Hz is supported for appropriate high-resolution "
-"devices, except when using Windows DirectSound host.</li>\n"
+"hardware and host selection). Up to 384,000 Hz is supported for appropriate "
+"high-resolution devices (note that Windows DirectSound host is limited to "
+"200,000 Hz).</li> \n"
+"  <li>Record at 24-bit depth on Windows (using Windows WDM-KS or Windows "
+"WASAPI host), Mac OS X or Linux (using ALSA or JACK  host).\n"
 "  <li>Record <a href=\"http://wiki.audacityteam.org/wiki/"
 "Multichannel_Recording\">multiple channels</a> at once (subject to "
 "appropriate hardware).</li>\n"
-"  <li>Level meters can monitor volume levels before, during and after "
-"recording. Clipping can be displayed in the waveform or in a label track.</"
-"li>\n"
 "</ul>"
 msgstr ""
 "<h3 id=\"record\">Registrazione</h3>\n"
 "<p>Audacity può registrare audio dal vivo attraverso un microfono o un "
-"mixer, o <a href=\"http://manual.audacityteam.org/help/manual/man/"
-"tutorial_copying_tapes_lps_or_minidiscs_to_cd.html\">digitalizzare "
-"registrazioni da cassette audio, giradischi, o minidisc</a>. Con alcune "
-"schede audio, Audacity può anche catturare <a href=\"http://manual."
-"audacityteam.org/help/manual/man/"
-"tutorial_recording_audio_playing_on_the_computer.html\">flussi audio</a>.</"
-"p>\n"
+"mixer, o <a href=\"http://manual.audacityteam.org/o/man/"
+"tutorial_copying_tapes_lps_or_minidiscs_to_cd.html\">digitalizzando "
+"registrazioni da cassette a nastro, dischi o minidischi</a>. Con alcune "
+"schede audio, e su qualsiasi macchina con Windows Vista, Windows 7 o Windows "
+"8, Audacity può anche catturare <a href=\"http://manual.audacityteam.org/o/"
+"man/tutorial_recording_audio_playing_on_the_computer.html\">flussi audio</a>."
+"</p>\n"
 "<ul>\n"
-"  <li>Registra da microfono, ingresso Line, dispositivi USB/Firewire e altri."
-"</li>\n"
-"  <li>La Barra strumenti Dispositivi gestisce più dispositivi di ingresso e "
-"di uscita.</li>  \n"
-"  <li>Funzioni di Timer registrazione e Registrazione attivata da audio.</"
+"  <li><a href=\"http://manual.audacityteam.org/o/man/device_toolbar.html"
+"\">La Barra Dispositivi</a> gestisce più dispositivi di ingresso e di uscita."
+"</li>  \n"
+"  <li><a href=\"http://manual.audacityteam.org/o/man/meter_toolbar.html\">I "
+"Monitor di livello</a> possono monitorare i livelli del volume prima, "
+"durante e dopo la registrazione. <a href=\"http://manual.audacityteam.org/o/"
+"man/glossary.html#clipping\">Il Clipping</a> può essere visualizzato nella "
+"forma d'onda o in una traccia etichetta.</li>\n"
+"  <li>Registrazione da microfono, line input, dispositivi USB/Firewire e "
+"altro.</li>\n"
+"  <li><a href=\"http://manual.audacityteam.org/o/man/"
+"tutorial_recording_computer_playback_on_windows.html\">Registrazione della "
+"riproduzione del computer su Windows Vista e seguenti</a> scegliendo l'host "
+"\"Windows WASAPI\" nella Barra Dispositivi poi un input \"loopback\".</li>\n"
+"  <li>Funzxioni Programma registrazione e Registrazione attivata da audio.</"
 "li>\n"
-"  <li>Sovraregistrazione su tracce esistenti per creare <a href=\"http://"
-"manual.audacityteam.org/help/manual/man/faq.html#overdub\">registrazioni "
-"multi-tracce</a>.</li>\n"
-"  <li>Registrazione ad alte frequenze di campionamento oltre i 192,000 Hz "
-"(subordinata ad appropriato hardware). Sono supportati fino a 384.000 Hz per "
-"appropriati dispositivi high-resolution, tranne quando si utilizza l'host "
-"Windows DirectSound.</li>\n"
+"  <li>Sovraregistrazione di tracce esistenti per creare <a href=\"http://"
+"manual.audacityteam.org/o/man/faq_recording_how_to_s.html#overdub"
+"\">registrazioni multitraccia</a>.</li>\n"
+"  <li>Registrazione con <a href=\"http://manual.audacityteam.org/o/man/"
+"glossary.html#latency\">latenze</a> molto basse su dispositivi supportati in "
+"Windows scegliendo l'host \"Windows WDM-KS\" e una impostazione \"Audio nel "
+"Buffer\" bassa nelle <a href=\"http://manual.audacityteam.org/o/man/"
+"recording_preferences.html\">Preferenze Registrazione</a>. In Linux, è "
+"possibile ottenere latenze simili usando Audacity  con <a href=\"http://wiki."
+"audacityteam.org/wiki/Linux_Issues#JACK\">JACK</a>.  \n"
+"  <li>Registrazione a frequenze di campionamento fino a 192.000 Hz (con "
+"appropriati hardware e selezione dell'host). Sono supportate frequenze fino "
+"a 384.000 Hz per appropriati dispositivi di alta risoluzione (da notare che "
+"l'host Windows DirectSound è limitato a 200.000 Hz).</li> \n"
+"  <li>Registrazione a 24-bit su Windows (usando l'host Windows WDM-KS o "
+"Windows WASAPI ), Mac OS X o Linux (usando l'host ALSA o JACK).\n"
 "  <li>Registrazione immediata di <a href=\"http://wiki.audacityteam.org/wiki/"
-"Multichannel_Recording\">più canali</a> (subordinata ad appropriato "
-"hardware). </li>\n"
-"  <li>Gli indicatori di livello possono monitorare i livelli di volume "
-"prima, durante e dopo la registrazione. Il clipping può essere visualizzato "
-"nella forma d'onda o in una traccia etichetta.</li>\n"
+"Multichannel_Recording\">canali multipli</a> (con appropriato hardware).</"
+"li>\n"
 "</ul>"
 
-#: about/features.php:27
+#: about/features.php:30
 msgid ""
 "<h3 id=\"imp_exp\">Import and Export</h3>\n"
 "<p>Import sound files, edit them, and combine them with other files or new "
 "recordings.  Export your recordings in many different file formats, "
-"including <a href=\"http://manual.audacityteam.org/help/manual/man/"
-"export_multiple.html\">multiple files at once</a>.</p>\n"
+"including <a href=\"http://manual.audacityteam.org/o/man/export_multiple.html"
+"\">multiple files at once</a>.</p>\n"
 "<ul>\n"
 "  <li>Import and export <b>WAV</b>, <b>AIFF</b>, <b>AU</b>, <b>FLAC</b> and "
 "<a href=\"http://vorbis.com\">Ogg Vorbis</a> files.</li>\n"
@@ -13525,13 +13685,13 @@ msgid ""
 "  <li>Import raw (headerless) audio files using the \"Import Raw\" command.</"
 "li>\n"
 "  <li>Create WAV or AIFF files suitable for burning to <a href=\"http://"
-"manual.audacityteam.org/help/manual/man/burning_music_files_to_a_cd.html"
-"\">audio CD</a>.</li>\n"
-"  <li>Export MP3 files with the optional <a href=http://manual.audacityteam."
-"org/help/manual/man/faq_installation_and_plug_ins.html#lame\">LAME encoder "
-"library</a>.</li>\n"
+"manual.audacityteam.org/o/man/burning_music_files_to_a_cd.html\">audio CD</"
+"a>.</li>\n"
+"  <li>Export MP3 files with the optional <a href=\"http://manual."
+"audacityteam.org/o/man/faq_installation_and_plug_ins.html#lame\">LAME "
+"encoder library</a>.</li>\n"
 "  <li>Import and export <b>AC3</b>, <b>M4A/M4R (AAC)</b> and <b>WMA</b> with "
-"the optional <a href=\"http://manual.audacityteam.org/help/manual/man/"
+"the optional <a href=\"http://manual.audacityteam.org/o/man/"
 "faq_installation_and_plug_ins.html#ffdown\">FFmpeg library</a> (this also "
 "supports import of audio from video files).</li>\n"
 "</ul>"
@@ -13540,7 +13700,7 @@ msgstr ""
 "<p>Importazione di file audio, modifica dei file audio, e associazione dei "
 "file audio ad altri file o a nuove registrazioni.  Esportazione di "
 "registrazioni in molti diversi formati file, compreso <a href=\"http://"
-"manual.audacityteam.org/help/manual/man/export_multiple.html\">più file "
+"manual.audacityteam.org/o/man/export_multiple.html\">più file "
 "contemporaneamente</a>.</p>\n"
 "<ul>\n"
 "  <li>Importazione ed esportazione di file <b>WAV</b>, <b>AIFF</b>, <b>AU</"
@@ -13557,18 +13717,18 @@ msgstr ""
 "  <li>Importazione di file audio raw (headerless) usando il comando "
 "\"Importa Raw\".</li>\n"
 "  <li>Creazione di file WAV o AIFF idonei per la masterizzazione in <a href="
-"\"http://manual.audacityteam.org/help/manual/man/burning_music_files_to_a_cd."
-"html\">CD audio</a>.</li>\n"
-"  <li>Esportazione di file MP3 con l'opzionale<a href=http://manual."
-"audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#lame"
-"\">libreria encoder LAME</a>.</li>\n"
+"\"http://manual.audacityteam.org/o/man/burning_music_files_to_a_cd.html\">CD "
+"audio</a>.</li>\n"
+"  <li>Esportazione di file MP3 con l'opzionale<a href=\"http://manual."
+"audacityteam.org/o/man/faq_installation_and_plug_ins.html#lame\">libreria "
+"encoder LAME</a>.</li>\n"
 "  <li>Importazione ed esportazione di file <b>AC3</b>, <b>M4A/M4R (AAC)</b> "
-"e <b>WMA</b> con l'opzionale <a href=\"http://manual.audacityteam.org/help/"
-"manual/man/faq_installation_and_plug_ins.html#ffdown\">libreria FFmpeg</a> "
-"(questa supporta anche l'importazione di audio da file video).</li>\n"
+"e <b>WMA</b> con l'opzionale <a href=\"http://manual.audacityteam.org/o/man/"
+"faq_installation_and_plug_ins.html#ffdown\">libreria FFmpeg</a> (questa "
+"supporta anche l'importazione di audio da file video).</li>\n"
 "</ul>"
 
-#: about/features.php:40
+#: about/features.php:43
 msgid ""
 "<h3>Sound Quality</h3>\n"
 "<ul>\n"
@@ -13591,7 +13751,7 @@ msgstr ""
 "convertite automaticamente in tempo reale.</li>\n"
 "</ul>"
 
-#: about/features.php:47
+#: about/features.php:50
 msgid ""
 "<h3 id=\"edit\">Editing</h3>\n"
 "<ul>\n"
@@ -13601,10 +13761,10 @@ msgid ""
 "  <li>Edit and mix large numbers of tracks.</li>\n"
 "  <li>Multiple <a href=\"http://manual.audacityteam.org/help/manual/man/"
 "audacity_tracks_and_clips.html\">clips</a> are allowed per track.</li>\n"
-"  <li><a href=\"http://manual.audacityteam.org/help/manual/man/label_tracks."
-"html\">Label tracks</a> with selectable <a href=\"http://manual.audacityteam."
-"org/help/manual/man/sync_locked_tracks.html\">Sync-Lock Tracks</a> feature "
-"for keeping tracks and labels synchronized.</li>\n"
+"  <li><a href=\"http://manual.audacityteam.org/o/man/label_tracks.html"
+"\">Label tracks</a> with selectable <a href=\"http://manual.audacityteam.org/"
+"o/man/sync-locked_track_groups.html\">Sync-Lock Tracks</a> feature for "
+"keeping tracks and labels synchronized.</li>\n"
 "  <li>Draw Tool to alter individual sample points.</li>\n"
 "  <li><a href=\"http://manual.audacityteam.org/help/manual/man/envelope_tool."
 "html\">Envelope Tool</a> to fade the volume up or down smoothly.</li>\n"
@@ -13616,14 +13776,14 @@ msgstr ""
 "<ul>\n"
 "  <li>Facile esecuzione di modifiche con le funzioni Taglia, Copia, Incolla "
 "e Elimina.</li>\n"
-"  <li>Illimitate funzioni di Annulla sequenziali (e Ripristina) per tornare "
+"  <li>Illimitate funzioni sequenziali di Annulla (e Ripristina) per tornare "
 "indietro per numerosi passi.</li>\n"
-"  <li>Modifica e miscela un grande numero di tracce.</li>\n"
+"  <li>Modifica e miscelazione di un grande numero di tracce.</li>\n"
 "  <li>Sono permesse multiple <a href=\"http://manual.audacityteam.org/help/"
 "manual/man/audacity_tracks_and_clips.html\">clip</a> per traccia.</li>\n"
-"  <li><a href=\"http://manual.audacityteam.org/help/manual/man/label_tracks."
-"html\">Etichette</a> con la selezione della funzione <a href=\"http://manual."
-"audacityteam.org/help/manual/man/sync_locked_tracks.html\">Blocca "
+"  <li><a href=\"http://manual.audacityteam.org/o/man/label_tracks.html"
+"\">Tracce Etichette</a> con la selezione della funzione <a href=\"http://"
+"manual.audacityteam.org/o/man/sync-locked_track_groups.html\">Blocca "
 "sincronizzazione tracce</a> per mantenere tracce ed etichette sincronizzate."
 "</li>\n"
 "  <li>Strumento Disegna per modificare singoli punti di campionamento.</li>\n"
@@ -13634,7 +13794,7 @@ msgstr ""
 "programma.</li>  \n"
 "</ul>"
 
-#: about/features.php:59
+#: about/features.php:62
 msgid ""
 "<h3><a href=\"http://manual.audacityteam.org/help/manual/man/accessibility."
 "html\">Accessibility</a></h3>\n"
@@ -13663,14 +13823,14 @@ msgstr ""
 "apple.com/accessibility/voiceover/\">VoiceOver</a> su Mac.</li>   \n"
 "</ul>"
 
-#: about/features.php:66
+#: about/features.php:69
 msgid ""
 "<h3 id=\"effects\">Effects</h3>\n"
 "<ul>\n"
 "  <li>Change the pitch without altering the tempo (or vice-versa).</li>\n"
 "  <li>Remove static, hiss, hum or other constant background noises.</li>\n"
-"  <li>Alter frequencies with Equalization, Bass Boost, High/Low Pass and "
-"Notch Filter effects.</li>\n"
+"  <li>Alter frequencies with Equalization, Bass and Treble, High/Low Pass "
+"and Notch Filter effects.</li>\n"
 "  <li>Adjust volume with Compressor, Amplify, Normalize, Fade In/Fade Out "
 "and Adjustable Fade effects.\n"
 "  <li><a href=\"http://manual.audacityteam.org/help/manual/man/vocal_remover."
@@ -13681,15 +13841,17 @@ msgid ""
 "  <li>Other built-in effects include:\n"
 "    <ul>\n"
 "      <li>Echo</li>\n"
-"      <li>Phaser</li>\n"
-"      <li>Wahwah</li>\n"
 "      <li>Paulstretch (extreme stretch)</li>\n"
+"      <li>Phaser</li>\n"
+"      <li>Reverb</li>\n"
 "      <li>Reverse</li>\n"
 "      <li>Truncate Silence</li>\n"
+"      <li>Wahwah</li> \n"
 "    </ul>\n"
 "  <li>Run \"Chains\" of effects on a project or multiple files in <a href="
-"\"http://manual.audacityteam.org/help/manual/man/batch_processing.html"
-"\">Batch Processing</a> mode. \n"
+"\"http://manual.audacityteam.org/o/man/"
+"chains_for_batch_processing_and_effects_automation.html\">Batch Processing</"
+"a> mode. \n"
 "</ul>"
 msgstr ""
 "<h3 id=\"effects\">Effetti</h3>\n"
@@ -13698,8 +13860,8 @@ msgstr ""
 "li>\n"
 "  <li>Rimuovere rumori statici, fruscii, ronzii o altri tipi di rumore di "
 "fondo.</li>\n"
-"  <li>Alterare le frequenze con gli effetti Equalizzazione, Esalta i bassi, "
-"Passa Alti/Bassi e Notch Filter.</li>\n"
+"  <li>Alterare le frequenze con gli effetti Equalizzazione, Esalta i bassi e "
+"gli alti, Passa Alti/Bassi e Notch Filter.</li>\n"
 "  <li>Regolare il volume con gli effetti Compressione, Amplifica, Normalizza "
 "e Dissolvenza in entrata/uscita e Dissolvenza regolabile.</li>\n"
 "  <li><a href=\"http://manual.audacityteam.org/help/manual/man/vocal_remover."
@@ -13709,28 +13871,30 @@ msgstr ""
 "a>.\n"
 "<li>Altri effetti tra i quali:\n"
 "    <ul>\n"
-"     <li>Eco</li>\n"
-"      <li>Phaser</li>\n"
-"      <li>WahWah</li>\n"
-"      <li>Paulstretch (extreme stretch)</li>\n"
-"      <li>Inverti</li>\n"
+"       <li>Eco</li>\n"
+"       <li>Paulstretch (extreme stretch)</li>\n"
+"       <li>Phaser</li>\n"
+"      <li>Riverbero</li>\n"
+"       <li>Inverti</li>\n"
 "      <li>Tronca silenzio</li>\n"
+"      <li>WahWah</li>\n"
 "    </ul>\n"
 "  <li>Avviare \"Concatenatione\" di effetti in un progetto o più file nella "
-"modalità <a href=\"http://manual.audacityteam.org/help/manual/man/"
-"batch_processing.html\">Batch Processing</a>. \n"
+"modalità <a href=\"http://manual.audacityteam.org/o/man/"
+"chains_for_batch_processing_and_effects_automation.html\">Batch Processing</"
+"a>. \n"
 "</ul>"
 
-#: about/features.php:86
+#: about/features.php:90
 msgid ""
 "<h3><a href=\"../download/plugins\">Plug-ins</a></h3>\n"
 "<ul>\n"
-"  <li>Add new effects with <a href=\"http://www.ladspa.org/\">LADSPA</a>, <a "
-"href=\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins"
-"\">Nyquist</a>, <a href=\"http://manual.audacityteam.org/help/manual/man/"
-"faq_installation_and_plug_ins.html#vst_install\">VST</a> and <a href="
-"\"http://manual.audacityteam.org/help/manual/man/effect_menu."
-"html#Audio_Unit_Effects\">Audio Unit</a> effect plug-ins.</li>\n"
+"  <li>Support for <a href=\"http://www.ladspa.org/\">LADSPA</a>, <a href="
+"\"http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins\">Nyquist</a>, "
+"<a href=\"http://manual.audacityteam.org/o/man/faq_installation_and_plug_ins."
+"html#vst_install\">VST</a> and <a href=\"http://manual.audacityteam.org/o/"
+"man/effect_menu.html#Audio_Unit_Effects\">Audio Unit</a> effect plug-ins.</"
+"li>\n"
 "  <li>Effects written in the <a href=\"../help/nyquist\">Nyquist programming "
 "language</a> can be easily modified in a text editor - or you can even write "
 "your own plug-in.</li>\n"
@@ -13738,18 +13902,18 @@ msgid ""
 msgstr ""
 "<h3><a href=\"../download/plugins\">Plug-in</a></h3>\n"
 "<ul>\n"
-"  <li>Aggiunti nuovi effetti con i plug-in effetti <a href=\"http://www."
-"ladspa.org/\">LADSPA</a>, <a href=\"http://wiki.audacityteam.org/wiki/"
+"  <li>Supporto per i plug-in effetti <a href=\"http://www.ladspa.org/"
+"\">LADSPA</a>, <a href=\"http://wiki.audacityteam.org/wiki/"
 "Download_Nyquist_Plug-ins\">Nyquist</a>, <a href=\"http://manual."
-"audacityteam.org/help/manual/man/faq_installation_and_plug_ins."
-"html#vst_install\">VST</a> e <a href=\"http://manual.audacityteam.org/help/"
-"manual/man/effect_menu.html#Audio_Unit_Effects\">Audio Unit</a>.</li>\n"
+"audacityteam.org/o/man/faq_installation_and_plug_ins.html#vst_install\">VST</"
+"a> e <a href=\"http://manual.audacityteam.org/o/man/effect_menu."
+"html#Audio_Unit_Effects\">Audio Unit</a>.</li>\n"
 "  <li>Effetti scritti nel <a href=\"../help/nyquist\">linguaggio di "
 "programmazione Nyquist</a> possono essere facilmente modificati in un editor "
 "di testi - o è anche possibile scrivere un proprio plug-in.</li>\n"
 "</ul>"
 
-#: about/features.php:92
+#: about/features.php:96
 msgid ""
 "<h3>Analysis</h3>\n"
 "<ul>\n"
@@ -13776,7 +13940,7 @@ msgstr ""
 "audacityteam.org/help/manual/man/analyze_menu.html#vamp\">VAMP</a>.</a>\n"
 "</ul>"
 
-#: about/features.php:101
+#: about/features.php:105
 msgid ""
 "<h3>Free and Cross-Platform</h3>\n"
 "<ul>\n"
@@ -13813,6 +13977,77 @@ msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr ""
 "Una ulteriore documentazione sul formato file progetto Audacity è in fase di "
 "preparazione."
+
+#~ msgid "for Windows, Mac or GNU/Linux"
+#~ msgstr "per Windows, Mac o GNU/Linux"
+
+#~ msgid "Download Audacity %s %s"
+#~ msgstr "Scaricate Audacity %s %s"
+
+#~ msgid "Audacity 2.0 series"
+#~ msgstr "Serie Audacity 2.0"
+
+#~ msgid "Forum</a>."
+#~ msgstr "Forum</a>."
+
+#~ msgid ""
+#~ "<h3 id=\"record\">Recording</h3>\n"
+#~ "<p>Audacity can record live audio through a microphone or mixer, or <a "
+#~ "href=\"http://manual.audacityteam.org/help/manual/man/"
+#~ "tutorial_copying_tapes_lps_or_minidiscs_to_cd.html\">digitize recordings "
+#~ "from cassette tapes, records, or minidiscs</a>. With some sound cards, "
+#~ "Audacity can also capture <a href=\"http://manual.audacityteam.org/help/"
+#~ "manual/man/tutorial_recording_audio_playing_on_the_computer.html"
+#~ "\">streaming audio</a>.</p>\n"
+#~ "<ul>\n"
+#~ "  <li>Record from microphone, line input, USB/Firewire devices and others."
+#~ "</li>\n"
+#~ "  <li>Device Toolbar manages multiple input and output devices.</li>  \n"
+#~ "  <li>Timer Record and Sound Activated Recording features.</li>\n"
+#~ "  <li>Dub over existing tracks to create <a href=\"http://manual."
+#~ "audacityteam.org/help/manual/man/faq.html#overdub\">multi-track "
+#~ "recordings</a>.</li>\n"
+#~ "  <li>Record at sample rates up to 192,000 Hz (subject to appropriate "
+#~ "hardware). Up to 384,000 Hz is supported for appropriate high-resolution "
+#~ "devices, except when using Windows DirectSound host.</li>\n"
+#~ "  <li>Record <a href=\"http://wiki.audacityteam.org/wiki/"
+#~ "Multichannel_Recording\">multiple channels</a> at once (subject to "
+#~ "appropriate hardware).</li>\n"
+#~ "  <li>Level meters can monitor volume levels before, during and after "
+#~ "recording. Clipping can be displayed in the waveform or in a label track."
+#~ "</li>\n"
+#~ "</ul>"
+#~ msgstr ""
+#~ "<h3 id=\"record\">Registrazione</h3>\n"
+#~ "<p>Audacity può registrare audio dal vivo attraverso un microfono o un "
+#~ "mixer, o <a href=\"http://manual.audacityteam.org/help/manual/man/"
+#~ "tutorial_copying_tapes_lps_or_minidiscs_to_cd.html\">digitalizzare "
+#~ "registrazioni da cassette audio, giradischi, o minidisc</a>. Con alcune "
+#~ "schede audio, Audacity può anche catturare <a href=\"http://manual."
+#~ "audacityteam.org/help/manual/man/"
+#~ "tutorial_recording_audio_playing_on_the_computer.html\">flussi audio</a>."
+#~ "</p>\n"
+#~ "<ul>\n"
+#~ "  <li>Registra da microfono, ingresso Line, dispositivi USB/Firewire e "
+#~ "altri.</li>\n"
+#~ "  <li>La Barra strumenti Dispositivi gestisce più dispositivi di ingresso "
+#~ "e di uscita.</li>  \n"
+#~ "  <li>Funzioni di Timer registrazione e Registrazione attivata da audio.</"
+#~ "li>\n"
+#~ "  <li>Sovraregistrazione su tracce esistenti per creare <a href=\"http://"
+#~ "manual.audacityteam.org/help/manual/man/faq.html#overdub\">registrazioni "
+#~ "multi-tracce</a>.</li>\n"
+#~ "  <li>Registrazione ad alte frequenze di campionamento oltre i 192,000 Hz "
+#~ "(subordinata ad appropriato hardware). Sono supportati fino a 384.000 Hz "
+#~ "per appropriati dispositivi high-resolution, tranne quando si utilizza "
+#~ "l'host Windows DirectSound.</li>\n"
+#~ "  <li>Registrazione immediata di <a href=\"http://wiki.audacityteam.org/"
+#~ "wiki/Multichannel_Recording\">più canali</a> (subordinata ad appropriato "
+#~ "hardware). </li>\n"
+#~ "  <li>Gli indicatori di livello possono monitorare i livelli di volume "
+#~ "prima, durante e dopo la registrazione. Il clipping può essere "
+#~ "visualizzato nella forma d'onda o in una traccia etichetta.</li>\n"
+#~ "</ul>"
 
 #~ msgid ""
 #~ "<ol>\n"
@@ -14028,9 +14263,6 @@ msgstr ""
 #~ msgid "Join our"
 #~ msgstr "Unitevi al nostro"
 
-#~ msgid "Audacity Forum"
-#~ msgstr "Forum Audacity"
-
 #~ msgid "let us know"
 #~ msgstr "fatecelo sapere"
 
@@ -14053,9 +14285,6 @@ msgstr ""
 #~ "incontrato, quello che vi piace e quello che potrebbe essere migliorato. "
 #~ "Fateci sapere se avete riscontrato qualche <em>regresso</em> - cose che "
 #~ "utilizzate per il vostro lavoro e che non funzionano più."
-
-#~ msgid "for Windows, Mac, or GNU/Linux"
-#~ msgstr "per Windows, Mac, o GNU/Linux"
 
 #~ msgid ""
 #~ "Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg;, and "
