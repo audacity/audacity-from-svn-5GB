@@ -35,6 +35,16 @@
   </li>
 </ul>
 <p>
+  <b>Known Issues:</b>
+  After release of 2.0.4, we have had reports that in some rare cases Audacity 2.0.4 has
+  <a href="http://forum.audacityteam.org/viewtopic.php?f=46&t=74438">
+    issues starting up on Windows</a>.
+  We're working on these problems.
+  To report or get help with these issues, please
+  <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;">
+    email us</a>.
+</p>
+<p>
   &nbsp;&nbsp;&nbsp;<a href="#sysreq"><?=_("System Requirements")?></a>
 </p>
 
