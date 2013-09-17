@@ -82,6 +82,13 @@ add_news_item(
     2.0.4 Release Notes</a> 
   for more items and details.
 </p>
+<p><b>Addendum, September 16, 2013:</b> 
+  We have reports that in some cases Audacity 2.0.4 
+  has issues starting up on Windows, or cannot import files on OS X. 
+  We're working on these problems. 
+  To report or get help with these issues, please see our 
+  <a href=\"contact/#feedback\">feedback venues</a>.
+  </p>
 "));
 
 
