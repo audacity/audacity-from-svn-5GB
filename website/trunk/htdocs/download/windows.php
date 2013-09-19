@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 2012
+ * Copyright 2004 - 2013
  * Matt Brubeck
  * Dominic Mazzoni
  * Richard Ash

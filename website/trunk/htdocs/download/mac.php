@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 2012
+ * Copyright 2004 - 2013
  * Matt Brubeck
  * Dominic Mazzoni
  * Richard Ash
@@ -37,7 +37,7 @@
 <p>
   <b>Known Issues:</b>
   After release of 2.0.4, we have had reports that in some rare cases Audacity 2.0.4 
-  <a href="http://forum.audacityteam.org/viewtopic.php?f=47&t=74438">
+  <a href="http://forum.audacityteam.org/viewtopic.php?f=47&t=74692">
     cannot import files on OS X</a>.
   We're working on these problems.
   To report or get help with these issues, please

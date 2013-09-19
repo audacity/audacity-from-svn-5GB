@@ -84,9 +84,9 @@ add_news_item(
 </p>
 <p><b>Addendum, September 16, 2013:</b> 
   After release, we have had reports that in some rare cases Audacity 2.0.4 has 
-  <a href=\"http://forum.audacityteam.org/viewtopic.php?f=46&t=74438\">
+  <a href=\"http://forum.audacityteam.org/viewtopic.php?f=46&t=74470\">
     issues starting up on Windows</a>, or 
-  <a href=\"http://forum.audacityteam.org/viewtopic.php?f=47&t=74438\">
+  <a href=\"http://forum.audacityteam.org/viewtopic.php?f=47&t=74692\">
     cannot import files on OS X</a>. 
   We're working on these problems. 
   To report or get help with these issues, please 
