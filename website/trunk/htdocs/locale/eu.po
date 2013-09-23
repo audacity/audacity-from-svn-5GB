@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity-website.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-07 09:40+0000\n"
-"PO-Revision-Date: 2013-09-13 01:47-0000\n"
-"Last-Translator: Gale Andrews\n"
+"POT-Creation-Date: 2013-09-19 05:34+0000\n"
+"PO-Revision-Date: 2013-09-23 05:26-0000\n"
+"Last-Translator: Xabier Aramendi\n"
 "Language-Team: (EUS_Xabier Aramendi) <azpidatziak@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -336,6 +336,17 @@ msgid ""
 "    2.0.4 Release Notes</a> \n"
 "  for more items and details.\n"
 "</p>\n"
+"<p><b>Addendum, September 16, 2013:</b> \n"
+"  After release, we have had reports that in some rare cases Audacity 2.0.4 has \n"
+"  <a href=\"http://forum.audacityteam.org/viewtopic.php?f=46&t=74470\">\n"
+"    issues starting up on Windows</a>, or \n"
+"  <a href=\"http://forum.audacityteam.org/viewtopic.php?f=47&t=74692\">\n"
+"    cannot import files on OS X</a>. \n"
+"  We're working on these problems. \n"
+"  To report or get help with these issues, please \n"
+"  <a href=\"&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;\"> \n"
+"    email us</a>.\n"
+"  </p>\n"
 msgstr ""
 "\n"
 "<p>\n"
@@ -376,12 +387,23 @@ msgstr ""
 "    2.0.4 Argitalpen Oharrak</a> \n"
 "  gai eta xehetasun gehiagorako.\n"
 "</p>\n"
+"<p><b>Gehigarria, 2013-ko Irailak 16:</b> \n"
+"  Argitalpenaren ondoren, jakinarazi digute zenbait kasu arrarotan Audacity 2.0.4-k \n"
+"  <a href=\"http://forum.audacityteam.org/viewtopic.php?f=46&t=74470\">\n"
+"    arazoak dituela Windows-en abiarazterakoan</a>, edo \n"
+"  <a href=\"http://forum.audacityteam.org/viewtopic.php?f=47&t=74692\">\n"
+"    ezin du agiririk inportatu OS X-an</a>. \n"
+"  Arazo hauek konpontzeko lanean gabiltza. \n"
+"  Arazo hauen jakinarazpenerako edo laguntza lortzeko, mesedez \n"
+"  <a href=\"&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;\"> \n"
+"    idatziguzu post@ bat</a>.\n"
+"  </p>\n"
 
-#: include/news.inc.php:91
+#: include/news.inc.php:102
 msgid "Audacity 2.0.3 Released"
 msgstr "Audacity 2.0.3 argitaratuta"
 
-#: include/news.inc.php:92
+#: include/news.inc.php:103
 msgid ""
 "\n"
 "<p>\n"
@@ -420,11 +442,11 @@ msgstr ""
 "  2.0.3 Argitalpen Oharrak</a> xehetasunetarako.\n"
 "</p>\n"
 
-#: include/news.inc.php:116
+#: include/news.inc.php:127
 msgid "Audacity 2.0.2 Released"
 msgstr "Audacity 2.0.2 argitaratuta"
 
-#: include/news.inc.php:117
+#: include/news.inc.php:128
 msgid ""
 "\n"
 "<p>\n"
@@ -452,11 +474,11 @@ msgstr ""
 "  2.0.2 Argitalpen Oharrak</a> aldeketen xehetasunetarako.\n"
 "</p>\n"
 
-#: include/news.inc.php:135
+#: include/news.inc.php:146
 msgid "Audacity 2.0.1 Released"
 msgstr "Audacity 2.0.1 argitaratuta"
 
-#: include/news.inc.php:136
+#: include/news.inc.php:147
 msgid ""
 "\n"
 "<p>\n"
@@ -484,11 +506,11 @@ msgstr ""
 "  2.0.1 Argitalpen Oharrak</a> aldaketen xehetasunetarako.\n"
 "</p>\n"
 
-#: include/news.inc.php:153
+#: include/news.inc.php:164
 msgid "Audacity 2.0 Released!"
 msgstr "Audacity 2.0 argitaratuta"
 
-#: include/news.inc.php:154
+#: include/news.inc.php:165
 msgid ""
 "\n"
 "<p>\n"
@@ -516,11 +538,11 @@ msgstr ""
 "  argibide xehetarako.\n"
 "</p>\n"
 
-#: include/news.inc.php:172
+#: include/news.inc.php:183
 msgid "Audacity 1.3.14 released"
 msgstr "Audacity 1.3.14 argitaratuta"
 
-#: include/news.inc.php:173
+#: include/news.inc.php:184
 msgid ""
 "\n"
 "<p>\n"
@@ -586,11 +608,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:241
+#: include/news.inc.php:252
 msgid "Audacity 1.3.13 released, and LinuxQuestions.org Audio Authoring Award 2010"
 msgstr "Audacity 1.3.13 argitaratuta, eta LinuxQuestions.org Audio Egiletza Saria 2010"
 
-#: include/news.inc.php:242
+#: include/news.inc.php:253
 msgid ""
 "\n"
 "<p>\n"
@@ -666,11 +688,11 @@ msgid ""
 "</p> \n"
 msgstr ""
 
-#: include/news.inc.php:320
+#: include/news.inc.php:331
 msgid "Audacity 1.3.12 released, and Audacity book release from PACKT Publishing"
 msgstr "Audacity 1.3.12 argitaratuta, eta Audacity liburua argitaratuta PACKT Argitaletxean"
 
-#: include/news.inc.php:321
+#: include/news.inc.php:332
 msgid ""
 "\n"
 "<p>\n"
@@ -746,11 +768,11 @@ msgid ""
 "</p> \n"
 msgstr ""
 
-#: include/news.inc.php:399
+#: include/news.inc.php:410
 msgid "Audacity 1.3.11 released"
 msgstr "Audacity 1.3.11 argitaratuta"
 
-#: include/news.inc.php:400
+#: include/news.inc.php:411
 msgid ""
 "\n"
 "<p>\n"
@@ -820,11 +842,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:471
+#: include/news.inc.php:482
 msgid "Audacity 1.3.10 released"
 msgstr "Audacity 1.3.10 argitaratuta"
 
-#: include/news.inc.php:472
+#: include/news.inc.php:483
 msgid ""
 "\n"
 "<p>\n"
@@ -905,11 +927,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:554
+#: include/news.inc.php:565
 msgid "Audacity 1.3.9 released, Google Summer of Code (GSoC) 2009 completed"
 msgstr "Audacity 1.3.9 argitaratuta, Google Summer of Code (GSoC) 2009 osatuta"
 
-#: include/news.inc.php:555
+#: include/news.inc.php:566
 msgid ""
 "\n"
 "<p>\n"
@@ -972,11 +994,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:619
+#: include/news.inc.php:630
 msgid "SourceForge.net Community Choice Awards 2009"
 msgstr "SourceForge.net Herkidegoaren Hautapen Sariak 2009"
 
-#: include/news.inc.php:620
+#: include/news.inc.php:631
 msgid ""
 "\n"
 "<p>\n"
@@ -990,11 +1012,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:635
+#: include/news.inc.php:646
 msgid "Audacity 1.3.8 released"
 msgstr "Audacity 1.3.8 argitaratuta"
 
-#: include/news.inc.php:636
+#: include/news.inc.php:647
 msgid ""
 "\n"
 "<p>\n"
@@ -1033,11 +1055,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:676
+#: include/news.inc.php:687
 msgid "Linux Journal and Bestcovery Awards, and new \"Audacity compact\" book"
 msgstr "Linux Aldizkaria eta Bestcovery Sariak, eta \"Audacity compact\" liburu berria"
 
-#: include/news.inc.php:677
+#: include/news.inc.php:688
 msgid ""
 "\n"
 "<p>\n"
@@ -1104,11 +1126,11 @@ msgid ""
 "</table>\n"
 msgstr ""
 
-#: include/news.inc.php:745
+#: include/news.inc.php:756
 msgid "Audacity is mentoring two Google Summer of Code (GSoC) 2009 students"
 msgstr "Audacity-k bi Google Summer of Code (GSoC) 2009 ikasleak aholkatzen ditu"
 
-#: include/news.inc.php:746
+#: include/news.inc.php:757
 msgid ""
 "\n"
 "<p>\n"
@@ -1131,11 +1153,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:770
+#: include/news.inc.php:781
 msgid "Audacity 1.3.7 released"
 msgstr "Audacity 1.3.7 argitaratuta"
 
-#: include/news.inc.php:771
+#: include/news.inc.php:782
 msgid ""
 "\n"
 "<p>\n"
@@ -1200,11 +1222,11 @@ msgid ""
 "<br>\n"
 msgstr ""
 
-#: include/news.inc.php:837
+#: include/news.inc.php:848
 msgid "Audacity 1.3.6 released"
 msgstr "Audacity 1.3.6 argitaratuta"
 
-#: include/news.inc.php:838
+#: include/news.inc.php:849
 msgid ""
 "\n"
 "<p>\n"
@@ -1251,11 +1273,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:886
+#: include/news.inc.php:897
 msgid "German Audacity Book released"
 msgstr "Alemaniar Audacity Liburua argitaratuta"
 
-#: include/news.inc.php:887
+#: include/news.inc.php:898
 msgid ""
 "\n"
 "<p>\n"
@@ -1297,11 +1319,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:930
+#: include/news.inc.php:941
 msgid "Audacity shines in Google Summer of Code (GSoC) 2008"
 msgstr "Audacity dizdiratsu Google Summer of Code (GSoC) 2008-an"
 
-#: include/news.inc.php:931
+#: include/news.inc.php:942
 msgid ""
 "\n"
 "<p>\n"
@@ -1351,11 +1373,11 @@ msgid ""
 "</p>    \n"
 msgstr ""
 
-#: include/news.inc.php:982
+#: include/news.inc.php:993
 msgid "Audacity in PC World 100 Best Products of 2008"
 msgstr "Audacity PC World 100 2008-ko Produktu Hoberenak"
 
-#: include/news.inc.php:983
+#: include/news.inc.php:994
 msgid ""
 "\n"
 "<p>\n"
@@ -1396,11 +1418,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:1025
+#: include/news.inc.php:1036
 msgid "Audacity 1.3.5 Released"
 msgstr "Audacity 1.3.5 argitaratuta"
 
-#: include/news.inc.php:1026
+#: include/news.inc.php:1037
 msgid ""
 "\n"
 "<p>\n"
@@ -1489,11 +1511,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:1116
+#: include/news.inc.php:1127
 msgid "Audacity is mentoring five Google Summer of Code (GSoC) 2008 students"
 msgstr "Audacity-k bost Google Summer of Code (GSoC) 2008 ikasleak aholkatzen ditu"
 
-#: include/news.inc.php:1117
+#: include/news.inc.php:1128
 msgid ""
 "\n"
 "<p>\n"
@@ -1512,11 +1534,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:1137
+#: include/news.inc.php:1148
 msgid "Audacity is a mentoring organization Google Summer of Code (GSoC) 2008 "
 msgstr "Audacity-k Google Summer of Code (GSoC) 2008 antolakuntza aholkatzen du"
 
-#: include/news.inc.php:1138
+#: include/news.inc.php:1149
 msgid ""
 "\n"
 "<p>\n"
@@ -1535,11 +1557,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:1158
+#: include/news.inc.php:1169
 msgid "Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "
 msgstr "Ikasleentzako Deia! Ezarri <em>ORAIN</em> Audacity egitasmoentzako Google Summer of Code (GSoC) 2008 -an"
 
-#: include/news.inc.php:1159
+#: include/news.inc.php:1170
 msgid ""
 "\n"
 "<p>\n"
@@ -1580,11 +1602,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:1201
+#: include/news.inc.php:1212
 msgid "Audacity and Google Summer of Code (GSoC) 2008 "
 msgstr "Audacity eta Google Summer of Code (GSoC) 2008 "
 
-#: include/news.inc.php:1202
+#: include/news.inc.php:1213
 msgid ""
 "\n"
 "<p>\n"
@@ -1614,11 +1636,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:1233
+#: include/news.inc.php:1244
 msgid "LinuxQuestions.org Audio Authoring Award 2007"
 msgstr "LinuxQuestions.org Audio Egiletza Saria 2007"
 
-#: include/news.inc.php:1234
+#: include/news.inc.php:1245
 #, php-format
 msgid ""
 "\n"
@@ -1629,11 +1651,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:1245
+#: include/news.inc.php:1256
 msgid "Audacity 1.3.4 Released"
 msgstr "Audacity 1.3.4 argitaratuta"
 
-#: include/news.inc.php:1246
+#: include/news.inc.php:1257
 msgid ""
 "\n"
 "<p>\n"
@@ -1669,11 +1691,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:1283
+#: include/news.inc.php:1294
 msgid "SourceForge Community Choice Awards 2007"
 msgstr "SourceForge Herkidego Hautapen Sariak 2007"
 
-#: include/news.inc.php:1284
+#: include/news.inc.php:1295
 msgid ""
 "\n"
 "<p>\n"
@@ -1687,11 +1709,11 @@ msgid ""
 "</p>\n"
 msgstr ""
 
-#: include/news.inc.php:1299
+#: include/news.inc.php:1310
 msgid "Audacity 1.3.3 Released"
 msgstr "Audacity 1.3.3 argitaratuta"
 
-#: include/news.inc.php:1300
+#: include/news.inc.php:1311
 msgid ""
 "\n"
 "<p>\n"
@@ -1763,11 +1785,11 @@ msgid ""
 "</dd></dl>\n"
 msgstr ""
 
-#: include/news.inc.php:1373
+#: include/news.inc.php:1384
 msgid "Audacity 1.3.2 and 1.2.5 Released"
 msgstr "Audacity 1.3.2 eta 1.2.5 argitaratuta"
 
-#: include/news.inc.php:1374
+#: include/news.inc.php:1385
 msgid ""
 "<p>\n"
 "The Audacity developers have been busy with many new features over\n"
@@ -1830,11 +1852,11 @@ msgid ""
 "</dd></dl>"
 msgstr ""
 
-#: include/news.inc.php:1438
+#: include/news.inc.php:1449
 msgid "The Audacity Store Is Open"
 msgstr "Audacity Denda Irekita Dago"
 
-#: include/news.inc.php:1439
+#: include/news.inc.php:1450
 msgid ""
 "\n"
 "\t<p>You are invited to try out the new <a href=\"http://audacitystore.com/\">Audacity Store</a>, which features\n"
@@ -1877,11 +1899,11 @@ msgid ""
 "\t"
 msgstr ""
 
-#: include/news.inc.php:1483
+#: include/news.inc.php:1494
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr "Audacity 1.2.4 eta 1.3.0 argitaratuta"
 
-#: include/news.inc.php:1484
+#: include/news.inc.php:1495
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple of bug fixes and minor improvements and is recommended for all users.  Audacity 1.3.0 is a beta release that contains hundreds of <a href=\"/download/features-1.3-a\">new features</a>, but this version is unfinished and unstable, and is recommended primarily for advanced users.  You can install both Audacity 1.2 and 1.3 simultaneously.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">1.2.4 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.4, or see <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for information about the new beta version.</p>\n"
@@ -1890,11 +1912,11 @@ msgid ""
 "</p>"
 msgstr ""
 
-#: include/news.inc.php:1494
+#: include/news.inc.php:1505
 msgid "Audacity 1.2.3 Released"
 msgstr "Audacity 1.2.3 argitaratuta"
 
-#: include/news.inc.php:1495
+#: include/news.inc.php:1506
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
@@ -1983,7 +2005,7 @@ msgstr "Oraindik laguntza behar baduzu, adituen laguntza eskuragarri dago"
 #. translate this link text unless there is a sub-forum in your language.
 #: contact/index.php:33
 msgid "Audacity Forum</a>."
-msgstr "Audacity Eztabaidagunea<\a>."
+msgstr "Audacity Eztabaidagunea</a>."
 
 #: contact/index.php:35
 msgid " To post a question, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">register</a>, confirm your registration then log in. Choose the correct subforum (for example, \"Windows\" in the Audacity 2.X Forum), click \"New Topic\" top left, then submit your message.  Foreign language subforums are available for <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">French</a>, <a href=\"http://audacity-forum.de/\">German</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Russian</a> and <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Spanish</a>."
@@ -2585,10 +2607,11 @@ msgid ""
 "  <li>And more! See the complete <a href=\"features\">list of features</a>.</li>\n"
 "</ul>"
 msgstr ""
-"<p>Audacity askea, erabilterraza eta <a href=\"http://manual.audacityteam.org/o/man/faq_recording_how_to_s.html#overdub\">bide-anitzeko</a> audio editatzaile eta grabatzailea da Windows, Mac OS X, GNU/Linux eta beste sistema eragile batzuetarako.  Interfazea eta <a href=\"http://audacityteam.org/wiki/index.php?title=Changing_the_current_language#list\">hizkuntza-anitzera itzulita dago</a>. Audacity hauetarako erabili dezakezu:</p>\n"
+"<p>Audacity askea, erabilterraza eta <a href=\"http://manual.audacityteam.org/o/man/faq_recording_how_to_s.html#overdub\">bide-anitzeko</a> audio editatzaile eta grabatzailea da Windows, Mac OS X, GNU/Linux eta beste sistema eragile batzuetarako.  Interfazea <a href=\"http://audacityteam.org/wiki/index.php?title=Changing_the_current_language#list\">hizkuntza-anitzera itzulita dago</a>. Audacity hauetarako erabili dezakezu:</p>\n"
 "\n"
 "<ul>\n"
 "  <li>Grabatu zuzeneko audioa.</li>\n"
+"  <li><a href=\"http://manual.audacityteam.org/o/man/tutorial_recording_computer_playback_on_windows.html\">Grabatu ordenagailuko irakurketa</a> Windows Vista edo berriagoa duen edozein makinatan.</li>\n"
 "  <li>Bihurtu kasetak eta grabaketak CD edo grabaketa digital.</li>\n"
 "  <li>Editatu WAV, AIFF, FLAC, MP2, MP3 edo Ogg Vorbis soinu agiriak.</li>\n"
 "  <li>Ebaki, kopiatu, batu edo nahastu soinuak elkarrekin.</li>\n"
@@ -2624,7 +2647,7 @@ msgstr ""
 "\n"
 "<p>Audacity bezalako programak <b>iturburu irekiko softwareak</b> ere deitzen dira, zeren beren iturburu kodea edonorentzat eskuragarri dago ikertzeko edo erabiltzeko.  Iturburu irekiko beste milaka programa daude, <a href=\"http://www.mozilla.com/\">Firefox</a> web nabigatzailea, <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> bulego suitea eta Linux-ohinarriko sistema eragile oso bat <a href=\"http://www.ubuntulinux.org/\">Ubuntu</a> bezala barne.</p>\n"
 "\n"
-"<p>Ongi etorriak dira <a href=\"/donate/\">dirulaguntzak</a> Audacity-ren garapena sostengatzeko. Edonork <a href=\"http://audacityteam.org/wiki/index.php?title=Contribute\">lagundu</a> dezake Audacity guri lagunduz <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">agiritza</a>-rekin, <a href=\"../community/translation\">itzulpenak</a> eginez, erabiltzaile <a href=\"http://audacityteam.org/forum/index.php\">sostengua</a>-rekin eta gure azken kodea <a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">aztertuz<a/>.</p>"
+"<p>Ongi etorriak dira <a href=\"/donate/\">dirulaguntzak</a> Audacity-ren garapena sostengatzeko. Edonork <a href=\"http://audacityteam.org/wiki/index.php?title=Contribute\">lagundu</a> dezake Audacity guri lagunduz <a href=\"http://www.audacityteam.org/manual/index.php?title=Main_Page\">agiritza</a>-rekin, <a href=\"../community/translation\">itzulpenak</a> eginez, erabiltzaile <a href=\"http://audacityteam.org/forum/index.php\">sostengua</a>rekin eta gure azken kodea <a href=\"http://audacityteam.org/wiki/index.php?title=Nightly_Builds\">aztertuz<a/>.</p>"
 
 #: about/index.php:45
 msgid "<p><a href=\"http://www.ohloh.net/projects/59\">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses.</p>"
@@ -3252,38 +3275,42 @@ msgid "In Audacity, click Help > Manual (in web browser), then the \"FAQ\" link 
 msgstr "Audacity-n, klikatu Laguntza > Eskuliburua (web nabigatzailean), orduan \"SEG\" lotura \"Nabigazioa\" kutxaren ezkerrean. Eskuliburua <a href=\"http://audacity.sourceforge.net/download/windows\">Windows .exe</a> edo <a href=\"http://audacity.sourceforge.net/download/mac\">Mac OS X .dmg</a> Audacity ezartzaileen barne dago."
 
 #: help/faq.php:27
+msgid "For <a href=\"../download/#legacy\">old versions of Audacity</a> please view the <a href=\"faq_i18n\">Older Frequently Asked Questions</a>."
+msgstr ""
+
+#: help/faq.php:29
 msgid "Other languages"
 msgstr "Beste hizkuntzak"
 
-#: help/faq.php:28
+#: help/faq.php:30
 msgid "View the localized FAQ in the online Manual:"
 msgstr "Ikusi zure hizkuntzako SEG online Eskuliburuan:"
 
-#: help/faq.php:30
+#: help/faq.php:32
 msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/fr\">French</a>"
 msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/fr\">Frantziera</a>"
 
-#: help/faq.php:31
+#: help/faq.php:33
 msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/it\">Italian</a>"
 msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/it\">Italiera</a>"
 
-#: help/faq.php:32
+#: help/faq.php:34
 msgid "<a href=\"http://manual.audacityteam.org/man/FAQ/es\">Spanish</a>"
 msgstr "<a href=\"http://manual.audacityteam.org/man/FAQ/es\">Espainiera</a>"
 
-#: help/faq.php:34
+#: help/faq.php:36
 msgid "<b>Note: </b>For the above three locales, the translation of the remainder of the Manual is not yet fully complete."
 msgstr "<b>Oharra: </b>Gaineko hiru hizkuntzetarako, eskuliburaren gainontzeko itzulpena ez dago osorik burututa."
 
-#: help/faq.php:36
+#: help/faq.php:38
 msgid "For all other languages, please check <a href=\"faq_i18n\">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0.x. The Manual will be updated for other languages in due course. Volunteers to help with <a href=\"http://manual.audacityteam.org/man/Help:Translating\">translating the Manual<a/> are welcomed."
 msgstr "Beste hizkuntzetarako, mesedez irakurri <a href=\"faq_i18n\">Sarri Egindako Galderak Zaharra nazioarteko laguntzarako</a>, hein handi batean baliagarria dena oraindik Audacity 2.0.x-rako. Eskuliburua beste hizkuntzatarako bere garaian eguneratuko da. <a href=\"http://manual.audacityteam.org/man/Help:Translating\">Eskuliburu itzulpena<a/>-rekin laguntzea nahi duten boluntarioak ongi etorriak dira."
 
-#: help/faq.php:38
+#: help/faq.php:40
 msgid "Still need help?"
 msgstr "Oraindik laguntza behar duzu?"
 
-#: help/faq.php:40
+#: help/faq.php:42
 msgid ""
 "If the Frequently Asked Questions don't resolve your query, see the \n"
 "<a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">\n"
@@ -3298,8 +3325,8 @@ msgid "Legacy Documentation"
 msgstr "Ondorena Agiritza"
 
 #: help/legacy_documentation.php:16
-msgid "This is old documentation for legacy versions of Audacity. Please see <a href=\"/help/documentation\">Documentation</a> for information about the current Audacity Manuals."
-msgstr "Hau agiritza zaharra da Audacity-ren ondorena bertsioetarako. Mesedez ikusi <a href=\"/help/documentation\">Agiritza</a> oraingo Audacity Eskuliburuen argibideak jasotzeko."
+msgid "This is legacy documentation for <a href=\"../download/#legacy\">old versions of Audacity</a>. Also see the <a href=\"faq_i18n\">Older Frequently Asked Questions</a> for more help with old versions. Please see <a href=\"/help/documentation\">Documentation</a> for information about the current Audacity Manuals."
+msgstr "Hau <a href=\"../download/#legacy\">Audacity-ren bertsio zaharrentzako</a> ondorena agiritza da. Ikusi ere <a href=\"faq_i18n\">Sarri Egindako Galderak Zaharra</a> bertsio zaharrentzako laguntza gehiagorako. Mesedez ikusi <a href=\"/help/documentation\">Agiritza</a> oraingo Audacity Eskuliburuen argibideak jasotzeko."
 
 #. i18n-hint:  Please add a note that the guides or manuals below are
 #. in English. This is legacy documentation, so it is not a priority to
@@ -3706,8 +3733,8 @@ msgid "This page contains links to Manuals (with Tutorials) for the free Audacit
 msgstr "Orrialde honek loturak ditu Audacity audio editatzaile askerarentzako Eskuliburuetara (Ikasgaiekin). Laguntza gehigarrirako, ikusi <a href=\"/faq\">Sarri Egindako Galderak</a> eta <a href=\"http://wiki.audacityteam.org/wiki/Category:Tutorial\">Ikasgaiak</a> gehigarria eta <a href=\"http://wiki.audacityteam.org/wiki/Category:Tips\">Aholkuak</a> <a href=\"http://wiki.audacityteam.org/\">Audacity Wikia</a>n."
 
 #: help/documentation.php:21
-msgid "Legacy documentation for old versions of Audacity can be found <a href=\"/help/legacy_documentation\">here</a>."
-msgstr "Audacity-ren bertsio zaharretarako ondorena agiritzak aurkitu daitezke <a href=\"/help/legacy_documentation\">hemen</a>."
+msgid "Legacy documentation for <a href=\"../download/#legacy\">old versions of Audacity</a> can be found <a href=\"/help/legacy_documentation\">here</a>."
+msgstr "<a href=\"../download/#legacy\">Audacity-ren bertsio zaharretarako</a> ondorena agiritzak <a href=\"/help/legacy_documentation\">hemen</a> aurkitu daitezke."
 
 #: help/documentation.php:23
 msgid "Audacity Manuals (with Tutorials)"
@@ -4319,8 +4346,8 @@ msgid "Can Audacity import additional formats like M4A, WMA or FLAC?"
 msgstr "Inportatu ahal ditu Audacity-k M4A, WMA edo FLAC bezalako heuskarri gehigarriak?"
 
 #: help/faq_i18n.php:190
-msgid "<p>Yes. Install the optional <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg</a> library. FFmpeg also allows Audacity to import audio from video files. Note that on Mac OS X, Audacity has built-in support for M4A import without installing FFmpeg, using the QuickTime components supplied by the operating system.</p>\n"
-msgstr "<p>Bai. Ezarri aukerazko <a href=\"http://manual.audacityteam.org/index.php?title=FAQ:Installation_and_Plug-Ins#installffmpeg\">FFmpeg</a> liburutegia. FFmpeg-ek ahalbidetzen dio ere Audacity-ri audioa inportatzea bideo agirietatik. Ohartu Mac OS X-ean, Audacity-k M4A inportazio sostengurako barne-eraiketa duela FFmpeg ezarri gabe, sistema eragileak dituen QuickTime osagaiak erabiliz.</p>\n"
+msgid "<p>Yes, if you install the optional <a href=\"http://manual.audacityteam.org/o/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg</a> library and if you have at least legacy Audacity 1.3.13 or later. FFmpeg also allows Audacity to import audio from video files. Note that on Mac OS X, Audacity has built-in support for M4A import without installing FFmpeg, using the QuickTime components supplied by the operating system.</p>\n"
+msgstr "<p>Bai, aukerazko <a href=\"http://manual.audacityteam.org/o/man/faq_installation_and_plug_ins.html#ffdown\">FFmpeg</a> liburutegia ezartzen baduzu eta gutxienez Audacity 1.3.13 edo berriagoa badauzu. FFmpeg-ek  Audacity-ri audioa bideo agirietatik inportatzea ere ahalbidetzen dio. Ohartu Mac OS X-ean, Audacity-k M4A inportazio sostengurako barne-eraiketa duela FFmpeg ezarri gabe, sistema eragileak dituen QuickTime osagaiak erabiliz.</p>\n"
 
 #: help/faq_i18n.php:194
 msgid "How do I import a track from an audio CD?"
@@ -4523,14 +4550,14 @@ msgstr "<b>Mac OS X 10.4 eta berriagoak ez daude sostengaturik Audacity 1.2-an. 
 
 #: download/legacy_mac.php:24
 #: download/legacy_mac.php:61
-#: download/mac.php:38
-#: download/mac.php:101
+#: download/mac.php:48
+#: download/mac.php:111
 #: download/beta_mac.php:46
 #: download/legacy_source.php:34
 #: download/beta_windows.php:57
 #: download/source.php:44
-#: download/windows.php:38
-#: download/windows.php:109
+#: download/windows.php:48
+#: download/windows.php:119
 #: download/legacy_windows.php:24
 #: download/legacy_windows.php:75
 #: download/legacy_linux.php:31
@@ -4568,7 +4595,7 @@ msgid "Inside your Applications folder, create a folder called \"Audacity\""
 msgstr "Zure Aplikazioak agiritegiaren barnean, sortu \"Audacity\" deituriko agiritegi bat"
 
 #: download/legacy_mac.php:35
-#: download/mac.php:43
+#: download/mac.php:53
 #: download/beta_mac.php:28
 msgid "Double-click the downloaded .dmg to mount it"
 msgstr "Klik bikoitza jeitsitako .dmg-an osatzeko."
@@ -4582,21 +4609,21 @@ msgid "Double-click the Audacity icon inside the \"Audacity\" folder to launch t
 msgstr "Klik bikoitza Audacity ikurrean \"Audacity\" agiritegiaren barnean programa abiarazteko"
 
 #: download/legacy_mac.php:41
-#: download/mac.php:48
+#: download/mac.php:58
 #: download/beta_mac.php:33
 #: download/legacy_source.php:24
 #: download/beta_windows.php:30
 #: download/source.php:29
-#: download/windows.php:41
+#: download/windows.php:51
 #: download/legacy_windows.php:45
 #: download/beta_source.php:27
 msgid "Optional Downloads"
 msgstr "Aukerazko Jeisketak"
 
 #: download/legacy_mac.php:43
-#: download/mac.php:49
+#: download/mac.php:59
 #: download/beta_windows.php:41
-#: download/windows.php:52
+#: download/windows.php:62
 #: download/legacy_windows.php:56
 msgid "Plug-ins and Libraries"
 msgstr "Plug-inak eta Liburutegiak"
@@ -4606,8 +4633,8 @@ msgid "LADSPA plug-ins installer</a> - over 90 plug-ins."
 msgstr "LADSPA plug-in ezartzailea</a> - 90 plug-in baino gehiago."
 
 #: download/legacy_mac.php:46
-#: download/mac.php:55
-#: download/windows.php:58
+#: download/mac.php:65
+#: download/windows.php:68
 #: download/legacy_windows.php:59
 #: download/common.inc.php:10
 #: download/beta_common.inc.php:10
@@ -4615,8 +4642,8 @@ msgid "Plug-Ins"
 msgstr "Plug-Inak"
 
 #: download/legacy_mac.php:46
-#: download/mac.php:56
-#: download/windows.php:59
+#: download/mac.php:66
+#: download/windows.php:69
 #: download/legacy_windows.php:59
 #: download/common.inc.php:10
 #: download/beta_common.inc.php:10
@@ -4624,8 +4651,8 @@ msgid "Download additional effects and filters."
 msgstr "Jeitsi eragin eta iragazki gehigarriak."
 
 #: download/legacy_mac.php:47
-#: download/mac.php:62
-#: download/windows.php:65
+#: download/mac.php:72
+#: download/windows.php:75
 #: download/legacy_windows.php:60
 #: download/common.inc.php:11
 #: download/beta_common.inc.php:11
@@ -4633,8 +4660,8 @@ msgid "LAME MP3 encoder"
 msgstr "LAME MP3 kodeatzailea"
 
 #: download/legacy_mac.php:47
-#: download/mac.php:63
-#: download/windows.php:66
+#: download/mac.php:73
+#: download/windows.php:76
 #: download/legacy_windows.php:60
 #: download/common.inc.php:11
 #: download/beta_common.inc.php:11
@@ -4642,8 +4669,8 @@ msgid "Allows Audacity to export MP3 files."
 msgstr "Audacity-ri MP3 agiriak esportatzea ahalbidetzen dio."
 
 #: download/legacy_mac.php:50
-#: download/mac.php:75
-#: download/windows.php:79
+#: download/mac.php:85
+#: download/windows.php:89
 #: download/legacy_windows.php:64
 #: download/common.inc.php:14
 #: download/beta_common.inc.php:14
@@ -4651,9 +4678,9 @@ msgid "Alternative Download Links"
 msgstr "Aukerazko Jeisketa Loturak"
 
 #: download/legacy_mac.php:53
-#: download/mac.php:80
+#: download/mac.php:90
 #: download/source.php:37
-#: download/windows.php:84
+#: download/windows.php:94
 #: download/legacy_windows.php:67
 #: download/common.inc.php:17
 #, php-format
@@ -4661,9 +4688,9 @@ msgid "If you have trouble with your download, or need an older version of Audac
 msgstr "Arazoak badituzu jeisketarekin, edo Audacity-ren bertsio zaharrago bat behar baduzu, saiatu honekin:"
 
 #: download/legacy_mac.php:55
-#: download/mac.php:84
+#: download/mac.php:94
 #: download/source.php:38
-#: download/windows.php:88
+#: download/windows.php:98
 #: download/legacy_windows.php:69
 #: download/common.inc.php:19
 #, php-format
@@ -4671,9 +4698,9 @@ msgid "<a href=\"%s\">SourceForge</a>: View older versions by clicking to enter 
 msgstr "<a href=\"%s\">SourceForge</a>: Ikusi bertsio zaharragoak \"Izena\" klikatuz beharrezko agiritegira sartzeko."
 
 #: download/legacy_mac.php:56
-#: download/mac.php:87
+#: download/mac.php:97
 #: download/source.php:39
-#: download/windows.php:91
+#: download/windows.php:101
 #: download/legacy_windows.php:70
 #: download/common.inc.php:20
 #, php-format
@@ -4697,13 +4724,13 @@ msgid "Audacity 1.0.0 is a legacy version for Mac OS 9 only."
 msgstr "Audacity 1.0.0 Mac OS 9-rako bakarrik ondorena bertsio bat da."
 
 #: download/legacy_mac.php:73
-#: download/mac.php:104
+#: download/mac.php:114
 #: download/beta_mac.php:49
 msgid "Audacity runs best with at least 1 GB RAM and a 1 GHz processor (2 GB RAM/2 GHz on OS X 10.7 or later)."
 msgstr "Audacity-k hobekien gutxienez 1 GB-ko RAM-rekin eta 1 GHz-ko prozesagailuarekin jarduten du (2 GB RAM/2 GHz OS X 10.7 edo berriagoan)."
 
 #: download/legacy_mac.php:74
-#: download/mac.php:105
+#: download/mac.php:115
 #: download/beta_mac.php:50
 msgid "Where Audacity is to be used for lengthy multi-track projects, we recommend a minimum of 2 GB RAM and 2 GHz processor (4 GB RAM on OS X 10.7 or later)."
 msgstr "Audacity bide-anitzeko egitasmo luzeetarako erabiltzerakoan, gomendatzen dugu gutxienez 2 GB-ko RAM eta 2 GHz-ko prozesagailua (4 GB-ko RAM  OS X 10.7 edo berrigoan)."
@@ -5125,41 +5152,41 @@ msgstr "<a href=\"%s\">Audacity %s</a> (.dmg agiria, %.1lf MB, laguntza agiriak 
 msgid "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for <b>OS X 10.4 or later</b> (Universal Binary) - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions."
 msgstr "<a href=\"%s\">Audacity %s zip agiria</a> (%.1lf MB) <b>OS X 10.4 edo berriagorako</b> (Binario Unibertsala) - Erabili hau jeisketa txikiago bat nahi baduzu (laguntza agiriak gabe), edo ezin baduzu ezartzailea abiarazi baimen mugengaitik."
 
-#: download/mac.php:41
+#: download/mac.php:51
 #: download/beta_mac.php:26
 msgid "Installation instructions (.dmg files)"
 msgstr "Ezarpen jarraipideak (.dmg agiriak)"
 
-#: download/mac.php:44
+#: download/mac.php:54
 #: download/beta_mac.php:29
 msgid "Then to install Audacity, copy the \"Audacity\" folder from the newly mounted .dmg to <b>/Applications</b> or any other location of your choosing."
 msgstr "Audacity ezartzeko, kopiatu \"Audacity\" agiritegia berriki osaturiko .dmg-tik <b>/Aplikazioak</b>-ra edo zeuk hautatzen duzun beste edozein kokalekura."
 
-#: download/mac.php:51
+#: download/mac.php:61
 msgid "LADSPA plug-ins zip file</a> - over 90 plug-ins."
 msgstr "LADSPA plug-inak zip agiria</a> - 90 plug-in baino gehiago."
 
-#: download/mac.php:69
-#: download/windows.php:72
+#: download/mac.php:79
+#: download/windows.php:82
 #: download/common.inc.php:12
 #: download/beta_common.inc.php:12
 msgid "FFmpeg import/export library"
 msgstr "FFmpeg inportazio/esportazio liburutegia"
 
-#: download/mac.php:70
-#: download/windows.php:73
+#: download/mac.php:80
+#: download/windows.php:83
 #: download/legacy_windows.php:61
 #: download/common.inc.php:12
 #: download/beta_common.inc.php:12
 msgid "Allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files."
 msgstr "Audacity-ri AC3, AMR(NB), M4A eta WMA bezalako audio heuskarri gehigarriak inportatzea eta esportatzea eta audioa bideo agirietatik inportatzea ahalbidetzen dio."
 
-#: download/mac.php:94
-#: download/windows.php:98
+#: download/mac.php:104
+#: download/windows.php:108
 msgid "Audacity Nightly Builds"
 msgstr "Audacity Gau Eraiketak"
 
-#: download/mac.php:97
+#: download/mac.php:107
 msgid "<b>For advanced users</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#mac\">Nightly Builds</a> for <b>OS X 10.4 or later</b> (Universal Binary) are available for testing purposes."
 msgstr "<b>Erabailtzaile aurreratuentzat</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#mac\">Gau Eraiketak</a> <b>OS X 10.4 edo berriagoetarako</b> (Binario Unibertsala) eskuragarri daude azterketa asmoetarako."
 
@@ -5654,8 +5681,8 @@ msgstr "<a href=\"%s\">Audacity %s ezartzailea</a> (.exe agiria, %.1lf MB) -  Au
 #. original string.)
 #: download/beta_windows.php:37
 #: download/beta_windows.php:38
-#: download/windows.php:48
-#: download/windows.php:49
+#: download/windows.php:58
+#: download/windows.php:59
 #: download/legacy_windows.php:52
 #: download/legacy_windows.php:53
 msgid "localized_downloads_windows"
@@ -5681,7 +5708,7 @@ msgid "<b>For advanced users</b>, <a href=\"http://wiki.audacityteam.org/index.p
 msgstr "<b>Erabiltzaile aurreratuentzat</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Gau Eraiketak</a> eskuragarri daude azterketa asmoetarako."
 
 #: download/beta_windows.php:59
-#: download/windows.php:112
+#: download/windows.php:122
 msgid "Windows 95 and NT are not supported."
 msgstr "Windows 95 eta NT ez daude sostengaturik."
 
@@ -5842,16 +5869,16 @@ msgstr "<a href=\"%s\">Audacity %s ezartzailea</a> (.exe agiria, %.1lf MB, lagun
 msgid "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB) for <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b> - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions."
 msgstr "<a href=\"%s\">Audacity %s zip agiria</a> (%.1lf MB)  <b>Windows&nbsp;2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8</b>-rako - Erabili hau jeisketa txikiago bat nahi baduzu (laguntza agiri gabe) edo ezin baduzu ezartzailea abiarazi baimen mugengaitik."
 
-#: download/windows.php:54
+#: download/windows.php:64
 #, php-format
 msgid "<a href=\"%s\">LADSPA plug-ins %s installer</a> (.exe file, %.1lf MB) - Contains over 90 plug-ins."
 msgstr "<a href=\"%s\">LADSPA plug-inak %s ezartzailea</a> (.exe agiria, %.1lf MB) - 90 plug-in baino gehiago ditu."
 
-#: download/windows.php:103
+#: download/windows.php:113
 msgid "<b>For advanced users</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Nightly Builds</a> for <b>Windows 2000/XP/Vista/Windows 7/Windows 8</b> are available for testing purposes."
 msgstr "<b>Erabiltzaile aurreratuentzat</b>, <a href=\"http://wiki.audacityteam.org/index.php?title=Nightly_Builds#Windows_Binaries\">Gau Eraiketak</a> <b>Windows 2000/XP/Vista/Windows 7/Windows 8</b> eskuragarri daude azterketa asmoetarako"
 
-#: download/windows.php:111
+#: download/windows.php:121
 #, php-format
 msgid "Read about Audacity on <a href=\"%s\">Windows Vista</a>, <a href=\"%s\">Windows 7</a> and <a href=\"%s\">Windows 8</a>."
 msgstr "Irakurri Audacity buruz <a href=\"%s\">Windows Vista</a>, <a href=\"%s\">Windows 7</a> eta <a href=\"%s\">Windows 8</a>-an."
@@ -7246,8 +7273,8 @@ msgid "For users of <b>Mac OS 9</b> and <b>Mac OS 10.0 through 10.3</b>, legacy 
 msgstr "<b>Mac OS 9</b> eta <b>Mac OS 10.0 -> 10.3</b> erabiltzaileentzat, Audacity-ren ondorena bertsioak eskuragarri daude <a href=\"legacy_mac\">Ondorena Mac jeisketa orrialdea"
 
 #: download/index.php:94
-msgid "<a href=\"http://sourceforge.net/projects/audacity/files/\">All Previous Versions of Audacity</a>"
-msgstr "<a href=\"http://sourceforge.net/projects/audacity/files/\">Audacity-ren Aurreko Bertsio Guztiak</a>"
+msgid "<a href=\"http://sourceforge.net/projects/audacity/files/\">All Previous Versions of Audacity</a> (click to enter the required folder under \"Name\")."
+msgstr "<a href=\"http://sourceforge.net/projects/audacity/files/\">Audacity-ren Aurreko Bertsio Guztiak</a>  (klikatu beharrezko agiritegia \"Izena\" barnean sartzeko)."
 
 #: download/index.php:97
 msgid "Further Information"
