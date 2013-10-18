@@ -33,6 +33,7 @@
   <li>Benjamin Drung, <?=_("developer")?></li>
   <li>Vaughan Johnson, <?=_("developer")?></li>
   <li>Greg Kozikowski, <?=_("documentation and support")?></li>
+  <li>Leland Lucius, <?=_("developer")?></li>
   <li>Peter Sampson, <?=_("documentation and support")?></li>
   <li>Martyn Shaw, <?=_("developer")?></li>
   <li>Bill Wharrie, <?=_("documentation and support")?></li>
@@ -52,7 +53,6 @@
   <li>Al Dimond, <?=_("developer")?></li>
   <li><a href="http://www.reverberate.org/">Joshua Haberman</a>, <?=_("developer")?></li>
   <li>Ruslan Ijbulatov, <?=_("developer")?></li>
-  <li>Leland Lucius, <?=_("developer")?></li>
   <li><a href="http://dominic-mazzoni.com/">Dominic Mazzoni</a>, <?=_("developer and co-founder of Audacity")?></li>
   <li>Markus Meyer, <?=_("developer")?></li>
   <li>Monty Montgomery, <?=_("developer")?></li>
