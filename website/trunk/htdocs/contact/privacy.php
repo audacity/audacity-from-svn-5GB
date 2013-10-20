@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2003 Dominic Mazzoni
- * Copyright 2005-12 Matt Brubeck, Vaughan Johnson
+ * Copyright 2005-13 Matt Brubeck, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -17,7 +17,7 @@
 
 <?=_('<p>On some pages on this site, we show advertisements from Google\'s AdSense program. See our &ldquo;<a href="http://audacity.sourceforge.net/donate/">How Does Audacity Raise Money?</a>&rdquo; page for the reasons we show advertisements.</p>
 
-<p>As of April 8, 2009, this includes "interest-based" advertising, which utilizes cookies to try to determine users\' areas of interest (for example, audio editing), to show advertisements of likelier interest. Please see Google\'s <a href="http://www.google.com/policies/privacy/ads/">Advertising privacy FAQ</a> for information regarding your privacy including how to <a href="http://www.google.com/policies/privacy/ads/#toc-optout">opt out</a> of this tracking.</p>')?>
+<p>As of April 8, 2009, this includes "interest-based" advertising, which utilizes cookies to try to determine users\' areas of interest (for example, audio editing), to show advertisements of likelier interest. Please see Google\'s <a href="http://www.google.com/policies/technologies/ads/">Advertising Policies and Principles</a> for information regarding your privacy and <a href="https://support.google.com/ads/answer/2662922">Ads Help</a> for how to opt out of interest-based tracking.</p>')?>
 
 <h3 id="announce"><?=_("Announcement List Policy")?></h3>
 
