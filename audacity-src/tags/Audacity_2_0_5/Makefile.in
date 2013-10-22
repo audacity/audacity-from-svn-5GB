@@ -1,0 +1,173 @@
+
+INSTALL = @INSTALL@
+exec_prefix= @exec_prefix@
+prefix= @prefix@
+datarootdir= @datarootdir@
+BINDIR= @bindir@
+DATADIR= @datadir@
+DATAROOTDIR = @datarootdir@
+MANDIR= @mandir@
+AUDACITY_NAME = @AUDACITY_NAME@
+EXTRAINSTALLTARGETS= @EXTRAINSTALLTARGETS@
+EXTRAUNINSTALLTARGETS= @EXTRAUNINSTALLTARGETS@
+PACKAGE=@AUDACITY_NAME@
+DOCDIR= @docdir@
+
+.PHONY: all
+all: audacity help/audacity.1.gz
+
+.PHONY: audacity
+audacity:
+	$(MAKE) -C lib-src
+	$(MAKE) -C src
+	$(MAKE) -C locale
+
+.PHONY: src/libaudacity.a
+src/libaudacity.a:
+	$(MAKE) -C src libaudacity.a
+
+.PHONY: install
+install: audacity $(EXTRAINSTALLTARGETS)
+	# install the binary
+	$(INSTALL) -d $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 755 audacity $(DESTDIR)$(BINDIR)/$(AUDACITY_NAME)
+
+	# install docs
+	$(INSTALL) -d $(DESTDIR)$(DOCDIR)/
+	$(INSTALL) -m 644 README.txt $(DESTDIR)$(DOCDIR)/README.txt
+	$(INSTALL) -m 644 LICENSE.txt $(DESTDIR)$(DOCDIR)/LICENSE.txt
+
+	# install manpage
+	$(INSTALL) -d $(DESTDIR)$(MANDIR)/man1
+	-test -f help/audacity.1.gz && \
+		$(INSTALL) -m 644 help/audacity.1.gz \
+		$(DESTDIR)$(MANDIR)/man1/$(AUDACITY_NAME).1.gz
+
+	# install nyquist
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/nyquist
+	$(INSTALL) -m 644 nyquist/*.lsp nyquist/nyquist-plot.txt $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/nyquist
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/nyquist/rawwaves
+	$(INSTALL) -m 644 nyquist/rawwaves/*.raw $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/nyquist/rawwaves
+
+	# install plug-ins
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/plug-ins
+	$(INSTALL) -m 644 plug-ins/*.ny $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/plug-ins
+
+	# install resources that use wxStandardPaths::GetResourceDir()
+	$(INSTALL) -m 644 presets/EQDefaultCurves.xml $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/EQDefaultCurves.xml
+
+	# install locales
+	$(MAKE) -C locale install
+
+	# install icons for audacity
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/pixmaps/
+	$(INSTALL) -m 644 images/AudacityLogo48x48.xpm $(DESTDIR)$(DATADIR)/pixmaps/$(AUDACITY_NAME).xpm
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/icons/hicolor/16x16/apps
+	$(INSTALL) -m 644 images/audacity16.png $(DESTDIR)$(DATADIR)/icons/hicolor/16x16/apps/$(AUDACITY_NAME).png
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/icons/hicolor/22x22/apps
+	$(INSTALL) -m 644 images/audacity22.png $(DESTDIR)$(DATADIR)/icons/hicolor/22x22/apps/$(AUDACITY_NAME).png
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/icons/hicolor/24x24/apps
+	$(INSTALL) -m 644 images/audacity24.png $(DESTDIR)$(DATADIR)/icons/hicolor/24x24/apps/$(AUDACITY_NAME).png
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/icons/hicolor/32x32/apps
+	$(INSTALL) -m 644 images/audacity32.png $(DESTDIR)$(DATADIR)/icons/hicolor/32x32/apps/$(AUDACITY_NAME).png
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/icons/hicolor/48x48/apps
+	$(INSTALL) -m 644 images/audacity48.png $(DESTDIR)$(DATADIR)/icons/hicolor/48x48/apps/$(AUDACITY_NAME).png
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/icons/hicolor/scalable/apps
+	$(INSTALL) -m 644 images/audacity.svg $(DESTDIR)$(DATADIR)/icons/hicolor/scalable/apps/$(AUDACITY_NAME).svg
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/pixmaps
+	$(INSTALL) -m 644 images/audacity16.xpm $(DESTDIR)$(DATADIR)/pixmaps/$(AUDACITY_NAME)16.xpm
+	$(INSTALL) -m 644 images/audacity32.xpm $(DESTDIR)$(DATADIR)/pixmaps/$(AUDACITY_NAME)32.xpm
+	# note we don't use the AUDACITY_NAME variable here, because the mime type
+	# doesn't depend on it
+	$(INSTALL) -m 644 images/gnome-mime-application-x-audacity-project.xpm $(DESTDIR)$(DATADIR)/pixmaps/gnome-mime-application-x-audacity-project.xpm
+
+.PHONY: install-extra-data
+install-extra-data:
+	# install desktop file
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/applications
+	$(INSTALL) -m 644 src/audacity.desktop $(DESTDIR)$(DATADIR)/applications/$(AUDACITY_NAME).desktop
+
+	# install MIME information
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/mime/packages
+	$(INSTALL) -m 644 src/audacity.xml $(DESTDIR)$(DATADIR)/mime/packages
+
+.PHONY: install-lrdf-data
+install-lrdf-data:
+	# install basic LRDF ontology file
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/rdf
+	$(INSTALL) -m 644 lib-src/liblrdf/examples/ladspa.rdfs $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/rdf
+
+.PHONY: uninstall
+uninstall: $(EXTRAUNINSTALLTARGETS)
+	# remove binary
+	rm -rf $(DESTDIR)$(BINDIR)/$(AUDACITY_NAME)
+	# remove docs
+	rm -rf $(DESTDIR)$(DATADIR)/doc/$(AUDACITY_NAME)
+	# remove man page
+	rm -rf $(DESTDIR)$(MANDIR)/man1/$(AUDACITY_NAME).1.gz
+	# remove nyquist
+	rm -rf $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/nyquist
+	# remove plug-ins
+	rm -rf $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/plug-ins
+	# remove locales
+	$(MAKE) -C locale uninstall
+	# remove icons
+	rm -rf $(DESTDIR)$(DATADIR)/pixmaps/$(AUDACITY_NAME).xpm
+	rm -rf $(DESTDIR)$(DATADIR)/icons/hicolor/16x16/apps/$(AUDACITY_NAME).png
+	rm -rf $(DESTDIR)$(DATADIR)/icons/hicolor/22x22/apps/$(AUDACITY_NAME).png
+	rm -rf $(DESTDIR)$(DATADIR)/icons/hicolor/24x24/apps/$(AUDACITY_NAME).png
+	rm -rf $(DESTDIR)$(DATADIR)/icons/hicolor/32x32/apps/$(AUDACITY_NAME).png
+	rm -rf $(DESTDIR)$(DATADIR)/icons/hicolor/48x48/apps/$(AUDACITY_NAME).png
+	rm -rf $(DESTDIR)$(DATADIR)/icons/hicolor/scalable/apps/$(AUDACITY_NAME).svg
+	rm -rf $(DESTDIR)$(DATADIR)/pixmaps/$(AUDACITY_NAME)16.xpm
+	rm -rf $(DESTDIR)$(DATADIR)/pixmaps/$(AUDACITY_NAME)32.xpm
+	# and the mime type icon
+	rm -rf $(DESTDIR)$(DATADIR)/pixmaps/gnome-mime-application-x-audacity-project.xpm
+
+
+.PHONY: uninstall-extra-data
+uninstall-extra-data:
+	rm -f $(DESTDIR)$(DATADIR)/applications/$(AUDACITY_NAME).desktop
+	rm -f $(DESTDIR)$(DATADIR)/mime/packages/audacity.xml
+
+.PHONY: uninstall-lrdf-data
+uninstall-lrdf-data:
+	rm -f $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/rdf/ladspa.rdfs
+
+help/audacity.1.gz: help/audacity.1
+	cat help/audacity.1 | gzip -9 > help/audacity.1.gz
+# gzipping the file this way prevents audacity.1 from getting deleted
+	
+dox: audacity.dox
+	doxygen audacity.dox
+
+check: src/libaudacity.a
+	-$(MAKE) -C tests check
+
+dep:
+	$(MAKE) -C src dep
+
+clean:
+	$(MAKE) -C lib-src clean
+	$(MAKE) -C src clean
+	-$(MAKE) -C tests clean
+	rm -f audacity
+	rm -f help/audacity.1.gz
+	rm -rf Audacity.app
+	rm -f src/audacity.desktop
+
+veryclean: clean
+	rm -f Makefile src/Makefile lib-src/Makefile
+	rm -f src/configunix.h
+	rm -f `find . -name "*~"`
+	rm -f `find . -name core`
+
+distclean: clean
+	$(MAKE) -C locale distclean
+	$(MAKE) -C lib-src distclean
+	-$(MAKE) -C tests distclean
+
+	rm -f Makefile src/Makefile lib-src/Makefile
+	rm -f locale/Makefile src/configunix.h
+	rm -f config.log config.status config.cache
+
