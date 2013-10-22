@@ -12,6 +12,12 @@
   echo "<h2>$pageTitle</h2>";
   echo "<p>"._('This is a list of features in Audacity, the free, open source, cross-platform audio editor.  For full information on how to use these features, go to the <a href="../help/">help pages</a>.')."</p>";
 
+/* 
+//Text to be reinstated in Recording section if WDM-KS is reinstated
+  <li>Record at very low <a href="http://manual.audacityteam.org/o/man/glossary.html#latency">latencies</a> on supported devices on Windows by choosing "Windows WDM-KS" host and a low "Audio to Buffer" setting in <a href="http://manual.audacityteam.org/o/man/recording_preferences.html">Recording Preferences</a>. On Linux, you can obtain comparable latencies by using Audacity  with <a href="http://wiki.audacityteam.org/wiki/Linux_Issues#JACK">JACK</a>.
+  <li>Record at sample rates up to 192,000 Hz (subject to appropriate hardware and host selection). Up to 384,000 Hz is supported for appropriate high-resolution devices (note that Windows DirectSound host is limited to 200,000 Hz).</li> 
+  <li>Record at 24-bit depth on Windows (using Windows WDM-KS or Windows WASAPI host), Mac OS X or Linux (using ALSA or JACK  host).
+*/  
   echo _('<h3 id="record">Recording</h3>
 <p>Audacity can record live audio through a microphone or mixer, or <a href="http://manual.audacityteam.org/o/man/tutorial_copying_tapes_lps_or_minidiscs_to_cd.html">digitize recordings from cassette tapes, records or minidiscs</a>. With some sound cards, and on any Windows Vista, Windows 7 or Windows 8 machine, Audacity can also capture <a href="http://manual.audacityteam.org/o/man/tutorial_recording_audio_playing_on_the_computer.html">streaming audio</a>.</p>
 <ul>
@@ -21,9 +27,9 @@
   <li><a href="http://manual.audacityteam.org/o/man/tutorial_recording_computer_playback_on_windows.html">Record computer playback on Windows Vista and later</a> by choosing "Windows WASAPI" host in Device Toolbar then a "loopback" input.</li>
   <li>Timer Record and Sound Activated Recording features.</li>
   <li>Dub over existing tracks to create <a href="http://manual.audacityteam.org/o/man/faq_recording_how_to_s.html#overdub">multi-track recordings</a>.</li>
-  <li>Record at very low <a href="http://manual.audacityteam.org/o/man/glossary.html#latency">latencies</a> on supported devices on Windows by choosing "Windows WDM-KS" host and a low "Audio to Buffer" setting in <a href="http://manual.audacityteam.org/o/man/recording_preferences.html">Recording Preferences</a>. On Linux, you can obtain comparable latencies by using Audacity  with <a href="http://wiki.audacityteam.org/wiki/Linux_Issues#JACK">JACK</a>.  
-  <li>Record at sample rates up to 192,000 Hz (subject to appropriate hardware and host selection). Up to 384,000 Hz is supported for appropriate high-resolution devices (note that Windows DirectSound host is limited to 200,000 Hz).</li> 
-  <li>Record at 24-bit depth on Windows (using Windows WDM-KS or Windows WASAPI host), Mac OS X or Linux (using ALSA or JACK  host).
+  <li>Record at very low <a href="http://manual.audacityteam.org/o/man/glossary.html#latency">latencies</a> on supported devices on Linux by using Audacity  with <a href="http://wiki.audacityteam.org/wiki/Linux_Issues#JACK">JACK</a>.  
+  <li>Record at sample rates up to 192,000 Hz (subject to appropriate hardware and host selection). Up to 384,000 Hz is supported for appropriate high-resolution devices on Mac OS X and Linux.</li> 
+  <li>Record at 24-bit depth on Windows (using Windows WASAPI host), Mac OS X or Linux (using ALSA or JACK  host).
   <li>Record <a href="http://wiki.audacityteam.org/wiki/Multichannel_Recording">multiple channels</a> at once (subject to appropriate hardware).</li>
 </ul>');
 

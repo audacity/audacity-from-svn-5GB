@@ -40,6 +40,43 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "October 21, 2013",
+  	"2.0.5-release",
+  _("Audacity 2.0.5 Released"),
+  _("
+<p>
+<a href=\"/download\">Audacity 2.0.5</a>
+  replaces all previous versions. It fixes crashes or hangs that were reported in
+  Audacity 2.0.4 on some machines, and contains many other bug fixes and stability 
+  improvements. 
+  <ul>
+    <li>(OS X) Crashes when importing audio files are fixed.</li>
+    <li>(OS X) Files can now be opened using Finder \"Open with\", and by double-click or
+     dragging to the Audacity icon.</li>    
+    <li>(OS X) Audio Unit plug-ins are not loaded until used. This makes Audacity
+     start faster and avoids startup crashes due to 
+     <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.5#vst_au\">
+     incompatible plug-ins</a>.</li>
+    <li>(Windows) On a very few machines, the <i>Windows WDM-KS</i> low latency
+     host caused Audacity 2.0.4 to hang or the computer to crash. WDM-KS has been 
+     removed from Audacity 2.0.5 while we work on safely enabling this host. 
+     WDM-KS will still be available for testing in the Windows
+     <a href=\"http://wiki.audacityteam.org/wiki/Nightly_Builds\">
+     alpha development builds</a>.</li>
+    <li>(Windows) Fixed a bug where Audacity would not record until the current input 
+     was reselected. </li>
+    <li>(Linux) You can now navigate through an effect or other dialog using keyboard TAB.</li>
+  </ul>
+Other bugs have been fixed, notably shaped dither being too loud, as detailed in the
+  <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.5\">2.0.5 Release Notes</a>. 
+</p>
+<p>
+<b>BOSSIE 2013 Awards:</b> In September, Audacity was listed as a top pick in InfoWorld's
+<a href=\"http://www.infoworld.com/d/open-source-software/bossies-2013-the-best-of-open-source-software-awards-226971\">BOSSIE 2013</a> category for <a href=\"http://www.infoworld.com/slideshow/119867/bossie-awards-2013-the-best-open-source-desktop-and-mobile-software-226979#slide17\">\"Best open source desktop apps and mobile platforms\"</a>.
+</p>
+"));
+
+add_news_item(
   "September 6, 2013",
   	"2.0.4-release",
   _("Audacity 2.0.4 Released"),

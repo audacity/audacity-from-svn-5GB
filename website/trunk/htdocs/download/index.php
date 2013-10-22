@@ -71,11 +71,12 @@
         </span>
       </h3>
 
+      <hr>
       <h3>
         <div class="downloads_notes">
           <?php printf('<a href="http://wiki.audacityteam.org/wiki/Release_Notes_%s">', src_version)?>
           <img src="../images/download_spacer.png">
-          <?php printf(_("View Release Notes for Audacity %s"), src_version)?>
+          <?php printf(_("Release Notes for Audacity %s"), src_version)?>
         </a>
         </div>
       </h3>

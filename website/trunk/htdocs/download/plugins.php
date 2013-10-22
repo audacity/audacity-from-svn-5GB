@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 12 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 13 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -19,7 +19,7 @@
 <p><?=_('To install new LADSPA or Nyquist plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under "Program Files".  On Mac OS X, it is usually under "Applications". On Linux, you can use <a href="http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#linux_plugins">various plug-in locations</a>. Restart Audacity, then the addded plug-ins will appear underneath the divider in the "Effect", "Generate" or "Analyze" menus.')?></p>
 
 <h3><?=_("LADSPA Plug-Ins")?></h3>
-<p><?php printf(_('Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity includes some sample LADSPA effects. Windows users can install an additional <a href="%s">set of over 90 LADSPA plug-ins</a>.  There is a similar set of LADSPA plug-ins for <a href="%s">Mac</a>. More information and many LADSPA plug-ins for Linux can be found on the <a href="%s">LADSPA web site</a>.'), download_url($ladspa_url), 'http://gaclrecords.org.uk/swh-plugins-mac-0.4.15.zip', 'http://www.ladspa.org/')?></p>
+<p><?php printf(_('Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity includes some sample LADSPA effects. Windows users can install an additional <a href="%s">set of over 90 LADSPA plug-ins</a>.  There is a similar set of LADSPA plug-ins for <a href="%s">Mac</a>. More information and many LADSPA plug-ins for Linux can be found on the <a href="%s">LADSPA web site</a>.'), download_url($ladspa_url), 'http://audacity.googlecode.com/files/swh-plugins-mac-0.4.15.zip', 'http://www.ladspa.org/')?></p>
 
 <h3><?=_("Nyquist Plug-Ins")?></h3>
 <p><?=_('Audacity has built-in support for Nyquist effects on all operating systems. You can download additional <a href="nyquistplugins">Nyquist plug-ins</a>, or create your own using the <a href="../help/nyquist">Nyquist programming language</a>. Nyquist code can be tested using "Nyquist Prompt" under the Effect menu, or code for Nyquist plug-ins that generate audio can be quickly tested with <a href="http://audacity.sourceforge.net/nyquist/generate.zip">Nyquist Generate Prompt</a>.')?>

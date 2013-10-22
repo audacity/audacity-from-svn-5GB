@@ -29,29 +29,21 @@
   </li>
   <li>
     <p>
-      <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB) for <b>OS X 10.4 or later</b> (Universal Binary) - Use this if you want a smaller download (without help files), or cannot run the installer because of restricted permissions.'),
+      <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB) for <b>OS X 10.4 or later</b> (Universal Binary) - Use this if you want a smaller download (without help files).'),
                     download_url($macosx_zip_url), macosx_version, macosx_zip_size)?>
     </p>
   </li>
 </ul>
-<p>
-  <b>Known Issues:</b>
-  After release of 2.0.4, we have had reports that in some rare cases Audacity 2.0.4 
-  <a href="http://forum.audacityteam.org/viewtopic.php?f=47&t=74692">
-    cannot import files on OS X</a>.
-  We're working on these problems.
-  To report or get help with these issues, please
-  <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#102;&#101;&#101;&#100;&#x62;&#97;&#99;&#107;&#x40;&#97;&#x75;&#x64;&#97;&#x63;&#105;&#116;&#x79;&#116;&#101;&#97;&#x6d;&#46;&#111;&#114;&#x67;">
-    email us</a>.
-</p>
+
 <p>
   &nbsp;&nbsp;&nbsp;<a href="#sysreq"><?=_("System Requirements")?></a>
 </p>
 
 <p> <b><?=_("Installation instructions (.dmg files)")?>:</b>
- <ol>
-   <li><?=_("Double-click the downloaded .dmg to mount it")?></li>
-   <li><?=_("Then to install Audacity, copy the \"Audacity\" folder from the newly mounted .dmg to <b>/Applications</b> or any other location of your choosing.")?></li>
+  <ol>
+   <li><?=_("Double-click the downloaded .dmg to mount it.")?></li>
+   <li><?=_("Copy the \"Audacity\" folder from the newly mounted .dmg to <b>/Applications</b> (or any other location of your choosing).")?></li>
+   <li><?=_("Eject the .dmg at bottom left of Finder, then launch Audacity.app from the \"Audacity\" folder that you copied.")?></li> 
  </ol>
 </p>
 
