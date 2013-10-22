@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+	<title>Audacity History</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+<body style="text-align: center;">
+<center>
+<table cellspacing=0 cellpadding=0>
+<tr>
+        <td class=ss>
+        <a href="index.html">Back to the front page</a>
+        </td>
+</tr></table>
+
+<h1 align=center>What's New in Audacity 1.2 ??
+<br><span class=ss>(History of Audacity)</span></h1>
+
+
+<table width="90%">
+<tr><td colspan=2 width="90%"><P class=menuref_current>New features in Audacity 1.2:</P></td></tr>
+<tr>
+ <td width="50%" valign=top>
+     <h3>User Interface</h3>
+	<ul>
+	<li>New Mixer toolbar allows you to control the output
+	volume, input volume, and input source directly
+	from Audacity.</li>
+	<li>Every track now has its own gain and pan controls.</li>
+	<li>Uses improved project file format.</li>
+	<li>Block files (stored in Audacity project directories) now
+	use the standard AU format.  Though some Audacity
+	meta-information is in these files, they can now be
+	read by many other popular audio programs as well.</li>
+	<li>Import RAW has a simpler GUI
+	but support for far more file formats. The
+	autodetection algorithms are much more accurate than
+	in 1.0.</li>
+	<li>Using high quality resampling algorithms, with the
+	option of better quality for mixing than for real-time
+	playback.</li>
+	<li>Preliminary support for Time Tracks, for changing
+	playback speed over time.</li>
+	<li>Vertical zooming of tracks.</li>
+	<li>Improved look and placement of toolbars.</li>
+	<li>New custom mouse cursors.</li>
+	<li>Complete implementation of editable keyboard shortcuts.</li>
+	<li>Find zero-crossings.</li>
+	<li>Mouse wheel can be used to zoom in and out.</li>
+	<li>Multi-Tool mode.</li>
+	<li>Amplify and fade using envelope.</li>
+	<li>Labels can store selections (like Audacity 1.0.0).</li>
+	<li>Open multiple files from the same dialog.</li>
+	</ul>
+ </td>
+
+ <td width="50%" valign=top>
+     <H3>Effects</H3>
+	<ul>
+	<li>Repeat Last Effect command.</li>
+	<li>Support for LADSPA plug-ins on all platforms.</li>
+	<li>VST support now comes through an optional LADSPA plug-in
+	called the VST Enabler.</li>
+	<li>Most effects now have a Preview button.</li>
+	<li>Compressor (Dynamic Range Compressor).</li>
+	<li>Change Pitch (without changing tempo).</li>
+	<li>Change Tempo (without changing pitch).</li>
+	<li>Change Speed (changing both pitch and tempo).</li>
+	<li>Repeat (useful for creating loops).</li>
+	<li>Normalize (adjust volume and DC bias).</li>
+	</ul>
+
+<h3>Audio I/O</h3>
+<ul>
+	<li>1-second preview command (just hit the '1' key on your
+	keyboard).</li>
+	<li>Looped play (Shift-click on the Play button).</li>
+	</ul>
+ </td>
+</tr>
+
+<tr><td colspan=2 width="90%"><P class=menuref_current>New features in
+	Audacity 1.1.1:</p></td></tr>
+    <!-- left hand column begin -->
+<tr>
+	<td style="width: 50%; vertical-align: top;">
+<p class=a>
+<h3>User Interface</h3>
+<ul>
+	<li>Tooltips appear in Statusbar.</li>
+	<li>Vertical cursor follows play/record.</li>
+	<li>Pause button.</li>
+	<li>Drawing tool (with three different modes).</li>
+	<li>Vertical Resizing of stereo tracks is more fun.</li>
+	<li>Adjust selection by click-dragging selection boundary.</li>
+	<li>Toolbar button context-sensitive enabling/disabling.</li>
+	<li>Better zooming functionality (centers region).</li>
+	<li>Multiple ways to display the cursor position and selection.</li>
+	<li>Snap-to selection mode.</li>
+	<li>Drag tracks up and down.</li>
+	<li>Align and group align functions.</li>
+	<li>Cursor save/restore.</li>
+	<li>Working history window.</li>
+  </ul>
+
+<h3>Effects</h3>
+<ul>
+	<li>Effects broken down into three menus: Generate, Effect, and
+	Analyze.</li>
+	<li>Generate menu lets you generate silence, noise, or a tone.</li>
+	<li>Nyquist support (supports plug-ins written in Nyquist,
+	an interpreted functional language based on Lisp).</li>
+</ul>
+
+<h3>Localization</h3>
+<ul>
+	<li>Improved localization support.</li>
+	<li>More languages available.</li>
+	<li>Language selection dialog on first startup.</li>
+</ul>
+
+</p>
+</td>
+
+    <!-- left hand cell end -->
+    <!-- right hand cell begin -->
+
+<td style="width:50%; vertical-align: top;">
+<p class=a>
+
+<h3>Mac OS X</h3>
+<ul>
+	<li>Support for more audio hardware</li>
+	<li>Support for full-duplex (play while recording).</li>
+	<li>Support for MP3 exporting using LameLib Carbon.</li>
+	<li>Hardware and Software playthrough support.</li>
+</ul>
+<h3>Unix</h3>
+<ul>
+	<li>Audacity now has a man page (it describes command-line
+	options and how to set the search path).</li>
+</ul>
+<h3>File Formats</h3>
+<ul>
+	<li>Uses libsndfile, which fixes some bugs and
+	improves performance. Allows a wide range of uncompressed
+	audio formats to be imported and exported</li>
+</ul>
+<h3>Searching for Files:</h3>
+<ul>
+	<li>On Windows and Mac OS, Audacity now looks for
+	translations in the "Languages" folder and all plug-ins
+	in the "Plug-ins" folder, relative to the program.</li>
+	<li>On Unix, Audacity looks for translations in
+	&lt;prefix&gt;/share/locale and looks for everything else
+	in &lt;prefix&gt;/share/audacity and also in any paths in
+	the AUDACITY_PATH environment variable.</li>
+</ul></p>
+</td>
+<!-- right hand cell end -->
+
+</tr></table>
+
+<!-- ===========  version boundary ============ -->
+<table style="width: 90%;">
+	<tr><td colspan=2 width="90%"><p class=menuref_current>New features in
+			Audacity 1.1.0:</p></td></tr>
+
+    <!-- left hand cell begin -->
+    <td style="width: 50%; vertical-align: top;">
+<p class=a>
+<h3>Core audio processing:</h3>
+<ul>
+	<li>Support for 24-bit and 32-bit sample formats.</li>
+	<li>Automatic real-time resampling (using linear
+	interpolation).</li>
+</ul>
+<h3>Effects:</h3>
+<ul>
+	<li>Support LADSPA plugins on Linux / Unix.</li>
+</ul>
+<h3>File formats:</h3>
+<ul>
+	<li>New XML-based Audacity project format.</li>
+	<li>Full Ogg Vorbis support now (importing and exporting).</li>
+	<li>Support for reading and writing many more types of
+	uncompressed audio files, including ADPCM WAV files.</li>
+</ul></p></td>
+    <!-- left hand cell end -->
+    <!-- right hand cell begin -->
+
+    <td style="width: 50%; vertical-align: top;">
+<p class=a>
+<h3>Toolbars</h3>
+<ul>
+	<li>New toolbar drawing code; automatically adopts your
+	operating system's colors.</li>
+	<li>New toolbar buttons (Skip to Start, Skip to End).</li>
+	<li>New Edit toolbar.</li>
+	<li>Toolbar buttons disable when they're not available.</li>
+</ul>
+<h3>User Interface</h3>
+<ul>
+	<li>Fully customizable keyboard commands.</li>
+	<li>Autoscroll while playing or recording.</li>
+	<li>New Ruler, used in main view and in
+	FFT Filter effect.</li>
+	<li>The waveform now displays the average value in a lighter
+	color inside the peak values.</li>
+</ul>
+<h3>Localization</h3>
+<ul>
+	<li>Audacity can now be localized to different foreign
+	languages.</li>
+</ul></p></td>
+    <!-- right hand cell end -->
+</tr></table>
+
+<table style="width: 90%;"><tr><td>
+<p class=menuref_current>New libraries in Audacity 1.1:</p>
+<p class=a>
+<ul>
+	<li>libmad for fast MP3 importing.</li>
+	<li>libid3tag for editing MP3 file information.</li>
+	<li>libsndfile to read and write more audio file formats.</li>
+	<li>PortAudio for cross-platform audio playing and recording.</li>
+</ul></p>
+</td></tr></table>
+</center>
+</body>
+
+</html>

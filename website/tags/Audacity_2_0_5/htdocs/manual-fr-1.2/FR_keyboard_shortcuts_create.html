@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+        <title>Keyboard Commands Reference</title>
+<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+<body>
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#000080">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_reference.html">
+    <font color="#0000FF">Retour aux Références</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+<H2 align=center>Menu Editer&nbsp; <BR>Créer des raccourcis clavier</H2>
+
+
+<center><table>
+<tr><td nowrap bgcolor="#EEEE80"><H3>Où ?</H3></td></tr>
+<tr><td>
+ <P class=a>Dans la boîte de dialogue <a href="FR_prefs.html">
+ <font color="#0000FF">préférences</font></a>,
+  allez à la section&nbsp; <a href="FR_prefs.html#keyboard">
+ <font color="#0000FF">Clavier</font></a> ou 
+ éditez le fichier de configuration clavier directement avec un éditeur de 
+ texte. Vous le trouverez dans le dossier où vous avez installé Audacity sous le 
+ nom de <B>Audacity-keys.xml</B> .
+ </P>
+ <P class=a>
+  Audacity n'exécute pas cette configuration au démarrage, mais la sauve dans la 
+  base des registres(Windows). Si vous voulez modifier le fichier&nbsp; Audacity.xml&nbsp; 
+  avec un éditeur de texte, vous devrez ensuite charger ce fichier avec le 
+  bouton &quot;Charger&quot; pour qu'Audacity l'utilise. mais vous pouvez aussi 
+  sauvegarder sous un autre nom pourvu qu'il ait une extension XML et contienne 
+  les différents tableaux de clefs décrites ci-après.</P>
+ <P class=a>
+  Audacity ne stockera pas le tableau courant dans Audacity.xml . Pour 
+  sauvegarder vos changements dans le tableau courant, sauvegardez avec le 
+  bouton &quot;Enregistrer&quot; dans un fichier XML. Après l'avoir édité,&nbsp; vous 
+  devrez le charger à nouveau, pour qu'il soit pris en compte.
+ </P>
+</td></tr>
+</table></center>
+
+<P class=qy>Editer et Créer des raccourcis avec la boîte de dialogue Préférences</P>
+<table widht="98%"><tr>
+ <td valign=top><img src="images/FR_preferences_keyboard.jpg" width="531" height="385" alt="Preferences Clavier"></td>
+ <td valign=top>
+  <H3>Changer un raccourci :</H3>
+  <OL>
+   <LI>Cliquez sur la commande dans la liste. Elle passe en surbrillance</LI>
+   <LI dir="ltr">
+   <p dir="ltr">Cliquez sur le bouton <b>modifier</b>. Si un raccourci était assigné 
+   à cette commande, il sera affiché dans cette boîte.</LI>
+   <LI>Saisissez la clé ou combinaison de clés souhaitées.</LI>
+   <LI>Cliquez ensuite sur le bouton <b>Enregistrer</b> pour sauvegarder votre 
+   modification.</LI>
+  </OL>
+
+  <H3>Effacer un raccourci :</H3>
+  <OL>
+   <LI>Cliquez sur la commande dans la liste. Elle passe en surbrillance.</LI>
+   <LI>Cliquez sur le bouton effacer.</LI>
+  </OL>
+ </td>
+</tr></table>
+
+
+<P class=qg>Editer et Créer des raccourcis avec un éditeur de texte</P>
+<P class=a>
+Les raccourcis clavier que vous avez édité avec la boîte de dialogue sont 
+stockés dans un fichier XML.
+Aussi, vous pouvez l'éditer avec un éditeur de texte.
+</P>
+<P class=a>Chaque tableau de clefs commence par </P>
+<center>
+<table><tr><td>
+<h3><B>&lt;audacitykeyboard audacityversion=&quot;1.2&quot;&gt;</B></H3>
+<P class=a>et finit avec </P>
+<H3><B>&lt;/audacitykeyboard&gt;</B></H3>
+</td></tr></table>
+</center>
+
+<P class=a>Chaque commands est définie avec une <B>étiquette de commande</B> . 
+Un&nbsp; exemple :</P>
+<H3 align=center>&nbsp;&nbsp;&nbsp;<B>&lt;command
+<span class=textr>nom=&quot;Annuler&quot;</span>
+<span class=texto>label=&quot;Annuler&quot;</span>
+<span class=textg>Clef=&quot;Ctrl+Z&quot;</span> /&gt;</B>.</H3>
+
+<center>
+<table><tr><td>
+<P class=menuref_item>nom</P>
+<P class=ar>La commande actuelle qu'Audacity connaît.</P>
+
+<P class=menuref_item>label</P>
+<P class=ao dir="ltr">Description&nbsp; de la commande qui a ét vu dans la 
+section Editeur de cartes de Préférences .</P>
+
+<P class=menuref_item>clef</P>
+<P class=ag>C'est le raccourci actuel. Contrôler quel est le format dans la 
+boîte de dialogue des Préférences.</P>
+</td></tr></table>
+</center>
+
+<BR>
+
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#0000FF">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_reference.html">
+    <font color="#0000FF">Retour aux Références</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+
+
+</body>
+</html>
