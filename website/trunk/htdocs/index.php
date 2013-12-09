@@ -99,10 +99,10 @@
 <div id="news">
   <?php
     global $news_items;
-    /* Revert to showing only one news item on front page.
-      for ($i = 0; $i < 2; $i++) 
+    /* Temporarily revert to showing two news item on front page.
+      for ($i = 0; $i < 1; $i++) 
       */
-    for ($i = 0; $i < 1; $i++)
+    for ($i = 0; $i < 2; $i++)
     {
         $item = array_shift($news_items);
         $dateStr = $item->dateStr();

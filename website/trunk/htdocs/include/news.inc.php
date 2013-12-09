@@ -40,6 +40,22 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "December 9, 2013",
+  	"Audacity-Unconference-AU14",
+  _("Audacity Unconference (AU14)"),
+  _("
+<p>
+We are pleased to announce our planned \"Audacity Unconference (AU14)\" 
+to take place in July 2014 at <a href=\"http://www.uclan.ac.uk/\">
+UCLan</a> in Preston, England.  
+</p>
+<p>Please see our <a href=\"http://wiki.audacityteam.org/wiki/Audacity_Unconference_2014\">
+Audacity Unconference 2014</a> wiki page for details and register an interest by completing
+our survey at <a href=\"https://www.surveymonkey.com/s/DKSG55H\">https://www.surveymonkey.com/s/DKSG55H</a>.	
+</p>
+"));
+
+add_news_item(
   "October 21, 2013",
   	"2.0.5-release",
   _("Audacity 2.0.5 Released"),
