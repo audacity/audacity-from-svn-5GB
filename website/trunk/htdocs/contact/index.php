@@ -3,7 +3,7 @@
  * Copyright 2004 Matt Brubeck
  * 2006 Richard Ash
  * 2007 Vaughan Johnson
- * 2008-12 Gale Andrews
+ * 2008-14 Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -31,8 +31,13 @@
   // i18n-hint: "Forum" is the link text to the Forum. Probably you should not
   // translate this link text unless there is a sub-forum in your language.
   echo _('Audacity Forum</a>.');?>
+
+<?php printf(_('Visually impaired users should ask for help on the <a href="%s">audacity4blind mailing list</a>.'), 'http://wiki.audacityteam.org/wiki/Audacity_for_blind_users#Documentation_and_mailing_lists');?>
+</p>
+
+<p>
 <?php
-  echo _(' To post a question, <a href="http://forum.audacityteam.org/ucp.php?mode=register">register</a>, confirm your registration then log in. Choose the correct subforum (for example, "Windows" in the Audacity 2.X Forum), click "New Topic" top left, then submit your message.  Foreign language subforums are available for <a href="http://forum.audacityteam.org/viewforum.php?f=7">French</a>, <a href="http://audacity-forum.de/">German</a>, <a href="http://forum.audacityteam.org/viewforum.php?f=10">Russian</a> and <a href="http://forum.audacityteam.org/viewforum.php?f=8">Spanish</a>.');?>
+  echo _(' To post a question on the Forum, <a href="http://forum.audacityteam.org/ucp.php?mode=register">register</a>, confirm your registration then log in. Choose the correct subforum (for example, "Windows" in the Audacity 2.X Forum), click "New Topic" top left, then submit your message.  Foreign language subforums are available for <a href="http://forum.audacityteam.org/viewforum.php?f=7">French</a>, <a href="http://audacity-forum.de/">German</a>, <a href="http://forum.audacityteam.org/viewforum.php?f=10">Russian</a> and <a href="http://forum.audacityteam.org/viewforum.php?f=8">Spanish</a>.');?>
 </p>
 <p><?=_('Always give plenty of information when asking questions on the Audacity Forum. You can find more help with joining and using the Audacity Forum <a href="http://wiki.audacityteam.org/wiki/Asking_Questions">here</a>.')?></p>
 

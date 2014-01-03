@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005 Matt Brubeck, 2008 - 2010 Gale Andrews
+ * Copyright 2005 Matt Brubeck, 2008 - 2014 Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -25,6 +25,12 @@
   <dd>
     <p><?=_('Discuss Audacity with other <a href="../community/users">users</a> and developers.')?> <?=$subscriberOnlyStr?></p>
     <p><a href="http://lists.sourceforge.net/lists/listinfo/audacity-users"><?php printf($archiveStr, "audacity-users")?></a>
+  </dd>
+
+  <dt id="blind">audacity4blind</dt>
+  <dd>
+    <p><?=_('Get help with using Audacity as a visually impaired person.')?> <?=$subscriberOnlyStr?></p>
+    <p><a href="http://wiki.audacityteam.org/wiki/Audacity_for_blind_users#Documentation_and_mailing_lists"><?php printf($archiveStr, "audacity4blind")?></a>
   </dd>
 
 <dt id="devel">audacity-devel</dt>
