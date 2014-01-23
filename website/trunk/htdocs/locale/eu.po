@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity-website.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-09 22:17+0000\n"
-"PO-Revision-Date: 2013-12-21 21:20-0000\n"
-"Last-Translator: Xabier Aramendi \n"
+"POT-Creation-Date: 2014-01-05 16:49+0000\n"
+"PO-Revision-Date: 2014-01-23 13:14-0000\n"
+"Last-Translator: Xabier Aramendi\n"
 "Language-Team: (EUS_Xabier Aramendi) <azpidatziak@gmail.com>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
@@ -6678,14 +6678,19 @@ msgid "Audacity Forum</a>."
 msgstr "Audacity Eztabaidagunea</a>."
 
 #: contact/index.php:35
-msgid " To post a question, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">register</a>, confirm your registration then log in. Choose the correct subforum (for example, \"Windows\" in the Audacity 2.X Forum), click \"New Topic\" top left, then submit your message.  Foreign language subforums are available for <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">French</a>, <a href=\"http://audacity-forum.de/\">German</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Russian</a> and <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Spanish</a>."
-msgstr " Galdera bat egiteko, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">izena eman</a>, baieztatu zure izen-ematea eta saioa hasi. Hautatu azpieztabaidagune zuzena (adibidez, \"Windows\" Audacity 2.X Eztabiadagunean), klikatu \"Gai Berria\" goi ezkerrean, ondoren aurkeztu zure mezua. Ez ingelerazko azpieztabaidaguneak eskuragarri daude <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">Frantzieraz</a>, <a href=\"http://audacity-forum.de/\">Alemanieraz</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Errusieraz</a> eta <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Espainieraz</a>."
+#, php-format
+msgid "Visually impaired users should ask for help on the <a href=\"%s\">audacity4blind mailing list</a>."
+msgstr "Norbanako itsuek laguntza hemen eskatu behar dute: <a href=\"%s\">audacity4blind mailing list</a>."
 
-#: contact/index.php:37
+#: contact/index.php:40
+msgid " To post a question on the Forum, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">register</a>, confirm your registration then log in. Choose the correct subforum (for example, \"Windows\" in the Audacity 2.X Forum), click \"New Topic\" top left, then submit your message.  Foreign language subforums are available for <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">French</a>, <a href=\"http://audacity-forum.de/\">German</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Russian</a> and <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Spanish</a>."
+msgstr " Eztabaidagunean galdera bat egiteko, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">izena eman</a>, baieztatu zure izen-ematea eta saioa hasi. Hautatu azpieztabaidagune zuzena (adibidez, \"Windows\" Audacity 2.X Eztabiadagunean), klikatu \"Gai Berria\" goi ezkerrean, ondoren aurkeztu zure mezua. Ez ingelerazko azpieztabaidaguneak eskuragarri daude <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">Frantzieraz</a>, <a href=\"http://audacity-forum.de/\">Alemanieraz</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Errusieraz</a> eta <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Espainieraz</a>."
+
+#: contact/index.php:42
 msgid "Always give plenty of information when asking questions on the Audacity Forum. You can find more help with joining and using the Audacity Forum <a href=\"http://wiki.audacityteam.org/wiki/Asking_Questions\">here</a>."
 msgstr "Betik eman argibide pilo bat Eztabaidagunean galderak egiterakoan. Laguntza gehiago aurkitu dezakezu Audacity Eztabaidaguneara batuz eta erabiliz <a href=\"http://wiki.audacityteam.org/wiki/Asking_Questions\">hemen</a>."
 
-#: contact/index.php:39
+#: contact/index.php:44
 msgid "Suggestions, Bug Reports, Feature Requests and Patches"
 msgstr "Iradokizunak, Akats Jakinarazpenak, Ezaugarri Eskaerak eta Eranspenak"
 
@@ -6693,11 +6698,11 @@ msgstr "Iradokizunak, Akats Jakinarazpenak, Ezaugarri Eskaerak eta Eranspenak"
 #. "echo" strings obscures the e-mail address from (at least some)
 #. harvesting bots. Please translate the strings above and below
 #. the <a href> tag, and ignore the line with the <a href> tag itself.
-#: contact/index.php:46
+#: contact/index.php:51
 msgid "You can "
 msgstr "Ahal duzu"
 
-#: contact/index.php:49
+#: contact/index.php:54
 msgid ""
 "e-mail us</a> about any Audacity matter, but <b>not for technical support</b> - this is provided on the <a href=\"http://forum.audacityteam.org/\">Audacity Forum</a>. Please write in <b>English language only.</b> Please tell us your experiences of the Audacity program, documentation or web site. We particularly welcome the following:</p>\n"
 "\n"
@@ -6715,11 +6720,11 @@ msgstr ""
 "<li>Ezaugarri berrien edo hobekuntzen eskaerak</li>\n"
 "<li>Audacity egitasmoan <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">lagundu</a> eskaintzak."
 
-#: contact/index.php:59
+#: contact/index.php:64
 msgid "<b>Bug reports:</b> Please check both the <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Release Notes</a> for your specific version of Audacity 2.0 and <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Reporting Bugs</a> <b>before</b> making a report. We are not fixing bugs in the legacy 1.2 or 1.3 series - please upgrade to the <a href=\"/download/\">latest 2.0 version</a> of Audacity instead."
 msgstr "<b>Akats jakinarazpena:</b> Mesedez egiaztatu biak <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Argitalpen Oharrak</a> zure Audacity 2.0 bertsio bereizirako eta <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Akats Jakinarazpena</a> jakinarazpena egin <b>aurretik</b>. Ez ditugu 1.2 edo 1.3 ondoren serietako akatsak zuzentzen - mesedez eguneratu Audacity-ren <a href=\"/download/\"> 2.0 azken bertsioa</a>ra ordez."
 
-#: contact/index.php:62
+#: contact/index.php:67
 msgid ""
 "<b>Please include the following information.</b> This is important.</p>\n"
 "<ol>\n"
@@ -6741,28 +6746,28 @@ msgstr ""
 "\n"
 "<p><b>Eranspenak:</b> Kode eranspenak arazoak zuzentzeko edo ezaugarriak hobetzeko ongi etorriak dira. Mesedez jarraitu hurrengo gidalerroa <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Eranspen Aurkezpena</a> orrialdean <a href=\"http://wiki.audacityteam.org/\">Audacity Wikia</a>n.</p>"
 
-#: contact/index.php:72
+#: contact/index.php:77
 msgid "Discussion Lists"
 msgstr "Eztabaida Zerrendak"
 
-#: contact/index.php:73
+#: contact/index.php:78
 msgid "Subscribe to our"
 msgstr "Harpidetu gure"
 
 #. i18n-hint: this is the link text to the mailing list page
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "mailing lists"
 msgstr "post@ zerrendak"
 
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "to discuss Audacity with our community of users and developers. C++ developers: join "
 msgstr "Audacity eztabaidatzeko gure erabiltzaile eta garatzaile herkidegoarekin. C++ garatzaileak: bat egin"
 
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "our developers' list"
 msgstr "gure garatzaile zerrenda"
 
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "to learn about the Audacity source code and contribute to making Audacity even better!"
 msgstr "Audacity-ren iturburu kodeaz jakiteko eta Audacity hare hobeagoa egiten laguntzeko!"
 
@@ -6831,22 +6836,26 @@ msgid "Discuss Audacity with other <a href=\"../community/users\">users</a> and 
 msgstr "Eztabaidatu Audacity beste <a href=\"../community/users\">erabiltzaileak</a> eta garatzaileekin."
 
 #: contact/lists.php:32
+msgid "Get help with using Audacity as a visually impaired person."
+msgstr "Lortu laguntza Audacity norbanako itsu bezala erabiliz gero."
+
+#: contact/lists.php:38
 msgid "For  <a href=\"../community/developers\">developers</a> working with the Audacity source code and documentation, and others interested in following our development process, or learning about compiling or developing our code."
 msgstr "Audacity-ren iturburu kodearekin eta agiritzarekin lanean ari diren <a href=\"../community/developers\">Garatzaileak</a> eta gure garapen aurrerabidea jarraitzean edo gure kodea nola bildu edo garatun interesaturiko bestelakoentzat."
 
-#: contact/lists.php:34
+#: contact/lists.php:40
 msgid "We now use a <a href=\"http://www.bugzilla.org/\">Bugzilla</a> installation to track bugs and enhancements. To find issues to work on, please view our categorized <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Bug Lists</a>."
 msgstr "Orain <a href=\"http://www.bugzilla.org/\">Bugzilla</a> erabiltzen dugu, akatsak eta hobekuntzak aztarnatzeko ezarpen bat. Langaiak aurkitzeko, mesedez ikusi gure kategoriaz sailkaturiko <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Akats Zerrendak</a>."
 
-#: contact/lists.php:39
+#: contact/lists.php:45
 msgid "Receive automatic notification of every change made to the Audacity <a href=\"../community/developers#svn\">source code</a>."
 msgstr "Jaso berezgaitasunezko jakinarazpen bat Audacity-ri eginiko edozein aldaketaz <a href=\"../community/developers#svn\">iturburu kodea</a>."
 
-#: contact/lists.php:46
+#: contact/lists.php:52
 msgid "For <a href=\"../community/translation\">translators</a> localizing the Audacity software, web site and documentation."
 msgstr "<a href=\"../community/translation\">itzultzaileak</a> Audacity softwarea, webgunea eta agiritza herrialdetzea."
 
-#: contact/lists.php:52
+#: contact/lists.php:58
 msgid "Share questions and tips about programming <a href=\"../help/nyquist\">Nyquist plug-ins</a>."
 msgstr "Elkarbanatu galderak eta iradokizunak <a href=\"../help/nyquist\">Nyquist plug-inak</a> programazioari buruz."
 
@@ -7076,7 +7085,7 @@ msgstr "GARRANTZITSUA: Audacity-rentzat zeure agiritza idazten baduzu, mesedez"
 
 #: about/license.php:86
 msgid "submit it to us</a> for review <em>before</em> you publish it.</p>"
-msgstr "aurkeztu diezaguzu</a> berreikusteko argitaratu <em>aurretik</em>.</p>"
+msgstr "aurkeztu diezaguzu</a> berrikusteko argitaratu <em>aurretik</em>.</p>"
 
 #: about/license.php:88
 msgid "<h4>For vendors selling a hardware product, with Audacity included:</h4>"
@@ -7092,7 +7101,7 @@ msgstr "jarri harremanetan gurekin</a> garaiz elkarrekin lan egin ahal izateko z
 
 #: about/license.php:100
 msgid "<li>Please distribute Audacity unmodified. If you need to modify it to work with your device, please "
-msgstr "<li>Meseez banatu Audacity aldatu gabe. Zure gailuarekin lan egiteko aldatu beharra baduzu, mesedez"
+msgstr "<li>Mesedez banatu Audacity aldatu gabe. Zure gailuarekin lan egiteko aldatu beharra baduzu, mesedez"
 
 #: about/license.php:103
 msgid "contact us</a> first.</li>"
@@ -7132,7 +7141,7 @@ msgstr "Audacity gugandik lortu duzun bezala bersaltzen ari bazara eta galderak 
 
 #: about/license.php:122
 msgid "e-mail us</a>."
-msgstr "post@ idatzi</a>."
+msgstr "idatzi post@z</a>."
 
 #: about/license.php:124
 msgid ""
