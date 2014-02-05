@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity_website\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-09 22:17+0000\n"
-"PO-Revision-Date: 2014-01-05 16:36-0000\n"
+"POT-Creation-Date: 2014-01-05 16:49+0000\n"
+"PO-Revision-Date: 2014-02-05 15:43-0000\n"
 "Last-Translator: Carmelo\n"
 "Language-Team: italiano <audacity-translation@lists.sourceforge.net>\n"
 "Language: it_IT\n"
@@ -8610,14 +8610,19 @@ msgid "Audacity Forum</a>."
 msgstr "Forum Audacity</a>."
 
 #: contact/index.php:35
-msgid " To post a question, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">register</a>, confirm your registration then log in. Choose the correct subforum (for example, \"Windows\" in the Audacity 2.X Forum), click \"New Topic\" top left, then submit your message.  Foreign language subforums are available for <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">French</a>, <a href=\"http://audacity-forum.de/\">German</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Russian</a> and <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Spanish</a>."
-msgstr "Per inviare una domanda, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">registratevi</a>, confermate la vostra registrazione poi eseguite il log in. Scegliete la sezione corretta (per esempio,  \"Windows\" nel Forum Audacity 2.x), fate clic su \"Nuovo argomento\" in alto a sinistra, poi inviate il vostro messaggio. Sono disponibili delle sezioni in lingua straniera per <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">Francese</a>,<a href=\"http://audacity-forum.de/\">Tedesco</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Russo</a> e <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Spagnolo</a>."
+#, php-format
+msgid "Visually impaired users should ask for help on the <a href=\"%s\">audacity4blind mailing list</a>."
+msgstr "Gli utenti non vedenti devono chiedere aiuto nella <a href=\"%s\">audacity4blind mailing list</a>."
 
-#: contact/index.php:37
+#: contact/index.php:40
+msgid " To post a question on the Forum, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">register</a>, confirm your registration then log in. Choose the correct subforum (for example, \"Windows\" in the Audacity 2.X Forum), click \"New Topic\" top left, then submit your message.  Foreign language subforums are available for <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">French</a>, <a href=\"http://audacity-forum.de/\">German</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Russian</a> and <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Spanish</a>."
+msgstr " Per pubblicare una domanda nel Forum, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">registrati</a>, conferma la tua registrazione poi esegui il log in. Scegli il corretto subforum (per esempio, \"Windows\" in Audacity 2.X Forum), fai clic su \"New Topic\" in alto a sinistra, poi invia il messaggio.  Sono disponibili subforum in lingua straniera per <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">Francese</a>, <a href=\"http://audacity-forum.de/\">Tedesco</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Russo</a> e <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Spagnolo</a>."
+
+#: contact/index.php:42
 msgid "Always give plenty of information when asking questions on the Audacity Forum. You can find more help with joining and using the Audacity Forum <a href=\"http://wiki.audacityteam.org/wiki/Asking_Questions\">here</a>."
 msgstr "Vengono fornite moltissime informazioni quando si pongono domande nel Forum Audacity. È possibile trovare ulteriori informazioni iscrivendovi e utilizzando il Forum <a href=\"http://wiki.audacityteam.org/wiki/Asking_Questions\">qui</a>."
 
-#: contact/index.php:39
+#: contact/index.php:44
 msgid "Suggestions, Bug Reports, Feature Requests and Patches"
 msgstr "Suggerimenti, resoconti di errori e richieste di caratteristiche e patch"
 
@@ -8625,11 +8630,11 @@ msgstr "Suggerimenti, resoconti di errori e richieste di caratteristiche e patch
 #. "echo" strings obscures the e-mail address from (at least some)
 #. harvesting bots. Please translate the strings above and below
 #. the <a href> tag, and ignore the line with the <a href> tag itself.
-#: contact/index.php:46
+#: contact/index.php:51
 msgid "You can "
 msgstr "È possibile"
 
-#: contact/index.php:49
+#: contact/index.php:54
 msgid ""
 "e-mail us</a> about any Audacity matter, but <b>not for technical support</b> - this is provided on the <a href=\"http://forum.audacityteam.org/\">Audacity Forum</a>. Please write in <b>English language only.</b> Please tell us your experiences of the Audacity program, documentation or web site. We particularly welcome the following:</p>\n"
 "\n"
@@ -8647,11 +8652,11 @@ msgstr ""
 "<li>Richieste di caratteristiche nuove o migliorate</li>\n"
 "<li>Offerte per <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">contribuire</a> al progetto Audacity."
 
-#: contact/index.php:59
+#: contact/index.php:64
 msgid "<b>Bug reports:</b> Please check both the <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Release Notes</a> for your specific version of Audacity 2.0 and <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Reporting Bugs</a> <b>before</b> making a report. We are not fixing bugs in the legacy 1.2 or 1.3 series - please upgrade to the <a href=\"/download/\">latest 2.0 version</a> of Audacity instead."
 msgstr "<b>Resoconti di errori:</b> Controllate le <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Note di rilascio</a> per la vostra specifica versione di Audacity 2.0 e i <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Rescoconti di errori</a> <b>prima</b> di fare un resoconto.Non correggiamo gli errori delle precedenti serie 1.2 e 1.3 - Invece siete invitati ad aggiornarvi <a href=\"/download\">all'ultima versione 2.0</a> di Audacity."
 
-#: contact/index.php:62
+#: contact/index.php:67
 msgid ""
 "<b>Please include the following information.</b> This is important.</p>\n"
 "<ol>\n"
@@ -8673,28 +8678,28 @@ msgstr ""
 "\n"
 "<p><b>Patch:</b> Le patch per risolvere i problemi o migliorare le caratteristiche saranno ben accette. Siete pregati di seguire le linee guida della pagina <a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Inviare Patch</a> del nostro <a href=\"http://wiki.audacityteam.org/\">Wiki Audacity</a>.</p>"
 
-#: contact/index.php:72
+#: contact/index.php:77
 msgid "Discussion Lists"
 msgstr "Liste di discussione"
 
-#: contact/index.php:73
+#: contact/index.php:78
 msgid "Subscribe to our"
 msgstr "Iscrivetevi alla nostra"
 
 #. i18n-hint: this is the link text to the mailing list page
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "mailing lists"
 msgstr "Mailing List"
 
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "to discuss Audacity with our community of users and developers. C++ developers: join "
 msgstr "per discutere di Audacity con la nostra comunità di utenti e sviluppatori. Sviluppatori C++: iscrivetevi "
 
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "our developers' list"
 msgstr "alla nostra lista di sviluppatori"
 
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "to learn about the Audacity source code and contribute to making Audacity even better!"
 msgstr "per conoscere il codice sorgente di Audacity e contribuire a rendere Audacity ancora migliore!"
 
@@ -8763,22 +8768,26 @@ msgid "Discuss Audacity with other <a href=\"../community/users\">users</a> and 
 msgstr "Discutete di Audacity con altri <a href=\"../community/users\">utenti</a> e sviluppatori."
 
 #: contact/lists.php:32
+msgid "Get help with using Audacity as a visually impaired person."
+msgstr "Ottieni aiuto usando Audacity come persona non vedente."
+
+#: contact/lists.php:38
 msgid "For  <a href=\"../community/developers\">developers</a> working with the Audacity source code and documentation, and others interested in following our development process, or learning about compiling or developing our code."
 msgstr "Per gli <a href=\"../community/developers\">sviluppatori</a> che lavorano con il codice sorgente e la documentazione di Audacity, e gli altri interessati a seguire il nostro processo di sviluppo, o a imparare come compilare o sviluppare il nostro codice."
 
-#: contact/lists.php:34
+#: contact/lists.php:40
 msgid "We now use a <a href=\"http://www.bugzilla.org/\">Bugzilla</a> installation to track bugs and enhancements. To find issues to work on, please view our categorized <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Bug Lists</a>."
 msgstr "Gli sviluppatori di Audacity ora usano una installazione <a href=\"http://www.bugzilla.org/\">Bugzilla</a> per memorizzare errori e miglioramenti. Per trovare argomenti su cui lavorare, consultate le <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Liste degli errori</a> suddivise in categorie."
 
-#: contact/lists.php:39
+#: contact/lists.php:45
 msgid "Receive automatic notification of every change made to the Audacity <a href=\"../community/developers#svn\">source code</a>."
 msgstr "Riceverete una notifica automatica di ogni modifica attuata nel<a href=\"../community/developers#svn\">codice sorgente</a> di Audacity."
 
-#: contact/lists.php:46
+#: contact/lists.php:52
 msgid "For <a href=\"../community/translation\">translators</a> localizing the Audacity software, web site and documentation."
 msgstr "Per i <a href=\"../community/translation\">traduttori</a> che localizzano il software Audacity, il sito web e la documentazione."
 
-#: contact/lists.php:52
+#: contact/lists.php:58
 msgid "Share questions and tips about programming <a href=\"../help/nyquist\">Nyquist plug-ins</a>."
 msgstr "Condividete domande e suggerimenti sulla programmazione dei <a href=\"../help/nyquist\">plugin Nyquist</a>."
 
