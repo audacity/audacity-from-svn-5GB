@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity website translation 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-09 22:17+0000\n"
-"PO-Revision-Date: 2013-12-15 14:35-0000\n"
-"Last-Translator: Atsushi YOSHIDA\n"
+"POT-Creation-Date: 2014-02-05 15:54+0000\n"
+"PO-Revision-Date: 2014-02-08 15:48-0500\n"
+"Last-Translator: Atsushi Yoshida <ayoshida.pub@gmail.com>\n"
 "Language-Team: Atsushi YOSHIDA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -483,31 +483,29 @@ msgstr "Audacity Unconference (AU14)開催"
 msgid ""
 "\n"
 "<p>\n"
-"We are pleased to announce our planned \"Audacity Unconference (AU14)\" \n"
-"to take place in July 2014 at <a href=\"http://www.uclan.ac.uk/\">\n"
-"UCLan</a> in Preston, England.  \n"
+"Further to our recent announcement, our planned \"Audacity Unconference (AU14)\"\n"
+"will now take place on 11th and 12th July 2014 at <a href=\"http://www.uclan.ac.uk/\">\n"
+"UCLan</a> in Preston, England. Bookings are now being taken.  \n"
 "</p>\n"
 "<p>Please see our <a href=\"http://wiki.audacityteam.org/wiki/Audacity_Unconference_2014\">\n"
-"Audacity Unconference 2014</a> wiki page for details and register an interest by completing\n"
-"our survey at <a href=\"https://www.surveymonkey.com/s/DKSG55H\">https://www.surveymonkey.com/s/DKSG55H</a>.\t\n"
+"Audacity Unconference 2014</a> wiki page for details.\n"
 "</p>\n"
 msgstr ""
 "\n"
 "<p>\n"
-"来る2014年7月に \"Audacity Unconference (AU14)\" \n"
+"来る2014年7月11日および12日に \"Audacity Unconference (AU14)\" \n"
 "を英国プレストン(Preston）の<a href=\"http://www.uclan.ac.uk/\">\n"
-"UCLan</a>にて開催いたします。\n"
+"UCLan</a>にて開催いたします。現在申し込み受付中です。\n"
 "</p>\n"
 "<p>詳細は <a href=\"http://wiki.audacityteam.org/wiki/Audacity_Unconference_2014\">\n"
-"Audacity Unconference 2014</a> wiki ページをご覧下さい。またサーベイページ\n"
-" <a href=\"https://www.surveymonkey.com/s/DKSG55H\">https://www.surveymonkey.com/s/DKSG55H</a>にご興味の領域をご記入ください。\t\n"
+"Audacity Unconference 2014</a> wiki ページをご覧下さい。\n"
 "</p>\n"
 
-#: include/news.inc.php:61
+#: include/news.inc.php:60
 msgid "Audacity 2.0.5 Released"
 msgstr "Audacity 2.0.5がリリースされました！"
 
-#: include/news.inc.php:62
+#: include/news.inc.php:61
 msgid ""
 "\n"
 "<p>\n"
@@ -573,11 +571,11 @@ msgstr ""
 "<a href=\"http://www.infoworld.com/d/open-source-software/bossies-2013-the-best-of-open-source-software-awards-226971\">BOSSIE 2013</a> の<a href=\"http://www.infoworld.com/slideshow/119867/bossie-awards-2013-the-best-open-source-desktop-and-mobile-software-226979#slide17\">\"Best open source desktop apps and mobile platforms\"</a>カテゴリでトップに選ばれました。\n"
 "</p>\n"
 
-#: include/news.inc.php:98
+#: include/news.inc.php:97
 msgid "Audacity 2.0.4 Released"
 msgstr "Audacity 2.0.4がリリースされました！"
 
-#: include/news.inc.php:99
+#: include/news.inc.php:98
 msgid ""
 "\n"
 "<p>\n"
@@ -681,11 +679,11 @@ msgstr ""
 "    emailをお送り下さい</a>。\n"
 "  </p>\n"
 
-#: include/news.inc.php:155
+#: include/news.inc.php:154
 msgid "Audacity 2.0.3 Released"
 msgstr "Audacity 2.0.3がリリースされました！"
 
-#: include/news.inc.php:156
+#: include/news.inc.php:155
 msgid ""
 "\n"
 "<p>\n"
@@ -725,11 +723,11 @@ msgstr ""
 "  2.0.3 Release Notes</a> をご覧下さい。\n"
 "</p>\n"
 
-#: include/news.inc.php:180
+#: include/news.inc.php:179
 msgid "Audacity 2.0.2 Released"
 msgstr "Audacity 2.0.2がリリースされました！"
 
-#: include/news.inc.php:181
+#: include/news.inc.php:180
 msgid ""
 "\n"
 "<p>\n"
@@ -755,11 +753,11 @@ msgstr ""
 "  2.0.2 Release Notes</a>をご覧下さい。\n"
 "</p>\n"
 
-#: include/news.inc.php:199
+#: include/news.inc.php:198
 msgid "Audacity 2.0.1 Released"
 msgstr "Audacity 2.0.1がリリースされました！"
 
-#: include/news.inc.php:200
+#: include/news.inc.php:199
 msgid ""
 "\n"
 "<p>\n"
@@ -786,11 +784,11 @@ msgstr ""
 "  2.0.1 Release Notes</a>をご覧下さい。\n"
 "</p>\n"
 
-#: include/news.inc.php:217
+#: include/news.inc.php:216
 msgid "Audacity 2.0 Released!"
 msgstr "Audacity 2.0がリリースされました！"
 
-#: include/news.inc.php:218
+#: include/news.inc.php:217
 msgid ""
 "\n"
 "<p>\n"
@@ -817,11 +815,11 @@ msgstr ""
 "  をご覧ください。\n"
 "</p>\n"
 
-#: include/news.inc.php:236
+#: include/news.inc.php:235
 msgid "Audacity 1.3.14 released"
 msgstr "Audacity 1.3.14がリリースされました。"
 
-#: include/news.inc.php:237
+#: include/news.inc.php:236
 msgid ""
 "\n"
 "<p>\n"
@@ -944,11 +942,11 @@ msgstr ""
 "Changes in Audacity 1.3.14</a> をご覧ください。\n"
 "</p>\n"
 
-#: include/news.inc.php:305
+#: include/news.inc.php:304
 msgid "Audacity 1.3.13 released, and LinuxQuestions.org Audio Authoring Award 2010"
 msgstr "Audacity 1.3.13がリリースされました。またLinuxQuestions.org Audio Authoring Award 2010を受賞しました。"
 
-#: include/news.inc.php:306
+#: include/news.inc.php:305
 msgid ""
 "\n"
 "<p>\n"
@@ -1084,11 +1082,11 @@ msgstr ""
 "Audacityは2010 LinuxQuestions.org Members Choice pollにて<a href=\"http://www.linuxquestions.org/questions/2010-linuxquestions-org-members-choice-awards-93/audio-authoring-application-of-the-year-855921/\">Audio Authoring Application of the Year</a> に選ばれました。iLinuxQuestions.orgはLinuxに関する活発なオンラインコミュニティで、その投票ではAudacityはおよそ75%の投票を獲得することができました。ありがとうござました。\n"
 "</p> \n"
 
-#: include/news.inc.php:384
+#: include/news.inc.php:383
 msgid "Audacity 1.3.12 released, and Audacity book release from PACKT Publishing"
 msgstr "Audacity 1.3.12がリリースされました。またAudacityの本がPACKT Publishingより発売されました。"
 
-#: include/news.inc.php:385
+#: include/news.inc.php:384
 msgid ""
 "\n"
 "<p>\n"
@@ -1229,11 +1227,11 @@ msgstr ""
 " <a href=\"http://wiki.audacityteam.org/wiki/Books_about_Audacity\">Books about Audacity</a>ページをご覧ください。\n"
 "</p> \n"
 
-#: include/news.inc.php:463
+#: include/news.inc.php:462
 msgid "Audacity 1.3.11 released"
 msgstr "Audacity 1.3.11がリリースされました。"
 
-#: include/news.inc.php:464
+#: include/news.inc.php:463
 msgid ""
 "\n"
 "<p>\n"
@@ -1366,11 +1364,11 @@ msgstr ""
 "ダウンロード可能</a>です。 \n"
 "</p>\n"
 
-#: include/news.inc.php:535
+#: include/news.inc.php:534
 msgid "Audacity 1.3.10 released"
 msgstr "Audacity 1.3.10がリリースされました。"
 
-#: include/news.inc.php:536
+#: include/news.inc.php:535
 msgid ""
 "\n"
 "<p>\n"
@@ -1523,11 +1521,11 @@ msgstr ""
 "ダウンロード</a>可能です。 \n"
 "</p>\n"
 
-#: include/news.inc.php:618
+#: include/news.inc.php:617
 msgid "Audacity 1.3.9 released, Google Summer of Code (GSoC) 2009 completed"
 msgstr "Audacity1.3.9リリース、Google Summer of Code (GSoC) 2009終了 "
 
-#: include/news.inc.php:619
+#: include/news.inc.php:618
 msgid ""
 "\n"
 "<p>\n"
@@ -1646,11 +1644,11 @@ msgstr ""
 "をお使いください</a>。 \n"
 "</p>\n"
 
-#: include/news.inc.php:683
+#: include/news.inc.php:682
 msgid "SourceForge.net Community Choice Awards 2009"
 msgstr "SourceForge Community Choice Awards 2009"
 
-#: include/news.inc.php:684
+#: include/news.inc.php:683
 msgid ""
 "\n"
 "<p>\n"
@@ -1673,11 +1671,11 @@ msgstr ""
 "サポートいただいたSourceForge.netに感謝いたします！\n"
 "</p>\n"
 
-#: include/news.inc.php:699
+#: include/news.inc.php:698
 msgid "Audacity 1.3.8 released"
 msgstr "Audacity 1.3.8公開"
 
-#: include/news.inc.php:700
+#: include/news.inc.php:699
 msgid ""
 "\n"
 "<p>\n"
@@ -1750,12 +1748,12 @@ msgstr ""
 "1.3.7をお使いください。</a>. \n"
 "</p>\n"
 
-#: include/news.inc.php:740
+#: include/news.inc.php:739
 msgid "Linux Journal and Bestcovery Awards, and new \"Audacity compact\" book"
 msgstr "Linux JournalおよびBestcovery Awards、さらに新刊の\"Audacity compact\""
 
 # New
-#: include/news.inc.php:741
+#: include/news.inc.php:740
 msgid ""
 "\n"
 "<p>\n"
@@ -1885,12 +1883,12 @@ msgstr ""
 "</tr>\n"
 "</table>\n"
 
-#: include/news.inc.php:809
+#: include/news.inc.php:808
 msgid "Audacity is mentoring two Google Summer of Code (GSoC) 2009 students"
 msgstr "AudacityはGoogle Summer of Code (GSoC) 2009の学生さん2名を指導しています。"
 
 # New似たものがある
-#: include/news.inc.php:810
+#: include/news.inc.php:809
 msgid ""
 "\n"
 "<p>\n"
@@ -1932,11 +1930,11 @@ msgstr ""
 "\t合格された学生さんたち、おめでとうございます。またAudacityにご興味をいただきましたみなさんに感謝申し上げます!\n"
 "</p>\n"
 
-#: include/news.inc.php:834
+#: include/news.inc.php:833
 msgid "Audacity 1.3.7 released"
 msgstr "Audacity 1.3.7 がリリースされました。"
 
-#: include/news.inc.php:835
+#: include/news.inc.php:834
 msgid ""
 "\n"
 "<p>\n"
@@ -2058,11 +2056,11 @@ msgstr ""
 "</p>\n"
 "<br>\n"
 
-#: include/news.inc.php:901
+#: include/news.inc.php:900
 msgid "Audacity 1.3.6 released"
 msgstr "Audacity 1.3.6がリリースされました。"
 
-#: include/news.inc.php:902
+#: include/news.inc.php:901
 msgid ""
 "\n"
 "<p>\n"
@@ -2151,11 +2149,11 @@ msgstr ""
 "インストールすることができます。\n"
 "</p>\n"
 
-#: include/news.inc.php:950
+#: include/news.inc.php:949
 msgid "German Audacity Book released"
 msgstr "ドイツ語のAudacityに関する本が出版されました。"
 
-#: include/news.inc.php:951
+#: include/news.inc.php:950
 msgid ""
 "\n"
 "<p>\n"
@@ -2233,11 +2231,11 @@ msgstr ""
 "</table>\n"
 "</p>\n"
 
-#: include/news.inc.php:994
+#: include/news.inc.php:993
 msgid "Audacity shines in Google Summer of Code (GSoC) 2008"
 msgstr "Google Summer of Code (GSoC) 2008での顕著な活躍"
 
-#: include/news.inc.php:995
+#: include/news.inc.php:994
 msgid ""
 "\n"
 "<p>\n"
@@ -2336,11 +2334,11 @@ msgstr ""
 "\"オープンシースが提供すべきベスト製品賞\"として選ばれました。  \n"
 "</p>    \n"
 
-#: include/news.inc.php:1046
+#: include/news.inc.php:1045
 msgid "Audacity in PC World 100 Best Products of 2008"
 msgstr "PC World 100 Best Products of 2008にも選ばれました"
 
-#: include/news.inc.php:1047
+#: include/news.inc.php:1046
 msgid ""
 "\n"
 "<p>\n"
@@ -2418,11 +2416,11 @@ msgstr ""
 "of Best Free Softwareにも選ばれました。\n"
 "</p>\n"
 
-#: include/news.inc.php:1089
+#: include/news.inc.php:1088
 msgid "Audacity 1.3.5 Released"
 msgstr "Audacity 1.3.5がリリースされました。"
 
-#: include/news.inc.php:1090
+#: include/news.inc.php:1089
 msgid ""
 "\n"
 "<p>\n"
@@ -2594,11 +2592,11 @@ msgstr ""
 "<a href=\"/download/features-1.3-a\">1.3での新機能</a>をご覧ください。\n"
 "</p>\n"
 
-#: include/news.inc.php:1180
+#: include/news.inc.php:1179
 msgid "Audacity is mentoring five Google Summer of Code (GSoC) 2008 students"
 msgstr "Audacityは5人のGoogle Summer of Code (GSoC) 2008学生を指導しています。"
 
-#: include/news.inc.php:1181
+#: include/news.inc.php:1180
 msgid ""
 "\n"
 "<p>\n"
@@ -2632,11 +2630,11 @@ msgstr ""
 "\t許可を受けた5人の学生の皆様、おめでとうございます。そしてAudacityにご興味を持っていただきました多くの方々に感謝いたします。!\n"
 "</p>\n"
 
-#: include/news.inc.php:1201
+#: include/news.inc.php:1200
 msgid "Audacity is a mentoring organization Google Summer of Code (GSoC) 2008 "
 msgstr "AudacityはGoogle Summer of Code (GSoC) 2008の指導機関の1つです。"
 
-#: include/news.inc.php:1202
+#: include/news.inc.php:1201
 msgid ""
 "\n"
 "<p>\n"
@@ -2670,11 +2668,11 @@ msgstr ""
 "\tご興味をお持ちいただきありがとうございます!\n"
 "</p>\n"
 
-#: include/news.inc.php:1222
+#: include/news.inc.php:1221
 msgid "Call for Students! Apply <em>NOW</em> for Audacity projects in Google Summer of Code (GSoC) 2008 "
 msgstr "学生の皆さんへ!  Google Summer of Code (GSoC) 2008でのAudacityプロジェクトに<em>今すぐ</em>申し込みましょう。 "
 
-#: include/news.inc.php:1223
+#: include/news.inc.php:1222
 msgid ""
 "\n"
 "<p>\n"
@@ -2753,11 +2751,11 @@ msgstr ""
 "お知らせして詳細情報を読んでいただけるようにしてください。\n"
 "</p>\n"
 
-#: include/news.inc.php:1265
+#: include/news.inc.php:1264
 msgid "Audacity and Google Summer of Code (GSoC) 2008 "
 msgstr "AudacityとGoogle Summer of Code (GSoC) 2008 "
 
-#: include/news.inc.php:1266
+#: include/news.inc.php:1265
 msgid ""
 "\n"
 "<p>\n"
@@ -2814,11 +2812,11 @@ msgstr ""
 "お知らせして詳細情報を読んでいただけるようにしてください。\n"
 "</p>\n"
 
-#: include/news.inc.php:1297
+#: include/news.inc.php:1296
 msgid "LinuxQuestions.org Audio Authoring Award 2007"
 msgstr "LinuxQuestions.org Audio Authoring Award 2007"
 
-#: include/news.inc.php:1298
+#: include/news.inc.php:1297
 #, php-format
 msgid ""
 "\n"
@@ -2835,11 +2833,11 @@ msgstr ""
 "Audio Authoring Application of the Year</a>に選ばれました。 LinuxQuestions.orgは活発なオンラインLinuxコミュニティです。その投票において、Audacityは444人の方々から7割の方々の賛同を得ました。(In the voting, Audacity received nearly  70% of  the 444 votes cast.)  ご投票いただいた皆様に感謝いたします。 \n"
 "</p>\n"
 
-#: include/news.inc.php:1309
+#: include/news.inc.php:1308
 msgid "Audacity 1.3.4 Released"
 msgstr "Audacity 1.3.4 がリリースされました。"
 
-#: include/news.inc.php:1310
+#: include/news.inc.php:1309
 msgid ""
 "\n"
 "<p>\n"
@@ -2907,11 +2905,11 @@ msgstr ""
 "<a href=\"http://www.informit.com/store/product.aspx?isbn=0132366576&rl=1\">Podcasting with Audacity</a>でご覧ください。\n"
 "</p>\n"
 
-#: include/news.inc.php:1347
+#: include/news.inc.php:1346
 msgid "SourceForge Community Choice Awards 2007"
 msgstr "SourceForge Community Choice Awards 2007"
 
-#: include/news.inc.php:1348
+#: include/news.inc.php:1347
 msgid ""
 "\n"
 "<p>\n"
@@ -2935,11 +2933,11 @@ msgstr ""
 "Audacityをより良くするために貢献してくださる皆様に<b>大</b>感謝いたします。\n"
 "</p>\n"
 
-#: include/news.inc.php:1363
+#: include/news.inc.php:1362
 msgid "Audacity 1.3.3 Released"
 msgstr "Audacity 1.3.3 がリリースされました。"
 
-#: include/news.inc.php:1364
+#: include/news.inc.php:1363
 msgid ""
 "\n"
 "<p>\n"
@@ -3076,11 +3074,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>\n"
 
-#: include/news.inc.php:1437
+#: include/news.inc.php:1436
 msgid "Audacity 1.3.2 and 1.2.5 Released"
 msgstr "Audacity 1.3.2 および 1.2.5がリリースされました。"
 
-#: include/news.inc.php:1438
+#: include/news.inc.php:1437
 msgid ""
 "<p>\n"
 "The Audacity developers have been busy with many new features over\n"
@@ -3198,11 +3196,11 @@ msgstr ""
 "</dl>\n"
 "</dd></dl>"
 
-#: include/news.inc.php:1502
+#: include/news.inc.php:1501
 msgid "The Audacity Store Is Open"
 msgstr "Audacityストアがオープンしました"
 
-#: include/news.inc.php:1503
+#: include/news.inc.php:1502
 msgid ""
 "\n"
 "\t<p>You are invited to try out the new <a href=\"http://audacitystore.com/\">Audacity Store</a>, which features\n"
@@ -3284,11 +3282,11 @@ msgstr ""
 "\t</p>\n"
 "\t"
 
-#: include/news.inc.php:1547
+#: include/news.inc.php:1546
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr "Audacity 1.2.4 および 1.3.0 がリリースされました。"
 
-#: include/news.inc.php:1548
+#: include/news.inc.php:1547
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple of bug fixes and minor improvements and is recommended for all users.  Audacity 1.3.0 is a beta release that contains hundreds of <a href=\"/download/features-1.3-a\">new features</a>, but this version is unfinished and unstable, and is recommended primarily for advanced users.  You can install both Audacity 1.2 and 1.3 simultaneously.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">1.2.4 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.4, or see <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for information about the new beta version.</p>\n"
@@ -3302,11 +3300,11 @@ msgstr ""
 "<a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>をご利用ください。\n"
 "</p>"
 
-#: include/news.inc.php:1558
+#: include/news.inc.php:1557
 msgid "Audacity 1.2.3 Released"
 msgstr "Audacity 1.2.3 公開"
 
-#: include/news.inc.php:1559
+#: include/news.inc.php:1558
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
@@ -4632,7 +4630,7 @@ msgstr "Audacityのマニュアル (チュートリアル含む)"
 
 #: help/documentation.php:25
 msgid "The <a href=\"/download/windows\">Windows .exe</a> and <a href=\"/download/mac\">Mac OS X .dmg</a> installers already include a built-in copy of the Manual. To access it, click <b>Help > Manual (in web browser)</b> in the Audacity program."
-msgstr "The <a href=\"/download/windows\">Windows .exe</a> および<a href=\"/download/mac\">Mac OS X .dmg</a> インストーラーはマニュアルを含んでおり、 Audacityプログラムの<b>ヘルプ > マニュアル(ブラウザで閲覧)</b> でアクセスすることができます。"
+msgstr "<a href=\"/download/windows\">Windows .exe</a> および<a href=\"/download/mac\">Mac OS X .dmg</a> インストーラーはマニュアルを含んでおり、 Audacityプログラムの<b>ヘルプ > マニュアル(ブラウザで閲覧)</b> でアクセスすることができます。"
 
 #: help/documentation.php:30
 #, php-format
@@ -8546,14 +8544,19 @@ msgid "Audacity Forum</a>."
 msgstr "フォーラム</a>"
 
 #: contact/index.php:35
-msgid " To post a question, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">register</a>, confirm your registration then log in. Choose the correct subforum (for example, \"Windows\" in the Audacity 2.X Forum), click \"New Topic\" top left, then submit your message.  Foreign language subforums are available for <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">French</a>, <a href=\"http://audacity-forum.de/\">German</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Russian</a> and <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Spanish</a>."
-msgstr " 質問を投稿するには、 <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">register</a> にてフォーラムに登録し、登録を確認し、ログインしてください。適切なサブフォーラム（たとえば,\"Windows\" in the Audacity 2.x Forum）を選び、\"New Topic\"をクリックし、あなたのメッセージを投稿してください。英語以外に<a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">フランス語</a>, <a href=\"http://audacity-forum.de/\">ドイツ語</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">ロシア語</a> および <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">スペイン語</a>のサブフォーラムもあります。"
+#, php-format
+msgid "Visually impaired users should ask for help on the <a href=\"%s\">audacity4blind mailing list</a>."
+msgstr "目の不自由な方向けのヘルプは<a href=\"%s\">audacity4blind mailing list</a>にご活用ください。"
 
-#: contact/index.php:37
+#: contact/index.php:40
+msgid " To post a question on the Forum, <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">register</a>, confirm your registration then log in. Choose the correct subforum (for example, \"Windows\" in the Audacity 2.X Forum), click \"New Topic\" top left, then submit your message.  Foreign language subforums are available for <a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">French</a>, <a href=\"http://audacity-forum.de/\">German</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">Russian</a> and <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">Spanish</a>."
+msgstr " 質問を投稿するには、 <a href=\"http://forum.audacityteam.org/ucp.php?mode=register\">register</a> にてフォーラムに登録し、登録を確認し、ログインしてください。適切なサブフォーラム（たとえば,\"Windows\" in the Audacity 2.x Forum）を選び、上部左の\"New Topic\"をクリックし、あなたのメッセージを投稿してください。英語以外に<a href=\"http://forum.audacityteam.org/viewforum.php?f=7\">フランス語</a>, <a href=\"http://audacity-forum.de/\">ドイツ語</a>, <a href=\"http://forum.audacityteam.org/viewforum.php?f=10\">ロシア語</a> および <a href=\"http://forum.audacityteam.org/viewforum.php?f=8\">スペイン語</a>のサブフォーラムもあります。"
+
+#: contact/index.php:42
 msgid "Always give plenty of information when asking questions on the Audacity Forum. You can find more help with joining and using the Audacity Forum <a href=\"http://wiki.audacityteam.org/wiki/Asking_Questions\">here</a>."
 msgstr "フォーラムで質問すればいつでも多くの情報を得ることができます。<a href=\"http://wiki.audacityteam.org/wiki/Asking_Questions\">ここ</a>をクリックすることでより多くのヘルプを得られます。"
 
-#: contact/index.php:39
+#: contact/index.php:44
 msgid "Suggestions, Bug Reports, Feature Requests and Patches"
 msgstr "提案、バグ報告、新機能リクエストおよびパッチ"
 
@@ -8562,11 +8565,11 @@ msgstr "提案、バグ報告、新機能リクエストおよびパッチ"
 #. "echo" strings obscures the e-mail address from (at least some)
 #. harvesting bots. Please translate the strings above and below
 #. the <a href> tag, and ignore the line with the <a href> tag itself.
-#: contact/index.php:46
+#: contact/index.php:51
 msgid "You can "
 msgstr " "
 
-#: contact/index.php:49
+#: contact/index.php:54
 msgid ""
 "e-mail us</a> about any Audacity matter, but <b>not for technical support</b> - this is provided on the <a href=\"http://forum.audacityteam.org/\">Audacity Forum</a>. Please write in <b>English language only.</b> Please tell us your experiences of the Audacity program, documentation or web site. We particularly welcome the following:</p>\n"
 "\n"
@@ -8584,11 +8587,11 @@ msgstr ""
 "<li>新機能や将来拡張すべき機能のリクエスト</li>\n"
 "<li>Audacityプロジェクトへの <a href=\"http://wiki.audacityteam.org/wiki/Contribute\">参加</a>のお申し出"
 
-#: contact/index.php:59
+#: contact/index.php:64
 msgid "<b>Bug reports:</b> Please check both the <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">Release Notes</a> for your specific version of Audacity 2.0 and <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Reporting Bugs</a> <b>before</b> making a report. We are not fixing bugs in the legacy 1.2 or 1.3 series - please upgrade to the <a href=\"/download/\">latest 2.0 version</a> of Audacity instead."
 msgstr "<b>バグ報告:</b>  ご報告の<b>前に</b>、ぜひ Audacity 2.0のそれぞれのバージョンの<a href=\"http://wiki.audacityteam.org/wiki/Release_Notes\">リリースノート</a>、および <a href=\"http://wiki.audacityteam.org/wiki/Reporting_Bugs\">Reporting Bugs</a> をご確認ください。旧バージョンの1.2 および 1.3 シリーズのバグ修正は終了しています。 - <a href=\"/download\">最新の2.0バージョン</a>のAudacityをお使いください。"
 
-#: contact/index.php:62
+#: contact/index.php:67
 msgid ""
 "<b>Please include the following information.</b> This is important.</p>\n"
 "<ol>\n"
@@ -8610,28 +8613,28 @@ msgstr ""
 "\n"
 "<p><b>パッチ:</b>  問題点修正や機能向上のパッチを歓迎します。 <a href=\"http://wiki.audacityteam.org/\">Wiki</a>の中の<a href=\"http://wiki.audacityteam.org/wiki/SubmittingPatches\">Submitting Patches</a に書かれている手順とガイドラインにしたがってください。</p>  "
 
-#: contact/index.php:72
+#: contact/index.php:77
 msgid "Discussion Lists"
 msgstr "メーリングリスト"
 
-#: contact/index.php:73
+#: contact/index.php:78
 msgid "Subscribe to our"
 msgstr "私たちの"
 
 #. i18n-hint: this is the link text to the mailing list page
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "mailing lists"
 msgstr "メーリングリストを購読してください。"
 
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "to discuss Audacity with our community of users and developers. C++ developers: join "
 msgstr "を購読してAucadityユーザーや開発者のコミュニティと議論しましょう。C++開発者の方々："
 
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "our developers' list"
 msgstr "開発者の一覧"
 
-#: contact/index.php:76
+#: contact/index.php:81
 msgid "to learn about the Audacity source code and contribute to making Audacity even better!"
 msgstr "Audacityのソースコードについて学習し、Audacityをもっと良くするために貢献しましょう！"
 
@@ -8702,22 +8705,26 @@ msgid "Discuss Audacity with other <a href=\"../community/users\">users</a> and 
 msgstr "Audacityについて他の <a href=\"../community/users\">ユーザー</a> や開発者との議論"
 
 #: contact/lists.php:32
+msgid "Get help with using Audacity as a visually impaired person."
+msgstr "目の不自由な方向けのヘルプを得ることが出来ます。"
+
+#: contact/lists.php:38
 msgid "For  <a href=\"../community/developers\">developers</a> working with the Audacity source code and documentation, and others interested in following our development process, or learning about compiling or developing our code."
 msgstr "For  <a href=\"../community/developers\">developers</a> working with the Audacity source code and documentation, and others interested in following our development process, or learning about compiling or developing our code."
 
-#: contact/lists.php:34
+#: contact/lists.php:40
 msgid "We now use a <a href=\"http://www.bugzilla.org/\">Bugzilla</a> installation to track bugs and enhancements. To find issues to work on, please view our categorized <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Bug Lists</a>."
 msgstr "Audacity開発チームは <a href=\"http://www.bugzilla.org/\">Bugzilla</a>をバグトラックおよび改善のために使っています。 解決すべき課題を見つけるには、カテゴリ別に分類された <a href=\"http://wiki.audacityteam.org/wiki/Bug_Lists\">Bug Lists</a>をご覧ください。"
 
-#: contact/lists.php:39
+#: contact/lists.php:45
 msgid "Receive automatic notification of every change made to the Audacity <a href=\"../community/developers#svn\">source code</a>."
 msgstr "ソースコードが変更された場合、Audacity <a href=\"../community/developers#svn\">source code</a>より知らせを受け取ることが出来ます。"
 
-#: contact/lists.php:46
+#: contact/lists.php:52
 msgid "For <a href=\"../community/translation\">translators</a> localizing the Audacity software, web site and documentation."
 msgstr "Audacityソフトウェア、Webサイトおよびドキュメントを各国語に翻訳する<a href=\"../community/translation\">翻訳者</a> による議論"
 
-#: contact/lists.php:52
+#: contact/lists.php:58
 msgid "Share questions and tips about programming <a href=\"../help/nyquist\">Nyquist plug-ins</a>."
 msgstr "<a href=\"../help/nyquist\">Nyquistプラグイン</a>でのプログラミングについて疑問点や技術を共有する。"
 
