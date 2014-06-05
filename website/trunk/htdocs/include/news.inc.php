@@ -40,17 +40,14 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
-  "February 5, 2014",
+  "June 05, 2014",
   	"Audacity-Unconference-AU14",
   _("Audacity Unconference (AU14)"),
   _("
 <p>
-Further to our recent announcement, our planned \"Audacity Unconference (AU14)\"
-will now take place on 11th and 12th July 2014 at <a href=\"http://www.uclan.ac.uk/\">
-UCLan</a> in Preston, England. Bookings are now being taken.  
-</p>
-<p>Please see our <a href=\"http://wiki.audacityteam.org/wiki/Audacity_Unconference_2014\">
-Audacity Unconference 2014</a> wiki page for details.
+Meet developers, support team members and users at the Audacity Unconference.<br />
+11-12 July 2014 at <a href=\"http://www.uclan.ac.uk/\">UCLan</a>, Preston, UK.<br />
+<a href=\"http://wiki.audacityteam.org/wiki/Audacity_Unconference_2014\">Details here</a>.
 </p>
 "));
 
