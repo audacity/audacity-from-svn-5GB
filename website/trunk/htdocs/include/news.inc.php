@@ -45,9 +45,7 @@ add_news_item(
   _("Audacity Unconference (AU14)"),
   _("
 <p>
-Meet developers, support team members and users at the Audacity Unconference.<br />
-11-12 July 2014 at <a href=\"http://www.uclan.ac.uk/\">UCLan</a>, Preston, UK.<br />
-<a href=\"http://wiki.audacityteam.org/wiki/Audacity_Unconference_2014\">Details here</a>.
+Meet developers, support team members and users at the <a href=\"http://wiki.audacityteam.org/wiki/Audacity_Unconference_2014\">Audacity Unconference</a>. 11-12 July 2014 at <a href=\"http://www.uclan.ac.uk/\">UCLan</a>, Preston, UK.
 </p>
 "));
 
