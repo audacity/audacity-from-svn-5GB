@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007-13 Gale Andrews, Vaughan Johnson. 
+ * 2007-14 Gale Andrews, Vaughan Johnson. 
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -17,10 +17,10 @@
 <ul>
   <li>Record live audio.</li>
   <li><a href="http://manual.audacityteam.org/o/man/tutorial_recording_computer_playback_on_windows.html">Record computer playback</a> on any Windows Vista or later machine.</li>
-  <li>Convert tapes and records into digital recordings or CDs.</li>
+  <li><a href="http://manual.audacityteam.org/o/man/tutorial_copying_tapes_lps_or_minidiscs_to_cd.html">Convert tapes and records</a> into digital recordings or CDs.</li>
   <li>Edit WAV, AIFF, FLAC, MP2, MP3 or Ogg Vorbis sound files.</li>
-  <li>Cut, copy, splice or mix sounds together.</li>
-  <li>Change the speed or pitch of a recording.</li>
+  <li>Cut, copy, <a href="http://manual.audacityteam.org/o/man/faq_editing.html#join">splice</a> or <a href="http://manual.audacityteam.org/man/Mixing">mix</a> sounds together.</li>
+  <li><a href="http://manual.audacityteam.org/o/man/index_of_effects_generators_and_analyzers.html#Make_the_sound_faster.2C_slower.2C_lower_pitched_or_higher_pitched">Change the speed or pitch</a> of a recording.</li>
   <li>And more! See the complete <a href="features">list of features</a>.</li>
 </ul>');
 
