@@ -50,7 +50,7 @@
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
 <h4><?=_("Plug-ins and Libraries")?></h4>
 <ul>
-  <li><p><a href="http://audacity.googlecode.com/files/swh-plugins-mac-0.4.15.zip"><?=_("LADSPA plug-ins zip file</a> - over 90 plug-ins.")?></p></li>
+  <li><p><a href="<?=download_url("swh-plugins-mac-0.4.15.zip")?>"><?=_("LADSPA plug-ins zip file</a> - over 90 plug-ins.")?></p></li>
   <li>
     <p>
       <a href="plugins">
