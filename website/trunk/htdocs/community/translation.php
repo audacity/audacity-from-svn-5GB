@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2002-2012 Dominic Mazzoni, Matt Brubeck, Gale Andrews
+ * Copyright 2002-2014 Dominic Mazzoni, Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -75,11 +75,12 @@ printf(_('We are grateful that volunteers translate Audacity into many different
 </ul>
 
 <p><b>To test a translation in Audacity:</b></p>
-<ul>
-  <li>Navigate to the "Languages" directory inside the Audacity installation directory, and open the directory with the same name as your .po file. If creating a new translation, create a directory in the "Languages" folder using the correct language code from <a href="http://www.poedit.net/translations.php">http://www.poedit.net/translations.php</a>. For example, the code for Tamil is "ta", so create "Audacity\Languages\ta".</li>
+<ol>
+  <li>On Windows, open the "Languages" directory inside the Audacity installation directory, then open the directory with the same name as your .po file. On Mac OS X, right-click or control-click over Audacity.app > Show Package Contents then open the relevant LPROJ directory inside the "Resources" directory. On GNU/Linux, open the relevant "locale" directory in usr/share/ or usr/local/share. 
+  <li>If creating a new translation, create a new directory for your language using the correct language code from <a href="http://www.poedit.net/translations.php">http://www.poedit.net/translations.php</a>. For example, the code for Punjabi is "pa", so on Windows, create "Audacity\Languages\pa".</li>
   <li>Rename the saved <b>.mo</b> file to "Audacity.mo", and paste it into the directory you opened or created.</li>
   <li>Open Audacity and in <b>Preferences: Interface</b>, choose your language and click OK. You should now see your translations. </li>
-</ul>
+</ol>
 
 <p><b>Further information:</b></p>
 <ul>

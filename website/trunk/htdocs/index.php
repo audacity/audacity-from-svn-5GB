@@ -33,12 +33,12 @@
   else if ($download == "mac") {
     $download_version = macosx_version;
     $download_OS = _("for Mac");
-    $download_OS_versions = _("OS X 10.4 or later");
+    $download_OS_versions = _("OS X 10.4 to 10.9.x");
     $download_page = "mac";
     $recommended_download = $macosx_url;
     /*
       $beta_version = beta_version;
-      $beta_download_OS_versions = _("Mac OS X 10.4 or later");
+      $beta_download_OS_versions = _("Mac OS X 10.4 to 10.9.x");
       $beta_download_page = "beta_mac";
       */
   }
