@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2012 - 2013 Gale Andrews, Vaughan Johnson
+ * Copyright 2012 - 2014 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -208,7 +208,9 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
  <li>Use any CD-recording software (for example, iTunes or Nero) to burn this file to a CD.</li>
 </ol>
 <p>To make a disc you can play in normal CD players, ensure you create a \"music\" or \"audio\" CD (not a \"data\" or \"MP3 CD\"). Use CD-R discs, because some players cannot read CD-RW. You can burn only 74 minutes or so onto an audio CD - this is a limitation of the audio CD format.</p>
-<p>It is also possible to burn longer \"data\" CDs which are playable on computers and most DVD players or MP3 CD players, but not in standalone CD players. For details and other advanced tips including help with particular CD burning software, see <a href=\"http://wiki.audacityteam.org/wiki/How_to_burn_CDs\">How to burn CDs</a> on the Audacity Wiki.</p>
+<p>It is also possible to burn longer material to \"data\" CDs which are playable on computers and most DVD players or MP3 CD players, but not in standalone CD players. For example, if you were to choose a 64 kbps MP3 bit rate, about 23 hours of music would fit on the CD, although the penalty of reducing the bit rate is lower sound quality (especially so for music, less so for speech). Or you can burn a \"data\" DVD. A single layer 4.7 GB data DVD can accommodate nearly 80 hours of 128 kbps MP3 audio. Computers having a DVD-R drive will play data DVDs though some older DVD players won't do so, or will only play those containing certain audio or video formats.</p>
+<p>By default, most CD burners add an appropriate two-second gap between CD tracks. However sometimes you may have a continuous mix or live concert where you want to play the CD without gaps but still want the ability to skip from one CD track to the next using the player controls. To achieve this you can try turning off the setting in the burning software to add a gap, and/or set the burning software to Disc-At-Once (DAO) mode (if the CD burner and burning software support this). Be sure to use lossless WAV or AIFF files because most lossy formats like MP3 add silence padding. If a gap is still heard, export a single file for the entire recording, then burn the CD with DAO using a <a href=\"http://wiki.audacityteam.org/wiki/Cue_sheets\">cue sheet</a>. The cue sheet can be generated from exported Audacity labels and specifies the start times of each CD track. 
+</p>
 <p>See also: <a href=\"faq_i18n?s=files&amp;i=split\">How can I split a long recording into multiple tracks?</a></p>")
         ),
         "split" => array(
@@ -273,13 +275,18 @@ Follow <a href="http://audacityteam.org/wiki/index.php?title=Lame_Installation#G
   }
   else {
     // Print the list of sections and questions.
-    $pageTitle = _("Older Frequently Asked Questions (for legacy Audacity and international help)");
+    $pageTitle = _("Older Frequently Asked Questions for international help");
     include "../include/header.inc.php";
 
     echo "<h2>$pageTitle</h2>";
-    echo "<p>"._('These are older Frequently Asked Questions (FAQ), <b>only for:</b> <ul><li><a href="../download/#legacy">legacy versions of Audacity</a></li><li>users of <a href="../download/">current Audacity</a> in languages where the <a href="faq">current FAQ</a> has no translation yet.</li></ul> These questions remain largely valid for Audacity 2.0.x, but please use the current FAQ if you can do so.')."</p>";
+    echo "<p>"._('These are older Frequently Asked Questions (FAQ) for users of <a href="../download/">current Audacity</a> in languages where the <a href="faq">current FAQ</a> has no translation yet. These questions remain largely valid for Audacity 2.0.x, but please use the current FAQ if you can do so.')."</p>";
 
-echo "<p>"._('Additional help in French, German, Russian or Spanish can be obtained from our <a href="http://forum.audacityteam.org/viewforum.php?f=3">International Forum</a>.')."</p>";
+echo "<div class=\"advice\">";
+echo "<p>"._('Additional help in other languages can be obtained from various 
+<a href="http://wiki.audacityteam.org/wiki/MultiLingual">online forums</a>
+including the <a href="http://forum.audacityteam.org/viewforum.php?f=54">
+Audacity International Forums</a>.')."</p>";
+echo "</div>";
 
     foreach ($faqSections as $faqSectionId => $section) {
       $sectionTitle = $section[0];
