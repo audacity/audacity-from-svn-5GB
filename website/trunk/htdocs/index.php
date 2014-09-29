@@ -3,7 +3,7 @@
  * index.php for audacity home
  *
  * Copyright 2005 Matt Brubeck
- * 2007 - 13 Vaughan Johnson, Gale Andrews
+ * 2007 - 14 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -21,7 +21,7 @@
   if ($download == "windows") {
     $download_version = win_exe_version;
     $download_OS = _("for Windows");
-    $download_OS_versions = "2000/XP/Vista/Windows&nbsp;7/Windows&nbsp;8";
+    $download_OS_versions = "2000/XP/Vista/7/8";
     $download_page = "windows";
     $recommended_download = $win_exe_url;
     /*
@@ -63,10 +63,11 @@
     <a title="<?=_("Screenshots")?>" href="about/screenshots"><img alt="<?=_("Screenshots")?>" src="about/images/audacity-windows-small.jpg"></a>
   </div>
   <p>
-    <?=_('Audacity is available for Windows&reg;, Mac&reg;, GNU/Linux&reg; and other operating systems. 
+    <?=_('Audacity is available for <a href="download/windows">Windows&reg;</a>, 
+         <a href="download/mac">Mac&reg;</a>, <a href="download/linux">GNU/Linux&reg</a>; and other operating systems. 
     Check our <a href="about/features">feature list</a>, 
     <a href="http://wiki.audacityteam.org/">wiki</a>, and 
-    <a href="http://forum.audacityteam.org/">forum</a> for more information.')?></p>
+    <a href="http://forum.audacityteam.org/">forum</a>.')?></p>
 </div>
 
 <div id="download">
