@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Mixer Toolbar</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+<body>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=middle><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="reference.html">Back to the Reference page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+
+  <tr>
+    <td colspan=3 align=center>
+	<a class=top_b href="toolbar.html">Main Toolbar</a>
+	<a class=top_b href="toolbar_edit.html">Edit Toolbar</a>
+	<a class=top_b href="toolbar_io.html">Input/Output</a>
+    </td>
+  </tr>
+</table>
+
+<h1 align=center>Mixer Toolbar</h1>
+<table>
+ <tr><td colspan=3><img border=0 src="images/toolbar_io.png" width="485" height="29" alt="I/O Sliders and Input Selector" align="middle"></td></tr>
+ <tr>
+  <td width="36%" align=center><b>Output</b></td>
+  <td width="36%" align=center><b>Input</b></td>
+  <td width="28%" align=center><b>Input Selector</b></td>
+ </tr>
+</table>
+</center>
+
+<p class=a>
+ These sliders control the mixer settings of the soundcard in your system.
+</p>
+<p class=a>
+The sliders will jump to zero (left most position) if the drivers do not
+expose these functions. This is the case with some digital I/O cards
+from RME and possibly others as well. Generally most cards that have a custom
+mixer application rather than the standard OS volume control won't work
+with this function of audacity.
+On these cards you will not be able to control the anything with these sliders,
+and you will need to set up the recording levels and the recording source using
+the card's mixer program.
+</p>
+
+
+<table><tr>
+  <td valign=top width="48%">
+
+<p class=qg>Output Slider</p>
+<p class=a>This is the left hand slider that lets you control the output
+   level of your soundcard. It actually controls the output setting of
+   the soundcard driver.</p>
+<p class=a>Should your output sound distorted, this is not the first place
+   to look. You might get lucky though, so give it a quick slide. Usually
+   however, the distortion comes from the mix of your project <b>clipping</b>.
+   You actually need to reduce the level of your tracks. It is suggested you
+   reduce every track by the same amount.
+</p>
+
+  </td>
+  <td valign=top width="52%">
+
+<p class=qr>Input Slider</p>
+<p class=a>This is the right hand slider that lets you control the 
+    level of the input selected in the Input Selector. It actually controls
+    the recording level setting of the soundcard driver.</P>
+    <p class=a>What you record is also determined in the mixer settings on
+    your soundcard. There you can switch certain sources on and off, such
+    as the Line Input, the Microphone Input or the CD Audio.</p>
+    <p class=a>After selecting the corresponding input source with the Input 
+    Selector, you can control the level of the recording with this slider. 
+    Use the VU Meters on the Meter Toolbar to get the correct recording
+    level.</p>
+    <p class=a>Should your input sound distorted, you should lower this slider
+    until no distortion can be heard, and the VU Meters do not hit the end of
+    their travel.</p>
+  </td>
+ </tr>
+</table>
+
+<p class=qb>Input Selector</p>
+<table><tr>
+    <td width="40%" valign=top><p class=a>Pick the input source you wish to
+    record from. All these items are exposed by the soundcard driver,
+    so the this of options will vary with different soundcards.</p>
+    <p class=a><b>Note:</b> On Windows Vista or 7, you must use the 
+    "Recording Device" dropdown in the "Audio I/O" tab of Preferences 
+    to select input sources.</p></td>
+    <td width="60%" valign=top><table><tr><td valign=top>
+	<img border=0 src="images/toolbar_io_inputselector.png" 
+	alt="Input Selector drop down list" align=top></td>
+<td valign=top>Here is an example of an ESS 1969 soundcard with the 
+	Line In input selected.</td></tr></table></td>
+</tr></table>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="reference.html">Back to the Reference page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+<br>&nbsp;
+</body>
+</html>

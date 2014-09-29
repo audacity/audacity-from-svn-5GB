@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+        <title>Tutorial - Basics - Part 1 - Digital Audio</title>
+<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+<body>
+<!--top table-->
+<DIV align=center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top>
+    <p><a class=ss href="FR_index.html"><font color="#000080">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_tutorials.html">
+    <font color="#0000FF">Retour 
+    au didacticiel</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+<table width="95%" border=0 cellspacing=0 cellpadding=0>
+  <tr><td colspan=2 width="100%" align=center>
+	<p dir="ltr">
+	<a class=top_r href="FR_tutorial_basics_1.html"><font color="#0000FF">Digital Audio</font></a><font color="#0000FF">
+    </font>
+	<a class=top_y href="FR_tutorial_basics_2.html"><font color="#0000FF">Règles d'Audacity</font></a><font color="#0000FF">
+    </font>
+	<a class=top_b href="FR_tutorial_basics_3.html"><font color="#0000FF">Organiser, Importer et Reproduire</font></a>
+	<a class=top_g href="FR_tutorial_basics_4.html"><font color="#0000FF">Enregistrer avec</font></a><a class=top_g href="tutorial_basics_4.html"><font color="#0000FF"> Audacity</font></a><font color="#0000FF">
+    </font>
+    </td>
+  </tr>
+</table>
+</DIV>
+<!-- -->
+
+<h2 align=center><span class="ss">D<B>idacticiel - I . Les Bases</B></span><br><span class=sf>Partie 1&nbsp;-&nbsp;&nbsp;</span>Digital Audio<span class=sf>&nbsp;&nbsp;-&nbsp;Partie 1</span></h2>
+
+<P class=qr>Qu'est ce qu'un son?</H3>
+
+<P class=a>
+Les sons sont des vagues d'air compressé.  S'il n'y avait pas d'air, nous ne 
+pourrions pas entendre de sons.  Il n'y a pas de son dans l'espace.
+</P>
+<P class=a>
+Nous entendons les sons car nos oreilles sont sensibles à ces ondes comprimées.
+Illustrons ce qu'est une onde sonore : le son le plus simple est un court et 
+soudain évènement tel qu'un claquement. Quand vous claquez des mains, l'air 
+entre elles est repoussé vers l'extérieur. Ceci provoque une pression d'air dans 
+l'espace prés de vos mains, car les molécules d'air sont temporairement 
+compressées dans moins d'espace. La haute pression repousse les molécules d'air 
+vers l'extérieur, dans toutes les directions, à la vitesse du son, qui est 
+d'environ 340 mètres /seconde. Quand l'onde comprimée atteint votre oreille, 
+elle pousse légèrement sur votre tympan et provoque le bruit du claquement.</P>
+<center>
+<img src="images/FR_waveform_clap.jpg" width=340 height=173>
+</center>
+<P class=a>
+Un claquement de mains est un  évènement court qui génère une  pression 
+simple et qui s'arrête rapidement. L'image ci-dessus montre l'onde d'un claquement de 
+mains typique. Pour cette onde, l'axe horizontal représente le temps et l'axe 
+vertical la pression. La haute pression initiale est suivie d'une basse 
+pression, mais l'oscillation diminue rapidement.</P>
+<P class=a>
+L'autre type d'onde habituelle est la vague périodique. Quand vous sonnez une 
+cloche, après la sonnerie initiale (qui est courte comme un claquement de 
+mains), le son vient de la vibration de la cloche. Quand la cloche re-sonne, 
+elle vibre à une fréquence particulière, dépendant de la taille et de la forme 
+de la cloche et qui provoque la vibration de l'air proche, à la même fréquence. 
+Ceci génère des ondes de pression d'air qui se diffusent de la cloche vers 
+l'extérieur, à la vitesse du son. Les ondes en vibration continue ressemblent 
+plutôt à cela :</P>
+<center>
+<img src="images/FR_waveform_sine.jpg" width=340 height=173>
+</center>
+
+<P class=qr>Comment le son est enregistré?</H3>
+
+<P class=a>
+Un microphone est constitué d'une fine membrane libre de vibrer, alliée à un 
+mécanisme qui traduit les mouvements de la membrane en signaux électriques.  (Le 
+mécanisme électrique exact varie en fonction du type de micro) Ensuite les ondes 
+acoustiques sont transformées en signal électrique par le micro. Les hautes 
+pressions correspondent à des voltages élevés et inversement.
+</P>
+
+<P class=a>
+Un magnétophone enregistreur traduit à nouveau ce signal - d'un signal 
+électrique via un fil électrique, en un signal magnétique sur la bande. Quand 
+vous écoutez une bande, le processus inverse est réalisé, transformant le signal 
+magnétique en signal électrique entraînant la vibration d'un haut parleur, 
+généralement en utilisant un électro-aimant.</P>
+
+<P class=qr dir="ltr">Qu'est ce qu'un son numérisé?</H3>
+
+<P class=a>
+Enregistrer sur une bande est un exemple d'enregistrement analogique. Audacity 
+crée des enregistrements numériques - enregistrements qui sont échantillonnés 
+pour être utilisés par un PC tel que vous en utilisez en ce moment. Les 
+enregistrements numériques ont de nombreux avantages sur les enregistrement 
+analogique .Ils peuvent être copiés quand vous le voulez, sans perte de qualité, 
+sur un cd audio, ou partagés sur internet. Ils peuvent aussi être édités 
+beaucoup plus facilement que les bandes analogiques.</P>
+
+<P class=a>
+Le principal système utilisé pour les enregistrements numériques est un 
+convertisseur analogique vers numérique. (ADC Analog-to-Digital
+Converter). Il capture la photo du voltage sur une ligne sonore et l'interprète 
+comme une information numérique qui peut être envoyée au PC. En capturant le 
+voltage des milliers de fois par seconde, vous obtenez une très bonne 
+approximation du signal sonore d'origine :</P>
+
+<center>
+<img src="images/waveform_sampled.png" width=340 height=124>
+</center>
+
+<P class=a>
+Chaque point du dessin ci-dessus&nbsp; représente&nbsp; un échantillon sonore. 
+Il y a 2 facteurs qui déterminent la qualité d'un enregistrement numérique :&nbsp;
+</P>
+
+<UL>
+<LI><P><b>Le Taux d'échantillonnage </b>: Le taux auquel les échantillons sont 
+capturés ou joués, mesuré en Hertz (Hz), ou échantillon par seconde.  Un CD 
+audio a un taux d'échantillonnage de
+  44,100 Hz, souvent décrit a 44 KHz en abrégé .  C'est aussi l'échantillonnage 
+par défaut qu'Audacity utilise, car les CD audio sont répandus.</P>
+
+<LI><P><b>Le Format</b> <b>d'échantillonnage </b>ou <b>taille</b>: C'est le 
+nombre de bits utilisés pour représenter chaque échantillon. Imaginez que le <b>
+taux</b> est la précision horizontale du son numérique,
+  et que le <b>format</b> est la précision verticale.  Un CD audio a une précision 
+de 16 bits, qui correspond à un nombre à 5 décimales environ.</P>
+</UL>
+
+<P class=a>
+Les taux plus élevés permettent un enregistrement numérique plus précis des 
+fréquences du son.  Le taux devrait être, au moins, le double de la plus haute 
+fréquence que vous voulez représenter. Les humains ne peuvent entendre les fréquences 
+au delà de 20,000 Hz environ, aussi 44,100 Hz
+a été choisi comme taux des CD audio pour  intégrer l'ensemble des fréquences humainement 
+audibles.  Les taux de 96 et 192 KHz deviennent plus fréquentes, 
+particulièrement pour les&nbsp; DVD - Audio mais beaucoup de gens ne perçoivent pas la différence .
+</P>
+<P class=a>
+Les tailles d'échantillon élevées autorisent des tessitures plus dynamiques - 
+des résonances plus fortes et des fondus plus doux.  Si vous êtes familier de 
+l'échelle des décibels (dB), la tessiture dynamique d'un CD audio est 
+théoriquement d'environ
+90 dB, mais en réalité les signaux  de 24 dB ou plus en volume 
+baissent fortement en qualité.  Audacity supporte deux tailles d'échantillon 
+supplémentaires : 24-bit, couramment utilisée pour les enregistrements 
+numériques, et le 32-bit <i>à virgule flottante</i>, qui a une tessiture 
+dynamique illimitée, pour un espace de stockage d'à peine le double des 
+échantillons de 16-bit.
+</P>
+<P class=a dir="ltr">
+Rejouer des sons numérique utilise un convertisseur analogique vers numérique. 
+(ADC Analog-to-Digital
+Converter). Il lit l'échantillon et procure un certain voltage sur les sorties analogiques 
+pour recréer le signal. Le DAC (Digital-to-Analog Converter) le fait aussi 
+fidèlement que possible et les premiers lecteurs CD faisaient seulement cela, ce 
+qui ne donnait pas toujours un son de qualité. Maintenant,&nbsp;les DAC 
+utilisent un &quot;sur échantillonnage&quot; pour lisser le signal sonore. La qualité des filtres 
+dans le DAC contribue aussi à la qualité du signal analogique restitué. Le filtre 
+est une des nombreuses possibilités que procure le DAC.
+</P>
+
+<P class=qr dir="ltr">Comment les sons sont numérisés sur votre PC?</P>
+<P class=a>
+Votre PC a une carte son&nbsp; - qui peut être une carte indépendante telle que 
+la
+SoundBlaster, ou bien le son peut être généré par votre PC. Dans les deux cas votre 
+carte son traduit avec un convertisseur d'analogique à numérique (ADC) pour enregistrer et 
+convertisseur de numérique à analogique (DAC) pour jouer. Votre système d'exploitation (Windows, Mac OS X, Linux, etc.) 
+échange avec la carte son pour charger l'enregistrement et le jouer .
+Audacity échange aussi avec votre système d'exploitation quand vous voulez capturer 
+les sons vers un fichier, les éditer et mixer des pistes multiples pour les 
+jouer.
+</P>
+
+<P class=qr>Formats standard de fichiers pour PCM audio </P>
+
+<P class=a>
+Sur un ordinateur, il existe deux principaux types de fichiers audio.</P>
+
+<UL>
+<LI><P>PCM signifie &quot;Pulse Code Modulation&quot; .  C'est juste un nom courant pour 
+la technique décrite ci-dessus, où chaque octet du fichier audio représente 
+exactement un échantillon de sons.  Les exemples courants de fichiers PCM sont 
+les fichiers <b>WAV</b> et&nbsp;
+    <b>AIFF</b>, et les fichiers <B>Sound&nbsp;Designer&nbsp;II</B> .  Audacity 
+admet&nbsp; WAV, AIFF, et de nombreux autres fichiers PCM.</P>
+
+<LI><P>L'autre format de fichier sont les fichiers compressés. Les premiers formats 
+utilisent un encodage logarithmique pour compresser plus de tessitures 
+dynamiques dans moins d'espace, tel que l'encodage
+    u-law ou a-law au format <B>Sun AU</B>.  Les fichiers compressés modernes 
+utilisent des algorithmes psycho-acoustiques&nbsp; sophistiqués pour représenter 
+les fréquences essentielles pour le signal audio dans encore moins d'espace 
+disque.  Ces exemples comprennent <b>MP3</b>
+    (MPEG I, layer 3), <b>Ogg Vorbis</b>, et <b>WMA</b> (Windows Media Audio).
+    Audacity supporte le MP3 et Ogg Vorbis, mais pas le format propriétaire WMA.</P>
+</UL>
+
+<P class=a>
+Pour plus de détails sur les formats qu'Audacity peut importer et exporter, 
+reportez vous à la page <a href="FR_fileformats.html"><font color="#0000FF">Formats de Fichiers</font></a> de cette documentation.
+Souvenez vous que le MP3 ne peut être stocké décompressé. Quand vous créez un 
+fichier MP3, vous perdez volontairement une partie de la qualité audio pour 
+gagner en espace disque.</P>
+
+<center><a class=top_y href="FR_tutorial_basics_2.html"><font color="#0000FF">Nouveau chapitre - Les règles d'Audacity</font></a></P></center>
+
+<BR>
+
+<a class=ss href="FR_index.html"><font color="#0000FF">Retour au sommaire</font></a><font color="#0000FF">
+</font>
+
+</body>
+</html>

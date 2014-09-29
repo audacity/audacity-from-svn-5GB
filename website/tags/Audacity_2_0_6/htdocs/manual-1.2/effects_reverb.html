@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Audio effect - Reverb</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+<body>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="effects.html">Back to the Effects page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+
+<H1 align=center>Reverb</H1>
+</center>
+
+<P class=qr>What is Reverb ?</P>
+<P class=a>
+ A Reverb simulates the component of sound that results from reflections from surrounding walls or objects.
+ It is in effect a room simulator. Some people think it's just a delay effect with some filters, but it's way
+ more complex than that. Reverb effects (software plugins or external hardware units) provide
+ an interface to their changeable parameters that need some explaining. Let's look at a simple room first.
+</P>
+<P class=qr>Basic Simulation of a Room</P>
+<P class=a>
+ <B>Our model is a simple room</B> with four straight walls, a sound source and a listener. In <i>Figure 1</i>
+ the arrows stand for the path of traveling sound.
+</P>
+<P class=a>
+ The listener hears the DIRECT signal first. The DIRECT signal is also referred to as the DRY part of the signal when using
+ any effect. Most digital reverbs produce two parts: The Early Reflections and the Reverb component.
+</P>
+
+<a name=earlyreflections></a>
+<P class=menuref_item>I. Early Reflections</P>
+<table><tr>
+<td valign=top align=right><img border=0 src="images/reverb_er1.png" width="352" height="373" alt="Early Reflections">
+                           <br><i><B>Figure 1</B></i></td>
+<td valign=top>
+ <P class=a>
+  The first Early Reflection reaches the listener milliseconds after
+  the direct signal does.
+ </P>
+ <P class=a>
+  The path of the Early Reflections is longer. The difference in time between the arrival of
+  the direct signal and the first Early Reflections is measured in milliseconds.
+ </P>
+
+</td>
+</tr></table>
+
+
+<P class=menuref_item>II. Reverb</P>
+<table><tr>
+<td valign=top align=right><img border=0 src="images/reverb_rev1.png" width="348" height="370" alt="Reverb">
+                           <br><i><B>Figure 1</B></i></td>
+<td valign=top>
+ <P class=a>
+  The sound reflects off the walls and objects in the room, and in time individual reflections
+  disappear and the Reverb develops.
+ </P>
+ <P class=a>
+  <U><B>Predelay</B></U><BR>
+  The time between the reception of the DIRECT signal by the listener and start of the Reverb portion
+  of the effect is called <B>Predelay</B>. This is a parameter in many digital reverb effects, and it
+  is expressed in milliseconds (ms).
+ </P>
+ <P class=a>
+  <U><B>Reverb Time</B></U><BR>
+  The time difference between switching off any sound generator and the level of the reverb resulting
+  from that sound dropping by 60dB is called <B>RT60</B>.
+ </P>
+ <P class=a>
+  This is usually referred to as the <B>Reverb Time</B>. When anyone refers to the reverb time
+  of a real room or that of a digital reverb, RT60 is what they're talking about.
+ </P>
+ <P class=a>
+  Most digital reverbs feature this as a parameter.
+ </P>
+</td>
+</tr></table>
+
+<a name=parameters></a>
+<P class=qr>Common parameters of a digital Reverb</P>
+
+<table cellpadding=4>
+<tr>
+ <td valign=top align=right class=menuref_item>Early&nbsp;Reflections</td>
+ <td valign=top>
+   <P class=a>
+    Usually controlled via <B>Room type</B> and/or <B>Room Size</B> parameters.
+   </P>
+   <P class=a>
+    The <B>EARLY REFLECTIONS</B> enable the human brain to quickly identify the room size. They are
+    therefore the most critical part of a reverb effect, if a room simulation is the goal.
+   </P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Predelay</td>
+ <td valign=top>
+   <P class=a>
+    Parameter Range : 0 to x milliseconds
+   </P>
+   <P class=a>
+    Time between Direct Signal and start of Reverb portion.
+   </P>
+   <P class=a>
+    The more space between you and walls or other reflective objects, the greater the Predelay.
+   </P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Reverb Time</td>
+ <td valign=top>
+   <P class=a>
+    Parameter Range : 0.1 to x.x seconds
+   </P>
+   <P class=a>
+    The greater the enclosed(!) volume of the space you're in, the longer the reverb time. This is of course true only
+    to a certain extent. The larger the room or chamber, the louder your source signal needs to be to produce any
+    significant level of reverb tail. A good way to demonstrate this is to visit some huge cathedral and talk quietly.
+    Then yell a bit and you'll actually hear some significantly loud reverb. The RT60 value is measured with a noise impulse, but the level
+    at which that impulse was sent out should be known too.
+   </P>
+   <P class=a>
+    Many reverb effects let you set different reverb times for different frequency bands. Most reverb units on PC and Mac architectures provide two bands,
+    so you get to set the reverb time for each frequency band individually.
+   </P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Reverb Damping</td>
+ <td valign=top>
+   <P class=a>
+    Usually a Highshelf and/or a Lowshelf EQ with variable Frequency.
+   </P>
+   <P class=a>
+    These EQs are applied continuously to an evolving reverb of a piece of audio.
+    Over time, as the reverb fades, so do certain frequencies, either in the lower
+    or higher frequency range. The more less-reflective surfaces the sound bounces
+    around from, the more the reverb is dampened the higher frequencies.
+   </P>
+   <P class=a>
+    Freeverb features a Damping parameter that dampens the upper frequencies.
+   </P>
+   <BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Reverb EQ</td>
+ <td valign=top>
+   <P class=a>
+    Usually a Highshelf and/or Lowshelf EQ with variable Frequency.
+   </P>
+   <P class=a>
+    These EQs are only applied to the output of the reverb or perhaps even just the reverb portion
+    of the Reverb effect. Some reverbs have Highshelf and Lowshelf EQs for the Early Reflections as well.
+   </P>
+   <P class=a>
+    Freeverb has both a Hicut and Lowcut parameter.
+   </P>
+   <BR>
+ </td>
+</tr>
+
+</table>
+
+<P class=a>
+ Here's a screenshot taken from the reverb plugin Renaissance Reverberator by <a href="http://www.waves.com">Waves</a>.
+</P>
+<center>
+<img border=0 src="images/reverb_rverb.png" width="599" height="232" alt="Renaissance Reverberator"><BR>
+<small><span class=ss>reproduced with permission</span></small>
+</center>
+<P class=a>
+ Here we have the Highshelf and Lowshelf EQs for Damping(left) and for the final output(right). The upper middle display
+ depicts the Early Reflections placement and level, as well as the Reverb portion start and fading. Above this display
+ is the <i>Reverb Type</i> selector. This changes the placement and level of the Early Reflections. The <i>Size</i> slider
+ has influence on the Early Reflections as well.
+</P>
+
+<!-- P class=a>
+ The surface of a wall as well as different shapes and sizes of objects in a room influence
+ the way sound reflects, bends or spreads from off them.
+</P -->
+<P class=a>
+ Blank concrete will reflect sound quite well across the frequency spectrum. A large thick curtain
+ or padded walls will reflect sound poorly. A large club filled with people sounds completely different
+ from an empty one. People, comfy chairs, curtains, carpets, beds and many more objects reflect only
+ part of the sound that hits them.
+</P>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="effects.html">Back to the Effects page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<BR>
+
+</body>
+</html>

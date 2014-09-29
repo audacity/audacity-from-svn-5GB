@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Audio effect - Delay</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+<body>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="effects.html">Back to the Effects page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+
+<H1 align=center>Delay</H1>
+</center>
+
+<P class=qr>What is a Delay ?</P>
+<P class=a>
+ This effect uses a RAM buffer to store the audio for a certain amount of time, after which it outputs this audio.
+</P>
+<P class=a>
+ The RAM buffer will not always be just large enough to store the amount of audio set by the current delay time, but will
+ actually be considerably larger sometimes, because many delay effects allow for their delay parameter to automated.
+</P>
+<center>
+<img border=0 src="images/delay_signalflow.png" width="296" height="117" alt="Delay Effect Signal flow">
+<BR>&nbsp;<br>
+<img border=0 src="images/delay.png" width="459" height="169" alt="Delay Effect diagram">
+</center>
+
+
+<P class=qr>Multi-Tap Delays</P>
+<P class=a>
+ This effect simply incorporates several discrete delay lines, each with its own delay time,
+ level(amplitude) and panning. The feedback parameter is usually shared by all delays in a multi-tap delay.
+ Some multi-tap delays feature a modulation section that modulates the delay times, which can be used to
+ create <a href="effects_chorus.html">chorus</a> effects.
+</P>
+<BR>
+
+
+
+<P class=qr>Common parameters of a digital Delay</P>
+<table cellpadding=4>
+<tr>
+ <td valign=top align=right class=menuref_item>Delay&nbsp;Time</td>
+ <td valign=top>
+   <P class=a>
+    Parameter Range : 0.000 to xxx.xxx seconds
+   </P>
+   <P class=a>
+    The upper boundary of this parameter(xxx.xxx) depends on the amount of RAM in the hardware unit, or the amount of RAM
+    reserved by the software plugin. For software plugins, the programmers or designers of the plugin set this upper boundary.
+   </P>
+   <P class=a>
+    The delay software plugin Supertap by Waves for example comes in two flavours on Protools TDM systems.
+    One allows for delays of up to two seconds, but another version accommodates delay times of up to six seconds.
+    This is due to the availability of RAM on the DSP hardware of a TDM system. The native(->CPU) version of this plugin
+    for Windows for example only allows for delays of up to four seconds in length, but there are delay plugins that
+    allow for delays of several minutes.
+   </P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Feedback</td>
+ <td valign=top>
+   <P class=a>
+    Today's delay units and plugins will feature one of several different types of feedback parameters :
+   </P>
+   <P class=a>
+    <B>a) Percentage Range : 0 to 99(or 100)%</B>
+    <BR>
+    This is used by most hardware units and some software plugins. It determines the amount of a delayed signal
+    to be sent back to the RAM buffer. The same delay time is applied. This is the most common parameter type for feedback.
+   </P>
+   <P class=a>
+    <B>b) Decay Time : 0.1 to xx seconds</B>
+    <BR>
+    A slightly different approach. The plugin or hardware unit determines the amount of delayed signal,
+    that it sends back in to its RAM buffer, itself. Some may find this more intuitive. It isn't widely used however.
+   </P>
+   <P class=a>
+    <B>c) Feedback Delay Time : 0.000 to xxx.xxx seconds</B>
+    <BR>
+    This is like an additional delay line that takes the already delayed signal as input.
+    This kind of parameter also requires a level setting, which is usually a percentage parameter, like a).
+   </P>
+   <P>
+    <!-- push it down a bit -->&nbsp;
+   </P>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>EQs&nbsp;&amp;&nbsp;Filters</td>
+ <td valign=top>
+   <P class=a>
+    Many delay plugins feature highshelf and/or lowshelf EQs, or they feature highpass and/or lowpass filters.
+    These EQs or filters usually process each delay. The idea behind this is usually to simulate distance, because
+    with increasing distance, the lower and higher frequencies are dampened.
+   </P>
+   <P class=a>
+    <table><tr>
+     <td valign=top>
+      <B><B>Hi- &amp; Lowshelf EQs</B><BR>
+      <UL><LI>Gain : -xx to xx dB</LI><LI>Frequency: 20 Hz - 20 kHz</LI></UL>
+     </td>
+     <td valign=top>
+      <B><B>Low- &amp; Highpass Filters</B><BR>
+      <UL><LI>Frequency: 20 Hz - 20 kHz</LI><LI>Filter Strength : 6, 12, 18 or 24 dB/Octave</LI></UL>
+     </td>
+    </tr></table>
+   </P>
+   <P class=a>
+   </P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>PANNING</td>
+ <td valign=top>
+   <P class=a>
+    These are the most common types of stereo panning parameters you'll find.
+   </P>
+   <P class=a>
+    <table cellpadding=2>
+       <tr>
+        <td align=center>LEFT</td> <td align=center>RIGHT</td><td rowspan=2>&nbsp;&nbsp;</td>
+        <td align=center>LEFT</td> <td align=center>RIGHT</td><td rowspan=2>&nbsp;&nbsp;</td>
+        <td align=center>LEFT</td> <td align=center>RIGHT</td>
+       </tr>
+       <tr><td align=center>-63</td>  <td align=center>+64</td>
+           <td align=center>0%</td>   <td align=center>100%</td>
+           <td align=center>-100%</td><td align=center>100%</td></tr>
+    </table>
+   </P>
+   <P class=a>
+    Simply a panning control for the delay. The feedback parameter may also have its own panning control.
+   </P>
+   <BR>
+ </td>
+</tr>
+</table>
+
+<P>&nbsp;</P>
+</body>
+</html>

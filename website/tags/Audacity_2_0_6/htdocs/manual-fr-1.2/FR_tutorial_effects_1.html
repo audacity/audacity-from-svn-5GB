@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+        <title>Effects for Beginners - 1 - Reverbs</title>
+        <link rel=stylesheet type="text/css" href="audacity.css"></head>
+<body>
+
+<!--top table-->
+<DIV align=center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top>
+    <p dir="ltr"><a class=ss href="FR_index.html"><font color="#000080">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_tutorials.html">
+    <font color="#0000FF">Retour au Didacticiel</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+
+<table width="95%" border=0 cellspacing=0 cellpadding=0 height="13">
+  <tr><td colspan=2 width="100%" align=center height="13">
+        <p dir="ltr">
+        <a class=top_r href="FR_tutorial_effects_1.html"><font color="#0000FF">Une chambre de réverbération virtuelle</font></a>
+<!--        <a class=top_y href="tutorial_effects_2.html">Waiting for the right Delay</a>
+        <a class=top_g href="tutorial_effects_3.html">Psychoacoustic Tricks - The Haas Delay</a> -->
+    </td>
+  </tr>
+</table>
+</DIV>
+<center>
+<h2 align=center><span class=ss><B>IV . Effets pour débutants</B></span><br><span class=sf>
+Partie 1&nbsp;-&nbsp;</span><a href="FR_tutorial_effects_1.html" style="text-decoration: none"><font color="#000000">Une 
+chambre de réverbération virtuelle</font></a> <span class=sf>-&nbsp;Partie 1</span></h2>
+</center>
+
+<P class=qr>Un exemple par les chiffres</P>
+
+<P class=a>
+ Dans cet exemple nous verrons comment créer une réverbération.
+</P>
+<P class=a>
+ Voyons ce que nous avons à faire avec les paramètres des fonctions de 
+ réverbération des éditeurs. En premier, nous déterminons quelques bases sur la 
+ chambre que nous voulons simuler.
+</P>
+<P class=a>
+ Notre pièce, fait à peu près 8 mètres de tous côtés (pour simplifier) et 
+ trois mètres de haut. L'orchestre jouera à moins de quatre mètres de nous.&nbsp; 
+ Le volume est donc de 200 mètres cube environ.</P>
+<P class=a>
+ De plus, le SON DIRECT vous arrivera à en environ
+ 11 ms (millisecondes). Ceci est la valeur du temps dont nous avons besoin pour 
+ déterminer les autres valeurs.</P>
+<P class=a>
+ Les premières&nbsp; REFLEXIONS (sur les murs de gauche et de droite) voyagent 
+ environ 9 mètres avant de vous parvenir, et parviendront à vos oreilles
+ 15 ms plus tard! (9 mètres à 343 mètres /sec -&gt; 26 ms moins les 11 ms que le son&nbsp;DIRECT
+ met pour traverser vos oreilles).
+</P>
+<P class=a>
+ Je n'ai pas parlé du plancher dans le comptage, en raison des obstacles, tels 
+ que vos jambes, la table,&nbsp;qui empêchent les réflexions du son. Il est 
+ aussi possible que vous soyez assis contre un mur et le temps de la première REFLEXION  peut varier considérablement.&nbsp; Expérimentez et&nbsp; écoutez attentivement.
+</P>
+<P class=a>
+ La raison de la déduction des 11 ms aux 26 ms initiales est que, dans 
+ l'éditeur, nous avons toujours le son direct.&nbsp; Dans une Edition normale, 
+ les premiers paramètres de REFLEXION n'existent pas. Ici , nous avons quelques 
+ erreurs de temps à choisir. Nous choisirons que ça ira en 15 ms. Freeverb 
+ malheureusement n'a pas de caractéristiques sur la première réflexion.
+</P>
+<P class=a>
+ Notez que le temps des premières réflexions est défini par les caractéristiques 
+ de la chambre tel que la taille et la forme. La couleur des sons est définie 
+ par les surfaces dans la chambre. Ces paramètres sont utilisables dans les 
+ logiciels professionnels de réverbération, mais pas dans les éditions grand 
+ public.
+</P>
+<P class=a>
+ Le <b>pré délai</b> et le temps de réverbération dépendent juste du paramètre 
+ de la taille de la pièce. Les matériaux des murs et du sol sont considérés 
+ comme sans effet sur la réflexion, les sons dispersés et étouffés influenceront 
+ la réverbération dans de nombreux cas.</P>
+<P class=a>
+ Notre pièce a beaucoup de bois sur les murs et au plafond et les gens sont 
+ assis à table et l'air contient probablement un peu de fumée.
+</P>
+<P class=a>
+ Le <b>temps de réverbération,</b> un paramètre de presque tous les plugins, 
+ pourrait être défini à moins d'une seconde.&nbsp;Dans des petites pièces 
+ bondées, où une petite réverbération survient, il est très important de définir 
+ exactement la primo réflexion. Expérimentez avec un temps plus bas que 1.2 secondes 
+ et plus élevé que 0.7 secondes. Freeverb et GVerb demandent toutes ces informations dans 
+ les paramètres de dimension.</P>
+<P class=a>
+ Le pré délai peut être défini à 30 ms ou plus. Les pièces importantes 
+ développent les réverbérations plus tardivement (la distance à parcourir étant 
+ plus importante) mais cela dépend aussi de la réflexion des matériaux. Freeverb 
+ ne connaît pas les pré délais, mais ce n'est plus une difficulté pour vous 
+ maintenant que vous avez lu cette partie.</P>
+<P class=a>
+ Les éditeurs ont des paramètres de <b>densité de réverbération</b> d'une partie 
+ du son . Les matériaux tel que le marbre poli réfléchiront très bien et le 
+ disperseront très peu. Le bois disperse plus et un tapis&nbsp;en étouffe une 
+ bonne partie. Pour notre pièce, nous devrons définir le niveau de densité que 
+ les matériaux dispersent. (humains,bois et obstacles). Ces paramètres 
+ n'existent pas dans&nbsp;Freeverb et les sons sont élevés. Dans GVerb, le 
+ paramètre &quot;DAMPING&quot; sera utilisé pour étouffer le son.</P>
+<P class=a>
+ Les <b>hautes fréquences</b> sont plus facilement étouffées que les basses. 
+ Cool Editeur possède un paramètre de <b>temps d'Absorption des hautes 
+ fréquences</b> . Le Son Forge&nbsp; vous donne le choix pour les hautes et 
+ basses fréquences mais ne fournit pas d'autre paramètre de temps. Freeverb 
+ et GVerb procurent le paramètre d'étouffement pour se faire.
+</P>
+<P class=a>
+ Cela peut ajouter au réalisme de l'effet. Une pièce pleine de gens absorbe 
+ beaucoup plus les hautes fréquences qu'une pièce vide. et dans ce cas seuls les 
+ matériaux font la différence. Aussi dans&nbsp;Cool Edit nous définirons le 
+ temps d'absorption des&nbsp; hautes fréquences comme très lent&nbsp;car la 
+ pièce est bondée.&nbsp;
+ </P>
+<P class=a>
+ Pour SoundForget activez la boîte d'atténuation des hautes fréquences et 
+ précisez les paramètres de fréquence aux environs de 2000-2500 Hz. Expérimentez 
+ un morceau. Avec la plus haute fréquence et le plus long paramètre de temps 
+ d'absorption dans Cool Edit, vous obtiendrez la plus vide et la plus froide des 
+ pièces. Dans les petites pièces cela peut générer des sons très métalliques 
+ comme dans les égouts ou les pipelines.</P>
+<P class=a>
+ L'égalisation de réverbérations sont l'étape finale du processus et peut 
+ modifier dramatiquement le son. On trouve les égaliseurs haut et bas dans de 
+ nombreux plug-in de réverbération et dans des PC. Freeverb possède des filtres 
+ de&nbsp;passage haut et bas. Ce ne sont pas des égaliseurs. Les paramètres 
+ modifient la cible des fréquences des filtres, A nouveau, écoutez.
+</P>
+<P class=a>
+ &nbsp;La dernière chose à définir est la balance entre le signal &quot;modulé&quot; 
+ et votre signal d'origine (DRY). Vous faites comme vous voulez, mais souvenez vous 
+ que seuls les surfaces dures et très lisses des grandes cavernes créent des 
+ effets réverbérant très importants. Une église fait cela lorsqu'elle n'est pas 
+ trop fréquentée et sans trop de bancs en bois dedans, mais un night club ne le 
+ fait pas. Pensez à dupliquer la partie que vous souhaitez travailler en 
+ traitant votre duplicata . Le volume est facile à contrôler avec le paramètre 
+ &quot;modulé&quot; (WET) de&nbsp; Freeverb de 0 dB(-&gt;100%) et du paramètre &quot;sec&quot; (DRY) 
+ pour en terminer (-&gt;0% glisser le plus à gauche).</P>
+<P class=a>
+ Aussi, quand vous créez votre prochaine chanson, ou voulez mettre les choses en 
+ perspective, soyez sûr d'avoir contrôlé les possibilités d'ajouter des 
+ dimensions et prenez les dimensions de votre matériel avec une utilisation intelligente 
+ des réverbérations. Réglez chaque instrument à une profondeur différente. 
+ Expérimentez avec ces bases et vous obtiendrez des résultats en peu de temps.
+</P>
+<P class=a dir="ltr">
+ Btw et Snare fournissent réverbérations. De nombreuses et de tous genres mais 
+ généralement bonnes. C'est aussi important de décider ce que vous voulez 
+ essayer de simuler, un orchestre en direct, un son multi - pistes, qui font 
+ ronfler tous les trucs et bonnes idées comme le doublage (une autre façon de 
+ faire la même chose), extrêmement complexe et peu réaliste.
+</P>
+
+<P class=qr>
+Original contre Modulé</P>
+<P class=a>
+Avez vous entendu les salles &quot;sourdes&quot; où l'on teste les microphones et les haut 
+parleurs ? Si vous n'y êtes jamais allé, elles sont grandes. Après quelques 
+minutes vous entendez le sang dans vos oreilles qui rugit comme un océan. Vous 
+entendez seulement votre voix intérieure quand vous parlez. La pièce avale tous 
+les bruits. Beaucoup de gens ne peuvent rester dans cette salle plus de 10-15 
+minutes. Je vous dis ceci car c'est très différent de mettre un casque sur les 
+oreilles. Certaines salles n'atténuent que les sons venus de l'extérieur. Une 
+salle sourde le tue complètement.</P>
+<P class=a>
+Cette salle est horrible à écouter car elle ne présente aucune réverbération et 
+ne réfléchit rien du tout. Cela ne révèle rien sur sa taille et les matériaux 
+qui la composent.
+</P>
+<P class=a>
+Vous serez peut être surpris d'apprendre que beaucoup de chants sont 
+actuellement enregistrés dans des environnements similaires.
+Les cabines vocales sont de petites pièces dans lesquelles la réflexion du son 
+est aussi basse que possible. Durant le mixage, les réverbérations numériques 
+sont utilisées pour créer un espace virtuel.
+</P>
+
+<P class=qr>
+Réverbérations Numériques
+</P>
+<P class=a dir="ltr">
+Audacity pour Windows et MacOS8&X inclut le plug-in VST <B>Freeverb</B>, qui 
+donne une très bonne réverbération,
+et est très commode pour faire vos premiers pas avec la réverbération numérique. 
+Il présente des contrôles simples qui nécessitent  explication spécifique. La 
+réverbération GVerb est aussi disponible dans le menu Effets. </P>
+<P class=a>
+Pour plus de détails sur Freeverb ou GVerb, Voir le <a href="FR_menu_effects.html#freeverb">
+<font color="#0000FF">Menu effets</font></a>.
+Pour les informations sur ce qu'est et comment fonctionne la réverbération, voir&nbsp; <a href="FR_effects_reverb.html">
+<font color="#0000FF">cette page spécifique</font> </a>du manuel.
+</P>
+
+<P class=qr>
+Conservez les effets sur des pistes séparées</P>
+<P class=a dir="ltr">
+Vous ne pourrez pas utiliser les réverbérations sur les pistes originales. En 
+premier, <a href="FR_menu_edit.html#duplicate"><font color="#0000FF">dupliquez</font></a> l'audio puis 
+appliquez l'effet sur le duplicata . La réverbération peut être émise à 100% 
+&quot;modulée&quot; (i.e. 100% du signal de l'effet et 0% du signal original  ). Ainsi 
+vous pouvez contrôler le niveau de réverbération dans le mixage final et le 
+redresser au dernier moment.
+</P>
+
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#0000FF">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_tutorials.html">
+    <font color="#0000FF">Retour au didacticiel</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+
+<html>
+  <head>
+    <title>Track Pop-Down Menu</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" type="text/css" href="audacity.css">
+<style>
+hr.menu	{ noshade:noshade; color:yellow; height:4px; text-align:left; border:1px solid red; }
+    </style>
+  </head>
+
+<body>
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top>
+    <p dir="ltr"><a class=ss href="FR_index.html"><font color="#000080">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+<a class=ss href="FR_track_delete.html"><font color="#0000FF">Effacer</font></a>
+<a class=ss href="FR_track_popdown.html"><font color="#0000FF">Menu Déroulant</font></a>
+<a class=ss href="FR_track_solo.html"><font color="#0000FF">Solo</font></a>
+<a class=ss href="FR_track_mute.html"><font color="#0000FF">Muet</font></a>
+<a class=ss href="FR_track_controls.html"><font color="#0000FF">Volume et panneaux de contrôle</font></a>
+<a class=ss href="FR_track_resize.html"><font color="#0000FF">Redimensionner la piste Verticalement</font></a>
+
+
+<h1 align=center>Menu Déroulant</h1>
+
+<table cellpadding=4><tr>
+ <td valign=top><img border=0 src="images/FR_track_panel_open.jpg" width="160" height="349" alt="TMenu Déroulant de piste" align="middle"></td>
+ <td valign=top>
+  <table>
+   <tr>
+     <td class=menuref_item align=right valign=top>Nom</td>
+     <td>Edite le nom de la piste et permet de la renommer.</td>
+   </tr>
+   <tr><td><hr></td><td><hr class=menu></td></tr>
+   <tr>
+     <td class=menuref_item align=right valign=top>Déplacer la piste vers le 
+     haut / le bas </td>
+     <td>Déplace la piste en haut /bas de la fenêtre .</td>
+   </tr>
+
+   <tr><td><hr></td><td><hr class=menu></td></tr>
+
+   <tr>
+     <td class=menuref_item align=right valign=top>Forme d'Onde&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+     <td>C'est la représentation traditionnelle du matériau Audio. C'est la 
+     représentation par défaut en Décibels.</td>
+   </tr>
+
+   <tr>
+     <td class=menuref_item align=right valign=top>Forme d'Onde(Db)</td>
+     <td>Similaire à la précédente. Elle effectue un zoom sur l'amplitude en 
+     échelle logarithmique mesurée en Db. Intéressante pour afficher un son 
+     simple (bruit de fond par exemple)</td>
+   </tr>
+   <tr>
+     <td class=menuref_item align=right valign=top>Spectre</td>
+     <td>Représentation en Hertz de l'énergie&nbsp; de la piste dans les 
+     différentes bandes de fréquence. (revenir à la représentation classique 
+     avec Forme d'onde)</td>
+   </tr>
+   <tr>
+     <td class=menuref_item align=right valign=top>Hauteur (EAC)</td>
+     <td>Affiche le Ton de la fréquence principale en utilisant un algorithme de 
+     corrélation renforcée. (EAC)</td>
+   </tr>
+
+   <tr><td><hr></td><td><hr class=menu></td></tr>
+
+   <tr>
+     <td class=menuref_item align=right valign=top>Mono</td>
+     <td>Définit la piste en mono et la joue indifféremment sur le haut parleur 
+     gauche ou les deux.</td>
+   </tr>
+   <tr>
+     <td class=menuref_item align=right valign=top>Canal Gauche</td>
+     <td>Permet de jouer la piste sur le seul haut parleur de gauche.</td>
+   </tr>
+   <tr>
+     <td class=menuref_item align=right valign=top>Canal Droit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+     <td>
+     <p dir="ltr">Permet de jouer la piste sur le seul haut parleur de droite.</td>
+   </tr>
+   <tr>
+     <td class=menuref_item align=right valign=top>Transformer en piste Stéréo</td>
+     <td>
+     <p dir="ltr">S'il y a deux pistes à l'écran, la fonction les rassemble en 
+     une seule piste stéréo, la bande du haut représentant le haut parleur de 
+     gauche et celle du bas le haut parleur de droite. La piste stéréo sera lue 
+     en entier sur&nbsp; les deux haut parleurs</td>
+   </tr>
+   <tr>
+     <td class=menuref_item align=right valign=top>Séparer une piste stéréo</td>
+     <td>Transforme une piste stéréo en deux pistes simples qui peuvent être 
+     modifiées indépendamment.</td>
+   </tr>
+
+   <tr><td><hr></td><td><hr class=menu></td></tr>
+
+   <tr>
+     <td class=menuref_item align=right valign=top>Choisir un&nbsp;Format 
+     d'échantillon</td>
+     <td>
+         Détermine la qualité du son et la quantité d'espace occupé sur disque. 
+         16 Bits est la qualité minimale utilisée par Audacity (les sons 8 Bits 
+         seront automatiquement convertis à l'ouverture), 24 Bits est la valeur 
+         utilisée sur le matériel haute fidélité. 32 Bits flottant offre la 
+         meilleure qualité, recommandé à moins que votre PC n'ai pas assez de 
+         RAM ou d'espace disque. Le changement de format influencera la 
+         sauvegarde.
+     </td>
+   </tr>
+   <tr><td><hr></td><td><hr class=menu></td></tr>
+   <tr>
+     <td class=menuref_item align=right valign=top>Régler le Taux</td>
+     <td>Détermine le taux d'échantillon par seconde de la piste.44100 Hertz est 
+     le taux des pistes de CD. Les pistes peuvent avoir des taux différents dans 
+     Audacity, elles seront automatiquement retaillées dans le projet (taux 
+     visible en bas à gauche de la fenêtre).</td>
+   </tr>
+   </table>
+ </td>
+</tr></table>
+<center>
+<br>
+<a class="ss" href="FR_screen.html"><font color="#0000FF">Retour aux détails d'écran</font></a><font color="#0000FF">
+</font>
+</center>
+<br>
+</body>
+</html>
