@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 2013 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 2014 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -42,7 +42,7 @@
 <div id="fr">
   <h3>Aide en Français</h3>
   <ul>
-    <li><a href="http://www.pearson.fr/livre/?GCOI=27440100057910">Christian Brochec - Audacity 2</a> Une présentation complète d'Audacity, accompagnée d'exercices pour faciliter la prise en main et aller plus loin dans l'utilisation. <b>Attention:</b> En raison du retard pris par le développement d'Audacity 2.0, ce livre est basé sur la version 1.3.11 qui préfigure largement la version finale.</li>
+    <li><a href="http://www.pearson.fr/livre/?GCOI=27440100552400">Christian Brochec - Audacity 2</a> Une présentation complète d'Audacity, accompagnée d'exercices pour faciliter la prise en main et aller plus loin dans l'utilisation. <b>Attention:</b> En raison du retard pris par le développement d'Audacity 2.0, ce livre est basé sur la version 1.3.11 qui préfigure largement la version finale.</li>
   </ul>
 </div>
 
