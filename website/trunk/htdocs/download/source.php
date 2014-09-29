@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 2013
+ * Copyright 2004 - 2014
  * Matt Brubeck
  * Dominic Mazzoni
  * Richard Ash
@@ -49,30 +49,7 @@
 </blockquote>
 <p><?=_("You can type <i>./configure --help</i> to see a list of compilation options. After Audacity is compiled, run <i>make install</i> as root to install it.")?></p>
 
-<h4><?=_("Further Help")?></h4>
-<p><? printf('<ul><li>%s</li>',
-	_('On Windows, see the file "compile.txt" inside the "Win" folder in the source code. For OS X, see "compile.txt" inside the "Mac" folder in the code.'));
-  printf(_('%sSee our guides to compiling Audacity for %sWindows%s, %sMac%s and %sGNU/Linux%s on the %sWiki%s.%s'),
-   '<li>',
-   '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Windows">',
-   '</a>',
-   '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Mac">',
-   '</a>',
-   '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Linux">',
-   '</a>',
-   '<a href="http://wiki.audacityteam.org/">',
-   '</a>',
-   '</li>');
-  printf(_('%sIf you are still having difficulties, we want to help! Please ask on the %sCompiling Audacity%s board on our %sForum%s.%s'),
-  '<li>',
-  '<a href="http://forum.audacityteam.org/viewforum.php?f=19">',
-  '</a>',
-  '<a href="http://forum.audacityteam.org">',
-  '</a>',
-  '</li></ul>');
-
-?></p>
-
+<p><?php printf(_('Those new to compiling are recommended to look at %sCompiling Audacity for Beginners%s. Information for Developers is at %sDeveloper Guide%s.'), '<a href="http://wiki.audacityteam.org/wiki/CompilingAudacityForBeginners">', '</a>', '<a href="http://wiki.audacityteam.org/wiki/Developer_Guide">', '</a>')?></p>
 
 <p>&nbsp;</p>
 
