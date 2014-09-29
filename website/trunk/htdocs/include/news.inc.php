@@ -40,6 +40,69 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "September 29, 2014",
+  	"2.0.6-release",
+  _("Audacity 2.0.6 Released"),
+  _("
+<p>
+<a href=\"/download\">Audacity 2.0.6</a> replaces all previous versions. 
+</p>
+
+<p>
+  Improvements:
+  <ul>
+    <li>better user interface for 
+      <a href=\"http://manual.audacityteam.org/o/man/keyboard_preferences.html\">Keyboard Preferences</a></li>
+
+    <li>streamlining of several <a href=\"http://manual.audacityteam.org/o/man/menu_reference.html\">Menus</a></li>
+     
+    <li>LV2 now supported on all platforms, and improved VST settings interface</li>
+
+    <li>translations updated, including adding Tamil language</li>
+
+    <li>other improvements, including to import/export and ease of installation on Mac OS X</li>
+  </ul>
+</p>
+
+<p>
+  Bug Fixes:
+  <ul>
+    <li>user interface bug fixes to <a href=\"http://manual.audacityteam.org/o/man/edit_menu.html#region_save\">Region Restore</a>, dragging selections, and <em>many</em> others</li>
+    <li>effects bug fixes to add missing effects to <a href=\"http://manual.audacityteam.org/o/man/chains_for_batch_processing_and_effects_automation.html\">Chains</a>, 
+    fix accuracy of <a href=\"http://manual.audacityteam.org/o/man/contrast.html\">Analyze &gt; Contrast</a>, 
+    fix accuracy of <a href=\"http://manual.audacityteam.org/o/man/noise_removal.html\">Noise Removal</a> attack and decay, 
+    and improve speed of Nyquist effects on OS X and Linux</li>
+    <li>other bug fixes to 
+    <a href=\"http://manual.audacityteam.org/o/man/timeline.html\">Timeline</a> 
+    after <a href=\"http://manual.audacityteam.org/o/man/transport_menu.html\">Loop Play</a>, 
+    <a href=\"http://manual.audacityteam.org/o/man/transcription_toolbar.html\">Transcription Toolbar</a>, 
+    and Linux build issues</li>
+  </ul>
+</p>
+
+See <a href=\"http://wiki.audacityteam.org/wiki/Release_Notes_2.0.6\">2.0.6 Release Notes</a> for all the details. 
+</p>
+
+<p>
+  <b>New Forum:</b> We are also very happy to announce a new Forum, <a href=\"http://forum.audacityteam.org/viewforum.php?f=66&sid=7414b54316a787b44d520b582716f801\">Special Interest Groups</a> (a result of discussions at <a href=\"http://wiki.audacityteam.org/wiki/Audacity_Unconference_2014\">AU14</a>), with subforums for Education, Audiobooks, Audio Technology, Making Music, and Podcasting. 
+</p>
+"));
+
+add_news_item(
+  "July 14, 2014",
+  	"Audacity-Unconference-AU14-Update",
+  _("Audacity Unconference (AU14) Update"),
+  _("
+<p>
+The first-ever <a href=\"http://wiki.audacityteam.org/wiki/Audacity_Unconference_2014\">Audacity Unconference (AU14)</a> was a great success. 
+
+Everyone remarked how informative, convivial, and energizing it was. We had excellent tutorials about amazing things that can be done with Audacity, as well as hints at astonishng progress on major new features and capabilites to come. 
+
+See <a href=\"http://au14.audacityteam.org/index.php/Audacity_Unconference_2014#What_happened_at_AU14\">What happened at AU14</a> for an overview and links to details, including <a href=\"https://www.youtube.com/user/TE3008AF\">videos</a>. 
+</p>
+"));
+
+add_news_item(
   "June 05, 2014",
   	"Audacity-Unconference-AU14",
   _("Audacity Unconference (AU14)"),
