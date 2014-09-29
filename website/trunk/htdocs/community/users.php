@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2003, 2004 Dominic Mazzoni
- * Copyright 2004 - 12 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 14 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -30,13 +30,17 @@
 <p><?php printf(_('If you find a bug in Audacity, please <a href="%s">let us know</a>.'), "../contact#feedback")?></p>
 
 <h3><?=_('Help us test our latest versions')?></h3>
-<p><?php printf(_('<a href="%s">Subscribe</a> to our announcements list for the latest news, and download our <a href="%s">latest release</a> or <a href="%s">Nightly Build</a>. Nightly Builds are aplha pre-releases that may contain new features or bug fixes that haven\'t been fully tested yet.'), "../#announce", "../download/", "http://wiki.audacityteam.org/wiki/Nightly_Builds")?></p>
+<p><?php printf(_('<a href="%s">Subscribe</a> to our announcements list for the latest news, and download our <a href="%s">latest release</a> or <a href="%s">Nightly Build</a>. Nightly Builds are alpha pre-releases that may contain new features or bug fixes that haven\'t been fully tested yet.'), "../#announce", "../download/", "http://wiki.audacityteam.org/wiki/Nightly_Builds")?></p>
 
 <p><?php printf(_('After testing, please <a href="%s">let us know</a>:
 <ul><li>Details of any problems you encountered</li>
 <li>Any <em>regressions</em> - things that used to work but now don\'t</li>
 <li>What you liked</li>
-<li>What could be improved.</li></ul>.'), "../contact#feedback")?></p>
+<li>What could be improved.</li></ul>'), "../contact#feedback")?></p>
+
+<div class="advice">
+<?php printf(_('Help us with regular testing by joining our <a href="%s">audacity-quality mailing list</a>! You can identify issues that need improvement, test bug fixes, give usability reports on upcoming new features and more.'), "../contact/lists#quality")?></p>
+</div>
 
 <?php
   include "../include/footer.inc.php";

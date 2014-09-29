@@ -16,7 +16,8 @@
 	echo "<h2>$pageTitle</h2>";
 
 	// i18n-hint: Please add a note that these lists are in English.  If there are
-	// Audacity mailing lists or forums in your language, please link to them here.
+	// Audacity mailing lists or forums in your language other than noted at 
+   // http://wiki.audacityteam.org/wiki/MultiLingual, please link to them here.
 	echo "<p>"._('These lists are for discussion about the Audacity audio editor.  </p>
 <p><b>Note:</b> In line with our <a href="../contact/privacy#lists">Privacy Policy</a>, these are public lists - messages are seen by all list subscribers, and posted on several web sites where the messages are archived.</p>');?>
 
@@ -38,6 +39,13 @@
     <p><?=_('For  <a href="../community/developers">developers</a> working with the Audacity source code and documentation, and others interested in following our development process, or learning about compiling or developing our code.')?>  <?=$subscriberOnlyStr?></p>
     <p><a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel"><?php printf($archiveStr, "audacity-devel")?></a>
     <p><?=_('We now use a <a href="http://www.bugzilla.org/">Bugzilla</a> installation to track bugs and enhancements. To find issues to work on, please view our categorized <a href="http://wiki.audacityteam.org/wiki/Bug_Lists">Bug Lists</a>.')?></p> 
+  </dd>
+
+<dt id="quality">audacity-quality</dt>
+  <dd>
+    <p><?=_('For identification, characterization, and prioritization of bugs and user-facing issues.')?> <?=$subscriberOnlyStr?> <?=_('You can write to <a href="http://audacity.sourceforge.net/contact/#feedback">our feedback address</a> to make a report of a specific bug without subscribing to this list.')?>  </p>
+    <p><a href="http://lists.sourceforge.net/lists/listinfo/audacity-quality"><?php printf($archiveStr, "audacity-quality")?></a>
+</p> 
   </dd>
 
 <dt id="svn">audacity-svn</dt>
