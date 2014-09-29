@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 13 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 14 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -21,7 +21,7 @@
   echo _('<h3 id="record">Recording</h3>
 <p>Audacity can record live audio through a microphone or mixer, or <a href="http://manual.audacityteam.org/o/man/tutorial_copying_tapes_lps_or_minidiscs_to_cd.html">digitize recordings from cassette tapes, records or minidiscs</a>. With some sound cards, and on any Windows Vista, Windows 7 or Windows 8 machine, Audacity can also capture <a href="http://manual.audacityteam.org/o/man/tutorial_recording_audio_playing_on_the_computer.html">streaming audio</a>.</p>
 <ul>
-  <li><a href="http://manual.audacityteam.org/o/man/device_toolbar.html">Device Toolbar</a> manages multiple input and output devices.</li>  
+  <li><a href="http://manual.audacityteam.org/o/man/device_toolbar.html">Device Toolbar</a> manages multiple recording and playback devices.</li>  
   <li><a href="http://manual.audacityteam.org/o/man/meter_toolbar.html">Level meters</a> can monitor volume levels before, during and after recording. <a href="http://manual.audacityteam.org/o/man/glossary.html#clipping">Clipping</a> can be displayed in the waveform or in a label track.</li>
   <li>Record from microphone, line input, USB/Firewire devices and others.</li>
   <li><a href="http://manual.audacityteam.org/o/man/tutorial_recording_computer_playback_on_windows.html">Record computer playback on Windows Vista and later</a> by choosing "Windows WASAPI" host in Device Toolbar then a "loopback" input.</li>
@@ -59,7 +59,7 @@
   <li>Unlimited sequential Undo (and Redo) to go back any number of steps.</li>
   <li>Edit and mix large numbers of tracks.</li>
   <li>Multiple <a href="http://manual.audacityteam.org/help/manual/man/audacity_tracks_and_clips.html">clips</a> are allowed per track.</li>
-  <li><a href="http://manual.audacityteam.org/o/man/label_tracks.html">Label tracks</a> with selectable <a href="http://manual.audacityteam.org/o/man/sync-locked_track_groups.html">Sync-Lock Tracks</a> feature for keeping tracks and labels synchronized.</li>
+  <li><a href="http://manual.audacityteam.org/o/man/label_tracks.html">Label tracks</a> with selectable <a href="http://manual.audacityteam.org/o/man/sync_locked_track_groups.html">Sync-Lock Tracks</a> feature for keeping tracks and labels synchronized.</li>
   <li>Draw Tool to alter individual sample points.</li>
   <li><a href="http://manual.audacityteam.org/help/manual/man/envelope_tool.html">Envelope Tool</a> to fade the volume up or down smoothly.</li>
   <li>Automatic Crash Recovery in the event of abnormal program termination.</li>  
@@ -95,7 +95,7 @@
 
   echo _('<h3><a href="../download/plugins">Plug-ins</a></h3>
 <ul>
-  <li>Support for <a href="http://www.ladspa.org/">LADSPA</a>, <a href="http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins">Nyquist</a>, <a href="http://manual.audacityteam.org/o/man/faq_installation_and_plug_ins.html#vst_install">VST</a> and <a href="http://manual.audacityteam.org/o/man/effect_menu.html#Audio_Unit_Effects">Audio Unit</a> effect plug-ins.</li>
+  <li>Support for <a href="http://www.ladspa.org/">LADSPA</a>, <a href="http://lv2plug.in/">LV2</a>, <a href="http://wiki.audacityteam.org/wiki/Download_Nyquist_Plug-ins">Nyquist</a>, <a href="http://manual.audacityteam.org/o/man/faq_installation_and_plug_ins.html#vst_install">VST</a> and <a href="http://manual.audacityteam.org/o/man/effect_menu.html#Audio_Unit_Effects">Audio Unit</a> effect plug-ins.</li>
   <li>Effects written in the <a href="../help/nyquist">Nyquist programming language</a> can be easily modified in a text editor - or you can even write your own plug-in.</li>
 </ul>');
 

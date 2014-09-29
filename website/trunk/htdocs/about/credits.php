@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2003 Dominic Mazzoni
- * Copyright 2004-12 Matt Brubeck, Vaughan Johnson
+ * Copyright 2004-14 Matt Brubeck, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -19,7 +19,7 @@
 
 <p><?=_("Audacity was started by Dominic Mazzoni and Roger Dannenberg in the fall of 1999 at Carnegie Mellon University.  It was released as open-source software at SourceForge.net in May of 2000.")?></p>
 
-<p><?=_('<a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, that is, excluding the code libraries Audacity uses. The <a href="http://www.ohloh.net/projects/audacity/contributors">Contributors tab</a> on the Ohloh site shows the contributions of each developer.')?></p>
+<p><?=_('<a href="https://www.openhub.net/p/audacity">Open HUB</a> (formerly known as "Ohloh") has statistics on the value of Audacity development. The Open HUB &quot;badge&quot; at the bottom of each page on this site shows updated summary values. The statistics are set up by us to show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses. The <a href="https://www.openhub.net/p/audacity/contributors">Contributors page</a> on the Open HUB site shows the contributions of each developer.')?></p>
 
 <h3><?=_("Audacity Team Members")?></h3>
 <ul>
@@ -144,6 +144,7 @@
   <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>
   <li><a href="http://www.mega-nerd.com/libsndfile/">libsndfile</a></li>
   <li><a href="http://sourceforge.net/p/soxr/wiki/Home/">libsoxr</a></li>
+  <li><a href="http://lv2plug.in/">lv2</a> <br> incorporating lilv, msinttypes, serd, sord and sratom</li>
   <li><a href="http://www.audacity-forum.de/download/edgar/nyquist/nyquist-doc/manual/home.html">Nyquist</a></li>
   <li><a href="http://vorbis.com/">Ogg Vorbis</a></li>
   <li><a href="http://www.portaudio.com/">PortAudio</a></li>

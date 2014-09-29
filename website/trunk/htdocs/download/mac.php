@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 2013
+ * Copyright 2004 - 2014
  * Matt Brubeck
  * Dominic Mazzoni
  * Richard Ash
@@ -23,13 +23,12 @@
 <ul>
   <li>
     <p>
-      <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB, including help files) for <b>OS X 10.4 or later</b> (Universal Binary)'), 
-                    download_url($macosx_url), macosx_version, macosx_size)?>
+      <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB, including help files) for <b>OS X 10.4 to 10.9.x</b> (Universal Binary)'), download_url($macosx_url), macosx_version, macosx_size)?>
     </p>
   </li>
   <li>
     <p>
-      <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB) for <b>OS X 10.4 or later</b> (Universal Binary) - Use this if you want a smaller download (without help files).'),
+      <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB) for <b>OS X 10.4 to 10.9.x</b> (Universal Binary) - Use this if you want a smaller download (without help files).'),
                     download_url($macosx_zip_url), macosx_version, macosx_zip_size)?>
     </p>
   </li>
@@ -41,11 +40,22 @@
 
 <p> <b><?=_("Installation instructions (.dmg files)")?>:</b>
   <ol>
-   <li><?=_("Double-click the downloaded .dmg to mount it.")?></li>
-   <li><?=_("Copy the \"Audacity\" folder from the newly mounted .dmg to <b>/Applications</b> (or any other location of your choosing).")?></li>
-   <li><?=_("Eject the .dmg at bottom left of Finder, then launch Audacity.app from the \"Audacity\" folder that you copied.")?></li> 
+   <li><?=_("Double-click the downloaded DMG to mount it.")?></li>
+   <li><?=_("Do not double-click the \"Audacity\" folder in the DMG window. Drag the entire \"Audacity\" folder 
+icon to the <b>/Applications</b> folder icon on the right (or to any other location of your choosing).")?></li>
+   <li><?=_("Eject the DMG at bottom left of Finder, then launch Audacity.app from the \"Audacity\" folder 
+in /Applications or from your chosen location.")?></li> 
  </ol>
 </p>
+
+<div class="advice">
+<?=_('<b>Known Issue:</b> Security settings on OS X 10.7 or later may block Audacity being 
+launched. Most users on OS X 10.9.5 will experience this, due to changes made by Apple.')?>
+<p><ul><li>
+<?=('To permanently enable Audacity launch, right-click or control-click on the Audacity 
+application in Finder, choose "Open", then in the dialog box that appears, choose "Open".')?>
+</li></ul></p>
+</div>
 
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
 <h4><?=_("Plug-ins and Libraries")?></h4>
@@ -73,30 +83,24 @@
     </p>
   </li>
 </ul>
+
 <h4>
   <?=_("Alternative Download Links")?>
 </h4>
 <ul>
   <li>
-    <p>
-      <?php printf(_('If you have trouble with your download, or need an older version of Audacity, try:')) ?>
-    </p>
-    <ul>
-      <li>
-        <?php printf(_('<a href="%s">SourceForge</a>: View older versions by clicking to enter the required folder under "Name".'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?>
+       <?php printf(_('<a href="%s">SourceForge</a> hosts the current Audacity version and all previous versions. Click on the required folder under "Name" to find the version you require.'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?>
       </li>
       <li>
-        <?php printf(_('<a href="%s">Google Code</a>: Click on the headings to sort the list.'), "http://code.google.com/p/audacity/downloads/list")?>
+        <?php printf(_('<a href="%s">Google Code</a> hosts selected previous versions up to and including Audacity 2.0.5.'), "https://code.google.com/p/audacity/downloads/list?can=1")?>
       </li>
-    </ul>
-  </li>
 </ul>
 
 <h4>
   <?=_("Audacity Nightly Builds")?>
 </h4>
 <ul>
-  <li><p><?php echo _('<b>For advanced users</b>, <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds#mac">Nightly Builds</a> for <b>OS X 10.4 or later</b> (Universal Binary) are available for testing purposes.')?>
+  <li><p><?php echo _('<b>For advanced users</b>, <a href="http://wiki.audacityteam.org/index.php?title=Nightly_Builds#mac">Nightly Builds</a> for <b>OS X 10.4 to 10.9.x</b> (Universal Binary) are available for testing purposes.')?>
     <?php include "beta_nightly.inc.php"; ?></p></li>
 </ul>
 

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 13 Matt Brubeck, Gale Andrews
+ * Copyright 2004 - 14 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -21,6 +21,10 @@
 <h3><?=_("LADSPA Plug-Ins")?></h3>
 <p>
   <?php printf(_('Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity includes some sample LADSPA effects. Windows users can install an additional <a href="%s">set of over 90 LADSPA plug-ins</a>.  There is a similar set of LADSPA plug-ins for <a href="%s">Mac</a>. More information and many LADSPA plug-ins for Linux can be found on the <a href="%s">LADSPA web site</a>.'), download_url($ladspa_url), download_url('swh-plugins-mac-0.4.15.zip'), 'http://www.ladspa.org/')?></p>
+
+<h3><?=_("LV2 Plug-Ins")?></h3>
+<p>
+  <?php printf(_('Audacity has built-in support for <a href="http://lv2plug.in/">LV2</a> plug-ins, which are an extensible successor of LADSPA effects. LV2 plug-ins are mostly built for Linux, but Audacity supports LV2 on all operating systems. To install LV2 plug-ins, place them in the <a href="%s">system LV2 location</a> then restart Audacity.'), 'http://manual.audacityteam.org/o/man/effect_menu.html#LV2_Effects')?></p>
 
 <h3><?=_("Nyquist Plug-Ins")?></h3>
 <p><?=_('Audacity has built-in support for Nyquist effects on all operating systems. You can download additional <a href="nyquistplugins">Nyquist plug-ins</a>, or create your own using the <a href="../help/nyquist">Nyquist programming language</a>. Nyquist code can be tested using "Nyquist Prompt" under the Effect menu, or code for Nyquist plug-ins that generate audio can be quickly tested with <a href="http://audacity.sourceforge.net/nyquist/generate.zip">Nyquist Generate Prompt</a>.')?>
@@ -43,7 +47,7 @@
 <h3><?=_("Libraries")?></h3>
 <p><?=_('The <b>LAME MP3 encoding</b> library allows Audacity to export audio in the popular <a href="http://wiki.audacityteam.org/index.php?title=MP3">MP3</a> format. To install the LAME library, please read our <a href="http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#lame">LAME FAQ</a>.')?></p>    
 
-<p><?=_('The <b>FFmpeg import/export</b> library allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. To install the FFmpeg library, please read our <a href="http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown">FFmpeg FAQ</a>.')?></p>
+<p><?=_('The <b>FFmpeg import/export</b> library allows Audacity to import and export many additional audio formats such as AC3, AMR(NB), M4A and WMA, and to import audio from video files. Audacity 2.0.6 and later requires FFmpeg 1.2 or later (or libav 0.8 or later). To install FFmpeg, please read our <a href="http://manual.audacityteam.org/help/manual/man/faq_installation_and_plug_ins.html#ffdown">FFmpeg FAQ</a>.')?></p>
 
 <?php
   include "../include/footer.inc.php";

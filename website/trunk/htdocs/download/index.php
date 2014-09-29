@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2008 - 2013 Gale Andrews, Vaughan Johnson
+ * 2008 - 2014 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -52,7 +52,7 @@
         <span class="downloads_smaller">
           <br>
           <img src="../images/download_spacer.png">
-          <?=_("(Universal Binary for Mac OS X 10.4 or later)")?>
+          <?=_("(Universal Binary for Mac OS X 10.4 to 10.9.x)")?>
         </span>
       </h3>
 
