@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 - 2013
+ * Copyright 2004 - 2014
  * Matt Brubeck
  * Dominic Mazzoni
  * Richard Ash
@@ -85,18 +85,11 @@
 </h4>
 <ul>
   <li>
-    <p>
-      <?php printf(_('If you have trouble with your download, or need an older version of Audacity, try:')) ?>
-    </p>
-    <ul>
-      <li>
-        <?php printf(_('<a href="%s">SourceForge</a>: View older versions by clicking to enter the required folder under "Name".'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?>
+       <?php printf(_('<a href="%s">SourceForge</a> hosts the current Audacity version and all previous versions. Click on the required folder under "Name" to find the version you require.'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?>
       </li>
       <li>
-        <?php printf(_('<a href="%s">Google Code</a>: Click on the headings to sort the list.'), "http://code.google.com/p/audacity/downloads/list")?>
+        <?php printf(_('<a href="%s">Google Code</a> hosts selected previous versions up to and including Audacity 2.0.5.'), "https://code.google.com/p/audacity/downloads/list?can=1")?>
       </li>
-    </ul>
-  </li>
 </ul>
 
 <h4>
