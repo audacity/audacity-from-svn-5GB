@@ -19,31 +19,17 @@
 
 <h2><?=$pageTitle?></h2>
 
-<h3 id="recdown"><?=_("Recommended Download")?></h3>
-
 <ul>
-<li><p><?php printf(_('<a href="%s">Audacity %s source tarball</a> (%s file, %.1lf MB)'), download_url($min_src_url), src_version, src_suffix, min_src_size)?> 
-<?php printf(_('standard source tarball, primarily for GNU/Linux. This assumes your system has necessary dependencies and libraries installed. For Windows and Mac, see SVN (below).'))?></p></li>
-</ul>
+  <li><p><?php printf(_('<a href="%s">Audacity %s source tarball</a> (%s file, %.1lf MB)'), download_url($min_src_url), src_version, src_suffix, min_src_size)?> 
+<?php printf(_(': Standard source tarball, primarily for GNU/Linux. This assumes your system has necessary dependencies and libraries installed.'))?></p></li>
 
-<h3><?=_("Optional Downloads")?></h3>
-
-<ul>
-<!--<li><p><?php printf(_('<a href="%s">Audacity %s source tarball</a> (%s file, %.1lf MB)'), download_url($full_src_url), src_version, src_suffix, full_src_size)?> 
-<?php printf(_('full source tarball: Primarily for use on Windows and Mac, as they typically lack necessary dependencies to compile Audacity. Also needed on a GNU/Linux system configured as an end-user.'))?></p></li>-->
-<li><p><?php printf(_('<a href="%s">SVN Repository</a>&nbsp;'), "../community/developers#svn")?>
-<?php printf(_('Check out either the latest Audacity development code or a specific tagged release. SVN checkouts are suitable for any system, including those that lack necessary dependencies to compile the standard source tarball.'))?>
-</p></li> 
-<li><p><?php printf(_('If you have trouble with your download, or need an older version of Audacity, try:')) ?></p>
-   <ul><li><?php printf(_('<a href="%s">SourceForge</a>: View older versions by clicking to enter the required folder under "Name".'), "http://sourceforge.net/project/showfiles.php?group_id=6235")?></li>
-       <li><?php printf(_('<a href="%s">Google Code</a>: Click on the headings to sort the list.'), "http://code.google.com/p/audacity/downloads/list")?></li>
-   </ul>
-</li>
+  <li><p><?php printf(_('<a href="%s">SVN Repository</a>&nbsp;'), "../community/developers#svn")?>
+<?php printf(_('For all platforms. Check out either the latest Audacity development code or a specific tagged release. SVN checkouts are suitable for any system, including those that lack necessary dependencies to compile the standard source tarball.'))?>
 </ul>
 
 <h3 id="sysreq"><?=_("System Requirements")?></h3>
  <ul>
-  <li><?=_('See operating system support for')?> <a href="./windows#sysreq">Windows</a>, <a href="./mac#sysreq">Mac</a> <?=_('or')?> <a href="./linux#sysreq">GNU/Linux</a>.</li>
+  <li><a href="./windows#sysreq">Windows</a>, <a href="./mac#sysreq">Mac</a>, or <a href="./linux#sysreq">GNU/Linux</a></li>
  </ul>
 
 
