@@ -2,7 +2,7 @@
 /*
  * Copyright 2003 Dominic Mazzoni
  * Copyright 2005 Matt Brubeck
- * Copyright 2007 - 13 Gale Andrews, Vaughan Johnson
+ * Copyright 2007 - 14 Gale Andrews, Vaughan Johnson
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -24,8 +24,6 @@ echo "<li><a href=\"http://manual.audacityteam.org/o/man/faq.html\">"._('View th
 echo "<li>"._('In Audacity, click Help > Manual (in web browser), then the "FAQ" link in the "Navigation" box on the left. The Manual is included with the <a href="http://audacity.sourceforge.net/download/windows">Windows .exe</a> or <a href="http://audacity.sourceforge.net/download/mac">Mac OS X .dmg</a> Audacity installers.')."</li></ul></p>";
 echo "</div>";
 
-echo "<p>"._('For <a href="../download/#legacy">old versions of Audacity</a> please view the <a href="faq_i18n">Older Frequently Asked Questions</a>.')."</p>";
-
 echo "<h3>"._('Other languages')."</h3>";
 echo "<p>"._('View the localized FAQ in the online Manual:')."</p>";
 echo "<p><ul>";
@@ -33,7 +31,9 @@ echo "<li>"._('<a href="http://manual.audacityteam.org/man/FAQ/fr">French</a>').
 echo "<li>"._('<a href="http://manual.audacityteam.org/man/FAQ/it">Italian</a>')."</li>";
 echo "<li>"._('<a href="http://manual.audacityteam.org/man/FAQ/es">Spanish</a>')."</li></ul></p>";
 
-echo "<p>"._('<b>Note: </b>For the above three locales, the translation of the remainder of the Manual is not yet fully complete.')."</p>";
+echo "<p>";
+printf(_('<b>Note: </b>For the above locales, the translation of the remainder of the Manual is not yet fully complete. The content of the translated Manual relates to development versions of Audacity and so may not relate to the current Audacity %s version.'), src_version);
+echo "</p>";
 
 echo "<p>"._('For all other languages, please check <a href="faq_i18n">Older Frequently Asked Questions for international help</a>, which remain largely valid for Audacity 2.0.x. The Manual will be updated for other languages in due course. Volunteers to help with <a href="http://manual.audacityteam.org/man/Help:Translating">translating the Manual<a/> are welcomed.')."</p>";
 

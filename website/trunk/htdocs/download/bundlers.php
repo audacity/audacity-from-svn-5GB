@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * Copyright 2007 - 2013  Vaughan Johnson, Gale Andrews
+ * Copyright 2007 - 2014  Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -84,7 +84,7 @@
     Podcast Factory
     </td>
 	<td>
-    <?=_("Now discontinued, but generally still available online from retailers in USA and Canada. Hardware and software to record, edit, and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Currently Podcast Factory will not work with Windows XP Media Center Edition (XP Home and Pro are not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware.")?>
+    <?=_("Now discontinued. Hardware and software to record, edit, and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Podcast Factory did not work with Windows XP Media Center Edition (XP Home and Pro were not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware.")?>
    </td>
   </tr>
   <tr>
@@ -92,10 +92,10 @@
    <a href="http://www.pinnaclesys.com/PublicSite/uk/Home/">Pinnacle Systems</a>
    </td>
    <td>
-   <a href="http://www.pinnaclesys.com/PublicSite/uk/Products/Consumer+Products/Audio/M-Audio/Family?code=UKMaudio">Podcast Factory</a>
+   Podcast Factory
    </td>
    <td>
-   <?=_("Available in Europe. Hardware and software to record, edit and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Currently Podcast Factory will not work with Windows XP Media Center Edition (XP Home and Pro are not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware.")?>
+   <?=_("Now disontinued. Hardware and software to record, edit and publish podcasts: 24-bit/48kHz audio interface, dynamic broadcast microphone with desk stand. NOTE: Podcast Factory did not work with Windows XP Media Center Edition (XP Home and Pro were not affected). Audacity itself does work with Media Center Edition, subject to your computer having suitable sound device drivers specific to your hardware.")?>
    </td>
   </tr>
   <tr>
@@ -289,7 +289,8 @@
    <a href="http://www.goldsound.com.hk/index.php">Goldsound</a>
    </td>
    <td class="col2">
-   <a href="http://www.goldsound.com.hk/product318672.html">TT-990PC</a>
+   <a href="http://www.goldsound.com.hk/?pid=704281&lang=enus&cid=86792&product=Turntable_With_Encoding_Via_PC_Link
+">TT-990PC</a>
    </td>
    <td class="col3"><?=_("USB Turntable.")?></td>
   </tr>
@@ -426,12 +427,12 @@
   </tr>
   <tr>
    <td>
-   <a href="http://www.trinityaudiogroup.com">Trinity Audio Group</a>
+   Trinity Audio Group
    </td>
    <td>
-   <a href="http://www.trinityaudiogroup.com/home.html">Trinity</a>
+   Trinity
    </td>
-   <td><?=_('Portable recording studio or digital audio workstation (DAW), featuring "walk and mix" technology.')?></td>
+   <td><?=_('Now discontinued. A portable recording studio or digital audio workstation (DAW), featuring "walk and mix" technology.')?></td>
   </tr>
   <tr>
    <td>
