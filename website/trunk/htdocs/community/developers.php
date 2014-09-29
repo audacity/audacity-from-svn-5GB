@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
- * 2007-2013 Vaughan Johnson, Gale Andrews
+ * 2007-2014 Vaughan Johnson, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -13,13 +13,13 @@
 
 <h2><?=$pageTitle?></h2>
 
-<p><?=_('<a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses. The <a href="http://www.ohloh.net/projects/59/analyses/latest">Code tab</a> on the Ohloh site shows the progress of code development.')?></p>
+<p><?=_('<a href="https://www.openhub.net/p/audacity">Open HUB</a> (formerly known as "Ohloh") has statistics on the value of Audacity development. The Open HUB &quot;badge&quot; at the bottom of each page on this site shows updated summary values. The statistics are set up by us to show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses. Searchable <a href="https://www.openhub.net/p/audacity/commits">commit listings</a> are produced every 10 days.')?></p>
 
 <h3><?=_('Mailing Lists')?></h3>
 <p><?=_('Join the <a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel">audacity-devel</a> mailing list to discuss current and future development, or to get help modifying the Audacity source code.')?></p>
 
 <h3 id="svn"><?=_('SVN')?></h3>
-<p><?=_('You can get the latest Audacity code from our <a href="http://code.google.com/p/audacity/source/browse/audacity-src/trunk">SVN repository</a>.  We aren\'t currently working on any other version.')?>
+<p><?=_('You can get the latest Audacity code from our <a href="http://code.google.com/p/audacity/source/browse/audacity-src/trunk">SVN repository</a>.')?>
 
 <ul>
   <li><p><?=_('Type this at the command line to check out the latest source code from SVN:')?></p>
@@ -34,9 +34,29 @@
 </ul>
 </p>
 
-<p><?=_('See our development source code page for <a href="../download/source#instructions">compilation instructions</a>.')?></p>
-
 <p><?=_('The SVN repository may also be accessed using GUI and IDE <a href="http://wiki.audacityteam.org/wiki/SVN_Clients">clients or plug-ins</a>. If using GUI or IDE tools, please use the commands indicated in the tool\'s documentation.')?></p>
+
+<h3><?=_("Compiling Audacity")?></h3>
+<p><? printf('<ul><li>%s</li>',
+	_('On Windows, see the file "compile.txt" inside the "Win" folder in the source code. For OS X, see "compile.txt" inside the "Mac" folder in the code.'));
+  printf(_('%s Further information can be found in <a href="%s">Developer Guide</a> and in our more detailed guides on compiling Audacity for %sWindows%s, %sMac%s and %sGNU/Linux%s.%s'),
+   '<li>',
+   'http://wiki.audacityteam.org/wiki/Developer_Guide',
+   '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Windows">',
+   '</a>',
+   '<a href="http://wiki.audacityteam.org/wiki/Building_On_Mac">',
+   '</a>',
+   '<a href="http://wiki.audacityteam.org/wiki/Developing_On_Linux">',
+   '</a>',
+   '</li>');
+  printf(_('%sIf you are still having difficulties, please ask on the %sCompiling Audacity%s board on the %sAudacity Forum%s.%s'),
+  '<li>',
+  '<a href="http://forum.audacityteam.org/viewforum.php?f=19">',
+  '</a>',
+  '<a href="http://forum.audacityteam.org">',
+  '</a>',
+  '</li></ul>');
+?></p>
 
 <h3 id="bugs"><?=_('Bug Tracking')?></h3>
 <p><?=_('The Audacity developers use bugzilla to track bugs and enhancements. To find issues to work on, please view our categorized <a href="http://wiki.audacityteam.org/wiki/Bug_Lists">Bug Lists</a>.')?></p>
