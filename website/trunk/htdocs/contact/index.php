@@ -16,10 +16,11 @@
 <h2><?=$pageTitle?></h2>
 <?php
   // i18n-hint: If there are any special sources of help (local forums, lists) for Audacity
-  // users in your language (other than our Russian, French, German and Spanish
-  // forums), please add links to them here and at the bottom of \htdocs\help\index.php.
+  // users in your language (other than sources listed at 
+  // http://wiki.audacityteam.org/wiki/MultiLingual), please add links to them here and
+  // at the bottom of \htdocs\help\index.php.
   // If there is any translated documentation, please add links to it at the bottom
-  // of \htdocs\help\documentation.php
+  // of \htdocs\help\documentation.php.
   ?>
 
 <h3><?=_('Audacity Forum for Questions or Problems')?></h3>
@@ -37,7 +38,9 @@
 
 <p>
 <?php
-  echo _(' To post a question on the Forum, <a href="http://forum.audacityteam.org/ucp.php?mode=register">register</a>, confirm your registration then log in. Choose the correct subforum (for example, "Windows" in the Audacity 2.X Forum), click "New Topic" top left, then submit your message.  Foreign language subforums are available for <a href="http://forum.audacityteam.org/viewforum.php?f=7">French</a>, <a href="http://audacity-forum.de/">German</a>, <a href="http://forum.audacityteam.org/viewforum.php?f=10">Russian</a> and <a href="http://forum.audacityteam.org/viewforum.php?f=8">Spanish</a>.');?>
+  echo _(' To post a question on the Forum, <a href="http://forum.audacityteam.org/ucp.php?mode=register">register</a>, confirm your registration then log in. Choose the correct subforum (for example, "Windows" in the Audacity 2.x Help Forum), click "New Topic" top left, then submit your message. Help in other languages can be obtained from various 
+<a href="http://wiki.audacityteam.org/wiki/MultiLingual">online forums</a> including the 
+<a href="http://forum.audacityteam.org/viewforum.php?f=54">Audacity International Forums</a>.');?>
 </p>
 <p><?=_('Always give plenty of information when asking questions on the Audacity Forum. You can find more help with joining and using the Audacity Forum <a href="http://wiki.audacityteam.org/wiki/Asking_Questions">here</a>.')?></p>
 
@@ -61,7 +64,7 @@
 </ul>
 </p>
 
-<p><?=_('<b>Bug reports:</b> Please check both the <a href="http://wiki.audacityteam.org/wiki/Release_Notes">Release Notes</a> for your specific version of Audacity 2.0 and <a href="http://wiki.audacityteam.org/wiki/Reporting_Bugs">Reporting Bugs</a> <b>before</b> making a report. We are not fixing bugs in the legacy 1.2 or 1.3 series - please upgrade to the <a href="/download/">latest 2.0 version</a> of Audacity instead.');?></p>
+<p><?=_('<b>Bug reports:</b> Please check both the <a href="http://wiki.audacityteam.org/wiki/Release_Notes">Release Notes</a> for your specific version of Audacity 2.x and <a href="http://wiki.audacityteam.org/wiki/Reporting_Bugs">Reporting Bugs</a> <b>before</b> making a report. We are not fixing bugs in the legacy 1.2 or 1.3 series - please upgrade to the <a href="/download/">latest version</a> of Audacity instead.');?></p>
 
 <div class="advice">
 <p><?=_('<b>Please include the following information.</b> This is important.</p>
