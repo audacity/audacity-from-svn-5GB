@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+	<title>File Menu</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+
+<body>
+<!--top table-->
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top>
+    <p dir="ltr"><a class=ss href="FR_index.html"><font color="#000080">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center>
+    <p><a class="ss" href="FR_screen.html"><font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<BR>
+<table cellpadding=0 cellspacing=0 width="98%">
+	<tr>
+	  <td align=center>
+	  	<table cellpadding=0 cellspacing=0><tr>
+	  	<td dir="ltr"><a class=menuref_current href="FR_menu_file.html">
+        <font color="#0000FF">Fichier - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_edit.html">
+        <font color="#0000FF">Edition - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_view.html">
+        <font color="#0000FF">Affichage - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_project.html">
+        <font color="#0000FF">Projet - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_generate.html">
+        <font color="#0000FF">Générer - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_effects.html">
+        <font color="#0000FF">Effets - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_analyze.html">
+        <font color="#0000FF">Analyse</font></a></td>
+	  	</tr></table>
+	  </td>
+	</tr>
+	<tr>
+	  <td class=bg_r align=center><font size="+3">Menu Fichier</font></td>
+	</tr>
+</table>
+
+<center>
+  <table width="100%"><tr>
+    <td valign=top width="50%">
+
+
+<a name="new"></a>
+<p class=menuref_item>Nouveau ...</p>
+<p class=a>Crée une nouvelle fenêtre de projet vide. </p>
+
+<a name="open"></a>
+<p class=menuref_item>Ouvrir ...</p>
+<p class=a>Sélectionner&nbsp; <i>Ouvrir</i> permet de choisir un fichier à 
+charger.  Si le projet curant est vide, un nouveau fichier sera créé dans la 
+fenêtre courante. Sinon, une nouvelle fenêtre sera ouverte.</P>
+<p class=a>Les formats de fichier reconnus par Audacity sont :<br>
+<a href="FR_fileformats.html#wav"><font color="#0000FF">WAV</font></a><font color="#0000FF">,&nbsp;&nbsp;
+</font>
+<a href="FR_fileformats.html#aiff"><font color="#0000FF">AIFF</font></a><font color="#0000FF">,&nbsp;&nbsp;
+</font>
+<a href="FR_fileformats.html#au"><font color="#0000FF">SUN/AU</font></a><font color="#0000FF">,&nbsp;&nbsp;
+</font>
+<a href="FR_fileformats.html#ircam"><font color="#0000FF">IRCAM</font></a><font color="#0000FF">,&nbsp;&nbsp;
+</font>
+<a href="FR_fileformats.html#mp3"><font color="#0000FF">MP3</font></a><font color="#0000FF">,&nbsp;&nbsp;
+</font>
+<a href="FR_fileformats.html#ogg"><font color="#0000FF">Ogg Vorbis</font></a><font color="#0000FF">,&nbsp;&nbsp;
+</font>
+<a href="FR_fileformats.html#midi"><font color="#0000FF">MIDI</font></a><font color="#0000FF">,</font>
+et le format de projet Audacity :<font color="#0000FF"> </font> <a href="FR_fileformats.html#aup">
+<font color="#0000FF">AUP</font></a><font color="#0000FF"> </font>.</p>
+
+<p class=a dir="ltr">De plus, Audacity peut aussi tenter d'ouvrir des fichiers audio en 
+formats différents pour autant qu'ils soient décompressés. - Pour se faire, 
+utilisez la commande <a href="FR_menu_project.html#importraw">
+<font color="#0000FF">Importer les Données brutes 
+(Raw)</font></a> .</p>
+
+<a name="close"></a>
+<p class=menuref_item>Fermer </p>
+<p class=a>Ferme la fenêtre du <b>projet</b> courant. Quitte le logiciel s'il 
+n'y a pas de projet (un import n'est pas un projet)</p>
+
+<a name="save"></a>
+<p class=menuref_item >Enregistrer le&nbsp;Projet ...</p>
+<p class=a>Enregistre le projet courant sous fichier Audacity (<a href="FR_fileformats.html#aup"><font color="#0000FF">AUP</font></a>).  
+Les projets Audacity ne sont pas prévus pour être lus par d'autres programmes, 
+Mais le chargement et la sauvegarde sont très rapides avec Audacity.
+Lorsque votre projet est finalisé, et que vous voulez le rendre compatible avec 
+un autre logiciel, sélectionner une des commandes d'<a href="#export"><font color="#0000FF">Export</font></a><font color="#0000FF">
+</font>ci-après.</p>
+<p class=a><b>NB :</b> La plupart des données audio d'un projet Audacity ne sont pas 
+stockées dans un fichier <a href="FR_fileformats.html#aup">
+<font color="#0000FF">AUP</font></a>, mais dans un 
+dossier de même nom que le projet. Par exemple, si vous sauvegardez sous le nom 
+de <tt>&quot;chanson.aup&quot;</tt>, un dossier nommé &quot;<tt>chanson_data&quot;</tt> sera créé pour 
+stocker les pistes audio du projet. Pour plus d'informations sur les formats de 
+fichier projet, voir la page&nbsp; <a href="FR_fileformats.html#aup">
+<font color="#0000FF">Formats 
+de Fichiers</font></a>.</p>
+
+<a name="saveas"></a>
+<p class=menuref_item>Enregistrer le&nbsp;Projet Sous ...</p>
+<p class=a dir="ltr">Enregistre le projet courant au format (<a href="FR_fileformats.html#aup"><font color="#0000FF">AUP</font></a>), 
+sous un nouveau nom que vous voulez lui donner ou sous un répertoire différent 
+du répertoire courant.</p>
+<p class=a>Portabilité vers d'autres logiciels : voir ci-dessus.</p>
+
+
+
+<p class=a>Pour plus d'informations sur les formats de fichier projet, voir la 
+page&nbsp; <a href="FR_fileformats.html#aup"><font color="#0000FF">Formats 
+de Fichiers</font></a>.</p>
+
+
+
+	</td>
+	<td valign=top width="50%">
+
+
+
+<a name="export"></a>
+<p class=menuref_item>Exporter en AIFF ...</p>
+<p class=a>Exporte la totalité du projet courant au format standard audio tel que
+<a href="FR_fileformats.html#wav"><font color="#0000FF">WAV</font></a>&nbsp;&nbsp;ou&nbsp;&nbsp;<a href="FR_fileformats.html#aiff"><font color="#0000FF">AIFF</font></a>.</p>
+<p class=a>Vous pouvez modifier le format d'export des fichiers dans le menu&nbsp;
+<a href="FR_prefs.html">
+<span style="font-weight: 700; background-color: #00FFFF">[Edition/Préférences]</span></a> .</p>
+
+<p class=a>S'il y a des pistes multiples sur le même canal de votre projet, 
+elles seront automatiquement mixées dans le fichier d'export .  Pour plus 
+d'informations sur le mixage, voir la page <a href="FR_menu_project.html#quickmix">
+<font color="#0000FF">Mixage 
+rapide</font></a>.</p>
+
+<p class=a dir="ltr">Pour exporter seulement une piste ou une partie de piste, utilisez <a href="#exportsel">
+<font color="#0000FF">Exporter 
+la&nbsp;Sélection</font></a>,ci dessous.</p>
+
+<a name="exportsel"></a>
+<p class=menuref_item>Exporter la Sélection en WAV...</p>
+<p class=a dir="ltr">C'est identique à <a href="#export"><font color="#0000FF">Exporter en AIFF</font></a>, mais seule 
+la partie de projet sélectionnée sera exportée.  C'est très pratique si vous 
+voulez sauver un petit clip faisant partie de votre piste, dans un fichier 
+séparé.</p>
+
+<a name="exportmp3"></a>
+<p class=menuref_item>Exporter comme MP3 ...</p>
+<p class=a>Exporte le projet courant en fichier MP3.
+Audacity n'encode pas directement les fichiers MP3, mais nécessite que vous 
+transfériez un encodeur MP3 séparé. Voir&nbsp; <a href="FR_exportmp3.html"> 
+<font color="#0000FF">Export des fichiers au format MP3/OGG</font></a> 
+pour plus de détails.</p>
+<p class=a>Pour exporter une seule piste ou une partie de piste, voir&nbsp;<a href="#exportselmp3"><font color="#0000FF">Exporter 
+la Sélection en MP3</font></a> ci après.</p>
+
+<a name="exportselmp3"></a>
+<p class=menuref_item>Exporter la Sélection en MP3...</p>
+<p class=a dir="ltr">C'est identique à&nbsp; <a href="#exportmp3">
+<font color="#0000FF">Exporter en MP3</font></a>, 
+mais exporte la partie de projet sélectionnée. Option pratique pour&nbsp;sauver 
+un petit clip faisant partie de votre piste, dans un fichier séparé. Voir <a href="FR_exportmp3.html">
+<font color="#0000FF">Export des fichiers au format MP3/OGG</font></a><font color="#0000FF">.</font></p>
+
+<a name="exportogg"></a>
+<p class=menuref_item>Exporter en OGG...</p>
+<p class=a>Exporte le projet courant en tant que fichier Vorbis.
+
+<p class=a>Pour exporter une seule piste ou une partie de piste, voir <a href="#exportselogg">
+<font color="#0000FF">Exporter 
+la Sélection en Ogg Vobis</font></a> ci après.</p>
+
+<a name="exportselogg"></a>
+<p class=menuref_item>Exporter la&nbsp; Sélection en OGG Vobis ...</p>
+<p class=a>C'est identique à&nbsp;<a href="#exportogg"><font color="#0000FF">Export 
+en OGG</font></a>, 
+mais exporte la partie de projet sélectionnée. Option pratique pour&nbsp;sauver 
+un petit clip faisant partie de votre piste, dans un fichier séparé.
+
+<p class=menuref_item dir="ltr">Exporter les Marqueurs ...</p>
+<p class=a dir="ltr">Si vous avez des <a href="FR_tracks.html#label">
+<font color="#0000FF">Pistes d'Annotations</font></a>, 
+cette commande les exportera dans un fichier texte. Cette options est couramment 
+utilisée dans la recherche sur la reconnaissance de la voix pour annoter 
+l'énoncé du discours, puis exporter l'annotation afin d'être reprise plus tard 
+dans 
+un autre logiciel</p>
+<p class=a>Pour importer ces annotations dans différents projets ultérieurement, 
+voir la commande
+<a href="FR_menu_project.html#importlabels">
+<span style="font-weight: 700; background-color: #00FFFF">[Projet / Importer les 
+Marqueurs]</span></a>.</p>
+
+<p class=menuref_item dir="ltr">Export Multiple ...</p>
+<p class=a dir="ltr">Si vous avez plus d'une piste audio, il est possible 
+d'exporter chacune dans un fichier indépendant,ou si vous avez une piste de 
+marqueurs, vous pouvez créer un nouveau fichier pour chaque marqueur.</p>
+<p class=a>&nbsp;</p>
+
+<a name="prefs"></a>
+<p class=menuref_item>Quitter</p>
+<p class=a>Ferme tous les projets et ferme Audacity. Il vous sera demandé si 
+vous voulez sauvegarder les changements de votre projet. Ce n'est pas nécessaire 
+si venez d'exporter en WAV or MP3 et que vous avez fini d'y travailler . Sinon, 
+si vous avez travaillé sur un mixage et projetez de poursuivre plus tard, la 
+sauvegarde vous permettra de tout restaurer plus tard.</p>
+
+<p class=a>&nbsp;</p>
+
+	</td>
+    </tr>
+</table>
+</center>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#0000FF">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+
+</body>
+</html>

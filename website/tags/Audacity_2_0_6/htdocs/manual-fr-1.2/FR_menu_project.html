@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Project Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+
+<body>
+<!--top table-->
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#000080">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center>
+    <p dir="ltr"><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<BR>
+<table cellpadding=0 cellspacing=0 width="98%">
+	<tr>
+	  <td align=center>
+	  	<table cellpadding=0 cellspacing=0><tr>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_file.html">
+        <font color="#0000FF">Fichier - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_edit.html">
+        <font color="#0000FF">Edition - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_view.html">
+        <font color="#0000FF">Affichage - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref_current href="FR_menu_project.html">
+        <font color="#0000FF">Projet - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_generate.html">
+        <font color="#0000FF">Générer - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_effects.html">
+        <font color="#0000FF">Effets - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_analyze.html">
+        <font color="#0000FF">Analyse</font></a></td>
+	  	</tr></table>
+	  </td>
+	</tr>
+	<tr>
+	  <td class=bg_r align=center><font size="+3">Menu Projet</font></td>
+	</tr>
+</table>
+
+<center>
+  <table width="100%"><tr>
+    <td valign=top width="50%">
+
+
+<a name="import"></a>
+<p class=menuref_item>Importer Audio...</p>
+<p class=a>Cette commande permet d'importer un enregistrement, ayant un format 
+standard audio, dans votre projet. Utilisez cette commande si vous avez déjà une 
+paire de pistes et que vous voulez ajouter une nouvelle piste dans le même 
+projet, peut être pour les mixer ensemble. </p>
+<p class=a>Avec cette commande, vous pouvez tout importer sauf les fichiers MIDI et les projets Audacity 
+(ces derniers s'ouvrent par la fonction &quot;Ouvrir&quot; du menu Fichier)..</p>
+
+<a name="importlabels"></a>
+<p class=menuref_item>Importer les Marqueurs ...</p>
+<p class=a>Cette commande ouvre un fichier texte contenant les annotations et 
+leur position dans le temps et les place dans une <a href="FR_tracks.html#label">
+<font color="#0000FF">Piste d'Annotations</font></a>.</p>
+
+<a name="importmidi"></a>
+<p class=menuref_item>Import MIDI ...</p>
+<p class=a>Cette commande importe les fichiers MIDI et les met dans une&nbsp;  <a href="FR_tracks.html#note">
+<font color="#0000FF">Piste de Note</font></a>.  Audacity 
+peut afficher les fichiers
+MIDI, mais ne peut les jouer, ni les éditer ni les sauvegarder.</p>
+
+<a name="importraw"></a>
+<p class=menuref_item>Importer les données brutes (Raw) ...</p>
+<p class=a>Cette commande vous permet d'ouvrir n'importe quel format de fichier 
+pour autant qu'il ne soit pas compressé. Quand vous sélectionnez un fichier, 
+Audacity l'analysera et tentera d'en déterminer le format. Il y parvient dans 
+90% des cas, et vous avez juste à presser &quot;OK&quot; et écouter. Si ça n'est pas 
+correct, alors essayez d'utiliser les boîtes de dialogue présentées ici pour essayer les 
+différentes possibilités offertes.</p>
+<p class=a dir="ltr">Au début de votre importation, vous risquez d'obtenir une grande 
+quantité de &quot;Bruits&quot; . C'est probablement l'en-tête du fichier qu'Audacity&nbsp; 
+n'est pas capable d'analyser. Zoomez et sélectionnez ce bruit, avec
+<a href="FR_toolbar.html#selection"><font color="#0000FF">l'Outil de Sélection</font></a><font color="#0000FF">,</font> et choissez <a href="FR_menu_edit.html#delete">
+<font color="#0000FF">Effacer</font></a>.</p>
+
+<a name="editid3tags"></a>
+<p class=menuref_item>Editer les Tags ID3  ...</p>
+<p class=a>Ouvre une boîte de dialogue vous permettant&nbsp;d'éditer les tags ID3 
+associés au projet pour un export MP3.</p>
+<p class=a>Les Tags ID3 servent à stocker le Titre, l'Artiste, l'Auteur et 
+autres informations des fichiers MP3. Quand vous importez un fichier MP3,
+Audacity stocke cette information avec votre
+projet. Quand vous exportez en MP3, Audacity vous proposera de modifier ou 
+saisir les Tags ID3, montrant l'ensemble des Tags collectés de l'original. Après 
+sauvegarde, vous pouvez encore les <b>modifier</b> en 
+sélectionnant
+"Editer Tags ID3&quot; du menu Projet.</p>
+<p class=a>Audacity propose de stocker les tags ID3 au format ID3v1 ou ID3v2.  En général, 
+vous utiliserez le format ID3v2,
+car les tags ID3v2  sont en début de fichier MP3, alors que les tags ID3v1 
+sont à la fin.  Avoir le titre et l'auteur au début peut intéresser ceux qui 
+transfèrent le MP3 que vous avez créé car ils ont l'information avant d'avoir 
+terminé le transfert&nbsp;de la chanson. </p>
+
+	</td>
+	<td valign=top width="50%">
+
+
+
+<a name="quickmix"></a>
+<p class=menuref_item>Mixage rapide</p>
+<p class=a>Cette commande&nbsp; mixe toutes les pistes sélectionnées vers une ou deux 
+pistes. Le canal&nbsp;de la&nbsp;piste mixée est affecté soit au canal droit, 
+soit au gauche, soit&nbsp;aux deux (son mono).
+</p>
+<p class=a>
+Par exemple, si vous avez quatre pistes:
+<ul>
+  <li> Piste 1: canal gauche
+  <li> Piste 2: canal gauche&nbsp;
+  <li> Piste 3: canal droit&nbsp;
+  <li> Piste 4: mono canal&nbsp;
+</ul>
+</p>
+<p class=a>et que vous les ayez toutes sélectionnées pour un mixage rapide, vous 
+obtiendrez deux pistes avec, pour la 1ére le mixage des pistes 1, 2 et4 (le 
+nouveau canal gauche) et pour la seconde les pistes 3 et 4 (le nouveau canal de 
+droite).</p>
+
+<p class=a>Vos pistes sont mixées implicitement lorsque vous cliquer sur
+<a href="FR_toolbar.html#play"><font color="#0000FF">Jouer</font></a><font color="#0000FF">
+</font>ou sélectionnez la commande 
+<a href="FR_menu_file.html#export"><font color="#0000FF">Exporter</font></a>.</p>
+
+<p class=a>Notez que si vous essayez de mixer deux pistes très bruyantes 
+ensemble, vous pourriez obtenir des coupures (cela sonne comme des éclats, 
+cliquètements et bruits).  Pour éviter cela, vous devez utiliser la commande 
+Amplifier pour réduire l'amplitude de vos pistes. La future version d'Audacity 
+contrôlera automatiquement l'augmentation et calculera pour vous l'amplitude 
+optimale.</p>
+
+
+<a name="newaudiotrack"></a>
+<p class=menuref_item>Nouvelle piste Audio / Stéréo</p>
+<p class=a>Ceci permet de créer une nouvelle piste audio. Cette commande est 
+rarement nécessaire depuis que l'import, l'enregistrement et le mixage créent 
+les pistes voulues.  Mais vous pouvez utiliser cela pour couper ou copier des 
+données d'une piste existante vers une piste vierge. Pour se faire, chargez le 
+morceau à copier puis&nbsp;utilisez
+<span style="font-weight: 700; background-color: #00FFFF">[Fichier / Nouveau]</span> 
+et collez dans celui ci les données source.</p>
+
+
+<a name="newlabeltrack"></a>
+<p class=menuref_item>Nouvelle piste de Marqueurs</p>
+<p class=a>Ceci crée une nouvelle piste pour saisir les annotations texte. Voir 
+la section sur&nbsp;les pistes de marqueur pour plus d'informations.</p>
+<p class=menuref_item><font color="#800000">Nouvelle piste de Temps</font></p>
+<p class=a>Affiche une nouvelle piste de temps dont la vitesse (en %) peut être 
+ajustée dans son panneau de contrôle (à gauche) . Certains vieux PC peuvent être 
+incapables de jouer une piste en temps réel et utilisent une piste de temps.</p>
+
+
+<a name="remove">
+</a>
+<p class=menuref_item>Supprimer la (les) piste(s)</p>
+<p class=a>Ceci supprime la ou les pistes du projet. Même si une partie de piste 
+est sélectionnée, c'est la piste entière qui est supprimée.
+Cliquer sur le X du panneau de piste (en haut à gauche) efface aussi celle-ci. 
+Pour n'effacer qu'une partie de piste, utilisez&nbsp;
+<a href="FR_menu_edit.html#delete"><font color="#0000FF">Effacer</font></a> ou 
+<a href="FR_menu_file.html#silence"><font color="#0000FF">Silence</font></a>.</p>
+
+<!-- a name="newlabel"></a>
+<p class=menuref_item>Add Label at Selection</p>
+<p class=a>This menu item lets you create a new label at the current selection.
+You can title the label by typing with the keyboard and then hitting "Enter"
+when you're done.  The label saves your current selection - so when you click
+on the label later it will return the selection to the state it was in when
+you created the label.
+See the discussion on 
+<a name="tracks.html#label">Label tracks</a> for more information
+on how to use label tracks.</p -->
+
+	</td>
+    </tr>
+
+    <tr><td colspan=2>&nbsp;<br><hr width="70%"></td></tr>
+    <tr>
+        <td colspan=2>
+
+<a name=align></a>
+<center><p class=menuref_item><font size="+1">Fonctions -&gt; <U>Aligner</U> &lt;-  </font></p></center>
+<p class=a dir="ltr">Toutes les fonctions Aligner travaillent sur de larges pistes ou groupes 
+de pistes, pas sur des sélections, même si elles s'étendent aux pistes 
+multiples. Lisez le
+<a href="FR_tutorial_align_1.html"><font color="#0000FF">Didacticiel comment utiliser les fonctions d'alignement</font> </a>. 
+Vous y trouverez quelques utilisations créatives et solutions aux problèmes 
+courants.</p>
+
+        </td>
+    </tr>
+    <tr>
+        <td valign=top>
+
+<a name="aligntogether"></a>
+<p class=menuref_item>Aligner les pistes entre elles </p>
+<p class=a>Si vous sélectionnez plusieurs pistes, cette commande ajuste le 
+moment de démarrage pour qu'elles démarrent au même moment. Elle ajuste leur 
+moment de départ sur la moyenne de tous les durées d'origine. Pour ajuster le 
+temps d'une piste, voir le 
+<a href="FR_toolbar.html#timeshift"><font color="#0000FF">Calage temporel</font></a><font color="#0000FF">.</font></p>
+
+         </td>
+         <td valign=top>
+
+<a name="alignzero"></a>
+<p class=menuref_item>Aligner avec le Zéro</p>
+<p class=a dir="ltr">Si vous sélectionnez plusieurs pistes, cette commande réinitialise 
+leur Temps compensé à zéro. Pour ajuster le temps d'une piste, voir le 
+<a href="FR_toolbar.html"><font color="#0000FF">Calage temporel</font></a><font color="#0000FF">.</font></p>
+
+         </td>
+    </tr>
+
+
+    <tr><td colspan=2><center><br><hr width="50%"><br>Ces fonctions opèrent individuellement sur chaque piste. 
+      <p>Si plus d'une piste est sélectionnée, ces fonctions ne préservent pas leur position par rapport à une autre. </p>
+      </center></td>
+    </tr>
+
+    <tr>
+         <td valign=top>
+
+<a name="aligncursor"></a>
+<p class=menuref_item>Aligner avec le curseur</p>
+<p class=a>Aligne le début de toutes les pistes sélectionnées avec la position 
+du curseur.</P>
+
+<a name="alignselectionstart"></a>
+<p class=menuref_item>Aligner avec le début de la&nbsp; Sélection </p>
+<p class=a>Aligne le début de toutes les pistes sélectionnées avec le début de 
+la sélection courante.</P>
+
+<a name="alignselectionend"></a>
+<p class=menuref_item>Aligner avec la fin de la Sélection</p>
+<p class=a dir="ltr">Aligne le début de toutes les pistes sélectionnées avec la 
+fin de la&nbsp; sélection courante</P>
+
+         </td>
+         <td valign=top>
+
+<a name="alignendcursor"></a>
+<p class=menuref_item>Aligner la fin avec le Curseur</p>
+<p class=a>Aligne la fin de toutes les pistes sélectionnées avec la position du 
+curseur.</P>
+
+<a name="alignendselectionstart"></a>
+<p class=menuref_item>Aligner la fin avec le début de la&nbsp; Sélection</p>
+<p class=a dir="ltr">Aligne la fin de toutes les pistes sélectionnées avec le 
+début de la sélection courante.</P>
+
+<a name="alignendselectionend"></a>
+<p class=menuref_item>Aligner la fin avec la fin de la Sélection</p>
+<p class=a>Aligne la fin de toutes les pistes sélectionnées avec la fin de la sélection 
+courante.</P>
+
+         </td>
+    </tr>
+
+
+    <tr><td colspan=2><center><br><hr width="50%"><br><B>Les Groupes</B> se 
+      réfèrent à plus de deux pistes sélectionnées,<br>
+         qui vont être modifies comme s'il n'y avait qu'une piste. Ceci préserve 
+      leur position par rapport aux autres .</center></td>
+    </tr>
+
+    <tr>
+         <td valign=top>
+
+<a name="aligngroupcursor"></a>
+<p class=menuref_item>Aligner&nbsp; le Groupe avec le curseur</p>
+<p class=a>Aligne le début du groupe de pistes sélectionnées avec la position du 
+curseur.</P>
+
+<a name="aligngroupselectionstart"></a>
+<p class=menuref_item>Aligner le Groupe avec le début de la sélection</p>
+<p class=a>Aligne le début du groupe de pistes sélectionnées avec le début de la 
+sélection courante.</P>
+
+<a name="aligngroupselectionend"></a>
+<p class=menuref_item>Aligner le Groupe avec la fin de la Sélection</p>
+<p class=a>Aligne le début du groupe de pistes avec la fin de la&nbsp; sélection 
+courante</P>
+
+         </td>
+         <td valign=top>
+
+<a name="aligngroupendcursor"></a>
+<p class=menuref_item>Aligner la fin du Groupe avec le curseur</p>
+<p class=a>Aligne la fin du groupe de pistes sélectionnées avec la position du 
+curseur.</P>
+
+<a name="aligngroupendselectionstart"></a>
+<p class=menuref_item>Aligner a fin du Groupe avec&nbsp; le début de la 
+Sélection</p>
+<p class=a>Aligne la fin du groupe de pistes sélectionnées avec le début de la sélection 
+courante</P>
+
+<a name="aligngroupendselectionend"></a>
+<p class=menuref_item>Aligner la fin du Groupe avec la fin de la 
+Sélection</p>
+<p class=a>Aligne la fin du groupe de pistes sélectionnées avec la fin de la sélection 
+courante.</P>
+
+         </td>
+    </tr>
+
+</table>
+</center>
+
+
+&nbsp;<br>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#0000FF">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+&nbsp;<br>
+
+</body>
+</html>

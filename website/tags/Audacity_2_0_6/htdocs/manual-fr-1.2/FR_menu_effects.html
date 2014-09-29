@@ -1,0 +1,358 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Effect Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+
+<body>
+<!--top table-->
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#000080">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<BR>
+<table cellpadding=0 cellspacing=0 width="98%">
+	<tr>
+	  <td align=center>
+	  	<table cellpadding=0 cellspacing=0><tr>
+	  	<td><a class=menuref href="FR_menu_file.html"><font color="#0000FF">Fichier -
+        </font> </a></td>
+	  	<td><a class=menuref href="FR_menu_edit.html"><font color="#0000FF">Edition -
+        </font> </a></td>
+	  	<td><a class=menuref href="FR_menu_view.html"><font color="#0000FF">Affichage -
+        </font> </a></td>
+	  	<td><a class=menuref href="FR_menu_project.html"><font color="#0000FF">Projet -
+        </font> </a></td>
+	  	<td><a class=menuref href="FR_menu_generate.html"><font color="#0000FF">Générer -
+        </font> </a></td>
+	  	<td><a class=menuref_current href="FR_menu_effects.html">
+        <font color="#0000FF">Effets - </font> </a></td>
+	  	<td><a class=menuref href="FR_menu_analyze.html"><font color="#0000FF">Analyse</font></a></td>
+	  	</tr></table>
+	  </td>
+	</tr>
+	<tr>
+	  <td class=bg_r align=center><font size="+3">Menu Effets </font></td>
+	</tr>
+</table>
+
+<p class=a>
+Audacity propose beaucoup de possibilités d'insertion d'effets sonores tout en 
+offrant le choix d'utiliser les effets de plug-in (VST plug-ins) dans les 
+versions MacOS et Windows. Vous pouvez transférer de nombreux plugins 
+gratuits&nbsp;VST à l'adresse&nbsp; <a href="http://www.databaseaudio.co.uk">http://www.databaseaudio.co.uk</a>.
+Des chargements sont aussi disponibles à <a href="http://www.kvr-vst.com">http://www.kvr-vst.com</a>.</p>
+
+
+<p class=a>
+Pour appliquer un effet, sélectionnez une partie de piste (ou la piste entière) 
+que vous voulez modifier. Puis sélectionnez l'effet dans le menu. Les titres, ci 
+dessous, se 
+terminant par des points de suspension (...) afficheront une boîte de dialogue 
+vous demandant des paramètres supplémentaires.</p>
+
+<P class=a dir="ltr">
+Il existe quatre classes d'effets qui sont <a href="FR_effects_basics.html">
+<font color="#0000FF">appliqués</font></a> 
+de la même manière. Ce sont :
+<br>
+<center><table><tr><td>
+<span class=bg_b><a href="#internal">les Effets internes </a></span>,
+<span class=bg_o><a href="#vstfx">Effets Plugins VST </a></span>(Windows/Mac seulement),
+<span class="bg_g"><a href="#nyquistfx"><span style="background-color: #D0FFD0">
+Plugins</span> Nyquist </a>&nbsp;</span>et <span class="bg_r">
+<a href="#ladspafx"><span style="background-color: #FFD0D0">Plugins</span> LADSPA
+</a></span>(Linux seulement).
+</td></tr></table></center>
+
+<a name="internal"></a>
+<H2 align=center class=bg_b>Effets Internes</H2>
+<center>
+  <table width="100%"><tr>
+    <td valign=top width="50%">
+
+
+<p class=menuref_item dir="ltr">Amplification ...</p>
+<p class=a>Cet effet augmente ou diminue le volume de la ou des pistes.  Lorsque 
+vous lancez l'option, <b>Audacity</b> calcule automatiquement le montant maximum 
+d'amplification possible sans créer de cassure. (devenant trop fort).</p>
+
+<p class=menuref_item>Amplification des Basses ...</p>
+<p class=a>C'est un filtre doux et sans danger qui peut amplifier les basses 
+fréquences lorsque il reste beaucoup d'autres fréquences .  C'est sensible 
+lorsque vous n'essayez pas d'amplifier de trop ; 12db est généralement le bon 
+niveau.</p>
+
+<p class=menuref_item>Changer la hauteur, la vitesse, le tempo, Compresseur 
+Console Nyquist ,&nbsp; Normaliser,&nbsp; 
+Répéter, Suppression des clics, Tremolo ...</p>
+<p class=a>A documenter .</p>
+
+<p class=menuref_item>Echo ...</p>
+<p class=a>Une simple position de retard au démarrage.</p>
+<p class=a>Cet effet répète encore et encore l'audio que vous avez sélectionné,
+plus doucement à chaque fois. Le temps entre chaque répétition est prédéfini.</p>
+<p class=a dir="ltr">Premièrement, sélectionnez l'audio que vous voulez traiter. 
+Vous voudrez peut être en premier ajouter un silence à la fin de votre piste ce 
+qui laissera à l'écho le temps de résonner pleinement. Quand vous sélectionnez
+<b><span style="background-color: #00FFFF">[Effets / Echo]</span></b> , Audacity 
+vous demande deux chiffres.
+
+<p class=a>Le <b>premier</b> est le délai entre échos, exprimé en secondes. Le
+<b>second</b> est le facteur de décroissance dont la valeur est comprise entre 0 
+et 1.  Un facteur à zéro signifie l'absence d'écho, tandis qu'à 1, chaque écho 
+est aussi audible que l'original. Avec une valeur de 0,5 l'amplitude est coupée 
+à chaque demi temps et il sera émis lentement. Avec des valeurs plus petites il 
+sort plus rapidement.</p>
+<p class=a>L'effet Echo est très simple et n'est pas à utiliser à la place de la 
+Réverbération. qui simule le son d'une pièce , hall de concert, théâtre, ou 
+autre environnement naturel.
+Audacity pour MacOS et Windows utilise FreeVerb, un plug-in de Réverbération 
+gratuit de VST . Voir <a href="#freeverb"><font color="#0000FF">FreeVerb</font></a>, ci-dessous pour plus d'informations.</p>
+
+<p class=a dir="ltr">Notez que si vous définissez&nbsp; le délai à 1.0, vous pouvez 
+utiliser l'Echo
+pour créer une boucle qui répète aussi longtemps que vous voulez sans jamais 
+changer le volume.</p>
+
+<p class=menuref_item>Fondre en ouverture, Cross fade in :</p>
+<p class=a dir="ltr">Applique une montée linéaire du volume à la sélection audio.  Pour une 
+progression&nbsp; logarithmique , utilisez l'<a href="FR_toolbar.html#envelope"><font color="#0000FF">Outil 
+de Niveau</font></a>. NB : Le cross fade in procure le même effet avec les Db 
+moins atténués.</p>
+
+<p class=menuref_item>Fondre en fermeture, Cross fade out :</p>
+<p class=a>Applique un abaissement linéaire du volume à la sélection audio.  Pour une 
+progression&nbsp; logarithmique , utilisez&nbsp;l'<a href="FR_toolbar.html#envelope"><font color="#0000FF">Outil de 
+Niveau</font></a>. NB : Le cross fade out procure le même effet avec les Db 
+moins atténués.</p>
+
+<p class=menuref_item>Filtre FFT  ...</p>
+<p class=a>Similaire à l'Egalisation, il vous permet d'augmenter ou de réduire 
+arbitrairement les fréquences. la courbe utilise ici une échelle linéaire pour 
+les fréquences.</p>
+<p class=a>Déplacez vers le haut ou le bas la ligne en sur gras et réglez le 
+nombre de décibels de la fréquence que vous voulez renforcer ou atténuer. </p>
+<p class=a>Cet effet est très fonctionnel mais la boîte de dialogue est encore 
+en cours de construction. Vous pourrez quand même l'utiliser, mais il n'y a pas 
+d'axe pour indiquer les fréquences ni combien vous allez obtenir en 
+l'appliquant.</p>
+<p class=a>C'est le type de filtre le plus général. En faisant attention, vous 
+pourrez rehausser exactement les fréquences que vous voulez. Toutefois, mettre 
+un filtre FFT est plus prometteur pour obtenir des résultats, spécialement si le 
+filtre que vous dessinez n'est pas régulier. </p>
+
+
+
+
+<p class=a>&nbsp;</p>
+
+
+
+
+	</td>
+	<td valign=top width="50%">
+
+
+
+
+<p class=menuref_item>Inverser</p>
+<p class=a>Cet effet fait sauter les échantillons audio de la position haute à 
+basse. Ceci ne doit pas affecter le son de l'audio. il est utilisé 
+occasionnellement&nbsp; quand les canaux gauche et droite d'une chanson 
+contiennent une part égale de vocal mais une part inégale de musique 
+instrumentale de fond.  En inversant un des canaux mais pas l'autre, le vocal 
+sera annulé sur une sortie, laissant juste la partie instrumentale. A noter que 
+cela ne fonctionnera&nbsp; que si la même quantité de signal vocal est présente 
+sur les deux canaux.</p>
+
+<p class=menuref_item>Elimination du Bruit ...</p>
+<p class=a>Cet effet est idéal pour supprimer un bruit de fond constant tel que 
+les ventilateurs, bruits de frappe ou bourdonnement.&nbsp; Il ne fonctionnera 
+pas très bien pour éliminer les paroles ou musiques de fond. </p>
+<p class=a>Eliminer le bruit passe par deux étapes. En <b>premier</b>, vous 
+sélectionnez une partie de votre son qui contient le bruit mais pas d'autre 
+signal, ni de silence.&nbsp; Puis choisissez <b>Elimination du Bruit ...</b> et 
+cliquez sur obtenir profil.  Audacity étudie les bruits de cette sélection et 
+ainsi sait ce qu'il doit filtrer ensuite.</p>
+<p class=a>En <b>deuxième</b>, sélectionnez tout le morceau audio que vous 
+voulez traiter et choisissez <b>Elimination du Bruit, </b>à nouveau<b> . </b>
+Cliquez sur &quot;Supprimer le bruit&quot;. Cela peut prendre quelques secondes ou plus 
+suivant la taille du morceau à traiter.</p>
+<p class=a>Si trop ou pas assez de bruit a été supprimé, utilisez la fonction
+<span style="font-weight: 700; background-color: #00FFFF">[Edition / Annuler]</span> 
+et essayez à nouveau avec un niveau de bruit différent. Vous n'avez pas à 
+redéfinir un nouveau profil de bruit si vous pensez que votre première sélection 
+est correcte.</p>
+<p class=a>Eliminer le bruit peut provoquer quelques distorsions.&nbsp; C'est 
+normal et vous ne pouvez rien y faire. Quand il s'agit d'un petit bruit et que 
+le signal principal est plus fort que le bruit, cette fonction travaille bien et 
+la distorsion est très faible. Mais dans le cas contraire, le résultat est 
+souvent trop distordu. </p>
+<p class=a>Les versions futures d'Audacity incluront des versions améliorées de 
+cet effet. </p>
+
+<p class=menuref_item>Phaser...</p>
+<p class=a dir="ltr">Le nom "Phaser"vient de la contraction de "Phase Shifter" 
+(changeur de phase), car il travaille en combinant des signaux de phase modifiée 
+avec le signal original. Le mouvement du signal modifié est contrôlé en 
+utilisant un Oscillateur Basse fréquence. .</p>
+
+<p class=menuref_item>Inverser sens</p>
+<p class=a>Cet effet inverse temporairement la sélection. Après application, la 
+fin de l'audio sera entendue en premier et le début après . Certains inversent&nbsp; 
+de petites parties d'audio pour rendre le discours inintelligible, seulement 
+audibles en retour arrière. Vous pouvez aussi créer des effets de sons 
+intéressants en enregistrant naturellement les bruits puis en inversant l'audio.</p>
+
+<p class=menuref_item dir="ltr">Wahwah ...</p>
+<p class=a>Tel que le son des guitares, si populaire dans les années 1970.</p>
+<p class=a>Cet effet utilise un filtre évolutif de bande passante pour créer ces 
+sons. Une oscillation de basse fréquence est utilisée pour contrôler le 
+mouvement du filtre à travers le spectre de fréquences.</p>
+<p class=a>L'effet Wahwah ajuste automatiquement la phase des canaux droit et 
+gauche dans les enregistrements stéréo, et l'effet semble ainsi voyager d'un 
+haut parleur à l'autre.</p>
+
+
+<p class=menuref_item dir="ltr">Répéter ... </p>
+<p class=a>Répète la section un certain nombre de fois. Cette opération est 
+efficace pour donner une notion d'espace et est utilisée pour des boucles 
+presque infinies.</p>
+
+<p class=menuref_item dir="ltr">Gverb ... </p>
+<p class=a>Voir chapitre sur les 
+<a href="FR_effects_reverb.html">
+<font color="#0000FF">réverbérations  </font></a>
+
+<p class=menuref_item dir="ltr">Delay... </p>
+<p class=a>Voir chapitre sur les <a href="FR_effects_delay.html"> 
+<font color="#0000FF">retardateur et retards </font></a>
+<p class=menuref_item>Hard limiter, Hight pass Filter, Low pass Filter</p></a>
+
+<p class=a dir="ltr">A documenter (voir réverbération pour utilité de ces effets)</p>
+
+<p class=menuref_item dir="ltr">SC4</p></a>
+<p class=a dir="ltr">A documenter</p>
+<p class=a>&nbsp;</p>
+
+
+	</td>
+    </tr>
+    <tr><td colspan=2 class=top_b>&nbsp;</td></tr>
+</table>
+</center>
+
+
+<a name=vstfx></a>
+<H2 align=center class=bg_o>Plug-in VST  </H2>
+<p class=a>Pour utiliser les effets plug-in VST, mettez l'effet dans le dossier 
+appelé "VST",&nbsp; qui pourrait être dans le même répertoire qu'Audacity.  S'il 
+n'y a pas de dossier VST, créez en un. La prochaine fois que vous lancerez Audacity, 
+tous les plug-ins que vous avez ajouté apparaîtront dans le menu Effets.</p>
+
+<a name="freeverb"></a>
+<p class=menuref_item>Freeverb2...</p>
+
+
+<center>
+  <table width="100%"><tr>
+    <td valign=top width="50%">
+
+
+<p class=a>Audacity pour Mac OS et Windows travaille avec le plug-in VST
+Freeverb, en version 2 ("Freeverb2").  il procure un effet modulable et de haute 
+qualité.</p>
+<p class=a>Obtenir une bonne réverbération audio dépend principalement de la 
+source et peut procurer de nombreuses expériences. Une bonne stratégie est de 
+sélectionner une petite partie d'audio (quelques secondes) et d'essayer sur elle 
+la réverbération. Ecoutez et Annulez et recommencez avec des paramètres 
+différents. Refaites le jusqu'à trouver les critères vous paraissant les 
+meilleurs, puis annulez. Sélectionnez toute la piste et appliquez l'effet sur 
+votre enregistrement complet.</p>
+<p class=a><font color="#008000">&nbsp;</font>Il existe de nombreux paramètres 
+dans Freeverb2 : taille de la pièce, atténuation<font color="#008000"> </font>, 
+pré - délai, abaisser, élever, niveau de modulation et d'entrée.</p>
+<p class=a>Commencez par les niveau d'entrée et d'atténuation. Freeverb prend 
+votre signal et le modifie pour créer la réverbération. cad génère un écho . 
+c'est la partie modulation de l'effet.</p>
+<p class=a>Puis il est mixé avec l'original, appelé partie &quot;DRY&quot; de l'effet en 
+vue de produire une combinaison entre son direct et indirect (ce que vous auriez 
+entendu naturellement). Si vous définissez le son direct &quot; à l'infini&quot; , et le 
+son modulé à 0 Db, le résultat ressemble à une salle de concert vue du dehors :&nbsp; 
+vous n'entendrez que les réverbérations.</p>
+
+
+	</td>
+	<td valign=top width="50%">
+
+
+<p class=a>Si vous positionnez le son d'origine à 0 et la modulation à l'infini, 
+ça équivaut à être en face du chanteur dans une toute petite pièce sans 
+réverbération. Un bon endroit pour tester les critères de niveau de signal 
+original et de signal modulé&nbsp; à 0 Db. Mis vous pouvez souhaiter 
+expérimenter un bas niveau d'entrée lorsque vous aurez acquis de l'expérience 
+avec la réverbération. </p>
+
+<p class=a>&nbsp;La taille de la pièce est partiellement explicatif . la plus 
+petite taille de pièce crée une rapide et claquante réverbération, tandis qu'une 
+plus vaste pièce en crée une longue. modulée et profonde. Le paramètre 
+d'atténuation contrôle comment le son rebondit sur les murs et ses paramètres 
+d'absorption. </p>
+<p class=a>Le pré - délai contrôle le retard entre le signal original et celui 
+réverbéré - car il s'écoute un certain temps entre l'émission à la source et le 
+retour via le mur le plus proche et le microphone. Les pré - délais importants 
+créent l'impression de très grandes pièces. </p>
+<p class=a>Enfin, les filtres de passage haut et bas permettent de créer des 
+sons réverbérés plus ou moins hauts. Augmentez les filtres bas filtre les hautes 
+fréquences et inversement.&nbsp; </p>
+
+
+	</td>
+    </tr>
+    <tr><td colspan=2 class=top_o>&nbsp;</td></tr>
+</table>
+</center>
+
+
+<a name=nyquistfx></a>
+<H2 align=center class=bg_g>Plugins Nyquist</H2>
+<p class=a>Pour utiliser les effets Nyquist, enregistrez les effets dans le 
+dossier nommé "Nyquist", qui pourrait être dans le même répertoire qu'Audacity.  
+Après installation, quelques scripts Nyquist sont inclus, et vous ne regretterez 
+pas d'avoir créé ce dossier.&nbsp; a prochaine fois que vous lancerez Audacity, 
+tous les plug-ins que vous avez ajouté apparaîtront dans le menu Effets.</p>
+<!-- a name="nyquist1"></a>
+<p class=menuref_item>Freeverb2...</p -->
+
+
+<a name=ladspafx></a>
+<H2 align=center class=bg_r dir="ltr">Plugins LADSPA </H2>
+<p class=a>
+&nbsp;
+</p>
+
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#0000FF">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+- Makefile: Use "make publish" for locale files only (SVN for the rest).
+- about/news: Add an RSS feed.  Should be localized (just like regular pages).
+    Should support "conditional GET" (Etag/If-Modified-Since).
+- community/users: Add buttons and banners for users to put on web sites.
+- contact: Add section for press and PR.
+- download/*: Link to release notes from download pages?
+- download/mac: OS 9 System Requirements should link to CarbonLib updates?
+- download/release-notes: Add archives and permalinks for Release Notes.
+- help/documentation: Link to localized manual/reference when available.
+- help/faq: LAME instructions should also promote Ogg Vorbis.
+- help/faq: If there are more than ten questions in a section, show the top 
+    ten plus a link to e.g. "More questions about recording...".
+- include/header: Set Expires or Etag headers for better caching?
+- list/*: Integrate new site design.
