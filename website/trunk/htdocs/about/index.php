@@ -19,8 +19,9 @@
   <li><a href="http://manual.audacityteam.org/o/man/tutorial_recording_computer_playback_on_windows.html">Record computer playback</a> on any Windows Vista or later machine.</li>
   <li><a href="http://manual.audacityteam.org/o/man/tutorial_copying_tapes_lps_or_minidiscs_to_cd.html">Convert tapes and records</a> into digital recordings or CDs.</li>
   <li>Edit WAV, AIFF, FLAC, MP2, MP3 or Ogg Vorbis sound files.</li>
+  <li>AC3, M4A/M4R (AAC), WMA and other formats supported using optional libraries.</li>
   <li>Cut, copy, <a href="http://manual.audacityteam.org/o/man/faq_editing.html#join">splice</a> or <a href="http://manual.audacityteam.org/o/man/mixing.html">mix</a> sounds together.</li>
-  <li><a href="http://manual.audacityteam.org/o/man/index_of_effects_generators_and_analyzers.html#Make_the_sound_faster.2C_slower.2C_lower_pitched_or_higher_pitched">Change the speed or pitch</a> of a recording.</li>
+  <li>Numerous effects including <a href="http://manual.audacityteam.org/o/man/index_of_effects_generators_and_analyzers.html#Make_the_sound_faster.2C_slower.2C_lower_pitched_or_higher_pitched">change the speed or pitch</a> of a recording.</li>
   <li>And more! See the complete <a href="features">list of features</a>.</li>
 </ul>');
 
@@ -38,11 +39,11 @@
 
 <p>Free software is not just free of cost (like &quot;free beer&quot;).  It is <b>free as in freedom</b> (like &quot;free speech&quot;).  Free software gives you the freedom to use a program, study how it works, improve it and share it with others.  For more information, visit the <a href="http://www.fsf.org/">Free Software Foundation</a>.</p>
 
-<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href="http://www.mozilla.com/">Firefox</a> web browser, the <a href="http://www.openoffice.org/">OpenOffice.org</a> office suite and entire Linux-based operating systems such as <a href="http://www.ubuntulinux.org/">Ubuntu</a>.</p>
+<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href="http://www.mozilla.com/">Firefox</a> web browser, the <a href="http://www.libreoffice.org/">LibreOffice</a> or <a href="http://www.openoffice.org/"> Apache OpenOffice</a> office suites and entire Linux-based operating systems such as <a href="http://www.ubuntulinux.org/">Ubuntu</a>.</p>
 
 <p>We welcome <a href="/donate/">donations</a> to support Audacity development. Anyone can <a href="http://audacityteam.org/wiki/index.php?title=Contribute">contribute</a> to Audacity by helping us with <a href="http://www.audacityteam.org/manual/index.php?title=Main_Page">documentation</a>, <a href="../community/translation">translations</a>, user <a href="http://audacityteam.org/forum/index.php">support</a> and by <a href="http://audacityteam.org/wiki/index.php?title=Nightly_Builds">testing<a/> our latest code.</p>');
 
-echo _('<p><a href="http://www.ohloh.net/projects/59">Ohloh</a> has statistics on the value of Audacity development. The Ohloh &quot;badge&quot; at the bottom of each page on this site shows updated summary values. We set up the Ohloh pages about Audacity so the statistics show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses.</p>');
+echo _('<p><a href="https://www.openhub.net/p/audacity">Open HUB</a> (formerly known as "Ohloh") has statistics on the value of Audacity development. The Open HUB &quot;badge&quot; at the bottom of each page on this site shows updated summary values. The statistics are set up by us to show only the values of Audacity-specific development, excluding the third-party code libraries Audacity uses.</p>');
 
   echo _('<h3>Bundling, Reselling or Distributing Audacity</h3>
 

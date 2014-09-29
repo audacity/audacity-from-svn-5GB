@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004 Matt Brubeck
+ * Copyright 2004 - 14 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -14,7 +14,7 @@
 
 <p><?=_('Click any screenshot for a larger version.')?></p>
 
-<p class="screenshot"><a href="images/audacity-linux.png"><img alt="" src="images/audacity-linux-small.jpg"><?=_("Audacity running on Linux")?></a></p>
+<p class="screenshot"><a href="images/audacity-linux.png"><img alt="" src="images/audacity-linux-small.jpg"><?=_("Audacity running on GNU/Linux")?></a></p>
 
 <p class="screenshot"><a href="images/audacity-windows.png"><img alt="" src="images/audacity-windows-small.jpg"><?=_("Audacity running on Windows")?></a></p>
 

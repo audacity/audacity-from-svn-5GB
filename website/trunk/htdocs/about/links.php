@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2004-13 Matt Brubeck, Gale Andrews
+ * Copyright 2004-14 Matt Brubeck, Gale Andrews
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/3.0/
  */
@@ -38,7 +38,7 @@
 <ul>
   <li><?=_('<a href="http://www.virtualdub.org/">VirtualDub</a> for Windows')?>  
   <li><?=_('<a href="http://avidemux.sourceforge.net/">Avidemux</a> for Windows, Mac OS X (Intel) and Linux')?>  
-  <li><?=_('<a href="http://sourceforge.net/projects/hyperengine/">HyperEngine-AV</a> for Mac OS X')?>  
+  <li><?=_('<a href="http://sourceforge.net/projects/hyperengine/">HyperEngine-AV</a> for Mac OS X (PPC)')?>  
   <li><?=_('<a href="http://cinelerra.org/about.php">Cinelerra</a> or <a href="http://www.kinodv.org/article/static/2">Kino</a> for Linux')?>  
 </ul>
 
