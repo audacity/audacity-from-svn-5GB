@@ -6,6 +6,6 @@ Up to date versions of Audacity for download, from version 2.0.6 onwards,  are n
 
 ==Legacy Downloads==
 
-Onlder versions of Audacity for older machines are available from here:
+Older versions of Audacity for older machines are available from here:
 
 http://code.google.com/p/audacity/downloads/list
