@@ -1,0 +1,11 @@
+#No Longer Hosted Here.
+
+= Where can I download Audacity? =
+
+Up to date versions of Audacity for download, from version 2.06 onwards,  are no longer available from Google code.  You'll need to Google for "Audacity Download" instead.
+
+==Legacy Downloads==
+
+Onlder versions of Audacity for older machines are available from here:
+
+http://code.google.com/p/audacity/downloads/list
