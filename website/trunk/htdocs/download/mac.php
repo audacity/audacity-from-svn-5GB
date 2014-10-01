@@ -52,7 +52,7 @@ in /Applications or from your chosen location.")?></li>
 <?=_('<b>Known Issue:</b> Security settings on OS X 10.7 or later may block Audacity being 
 launched. Most users on OS X 10.9.5 will experience this, due to changes made by Apple.')?>
 <p><ul><li>
-<?=('To permanently enable Audacity launch, right-click or control-click on the Audacity 
+<?=_('To permanently enable Audacity launch, right-click or control-click on the Audacity 
 application in Finder, choose "Open", then in the dialog box that appears, choose "Open".')?>
 </li></ul></p>
 </div>
