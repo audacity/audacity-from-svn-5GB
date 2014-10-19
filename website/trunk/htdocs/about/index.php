@@ -12,7 +12,7 @@
 
   echo "<h2>$pageTitle</h2>";
 
-  echo _('<p>Audacity is a free, easy-to-use, <a href="http://manual.audacityteam.org/o/man/faq_recording_how_to_s.html#overdub">multi-track</a> audio editor and recorder for Windows, Mac OS X, GNU/Linux and other operating systems. The interface is translated into <a href="http://audacityteam.org/wiki/index.php?title=Changing_the_current_language#list">many languages</a>. You can use Audacity to:</p>
+  echo _('<p>Audacity is a free, easy-to-use, <a href="http://manual.audacityteam.org/o/man/faq_recording_how_to_s.html#overdub">multi-track</a> audio editor and recorder for Windows, Mac OS X, GNU/Linux and other operating systems. The interface is translated into <a href="http://manual.audacityteam.org/o/man/languages.html#list">many languages</a>. You can use Audacity to:</p>
 
 <ul>
   <li>Record live audio.</li>
