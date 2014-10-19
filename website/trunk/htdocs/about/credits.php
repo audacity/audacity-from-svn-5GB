@@ -66,19 +66,36 @@
   <li>Lynn Allan, <?=_("developer")?></li>
   <li>David Bailes, <?=_("accessibility advisor")?></li> 
   <li>William Bland, <?=_("developer")?></li>
+  <li>Alex S.Brown, <?=_("developer")?></li>
+  <li>Jeremy R.Brown, <?=_("developer")?></li>
   <li>Chris Cannam, <?=_("developer")?></li>
+  <li>Craig DeForest, <?=_("developer")?></li>
+  <li>Edgar Franke (Edgar-RFT), <?=_("developer")?></li>
+  <li>Mitch Golden, <?=_("developer")?></li>
   <li>Brian Gunlogson, <?=_("developer")?></li>
+  <li>Andrew Hallendorff, <?=_("developer")?></li>
   <li>Daniel Horgan, <?=_("developer")?></li>  
+  <li>David Hostetler, <?=_("developer")?></li>
+  <li>Steve Jolly, <?=_("developer")?></li>
+  <li>Steven Jones, <?=_("developer")?></li>
   <li>Arun Kishore, <?=_("developer")?></li>
+  <li>Paul Licameli, <?=_("developer")?></li>
   <li>Paul Livesey, <?=_("developer")?></li>
   <li>Harvey Lubin, <?=_("graphic artist")?></li>
   <li>Greg Mekkes, <?=_("developer")?></li>
   <li>Abe Milde, <?=_("developer")?></li>
   <li>Paul Nasca, <?=_("developer")?></li>
+  <li>Clayton Otey, <?=_("developer")?></li>
+  <li>Mark Phillips, <?=_("developer")?></li>
   <li>André Pinto, <?=_("developer")?></li>
+  <li>Jean-Claude Risset, <?=_("composer")?></li>
   <li>Augustus Saunders, <?=_("developer")?></li>
+  <li>Benjamin Schwartz, <?=_("developer")?></li>
   <li>David R. Sky, <?=_("Nyquist plug-ins")?> - <a href="http://www.garyallendj.com/davidsky/index.html">Obituary</a></li>
+  <li>Rob Sykes, <?=_("developer")?></li>
   <li>Mike Underwood, <?=_("developer")?></li>
+  <li>Philip Van Baren, <?=_("developer")?></li>
+  <li>Salvo Ventura, <?=_("developer")?></li>
   <li>Jun Wan, <?=_("developer")?></li>
   <li>Tom Woodhams, <?=_("developer")?></li>
   <li>Wing Yu, <?=_("developer")?></li>
@@ -171,7 +188,6 @@
   <li>Logan Lewis</li>
   <li>David Luff</li>
   <li>Jason Pepas</li>
-  <li>Mark Phillips</li>
   <li>Jonathan Ryshpan</li>
   <li>Michael Schwendt</li>
   <li>Patrick Shirkey</li>
