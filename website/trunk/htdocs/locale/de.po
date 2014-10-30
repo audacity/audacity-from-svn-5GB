@@ -11,11 +11,11 @@
 # Michał Trzebiatowski <michtrz@gmail.com>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacity 2.0.6\n"
+"Project-Id-Version: Audacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-01 10:10+0100\n"
-"PO-Revision-Date: 2014-10-06 05:57-0000\n"
-"Last-Translator: Michał Trzebiatowski\n"
+"POT-Creation-Date: 2014-10-19 15:17+0100\n"
+"PO-Revision-Date: 2014-10-30 19:41-0000\n"
+"Last-Translator: Michi T.\n"
 "Language-Team: German (http://www.transifex.com/projects/p/audacity/language/"
 "de/)\n"
 "MIME-Version: 1.0\n"
@@ -294,7 +294,7 @@ msgstr ""
 "listinfo/audacity-quality\">audacity-quality</a> Mailingliste bei."
 
 #: community/index.php:41 community/translation.php:9 main.inc.php:64
-#: about/credits.php:87
+#: about/credits.php:104
 msgid "Translators"
 msgstr "Übersetzer"
 
@@ -12497,7 +12497,7 @@ msgstr ""
 "aus den System Plugin-Ordneren. Audacity wird keine Audio Units in seinem "
 "eigenen \"Plug-ins\" Ordner erkennen."
 
-#: download/plugins.php:47 about/credits.php:137
+#: download/plugins.php:47 about/credits.php:154
 msgid "Libraries"
 msgstr "Bibliotheken"
 
@@ -13365,9 +13365,8 @@ msgid ""
 "<p>Audacity is a free, easy-to-use, <a href=\"http://manual.audacityteam.org/"
 "o/man/faq_recording_how_to_s.html#overdub\">multi-track</a> audio editor and "
 "recorder for Windows, Mac OS X, GNU/Linux and other operating systems. The "
-"interface is translated into <a href=\"http://audacityteam.org/wiki/index."
-"php?title=Changing_the_current_language#list\">many languages</a>. You can "
-"use Audacity to:</p>\n"
+"interface is translated into <a href=\"http://manual.audacityteam.org/o/man/"
+"languages.html#list\">many languages</a>. You can use Audacity to:</p>\n"
 "\n"
 "<ul>\n"
 "  <li>Record live audio.</li>\n"
@@ -13391,13 +13390,12 @@ msgid ""
 "li>\n"
 "</ul>"
 msgstr ""
-"<p>Audacity ist ein kostenloses , benutzerfreundliches, <a href=\"http://"
+"<p>Audacity ist ein kostenloses, benutzerfreundliches, <a href=\"http://"
 "manual.audacityteam.org/o/man/faq_recording_how_to_s.html#overdub"
 "\">multikanal</a> Audiobearbeitungs und -Aufnahmeprogramm für Windows, Mac "
 "OS X, GNU/Linux und andere Betriebssysteme. Die Benutzeroberfläche ist in <a "
-"href=\"http://audacityteam.org/wiki/index.php?"
-"title=Changing_the_current_language#list\">viele Sprachen</a> übersetzt. Mit "
-"Audacity können Sie:</p>\n"
+"href=\"http://manual.audacityteam.org/o/man/languages.html#list\"\">viele "
+"Sprachen</a> übersetzt. Mit Audacity können Sie:</p>\n"
 "\n"
 "<ul>\n"
 "<li>Liveaufnahmen erstellen.</li>\n"
@@ -13407,16 +13405,14 @@ msgstr ""
 "<li><a href=\"http://manual.audacityteam.org/o/man/"
 "tutorial_copying_tapes_lps_or_minidiscs_to_cd.html\">Kassetten, "
 "Schallplatten und andere Aufnahmen</a> digitalisieren.</li>\n"
-"<li>WAV, AIFF, FLAC, MP2, MP3 oder Ogg Vorbis Sounddateien bearbeiten.</li>\n"
-"<li>AC3, M4A/M4R (AAC), WMA und andere Formate werden mit optionalen "
-"Bibliotheken unterstützt.</li>\n"
+"<li>WAV, AIFF, FLAC, MP2, MP3 oder Sounddateien bearbeiten.</li>\n"
 "<li>Sounds schneiden, kopieren, <a href=\"http://manual.audacityteam.org/o/"
 "man/faq_editing.html#join\">zusammenfügen</a> oder <a href=\"http://manual."
 "audacityteam.org/o/man/mixing.html\">zusammenmischen</a>.</li>\n"
-"<li>Zahlreiche Effekte, wie <a href=\"http://manual.audacityteam.org/o/man/"
+"<li><a href=\"http://manual.audacityteam.org/o/man/"
 "index_of_effects_generators_and_analyzers."
 "html#Make_the_sound_faster.2C_slower.2C_lower_pitched_or_higher_pitched"
-"\">die Abspielgeschwindigkeit oder die Tonhöhe</a> von Aufnahmen ändern.</"
+"\">Die Abspielgeschwindigkeit oder die Tonhöhe</a> von Aufnahmen ändern.</"
 "li>\n"
 "<li>Und vieles mehr! Schauen Sie sich den <a href=\"features\">kompletten "
 "Funktionsumfang</a> an.</li>\n"
@@ -13961,9 +13957,15 @@ msgstr "Qualitätssicherung"
 #: about/credits.php:58 about/credits.php:59 about/credits.php:66
 #: about/credits.php:68 about/credits.php:69 about/credits.php:70
 #: about/credits.php:71 about/credits.php:72 about/credits.php:73
-#: about/credits.php:75 about/credits.php:76 about/credits.php:77
-#: about/credits.php:78 about/credits.php:79 about/credits.php:81
-#: about/credits.php:82 about/credits.php:83 about/credits.php:84
+#: about/credits.php:74 about/credits.php:75 about/credits.php:76
+#: about/credits.php:77 about/credits.php:78 about/credits.php:79
+#: about/credits.php:80 about/credits.php:81 about/credits.php:82
+#: about/credits.php:83 about/credits.php:85 about/credits.php:86
+#: about/credits.php:87 about/credits.php:88 about/credits.php:89
+#: about/credits.php:90 about/credits.php:92 about/credits.php:93
+#: about/credits.php:95 about/credits.php:96 about/credits.php:97
+#: about/credits.php:98 about/credits.php:99 about/credits.php:100
+#: about/credits.php:101
 msgid "developer"
 msgstr "Entwickler"
 
@@ -14001,23 +14003,27 @@ msgstr "Mitwirkende"
 msgid "accessibility advisor"
 msgstr "Berater für Zugänglichkeit"
 
-#: about/credits.php:74
+#: about/credits.php:84
 msgid "graphic artist"
 msgstr "Grafikkünstler"
 
-#: about/credits.php:80
+#: about/credits.php:91
+msgid "composer"
+msgstr "Komponist"
+
+#: about/credits.php:94
 msgid "Nyquist plug-ins"
 msgstr "Nyquist-Plugins"
 
-#: about/credits.php:138
+#: about/credits.php:155
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity basiert auf dem Code folgender Projekte:"
 
-#: about/credits.php:160
+#: about/credits.php:177
 msgid "Thanks"
 msgstr "Danke"
 
-#: about/credits.php:161
+#: about/credits.php:178
 msgid ""
 "There are many other people and organizations we would like to thank. Many "
 "of these have contributed code, patches, feedback, money, time, or other "
@@ -14029,7 +14035,7 @@ msgstr ""
 "Andere haben \"nur\" Werkzeuge entwickelt, ohne die dieses Projekt nicht "
 "hätte entwickelt werden können."
 
-#: about/credits.php:185
+#: about/credits.php:201
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Lassen Sie es uns wissen, wenn wir jemanden vergessen haben)"
 
