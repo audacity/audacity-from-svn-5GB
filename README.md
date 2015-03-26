@@ -1,6 +1,10 @@
 # Audacity
 Audacity(R): A Free, Cross-Platform Digital Audio Editor. http://audacity.sourceforge.net/
 
+This git repository is the FULL version of https://code.google.com/p/audacity/ SVN converted to git by the standard conversion tools as of 24th March 2015.  It's a snapshot of SVN and all its history as used for release of Audacity 2.1.0.  If you clone this repository you will end up with over 5GB of content.  All the brances and all the tags from SVN will be expanded.  It is  much more liekly that you will want the subtree created by following this stackoverflow answer http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository/17864475#17864475 just for audacity-src/trunk which is at https://github.com/audacity/audacity.
+
+This repository is kept here for people who (for example) want the website and mezzo, which will become repositories under https://github.com/audacity in due course.
+
 We welcome feedback on Audacity, suggestions for new or improved features, 
 bug reports and patches at:
   feedback@audacityteam.org .
