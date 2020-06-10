@@ -1,9 +1,9 @@
 # Audacity
 Audacity(R): A Free, Cross-Platform Digital Audio Editor. http://audacity.sourceforge.net/
 
-This git repository is the FULL version of https://code.google.com/p/audacity/ SVN converted to git by the standard conversion tools as of 24th March 2015.  It's a snapshot of SVN and all its history as used for release of Audacity 2.1.0.  If you clone this repository you will end up with over 5GB of content.  All the brances and all the tags from SVN will be expanded.  It is  much more liekly that you will want the subtree created by following this stackoverflow answer http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository/17864475#17864475 just for audacity-src/trunk which is at https://github.com/audacity/audacity.
+This git repository is the FULL version of https://code.google.com/p/audacity/ SVN converted to git by the standard conversion tools as of 24th March 2015.  It's a snapshot of SVN and all its history as used for release of Audacity 2.1.0.  If you clone this repository you will end up with over 5GB of content.  All the branches and all the tags from SVN will be expanded.  It is  much more likely that you will want the subtree created by following this stackoverflow answer http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository/17864475#17864475 just for audacity-src/trunk which is at https://github.com/audacity/audacity.
 
-This repository is kept here for people who (for example) want the website and mezzo, which will become repositories under https://github.com/audacity in due course.
+This repository is kept here for people who (for example) want to see the old website, or mezzo, or who want to view detailed contributor history.  
 
 We welcome feedback on Audacity, suggestions for new or improved features, 
 bug reports and patches at:
@@ -12,7 +12,7 @@ bug reports and patches at:
 Personal support with Audacity is not provided by e-mail, but on our Forum:
   http://audacityteam.org/forum/ .
 
-Audacity is copyright (c) 1999-2015 by Audacity Team. This copyright notice
+Audacity is copyright (c) 1999-2020 by Audacity Team. This copyright notice
 applies to all documents in the Audacity source code archive, except as
 otherwise noted (mostly in the lib-src subdirectories).
 
